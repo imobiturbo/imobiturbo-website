@@ -24,7 +24,11 @@ function PremiumCard({ children, style, hover = false, active = false, padding =
       onMouseLeave={hover ? () => setIsHover(false) : undefined}
       style={{
         background: 'var(--surface-premium-1)',
-        border: active ? '1px solid var(--border-lime-soft)' : '1px solid var(--border-subtle)',
+        border: active 
+          ? '1px solid var(--it-lime)' 
+          : isHover 
+            ? '1px solid rgba(191, 215, 48, 0.38)' 
+            : '1px solid var(--border-subtle)',
         borderRadius: 18,
         padding,
         boxShadow: active || isHover ? 'var(--shadow-premium-card), var(--glow-lime-soft)' : 'var(--shadow-premium-card)',
@@ -44,7 +48,7 @@ function PremiumEyebrow({ children, style }) {
       fontFamily: premiumText.display,
       fontWeight: 800,
       textTransform: 'uppercase',
-      letterSpacing: '0px',
+      letterSpacing: 'var(--tracking-eyebrow)',
       lineHeight: 1,
       fontSize: 13,
       color: 'var(--it-lime)',
@@ -250,13 +254,13 @@ function ProductMockup() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {stages.map(([stage, count, weight]) => (
-                <div key={stage} style={{ display: 'grid', gridTemplateColumns: '112px 1fr 38px', alignItems: 'center', gap: 12 }}>
-                  <div style={{ font: '700 12px Inter', color: '#fff' }}>{stage}</div>
-                  <div style={{ height: 28, borderRadius: 8, border: '1px solid var(--border-subtle)', background: 'var(--surface-sidebar)', overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${weight * 100}%`, background: weight < 0.25 ? 'var(--it-lime)' : 'rgba(191,215,48,0.72)', borderRadius: 8 }} />
-                  </div>
-                  <div style={{ font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', color: 'var(--fg-2)', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1, textAlign: 'right' }}>{count}</div>
-                </div>
+                <FunnelRow
+                  key={stage}
+                  label={stage}
+                  value={count}
+                  progress={weight * 100}
+                  gridTemplate="112px 1fr 38px"
+                />
               ))}
             </div>
           </div>
@@ -340,30 +344,46 @@ function PricingCard({ name, price, description, features, highlighted = false, 
 
 function FAQAccordion({ items }) {
   const [open, setOpen] = React.useState(0);
+  const [hovered, setHovered] = React.useState(-1);
   return (
     <div style={{ maxWidth: 860, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
       {items.map((item, index) => {
         const isOpen = open === index;
+        const isHovered = hovered === index;
         return (
           <button
             key={item.q}
             onClick={() => setOpen(isOpen ? -1 : index)}
+            onMouseEnter={() => setHovered(index)}
+            onMouseLeave={() => setHovered(-1)}
             style={{
               width: '100%',
               textAlign: 'left',
-              background: 'var(--surface-premium-1)',
+              background: isHovered ? 'rgba(255, 255, 255, 0.06)' : 'var(--surface-premium-1)',
               color: '#fff',
-              border: isOpen ? '1px solid var(--border-lime-soft)' : '1px solid var(--border-subtle)',
+              border: isOpen 
+                ? '1px solid var(--it-lime)' 
+                : isHovered 
+                  ? '1px solid rgba(191, 215, 48, 0.38)' 
+                  : '1px solid var(--border-subtle)',
               borderRadius: 16,
               padding: '20px 22px',
               cursor: 'pointer',
               boxShadow: isOpen ? 'var(--glow-lime-soft)' : 'none',
-              transition: 'border-color var(--dur-base), box-shadow var(--dur-base)',
+              transition: 'border-color var(--dur-base) var(--ease-out), background var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out)',
             }}
           >
             <span style={{ display: 'flex', justifyContent: 'space-between', gap: 20, alignItems: 'center', font: '700 15px Inter' }}>
               {item.q}
-              <span style={{ color: isOpen ? 'var(--it-lime)' : 'var(--fg-3)', font: '700 20px Inter' }}>{isOpen ? '×' : '+'}</span>
+              <Icon 
+                name="chevronDown" 
+                size={18} 
+                color={isOpen ? 'var(--it-lime)' : 'var(--fg-3)'} 
+                style={{
+                  transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform var(--dur-base) var(--ease-out)',
+                }}
+              />
             </span>
             {isOpen && <span style={{ display: 'block', marginTop: 12, color: 'var(--fg-2)', font: '400 14px Inter', lineHeight: 1.6 }}>{item.a}</span>}
           </button>
@@ -575,6 +595,35 @@ function EmptyState({ title, body, actionLabel }) {
   );
 }
 
+// ---------- FunnelRow ----------
+function FunnelRow({ label, value, progress, gridTemplate = '112px 1fr 48px' }) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: gridTemplate, alignItems: 'center', gap: 12 }}>
+      <div style={{ font: '700 12px Inter', color: '#fff' }}>{label}</div>
+      <div style={{ height: 28, borderRadius: 8, border: '1px solid var(--border-subtle)', background: 'var(--surface-sidebar)', overflow: 'hidden' }}>
+        <div style={{ height: '100%', width: `${progress}%`, background: 'rgba(191,215,48,0.72)', borderRadius: 8 }} />
+      </div>
+      <div style={{ font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', color: 'var(--fg-2)', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1, textAlign: 'right' }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+// ---------- KpiCard ----------
+function KpiCard({ value, label, size = 'md' }) {
+  return (
+    <div style={{ padding: 14, borderRadius: 14, background: 'rgba(0,0,0,0.34)', border: '1px solid var(--border-subtle)' }}>
+      <div style={{ color: '#fff', fontFamily: premiumText.display, fontWeight: 800, fontSize: size === 'lg' ? 42 : 34, lineHeight: 0.9, letterSpacing: '-0.04em' }}>
+        {value}
+      </div>
+      <div style={{ marginTop: 8, color: 'var(--fg-3)', font: '800 13px "Futura LT Cond", "Barlow Condensed", system-ui, sans-serif', letterSpacing: 'var(--tracking-eyebrow)', textTransform: 'uppercase', lineHeight: 1 }}>
+        {label}
+      </div>
+    </div>
+  );
+}
+
 Object.assign(window, {
   PremiumCard,
   PremiumEyebrow,
@@ -591,4 +640,6 @@ Object.assign(window, {
   RecentCard,
   DashboardPanel,
   EmptyState,
+  FunnelRow,
+  KpiCard,
 });

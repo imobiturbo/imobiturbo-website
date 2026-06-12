@@ -4,6 +4,19 @@
 const AUDIENCE_WHATSAPP_URL = 'https://wa.me/5521983747796?text=Quero%20entender%20a%20Imobiturbo%20para%20minha%20opera%C3%A7%C3%A3o';
 const AUDIENCE_INSTAGRAM_URL = 'https://www.instagram.com/imobiturbo/';
 
+function useIsMobile(maxWidth = 980) {
+  const [isMobile, setIsMobile] = React.useState(() => window.innerWidth <= maxWidth);
+
+  React.useEffect(() => {
+    const update = () => setIsMobile(window.innerWidth <= maxWidth);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [maxWidth]);
+
+  return isMobile;
+}
+
 const audienceAssets = {
   hero: '../assets/home-hero-operacao-imobiliaria.webp',
   method: '../assets/home-metodo-corretor-solo.webp',
@@ -132,19 +145,160 @@ function audienceOpenWhatsApp() {
 }
 
 function AudienceTopbar() {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const isMobile = useIsMobile();
+  const closeMenu = () => setIsOpen(false);
+
+  const headerLinks = [
+    ['Corretor Autônomo', '/corretor-autonomo/'],
+    ['Imobiliárias', '/imobiliarias/'],
+    ['Construtoras', '/construtoras-incorporadoras/'],
+    ['Depoimentos', '/depoimentos/'],
+  ];
+
   return (
-    <header className="aud-topbar">
-      <div className="aud-shell aud-topbar-inner">
-        <a href="/">
-          <img className="aud-logo" src="../assets/logo-imobiturbo-white.png" alt="Imobiturbo" />
+    <header className={`aud-topbar ${isOpen ? 'menu-open' : ''}`}>
+      <div className="aud-shell aud-topbar-inner" style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%'
+      }}>
+        <a href="/" onClick={closeMenu}>
+          <img className="aud-logo" src="../assets/logo-imobiturbo-white.png" alt="Imobiturbo" style={{ width: isMobile ? 142 : 148, display: 'block' }} />
         </a>
-        <nav className="aud-nav" aria-label="Navegação principal">
-          <a href="/corretor-autonomo/">Corretor Autônomo</a>
-          <a href="/imobiliarias/">Imobiliárias</a>
-          <a href="/construtoras-incorporadoras/">Construtoras</a>
-          <a href="/depoimentos/">Depoimentos</a>
+
+        <nav className="aud-nav" aria-label="Navegação principal" style={{ display: isMobile ? 'none' : 'flex', gap: 18, alignItems: 'center', marginLeft: 'auto' }}>
+          {headerLinks.map(([label, href]) => (
+            <a href={href} key={label} style={{
+              color: 'var(--fg-2)',
+              textDecoration: 'none',
+              font: '800 13px var(--font-mono)',
+              letterSpacing: '0px',
+              textTransform: 'uppercase',
+              lineHeight: 1,
+            }}>
+              {label}
+            </a>
+          ))}
         </nav>
+
+        {isMobile && (
+          <button
+            className="aud-menu-button"
+            type="button"
+            aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'}
+            aria-expanded={isOpen}
+            onClick={() => setIsOpen((value) => !value)}
+            style={{
+              width: 44,
+              height: 44,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexDirection: 'column',
+              gap: 4,
+              border: '1px solid var(--border-subtle)',
+              borderRadius: 999,
+              background: 'rgba(255,255,255,0.05)',
+              color: '#fff',
+              padding: 0,
+              cursor: 'pointer',
+            }}
+          >
+            <span style={{
+              width: 18,
+              height: 2,
+              display: 'block',
+              borderRadius: 999,
+              background: 'currentColor',
+              transition: 'transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out)',
+              transform: isOpen ? 'translateY(6px) rotate(45deg)' : undefined,
+            }} />
+            <span style={{
+              width: 18,
+              height: 2,
+              display: 'block',
+              borderRadius: 999,
+              background: 'currentColor',
+              transition: 'transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out)',
+              opacity: isOpen ? 0 : 1,
+            }} />
+            <span style={{
+              width: 18,
+              height: 2,
+              display: 'block',
+              borderRadius: 999,
+              background: 'currentColor',
+              transition: 'transform var(--dur-base) var(--ease-out), opacity var(--dur-base) var(--ease-out)',
+              transform: isOpen ? 'translateY(-6px) rotate(-45deg)' : undefined,
+            }} />
+          </button>
+        )}
       </div>
+
+      {isMobile && isOpen && (
+        <nav className="aud-menu-panel" aria-label="Menu mobile" style={{
+          position: 'absolute',
+          top: 'calc(100% + 10px)',
+          left: 16,
+          right: 16,
+          display: 'grid',
+          gap: 4,
+          padding: 14,
+          border: '1px solid var(--border-subtle)',
+          borderRadius: 16,
+          background: 'rgba(10,10,10,0.96)',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.52)',
+          zIndex: 40,
+        }}>
+          {headerLinks.map(([label, href]) => (
+            <a 
+              href={href} 
+              key={label} 
+              onClick={closeMenu} 
+              style={{
+                color: 'rgba(255, 255, 255, 0.86)',
+                font: '800 13px/1 "Futura LT Cond", "Barlow Condensed", system-ui, sans-serif',
+                letterSpacing: '0px',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                whiteSpace: 'nowrap',
+                minHeight: 44,
+                display: 'flex',
+                alignItems: 'center',
+                padding: '0 12px',
+                borderRadius: 10,
+              }}
+            >
+              {label}
+            </a>
+          ))}
+          <a 
+            href={AUDIENCE_WHATSAPP_URL} 
+            target="_blank" 
+            rel="noreferrer" 
+            onClick={closeMenu} 
+            style={{
+              minHeight: 42,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 999,
+              background: 'var(--accent)',
+              color: 'var(--fg-on-lime)',
+              padding: '0 28px',
+              font: '800 15px/1 var(--font-body)',
+              textDecoration: 'none',
+              whiteSpace: 'nowrap',
+              marginTop: 8,
+              width: '100%',
+            }}
+          >
+            Falar no WhatsApp
+          </a>
+        </nav>
+      )}
     </header>
   );
 }

@@ -115,7 +115,7 @@
   --lh-loose: 1.65;
 
   --tracking-display: -0.04em;
-  --tracking-eyebrow: 0px;
+  --tracking-eyebrow: 0.08em;
   --tracking-tight:   -0.02em;
 
   /* ============================================================
@@ -147,7 +147,7 @@
   /* Motion */
   --ease-out:    cubic-bezier(0.2, 0.7, 0.2, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --ease-snap:   cubic-bezier(0.2, 1.2, 0.4, 1);
+  --ease-snap:   cubic-bezier(0.16, 1, 0.3, 1); /* ease-out-expo */
   --dur-quick: 120ms;
   --dur-base:  200ms;
   --dur-slow:  360ms;

@@ -227,6 +227,13 @@ a {
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.02));
+  transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+
+.aud-card:hover {
+  border-color: rgba(191, 215, 48, 0.38);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-premium-card), var(--glow-lime-soft);
 }
 
 .aud-card-icon {
@@ -264,6 +271,13 @@ a {
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.042);
+  transition: transform var(--dur-base) var(--ease-out), border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+
+.aud-step:hover {
+  border-color: rgba(191, 215, 48, 0.38);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-premium-card), var(--glow-lime-soft);
 }
 
 .aud-step-number {
@@ -296,6 +310,12 @@ a {
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.044);
+  transition: border-color var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out);
+}
+
+.aud-image-card:hover {
+  border-color: rgba(191, 215, 48, 0.22);
+  box-shadow: var(--glow-lime-soft);
 }
 
 .aud-image-card img {

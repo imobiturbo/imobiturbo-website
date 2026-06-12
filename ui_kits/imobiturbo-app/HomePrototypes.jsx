@@ -439,21 +439,18 @@ function DealSystemMockup() {
               ['R$20K', 'escopo máx.'],
               ['5', 'etapas'],
             ].map(([value, label]) => (
-              <div key={label} style={{ padding: 14, borderRadius: 14, border: '1px solid var(--border-subtle)', background: 'rgba(0,0,0,0.34)' }}>
-                <div style={{ color: '#fff', fontFamily: premiumText.display, fontWeight: 800, fontSize: 34, lineHeight: 0.9, letterSpacing: '-0.04em' }}>{value}</div>
-                <div style={{ marginTop: 7, color: 'var(--fg-3)', font: '800 13px var(--font-mono)', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>{label}</div>
-              </div>
+              <KpiCard key={label} value={value} label={label} />
             ))}
           </div>
           <div style={{ display: 'grid', gap: 12, marginTop: 20 }}>
             {stages.map(([stage, width, label]) => (
-              <div key={stage} style={{ display: 'grid', gridTemplateColumns: '100px 1fr 80px', gap: 12, alignItems: 'center' }}>
-                <div style={{ color: '#fff', font: '800 12px var(--font-body)' }}>{stage}</div>
-                <div style={{ height: 24, borderRadius: 8, overflow: 'hidden', border: '1px solid var(--border-subtle)', background: 'var(--surface-sidebar)' }}>
-                  <div style={{ width: `${width}%`, height: '100%', background: 'rgba(191,215,48,0.72)', borderRadius: 8 }} />
-                </div>
-                <div style={{ color: 'var(--fg-3)', font: '800 13px var(--font-mono)', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1, textAlign: 'right' }}>{label}</div>
-              </div>
+              <FunnelRow
+                key={stage}
+                label={stage}
+                value={label}
+                progress={width}
+                gridTemplate="100px 1fr 80px"
+              />
             ))}
           </div>
         </div>
@@ -507,9 +504,9 @@ function AuthorityMockup() {
         <div style={{ padding: 28, minHeight: 410, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', background: 'linear-gradient(180deg, rgba(191,215,48,0.10), rgba(0,0,0,0.00) 42%)' }}>
           <div>
             <PremiumEyebrow>NATAN PIMENTEL</PremiumEyebrow>
-            <div style={{ marginTop: 14, fontFamily: premiumText.display, fontWeight: 800, fontSize: 'clamp(54px, 7vw, 86px)', lineHeight: 0.82, letterSpacing: '-0.045em', textTransform: 'uppercase', color: '#fff' }}>
+            <PremiumTitle size="hero" style={{ marginTop: 14, fontSize: 'clamp(54px, 7vw, 86px)', lineHeight: 0.82 }}>
               MÉTODO<br /><span style={{ color: 'var(--it-lime)' }}>IMOBITURBO</span>
-            </div>
+            </PremiumTitle>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
             {[
@@ -517,10 +514,7 @@ function AuthorityMockup() {
               ['4', 'camadas'],
               ['1', 'rotina'],
             ].map(([value, label]) => (
-              <div key={label} style={{ padding: 14, borderRadius: 14, background: 'rgba(0,0,0,0.44)', border: '1px solid var(--border-subtle)' }}>
-                <div style={{ color: '#fff', fontFamily: premiumText.display, fontWeight: 800, fontSize: 42, lineHeight: 0.9, letterSpacing: '-0.04em' }}>{value}</div>
-                <div style={{ marginTop: 8, color: 'var(--fg-3)', font: '800 13px var(--font-mono)', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>{label}</div>
-              </div>
+              <KpiCard key={label} value={value} label={label} size="lg" />
             ))}
           </div>
         </div>
@@ -971,6 +965,7 @@ function CorporateProofSection() {
 
 function CorporateFaqSection() {
   const [open, setOpen] = React.useState(0);
+  const [hovered, setHovered] = React.useState(-1);
 
   return (
     <section className="corporate-faq">
@@ -985,11 +980,42 @@ function CorporateFaqSection() {
         <div className="corporate-faq-list">
           {faqItems.map((item, index) => {
             const isOpen = open === index;
+            const isHovered = hovered === index;
             return (
-              <div className={`corporate-faq-item ${isOpen ? 'open' : ''}`} key={item.q}>
-                <button className="corporate-faq-question" type="button" onClick={() => setOpen(isOpen ? -1 : index)}>
+              <div 
+                className={`corporate-faq-item ${isOpen ? 'open' : ''}`} 
+                key={item.q}
+                style={{
+                  borderColor: isOpen 
+                    ? 'var(--it-lime)' 
+                    : isHovered 
+                      ? 'rgba(191, 215, 48, 0.34)' 
+                      : 'var(--border-subtle)',
+                  background: isOpen 
+                    ? 'rgba(255, 255, 255, 0.056)' 
+                    : isHovered 
+                      ? 'rgba(255, 255, 255, 0.068)' 
+                      : 'rgba(255, 255, 255, 0.042)',
+                  transition: 'border-color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out)',
+                }}
+              >
+                <button 
+                  className="corporate-faq-question" 
+                  type="button" 
+                  onClick={() => setOpen(isOpen ? -1 : index)}
+                  onMouseEnter={() => setHovered(index)}
+                  onMouseLeave={() => setHovered(-1)}
+                >
                   <span>{item.q}</span>
-                  <Icon name={isOpen ? 'x' : 'plus'} size={18} color={isOpen ? 'var(--it-lime)' : 'var(--fg-3)'} />
+                  <Icon 
+                    name="chevronDown" 
+                    size={18} 
+                    color={isOpen ? 'var(--it-lime)' : 'var(--fg-3)'} 
+                    style={{
+                      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                      transition: 'transform var(--dur-base) var(--ease-out)',
+                    }}
+                  />
                 </button>
                 {isOpen && <div className="corporate-faq-answer">{item.a}</div>}
               </div>
