@@ -113,7 +113,7 @@ a {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 0.88fr) minmax(380px, 0.72fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
   gap: 56px;
   align-items: center;
 }
@@ -130,8 +130,12 @@ a {
   max-width: 780px;
   margin: 18px 0 0;
   color: #fff;
-  font: 800 clamp(42px, 5vw, 72px)/1.04 var(--font-body);
-  letter-spacing: 0;
+  font-family: var(--font-display);
+  font-size: clamp(38px, 5.2vw, 64px);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
 }
 
 .aud-lede {
@@ -521,7 +525,8 @@ a {
   }
 
   .aud-title {
-    font-size: clamp(34px, 11vw, 48px);
+    font-size: clamp(34px, 10vw, 48px);
+    line-height: 0.92;
   }
 
   .aud-actions {

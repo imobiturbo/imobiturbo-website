@@ -347,7 +347,7 @@ function AudienceHero({ page }) {
           </div>
         </div>
         <aside className="aud-hero-panel">
-          <div className="aud-kicker">Foco da página</div>
+          <div className="aud-kicker">A Transformação</div>
           <div className="aud-panel-title">{page.panelTitle}</div>
           <div className="aud-panel-list">
             {page.panelItems.map((item) => (
