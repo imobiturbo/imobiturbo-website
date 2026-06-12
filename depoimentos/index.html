@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://trackapi.imobiturbo.com.br/9udzmnsck.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','30k3=AgdOKTk3STsvOSRYN08wUx1eQUBcXAAbVgoeAQ8TEAAZARxADhUJWwkR');</script>
-<!-- End Google Tag Manager -->
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://trackapi.imobiturbo.com.br/9udzmnsck.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','30k3=AgdOKTk3STsvOSRYN08wUx1eQUBcXAAbVgoeAQ8TEAAZARxADhUJWwkR');</script>
+    <!-- End Google Tag Manager -->
 
     <!-- SEO & Metadados -->
     <title>Depoimentos Imobiturbo | +3.000 Clientes Satisfeitos</title>
@@ -20,28 +20,39 @@
     <meta property="og:url" content="https://lp.imobiturbo.com.br/depoimentos/">
     <meta property="og:title" content="O que dizem os clientes da Imobiturbo?">
     <meta property="og:description" content="Resultados reais de quem aplicou o método Imobiturbo.">
-    <meta property="og:image" content="https://lp.imobiturbo.com.br/depoimentos/logo.png">
+    <meta property="og:image" content="logo.png">
 
-    <!-- Scripts de Estilo -->
+    <!-- CSS Links (Tailwind CDN + Design System Fonts & Tokens) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../colors_and_type.css?v=futura-labels-13-20260527">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@800&display=swap" rel="stylesheet">
 
+    <!-- Tailwind Config to Align with Imobiturbo Brand Identity -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'fundo': '#0b0b0c',
-                        'fundo-2': '#18181b',
-                        'realce': '#d4ff6d',
-                        'apoio': '#304007',
-                        'texto': '#fafafa',
+                        'fundo': '#000000',           /* Canvas */
+                        'fundo-2': '#0A0A0A',         /* Primary dark surface */
+                        'card-surf': '#101010',       /* Raised surface for cards */
+                        'realce': '#BFD730',          /* Pantone Lime Punch */
+                        'realce-hover': '#D2E854',    /* Lime hover state */
+                        'realce-dark': '#2A3107',     /* Text on lime */
+                        'border-subtle': 'rgba(255, 255, 255, 0.07)',
+                        'border-lime': 'rgba(191, 215, 48, 0.22)',
+                        'texto': '#FFFFFF',           /* fg-1 primary */
+                        'texto-muted': '#B8B8B8',     /* fg-2 secondary */
+                        'texto-dark': '#5C5C5C',      /* fg-3 muted */
                     },
                     fontFamily: {
-                        'oswald': ['Oswald', 'sans-serif'],
-                        'inter': ['Inter', 'sans-serif']
+                        'display': ['"Futura LT Cond"', '"Barlow Condensed"', 'Oswald', 'system-ui', 'sans-serif'],
+                        'body': ['Inter', '"Helvetica Neue"', 'Helvetica', 'Arial', 'system-ui', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        'display': '-0.04em',
                     }
                 }
             }
@@ -49,86 +60,108 @@
     </script>
 
     <style>
-        body { font-family: 'inter', sans-serif; background-color: #0b0b0c; color: #fafafa; }
-        .h1-custom-tracking { letter-spacing: -0.05em; }
+        body { 
+            font-family: 'Inter', "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+            background: 
+                radial-gradient(circle at 50% 0%, rgba(191, 215, 48, 0.12), rgba(191, 215, 48, 0) 40%),
+                linear-gradient(180deg, #020302 0%, #000000 70%);
+            color: #ffffff; 
+        }
         
-        /* Masonry layout */
+        /* Masonry layout overrides */
         #gallery { column-count: 1; column-gap: 1.5rem; }
         @media (min-width: 640px) { #gallery { column-count: 2; } }
         @media (min-width: 1024px) { #gallery { column-count: 3; } }
         
         .gallery-item { break-inside: avoid; margin-bottom: 1.5rem; cursor: pointer; }
         
-        /* Animações */
-        .testimonial-image { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        
-        /* Lightbox */
-        #lightbox { transition: opacity 0.3s ease-in-out; }
-        #lightbox.hidden { opacity: 0; pointer-events: none; }
+        /* Smooth Fade In animation */
+        .testimonial-image { animation: fadeIn 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: scale(0.97); } 
+            to { opacity: 1; transform: scale(1); } 
+        }
     </style>
 </head>
-<body class="bg-fundo text-texto overflow-x-hidden">
+<body class="bg-fundo text-texto overflow-x-hidden antialiased">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://trackapi.imobiturbo.com.br/ns.html?id=GTM-NDZW6Z5T" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
-
-    <!-- Header Section -->
-    <header class="text-center py-8 md:py-12 bg-black">
-        <div class="container mx-auto px-6 flex flex-col items-center">
-            <div class="mb-8 order-1">
-                <img src="https://lp.imobiturbo.com.br/depoimentos/logo.png" alt="Logo Imobiturbo" class="h-24 md:h-28 mx-auto" onerror="this.src='https://placehold.co/300x100/000000/fafafa?text=Imobiturbo';">
-            </div>
-
-            <!-- Mini Testimonials -->
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-8 w-full order-3 sm:order-2 sm:mb-8">
-                <div class="text-center">
-                    <p class="text-yellow-400 text-lg">★★★★★</p>
-                    <p class="text-texto/80 text-sm">"Minhas comissões dobraram"</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-yellow-400 text-lg">★★★★★</p>
-                    <p class="text-texto/80 text-sm">"Recomendo a qualquer corretor"</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-yellow-400 text-lg">★★★★★</p>
-                    <p class="text-texto/80 text-sm">"Resultados acima da média"</p>
-                </div>
-            </div>
-
-            <h1 class="font-oswald text-5xl md:text-7xl lg:text-8xl font-bold text-texto uppercase leading-none h1-custom-tracking order-2 sm:order-3 mb-8 sm:mb-0">
-                Veja o que nossos <br class="hidden md:block"> +3.000 clientes <br class="hidden md:block"> têm a dizer
-            </h1>
+    <!-- Header Navigation (sticky) -->
+    <header class="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#020302]/74 backdrop-blur-lg">
+        <div class="max-w-[1180px] mx-auto px-6 h-[74px] flex items-center justify-between gap-4">
+            <a href="../" class="inline-flex items-center">
+                <img src="../assets/logo-imobiturbo-white.png" alt="Imobiturbo" class="h-[28px] md:h-[32px] w-auto">
+            </a>
+            <nav class="hidden md:flex items-center gap-6">
+                <a href="../#o-que-faz" class="font-display text-[13px] font-extrabold text-texto/80 hover:text-realce uppercase tracking-wider transition-colors">O que faz</a>
+                <a href="../#publicos" class="font-display text-[13px] font-extrabold text-texto/80 hover:text-realce uppercase tracking-wider transition-colors">Para quem</a>
+                <a href="../#como-faz" class="font-display text-[13px] font-extrabold text-texto/80 hover:text-realce uppercase tracking-wider transition-colors">Como faz</a>
+                <a href="../#metodo" class="font-display text-[13px] font-extrabold text-texto/80 hover:text-realce uppercase tracking-wider transition-colors">Método</a>
+                <a href="../#investimento" class="font-display text-[13px] font-extrabold text-texto/80 hover:text-realce uppercase tracking-wider transition-colors">Investimento</a>
+                <a href="#" class="font-display text-[13px] text-realce uppercase font-extrabold tracking-wider">Depoimentos</a>
+            </nav>
+            <a href="https://wa.me/5521983747796?text=Quero%20mais%20fechamento%20e%20mais%20lucro%20com%20a%20Imobiturbo" target="_blank" rel="noopener noreferrer" class="h-10 px-6 rounded-full bg-realce hover:bg-realce-hover text-black font-body text-xs font-extrabold inline-flex items-center justify-center transition-all duration-200 hover:-translate-y-[1px]">
+                Falar no WhatsApp
+            </a>
         </div>
     </header>
 
+    <!-- Header Section / Hero -->
+    <section class="text-center pt-[150px] pb-12 relative overflow-hidden">
+        <div class="container mx-auto px-6 flex flex-col items-center relative z-10">
+            <!-- Mini Testimonials / Badges -->
+            <div class="flex flex-wrap justify-center items-center gap-4 md:gap-6 w-full mb-8">
+                <div class="px-4 py-2 rounded-xl bg-card-surf/80 border border-border-subtle flex flex-col items-center">
+                    <p class="text-realce text-xs">★★★★★</p>
+                    <p class="text-texto-muted text-xs font-semibold mt-1">"Minhas comissões dobraram"</p>
+                </div>
+                <div class="px-4 py-2 rounded-xl bg-card-surf/80 border border-border-subtle flex flex-col items-center">
+                    <p class="text-realce text-xs">★★★★★</p>
+                    <p class="text-texto-muted text-xs font-semibold mt-1">"Recomendo a qualquer corretor"</p>
+                </div>
+                <div class="px-4 py-2 rounded-xl bg-card-surf/80 border border-border-subtle flex flex-col items-center">
+                    <p class="text-realce text-xs">★★★★★</p>
+                    <p class="text-texto-muted text-xs font-semibold mt-1">"Resultados acima da média"</p>
+                </div>
+            </div>
+
+            <h1 class="font-display text-5xl md:text-7xl lg:text-[92px] font-extrabold text-texto uppercase leading-[0.88] tracking-display mb-6">
+                Veja o que nossos <br class="hidden md:block"> <span class="text-realce">+3.000 clientes</span> <br class="hidden md:block"> têm a dizer
+            </h1>
+            <p class="text-texto-muted max-w-2xl text-base md:text-lg font-medium leading-relaxed font-body">
+                Resultados reais de corretores, imobiliárias e construtoras que estruturaram seus processos comerciais com o método Imobiturbo.
+            </p>
+        </div>
+    </section>
+
     <!-- Testimonials Gallery (Prints) -->
-    <main class="container mx-auto px-6 py-12">
-        <h2 class="font-oswald text-4xl md:text-6xl font-bold text-texto uppercase leading-tight h1-custom-tracking mb-12 text-center">Resultados Reais (Prints)</h2>
-        <div id="gallery">
-            <!-- Prints injetados via JS -->
+    <main class="container mx-auto px-6 py-12 relative z-10">
+        <h2 class="font-display text-3xl md:text-5xl font-extrabold text-texto uppercase tracking-display mb-12 text-center">Resultados Reais (Prints)</h2>
+        <div id="gallery" class="gap-6">
+            <!-- Prints will be injected via Javascript -->
         </div>
     </main>
 
     <!-- Footer Section -->
-    <footer class="text-center py-12 bg-fundo-2">
-        <div class="container mx-auto px-6 text-texto/70 text-sm">
-            <p class="font-bold">Imobiturbo® por Natan Pimentel · CNPJ 47.746.249/0001-04</p>
-            <p class="mt-2">Rua Sete de Setembro, 71, Sala 1501 – Centro, Rio de Janeiro – RJ</p>
-            <p class="mt-4 font-semibold text-texto/90">Mais de 3.000 profissionais do mercado imobiliário acelerados.</p>
+    <footer class="text-center py-12 bg-[#050505] border-t border-border-subtle relative z-10">
+        <div class="container mx-auto px-6 text-texto-muted text-sm font-body">
+            <p class="font-bold text-texto text-base">Imobiturbo® por Natan Pimentel · CNPJ 47.746.249/0001-04</p>
+            <p class="mt-2 text-texto-muted/70">Rua Sete de Setembro, 71, Sala 1501 – Centro, Rio de Janeiro – RJ</p>
+            <p class="mt-4 font-extrabold text-realce font-display uppercase tracking-wider text-xs">Mais de 3.000 profissionais do mercado imobiliário acelerados.</p>
         </div>
     </footer>
 
     <!-- Lightbox Modal -->
-    <div id="lightbox" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-fundo/95 p-4">
-        <span id="close-lightbox" class="absolute top-5 right-8 text-texto/80 text-5xl font-bold cursor-pointer hover:text-realce transition-colors z-10">&times;</span>
-        <img id="lightbox-image" src="" alt="Depoimento Ampliado" class="max-w-[95vw] max-h-[95vh] object-contain rounded-lg shadow-2xl">
+    <div id="lightbox" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-md">
+        <span id="close-lightbox" class="absolute top-5 right-8 text-texto/80 text-5xl font-bold cursor-pointer hover:text-realce transition-colors duration-200 z-10">&times;</span>
+        <img id="lightbox-image" src="" alt="Depoimento Ampliado" class="max-w-[95vw] max-h-[90vh] object-contain rounded-2xl border border-border-subtle shadow-[0_24px_80px_rgba(0,0,0,0.8)]">
     </div>
 
+    <!-- Gallery Injection and Lightbox Logic -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- GALERIA DE PRINTS ---
             const imageUrls = [
                 'https://i.postimg.cc/SRnbNt83/1.webp',
                 'https://i.postimg.cc/zvyYXPKz/10.webp',
@@ -181,8 +214,10 @@
 
             imageUrls.forEach(url => {
                 const div = document.createElement('div');
-                div.className = 'gallery-item bg-fundo-2 rounded-lg overflow-hidden shadow-lg transform hover:scale-[1.02] transition-all';
-                div.innerHTML = `<img src="${url}" loading="lazy" class="w-full h-auto testimonial-image" onerror="this.src='https://placehold.co/600x400/18181b/fafafa?text=Imagem+Indispon%C3%ADvel'">`;
+                // Card designs aligned with SAAS platform cards from the design system
+                div.className = 'gallery-item bg-card-surf border border-border-subtle rounded-2xl overflow-hidden shadow-lg transform hover:scale-[1.015] hover:border-realce/30 hover:shadow-realce/5 transition-all duration-300';
+                div.innerHTML = `<img src="${url}" loading="lazy" class="w-full h-auto testimonial-image" onerror="this.src='https://placehold.co/600x400/101010/B8B8B8?text=Depoimento';">`;
+                
                 div.onclick = () => {
                     lightboxImage.src = url;
                     lightbox.classList.remove('hidden');
@@ -191,10 +226,28 @@
                 gallery.appendChild(div);
             });
 
-            document.getElementById('close-lightbox').onclick = () => {
+            // Close lightbox click events
+            const closeBtn = document.getElementById('close-lightbox');
+            const closeLightbox = () => {
                 lightbox.classList.add('hidden');
                 document.body.style.overflow = 'auto';
             };
+            
+            closeBtn.onclick = closeLightbox;
+            
+            // Close lightbox on clicking backdrop
+            lightbox.onclick = (e) => {
+                if (e.target === lightbox || e.target === closeBtn) {
+                    closeLightbox();
+                }
+            };
+
+            // Esc key support to close lightbox
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+                    closeLightbox();
+                }
+            });
         });
     </script>
 </body>
