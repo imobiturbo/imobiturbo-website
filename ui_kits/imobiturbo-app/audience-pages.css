@@ -352,11 +352,86 @@ a {
 }
 
 .aud-cta-panel {
+  position: relative;
   padding: 28px;
   border-radius: 10px;
   background: #fff;
   color: var(--it-ink);
   box-shadow: 0 26px 74px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+/* Animations for step transition */
+@keyframes audCtaSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes audCtaSlideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
+.aud-cta-panel-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.aud-cta-panel-inner.slide-in {
+  animation: audCtaSlideIn 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.aud-cta-panel-inner.slide-out {
+  animation: audCtaSlideOut 180ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Spring-like transition for diagnostic score bar */
+.aud-score-bar-fill {
+  height: 100%;
+  background: #7a911c;
+  border-radius: 999px;
+  transition: width 800ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.aud-progress-bar-fill {
+  height: 100%;
+  background: #7a911c;
+  transition: width 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes audCtaSlideIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes audCtaSlideOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  .aud-cta-panel-inner.slide-in {
+    animation: audCtaSlideIn 100ms linear forwards;
+  }
+  .aud-cta-panel-inner.slide-out {
+    animation: audCtaSlideOut 100ms linear forwards;
+  }
+  .aud-score-bar-fill,
+  .aud-progress-bar-fill {
+    transition: none !important;
+  }
 }
 
 .aud-footer {
