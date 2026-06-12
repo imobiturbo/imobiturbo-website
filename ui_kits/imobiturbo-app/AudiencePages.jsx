@@ -156,28 +156,53 @@ function AudienceTopbar() {
     ['Depoimentos', '/depoimentos/'],
   ];
 
+  const headerStyle = {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 50,
+    borderBottom: '1px solid rgba(255,255,255,0.12)',
+    background: 'rgba(2,3,2,0.72)',
+    backdropFilter: 'blur(18px) saturate(150%)',
+  };
+
+  const shellStyle = {
+    width: isMobile ? 'min(100% - 24px, 560px)' : 'min(1180px, calc(100% - 48px))',
+    margin: '0 auto',
+    height: isMobile ? 64 : 74,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: isMobile ? 16 : 28,
+  };
+
+  const logoStyle = {
+    width: isMobile ? 142 : 160,
+    height: 'auto',
+    display: 'block',
+  };
+
+  const linkStyle = {
+    color: 'rgba(255,255,255,0.86)',
+    font: '800 13px/1 "Futura LT Cond", "Barlow Condensed", system-ui, sans-serif',
+    letterSpacing: 0,
+    textTransform: 'uppercase',
+    textDecoration: 'none',
+    whiteSpace: 'nowrap',
+    transition: 'color var(--dur-base) var(--ease-out)',
+  };
+
   return (
-    <header className={`aud-topbar ${isOpen ? 'menu-open' : ''}`}>
-      <div className="aud-shell aud-topbar-inner" style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: '100%'
-      }}>
-        <a href="/" onClick={closeMenu}>
-          <img className="aud-logo" src="../assets/logo-imobiturbo-white.png" alt="Imobiturbo" style={{ width: isMobile ? 142 : 148, display: 'block' }} />
+    <header className={`aud-topbar ${isOpen ? 'menu-open' : ''}`} style={headerStyle}>
+      <div className="aud-shell aud-topbar-inner" style={shellStyle}>
+        <a href="/" onClick={closeMenu} style={{ display: 'inline-flex', alignItems: 'center', lineHeight: 0, textDecoration: 'none' }}>
+          <img className="aud-logo" src="../assets/logo-imobiturbo-white.png" alt="Imobiturbo" style={logoStyle} />
         </a>
 
         <nav className="aud-nav" aria-label="Navegação principal" style={{ display: isMobile ? 'none' : 'flex', gap: 18, alignItems: 'center', marginLeft: 'auto' }}>
           {headerLinks.map(([label, href]) => (
-            <a href={href} key={label} style={{
-              color: 'var(--fg-2)',
-              textDecoration: 'none',
-              font: '800 13px var(--font-mono)',
-              letterSpacing: '0px',
-              textTransform: 'uppercase',
-              lineHeight: 1,
-            }}>
+            <a href={href} key={label} style={linkStyle}>
               {label}
             </a>
           ))}
