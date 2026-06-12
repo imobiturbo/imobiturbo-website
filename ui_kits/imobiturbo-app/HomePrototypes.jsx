@@ -67,7 +67,7 @@ const faqItems = [
   },
   {
     q: 'Quanto custa um projeto com a Imobiturbo?',
-    a: 'Os projetos partem de R$500 e podem chegar a R$20.000 conforme escopo, acompanhamento, operação e nível de consultoria.',
+    a: 'Os projetos partem de R$500 e podem chegar a R$60.000 conforme escopo, acompanhamento, operação e nível de consultoria.',
   },
   {
     q: 'Onde entram os depoimentos?',
@@ -136,7 +136,7 @@ const corporateMetrics = [
   ['5', 'etapas do lead ao fechamento'],
   ['4', 'camadas no pacote completo'],
   ['R$500', 'ponto de entrada possível'],
-  ['R$20K', 'escopo conforme projeto'],
+  ['R$60K', 'escopo conforme projeto'],
 ];
 
 const corporateScopeItems = [
@@ -436,7 +436,7 @@ function DealSystemMockup() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 10, marginTop: 20 }}>
             {[
               ['R$500', 'entrada'],
-              ['R$20K', 'escopo máx.'],
+              ['R$60K', 'escopo máx.'],
               ['5', 'etapas'],
             ].map(([value, label]) => (
               <KpiCard key={label} value={value} label={label} />
@@ -913,7 +913,7 @@ function CorporateInvestmentSection() {
             <div className="corporate-price-divider" aria-hidden="true" />
             <div className="corporate-price-box featured">
               <div className="corporate-price-label">Projeto completo</div>
-              <div className="corporate-price-value">R$20.000</div>
+              <div className="corporate-price-value">R$60.000</div>
             </div>
           </div>
 
