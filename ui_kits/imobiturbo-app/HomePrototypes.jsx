@@ -697,7 +697,7 @@ function CorporateHero() {
       <img className="corporate-hero-bg" src={visualAssets.heroCity} alt="" aria-hidden="true" />
       <div className="home-shell corporate-hero-inner">
         <div className="corporate-kicker">Ecossistema para crescimento imobiliário</div>
-        <h1 className="corporate-hero-title">Onde vendas, operação e tecnologia imobiliária ganham direção.</h1>
+        <h1 className="corporate-hero-title">Onde vendas, operação e <span style={{ color: 'var(--it-lime)' }}>tecnologia imobiliária</span> ganham direção.</h1>
         <p className="corporate-hero-lede">
           A Imobiturbo conecta mentoria, hub, comunidade e consultoria para corretores, imobiliárias, construtoras e incorporadoras venderem com mais processo, margem e previsibilidade.
         </p>
@@ -728,7 +728,7 @@ function AudiencePathsSection() {
       <div className="home-shell">
         <div className="corporate-section-center">
           <div className="corporate-kicker">Escolha seu cenário</div>
-          <h2 className="corporate-section-title">A mesma inteligência, aplicada a operações diferentes.</h2>
+          <h2 className="corporate-section-title">A <span style={{ color: 'var(--it-lime)' }}>mesma inteligência</span>, aplicada a operações diferentes.</h2>
           <p className="corporate-section-text">
             Cada operação tem um desafio próprio. A Imobiturbo organiza o caminho conforme o tipo de negócio imobiliário.
           </p>
@@ -769,7 +769,7 @@ function CorporateSolutionsSection() {
       <div className="home-shell">
         <div className="corporate-section-center">
           <div className="corporate-kicker">Soluções Imobiturbo</div>
-          <h2 className="corporate-section-title">Estratégia imobiliária que transforma esforço em direção.</h2>
+          <h2 className="corporate-section-title"><span style={{ color: 'var(--it-lime)' }}>Estratégia imobiliária</span> que transforma esforço em direção.</h2>
           <p className="corporate-section-text">
             Antes de acelerar, a operação precisa entender para onde está indo. A Imobiturbo organiza visão, processo e execução em uma lógica integrada.
           </p>
@@ -812,7 +812,7 @@ function CorporateMoreSolutionsSection() {
       <div className="home-shell">
         <div className="corporate-section-center">
           <div className="corporate-kicker">Como a Imobiturbo atua</div>
-          <h2 className="corporate-section-title">Quatro frentes conectadas em um só raciocínio.</h2>
+          <h2 className="corporate-section-title"><span style={{ color: 'var(--it-lime)' }}>Quatro frentes</span> conectadas em um só raciocínio.</h2>
           <p className="corporate-section-text">
             Educação forma visão. Hub organiza rotina. Consultoria ajusta a operação. Comunidade sustenta repertório.
           </p>
@@ -839,7 +839,7 @@ function CorporateBridgeSection() {
       <div className="home-shell corporate-bridge">
         <div>
           <div className="corporate-kicker">Posicionamento</div>
-          <h2 className="corporate-section-title">Não é só ferramenta. Não é só mentoria. É direção para a operação imobiliária.</h2>
+          <h2 className="corporate-section-title">Não é só ferramenta. Não é só mentoria. É <span style={{ color: 'var(--it-lime)' }}>direção</span> para a operação imobiliária.</h2>
           <p className="corporate-section-text" style={{ marginLeft: 0 }}>
             A Imobiturbo ajuda cada operação a transformar esforço comercial em processo, critério e decisão. O caminho muda conforme o público. A lógica permanece integrada.
           </p>
@@ -869,7 +869,7 @@ function CorporateMetricsSection() {
       <div className="home-shell">
         <div className="corporate-section-center">
           <div className="corporate-kicker">Números da operação</div>
-          <h2 className="corporate-section-title">O escopo muda. O processo precisa aparecer.</h2>
+          <h2 className="corporate-section-title">O escopo muda. <span style={{ color: 'var(--it-lime)' }}>O processo</span> precisa aparecer.</h2>
         </div>
         <div className="corporate-metrics">
           {corporateMetrics.map(([value, label]) => (
@@ -890,7 +890,7 @@ function CorporateInvestmentSection() {
       <div className="home-shell corporate-investment-grid">
         <div>
           <div className="corporate-kicker">Investimento</div>
-          <h2 className="corporate-investment-title">O projeto muda conforme o estágio da operação.</h2>
+          <h2 className="corporate-investment-title">O projeto muda conforme o <span style={{ color: 'var(--it-lime)' }}>estágio da operação</span>.</h2>
           <p className="corporate-investment-text">
             Um corretor autônomo não precisa da mesma arquitetura de uma incorporadora. A conversa inicial serve para entender cenário, urgência, time, canais e escopo antes de propor formato.
           </p>
@@ -937,7 +937,7 @@ function CorporateProofSection() {
         <div className="corporate-proof-card">
           <div>
             <div className="corporate-kicker">Prova social</div>
-            <h2 className="corporate-proof-title">Resultados completos, sem interromper a narrativa da marca.</h2>
+            <h2 className="corporate-proof-title"><span style={{ color: 'var(--it-lime)' }}>Resultados completos</span>, sem interromper a narrativa da marca.</h2>
             <p className="corporate-proof-text">
               A primeira página apresenta a marca, o ecossistema e os caminhos de solução. Quem quiser validar casos, conversas e transformações pode acessar a página completa de depoimentos.
             </p>
@@ -969,7 +969,7 @@ function CorporateFaqSection() {
       <div className="home-shell corporate-faq-layout">
         <div>
           <div className="corporate-kicker">Dúvidas diretas</div>
-          <h2 className="corporate-faq-title">Antes de escolher um caminho, entenda o essencial.</h2>
+          <h2 className="corporate-faq-title">Antes de escolher um caminho, entenda <span style={{ color: 'var(--it-lime)' }}>o essencial</span>.</h2>
           <p className="corporate-section-text" style={{ marginLeft: 0 }}>
             Respostas curtas para decidir qual página interna faz mais sentido para o seu momento.
           </p>
