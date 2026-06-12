@@ -656,8 +656,18 @@ function FaqSection() {
 
 function HomeFooter() {
   const columns = [
-    ['Ecossistema', ['Mentoria', 'Software/hub', 'Comunidade', 'Consultoria']],
-    ['Públicos', ['Corretor autônomo', 'Imobiliárias', 'Construtoras', 'Incorporadoras']],
+    ['Ecossistema', [
+      ['Mentoria', '#como-faz'],
+      ['Software/hub', '#como-faz'],
+      ['Comunidade', '#como-faz'],
+      ['Consultoria', '#como-faz'],
+    ]],
+    ['Públicos', [
+      ['Corretor autônomo', '/corretor-autonomo/'],
+      ['Imobiliárias', '/imobiliarias/'],
+      ['Construtoras', '/construtoras-incorporadoras/'],
+      ['Incorporadoras', '/construtoras-incorporadoras/'],
+    ]],
     ['Contato', [
       ['WhatsApp', WHATSAPP_URL],
       ['Instagram', INSTAGRAM_URL],
@@ -678,10 +688,8 @@ function HomeFooter() {
           <div key={title}>
             <div style={{ color: '#fff', font: '800 13px var(--font-mono)', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>{title}</div>
             <div style={{ marginTop: 14, display: 'grid', gap: 10 }}>
-              {links.map((link) => (
-                Array.isArray(link)
-                  ? <a key={link[0]} href={link[1]} style={{ color: 'var(--fg-3)', font: '600 13px var(--font-body)', textDecoration: 'none' }}>{link[0]}</a>
-                  : <span key={link} style={{ color: 'var(--fg-3)', font: '600 13px var(--font-body)' }}>{link}</span>
+              {links.map(([label, url]) => (
+                <a key={label} href={url} className="footer-link">{label}</a>
               ))}
             </div>
           </div>

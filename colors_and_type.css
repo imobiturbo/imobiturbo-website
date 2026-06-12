@@ -293,3 +293,15 @@
 
 /* Selection mirrors the brand */
 ::selection { background: var(--it-lime); color: var(--it-ink); }
+
+/* Footer Links */
+.footer-link {
+  color: var(--fg-3) !important;
+  font: 600 13px var(--font-body) !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease;
+}
+.footer-link:hover {
+  color: var(--it-lime) !important;
+}
+
