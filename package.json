@@ -1,0 +1,18 @@
+{
+  "name": "imobiturbo-website",
+  "version": "1.0.0",
+  "description": "Local copy of imobiturbo.com.br",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "node build.js",
+    "deploy": "node build.js && node deploy.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "^0.28.1",
+    "ssh2": "^1.17.0"
+  }
+}

@@ -1,0 +1,295 @@
+/* ============================================================
+   Imobiturbo Design System — Core foundations
+   Colors + Type tokens (base + semantic)
+   ============================================================ */
+
+/* ---------- FONTS ---------- */
+@font-face {
+  font-family: "Futura LT Cond";
+  src: url("fonts/FuturaLT-CondExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Google Fonts substitutes (load via <link> in HTML):
+   - Inter (body / UI)
+   - Barlow Condensed (display fallback when Futura LT Cond unavailable)
+*/
+
+:root {
+  /* ============================================================
+     COLOR TOKENS — Base scale
+     Black-and-Lime is the brand. No third hue without intent.
+     ============================================================ */
+
+  /* Brand */
+  --it-lime:        #BFD730;   /* Pantone 13-0550 TCX Lime Punch */
+  --it-lime-hi:     #D2E854;   /* hover / lifted */
+  --it-lime-lo:     #A6BC1F;   /* press / darker accent */
+  --it-lime-ink:    #2A3107;   /* readable text-on-lime */
+
+  /* Neutral scale — anchored at true black */
+  --it-black:       #000000;
+  --it-ink:         #0A0A0A;   /* primary surface */
+  --it-ink-2:       #141414;   /* raised surface */
+  --it-ink-3:       #1F1F1F;   /* card on dark */
+  --it-ink-4:       #2A2A2A;   /* border on dark */
+  --it-ink-5:       #3A3A3A;   /* divider on dark */
+
+  --it-fog-1:       #5C5C5C;   /* muted text on dark */
+  --it-fog-2:       #8A8A8A;   /* secondary on light */
+  --it-fog-3:       #B8B8B8;   /* hairlines on light */
+
+  --it-paper:       #F4F4F1;   /* off-white surface */
+  --it-paper-2:     #ECECE7;   /* raised paper */
+  --it-bone:        #FAFAF7;   /* clean bg */
+  --it-white:       #FFFFFF;
+
+  /* Semantic accents (used sparingly — brand is black+lime) */
+  --it-success:     #6FD16F;
+  --it-danger:      #FF5A4E;
+  --it-warning:     #FFB020;
+  --it-info:        #6FA8FF;
+
+  /* ============================================================
+     SEMANTIC COLOR TOKENS (use these in components)
+     ============================================================ */
+
+  /* Foreground */
+  --fg-1:           var(--it-white);    /* primary text on dark */
+  --fg-2:           var(--it-fog-3);    /* secondary text on dark */
+  --fg-3:           var(--it-fog-1);    /* muted text on dark */
+  --fg-on-lime:     var(--it-ink);      /* always black on lime */
+  --fg-inverse-1:   var(--it-ink);      /* primary text on light */
+  --fg-inverse-2:   var(--it-fog-1);    /* secondary text on light */
+  --fg-inverse-3:   var(--it-fog-2);    /* muted text on light */
+
+  /* Background */
+  --bg-0:           var(--it-black);    /* canvas */
+  --bg-1:           var(--it-ink);      /* primary surface */
+  --bg-2:           var(--it-ink-2);    /* raised */
+  --bg-3:           var(--it-ink-3);    /* card */
+  --bg-inverse-0:   var(--it-bone);
+  --bg-inverse-1:   var(--it-paper);
+  --bg-inverse-2:   var(--it-paper-2);
+
+  /* Accent */
+  --accent:         var(--it-lime);
+  --accent-hover:   var(--it-lime-hi);
+  --accent-press:   var(--it-lime-lo);
+  --accent-ink:     var(--it-lime-ink);
+
+  /* Border / divider */
+  --border-1:       var(--it-ink-4);    /* on dark */
+  --border-2:       var(--it-ink-5);
+  --border-inverse-1: rgba(0,0,0,0.10);
+  --border-inverse-2: rgba(0,0,0,0.06);
+
+  /* Focus */
+  --focus-ring:     0 0 0 3px rgba(191, 215, 48, 0.45);
+
+  /* ============================================================
+     TYPOGRAPHY — base tokens
+     ============================================================ */
+  --font-display:   "Futura LT Cond", "Barlow Condensed", "Oswald", system-ui, sans-serif;
+  --font-body:      "Inter", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-mono:      "Futura LT Cond", "Barlow Condensed", system-ui, sans-serif;
+
+  /* Scale (modular, tuned for direct, punchy hierarchy) */
+  --fs-xs:    11px;
+  --fs-sm:    13px;
+  --fs-base:  15px;
+  --fs-md:    17px;
+  --fs-lg:    20px;
+  --fs-xl:    26px;
+  --fs-2xl:   34px;
+  --fs-3xl:   46px;
+  --fs-4xl:   64px;
+  --fs-5xl:   88px;
+  --fs-6xl:   128px;
+
+  --lh-tight: 0.92;
+  --lh-snug:  1.05;
+  --lh-base:  1.45;
+  --lh-loose: 1.65;
+
+  --tracking-display: -0.04em;
+  --tracking-eyebrow: 0px;
+  --tracking-tight:   -0.02em;
+
+  /* ============================================================
+     SPACING / RADIUS / ELEVATION
+     ============================================================ */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  96px;
+  --space-10: 128px;
+
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+  --radius-pill: 999px;
+
+  --shadow-1: 0 1px 0 rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-2: 0 2px 6px rgba(0,0,0,0.10), 0 8px 24px rgba(0,0,0,0.08);
+  --shadow-3: 0 12px 40px rgba(0,0,0,0.18);
+  --shadow-lime-glow: 0 8px 32px rgba(191, 215, 48, 0.35);
+
+  /* Motion */
+  --ease-out:    cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-snap:   cubic-bezier(0.2, 1.2, 0.4, 1);
+  --dur-quick: 120ms;
+  --dur-base:  200ms;
+  --dur-slow:  360ms;
+
+  /* ============================================================
+     PREMIUM LAYER — SaaS landing + internal app surfaces
+     Keep this layer black/lime. Do not import the reference palette.
+     ============================================================ */
+
+  /* Premium backgrounds */
+  --premium-bg-canvas: var(--it-black);
+  --premium-bg-hero:
+    radial-gradient(circle at 50% 0%, rgba(191, 215, 48, 0.16), rgba(191, 215, 48, 0.00) 34%),
+    linear-gradient(180deg, #050505 0%, #000000 72%);
+  --premium-bg-app:
+    radial-gradient(circle at 52% 0%, rgba(191, 215, 48, 0.09), rgba(191, 215, 48, 0.00) 32%),
+    linear-gradient(180deg, #080808 0%, #000000 100%);
+  --premium-bg-elevated: #101010;
+
+  /* Premium surfaces */
+  --surface-premium-1: rgba(20, 20, 20, 0.92);
+  --surface-premium-2: rgba(31, 31, 31, 0.88);
+  --surface-command: rgba(18, 18, 18, 0.96);
+  --surface-sidebar: #050505;
+  --surface-pricing: rgba(15, 15, 15, 0.96);
+
+  /* Premium borders */
+  --border-subtle: rgba(255, 255, 255, 0.07);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --border-lime-soft: rgba(191, 215, 48, 0.22);
+  --border-command-active: rgba(191, 215, 48, 0.72);
+
+  /* Premium depth */
+  --shadow-premium-card: 0 18px 70px rgba(0, 0, 0, 0.52), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+  --shadow-premium-panel: 0 28px 120px rgba(0, 0, 0, 0.68), 0 0 0 1px rgba(255, 255, 255, 0.04);
+  --glow-lime-soft: 0 0 42px rgba(191, 215, 48, 0.16);
+  --glow-lime-command: 0 0 0 1px rgba(191, 215, 48, 0.40), 0 18px 70px rgba(191, 215, 48, 0.18);
+  --glow-lime-hero: 0 0 140px rgba(191, 215, 48, 0.22);
+
+  /* Premium gradients */
+  --gradient-black-fade: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.88) 100%);
+  --gradient-lime-cta: linear-gradient(135deg, var(--it-lime-hi) 0%, var(--it-lime) 48%, var(--it-lime-lo) 100%);
+  --gradient-lime-aura: radial-gradient(circle, rgba(191, 215, 48, 0.20) 0%, rgba(191, 215, 48, 0.00) 64%);
+
+  /* Premium typography */
+  --type-landing-display: 112px;
+  --type-landing-display-sm: 72px;
+  --type-dashboard-display: 68px;
+  --type-section-title: 54px;
+  --type-card-title: 24px;
+  --type-pricing-number: 64px;
+  --type-command-input: 28px;
+  --type-ui-label: 13px;
+
+  /* Premium states */
+  --state-hover-border: rgba(191, 215, 48, 0.34);
+  --state-selected-bg: rgba(191, 215, 48, 0.11);
+  --state-disabled-bg: rgba(255, 255, 255, 0.04);
+  --state-empty-border: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   SEMANTIC ELEMENT STYLES — drop-in baseline
+   Use class names or apply via :where() so they don't override
+   component styles in apps.
+   ============================================================ */
+
+.it-root {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  color: var(--fg-1);
+  background: var(--bg-1);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.it-h1, .it-h2, .it-h3, .it-display, .it-eyebrow {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--lh-tight);
+  margin: 0;
+}
+
+.it-display  { font-size: clamp(64px, 10vw, 128px); }
+.it-h1       { font-size: clamp(46px, 6vw, 88px); }
+.it-h2       { font-size: clamp(34px, 4.2vw, 64px); }
+.it-h3       { font-size: clamp(24px, 2.6vw, 34px); letter-spacing: 0; }
+
+.it-eyebrow {
+  font-size: var(--type-ui-label);
+  letter-spacing: var(--tracking-eyebrow);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.it-lead {
+  font-family: var(--font-body);
+  font-size: var(--fs-lg);
+  line-height: var(--lh-base);
+  font-weight: 400;
+  color: var(--fg-2);
+  max-width: 60ch;
+}
+
+.it-p {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: var(--lh-base);
+  color: var(--fg-2);
+}
+
+.it-mono {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: var(--type-ui-label);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --type-landing-display: var(--type-landing-display-sm);
+    --type-dashboard-display: 48px;
+    --type-section-title: 40px;
+    --type-pricing-number: 52px;
+    --type-command-input: 22px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --type-landing-display: 54px;
+    --type-dashboard-display: 38px;
+    --type-section-title: 34px;
+    --type-command-input: 19px;
+  }
+}
+
+/* Selection mirrors the brand */
+::selection { background: var(--it-lime); color: var(--it-ink); }
