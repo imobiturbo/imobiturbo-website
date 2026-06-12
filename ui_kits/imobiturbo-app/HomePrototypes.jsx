@@ -1027,40 +1027,481 @@ function CorporateFaqSection() {
   );
 }
 
+const HOME_DIAGNOSTIC_QUESTIONS = {
+  profile: {
+    q: "Qual é o seu perfil de atuação?",
+    options: [
+      "Corretor Autônomo",
+      "Imobiliária (Gestor/Dono)",
+      "Construtora / Incorporadora"
+    ]
+  },
+  corretor: [
+    {
+      q: "Qual o seu principal desafio hoje?",
+      options: [
+        "Organizar a rotina de vendas",
+        "Fazer follow-up sem ser chato",
+        "Negociar e defender comissão",
+        "Falta de previsibilidade de vendas"
+      ]
+    },
+    {
+      q: "Quantos leads você atende por mês?",
+      options: [
+        "Menos de 10 leads",
+        "De 10 a 30 leads",
+        "Mais de 30 leads"
+      ]
+    },
+    {
+      q: "Onde você centraliza seus atendimentos?",
+      options: [
+        "Apenas no WhatsApp pessoal",
+        "Caderno ou Planilha",
+        "CRM imobiliário tradicional",
+        "Não centralizo, fica tudo solto"
+      ]
+    }
+  ],
+  imobiliarias: [
+    {
+      q: "Qual a maior dificuldade da imobiliária comercialmente?",
+      options: [
+        "Time de corretores sem método",
+        "Funil comercial bagunçado",
+        "Leads esfriando sem resposta",
+        "Reuniões comerciais pouco produtivas"
+      ]
+    },
+    {
+      q: "Qual o tamanho da sua equipe comercial?",
+      options: [
+        "Até 5 corretores",
+        "De 5 a 15 corretores",
+        "Mais de 15 corretores"
+      ]
+    },
+    {
+      q: "Como está a cadência comercial hoje?",
+      options: [
+        "Dependemos da memória de cada um",
+        "Cobramos por planilha de forma solta",
+        "Temos CRM mas o time não preenche"
+      ]
+    }
+  ],
+  incorporadoras: [
+    {
+      q: "Qual o foco da operação comercial agora?",
+      options: [
+        "Absorver estoque remanescente",
+        "Estruturar canais para lançamento",
+        "Melhorar conversão de leads de mídia",
+        "Alinhar posicionamento de produto"
+      ]
+    },
+    {
+      q: "Como é feita a distribuição de leads?",
+      options: [
+        "Direto para imobiliárias parceiras",
+        "Para house interna de vendas",
+        "Misto (House + Imobiliárias parceiras)"
+      ]
+    },
+    {
+      q: "Qual o maior gargalo no funil?",
+      options: [
+        "Baixo volume de visitas/propostas",
+        "SLA lento no atendimento da origem",
+        "Falta de leitura integrada dos canais"
+      ]
+    }
+  ]
+};
+
+function generateHomeDiagnostic(segment, answers) {
+  const ans = answers.slice(1) || [];
+  if (segment === 'corretor') {
+    return {
+      title: "Gargalo Crítico: Organização e Cadência Solo",
+      analysis: `Você atende ${ans[1] || 'leads'} e centraliza no "${ans[2] || 'sistema'}". O desafio principal ("${ans[0] || ''}") ocorre porque operar de forma reativa no dia a dia dispersa oportunidades e pressiona suas comissões.`,
+      recommendation: "Recomendamos a Mentoria Individual combinada com o Hub de Vendas Imobiturbo para organizar propostas, follow-up automático e dar ritmo comercial."
+    };
+  } else if (segment === 'imobiliarias') {
+    return {
+      title: "Gargalo de Gestão: Cadência e Padrão de Equipe",
+      analysis: `Com uma equipe comercial de ${ans[1] || 'corretores'} e acompanhamento via "${ans[2] || ''}", a dificuldade em "${ans[0] || ''}" indica falta de um funil centralizado com critérios objetivos de avanço.`,
+      recommendation: "Recomendamos o pacote de Consultoria de Processos + Implementação de Pipeline para Imobiliárias com rituais comerciais estruturados."
+    };
+  } else {
+    return {
+      title: "Gargalo de Lançamento: Coordenação e SLA de Canais",
+      analysis: `Sua distribuição para "${ans[1] || 'canais'}" aliada ao gargalo de "${ans[2] || ''}" sinaliza uma quebra na régua de relacionamento e no acompanhamento de leads de lançamentos.`,
+      recommendation: "Recomendamos a Consultoria Estratégica da Imobiturbo para alinhar campanhas, SLA de atendimento e funil de absorção de estoque."
+    };
+  }
+}
+
+function calculateHomeScores(segment, answers) {
+  const ans = answers.slice(1) || [];
+  let score1 = 50, score2 = 50, score3 = 50;
+
+  if (segment === 'corretor') {
+    // Q1 (Desafio)
+    if (ans[0] === "Organizar a rotina de vendas") { score1 = 30; score2 = 55; score3 = 40; }
+    else if (ans[0] === "Fazer follow-up sem ser chato") { score1 = 60; score2 = 30; score3 = 50; }
+    else if (ans[0] === "Negociar e defender comissão") { score1 = 65; score2 = 60; score3 = 45; }
+    else { score1 = 40; score2 = 40; score3 = 35; }
+
+    // Q2 (Leads)
+    if (ans[1] === "Menos de 10 leads") { score3 += 30; score2 += 15; }
+    else if (ans[1] === "De 10 a 30 leads") { score3 += 15; score2 += 10; }
+    else { score3 += 5; score2 += 5; }
+
+    // Q3 (Centraliza)
+    if (ans[2] === "Apenas no WhatsApp pessoal") { score1 += 10; score3 += 10; }
+    else if (ans[2] === "Caderno ou Planilha") { score1 += 15; score3 += 15; }
+    else if (ans[2] === "CRM imobiliário tradicional") { score1 += 30; score3 += 20; }
+    else { score1 += 5; score3 += 5; }
+  } else if (segment === 'imobiliarias') {
+    // Q1 (Desafio)
+    if (ans[0] === "Time de corretores sem método") { score1 = 35; score2 = 50; score3 = 45; }
+    else if (ans[0] === "Funil comercial bagunçado") { score1 = 25; score2 = 45; score3 = 40; }
+    else if (ans[0] === "Leads esfriando sem resposta") { score1 = 50; score2 = 25; score3 = 45; }
+    else { score1 = 55; score2 = 50; score3 = 30; }
+
+    // Q2 (Equipe)
+    if (ans[1] === "Até 5 corretores") { score3 += 30; score1 += 15; }
+    else if (ans[1] === "De 5 a 15 corretores") { score3 += 15; score1 += 10; }
+    else { score3 += 5; score1 += 5; }
+
+    // Q3 (Cadência)
+    if (ans[2] === "Dependemos da memória de cada um") { score2 += 5; score1 += 5; }
+    else if (ans[2] === "Cobramos por planilha de forma solta") { score2 += 15; score1 += 15; }
+    else { score2 += 30; score1 += 25; }
+  } else {
+    // Q1 (Foco)
+    if (ans[0] === "Absorver estoque remanescente") { score1 = 40; score2 = 50; score3 = 40; }
+    else if (ans[0] === "Estruturar canais para lançamento") { score1 = 30; score2 = 40; score3 = 50; }
+    else if (ans[0] === "Melhorar conversão de leads de mídia") { score1 = 50; score2 = 30; score3 = 45; }
+    else { score1 = 55; score2 = 50; score3 = 35; }
+
+    // Q2 (Distribuição)
+    if (ans[1] === "Direto para imobiliárias parceiras") { score2 += 10; score1 += 15; }
+    else if (ans[1] === "Para house interna de vendas") { score2 += 25; score1 += 25; }
+    else { score2 += 20; score1 += 20; }
+
+    // Q3 (Gargalo)
+    if (ans[2] === "Baixo volume de visitas/propostas") { score2 += 10; score3 += 10; }
+    else if (ans[2] === "SLA lento no atendimento da origem") { score2 += 5; score3 += 5; }
+    else { score2 += 15; score3 += 15; }
+  }
+
+  const clamp = (val) => Math.min(Math.max(val, 15), 90);
+
+  return {
+    organizacao: clamp(score1),
+    cadencia: clamp(score2),
+    tempo: clamp(score3)
+  };
+}
+
+function getHomeDiagnosticWhatsAppUrl(answers, diagnostic) {
+  const profileName = answers[0];
+  const baseText = `Olá Natan! Acabei de fazer o diagnóstico comercial no site da Imobiturbo para o perfil *${profileName}*.\n\n*Respostas:*\n1. Perfil: ${answers[0]}\n2. Desafio: ${answers[1]}\n3. Operação: ${answers[2]}\n4. Centralização: ${answers[3]}\n\n*Resultado:* ${diagnostic.title}\n*Recomendação:* ${diagnostic.recommendation}\n\nQuero agendar uma conversa para mapear este cenário.`;
+  return `https://wa.me/5521983747796?text=${encodeURIComponent(baseText)}`;
+}
+
 function CorporateContactSection() {
+  const [displayedStep, setDisplayedStep] = React.useState(0);
+  const [answers, setAnswers] = React.useState([]);
+  const [animationClass, setAnimationClass] = React.useState('');
+  const [hoveredOption, setHoveredOption] = React.useState(-1);
+  const [hoveredBtn, setHoveredBtn] = React.useState(false);
+  const [scoresRevealed, setScoresRevealed] = React.useState(false);
+  const isMobile = useIsMobile();
+
+  const getSegmentKey = () => {
+    if (!answers[0]) return 'corretor';
+    if (answers[0].includes('Corretor')) return 'corretor';
+    if (answers[0].includes('Imobiliária')) return 'imobiliarias';
+    return 'incorporadoras';
+  };
+
+  const segmentKey = getSegmentKey();
+
+  const getQuestionForStep = (stepVal) => {
+    if (stepVal === 1) return HOME_DIAGNOSTIC_QUESTIONS.profile;
+    const questionsList = HOME_DIAGNOSTIC_QUESTIONS[segmentKey];
+    return questionsList[stepVal - 2];
+  };
+
+  const navigateToStep = (targetStep) => {
+    setAnimationClass('slide-out');
+    setTimeout(() => {
+      setDisplayedStep(targetStep);
+      setAnimationClass('slide-in');
+    }, 180);
+  };
+
+  const handleStart = () => {
+    setAnswers([]);
+    navigateToStep(1);
+  };
+
+  const handleSelectOption = (option) => {
+    const nextAnswers = [...answers, option];
+    setAnswers(nextAnswers);
+    setHoveredOption(-1);
+    navigateToStep(nextAnswers.length + 1);
+  };
+
+  const handleBack = () => {
+    if (displayedStep > 1) {
+      const nextAnswers = answers.slice(0, -1);
+      setAnswers(nextAnswers);
+      navigateToStep(nextAnswers.length + 1);
+    } else {
+      navigateToStep(0);
+    }
+  };
+
+  const handleReset = () => {
+    setAnswers([]);
+    setScoresRevealed(false);
+    navigateToStep(0);
+  };
+
+  React.useEffect(() => {
+    if (displayedStep === 5) {
+      const timer = setTimeout(() => {
+        setScoresRevealed(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [displayedStep]);
+
+  React.useEffect(() => {
+    if (animationClass === 'slide-in') {
+      const timer = setTimeout(() => {
+        setAnimationClass('');
+      }, 220);
+      return () => clearTimeout(timer);
+    }
+  }, [animationClass]);
+
+  const diagnostic = displayedStep === 5 ? generateHomeDiagnostic(segmentKey, answers) : null;
+  const whatsappUrl = displayedStep === 5 ? getHomeDiagnosticWhatsAppUrl(answers, diagnostic) : '';
+  const scores = displayedStep === 5 ? calculateHomeScores(segmentKey, answers) : null;
+
   return (
     <section className="corporate-contact">
       <div className="home-shell corporate-contact-grid">
         <div>
-          <h2 className="corporate-contact-title">Vamos mapear seu projeto?</h2>
+          <h2 className="corporate-contact-title">Mapear sua operação comercial?</h2>
           <p className="corporate-contact-text">
-            A primeira conversa serve para entender seu momento, escopo e operação antes de prometer formato.
+            Responda a 4 perguntas rápidas para descobrir seu principal gargalo operacional e receber uma recomendação sob medida.
           </p>
         </div>
-        <div className="corporate-contact-card">
-          <div className="corporate-kicker" style={{ color: 'var(--it-lime-ink)' }}>WhatsApp</div>
-          <h3 className="corporate-solution-title" style={{ color: 'var(--it-ink)', fontSize: 24 }}>
-            Envie uma mensagem para a Imobiturbo.
-          </h3>
-          <div className="corporate-check-list">
-            {['Seu momento comercial', 'Principal gargalo de fechamento', 'Escopo de mentoria, hub e consultoria'].map((item) => (
-              <div className="corporate-check-item" key={item}>
-                <Icon name="check" size={18} color="var(--it-lime-ink)" />
-                {item}
-              </div>
-            ))}
+        <div className="corporate-contact-card" style={{ minHeight: 420, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', overflow: 'hidden' }}>
+          <div className={`home-cta-panel-inner ${animationClass}`} style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1 }}>
+            {displayedStep === 0 && (
+              <>
+                <div>
+                  <div className="corporate-kicker" style={{ color: '#7a911c' }}>Próximo passo</div>
+                  <h3 className="corporate-solution-title" style={{ color: 'var(--it-ink)', fontSize: 24, marginTop: 12 }}>
+                    Comece pelo diagnóstico comercial.
+                  </h3>
+                  <p style={{ color: 'rgba(0,0,0,0.65)', font: '500 14px/1.5 var(--font-body)', marginTop: 10 }}>
+                    Entenda onde sua operação comercial está perdendo eficiência antes de falar com a nossa equipe.
+                  </p>
+                </div>
+                <div style={{ marginTop: 22 }}>
+                  <Button variant="dark" size="lg" iconRight="arrowRight" onClick={handleStart} style={{ width: '100%' }}>
+                    Iniciar Diagnóstico
+                  </Button>
+                </div>
+              </>
+            )}
+
+            {displayedStep >= 1 && displayedStep <= 4 && (
+              <>
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                    <span style={{ font: '800 11px var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#7a911c' }}>
+                      Diagnóstico Comercial
+                    </span>
+                    <span style={{ font: '800 11px var(--font-mono)', textTransform: 'uppercase', color: 'rgba(0,0,0,0.5)' }}>
+                      Passo {displayedStep} de 4
+                    </span>
+                  </div>
+                  <div style={{ height: 4, background: 'rgba(0,0,0,0.06)', borderRadius: 2, overflow: 'hidden', marginBottom: 18 }}>
+                    <div className="home-progress-bar-fill" style={{ width: `${((displayedStep - 1) / 4) * 100}%` }} />
+                  </div>
+                  <h3 style={{ font: '800 17px/1.25 var(--font-body)', color: 'var(--it-ink)', margin: '0 0 16px' }}>
+                    {getQuestionForStep(displayedStep).q}
+                  </h3>
+                  <div style={{ display: 'grid', gap: 8 }}>
+                    {getQuestionForStep(displayedStep).options.map((option, index) => {
+                      const isHovered = hoveredOption === index;
+                      return (
+                        <button
+                          key={option}
+                          onClick={() => handleSelectOption(option)}
+                          onMouseEnter={() => setHoveredOption(index)}
+                          onMouseLeave={() => setHoveredOption(-1)}
+                          style={{
+                            width: '100%',
+                            textAlign: 'left',
+                            background: isHovered ? 'rgba(191, 215, 48, 0.09)' : '#fcfcfc',
+                            border: isHovered ? '1.5px solid #7a911c' : '1.5px solid rgba(0,0,0,0.08)',
+                            borderRadius: 8,
+                            padding: '11px 14px',
+                            font: '700 13px var(--font-body)',
+                            color: 'var(--it-ink)',
+                            cursor: 'pointer',
+                            transition: 'all 120ms ease-out',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: 12
+                          }}
+                        >
+                          {option}
+                          <span style={{
+                            width: 6,
+                            height: 6,
+                            borderRadius: 999,
+                            background: isHovered ? '#7a911c' : 'transparent',
+                            transition: 'background 120ms'
+                          }} />
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div style={{ marginTop: 18, display: 'flex', justifyContent: 'flex-start' }}>
+                  <button
+                    onClick={handleBack}
+                    onMouseEnter={() => setHoveredBtn(true)}
+                    onMouseLeave={() => setHoveredBtn(false)}
+                    style={{
+                      background: 'transparent',
+                      border: 0,
+                      padding: 0,
+                      font: '800 12px var(--font-mono)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.04em',
+                      color: hoveredBtn ? '#7a911c' : 'rgba(0,0,0,0.5)',
+                      cursor: 'pointer',
+                      transition: 'color 120ms'
+                    }}
+                  >
+                    ← Voltar
+                  </button>
+                </div>
+              </>
+            )}
+
+            {displayedStep === 5 && diagnostic && scores && (
+              <>
+                <div>
+                  <div style={{ height: 4, background: '#7a911c', borderRadius: 2, marginBottom: 14 }} />
+                  <span style={{ font: '800 11px var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#7a911c' }}>
+                    Resultado do Diagnóstico
+                  </span>
+                  <h3 style={{ font: '800 18px/1.2 var(--font-body)', color: 'var(--it-ink)', margin: '6px 0 10px' }}>
+                    {diagnostic.title}
+                  </h3>
+                  <p style={{ font: '500 13px/1.5 var(--font-body)', color: 'rgba(0,0,0,0.72)', margin: '0 0 16px' }}>
+                    {diagnostic.analysis}
+                  </p>
+
+                  <div style={{ display: 'grid', gap: 12, marginBottom: 20 }}>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', font: '800 11px var(--font-body)', textTransform: 'uppercase', color: 'var(--it-ink)', marginBottom: 4 }}>
+                        <span>Organização Comercial</span>
+                        <span style={{ color: '#7a911c' }}>{scores.organizacao}%</span>
+                      </div>
+                      <div style={{ height: 8, background: 'rgba(0,0,0,0.06)', borderRadius: 999, overflow: 'hidden' }}>
+                        <div className="home-score-bar-fill" style={{ width: scoresRevealed ? `${scores.organizacao}%` : '0%' }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', font: '800 11px var(--font-body)', textTransform: 'uppercase', color: 'var(--it-ink)', marginBottom: 4 }}>
+                        <span>Cadência Comercial</span>
+                        <span style={{ color: '#7a911c' }}>{scores.cadencia}%</span>
+                      </div>
+                      <div style={{ height: 8, background: 'rgba(0,0,0,0.06)', borderRadius: 999, overflow: 'hidden' }}>
+                        <div className="home-score-bar-fill" style={{ width: scoresRevealed ? `${scores.cadencia}%` : '0%' }} />
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', font: '800 11px var(--font-body)', textTransform: 'uppercase', color: 'var(--it-ink)', marginBottom: 4 }}>
+                        <span>Eficiência de Tempo</span>
+                        <span style={{ color: '#7a911c' }}>{scores.tempo}%</span>
+                      </div>
+                      <div style={{ height: 8, background: 'rgba(0,0,0,0.06)', borderRadius: 999, overflow: 'hidden' }}>
+                        <div className="home-score-bar-fill" style={{ width: scoresRevealed ? `${scores.tempo}%` : '0%' }} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ background: 'rgba(191, 215, 48, 0.08)', border: '1.5px solid rgba(191, 215, 48, 0.22)', borderRadius: 10, padding: 12 }}>
+                    <div style={{ font: '800 11px var(--font-mono)', textTransform: 'uppercase', color: '#7a911c', marginBottom: 4 }}>
+                      Recomendação Imobiturbo
+                    </div>
+                    <p style={{ font: '700 12px/1.45 var(--font-body)', color: 'var(--it-ink)', margin: 0 }}>
+                      {diagnostic.recommendation}
+                    </p>
+                  </div>
+                </div>
+                <div style={{ marginTop: 18, display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="corporate-whatsapp-btn"
+                    style={{
+                      minHeight: 42,
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      borderRadius: 999,
+                      background: 'var(--it-ink)',
+                      color: '#fff',
+                      padding: '0 24px',
+                      font: '800 14px var(--font-body)',
+                      textDecoration: 'none',
+                      textAlign: 'center',
+                      cursor: 'pointer',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    Enviar diagnóstico para WhatsApp
+                  </a>
+                  <button
+                    onClick={handleReset}
+                    style={{
+                      background: 'transparent',
+                      border: 0,
+                      padding: 0,
+                      font: '800 11px var(--font-mono)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.04em',
+                      color: 'rgba(0,0,0,0.4)',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                      marginTop: 4
+                    }}
+                  >
+                    Refazer Diagnóstico
+                  </button>
+                </div>
+              </>
+            )}
           </div>
-          <div style={{ marginTop: 24 }}>
-            <Button variant="dark" size="lg" icon="phone" iconRight="arrowRight" onClick={openWhatsApp}>
-              Falar no WhatsApp
-            </Button>
-          </div>
-          <a
-            href={INSTAGRAM_URL}
-            style={{ display: 'inline-flex', marginTop: 16, color: 'var(--it-ink)', font: '800 13px var(--font-mono)', letterSpacing: '0px', textTransform: 'uppercase', textDecoration: 'none' }}
-          >
-            Instagram @imobiturbo
-          </a>
         </div>
       </div>
     </section>

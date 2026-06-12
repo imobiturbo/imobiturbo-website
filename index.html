@@ -1527,13 +1527,86 @@
         padding: var(--space-5);
       }
     }
+
+    /* Animations for homepage step transition */
+    @keyframes homeCtaSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes homeCtaSlideOut {
+      from {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+    }
+
+    .home-cta-panel-inner {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .home-cta-panel-inner.slide-in {
+      animation: homeCtaSlideIn 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .home-cta-panel-inner.slide-out {
+      animation: homeCtaSlideOut 180ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Spring transition for score bars */
+    .home-score-bar-fill {
+      height: 100%;
+      background: #7a911c;
+      border-radius: 999px;
+      transition: width 800ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .home-progress-bar-fill {
+      height: 100%;
+      background: #7a911c;
+      transition: width 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      @keyframes homeCtaSlideIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes homeCtaSlideOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+      .home-cta-panel-inner.slide-in {
+        animation: homeCtaSlideIn 100ms linear forwards;
+      }
+      .home-cta-panel-inner.slide-out {
+        animation: homeCtaSlideOut 100ms linear forwards;
+      }
+      .home-score-bar-fill,
+      .home-progress-bar-fill {
+        transition: none !important;
+      }
+    }
   </style>
   <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
 </head>
 <body>
   <div id="root"></div>
-  <script src="dist/home.bundle.js?v=20260612-v2"></script>
+  <script src="dist/home.bundle.js?v=20260612-v3"></script>
   <script>
     ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(window.HomePrototypes));
   </script>
