@@ -1305,7 +1305,7 @@ function CorporateContactSection() {
           </p>
         </div>
         <div className="corporate-contact-card" style={{ minHeight: 420, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', overflow: 'hidden' }}>
-          <div className={`home-cta-panel-inner ${animationClass}`} style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1 }}>
+          <div className={`home-cta-panel-inner ${animationClass}`} style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: displayedStep === 0 ? 'center' : 'space-between', gap: displayedStep === 0 ? 20 : 0, flexGrow: 1 }}>
             {displayedStep === 0 && (
               <>
                 <div>

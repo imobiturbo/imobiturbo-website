@@ -701,7 +701,7 @@ function AudienceCta({ page }) {
           <p className="aud-cta-text">{page.ctaText}</p>
         </div>
         <div className="aud-cta-panel" style={{ minHeight: 400, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <div className={`aud-cta-panel-inner ${animationClass}`} style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flexGrow: 1 }}>
+          <div className={`aud-cta-panel-inner ${animationClass}`} style={{ minHeight: '100%', display: 'flex', flexDirection: 'column', justifyContent: displayedStep === 0 ? 'center' : 'space-between', gap: displayedStep === 0 ? 20 : 0, flexGrow: 1 }}>
             {displayedStep === 0 && (
               <>
                 <div>
