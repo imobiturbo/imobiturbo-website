@@ -1086,6 +1086,76 @@ function CorporateHome() {
 }
 
 function HomePrototypes() {
+  React.useEffect(() => {
+    // 1. Assign indexes for staggered animations in lists
+    const containerClasses = [
+      '.audience-grid',
+      '.corporate-card-grid',
+      '.corporate-metrics',
+      '.corporate-scope-grid',
+      '.corporate-faq-list'
+    ];
+
+    containerClasses.forEach(containerSelector => {
+      const containers = document.querySelectorAll(containerSelector);
+      containers.forEach(container => {
+        const children = container.children;
+        for (let i = 0; i < children.length; i++) {
+          children[i].style.setProperty('--i', i);
+        }
+      });
+    });
+
+    // 2. Select elements to animate on scroll
+    const selectors = [
+      '.audience-card',
+      '.corporate-solution',
+      '.corporate-info-card',
+      '.corporate-statement-card',
+      '.corporate-metric',
+      '.corporate-pricing-panel',
+      '.corporate-scope-card',
+      '.corporate-faq-item',
+      '.corporate-contact-card'
+    ];
+
+    const elements = document.querySelectorAll(selectors.join(', '));
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -8% 0px',
+      threshold: 0.05
+    };
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('reveal-active');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    elements.forEach(el => {
+      el.classList.add('reveal-hidden');
+      observer.observe(el);
+    });
+
+    // 3. Handle Hero section entrance instantly
+    const heroElements = document.querySelectorAll('.corporate-hero-inner > *');
+    heroElements.forEach((el, index) => {
+      el.style.setProperty('--i', index);
+      el.classList.add('hero-reveal');
+      // Force layout reflow before triggering transition
+      el.getBoundingClientRect();
+      el.classList.add('reveal-active');
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <div className="home-page it-root">
       <CorporateHeader />
