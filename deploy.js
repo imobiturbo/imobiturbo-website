@@ -42,6 +42,17 @@ const FILES_TO_UPLOAD = [
   { local: 'assets/testimonials/resultados-03.webp', remote: 'assets/testimonials/resultados-03.webp' }
 ];
 
+const testimonialsGalleryDir = 'assets/testimonials/gallery';
+
+if (fs.existsSync(testimonialsGalleryDir)) {
+  for (const file of fs.readdirSync(testimonialsGalleryDir).filter((entry) => entry.endsWith('.webp'))) {
+    FILES_TO_UPLOAD.push({
+      local: path.posix.join(testimonialsGalleryDir, file),
+      remote: path.posix.join(testimonialsGalleryDir, file)
+    });
+  }
+}
+
 async function uploadFile(sftp, localPath, remotePath) {
   const fullRemotePath = path.posix.join(remoteDir, remotePath);
   const remoteParentDir = path.posix.dirname(fullRemotePath);

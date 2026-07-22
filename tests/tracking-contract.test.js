@@ -54,5 +54,6 @@ test('deploy publica tracker e assets sem senha fixa no código', () => {
   assert.match(source, /site-tracking\.js/);
   assert.match(source, /home\.css/);
   assert.match(source, /assets\/testimonials\/resultados-03\.webp/);
+  assert.match(source, /assets\/testimonials\/gallery/);
   assert.doesNotMatch(source, /const password = ['"][^'"]+['"]/);
 });
