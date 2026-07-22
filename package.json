@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "npx serve .",
     "build": "node build.js",
+    "test": "node --test tests/*.test.js",
     "deploy": "node build.js && node deploy.js"
   },
   "keywords": [],

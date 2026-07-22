@@ -2,6 +2,11 @@
 // Imobiturbo audience pages - static React/CDN surface.
 
 const AUDIENCE_WHATSAPP_URL = 'https://wa.me/5521983747796?text=Quero%20entender%20a%20Imobiturbo%20para%20minha%20opera%C3%A7%C3%A3o';
+
+function trackAudienceEvent(name, properties = {}) {
+  if (typeof window.imtTrack === 'function') return window.imtTrack(name, properties);
+  return window.__track?.track?.(name, properties) || null;
+}
 const AUDIENCE_INSTAGRAM_URL = 'https://www.instagram.com/imobiturbo/';
 
 function useIsMobile(maxWidth = 980) {
@@ -141,6 +146,11 @@ const audienceContent = {
 };
 
 function audienceOpenWhatsApp() {
+  trackAudienceEvent('cta_click', {
+    cta_type: 'whatsapp',
+    placement: 'content_button',
+    page_path: window.location.pathname,
+  });
   window.open(AUDIENCE_WHATSAPP_URL, '_blank', 'noopener,noreferrer');
 }
 
@@ -645,11 +655,20 @@ function AudienceCta({ page }) {
 
   const handleStart = () => {
     setAnswers([]);
+    trackAudienceEvent('quiz_start', { quiz_id: 'diagnostico_publico', segment: segmentKey });
+    trackAudienceEvent('quiz_step_viewed', { quiz_id: 'diagnostico_publico', segment: segmentKey, step: 1 });
     navigateToStep(1);
   };
 
   const handleSelectOption = (option) => {
     const nextAnswers = [...answers, option];
+    if (nextAnswers.length < questions.length) {
+      trackAudienceEvent('quiz_step_viewed', {
+        quiz_id: 'diagnostico_publico',
+        segment: segmentKey,
+        step: nextAnswers.length + 1,
+      });
+    }
     setAnswers(nextAnswers);
     setHoveredOption(-1);
     navigateToStep(nextAnswers.length + 1);
@@ -857,6 +876,11 @@ function AudienceCta({ page }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="aud-whatsapp-btn"
+                    onClick={() => trackAudienceEvent('generate_lead', {
+                      method: 'whatsapp',
+                      form: 'diagnostico_publico',
+                      segment: segmentKey,
+                    })}
                     style={{
                       minHeight: 42,
                       display: 'inline-flex',

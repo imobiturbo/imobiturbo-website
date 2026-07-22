@@ -18,11 +18,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../ui_kits/imobiturbo-app/audience-pages.css?v=20260612-v3">
+  <script defer src="https://tracking.imobiturbo.com.br/tracker/v1.js" data-site-key="imobiturbo-public-v1" data-default-consent="granted"></script>
+  <script defer src="../site-tracking.js?v=20260722"></script>
   <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root" data-imt-decorate></div>
   <script src="../dist/audience.bundle.js?v=20260612-v3"></script>
   <script>
     ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(window.AudiencePage, { pageId: "imobiliarias" }));
