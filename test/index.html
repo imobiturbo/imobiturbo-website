@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Imobiturbo Prompt Lab</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060608;
+      --bg-2: #0c0c10;
+      --bg-3: #131318;
+      --bg-4: #1a1a22;
+      --line: rgba(255,255,255,0.07);
+      --line-2: rgba(255,255,255,0.04);
+      --text: #f0f0f2;
+      --muted: rgba(255,255,255,0.42);
+      --muted-2: rgba(255,255,255,0.2);
+      --accent: #a8ff6c;
+      --accent-dim: rgba(168,255,108,0.1);
+      --accent-dim-2: rgba(168,255,108,0.05);
+      --accent-glow: rgba(168,255,108,0.25);
+      --r: 14px;
+      --r-sm: 9px;
+      --font: 'DM Sans', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', ui-monospace, monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-text-size-adjust: 100%; }
+    html, body { min-height: 100%; color: var(--text); font-family: var(--font); background: var(--bg); }
+
+    /* ── LOGIN ── */
+    .login-screen { position: fixed; inset: 0; z-index: 200; background: var(--bg); display: flex; align-items: center; justify-content: center; padding: 24px; }
+    .login-screen.hidden { display: none; }
+    .login-card { width: min(370px, 100%); border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-2); padding: 32px 26px; display: flex; flex-direction: column; gap: 24px; }
+    .login-logo { display: flex; align-items: center; gap: 10px; }
+    .login-logo-mark { width: 34px; height: 34px; border-radius: 8px; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .login-logo-mark svg { width: 17px; height: 17px; }
+    .login-logo-text { font-size: 14px; font-weight: 700; letter-spacing: -0.03em; }
+    .login-logo-text span { color: var(--accent); }
+    .login-title { font-size: 19px; font-weight: 800; letter-spacing: -0.04em; }
+    .login-hint { font-size: 13px; color: var(--muted); line-height: 1.5; margin-top: 4px; }
+    .login-field { display: flex; flex-direction: column; gap: 7px; }
+    .login-field > label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .login-input { width: 100%; border: 1px solid var(--line); background: var(--bg-3); color: var(--text); border-radius: var(--r-sm); padding: 12px 15px; outline: none; font-family: var(--font); font-size: 15px; font-weight: 500; transition: border-color .15s, box-shadow .15s; -webkit-appearance: none; letter-spacing: 0.06em; }
+    .login-input:focus { border-color: var(--accent-glow); box-shadow: 0 0 0 3px var(--accent-dim); }
+    .login-input::placeholder { color: var(--muted-2); letter-spacing: 0; }
+    .login-error { font-size: 12px; color: #ff6b6b; display: none; }
+    .login-error.show { display: block; }
+    .login-btn { width: 100%; padding: 13px; border-radius: var(--r-sm); border: none; background: var(--accent); color: #000; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer; letter-spacing: -0.01em; transition: background .15s, transform .1s; }
+    .login-btn:hover { background: #bfff8e; }
+    .login-btn:active { transform: scale(.98); }
+
+    /* ── APP SHELL ── */
+    .app { width: min(1120px, calc(100% - 20px)); margin: 0 auto; padding: 24px 0 100px; display: none; }
+    .top-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+    .logo { display: flex; align-items: center; gap: 9px; }
+    .logo-mark { width: 30px; height: 30px; border-radius: 7px; background: var(--accent); display: flex; align-items: center; justify-content: center; }
+    .logo-mark svg { width: 15px; height: 15px; }
+    .logo-text { font-size: 13px; font-weight: 700; letter-spacing: -0.03em; }
+    .logo-text span { color: var(--accent); }
+
+    /* ── BUTTONS ── */
+    button { appearance: none; border: 0; border-radius: var(--r-sm); padding: 9px 14px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all .15s; -webkit-tap-highlight-color: transparent; letter-spacing: -0.01em; }
+    button:active { transform: scale(.97); }
+    .btn-accent { color: #000; background: var(--accent); }
+    .btn-accent:hover { background: #bfff8e; }
+    .btn-outline { color: var(--text); background: transparent; border: 1px solid var(--line); }
+    .btn-outline:hover { border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.03); }
+    .btn-ghost { color: var(--muted); background: transparent; border: 1px solid transparent; }
+    .btn-ghost:hover { color: var(--text); background: rgba(255,255,255,.04); }
+    .btn-sm { padding: 7px 12px; font-size: 12px; }
+
+    /* ── STATS ── */
+    .stats-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 16px; margin-bottom: 18px; border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-2); flex-wrap: wrap; }
+    .stats-left { display: flex; align-items: center; gap: 9px; }
+    .stats-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent-glow); flex-shrink: 0; }
+    .stats-info strong { font-size: 12px; font-weight: 600; }
+    .stats-info span { font-size: 11px; color: var(--muted); display: block; margin-top: 1px; }
+    .gen-count { font-size: 17px; font-weight: 800; color: var(--muted); letter-spacing: -0.03em; }
+
+    /* ── GRID ── */
+    .main-grid { display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr); gap: 14px; align-items: start; }
+
+    /* ── WIZARD ── */
+    .wizard-card { border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-2); overflow: hidden; }
+    .wiz-head { padding: 18px 20px 14px; border-bottom: 1px solid var(--line-2); }
+    .wiz-progress-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+    .wiz-step-lbl, .wiz-pct { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .wiz-bar { height: 2px; background: rgba(255,255,255,.05); border-radius: 999px; overflow: hidden; }
+    .wiz-bar-fill { height: 100%; border-radius: 999px; background: var(--accent); transition: width .4s cubic-bezier(.4,0,.2,1); }
+    .wiz-title-row { margin-top: 14px; }
+    .wiz-emoji { font-size: 20px; display: block; margin-bottom: 6px; }
+    .wiz-title { font-size: 18px; font-weight: 800; letter-spacing: -0.04em; line-height: 1.2; }
+    .wiz-hint { font-size: 12px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+    .step-dots { display: flex; gap: 5px; margin-top: 12px; }
+    .step-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.08); transition: all .2s; cursor: pointer; }
+    .step-dot.done { background: rgba(168,255,108,.45); }
+    .step-dot.active { background: var(--accent); width: 18px; border-radius: 3px; }
+
+    .wiz-body { padding: 20px; min-height: 280px; }
+    .wiz-step { display: none; animation: fadeIn .2s ease; }
+    .wiz-step.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateX(6px); } to { opacity: 1; transform: translateX(0); } }
+
+    .field-stack { display: flex; flex-direction: column; gap: 12px; }
+    label { display: grid; gap: 5px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.65); letter-spacing: 0.01em; }
+    .hint { font-size: 11px; color: var(--muted); font-weight: 400; }
+    input, textarea { width: 100%; border: 1px solid var(--line); background: var(--bg-3); color: var(--text); border-radius: var(--r-sm); padding: 10px 13px; outline: none; font-family: var(--font); resize: vertical; transition: border-color .15s, box-shadow .15s; font-size: 13px; -webkit-appearance: none; font-weight: 400; }
+    textarea { min-height: 68px; }
+    input:focus, textarea:focus { border-color: var(--accent-glow); box-shadow: 0 0 0 3px var(--accent-dim); }
+    input::placeholder, textarea::placeholder { color: var(--muted-2); }
+
+    .opt-grid { display: grid; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
+    .opt-card { padding: 9px 11px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--bg-3); color: var(--text); font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; transition: all .15s; font-family: var(--font); }
+    .opt-card small { display: block; margin-top: 2px; color: var(--muted); font-size: 10px; font-weight: 400; }
+    .opt-card:hover { border-color: rgba(168,255,108,.2); background: var(--accent-dim-2); }
+    .opt-card.active { border-color: rgba(168,255,108,.35); background: var(--accent-dim); color: var(--accent); }
+    .opt-card.active small { color: rgba(168,255,108,.55); }
+    .hidden-input { display: none; }
+
+    .format-note { font-size: 12px; color: var(--muted); padding: 9px 11px; border-radius: var(--r-sm); border: 1px solid var(--line-2); background: var(--bg-3); line-height: 1.6; margin-top: 6px; }
+    .format-note strong { color: var(--accent); font-weight: 600; }
+    .info-box { padding: 11px 13px; border-radius: var(--r-sm); border: 1px solid rgba(168,255,108,.12); background: var(--accent-dim-2); margin-top: 6px; }
+    .info-box-title { font-size: 11px; font-weight: 700; margin-bottom: 5px; color: var(--accent); text-transform: uppercase; letter-spacing: .04em; }
+    .info-box-copy { font-size: 12px; color: var(--muted); line-height: 1.7; }
+
+    .wiz-nav { padding: 12px 20px; border-top: 1px solid var(--line-2); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+
+    /* ── OUTPUT ── */
+    .output-panel { border: 1px solid var(--line); border-radius: var(--r); background: var(--bg-2); overflow: hidden; }
+    .out-head { padding: 16px 20px 12px; border-bottom: 1px solid var(--line-2); display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    .out-head h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.03em; margin: 0; }
+    .out-head p { margin: 2px 0 0; color: var(--muted); font-size: 11px; }
+    .out-actions { display: flex; gap: 5px; }
+    .out-body { padding: 16px 20px; }
+
+    .chips-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; }
+    .chip { padding: 3px 9px; border-radius: 999px; font-size: 10px; font-weight: 600; border: 1px solid var(--line); color: var(--muted); }
+    .chip.hi { border-color: rgba(168,255,108,.25); color: var(--accent); background: var(--accent-dim); }
+
+    .empty-state { padding: 36px 24px; border-radius: var(--r-sm); border: 1px dashed rgba(255,255,255,.06); text-align: center; }
+    .empty-icon { font-size: 26px; margin-bottom: 8px; display: block; opacity: .5; }
+    .empty-state strong { display: block; font-size: 14px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 5px; }
+    .empty-copy { color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+    .prompt-list { display: grid; gap: 7px; }
+    .prompt-card { overflow: hidden; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--bg-3); }
+    .prompt-head { padding: 10px 13px; border-bottom: 1px solid var(--line-2); display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .prompt-meta { display: flex; align-items: center; gap: 9px; }
+    .prompt-num { width: 21px; height: 21px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #000; flex-shrink: 0; background: var(--accent); }
+    .prompt-label strong { display: block; font-size: 12px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1px; }
+    .prompt-label span { color: var(--muted); font-size: 10px; }
+    .prompt-actions { display: flex; gap: 5px; align-items: center; }
+    .p-tag { padding: 2px 7px; border-radius: 999px; font-size: 9px; font-weight: 600; border: 1px solid var(--line); color: var(--muted); letter-spacing: .02em; }
+    .p-photos { padding: 2px 7px; border-radius: 999px; font-size: 9px; font-weight: 600; border: 1px solid rgba(100,180,255,.25); color: rgba(130,190,255,.8); letter-spacing: .02em; background: rgba(100,180,255,.07); }
+
+    pre { margin: 0; padding: 12px 13px; max-height: 180px; overflow: auto; white-space: pre-wrap; word-break: break-word; color: rgba(255,255,255,.55); font-family: var(--mono); font-size: 10.5px; line-height: 1.75; }
+    pre::-webkit-scrollbar { width: 3px; }
+    pre::-webkit-scrollbar-thumb { background: rgba(255,255,255,.07); border-radius: 3px; }
+
+    .generate-cta { margin-top: 12px; }
+    .btn-generate { width: 100%; padding: 13px 20px; font-size: 14px; font-weight: 700; border-radius: var(--r-sm); color: #000; background: var(--accent); letter-spacing: -0.02em; }
+    .btn-generate:hover { background: #bfff8e; }
+
+    .footer-note { margin-top: 10px; padding: 10px 13px; border-radius: var(--r-sm); border: 1px solid var(--line-2); font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; right: 14px; bottom: 22px; z-index: 80; max-width: min(320px, calc(100vw - 28px)); padding: 10px 15px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--bg-3); color: var(--text); font-size: 12px; opacity: 0; transform: translateY(5px); pointer-events: none; transition: opacity .18s, transform .18s; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ── MOBILE ── */
+    .mob-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; background: rgba(6,6,8,.97); backdrop-filter: blur(16px); border-top: 1px solid var(--line); padding: 9px 12px; padding-bottom: max(9px, env(safe-area-inset-bottom)); gap: 7px; align-items: center; }
+    .mob-tab { width: 42px; height: 42px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--bg-2); color: var(--muted); font-size: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+    .mob-tab.on { background: var(--accent-dim); border-color: rgba(168,255,108,.25); color: var(--accent); }
+    .mob-gen-btn { flex: 1; height: 42px; border-radius: var(--r-sm); border: none; background: var(--accent); color: #000; font-weight: 700; font-size: 13px; font-family: var(--font); cursor: pointer; transition: all .15s; }
+    .mob-gen-btn:active { transform: scale(.97); }
+
+    @media (max-width: 960px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .output-panel { display: none; }
+      .output-panel.mob-show { display: block; }
+      .mob-nav { display: flex; }
+      .app { padding-bottom: 76px; }
+      .hide-mob { display: none !important; }
+    }
+    @media (max-width: 600px) {
+      .app { width: calc(100% - 14px); padding-top: 16px; }
+      .wiz-head, .wiz-body, .wiz-nav, .out-head, .out-body { padding-left: 14px; padding-right: 14px; }
+      .wiz-title { font-size: 17px; }
+      pre { font-size: 10px; max-height: 150px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-mark"><svg viewBox="0 0 18 18" fill="none"><path d="M9 2L16 8V16H11V11H7V16H2V8L9 2Z" fill="#000"/></svg></div>
+      <div><div class="login-logo-text">Imobiturbo <span>Prompt Lab</span></div></div>
+    </div>
+    <div>
+      <div class="login-title">Acesso restrito</div>
+      <div class="login-hint">Digite a senha para entrar.</div>
+    </div>
+    <div class="login-field">
+      <label>Senha</label>
+      <input class="login-input" id="passwordInput" type="password" placeholder="••••••••••" autocomplete="off" />
+      <div class="login-error" id="loginError">Senha incorreta.</div>
+    </div>
+    <button class="login-btn" id="loginBtn">Entrar</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="appScreen">
+  <div class="top-bar">
+    <div class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 16 16" fill="none"><path d="M8 2L14 7V14H10V10H6V14H2V7L8 2Z" fill="#000"/></svg></div>
+      <div><div class="logo-text">Imobiturbo <span>Prompt Lab</span></div></div>
+    </div>
+    <div style="display:flex;gap:6px;">
+      <button class="btn-outline btn-sm hide-mob" id="exampleTop">Exemplo</button>
+      <button class="btn-ghost btn-sm" id="logoutBtn">Sair</button>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stats-left">
+      <div class="stats-dot"></div>
+      <div class="stats-info"><strong>Ferramenta ativa</strong><span id="statsText">0 prompts gerados</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:7px;">
+      <span style="font-size:11px;color:var(--muted)">gerações</span>
+      <span class="gen-count" id="generationCount">0</span>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:flex-start;gap:9px;padding:11px 15px;margin-bottom:18px;border-radius:var(--r);border:1px solid rgba(255,180,50,.18);background:rgba(255,180,50,.05);">
+    <span style="font-size:16px;flex-shrink:0;line-height:1;">⚠️</span>
+    <p style="font-size:12px;color:rgba(255,255,255,.55);line-height:1.6;margin:0;"><strong style="color:rgba(255,200,80,.85);">Menos é mais.</strong> Quanto mais informações você preencher, mais poluída fica a arte final. Preencha apenas o essencial para cada criativo.</p>
+  </div>
+
+  <div class="main-grid">
+    <!-- WIZARD -->
+    <div class="wizard-card" id="wizardPanel">
+      <div class="wiz-head">
+        <div class="wiz-progress-row">
+          <span class="wiz-step-lbl" id="stepLabel">Passo 1 de 3</span>
+          <span class="wiz-pct" id="stepPct">33%</span>
+        </div>
+        <div class="wiz-bar"><div class="wiz-bar-fill" id="barFill" style="width:33%"></div></div>
+        <div class="wiz-title-row">
+          <span class="wiz-emoji" id="stepEmoji">🏠</span>
+          <div class="wiz-title" id="stepTitle">O imóvel</div>
+          <div class="wiz-hint" id="stepHint">Tipo, características, localização e preço.</div>
+        </div>
+        <div class="step-dots" id="stepDots"></div>
+      </div>
+
+      <div class="wiz-body">
+        <!-- STEP 1: imóvel -->
+        <div class="wiz-step active" id="step-1">
+          <div class="field-stack">
+            <label>Tipo e características <span class="hint">Quartos, metragem, vagas</span>
+              <textarea id="property" placeholder="Ex.: apartamento 3 quartos, 90m², varanda gourmet, 2 vagas"></textarea>
+            </label>
+            <label>Bairro e cidade
+              <input id="location" placeholder="Ex.: Buritis, Belo Horizonte" />
+            </label>
+            <label>Preço e condição <span class="hint">Parcela, entrada, financiamento</span>
+              <input id="price" placeholder="Ex.: R$420.000 · parcelas a partir de R$2.100 · FGTS aceito" />
+            </label>
+          </div>
+        </div>
+
+        <!-- STEP 2: público + benefícios -->
+        <div class="wiz-step" id="step-2">
+          <div class="field-stack">
+            <label>Público ideal <span class="hint">Escolha apenas UM público-alvo</span>
+              <input id="audience" placeholder="Ex.: Investidores · Médicos · Quem quer sair do aluguel" />
+            </label>
+            <label>Benefícios da localização <span class="hint">Distâncias e pontos de referência</span>
+              <textarea id="locationBenefits" placeholder="Ex.: A 5 min do Shopping&#10;A 10 min andando da Praia&#10;Ao lado do metrô"></textarea>
+            </label>
+            <label>Benefícios do imóvel <span class="hint">Características internas</span>
+              <textarea id="propertyBenefits" placeholder="Ex.: Sol da manhã&#10;Totalmente mobiliado&#10;Piso de porcelanato"></textarea>
+            </label>
+            <label>Benefícios do condomínio <span class="hint">Opcional</span>
+              <textarea id="condoBenefits" placeholder="Ex.: Piscina aquecida&#10;Segurança 24h&#10;Academia"></textarea>
+            </label>
+          </div>
+        </div>
+
+        <!-- STEP 3: IA + formato -->
+        <div class="wiz-step" id="step-3">
+          <div class="field-stack">
+            <label>IA que vai receber o prompt + fotos</label>
+            <div class="opt-grid" id="modelGrid">
+              <button type="button" class="opt-card active" data-value="ChatGPT">ChatGPT<small>GPT Image 1.5</small></button>
+              <button type="button" class="opt-card" data-value="Gemini">Gemini<small>Nano Banana 2</small></button>
+            </div>
+            <input class="hidden-input" id="model" value="ChatGPT" />
+
+            <div id="formatSection" style="margin-top:4px">
+              <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,.65);margin-bottom:7px;">Formato do criativo</div>
+              <div id="fmtChatGPT">
+                <div class="format-note"><strong>ChatGPT (GPT Image 1.5)</strong> gera apenas <strong>1:1</strong> (1080×1080px).</div>
+              </div>
+              <div id="fmtGemini" style="display:none">
+                <div class="opt-grid" id="geminiFormatGrid">
+                  <button type="button" class="opt-card" data-value="9:16 Story (1080×1920px)">Story 9:16<small>1080×1920px</small></button>
+                  <button type="button" class="opt-card active" data-value="1:1 Padrão (1080×1080px)">Padrão 1:1<small>1080×1080px</small></button>
+                  <button type="button" class="opt-card" data-value="4:5 Feed (1080×1350px)">Feed 4:5<small>1080×1350px</small></button>
+                </div>
+                <input class="hidden-input" id="geminiFormat" value="1:1 Padrão (1080×1080px)" />
+                <div class="format-note" style="margin-top:7px"><strong>Gemini (Nano Banana 2)</strong> suporta múltiplos formatos.</div>
+              </div>
+            </div>
+
+            <div class="info-box">
+              <div class="info-box-title">Como usar</div>
+              <div class="info-box-copy">
+                1. Copie o prompt desejado<br>
+                2. Veja a sugestão de fotos (badge azul)<br>
+                3. Abra a IA e anexe as fotos indicadas<br>
+                4. Cole o prompt e envie
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wiz-nav">
+        <div style="display:flex;gap:6px;">
+          <button class="btn-ghost btn-sm" id="prevBtn" style="display:none">← Voltar</button>
+          <button class="btn-ghost btn-sm" id="clearBtn">Limpar</button>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn-outline btn-sm" id="exampleBtn">Exemplo</button>
+          <button class="btn-accent" id="nextBtn">Próximo →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="output-panel" id="outputPanel">
+      <div class="out-head">
+        <div>
+          <h3>10 prompts de criativo</h3>
+          <p id="outSubtitle">Cada prompt usa suas fotos reais do imóvel</p>
+        </div>
+        <div class="out-actions">
+          <button class="btn-outline btn-sm" id="copyAll">Copiar todos</button>
+          <button class="btn-outline btn-sm" id="downloadTxt">Baixar .txt</button>
+        </div>
+      </div>
+      <div class="out-body">
+        <div class="chips-row" id="summaryRow">
+          <span class="chip hi">10 criativos</span>
+          <span class="chip">Foto real</span>
+        </div>
+        <div id="promptArea" class="empty-state">
+          <span class="empty-icon">📸</span>
+          <strong>Pronto para gerar</strong>
+          <div class="empty-copy">Preencha os 3 passos e clique em Gerar.</div>
+        </div>
+        <div class="generate-cta">
+          <button class="btn-generate" id="generateMain">Gerar 10 prompts</button>
+        </div>
+        <div class="footer-note">Cada prompt já instrui a IA sobre layout, textos e hierarquia visual. Siga a sugestão de fotos (badge azul) para melhores resultados.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<nav class="mob-nav" id="mobNav" style="display:none">
+  <button class="mob-tab on" id="tWiz" onclick="mobSwitch('wiz')">📝</button>
+  <button class="mob-gen-btn" id="mobGenBtn">Gerar 10 prompts</button>
+  <button class="mob-tab" id="tOut" onclick="mobSwitch('out')">📋</button>
+</nav>
+
+<script>
+const PASS = 'imobiturbo';
+const SESSION_KEY = 'ipl-session';
+const DRAFT_KEY = 'ipl-v6-draft';
+const STATS_KEY = 'ipl-v6-stats';
+const TOTAL_STEPS = 3;
+const CTA = 'Saiba Mais';
+
+const FIELD_IDS = [
+  'property','location','price',
+  'audience','locationBenefits','propertyBenefits','condoBenefits',
+  'model','geminiFormat'
+];
+
+let exampleIndex = 0;
+const EXAMPLES = [
+  {
+    property: 'Apartamento 2 quartos, 58m², varanda, 1 vaga',
+    location: 'Cambuí, Campinas – SP',
+    price: 'R$320.000 · parcelas a partir de R$1.850 · aceita FGTS',
+    audience: 'Casais jovens',
+    locationBenefits: 'A 5 min do Shopping Iguatemi\nA 2 min do metrô\nRodeado de restaurantes e comércio',
+    propertyBenefits: 'Sol da manhã\nCozinha americana\nPiso de porcelanato em todo o apê',
+    condoBenefits: 'Piscina aquecida\nAcademia\nPortaria 24h\nPlayground',
+    model: 'ChatGPT', geminiFormat: '1:1 Padrão (1080×1080px)'
+  },
+  {
+    property: 'Casa em condomínio fechado, 3 quartos (1 suíte), 120m², quintal, 2 vagas',
+    location: 'Alphaville, Barueri – SP',
+    price: 'R$890.000 · financiamento bancário · entrada a partir de R$180.000',
+    audience: 'Famílias com filhos',
+    locationBenefits: 'A 10 min do centro de Alphaville\nPróximo a escolas internacionais\nFácil acesso à Rodovia Castello Branco',
+    propertyBenefits: 'Varanda gourmet com churrasqueira\nCozinha planejada\nQuintal amplo\nAr-condicionado em todos os quartos',
+    condoBenefits: 'Condomínio fechado com guarita\nSegurança 24h\nQuadra de tênis',
+    model: 'Gemini', geminiFormat: '4:5 Feed (1080×1350px)'
+  },
+  {
+    property: 'Studio compacto, 32m², andar alto com vista para a cidade',
+    location: 'Vila Olímpia, São Paulo – SP',
+    price: 'R$420.000 · excelente para renda com Airbnb · R$3.500/mês estimado',
+    audience: 'Investidores',
+    locationBenefits: 'A 5 min a pé da estação Berrini\nCercado por restaurantes e bares\nCentro financeiro de SP',
+    propertyBenefits: 'Vista panorâmica\nMobiliado e equipado\nCozinha compacta planejada\nAndar alto',
+    condoBenefits: 'Rooftop com piscina\nCoworking\nRecepção 24h',
+    model: 'Gemini', geminiFormat: '9:16 Story (1080×1920px)'
+  },
+  {
+    property: 'Apartamento MCMV, 2 quartos, 48m², 1 vaga',
+    location: 'Jardim das Flores, Sorocaba – SP',
+    price: 'R$220.000 · entrada a partir de R$5.000 · parcelas de R$800/mês · FGTS aceito',
+    audience: 'Quem quer sair do aluguel',
+    locationBenefits: 'A 8 min do centro\nPróximo a escola municipal e UBS\nLinha de ônibus na porta',
+    propertyBenefits: 'Pronto para morar\nPiso vinílico nos quartos\nRevestimento cerâmico',
+    condoBenefits: 'Portaria com interfone\nPlayground\nEstacionamento coberto',
+    model: 'ChatGPT', geminiFormat: '1:1 Padrão (1080×1080px)'
+  },
+  {
+    property: 'Cobertura duplex, 4 suítes, 280m², terraço com piscina privativa, 4 vagas',
+    location: 'Leblon, Rio de Janeiro – RJ',
+    price: 'R$4.800.000 · aceita permuta · condições para pagamento à vista',
+    audience: 'Executivos de alto padrão',
+    locationBenefits: 'Vista direta para o mar\nA 200m da praia do Leblon\nPróximo aos melhores restaurantes',
+    propertyBenefits: 'Piscina privativa no terraço\nAcabamento importado\nSala de cinema\nAdega climatizada\nElevador privativo',
+    condoBenefits: 'Concierge\nSpa e sauna\nSalão gourmet exclusivo',
+    model: 'Gemini', geminiFormat: '4:5 Feed (1080×1350px)'
+  }
+];
+
+// ── HELPERS ──
+function byId(id) { return document.getElementById(id); }
+function safe(v, fb='') { return String(v||'').trim() || fb; }
+function esc(v) { return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── WIZARD ──
+const STEPS_META = [
+  { emoji:'🏠', title:'O imóvel', hint:'Tipo, características, localização e preço.' },
+  { emoji:'🎯', title:'Público e benefícios', hint:'Para quem é e o que torna esse imóvel especial.' },
+  { emoji:'🤖', title:'IA e formato', hint:'Escolha a IA e o formato do criativo.' }
+];
+let currentStep = 1;
+
+// ── LOGIN ──
+function checkSession() { return sessionStorage.getItem(SESSION_KEY) === '1'; }
+function showApp() {
+  byId('loginScreen').classList.add('hidden');
+  byId('appScreen').style.display = '';
+  if (window.innerWidth <= 960) byId('mobNav').style.display = 'flex';
+  updateStats(); renderWizard(); loadDraft(); syncModelUI(byId('model').value); updateChips();
+}
+function tryLogin() {
+  const v = byId('passwordInput').value.trim().toLowerCase();
+  if (v === PASS) { sessionStorage.setItem(SESSION_KEY, '1'); byId('loginError').classList.remove('show'); showApp(); }
+  else { byId('loginError').classList.add('show'); byId('passwordInput').value = ''; byId('passwordInput').focus(); }
+}
+
+// ── WIZARD (cont.) ──
+function renderWizard() {
+  const s = STEPS_META[currentStep - 1];
+  const pct = Math.round(currentStep / TOTAL_STEPS * 100);
+  byId('stepLabel').textContent = `Passo ${currentStep} de ${TOTAL_STEPS}`;
+  byId('stepPct').textContent = pct + '%';
+  byId('barFill').style.width = pct + '%';
+  byId('stepEmoji').textContent = s.emoji;
+  byId('stepTitle').textContent = s.title;
+  byId('stepHint').textContent = s.hint;
+  byId('stepDots').innerHTML = STEPS_META.map((_, i) => {
+    const n = i + 1;
+    const cls = n < currentStep ? 'done' : n === currentStep ? 'active' : '';
+    return `<div class="step-dot ${cls}" onclick="jumpStep(${n})"></div>`;
+  }).join('');
+  document.querySelectorAll('.wiz-step').forEach(el => el.classList.remove('active'));
+  byId('step-' + currentStep).classList.add('active');
+  byId('prevBtn').style.display = currentStep > 1 ? '' : 'none';
+  const nb = byId('nextBtn');
+  if (currentStep === TOTAL_STEPS) { nb.textContent = 'Gerar 10 prompts'; nb.className = 'btn-accent btn-sm'; }
+  else { nb.textContent = 'Próximo →'; nb.className = 'btn-accent'; }
+  const step = byId('step-' + currentStep);
+  if (step) { const inp = step.querySelector('input:not(.hidden-input), textarea'); if (inp) setTimeout(() => inp.focus(), 250); }
+}
+
+function jumpStep(n) { if (n >= 1 && n <= TOTAL_STEPS) { currentStep = n; renderWizard(); } }
+byId('nextBtn').addEventListener('click', () => {
+  if (currentStep === TOTAL_STEPS) { generatePrompts(); return; }
+  currentStep = Math.min(currentStep + 1, TOTAL_STEPS); renderWizard();
+});
+byId('prevBtn').addEventListener('click', () => { currentStep = Math.max(currentStep - 1, 1); renderWizard(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && checkSession() && e.target.tagName !== 'TEXTAREA' && e.target.id !== 'passwordInput') { e.preventDefault(); byId('nextBtn').click(); }
+});
+
+// ── MODEL / FORMAT ──
+function syncModelUI(model) {
+  byId('fmtChatGPT').style.display = model === 'ChatGPT' ? '' : 'none';
+  byId('fmtGemini').style.display = model === 'Gemini' ? '' : 'none';
+}
+function getFormat() {
+  if (byId('model').value === 'ChatGPT') return '1:1 Quadrado (1080×1080px)';
+  return byId('geminiFormat').value || '1:1 Padrão (1080×1080px)';
+}
+
+byId('modelGrid').querySelectorAll('.opt-card').forEach(btn => {
+  btn.addEventListener('click', () => {
+    byId('model').value = btn.dataset.value;
+    byId('modelGrid').querySelectorAll('.opt-card').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); syncModelUI(btn.dataset.value); saveDraft(); updateChips();
+  });
+});
+byId('geminiFormatGrid').querySelectorAll('.opt-card').forEach(btn => {
+  btn.addEventListener('click', () => {
+    byId('geminiFormat').value = btn.dataset.value;
+    byId('geminiFormatGrid').querySelectorAll('.opt-card').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); saveDraft(); updateChips();
+  });
+});
+
+// ── DATA ──
+function collectData() {
+  const d = {};
+  FIELD_IDS.forEach(id => { d[id] = (byId(id) || { value: '' }).value.trim(); });
+  d.format = getFormat();
+  d.cta = CTA;
+  return d;
+}
+function validateMinimal(d) {
+  return [['property','tipo do imóvel'],['location','localização'],['audience','público ideal']]
+    .filter(([id]) => !d[id]).map(([,l]) => l);
+}
+
+// ── DRAFT ──
+function saveDraft() { try { localStorage.setItem(DRAFT_KEY, JSON.stringify(collectData())); } catch(e){} }
+function loadDraft() {
+  try {
+    const r = localStorage.getItem(DRAFT_KEY); if (!r) return;
+    const d = JSON.parse(r);
+    FIELD_IDS.forEach(id => { if (d[id] !== undefined && byId(id)) byId(id).value = d[id]; });
+    syncModelUI(byId('model').value || 'ChatGPT');
+    byId('modelGrid').querySelectorAll('.opt-card').forEach(b => b.classList.toggle('active', b.dataset.value === byId('model').value));
+    const gf = byId('geminiFormat').value;
+    byId('geminiFormatGrid').querySelectorAll('.opt-card').forEach(b => b.classList.toggle('active', b.dataset.value === gf));
+  } catch(e){}
+}
+document.querySelectorAll('input, textarea').forEach(el => {
+  if (!el.classList.contains('hidden-input') && el.id !== 'passwordInput') el.addEventListener('input', () => { saveDraft(); updateChips(); });
+});
+
+// ── CHIPS ──
+function updateChips() {
+  const fmt = getFormat();
+  const model = byId('model').value || 'ChatGPT';
+  byId('summaryRow').innerHTML = [
+    { label:'10 criativos', hi:true }, { label:model, hi:true },
+    { label:fmt.split(' ')[0], hi:false }, { label:'Foto real', hi:false }
+  ].map(c => `<span class="chip${c.hi?' hi':''}">${esc(c.label)}</span>`).join('');
+  byId('outSubtitle').textContent = `Cada prompt usa suas fotos reais · ${fmt}`;
+}
+
+// ── STATS ──
+function loadStats() { try { return JSON.parse(localStorage.getItem(STATS_KEY)) || { gen:0 }; } catch(e) { return { gen:0 }; } }
+function saveStats(s) { try { localStorage.setItem(STATS_KEY, JSON.stringify(s)); } catch(e){} }
+function updateStats() {
+  const s = loadStats();
+  byId('generationCount').textContent = String(s.gen || 0);
+  byId('statsText').textContent = (s.gen || 0) + ' prompts gerados';
+}
+
+// ── EXAMPLE ──
+function fillExample() {
+  const ex = EXAMPLES[exampleIndex % EXAMPLES.length]; exampleIndex++;
+  FIELD_IDS.forEach(id => { if (byId(id) && ex[id] !== undefined) byId(id).value = ex[id]; });
+  syncModelUI(ex.model || 'ChatGPT');
+  byId('modelGrid').querySelectorAll('.opt-card').forEach(b => b.classList.toggle('active', b.dataset.value === ex.model));
+  const gf = ex.geminiFormat || '1:1 Padrão (1080×1080px)';
+  byId('geminiFormat').value = gf;
+  byId('geminiFormatGrid').querySelectorAll('.opt-card').forEach(b => b.classList.toggle('active', b.dataset.value === gf));
+  saveDraft(); resetOutput(); updateChips();
+  showToast(`Exemplo ${exampleIndex} de ${EXAMPLES.length} carregado.`);
+  currentStep = 1; renderWizard();
+}
+
+function clearForm() {
+  FIELD_IDS.forEach(id => { if (byId(id)) byId(id).value = ''; });
+  byId('model').value = 'ChatGPT'; byId('geminiFormat').value = '1:1 Padrão (1080×1080px)';
+  syncModelUI('ChatGPT');
+  byId('modelGrid').querySelectorAll('.opt-card').forEach(b => b.classList.toggle('active', b.dataset.value === 'ChatGPT'));
+  byId('geminiFormatGrid').querySelectorAll('.opt-card').forEach(b => b.classList.toggle('active', b.dataset.value === '1:1 Padrão (1080×1080px)'));
+  try { localStorage.removeItem(DRAFT_KEY); } catch(e){}
+  resetOutput(); updateChips(); showToast('Campos limpos.'); currentStep = 1; renderWizard();
+}
+
+function resetOutput() {
+  byId('promptArea').className = 'empty-state';
+  byId('promptArea').innerHTML = '<span class="empty-icon">📸</span><strong>Pronto para gerar</strong><div class="empty-copy">Preencha os 3 passos e clique em Gerar.</div>';
+  byId('promptArea').dataset.all = '';
+}
+
+// ── PROMPT BUILDERS ──
+function buildPrompts(d) {
+  const fmt = d.format;
+  const isGPT = d.model === 'ChatGPT';
+  const suffix = isGPT
+    ? `\n\n[ChatGPT GPT Image 1.5: anexe até 3 fotos do imóvel nesta conversa e envie. Formato de saída: ${fmt}.]`
+    : `\n\n[Gemini Nano Banana 2: anexe até 3 fotos do imóvel nesta conversa e envie. Use o formato ${fmt} na geração da imagem.]`;
+
+  const dados = () => `DADOS DO IMÓVEL:
+- Tipo e características: ${safe(d.property,'Não informado')}
+- Localização: ${safe(d.location,'Não informado')}
+- Preço e condição: ${safe(d.price,'Não informado')}
+- Público ideal: ${safe(d.audience,'Não informado')}
+- CTA principal: ${CTA}
+${d.locationBenefits ? `\nBENEFÍCIOS DA LOCALIZAÇÃO:\n${d.locationBenefits}` : ''}
+${d.propertyBenefits ? `\nBENEFÍCIOS DO IMÓVEL:\n${d.propertyBenefits}` : ''}
+${d.condoBenefits ? `\nBENEFÍCIOS DO CONDOMÍNIO:\n${d.condoBenefits}` : ''}`;
+
+  const base = (layout, extra='') =>
+`Você é um designer especializado em criativos imobiliários de alta conversão.
+
+FORMATO DE SAÍDA: ${fmt} | IA: ${d.model}
+
+${dados()}
+
+LAYOUT OBRIGATÓRIO:
+${layout}
+${extra ? `\nINSTRUÇÕES EXTRAS:\n${extra}` : ''}
+INSTRUÇÕES GERAIS:
+- Use as FOTOS REAIS DO IMÓVEL que estão sendo anexadas nesta conversa
+- Priorize os benefícios fornecidos acima nos textos do criativo
+- Todo texto na arte deve ser em português do Brasil
+- Formato de saída: ${fmt}
+- Gere o criativo final pronto para uso — não explique o processo
+
+Gere somente o criativo final.${suffix}`;
+
+  const loc = safe(d.location).split(',')[0].toUpperCase() || 'LOCALIZAÇÃO';
+  const locFull = safe(d.location, 'nossa cidade');
+
+  return [
+    { id:1, name:'Jornal / Notícia', tag:'Notícia', icon:'📰', photos:'📷 1 foto: fachada ou área externa', desc:'Manchete de jornal local com foto do imóvel',
+      prompt: base(`- Topo: barra vermelha com "${loc}" em maiúsculas brancas (header estilo jornal, ícones ☰ e 🔍)\n- Título: manchete jornalística em negrito — "Imóvel com [características] em [localização] [condição surpreendente]"\n- Subtítulo: dados financeiros e condição de pagamento\n- Foto: imagem do imóvel centralizada com cantos arredondados\n- Rodapé: botão verde-limão "TOQUE EM SAIBA MAIS" em negrito preto`, `Anexe 1 foto: fachada ou área externa do imóvel.`) },
+    { id:2, name:'Lista de Benefícios', tag:'Benefícios', icon:'✅', photos:'📷 1 foto: a mais impactante do imóvel', desc:'Fundo escuro, checkmarks, foto com overlay',
+      prompt: base(`- Topo: faixa vermelha escura com headline em maiúsculas brancas negrito\n- Centro: foto do imóvel ao fundo com overlay escuro ~50%\n- Sobre a foto: lista dos 3 benefícios mais fortes com ✅ (texto branco, legível)\n- Faixa de localização: 📍 "${loc} — A POUCOS PASSOS DE TUDO"\n- Faixa verde com preço ou parcela destacada\n- Rodapé: faixa preta "TOQUE EM SAIBA MAIS"`, `Anexe 1 foto: a mais bonita e impactante do imóvel (será usada como fundo com overlay).`) },
+    { id:3, name:'Post Fake de Perfil', tag:'Viral', icon:'📱', photos:'📷 1 foto: fachada ou destaque externo', desc:'Post viral de conta de notícias da cidade',
+      prompt: base(`- Topo: header simulando perfil do Instagram\n  • Avatar circular com nome: "${loc} NOTÍCIAS"\n  • Nome em negrito + ícone verificado ✓\n  • Texto "VAZOU!" seguido de headline viral sobre o imóvel\n- Centro: foto do imóvel com cantos arredondados\n- Rodapé: botão verde-limão "TOQUE EM SAIBA MAIS"`, `Headline: "VAZOU! [construtora/proprietário] [faz algo surpreendente] em ${locFull} para [público] com [condição acessível]"\nAnexe 1 foto: fachada ou destaque externo.`) },
+    { id:4, name:'Texto Dramático', tag:'Drama', icon:'🔥', photos:'📷 2 fotos: interior + fachada', desc:'Copy urgente no topo, foto real no centro',
+      prompt: base(`- Topo (~40%): fundo branco, texto longo em negrito preto, fonte grande\n  • Estilo: "O DONO SURTOU", "IMPOSSÍVEL IGNORAR"\n  • Preço ou parcela em destaque\n  • Termine com urgência\n- Centro (~40%): foto(s) do imóvel (lado a lado se 2 fotos)\n- Rodapé (~20%): botão verde-limão grande "TOQUE EM SAIBA MAIS"`, `Anexe 2 fotos: uma do interior e uma da fachada. Serão exibidas lado a lado no centro.`) },
+    { id:5, name:'Elegância Dark', tag:'Premium', icon:'✨', photos:'📷 1 foto: interior sofisticado', desc:'Fundo escuro, foto integrada, tipografia sofisticada',
+      prompt: base(`- Fundo: preto ou azul-escuro profundo\n- Topo: headline serifada bold branca — "PROCURANDO O IMÓVEL DOS SEUS SONHOS?" ou "SEU PRÓXIMO LAR EM ${loc}"\n- Centro: foto do imóvel com vinheta escura nas bordas\n  • Texto cursivo em dourado com nome do bairro\n- Rodapé: botão dourado "CADASTRE E RECEBA UMA OFERTA EXCLUSIVA"`, `Anexe 1 foto: interior sofisticado (sala, varanda ou suíte). A vinheta escura integra a foto ao fundo.`) },
+    { id:6, name:'Luxo Minimalista', tag:'Luxo', icon:'🏛️', photos:'📷 2 fotos: interior + exterior', desc:'Duas fotos empilhadas, tipografia editorial',
+      prompt: base(`- Metade superior: foto do interior do imóvel\n- Faixa central (fundo branco ou cinza claro):\n  • Preço em fonte serifada fina\n  • Headline editorial bold em maiúsculas\n  • Caixa preta com texto branco — características principais\n- Metade inferior: foto da fachada ou área externa`, `Anexe 2 fotos: interior (superior) e exterior/fachada (inferior). Obrigatório ter 2 fotos distintas para esse layout.`) },
+    { id:7, name:'Portal Imobiliário', tag:'Portal', icon:'🌐', photos:'📷 1 foto: a melhor do imóvel', desc:'Interface de portal com header vermelho',
+      prompt: base(`- Topo: faixa vermelha — ☰ à esquerda, "APARTAMENTO EM ${loc}" centralizado, 🔍 à direita\n- Foto principal (~45% da altura)\n- Seção de texto (fundo branco):\n  • Título negrito: "[tipo] em [localização] — apenas R$[parcela]/mês | [benefício]"\n  • Subtítulo: público, renda e benefícios\n- Rodapé: botão verde-limão "TOQUE EM SAIBA MAIS"`, `Anexe 1 foto: a melhor foto disponível do imóvel (será a foto principal do anúncio).`) },
+    { id:8, name:'Oportunidade Direta', tag:'Oferta', icon:'🚨', photos:'📷 1 foto: fachada ou área de lazer', desc:'Tag OPORTUNIDADE, foto, texto direto',
+      prompt: base(`- Topo: tag vermelha "OPORTUNIDADE" em maiúsculas brancas negrito\n- Foto do imóvel (~40% da altura)\n- Seção de texto (fundo branco):\n  • Linha principal (grande, negrito): "[TIPO] [NO/NA] [BAIRRO] — APENAS R$[PARCELA]/MÊS."\n  • Linha de apoio: 1-2 frases sobre a oportunidade\n  • Condição de pagamento em destaque\n- Rodapé: faixa verde com CTA`, `Anexe 1 foto: fachada ou área de lazer do condomínio.`) },
+    { id:9, name:'Tweet / Post Viral', tag:'X/Twitter', icon:'🐦', photos:'📷 1 foto: fachada ou vista', desc:'Post viral do Twitter/X com engajamento',
+      prompt: base(`- Fundo: preto (dark mode Twitter/X)\n- Topo: header de perfil\n  • Avatar circular com sigla\n  • Nome em branco + arroba cinza + ✓ azul\n- Texto do post (branco, estilo tweet):\n  • "exclusivo", "causando alvoroço em ${locFull}"\n  • Citação entre aspas sobre o imóvel\n- Foto do imóvel com cantos arredondados\n- Rodapé: "HH:MM · DD mmm. AA · XM Visualizações · X Retweets · XK Curtidas"`, `Anexe 1 foto: fachada ou vista panorâmica. Será exibida como imagem do tweet.`) },
+    { id:10, name:'Matéria de Portal de Bairro', tag:'Bairro', icon:'📋', photos:'📷 1 foto: fachada do empreendimento', desc:'Site de notícias local com manchete segmentada',
+      prompt: base(`- Topo: header de portal local (fundo azul ou roxo escuro)\n  • ☰ à esquerda, "${loc} NOTÍCIAS" em branco, 🔍 à direita\n- Seção de matéria (fundo branco):\n  • Badge: "OPORTUNIDADE EXCLUSIVA"\n  • Manchete: "Empreendimento em ${locFull} chama atenção de ${safe(d.audience,'compradores')} que busca [benefício principal]"\n  • Subtítulo: tipo, preço\n- Foto do imóvel com cantos arredondados\n- Rodapé na cor do header com CTA`, `Anexe 1 foto: fachada do empreendimento (simula foto de matéria jornalística).`) }
+  ];
+}
+
+// ── GENERATE ──
+function generatePrompts() {
+  const d = collectData();
+  const missing = validateMinimal(d);
+  if (missing.length) { showToast('Preencha: ' + missing.join(', ') + '.'); if (!d.property || !d.location) jumpStep(1); else jumpStep(2); return; }
+  saveDraft(); updateChips();
+  const cards = buildPrompts(d);
+  renderPromptCards(cards);
+  const s = loadStats(); saveStats({ gen: (s.gen||0) + 1 }); updateStats();
+  showToast('10 prompts gerados!');
+  if (window.innerWidth <= 960) setTimeout(() => mobSwitch('out'), 280);
+}
+
+function renderPromptCards(cards) {
+  byId('promptArea').className = '';
+  byId('promptArea').innerHTML = `<div class="prompt-list">${cards.map(c => `
+    <article class="prompt-card">
+      <div class="prompt-head">
+        <div class="prompt-meta">
+          <div class="prompt-num">${c.id}</div>
+          <div class="prompt-label"><strong>${c.icon} ${esc(c.name)}</strong><span>${esc(c.desc)}</span></div>
+        </div>
+        <div class="prompt-actions">
+          <span class="p-photos">${esc(c.photos)}</span>
+          <span class="p-tag">${esc(c.tag)}</span>
+          <button class="btn-outline btn-sm copy-one" data-idx="${c.id-1}">Copiar</button>
+        </div>
+      </div>
+      <pre>${esc(c.prompt)}</pre>
+    </article>`).join('')}</div>`;
+  byId('promptArea').dataset.all = cards.map(c => `=== PROMPT ${c.id} | ${c.name.toUpperCase()} ===\n${c.prompt}`).join('\n\n---\n\n');
+  document.querySelectorAll('.copy-one').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const idx = Number(btn.dataset.idx);
+      const ok = await copyText(cards[idx].prompt);
+      showToast(ok ? `Prompt ${idx+1} copiado!` : 'Não foi possível copiar.');
+    });
+  });
+}
+
+// ── COPY / DOWNLOAD ──
+async function copyText(text) {
+  try { if (navigator.clipboard && window.isSecureContext) { await navigator.clipboard.writeText(text); return true; } } catch(e){}
+  const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'absolute'; ta.style.left = '-9999px';
+  document.body.appendChild(ta); ta.select(); const ok = document.execCommand('copy'); document.body.removeChild(ta); return ok;
+}
+function downloadTxtFile() {
+  const c = byId('promptArea').dataset.all || '';
+  if (!c.trim()) { showToast('Gere os prompts antes.'); return; }
+  const b = new Blob([c], { type:'text/plain;charset=utf-8' });
+  const u = URL.createObjectURL(b);
+  const a = document.createElement('a'); a.href = u; a.download = 'imobiturbo-prompts.txt';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(u);
+  showToast('.txt baixado.');
+}
+
+// ── UI ──
+let toastTimer = null;
+function showToast(msg) {
+  const t = byId('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+function mobSwitch(tab) {
+  const wiz = byId('wizardPanel'), out = byId('outputPanel'), tW = byId('tWiz'), tO = byId('tOut');
+  if (tab === 'wiz') { wiz.style.display = ''; out.classList.remove('mob-show'); tW.classList.add('on'); tO.classList.remove('on'); }
+  else { wiz.style.display = 'none'; out.classList.add('mob-show'); tO.classList.add('on'); tW.classList.remove('on'); window.scrollTo({ top:0, behavior:'smooth' }); }
+}
+
+// ── BINDINGS ──
+byId('loginBtn').addEventListener('click', tryLogin);
+byId('passwordInput').addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+byId('logoutBtn').addEventListener('click', () => { sessionStorage.removeItem(SESSION_KEY); location.reload(); });
+byId('exampleTop').addEventListener('click', fillExample);
+byId('exampleBtn').addEventListener('click', fillExample);
+byId('clearBtn').addEventListener('click', clearForm);
+byId('generateMain').addEventListener('click', generatePrompts);
+byId('mobGenBtn').addEventListener('click', generatePrompts);
+byId('copyAll').addEventListener('click', async () => {
+  const c = byId('promptArea').dataset.all || '';
+  if (!c.trim()) { showToast('Gere os prompts antes.'); return; }
+  showToast(await copyText(c) ? 'Todos copiados!' : 'Não foi possível copiar.');
+});
+byId('downloadTxt').addEventListener('click', downloadTxtFile);
+
+// ── INIT ──
+if (checkSession()) showApp();
+else setTimeout(() => byId('passwordInput').focus(), 100);
+</script>
+</body>
+</html>
