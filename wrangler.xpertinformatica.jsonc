@@ -1,0 +1,15 @@
+{
+  "name": "xpertinformatica-pages-router",
+  "main": "workers/xpertinformatica-router.js",
+  "compatibility_date": "2026-07-23",
+  "routes": [
+    {
+      "pattern": "xpertinformatica.com.br/*",
+      "zone_name": "xpertinformatica.com.br"
+    },
+    {
+      "pattern": "www.xpertinformatica.com.br/*",
+      "zone_name": "xpertinformatica.com.br"
+    }
+  ]
+}

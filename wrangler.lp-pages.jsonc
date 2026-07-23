@@ -1,0 +1,15 @@
+{
+  "name": "imobiturbo-lp-pages-router",
+  "main": "workers/lp-pages-router.js",
+  "compatibility_date": "2026-07-23",
+  "routes": [
+    {
+      "pattern": "lp.imobiturbo.com.br/consultoria-express/*",
+      "zone_name": "imobiturbo.com.br"
+    },
+    {
+      "pattern": "lp.imobiturbo.com.br/imobiclone-pro/*",
+      "zone_name": "imobiturbo.com.br"
+    }
+  ]
+}

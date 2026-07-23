@@ -1,0 +1,428 @@
+/* --- ImobiClone PRO Premium Design System --- */
+:root {
+    /* 1. Colors */
+    --brand-primary: #d4ff6d;
+    /* Lime Green */
+    --brand-dark: #b8de5e;
+    --brand-light: #e5ff99;
+
+    --bg-body: #050505;
+    /* Preto Profundo */
+    --bg-surface: #0F0F10;
+    /* Cinza Quase Preto */
+    --bg-surface-elevated: #18181B;
+    /* Cinza Zinco Escuro */
+    --bg-glass: rgba(24, 24, 27, 0.6);
+
+    --text-primary: #FFFFFF;
+    --text-secondary: #A1A1AA;
+    /* Zinc 400 */
+    --text-tertiary: #71717A;
+    /* Zinc 500 */
+
+    --border-light: rgba(255, 255, 255, 0.1);
+    --border-hover: rgba(212, 255, 109, 0.3);
+
+    /* 2. Typography */
+    --font-sans: 'Inter', sans-serif;
+
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 2rem;
+    --text-4xl: 2.5rem;
+    --text-5xl: 3.5rem;
+    /* Hero Desktop */
+
+    /* 3. Spacing & Radius */
+    --space-2: 0.5rem;
+    --space-4: 1rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+    --space-section: 6rem;
+
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-pill: 9999px;
+
+    /* 4. Effects */
+    --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-glow: 0 0 25px rgba(212, 255, 109, 0.15);
+    --blur-glass: blur(12px);
+
+    --max-width: 1200px;
+    --header-height: 80px;
+}
+
+/* --- Reset --- */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+img,
+video {
+    max-width: 100%;
+    display: block;
+    border-radius: var(--radius-sm);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: 0.3s ease;
+}
+
+ul {
+    list-style: none;
+}
+
+/* --- Utility Classes --- */
+.container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-brand {
+    color: var(--brand-primary);
+}
+
+.text-sec {
+    color: var(--text-secondary);
+}
+
+.flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.grid {
+    display: grid;
+    gap: var(--space-6);
+}
+
+/* --- Typography --- */
+h1,
+h2,
+h3,
+h4 {
+    letter-spacing: -0.02em;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.h1 {
+    font-size: 2.5rem;
+}
+
+.h2 {
+    font-size: 2rem;
+}
+
+.h3 {
+    font-size: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .h1 {
+        font-size: var(--text-5xl);
+    }
+
+    .h2 {
+        font-size: var(--text-4xl);
+    }
+
+    .h3 {
+        font-size: 2rem;
+    }
+}
+
+/* --- Components: Buttons --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: var(--text-base);
+    border: 1px solid transparent;
+}
+
+.btn-primary {
+    background: var(--brand-primary);
+    color: #000;
+    box-shadow: var(--shadow-glow);
+}
+
+.btn-primary:hover {
+    background: var(--brand-light);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(212, 255, 109, 0.3);
+}
+
+.btn-outline {
+    background: transparent;
+    border-color: var(--border-light);
+    color: var(--text-primary);
+}
+
+.btn-outline:hover {
+    border-color: var(--brand-primary);
+    background: rgba(212, 255, 109, 0.05);
+}
+
+.btn-full-mobile {
+    width: 100%;
+}
+
+@media(min-width: 768px) {
+    .btn-full-mobile {
+        width: auto;
+    }
+}
+
+/* --- Components: Cards --- */
+.card {
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    border-color: var(--border-hover);
+}
+
+.glass-card {
+    background: var(--bg-glass);
+    backdrop-filter: var(--blur-glass);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+}
+
+/* --- Components: Badge --- */
+.badge {
+    display: inline-flex;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    background: rgba(212, 255, 109, 0.1);
+    color: var(--brand-primary);
+    border: 1px solid rgba(212, 255, 109, 0.2);
+    margin-bottom: var(--space-4);
+}
+
+/* --- Layout: Sections --- */
+section {
+    padding: var(--space-12) 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+/* Hero Specifics */
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Video Placeholder */
+.video-card {
+    position: relative;
+    aspect-ratio: 9/16;
+    background: #000;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    cursor: pointer;
+    /* group property removed (invalid in standard CSS) */
+}
+
+.video-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.video-card:hover .video-overlay {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.play-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    transition: 0.3s;
+}
+
+.video-card:hover .play-btn {
+    transform: scale(1.1);
+    background: var(--brand-primary);
+    border: none;
+}
+
+/* Accordion FAQ */
+.accordion-item {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.accordion-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-6) 0;
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+}
+
+.accordion-icon {
+    transition: transform 0.3s ease;
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    color: var(--text-secondary);
+    transition: max-height 0.3s ease;
+    line-height: 1.6;
+}
+
+.accordion-item.active .accordion-content {
+    padding-bottom: var(--space-6);
+    max-height: 500px;
+}
+
+.accordion-item.active .accordion-icon {
+    transform: rotate(45deg);
+    color: var(--brand-primary);
+}
+
+/* Steps */
+.step-card {
+    position: relative;
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--border-light);
+}
+
+.step-card.active {
+    border-left-color: var(--brand-primary);
+}
+
+.step-number {
+    font-size: 3rem;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.05);
+    position: absolute;
+    top: 0;
+    right: 0;
+    line-height: 1;
+}
+
+/* Comparison Table */
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+    .comparison-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.check-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Footer */
+footer {
+    padding: var(--space-12) 0;
+    border-top: 1px solid var(--border-light);
+    margin-top: auto;
+}
+
+/* Sticky CTA Mobile */
+.sticky-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: var(--space-4);
+    background: rgba(5, 5, 5, 0.9);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border-light);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.sticky-cta.visible {
+    transform: translateY(0);
+}
+
+@media (min-width: 768px) {
+    .sticky-cta {
+        display: none;
+    }
+}

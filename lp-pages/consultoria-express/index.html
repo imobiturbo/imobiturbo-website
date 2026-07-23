@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imobiturbo - Implementação Expressa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .image-link {
+            display: block;
+            width: 100%;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .image-link img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: none;
+        }
+
+        .cta-container {
+            width: 100%;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #000000;
+            gap: 20px;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(194, 242, 91, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(194, 242, 91, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(194, 242, 91, 0);
+            }
+        }
+
+        .primary-btn {
+            display: inline-block;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #c2f25b;
+            color: #000000;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .whatsapp-link {
+            color: #76bf2d;
+            text-decoration: underline;
+            font-size: 16px;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1025303472485246');
+    fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+</head>
+<body>
+    <!-- Meta Pixel Code (noscript) -->
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1025303472485246&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- End Meta Pixel Code (noscript) -->
+
+    <div class="container">
+        <!-- Loop das 10 imagens apontando para o novo checkout -->
+        <a href="https://pague.lia.com.br/imobiturbo/oferta?offer_id=a73924f4-52d1-467f-9bf9-718f8d756fb3" class="image-link" target="_blank">
+            <img src="http://lp.imobiturbo.com.br/consultoria-express/1.webp" alt="Página 1">
+        </a>
+        <a href="https://pague.lia.com.br/imobiturbo/oferta?offer_id=a73924f4-52d1-467f-9bf9-718f8d756fb3" class="image-link" target="_blank">
+            <img src="http://lp.imobiturbo.com.br/consultoria-express/2.webp" alt="Página 2">
+        </a>
+        <a href="https://pague.lia.com.br/imobiturbo/oferta?offer_id=a73924f4-52d1-467f-9bf9-718f8d756fb3" class="image-link" target="_blank">
+            <img src="http://lp.imobiturbo.com.br/consultoria-express/3.webp" alt="Página 3">
+        </a>
+        <a href="https://pague.lia.com.br/imobiturbo/oferta?offer_id=a73924f4-52d1-467f-9bf9-718f8d756fb3" class="image-link" target="_blank">
+            <img src="http://lp.imobiturbo.com.br/consultoria-express/5.webp" alt="Página 5">
+        </a>
+        <a href="https://pague.lia.com.br/imobiturbo/oferta?offer_id=a73924f4-52d1-467f-9bf9-718f8d756fb3" class="image-link" target="_blank">
+            <img src="http://lp.imobiturbo.com.br/consultoria-express/6.webp" alt="Página 6">
+        </a>
+        <a href="https://pague.lia.com.br/imobiturbo/oferta?offer_id=a73924f4-52d1-467f-9bf9-718f8d756fb3" class="image-link" target="_blank">
+            <img src="http://lp.imobiturbo.com.br/consultoria-express/7.webp" alt="Página 7">
+        </a>
+        <a href="https://pague.lia.com.br/imobiturbo/oferta?offer_id=a73924f4-52d1-467f-9bf9-718f8d756fb3" class="image-link" target="_blank">
+            <img src="http://lp.imobiturbo.com.br/consultoria-express/8.webp" alt="Página 8">
+        </a>
+        <a href="https://pague.lia.com.br/imobiturbo/oferta?offer_id=a73924f4-52d1-467f-9bf9-718f8d756fb3" class="image-link" target="_blank">
+            <img src="http://lp.imobiturbo.com.br/consultoria-express/9.webp" alt="Página 9">
+        </a>
+        <a href="https://pague.lia.com.br/imobiturbo/oferta?offer_id=a73924f4-52d1-467f-9bf9-718f8d756fb3" class="image-link" target="_blank">
+            <img src="http://lp.imobiturbo.com.br/consultoria-express/10.webp" alt="Página 10">
+        </a>
+
+        <div class="cta-container">
+            <a href="https://pague.lia.com.br/imobiturbo/oferta?offer_id=a73924f4-52d1-467f-9bf9-718f8d756fb3" class="primary-btn" target="_blank">
+                COMEÇAR AGORA
+            </a>
+            <a href="https://wa.me/5521983747796?text=Natan%2C%20tenho%20interesse%20na%20Consultoria%20Express%2C%20mas%20ainda%20tenho%20uma%20d%C3%BAvida." class="whatsapp-link" target="_blank">
+                Quero tirar uma dúvida no WhatsApp
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

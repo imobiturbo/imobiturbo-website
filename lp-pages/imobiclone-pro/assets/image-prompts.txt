@@ -1,0 +1,44 @@
+# PROMPTS PARA GERAÇÃO DE IMAGENS (MIDJOURNEY / DALL-E 3)
+# Estilo Visual: Fotografia High-End, Iluminação de Estúdio, Tech, Cor Laranja (#FF8800) e Preto.
+
+---
+
+## 1. HERO IMAGE (O Clone em Ação)
+**Contexto:** Uma imagem que mostre o "software" funcionando, algo tangível que misture interface digital com imobiliária.
+**Prompt:**
+> Cinematic wide shot of a modern laptop screen displaying a futuristic real estate video editing software interface. On the screen, a digital twin avatar of a real estate agent is giving a house tour. The interface is sleek, dark mode, with vibrant orange accent buttons. The laptop is on a wooden table in a luxury modern living room with blurred background. Depth of field, 8k resolution, photorealistic, premium tech vibes. --ar 16:9 --v 6.0
+
+## 2. ÍCONES DE BENEFÍCIOS (Para a seção "Problema" ou "Benefícios")
+**Estilo:** 3D Render, Glassmorphism, Fundo Escuro.
+
+**Prompt (Tempo/Relógio):**
+> 3D icon of a futuristic clock or hourglass, floating, glassmorphism style, dark background, glowing orange digital accents, sleek design, high contrast, 8k render. --v 6.0
+
+**Prompt (Dinheiro/Economia):**
+> 3D icon of a coin stack or wallet, floating, glassmorphism style, dark background, glowing orange digital accents, sleek design, high contrast, 8k render. --v 6.0
+
+**Prompt (Video/Play):**
+> 3D icon of a play button or video camera, floating, glassmorphism style, dark background, glowing orange digital accents, sleek design, high contrast, 8k render. --v 6.0
+
+## 3. GRÁFICO "COMO FUNCIONA" (Abstrato)
+**Contexto:** Algo que represente a "clonagem" ou digitalização.
+**Prompt:**
+> Abstract digital art representing human digitization. A wireframe mesh of a human face transforming into a realistic video, data particles flowing, glowing orange lines connecting points, dark background, technological, cybernetic but clean, not cyberpunk. 8k resolution. --ar 16:9 --v 6.0
+
+## 4. SELO DE GARANTIA
+**Contexto:** Um selo premium para a oferta.
+**Prompt:**
+> 3D golden and orange metallic badge shield, text "7 DIAS" embossed, premium quality texture, dark studio lighting, reflection, high definition, isolated on black background. --v 6.0
+
+## 5. MOCKUPS DE CELULAR (Para a seção "Parece Real?")
+**Contexto:** Alguém segurando o celular vendo um vídeo de imóvel.
+**Prompt:**
+> Hand holding a modern smartphone (iPhone 15 Pro), displaying a vertical video (Instagram Reel) of a luxury real estate interior. The phone screen is bright, the background is a blurred modern office. Professional photography, sharp focus on phone, warm lighting. --ar 9:16 --v 6.0
+
+---
+
+## INSTRUÇÕES DE USO
+1. Copie o texto em inglês (Prompt) e cole no Midjourney (`/imagine`) ou DALL-E.
+2. Selecione as melhores opções e salve na pasta `/assets/img/`.
+3. Renomeie para nomes fáceis (ex: `hero-bg.jpg`, `icon-time.png`).
+4. Atualize o `index.html` com os nomes corretos dos arquivos.

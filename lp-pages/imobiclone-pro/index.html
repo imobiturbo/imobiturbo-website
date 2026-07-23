@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function (w, d, s, l, i) { w[l] = w[l] || []; w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' }); var f = d.getElementsByTagName(s)[0], j = d.createElement(s); j.async = true; j.src = "https://trackapi.imobiturbo.com.br/9udzmnsck.js?" + i; f.parentNode.insertBefore(j, f); })(window, document, 'script', 'dataLayer', '30k3=AgdOKTk3STs8KDUjITw2Ux1eQUBcXAAbVgoeAQ8TEAAZARxADhUJWwkR');</script>
+    <!-- End Google Tag Manager -->
+
+    <!-- VTurb Optimization -->
+    <script>!function (i, n) { i._plt = i._plt || (n && n.timeOrigin ? n.timeOrigin + n.now() : Date.now()) }(window, performance);</script>
+    <link rel="preload"
+        href="https://scripts.converteai.net/eb39e978-f5c8-4a72-b7e5-fc1316ae6df4/players/698029dc989c3c05ab594895/v4/player.js"
+        as="script">
+    <link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
+    <link rel="preload"
+        href="https://cdn.converteai.net/eb39e978-f5c8-4a72-b7e5-fc1316ae6df4/698029d876ae9d6f4de24b45/main.m3u8"
+        as="fetch">
+    <link rel="dns-prefetch" href="https://cdn.converteai.net">
+    <link rel="dns-prefetch" href="https://scripts.converteai.net">
+    <link rel="dns-prefetch" href="https://images.converteai.net">
+    <link rel="dns-prefetch" href="https://api.vturb.com.br">
+    <!-- End VTurb Optimization -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/img/favicon.webp" type="image/png">
+    <title>ImobiClone PRO | Venda Sem Gravar</title>
+    <meta name="description"
+        content="Aprenda a usar IA para se clonar em seus vídeos de imóveis. A estratégia de marketing que todo corretor precisa em 2026.">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://trackapi.imobiturbo.com.br/ns.html?id=GTM-NWKFMLFR" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Urgency Banner -->
+    <div id="urgency-banner"
+        style="background-color: #ef4444; color: #ffffff; text-align: center; padding: 0.75rem 1rem; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px; position: relative; z-index: 50; display: flex; justify-content: center; align-items: center; gap: 0.5rem; border-bottom: 2px solid #b91c1c;">
+        <span id="urgency-text">OFERTA ENCERRA EM <span id="urgency-timer">09:00</span></span>
+    </div>
+
+    <script>
+        (function () {
+            const DURATION = 9 * 60 * 1000; // 9 minutes in ms
+            const bannerText = document.getElementById('urgency-text');
+            const timerSpan = document.getElementById('urgency-timer');
+
+            let endTime = localStorage.getItem('imobiclone_timer_end');
+            const now = new Date().getTime();
+
+            // Setup or retrieve end time
+            if (!endTime) {
+                endTime = now + DURATION;
+                localStorage.setItem('imobiclone_timer_end', endTime);
+            } else {
+                endTime = parseInt(endTime, 10);
+            }
+
+            function updateTimer() {
+                const currentTime = new Date().getTime();
+                const diff = endTime - currentTime;
+
+                if (diff <= 0) {
+                    bannerText.textContent = "CONTAGEM ENCERRADA: OFERTA PODE EXPIRAR";
+                    return;
+                }
+
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                const m = minutes < 10 ? "0" + minutes : minutes;
+                const s = seconds < 10 ? "0" + seconds : seconds;
+
+                timerSpan.textContent = m + ":" + s;
+
+                requestAnimationFrame(updateTimer);
+            }
+
+            // Start countdown loop
+            updateTimer();
+        })();
+    </script>
+
+    <!-- 1. HERO SECTION -->
+    <section class="hero text-center" style="padding-top: 4rem;">
+        <div class="container hero-content">
+            <div class="badge">O CLONE DO CORRETOR DE IMÓVEIS</div>
+            <h1 class="h1 mb-4" style="margin-bottom: 1.5rem;">
+                Crie Vídeos Imobiliários Virais Com Seu Rosto <br> <span class="text-brand">Sem Precisar Gravar
+                    Nada</span>
+            </h1>
+
+            <!-- Hero Video -->
+            <div class="mb-8" style="margin-bottom: 2rem; width: 100%;">
+                <vturb-smartplayer id="vid-6980e5d181e379145446ea27"
+                    style="display: block; margin: 0 auto; width: 100%; "></vturb-smartplayer>
+                <script
+                    type="text/javascript"> var s = document.createElement("script"); s.src = "https://scripts.converteai.net/eb39e978-f5c8-4a72-b7e5-fc1316ae6df4/players/6980e5d181e379145446ea27/v4/player.js", s.async = !0, document.head.appendChild(s); </script>
+            </div>
+            <p class="text-sec" style="font-size: 1.25rem; margin-bottom: 2.5rem; line-height: 1.6;">
+                Use Inteligência Artificial para se clonar. Descubra o <strong class="text-brand">ÚNICO método do
+                    mercado</strong> para criar seu clone 100% Gratuito (com créditos infinitos).
+                Sem câmera, sem microfone, sem custo mensal.
+            </p>
+
+            <div
+                style="display: flex; flex-direction: column; gap: 1rem; align-items: center; justify-content: center; margin-bottom: 3rem;">
+                <a href="https://checkout.imobiturbo.com.br/checkout/v5/DMprcMWLp8hrhw59EMFk" id="begin_checkout"
+                    class="btn btn-primary btn-full-mobile text-xl">
+                    QUERO MEU CLONE AGORA
+                </a>
+                <p class="text-xs text-tertiary">Acesso imediato • Garantia de 7 dias • Suporte Incluso</p>
+            </div>
+
+
+        </div>
+    </section>
+
+    <!-- 2. SOCIAL PROOF / CREDIBILITY -->
+    <section id="social-proof" style="padding: 2rem 0; background: var(--bg-surface);">
+        <div class="container text-center">
+            <p class="text-sm text-tertiary uppercase mb-4" style="letter-spacing: 2px;">Estratégia usada por corretores
+                modernos</p>
+            <div class="flex-center" style="gap: 2rem; flex-wrap: wrap; opacity: 0.5; filter: grayscale(1);">
+                <!-- Placeholders logos -->
+                <span style="font-weight: 900; font-size: 1.5rem;">RE/MAX</span>
+                <span style="font-weight: 900; font-size: 1.5rem;">KELLER WILLIAMS</span>
+                <span style="font-weight: 900; font-size: 1.5rem;">XP</span>
+                <span style="font-weight: 900; font-size: 1.5rem;">CENTURY 21</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. THE PROBLEM -->
+    <section id="problem">
+        <div class="container">
+            <h2 class="h2 text-center mb-4" style="margin-bottom: 3rem;">O Ciclo de Exaustão da Gravação de Vídeos</h2>
+
+            <div class="grid grid-3" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <div class="card">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">⏳</div>
+                    <h3 class="h4 mb-2" style="margin-bottom: 0.5rem;">Perde 4h Gravando</h3>
+                    <p class="text-sec">Arrumar luz, decorar roteiro, gaguejar, gravar de novo... Uma manhã inteira
+                        perdida para fazer UM reels de 30 segundos.</p>
+                </div>
+                <div class="card">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">💸</div>
+                    <h3 class="h4 mb-2" style="margin-bottom: 0.5rem;">Gasta com Editor</h3>
+                    <p class="text-sec">Ou você paga caro (R$ 500+) por vídeo, ou perde mais 4 horas tentando editar no
+                        CapCut e o resultado fica amador.</p>
+                </div> <!-- Corrected closing tag -->
+                <div class="card">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📉</div>
+                    <h3 class="h4 mb-2" style="margin-bottom: 0.5rem;">Desiste e Para</h3>
+                    <p class="text-sec">Dá muito trabalho. Você posta 3 vezes, cansa e some por um mês. O algoritmo te
+                        pune e você não vende.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. HOW IT WORKS (3 STEPS) -->
+    <section id="how-it-works" style="background: var(--bg-surface-elevated);">
+        <div class="container">
+            <h2 class="h2 text-center" style="margin-bottom: 4rem;">Como Funciona o <span class="text-brand">ImobiClone
+                    PRO</span></h2>
+
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem;">
+                <!-- Step 1 -->
+                <div class="step-card">
+                    <span class="step-number">01</span>
+                    <h3 class="h3 margin-bottom-2" style="margin-top: 1rem; margin-bottom: 1rem;">Foto de Estúdio</h3>
+                    <p class="text-sec">Não tem fotos profissionais? Não tem problema. Ensinamos a criar fotos de
+                        estúdio ultra-realistas suas para usar de base.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="step-card active">
+                    <span class="step-number">02</span>
+                    <h3 class="h3 margin-bottom-2" style="margin-top: 1rem; margin-bottom: 1rem;">Te inserir no Imóvel
+                    </h3>
+                    <p class="text-sec">Coloque seu clone dentro de qualquer imóvel. Você na sala, na cozinha ou na
+                        fachada, sem nunca ter pisado lá.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="step-card">
+                    <span class="step-number">03</span>
+                    <h3 class="h3 margin-bottom-2" style="margin-top: 1rem; margin-bottom: 1rem;">Edição que Vende</h3>
+                    <p class="text-sec">Não adianta ter o vídeo se não vender. Ensinamos a montar o vídeo no
+                        <strong>CapCut</strong> com técnica viral para gerar leads qualificados.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. IS IT REAL? (DEMO VIDEO GRID) -->
+    <section>
+        <div class="container">
+            <div class="text-center" style="max-width: 700px; margin: 0 auto 3rem auto;">
+                <h2 class="h2 mb-4">"Mas não fica robótico?"</h2>
+                <p class="text-sec text-lg">O vídeo abaixo foi criado durante o Workshop usando apenas minhas fotos e IA
+                </p>
+            </div>
+
+            <div class="flex-center" style="margin-bottom: 2rem;">
+                <!-- Vturb SmartPlayer -->
+                <div style="width: 100%; max-width: 400px;">
+                    <vturb-smartplayer id="vid-698029dc989c3c05ab594895"
+                        style="display: block; margin: 0 auto; width: 100%;"></vturb-smartplayer>
+                    <script
+                        type="text/javascript"> var s = document.createElement("script"); s.src = "https://scripts.converteai.net/eb39e978-f5c8-4a72-b7e5-fc1316ae6df4/players/698029dc989c3c05ab594895/v4/player.js", s.async = !0, document.head.appendChild(s); </script>
+                </div>
+            </div>
+
+            <div class="text-center mt-8" style="margin-top: 3rem;">
+                <a href="https://checkout.imobiturbo.com.br/checkout/v5/DMprcMWLp8hrhw59EMFk" id="begin_checkout"
+                    class="btn btn-primary">Quero um resultado
+                    assim</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. COMPARISON -->
+    <section style="background: var(--bg-surface);">
+        <div class="container text-center">
+            <h2 class="h2 mb-8" style="margin-bottom: 3rem;">O seu Antes e Depois desse Workshop</h2>
+
+            <div class="comparison-grid">
+                <!-- Old Way -->
+                <div class="card" style="border: 1px solid #3f3f46; opacity: 0.7;">
+                    <h3 class="h3" style="color: #ef4444; margin-bottom: 1.5rem;">O Jeito Velho</h3>
+                    <ul class="text-left check-list text-sec">
+                        <li>❌ 4 horas para gravar um vídeo</li>
+                        <li>❌ Precisa de câmera, mic e luz</li>
+                        <li>❌ Erra o texto, regrava 10x</li>
+                        <li>❌ Custo alto com edição</li>
+                        <li>❌ Você aparece cansado/suado</li>
+                    </ul>
+                </div>
+
+                <!-- New Way -->
+                <div class="card"
+                    style="border: 1px solid var(--brand-primary); background: rgba(212, 255, 109, 0.03);">
+                    <h3 class="h3" style="color: var(--brand-primary); margin-bottom: 1.5rem;">Jeito ImobiClone PRO (IA)
+                    </h3>
+                    <ul class="text-left check-list">
+                        <li>✅ <strong class="text-primary">5 minutos</strong> para gerar</li>
+                        <li>✅ Precisa só do seu notebook</li>
+                        <li>✅ <span class="text-brand font-bold">100% Gratuito</span> (Créditos Infinitos)</li>
+                        <li>✅ Sem pagar assinaturas caras</li>
+                        <li>✅ Método Proprietário Exclusivo</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. DELIVERABLES (CURRICULUM) -->
+    <section>
+        <div class="container" style="max-width: 900px;">
+            <h2 class="h2 text-center mb-8" style="margin-bottom: 4rem;">O que você recebe AGORA</h2>
+
+            <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                <!-- Aula 1 -->
+                <div
+                    style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center; text-align: center;">
+                    <div
+                        style="background: var(--brand-primary); color:black; font-weight:bold; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-bottom: 0.5rem;">
+                        1</div>
+                    <div>
+                        <h4 class="h4 text-primary"><span class="text-brand">Aula 01:</span> Foto de Estúdio Perfeita
+                        </h4>
+                        estúdio, postura de autoridade) mesmo que você só tenha selfies ruins no celular.</p>
+                        <img src="assets/img/class-01.webp" alt="Exemplo Foto Estúdio"
+                            style="width: 100%; max-width: 400px; border-radius: var(--radius-md); margin-top: 1rem; object-fit: cover; margin-left: auto; margin-right: auto;">
+                    </div>
+                </div>
+                <!-- Aula 2 -->
+                <div
+                    style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center; text-align: center;">
+                    <div
+                        style="background: var(--brand-primary); color:black; font-weight:bold; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-bottom: 0.5rem;">
+                        2</div>
+                    <div>
+                        <h4 class="h4 text-primary"><span class="text-brand">Aula 02:</span> Seu Clone no Imóvel, em
+                            Vídeo</h4>
+                        E a introdução ao nosso método de "Créditos Infinitos" para animar sem pagar nada.</p>
+                        <img src="assets/img/class-02.webp" alt="Exemplo Corretor no Ambiente"
+                            style="width: 100%; max-width: 400px; border-radius: var(--radius-md); margin-top: 1rem; object-fit: cover; margin-left: auto; margin-right: auto;">
+                    </div>
+                </div>
+                <!-- Aula 3 -->
+                <div
+                    style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center; text-align: center;">
+                    <div
+                        style="background: var(--brand-primary); color:black; font-weight:bold; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-bottom: 0.5rem;">
+                        3</div>
+                    <div>
+                        <h4 class="h4 text-primary"><span class="text-brand">Aula 03:</span> Edição Viral no CapCut</h4>
+                        Copy, legendas e estrutura para criar vídeos de ALTA CONVERSÃO prontos para vender.</p>
+                        <img src="assets/img/class-03.webp" alt="Exemplo Edição CapCut"
+                            style="width: 100%; max-width: 400px; border-radius: var(--radius-md); margin-top: 1rem; object-fit: cover; margin-left: auto; margin-right: auto;">
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </section>
+    <!-- 8. BONUS SECTION -->
+    <section id="bonus" style="background: var(--bg-surface-elevated); padding-top: 5rem; padding-bottom: 3rem;">
+        <div class="container text-center">
+            <div class="badge"
+                style="margin: 0 auto 1.5rem auto; display: inline-flex; align-items: center; gap: 0.5rem; border-color: var(--brand-primary); color: var(--brand-primary); background: rgba(212, 255, 109, 0.1);">
+                <span>🎁</span> PRESENTE ESPECIAL
+            </div>
+            <h2 class="h2 mb-8">BÔNUS: Template de Criativo no Estilo Fofoca <br><span class="text-brand">+ Clone de
+                    I.A. Dirigindo Carro</span></h2>
+
+            <div class="flex-center" style="margin-bottom: 1.5rem;">
+                <div
+                    style="width: 100%; max-width: 400px; padding: 1rem; border-radius: var(--radius-lg); background: var(--bg-body); border: 1px solid var(--border-light); box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+                    <vturb-smartplayer id="vid-699b8fd410f8465bfaf33be4"
+                        style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
+                    <script
+                        type="text/javascript"> var s = document.createElement("script"); s.src = "https://scripts.converteai.net/eb39e978-f5c8-4a72-b7e5-fc1316ae6df4/players/699b8fd410f8465bfaf33be4/v4/player.js", s.async = !0, document.head.appendChild(s); </script>
+                </div>
+            </div>
+
+            <p class="text-sec text-lg mx-auto"
+                style="max-width: 600px; margin: 0 auto; font-weight: 500; font-style: italic; color: var(--brand-primary); text-align: center;">
+                Bônus Gratuito Liberado no Treinamento - Template de Alta Conversão
+            </p>
+        </div>
+    </section>
+
+    <!-- 9. OFFER SECTION (MODERNIZED) -->
+    <section id="offer"
+        style="background: linear-gradient(180deg, var(--bg-surface-elevated) 0%, rgba(212, 255, 109, 0.05) 50%, var(--bg-body) 100%); padding-top: 4rem; padding-bottom: 6rem;">
+        <div class="container text-center">
+            <h2 class="h1 mb-4" style="margin-bottom: 1rem;">Pronto para viralizar <br><span
+                    style="background: -webkit-linear-gradient(45deg, var(--brand-primary), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">sem
+                    gravar vídeos?</span></h2>
+            <p class="text-sec text-lg mx-auto mb-8"
+                style="max-width: 500px; margin: 0 auto 3rem auto; text-align: center;">
+                O método mais
+                rápido, sistema completo e prompts prontos para você faturar hoje.</p>
+
+            <div class="card glass-card"
+                style="max-width: 450px; margin: 0 auto; border: 2px solid var(--brand-primary); box-shadow: 0 0 40px rgba(212, 255, 109, 0.15); position: relative; padding: 3rem 2rem; border-radius: 24px;">
+
+                <div
+                    style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--brand-primary); color: #000; font-weight: 900; padding: 0.5rem 1.5rem; border-radius: 20px; font-size: 0.875rem; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(212, 255, 109, 0.4);">
+                    OFERTA ÚNICA
+                </div>
+
+                <div
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.25rem; margin-bottom: 2rem; margin-top: 1rem;">
+                    <div
+                        style="font-size: 1.25rem; color: var(--text-tertiary); text-decoration: line-through; font-weight: 500;">
+                        De R$ 97,00</div>
+                    <div style="display: flex; align-items: flex-start; gap: 0.25rem;">
+                        <span
+                            style="font-size: 1.5rem; font-weight: 700; color: var(--brand-primary); margin-top: 0.5rem;">R$</span>
+                        <span
+                            style="font-size: 4.5rem; font-weight: 900; color: var(--brand-primary); line-height: 1; letter-spacing: -2px;">17</span>
+                    </div>
+                </div>
+
+                <ul class="text-left check-list mb-8"
+                    style="margin: 0 auto 2.5rem auto; display: flex; flex-direction: column; gap: 0.75rem; color: var(--text-primary); font-size: 1.05rem;">
+                    <li style="display: flex; gap: 0.75rem; align-items: flex-start;"><span
+                            style="color: var(--brand-primary); font-size: 1.25rem;">✓</span> <span><strong
+                                style="color: var(--brand-primary);">Método Ilimitado:</strong> Crie seu clone 100%
+                            Gratuito</span></li>
+                    <li style="display: flex; gap: 0.75rem; align-items: flex-start;"><span
+                            style="color: var(--brand-primary); font-size: 1.25rem;">✓</span> <span><strong
+                                style="color: var(--brand-primary);">Fotos Profissionais Infinitas:</strong> Estúdio com
+                            IA</span></li>
+                    <li style="display: flex; gap: 0.75rem; align-items: flex-start;"><span
+                            style="color: var(--brand-primary); font-size: 1.25rem;">✓</span> <span><strong
+                                style="color: var(--brand-primary);">Vídeos 4k Ilimitados:</strong> Em qualquer
+                            imóvel</span></li>
+                    <li style="display: flex; gap: 0.75rem; align-items: flex-start;"><span
+                            style="color: var(--brand-primary); font-size: 1.25rem;">✓</span> <span><strong
+                                style="color: var(--brand-primary);">Prompts Secretos:</strong> Copie e cole nossos
+                            comandos</span></li>
+                    <li style="display: flex; gap: 0.75rem; align-items: flex-start;"><span
+                            style="color: var(--brand-primary); font-size: 1.25rem;">✓</span> <span><strong
+                                style="color: var(--brand-primary);">Formatos Virais:</strong> Estruturas de roteiro
+                            validadas</span></li>
+                    <li style="display: flex; gap: 0.75rem; align-items: flex-start;"><span
+                            style="color: var(--brand-primary); font-size: 1.25rem;">✓</span> <span><strong
+                                style="color: var(--brand-primary);">PRESENTE:</strong> Bônus Estilo Fofoca no
+                            Carro</span></li>
+                    <li style="display: flex; gap: 0.75rem; align-items: flex-start;"><span
+                            style="color: var(--text-tertiary); font-size: 1.25rem;">✓</span> <span>Acesso Vitalício
+                            Garantido</span></li>
+                </ul>
+
+                <a href="https://checkout.imobiturbo.com.br/checkout/v5/DMprcMWLp8hrhw59EMFk" id="begin_checkout"
+                    class="btn btn-primary btn-full-mobile"
+                    style="width: 100%; font-size: 1.25rem; padding: 1.25rem; border-radius: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.3s ease;">
+                    QUERO MEU ACESSO AGORA
+                </a>
+
+                <div
+                    style="margin-top: 2rem; display: flex; align-items: center; justify-content: center; gap: 1rem; font-size: 0.85rem; color: var(--text-tertiary); opacity: 0.8;">
+                    <span style="display: flex; align-items: center; gap: 0.25rem;">🔒 Pagamento Seguro</span>
+                    <span>•</span>
+                    <span style="display: flex; align-items: center; gap: 0.25rem;">⭐ 7 Dias de Garantia</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 9. ABOUT CREATOR -->
+    <section style="background: var(--bg-surface-elevated);">
+        <div class="container">
+            <div class="grid"
+                style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-items: center; gap: 4rem;">
+                <!-- Image -->
+                <div class="flex-center">
+                    <img src="assets/img/creator.webp" alt="Foto do Criador"
+                        style="width: 100%; max-width: 400px; border-radius: var(--radius-lg); border: 1px solid var(--border-light); filter: grayscale(20%);">
+                </div>
+
+                <!-- Content -->
+                <div>
+                    <h2 class="h2 mb-4" style="margin-bottom: 2rem;">Quem criou o método?</h2>
+
+                    <p class="text-lg text-primary" style="font-weight: 500; margin-bottom: 1.5rem;">
+                        Eu ajudo corretores a Venderem Mais.
+                    </p>
+
+                    <p class="text-sec mb-4" style="margin-bottom: 1rem;">
+                        Criei o <strong>ImobiClone</strong> porque cansei de ver corretores excelentes perdendo
+                        autoridade por não terem tempo (ou paciência) para gravar vídeos todos os dias.
+                    </p>
+
+                    <p class="text-sec mb-4" style="margin-bottom: 2rem;">
+                        Você sabe vender imóvel. Eu sei fazer a Inteligência Artificial trabalhar para você se
+                        multiplicar.
+                    </p>
+
+                    <div
+                        style="border-left: 4px solid var(--brand-primary); padding-left: 1.5rem; margin-bottom: 2rem;">
+                        <p class="text-xl text-primary" style="font-style: italic;">
+                            "Meu objetivo é que você gaste seu tempo atendendo cliente, não sofrendo para editar vídeo."
+                        </p>
+                    </div>
+
+                    <ul class="text-sec" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <li style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="text-brand">✔</span> Criador da Imobiturbo
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="text-brand">✔</span> +3000 Alunos usando o método
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 0.5rem;">
+                            <span class="text-brand">✔</span> Engenheiro Civil
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10. FAQ -->
+    <section id="faq" style="background: var(--bg-surface);">
+        <div class="container" style="max-width: 800px;">
+            <h2 class="h2 text-center mb-8" style="margin-bottom: 4rem;">Perguntas Frequentes</h2>
+
+            <div class="accordion">
+                <!-- Q1 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Preciso de um computador potente?</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        Não! Toda a mágica acontece na nuvem. Você pode usar qualquer notebook ou até mesmo um
+                        tablet/celular para digitar os textos e gerar os vídeos.
+                    </div>
+                </div>
+                <!-- Q2 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Preciso assinar alguma IA?</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        <strong>Não!</strong> Diferente de outros cursos que te obrigam a pagar mensalidades em dólar
+                        (como Kling, HeyGen ou Higgsfield), nosso método ensina o caminho <strong>100% gratuito e
+                            ilimitado</strong>.
+                    </div>
+                </div>
+                <!-- Q3 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Serve para quem nunca mexeu com IA?</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        Com certeza. O curso foi desenhado para corretores, não programadores. É "clique-a-clique". Se
+                        você sabe mandar e-mail, sabe fazer isso.
+                    </div>
+                </div>
+                <!-- Q4 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Tenho garantia?</span>
+                        <span class="accordion-icon">+</span>
+                    </button>
+                    <div class="accordion-content">
+                        Sim, 7 dias incondicionais. Se achar que não serve pra você, devolvemos 100% do dinheiro sem
+                        perguntas.
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+    <!-- 10. FOOTER -->
+    <footer>
+        <div class="container text-center text-sec">
+            <div
+                style="font-weight: 900; font-size: 1.5rem; letter-spacing: -1px; margin-bottom: 1rem; color: var(--text-primary);">
+                ImobiClone <span class="text-brand">PRO</span></div>
+            <p class="text-sm">© 2026 ImobiClone PRO. Todos os direitos reservados.</p>
+            <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 2rem; font-size: 0.875rem;">
+                <a href="#">Termos de Uso</a>
+                <a href="#">Privacidade</a>
+                <a href="#">Contato</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- STICKY MOBILE CTA -->
+    <div class="sticky-cta">
+        <a href="https://checkout.imobiturbo.com.br/checkout/v5/DMprcMWLp8hrhw59EMFk" id="begin_checkout"
+            class="btn btn-primary btn-full-mobile">QUERO ME
+            CLONAR (R$ 17)</a>
+    </div>
+
+    <!-- Social Proof Notification -->
+    <style>
+        #social-proof-toast {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 101;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 16px;
+            background: rgba(24, 24, 27, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 255, 109, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            max-width: 320px;
+        }
+
+        @media (max-width: 768px) {
+            #social-proof-toast {
+                bottom: 100px;
+                left: 16px;
+                right: 16px;
+                max-width: none;
+            }
+        }
+    </style>
+    <div id="social-proof-toast">
+        <div
+            style="font-size: 1.25rem; flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(212, 255, 109, 0.1); border: 1px solid rgba(212, 255, 109, 0.3);">
+            ✅</div>
+        <div style="font-size: 0.9rem; line-height: 1.3; color: #fff;">
+            <span id="social-proof-name" style="font-weight: 700; color: var(--brand-primary);"></span> <span
+                style="font-weight: 400; color: var(--text-secondary);">acabou de comprar!</span>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const toast = document.getElementById('social-proof-toast');
+            const nameEl = document.getElementById('social-proof-name');
+
+            const firstNames = ["João", "Maria", "Pedro", "Ana", "Lucas", "Mariana", "Carlos", "Juliana", "Marcos", "Fernanda", "Gabriel", "Amanda", "Rafael", "Camila", "Rodrigo", "Letícia", "Diego", "Beatriz", "Fernando", "Thais", "Ricardo", "Aline", "Marcelo", "Larissa", "Gustavo"];
+            const cities = ["São Paulo", "Rio de Janeiro", "Belo Horizonte", "Curitiba", "Porto Alegre", "Brasília", "Salvador", "Fortaleza", "Recife", "Goiânia", "Campinas", "Florianópolis", "Vitória", "Cuiabá", "Campo Grande", "Natal", "João Pessoa", "Maceió", "Aracaju", "Manaus", "Belém", "Pelotas", "Uberlândia", "Sorocaba"];
+
+            function getRandomItem(arr) {
+                return arr[Math.floor(Math.random() * arr.length)];
+            }
+
+            function showToast() {
+                const name = getRandomItem(firstNames);
+                const city = getRandomItem(cities);
+                nameEl.textContent = `${name} de ${city}`;
+
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+
+                // Keep visible for popup reading time
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(20px)';
+
+                    // Schedule next interval between 2 and 5 seconds
+                    const nextInterval = Math.floor(Math.random() * 3000) + 2000;
+                    setTimeout(showToast, nextInterval);
+                }, 4000);
+            }
+
+            // Start the first notification after standard 2 seconds delay
+            setTimeout(showToast, 2000);
+        })();
+    </script>
+
+    <!-- Scripts -->
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

@@ -11,7 +11,11 @@
     "deploy": "node build.js && node deploy.js",
     "deploy:pages": "npm run build:pages && npx wrangler pages deploy .cloudflare-pages --project-name imobiturbo-website",
     "deploy:lp-simulador": "npx wrangler pages deploy lp-simulador --project-name imobiturbo-lp-simulador",
-    "deploy:lp-simulador-route": "npx wrangler deploy --config wrangler.lp-simulador.jsonc"
+    "deploy:lp-simulador-route": "npx wrangler deploy --config wrangler.lp-simulador.jsonc",
+    "deploy:lp-pages": "npx wrangler pages deploy lp-pages --project-name imobiturbo-lp-pages",
+    "deploy:lp-pages-route": "npx wrangler deploy --config wrangler.lp-pages.jsonc",
+    "deploy:xpertinformatica": "npx wrangler pages deploy xpertinformatica --project-name xpertinformatica-website",
+    "deploy:xpertinformatica-route": "npx wrangler deploy --config wrangler.xpertinformatica.jsonc"
   },
   "keywords": [],
   "author": "",
