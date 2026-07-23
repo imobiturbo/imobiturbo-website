@@ -1,0 +1,11 @@
+{
+  "name": "imobiturbo-lp-simulador-router",
+  "main": "workers/lp-simulador-router.js",
+  "compatibility_date": "2026-07-23",
+  "routes": [
+    {
+      "pattern": "lp.imobiturbo.com.br/simulador*",
+      "zone_name": "imobiturbo.com.br"
+    }
+  ]
+}

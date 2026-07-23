@@ -9,7 +9,9 @@
     "build:pages": "node build-pages.js",
     "test": "node --test tests/*.test.js",
     "deploy": "node build.js && node deploy.js",
-    "deploy:pages": "npm run build:pages && npx wrangler pages deploy .cloudflare-pages --project-name imobiturbo-website"
+    "deploy:pages": "npm run build:pages && npx wrangler pages deploy .cloudflare-pages --project-name imobiturbo-website",
+    "deploy:lp-simulador": "npx wrangler pages deploy lp-simulador --project-name imobiturbo-lp-simulador",
+    "deploy:lp-simulador-route": "npx wrangler deploy --config wrangler.lp-simulador.jsonc"
   },
   "keywords": [],
   "author": "",
