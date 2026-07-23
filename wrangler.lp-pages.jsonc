@@ -10,6 +10,14 @@
     {
       "pattern": "lp.imobiturbo.com.br/imobiclone-pro/*",
       "zone_name": "imobiturbo.com.br"
+    },
+    {
+      "pattern": "lp.imobiturbo.com.br/quiz-blm-231025/*",
+      "zone_name": "imobiturbo.com.br"
+    },
+    {
+      "pattern": "lp.imobiturbo.com.br/qie-191125/*",
+      "zone_name": "imobiturbo.com.br"
     }
   ]
 }

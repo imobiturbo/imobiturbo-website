@@ -1,0 +1,28 @@
+1:"$Sreact.fragment"
+2:I[7555,[],""]
+3:I[1295,[],""]
+4:I[7323,["757","static/chunks/757-eb07fe434f743e7c.js","854","static/chunks/854-7e200a96848c131e.js","177","static/chunks/app/layout-b45f948005d8cc03.js"],"Toaster"]
+5:I[9243,["757","static/chunks/757-eb07fe434f743e7c.js","854","static/chunks/854-7e200a96848c131e.js","177","static/chunks/app/layout-b45f948005d8cc03.js"],""]
+6:I[894,[],"ClientPageRoot"]
+7:I[2937,["757","static/chunks/757-eb07fe434f743e7c.js","761","static/chunks/761-460153fe97b17edd.js","974","static/chunks/app/page-7fae74ac5f108604.js"],"default"]
+a:I[9665,[],"MetadataBoundary"]
+c:I[9665,[],"OutletBoundary"]
+f:I[4911,[],"AsyncMetadataOutlet"]
+11:I[9665,[],"ViewportBoundary"]
+13:I[6614,[],""]
+:HL["/qie-191125/_next/static/media/0484562807a97172-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/qie-191125/_next/static/media/8888a3826f4a3af4-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/qie-191125/_next/static/media/b957ea75a84b6ea7-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/qie-191125/_next/static/media/eafabf029ad39a43-s.p.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["/qie-191125/_next/static/css/9a5c8972326a4026.css","style"]
+0:{"P":null,"b":"83GGdhCFY2OcJ3HVP2wAo","p":"/qie-191125","c":["",""],"i":false,"f":[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],["",["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/qie-191125/_next/static/css/9a5c8972326a4026.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]],["$","html",null,{"lang":"pt-BR","children":[["$","head",null,{"children":["$","link",null,{"rel":"icon","href":"https://cdn.xquiz.co/images/77d493e2-0353-495b-a703-b6aee46e998c"}]}],["$","body",null,{"className":"__variable_85e0c0 font-sans antialiased","children":[["$","$L2",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L3",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":404}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],[]],"forbidden":"$undefined","unauthorized":"$undefined"}],["$","$L4",null,{}],["$","$L5",null,{"id":"utmify-pixel-script","strategy":"afterInteractive","children":"\n            window.pixelId = \"690a7235ef707623918325f0\";\n            var a = document.createElement(\"script\");\n            a.setAttribute(\"async\", \"\");\n            a.setAttribute(\"defer\", \"\");\n            a.setAttribute(\"src\", \"https://cdn.utmify.com.br/scripts/pixel/pixel.js\");\n            document.head.appendChild(a);\n          "}],["$","$L5",null,{"src":"https://cdn.utmify.com.br/scripts/utms/latest.js","data-utmify-prevent-xcod-sck":true,"data-utmify-prevent-subids":true,"async":true,"defer":true}]]}]]}]]}],{"children":["__PAGE__",["$","$1","c",{"children":[["$","$L6",null,{"Component":"$7","searchParams":{},"params":{},"promises":["$@8","$@9"]}],["$","$La",null,{"children":"$Lb"}],null,["$","$Lc",null,{"children":["$Ld","$Le",["$","$Lf",null,{"promise":"$@10"}]]}]]}],{},null,false]},null,false],["$","$1","h",{"children":[null,["$","$1","3wmJfapdMIEEtqPB0fT_7",{"children":[["$","$L11",null,{"children":"$L12"}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],null]}],false]],"m":"$undefined","G":["$13","$undefined"],"s":false,"S":true}
+14:"$Sreact.suspense"
+15:I[4911,[],"AsyncMetadata"]
+8:{}
+9:{}
+b:["$","$14",null,{"fallback":null,"children":["$","$L15",null,{"promise":"$@16"}]}]
+e:null
+12:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+d:null
+16:{"metadata":[["$","title","0",{"children":"A Nova Onda Imobiliária"}],["$","meta","1",{"name":"description","content":"Leve apenas leads quentes para seu WhatsApp com este novo modelo de site."}],["$","link","2",{"rel":"icon","href":"/qie-191125/favicon.ico","type":"image/x-icon","sizes":"16x16"}]],"error":null,"digest":"$undefined"}
+10:{"metadata":"$16:metadata","error":null,"digest":"$undefined"}
