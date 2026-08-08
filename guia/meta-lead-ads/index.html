@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Guia do cliente — Meta Lead Ads no Imobiturbo</title>
+  <style>
+    :root {
+      --bg: #faf9f6;
+      --paper: #ffffff;
+      --ink: #1c1a16;
+      --muted: #5d594f;
+      --subtle: #7d786c;
+      --line: #e7e3da;
+      --sage-50: #f3f6f1;
+      --sage-100: #e4ebe0;
+      --sage-300: #a4ba9a;
+      --sage-500: #67885d;
+      --sage-600: #506d48;
+      --sage-800: #374731;
+      --blue: #1877f2;
+      --blue-50: #f3f6fb;
+      --blue-100: #e7f0ff;
+      --warn-50: #fff8e8;
+      --warn-200: #e6c46e;
+      --warn-700: #6b5015;
+      --ok-50: #eef8f0;
+      --ok-700: #34794a;
+      --shadow: 0 18px 50px rgba(55, 71, 49, .10);
+    }
+
+    * { box-sizing: border-box; }
+    html { background: #e9e6df; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+    }
+    a { color: var(--sage-600); font-weight: 700; }
+    img { max-width: 100%; }
+    .document { max-width: 920px; margin: 0 auto; background: var(--paper); }
+    .page { padding: 42px 64px; }
+    .cover {
+      min-height: 1120px;
+      padding: 64px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 95% 12%, rgba(164,186,154,.38), transparent 28%),
+        linear-gradient(145deg, #faf9f6 0%, #f3f6f1 100%);
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-after: always;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand img { width: 50px; height: 50px; border-radius: 12px; box-shadow: 0 7px 20px rgba(28,26,22,.16); }
+    .brand-name { font-size: 23px; font-weight: 800; letter-spacing: -.02em; }
+    .eyebrow {
+      display: inline-block;
+      margin-top: 60px;
+      color: var(--sage-600);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    h1 { max-width: 720px; margin: 16px 0 20px; font-size: 60px; line-height: 1.04; letter-spacing: -.055em; }
+    h1 span { color: var(--sage-600); }
+    .lead { max-width: 660px; margin: 0; color: var(--muted); font-size: 22px; line-height: 1.4; }
+    .cover-flow { margin-top: 48px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .flow-card { min-height: 132px; padding: 18px; background: rgba(255,255,255,.76); border: 1px solid var(--line); border-radius: 16px; }
+    .flow-number { color: var(--sage-600); font-family: ui-monospace, monospace; font-size: 12px; font-weight: 800; }
+    .flow-title { margin-top: 18px; font-size: 17px; font-weight: 800; line-height: 1.15; }
+    .cover-bottom { display: flex; justify-content: space-between; gap: 30px; align-items: end; }
+    .cover-note { max-width: 480px; color: var(--muted); font-size: 14px; }
+    .version { color: var(--subtle); font-family: ui-monospace, monospace; font-size: 12px; text-align: right; }
+
+    h2 { margin: 0 0 22px; font-size: 32px; line-height: 1.1; letter-spacing: -.035em; }
+    h3 { margin: 0 0 8px; font-size: 21px; line-height: 1.2; letter-spacing: -.02em; }
+    h4 { margin: 0 0 6px; font-size: 16px; }
+    p { margin: 0 0 12px; }
+    .section-intro { max-width: 720px; color: var(--muted); font-size: 17px; }
+    .kicker { color: var(--sage-600); font-family: ui-monospace, monospace; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .rule { height: 1px; margin: 34px 0; background: var(--line); }
+    .notice { margin: 22px 0; padding: 18px 20px; border: 1px solid var(--line); border-left: 5px solid var(--sage-600); border-radius: 12px; background: var(--sage-50); }
+    .notice.warn { border-left-color: var(--warn-200); background: var(--warn-50); }
+    .notice strong { display: block; margin-bottom: 4px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .card { padding: 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 8px 24px rgba(28,26,22,.04); }
+    .card.soft { background: var(--sage-50); }
+    .card.blue { background: var(--blue-50); border-color: #dce3ed; }
+    .card h3 { color: var(--sage-800); }
+    .checklist { list-style: none; padding: 0; margin: 0; }
+    .checklist li { position: relative; padding-left: 28px; margin: 9px 0; }
+    .checklist li::before { content: "✓"; position: absolute; left: 0; top: 1px; width: 19px; height: 19px; border-radius: 50%; color: white; background: var(--sage-600); font-size: 13px; font-weight: 800; line-height: 19px; text-align: center; }
+    .role-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+    .role-table th, .role-table td { padding: 12px 14px; border: 1px solid var(--line); vertical-align: top; text-align: left; }
+    .role-table th { background: var(--sage-100); color: var(--sage-800); font-size: 13px; }
+    .tag { display: inline-block; padding: 3px 9px; border-radius: 999px; color: var(--sage-800); background: var(--sage-100); font-size: 12px; font-weight: 800; }
+    .tag.blue { color: #245a9c; background: var(--blue-100); }
+    .tag.warn { color: var(--warn-700); background: #f8e9b9; }
+
+    .step { display: grid; grid-template-columns: 52px 1fr; gap: 18px; margin: 30px 0; page-break-inside: avoid; }
+    .step-num { width: 44px; height: 44px; border-radius: 14px; color: white; background: var(--sage-600); font-size: 20px; font-weight: 800; line-height: 44px; text-align: center; box-shadow: 0 8px 16px rgba(80,109,72,.24); }
+    .step-meta { margin-bottom: 6px; color: var(--sage-600); font-family: ui-monospace, monospace; font-size: 11px; font-weight: 800; letter-spacing: .10em; text-transform: uppercase; }
+    .step-body { min-width: 0; }
+    .step-body p { color: var(--muted); }
+    .step-body ul { margin: 8px 0 14px; color: var(--muted); }
+    .visual { margin: 16px 0 0; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--paper); box-shadow: var(--shadow); }
+    .visual img { display: block; width: 100%; height: auto; }
+    .visual.actual { background: #f5f5f5; }
+    .visual.actual img { max-height: 530px; object-fit: contain; }
+    .caption { padding: 9px 13px; border-top: 1px solid var(--line); color: var(--subtle); font-size: 12px; }
+    .micro { color: var(--subtle); font-size: 13px; }
+    .path { display: inline-block; padding: 8px 11px; border: 1px solid var(--line); border-radius: 8px; color: var(--ink); background: #f7f4ee; font-family: ui-monospace, monospace; font-size: 13px; word-break: break-all; }
+    .button-demo { display: inline-block; margin: 7px 0; padding: 10px 15px; border-radius: 8px; color: white; background: var(--sage-600); font-weight: 800; }
+    .button-demo.fb { background: var(--blue); }
+    .split-step { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+    .arrow { color: var(--sage-500); font-size: 24px; font-weight: 800; text-align: center; }
+    .do-not { margin-top: 12px; padding: 14px 16px; border-radius: 10px; background: #fbefed; color: #8a3a2e; font-size: 14px; }
+    .trouble { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 14px; }
+    .trouble th, .trouble td { padding: 12px 13px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+    .trouble th { color: var(--sage-800); background: var(--sage-50); }
+    .final-box { padding: 28px; border-radius: 18px; color: white; background: linear-gradient(135deg, var(--sage-800), var(--sage-600)); break-inside: avoid; page-break-inside: avoid; }
+    .final-box h2 { color: white; }
+    .final-box p, .final-box li { color: #e4ebe0; }
+    .footer { padding: 25px 64px 42px; color: var(--subtle); border-top: 1px solid var(--line); font-size: 12px; }
+    .footer-row { display: flex; justify-content: space-between; gap: 20px; }
+    /* Sections flow naturally in print. Forcing a break here created nearly
+       empty pages when a preceding checklist grew by one line. */
+    .page-break { break-before: auto; }
+    .avoid-break { page-break-inside: avoid; }
+    .small-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .small-grid .card { padding: 15px; }
+    .small-grid strong { display: block; color: var(--sage-800); }
+    code { padding: 2px 5px; border-radius: 4px; background: #f0eee8; font-size: .92em; }
+
+    @media (max-width: 720px) {
+      .page, .cover, .footer { padding: 28px 22px; }
+      .cover { min-height: 900px; }
+      h1 { font-size: 42px; }
+      .lead { font-size: 18px; }
+      .cover-flow, .two-col, .split-step, .small-grid { grid-template-columns: 1fr; }
+      .cover-bottom, .footer-row { display: block; }
+      .version { margin-top: 14px; text-align: left; }
+      .step { grid-template-columns: 40px 1fr; gap: 10px; }
+      .step-num { width: 36px; height: 36px; border-radius: 11px; line-height: 36px; font-size: 17px; }
+      .role-table, .trouble { font-size: 13px; }
+    }
+
+    @media print {
+      html { background: white; }
+      body { background: white; }
+      .document { max-width: none; }
+      .cover { min-height: 265mm; }
+      .page { padding: 11mm 14mm; }
+      .footer { padding: 8mm 14mm; }
+      .visual { box-shadow: none; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="document">
+    <section class="cover">
+      <div>
+        <div class="brand">
+          <img src="data:image/png;base64,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" alt="Logo Imobiturbo" />
+          <div class="brand-name">Imobiturbo OS</div>
+        </div>
+        <div class="eyebrow">Guia do cliente · piloto Meta Lead Ads</div>
+        <h1>Do convite ao primeiro lead no <span>CRM</span>.</h1>
+        <p class="lead">Um passo a passo completo para conectar os Instant Forms da sua Página do Facebook ao funil da Imobiturbo enquanto o aplicativo da plataforma ainda está em análise pela Meta.</p>
+
+        <div class="cover-flow" aria-label="Resumo do fluxo">
+          <div class="flow-card"><div class="flow-number">01</div><div class="flow-title">Aceitar os convites</div></div>
+          <div class="flow-card"><div class="flow-number">02</div><div class="flow-title">Confirmar acesso à Página</div></div>
+          <div class="flow-card"><div class="flow-number">03</div><div class="flow-title">Conectar Facebook</div></div>
+          <div class="flow-card"><div class="flow-number">04</div><div class="flow-title">Ativar o formulário</div></div>
+        </div>
+      </div>
+
+      <div class="cover-bottom">
+        <p class="cover-note"><strong>Importante:</strong> durante o piloto, o seu perfil pessoal do Facebook será adicionado como <strong>Tester</strong> do aplicativo Imobiturbo. Você não precisa criar um aplicativo, informar o ID da sua Business Manager ou compartilhar senha e token.</p>
+        <div class="version">Versão do guia<br />08 ago. 2026</div>
+      </div>
+    </section>
+
+    <section class="page">
+      <div class="kicker">Antes de começar</div>
+      <h2>Quem faz cada parte?</h2>
+      <p class="section-intro">O processo tem dois convites diferentes. O primeiro libera sua entrada no CRM; o segundo libera seu perfil do Facebook para testar a integração da Meta.</p>
+
+      <div class="two-col" style="margin-top:24px">
+        <div class="card soft">
+          <span class="tag">Convite 1 · CRM</span>
+          <h3 style="margin-top:12px">Acesso à Imobiturbo</h3>
+          <p>Enviado pela equipe da Imobiturbo para o seu e-mail. É por ele que você entra no painel e acessa o funil.</p>
+        </div>
+        <div class="card blue">
+          <span class="tag blue">Convite 2 · Meta</span>
+          <h3 style="margin-top:12px">Tester do aplicativo</h3>
+          <p>Enviado pelo painel da Meta para o seu perfil pessoal do Facebook. É ele que permite testar o app antes do fim da análise.</p>
+        </div>
+      </div>
+
+      <table class="role-table">
+        <thead><tr><th>Responsável</th><th>O que faz</th><th>O que não precisa fazer</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Imobiturbo</strong></td><td>Cria seu acesso no CRM, adiciona seu perfil como Tester e acompanha a aprovação do app.</td><td>Não pede sua senha do Facebook nem seu token da Página.</td></tr>
+          <tr><td><strong>Você / cliente</strong></td><td>Aceita os convites, confirma a Página, conecta o Facebook e ativa o formulário no funil.</td><td>Não cria app Meta, não solicita App Review e não coloca ID de BM como Tester.</td></tr>
+          <tr><td><strong>Administrador da Página</strong></td><td>Concede ao seu perfil acesso à Página e aos ativos necessários, se você ainda não tiver.</td><td>Não precisa criar uma integração separada para cada funcionário.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="notice warn" style="margin-top:24px">
+        <strong>Use sempre o mesmo perfil do Facebook.</strong>
+          O perfil que aceita o convite de Tester precisa ser o perfil usado depois no botão <strong>Conectar Facebook.</strong> O ID da Business Manager identifica a empresa, mas não aceita o convite de Tester.
+      </div>
+
+      <div class="card" style="margin-top:24px">
+        <h3>Checklist rápido antes de iniciar</h3>
+        <ul class="checklist">
+          <li>Você tem acesso ao e-mail que receberá o convite do CRM.</li>
+          <li>Você sabe qual perfil pessoal do Facebook administra a Página.</li>
+          <li>A Página já tem um Instant Form criado no Gerenciador de Anúncios.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="kicker">Parte 1 · entrada no CRM</div>
+      <h2>Aceite o convite da Imobiturbo</h2>
+      <p class="section-intro">Começamos pelo acesso ao CRM. O convite é enviado para o e-mail informado pela imobiliária e vale por 24 horas.</p>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-meta">E-mail</div>
+          <h3>Abra o e-mail de convite</h3>
+          <p>Procure uma mensagem com assunto parecido com <strong>“Você foi convidado para a sua imobiliária no Imobiturbo OS”</strong>. Se não estiver na caixa de entrada, veja Spam, Promoções e Lixeira.</p>
+          <div class="visual"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY4MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkNvbnZpdGUgZGUgZXF1aXBlIGRvIEltb2JpdHVyYm88L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5JbHVzdHJhw6fDo28gZG8gZS1tYWlsIGRlIGNvbnZpdGUgY29tIG8gYm90w6NvIEFjZWl0YXIgY29udml0ZS48L2Rlc2M+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjgwIiByeD0iMjgiIGZpbGw9IiNmM2YxZWMiLz4KICA8cmVjdCB4PSIxMDgiIHk9IjYyIiB3aWR0aD0iOTg0IiBoZWlnaHQ9IjU1NiIgcng9IjE4IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNlN2UzZGEiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxyZWN0IHg9IjEwOCIgeT0iNjIiIHdpZHRoPSI5ODQiIGhlaWdodD0iNzgiIHJ4PSIxOCIgZmlsbD0iIzUwNmQ0OCIvPgogIDxyZWN0IHg9IjEwOCIgeT0iMTE4IiB3aWR0aD0iOTg0IiBoZWlnaHQ9IjIyIiBmaWxsPSIjNTA2ZDQ4Ii8+CiAgPHJlY3QgeD0iMTUwIiB5PSI4NyIgd2lkdGg9IjM0IiBoZWlnaHQ9IjM0IiByeD0iOCIgZmlsbD0iI2U0ZWJlMCIvPgogIDxwYXRoIGQ9Ik0xNTggOTZoMTh2MThoLTE4eiIgZmlsbD0iIzUwNmQ0OCIvPgogIDx0ZXh0IHg9IjIwMiIgeT0iMTExIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiI+SW1vYml0dXJibyBPUzwvdGV4dD4KICA8Y2lyY2xlIGN4PSIxMDI4IiBjeT0iMTAxIiByPSI2IiBmaWxsPSIjYTRiYTlhIi8+CiAgPHRleHQgeD0iMTYwIiB5PSIxOTgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjMxIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMWMxYTE2Ij5Wb2PDqiBmb2kgY29udmlkYWRvPC90ZXh0PgogIDx0ZXh0IHg9IjE2MCIgeT0iMjQ0IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMSIgZmlsbD0iIzVkNTk0ZiI+U2V1IGFjZXNzbyBhbyBDUk0gZGEgc3VhIGltb2JpbGnDoXJpYSBlc3TDoSBwcm9udG8uPC90ZXh0PgogIDxyZWN0IHg9IjE2MCIgeT0iMjg2IiB3aWR0aD0iODgwIiBoZWlnaHQ9IjIiIGZpbGw9IiNlN2UzZGEiLz4KICA8dGV4dCB4PSIxNjAiIHk9IjM0MiIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZpbGw9IiMxYzFhMTYiPkNsaXF1ZSBubyBib3TDo28gYWJhaXhvIHBhcmEgYWNlaXRhciBvIGNvbnZpdGUuPC90ZXh0PgogIDxyZWN0IHg9IjE2MCIgeT0iMzgyIiB3aWR0aD0iMjQ1IiBoZWlnaHQ9IjYyIiByeD0iMTEiIGZpbGw9IiM1MDZkNDgiLz4KICA8dGV4dCB4PSIyODIiIHk9IjQyMSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjEiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmZmYiPkFjZWl0YXIgY29udml0ZTwvdGV4dD4KICA8dGV4dCB4PSIxNjAiIHk9IjQ5NCIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM1ZDU5NGYiPk8gYWNlc3NvIHVzYSB1bSBjw7NkaWdvIGRlIDYgZMOtZ2l0b3MgZW52aWFkbyBwYXJhIGVzdGUgbWVzbW8gZS1tYWlsLjwvdGV4dD4KICA8dGV4dCB4PSIxNjAiIHk9IjUzNiIgZm9udC1mYW1pbHk9Im1vbm9zcGFjZSIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzdkNzg2YyI+TyBsaW5rIGV4cGlyYSBlbSAyNCBob3Jhcy48L3RleHQ+CiAgPGNpcmNsZSBjeD0iMTAxNiIgY3k9IjUwMyIgcj0iMzEiIGZpbGw9IiNlNGViZTAiLz4KICA8cGF0aCBkPSJNMTAwMCA1MDZsMTEgMTEgMjEtMjYiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzUwNmQ0OCIgc3Ryb2tlLXdpZHRoPSI3IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+Cg==" alt="Ilustração do e-mail de convite do CRM" /><div class="caption">Ilustração orientativa do e-mail. O nome da imobiliária e o remetente aparecem conforme o cadastro.</div></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-meta">Aceite</div>
+          <h3>Clique em “Aceitar convite”</h3>
+          <p>O botão abre uma página do Imobiturbo. Confira se o convite foi enviado para o seu endereço correto antes de continuar.</p>
+          <div class="notice warn"><strong>O link expirou?</strong> O convite do CRM vale 24 horas. Peça à Imobiturbo para reenviar; não tente criar uma conta por fora.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-meta">Login por código</div>
+          <h3>Receba o código de 6 dígitos</h3>
+          <p>Na tela de entrada, confirme o mesmo e-mail do convite e clique para receber o código. O código chega nesse endereço; não é uma senha enviada pela equipe.</p>
+          <div class="card soft"><strong>Não compartilhe o código.</strong><br />Digite-o somente na página oficial do CRM aberta pelo convite.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-meta">Confirmação</div>
+          <h3>Confirme o aceite e entre no painel</h3>
+          <p>Depois de entrar, a tela mostra que você foi convidado para a organização. Clique em <strong>Aceitar convite</strong>. Você será levado ao painel do CRM.</p>
+          <div class="button-demo">Aceitar convite</div>
+          <p class="micro">Se você já estiver logado com outro e-mail, saia e entre com o e-mail que recebeu o convite.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="kicker">Parte 2 · autorização de teste</div>
+      <h2>Aceite o convite de Tester da Meta</h2>
+      <p class="section-intro">Agora você libera o seu perfil pessoal do Facebook para testar o aplicativo Imobiturbo enquanto as permissões ainda aparecem como “Análise do app pendente”.</p>
+
+      <div class="visual actual" style="margin:24px 0"><img src="assets/meta-permissoes.png" alt="Painel Meta mostrando permissões com análise do app pendente" /><div class="caption">Exemplo do painel atual: várias permissões ainda estão pendentes. Por isso o acesso de Tester é usado no piloto.</div></div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-meta">Perfil correto</div>
+          <h3>Confirme qual Facebook deve ser adicionado</h3>
+          <p>Envie para a Imobiturbo o nome ou e-mail do <strong>perfil pessoal do Facebook</strong> que administra a Página. Não envie o ID da Business Manager.</p>
+          <div class="notice"><strong>O perfil correto é individual.</strong> A Business Manager é a empresa; o convite de Tester é aceito por uma pessoa que depois autoriza as Páginas dessa empresa.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-meta">Convite Meta</div>
+          <h3>Abra a notificação ou o e-mail da Meta</h3>
+          <p>A Meta pode mostrar o convite em uma notificação do Facebook ou enviar um e-mail. Abra a mensagem usando o mesmo perfil que foi informado à Imobiturbo e aceite o convite.</p>
+          <div class="visual"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY4MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkNvbnZpdGUgZGUgVGVzdGVyIG5vIE1ldGE8L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5JbHVzdHJhw6fDo28gZG8gcGFpbmVsIGRlIGZ1bsOnw7VlcyBkbyBhcHAsIGNvbSBUZXN0YWRvcmVzIHNlbGVjaW9uYWRvIGUgY29udml0ZSBwZW5kZW50ZS48L2Rlc2M+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjgwIiByeD0iMjgiIGZpbGw9IiNmM2Y2ZmIiLz4KICA8cmVjdCB4PSI3OCIgeT0iNTIiIHdpZHRoPSIxMDQ0IiBoZWlnaHQ9IjU3NiIgcng9IjE2IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNkY2UzZWQiIHN0cm9rZS13aWR0aD0iMyIvPgogIDxyZWN0IHg9Ijc4IiB5PSI1MiIgd2lkdGg9IjEwNDQiIGhlaWdodD0iNjIiIHJ4PSIxNiIgZmlsbD0iIzE4NzdmMiIvPgogIDxjaXJjbGUgY3g9IjExNSIgY3k9IjgzIiByPSIxNSIgZmlsbD0iI2ZmZiIgb3BhY2l0eT0iLjk1Ii8+CiAgPHRleHQgeD0iMTQ5IiB5PSI5MSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjIiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmZmYiPk1ldGEgZm9yIERldmVsb3BlcnM8L3RleHQ+CiAgPHJlY3QgeD0iNzgiIHk9IjExNCIgd2lkdGg9IjI3NiIgaGVpZ2h0PSI1MTQiIGZpbGw9IiNmN2Y5ZmMiLz4KICA8dGV4dCB4PSIxMTAiIHk9IjE1OCIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYzFhMTYiPkltb2JpdHVyYm8gQ1JNPC90ZXh0PgogIDx0ZXh0IHg9IjExMCIgeT0iMjEwIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzVkNjU3MiI+UGFpbmVsPC90ZXh0PgogIDxyZWN0IHg9Ijk2IiB5PSIyMzYiIHdpZHRoPSIyNDAiIGhlaWdodD0iNDgiIHJ4PSI4IiBmaWxsPSIjZTdmMGZmIi8+CiAgPHRleHQgeD0iMTE2IiB5PSIyNjciIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMTg3N2YyIj5GdW7Dp8O1ZXMgZG8gYXBwPC90ZXh0PgogIDx0ZXh0IHg9IjEzMiIgeT0iMzIyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzVkNjU3MiI+QWRtaW5pc3RyYWRvcmVzPC90ZXh0PgogIDx0ZXh0IHg9IjEzMiIgeT0iMzYyIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzVkNjU3MiI+RGVzZW52b2x2ZWRvcmVzPC90ZXh0PgogIDxyZWN0IHg9IjExNCIgeT0iMzg0IiB3aWR0aD0iMjA2IiBoZWlnaHQ9IjQyIiByeD0iNyIgZmlsbD0iI2RmZjFlNCIvPgogIDx0ZXh0IHg9IjEzMiIgeT0iNDExIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM0Nzk0YSI+VGVzdGFkb3JlczwvdGV4dD4KICA8dGV4dCB4PSI0MDIiIHk9IjE3NCIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYzFhMTYiPlRlc3RhZG9yZXM8L3RleHQ+CiAgPHRleHQgeD0iNDAyIiB5PSIyMTEiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjNWQ2NTcyIj5Vc3XDoXJpb3MgYXV0b3JpemFkb3MgYSB0ZXN0YXIgbyBhcHAgYW50ZXMgZGEgYXByb3Zhw6fDo28uPC90ZXh0PgogIDxyZWN0IHg9IjQwMiIgeT0iMjUyIiB3aWR0aD0iNjYwIiBoZWlnaHQ9IjExNiIgcng9IjEyIiBmaWxsPSIjZmZmOGU4IiBzdHJva2U9IiNlNmM0NmUiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxjaXJjbGUgY3g9IjQzOCIgY3k9IjMwOSIgcj0iMTgiIGZpbGw9IiNlNmI4NGQiLz4KICA8dGV4dCB4PSI0MzgiIHk9IjMxNiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmZmYiPiE8L3RleHQ+CiAgPHRleHQgeD0iNDc1IiB5PSIyOTgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjNmI1MDE1Ij5Db252aXRlIHBlbmRlbnRlPC90ZXh0PgogIDx0ZXh0IHg9IjQ3NSIgeT0iMzI5IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzgwNmEzMiI+QWNlaXRlIG8gY29udml0ZSB1c2FuZG8gbyBtZXNtbyBwZXJmaWwgZG8gRmFjZWJvb2suPC90ZXh0PgogIDxyZWN0IHg9IjQwMiIgeT0iNDA0IiB3aWR0aD0iNjYwIiBoZWlnaHQ9IjkyIiByeD0iMTIiIGZpbGw9IiNmN2Y5ZmMiIHN0cm9rZT0iI2RjZTNlZCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPGNpcmNsZSBjeD0iNDQ2IiBjeT0iNDUwIiByPSIyNCIgZmlsbD0iIzUwNmQ0OCIvPgogIDx0ZXh0IHg9IjQ0NiIgeT0iNDU4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiI+QzwvdGV4dD4KICA8dGV4dCB4PSI0ODgiIHk9IjQ0MiIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYzFhMTYiPkNsaWVudGUgZGEgaW1vYmlsacOhcmlhPC90ZXh0PgogIDx0ZXh0IHg9IjQ4OCIgeT0iNDcwIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzVkNjU3MiI+U3RhdHVzOiBwZW5kZW50ZSDihpIgYWNlaXRvPC90ZXh0PgogIDxyZWN0IHg9IjQwMiIgeT0iNTM2IiB3aWR0aD0iMTY2IiBoZWlnaHQ9IjQ4IiByeD0iOSIgZmlsbD0iIzE4NzdmMiIvPgogIDx0ZXh0IHg9IjQ4NSIgeT0iNTY3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiI+QWNlaXRhciBjb252aXRlPC90ZXh0Pgo8L3N2Zz4K" alt="Ilustração do convite de Tester no painel Meta" /><div class="caption">Ilustração orientativa. Os nomes dos menus podem mudar um pouco conforme o idioma e a versão do painel da Meta.</div></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-body">
+          <div class="step-meta">Se não encontrou</div>
+          <h3>Abra o painel de desenvolvedores com o mesmo Facebook</h3>
+          <p>Entre em <a href="https://developers.facebook.com/">developers.facebook.com</a> com o perfil convidado. Procure a área de solicitações/convites pendentes e aceite o convite do aplicativo <strong>Imobiturbo CRM</strong>.</p>
+          <div class="notice warn"><strong>Ainda não apareceu?</strong> Não use outro perfil e não tente aceitar com o ID da BM. Peça para a Imobiturbo conferir se o convite foi enviado para a pessoa correta e reenviar.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">8</div>
+        <div class="step-body">
+          <div class="step-meta">Confirmação</div>
+          <h3>Verifique se o convite saiu de “Pendente”</h3>
+          <p>Depois de aceitar, o status do seu perfil deve deixar de aparecer como pendente no app. Você não precisa mexer em App Review, adicionar secrets ou criar outro aplicativo.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="kicker">Parte 3 · Página e Business Manager</div>
+      <h2>Confira se você tem acesso à Página</h2>
+      <p class="section-intro">O convite de Tester libera o aplicativo, mas a Meta ainda precisa permitir que o seu perfil veja a Página e os formulários dela.</p>
+
+      <div class="step">
+        <div class="step-num">9</div>
+        <div class="step-body">
+          <div class="step-meta">Página correta</div>
+          <h3>Entre no Meta Business Suite</h3>
+          <p>Abra <a href="https://business.facebook.com/">business.facebook.com</a> com o mesmo perfil. Confirme se a Página da imobiliária aparece na lista de ativos.</p>
+          <div class="visual"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY4MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkFjZXNzbyBkbyBjbGllbnRlIMOgIFDDoWdpbmE8L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5JbHVzdHJhw6fDo28gZG8gQnVzaW5lc3MgU3VpdGUgbW9zdHJhbmRvIGEgUMOhZ2luYSBlIGEgY29uZmlybWHDp8OjbyBkZSBhY2Vzc28uPC9kZXNjPgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY4MCIgcng9IjI4IiBmaWxsPSIjZjNmMWVjIi8+CiAgPHJlY3QgeD0iOTIiIHk9IjU2IiB3aWR0aD0iMTAxNiIgaGVpZ2h0PSI1NjgiIHJ4PSIxOCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjZTdlM2RhIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8cmVjdCB4PSI5MiIgeT0iNTYiIHdpZHRoPSIxMDE2IiBoZWlnaHQ9IjY0IiByeD0iMTgiIGZpbGw9IiMxYzFhMTYiLz4KICA8dGV4dCB4PSIxMjgiIHk9Ijk3IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiI+TWV0YSBCdXNpbmVzcyBTdWl0ZTwvdGV4dD4KICA8dGV4dCB4PSI4ODQiIHk9Ijk3IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iI2QyY2RiZiI+Q29uZmlndXJhw6fDtWVzPC90ZXh0PgogIDxyZWN0IHg9IjkyIiB5PSIxMjAiIHdpZHRoPSIyNjAiIGhlaWdodD0iNTA0IiBmaWxsPSIjZmFmOWY2Ii8+CiAgPHRleHQgeD0iMTI2IiB5PSIxNzEiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNWQ1OTRmIj5QZXNzb2FzPC90ZXh0PgogIDxyZWN0IHg9IjExMiIgeT0iMjA1IiB3aWR0aD0iMjIwIiBoZWlnaHQ9IjQ4IiByeD0iOCIgZmlsbD0iI2U0ZWJlMCIvPgogIDx0ZXh0IHg9IjEzMiIgeT0iMjM2IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNyIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzUwNmQ0OCI+UMOhZ2luYXM8L3RleHQ+CiAgPHRleHQgeD0iMTMyIiB5PSIyOTIiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNWQ1OTRmIj5Db250YXMgZGUgYW7Dum5jaW88L3RleHQ+CiAgPHRleHQgeD0iMTMyIiB5PSIzNDgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNWQ1OTRmIj5JbnRlZ3Jhw6fDtWVzPC90ZXh0PgogIDx0ZXh0IHg9IjM5OCIgeT0iMTgwIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFjMWExNiI+QWNlc3NvIMOgIFDDoWdpbmE8L3RleHQ+CiAgPHRleHQgeD0iMzk4IiB5PSIyMTgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmaWxsPSIjNWQ1OTRmIj5PIHBlcmZpbCB1c2FkbyBubyBjb252aXRlIHByZWNpc2EgZW54ZXJnYXIgZSBhZG1pbmlzdHJhciBhIFDDoWdpbmEuPC90ZXh0PgogIDxyZWN0IHg9IjM5OCIgeT0iMjY4IiB3aWR0aD0iNjMyIiBoZWlnaHQ9IjEyNCIgcng9IjE0IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNlN2UzZGEiIHN0cm9rZS13aWR0aD0iMiIvPgogIDxyZWN0IHg9IjQzMCIgeT0iMjk4IiB3aWR0aD0iNjIiIGhlaWdodD0iNjIiIHJ4PSIxMiIgZmlsbD0iIzUwNmQ0OCIvPgogIDx0ZXh0IHg9IjQ2MSIgeT0iMzM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiI+UDwvdGV4dD4KICA8dGV4dCB4PSI1MjAiIHk9IjMxNCIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYzFhMTYiPlDDoWdpbmEgZGEgaW1vYmlsacOhcmlhPC90ZXh0PgogIDx0ZXh0IHg9IjUyMCIgeT0iMzQ4IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzVkNTk0ZiI+UGVzc29hIGNvbnZpZGFkYSDCtyBhY2Vzc28gYXRpdm88L3RleHQ+CiAgPHJlY3QgeD0iNTIwIiB5PSIzNjMiIHdpZHRoPSIxNTQiIGhlaWdodD0iMjgiIHJ4PSIxNCIgZmlsbD0iI2RmZjFlNCIvPgogIDx0ZXh0IHg9IjU5NyIgeT0iMzgzIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzM0Nzk0YSI+QWNlc3NvIGNvbmZpcm1hZG88L3RleHQ+CiAgPHJlY3QgeD0iMzk4IiB5PSI0NDQiIHdpZHRoPSI2MzIiIGhlaWdodD0iOTgiIHJ4PSIxNCIgZmlsbD0iI2Y3ZjRlOSIvPgogIDx0ZXh0IHg9IjQzMCIgeT0iNDgwIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZiNWIyZSI+U2UgYSBQw6FnaW5hIG7Do28gYXBhcmVjZXI8L3RleHQ+CiAgPHRleHQgeD0iNDMwIiB5PSI1MTIiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjODA2YTMyIj5QZcOnYSBhbyBhZG1pbmlzdHJhZG9yIGRhIFDDoWdpbmEgcGFyYSBjb25jZWRlciBhY2Vzc288L3RleHQ+CiAgPHRleHQgeD0iNDMwIiB5PSI1MzUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjODA2YTMyIj5hbyBtZXNtbyBwZXJmaWwgdXNhZG8gbm8gY29udml0ZSBkbyBhcHAuPC90ZXh0Pgo8L3N2Zz4K" alt="Ilustração do acesso à Página no Meta Business Suite" /><div class="caption">A Página precisa estar visível para o mesmo perfil que aceitou o convite de Tester.</div></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">10</div>
+        <div class="step-body">
+          <div class="step-meta">Permissão</div>
+          <h3>Se a Página não aparecer, peça acesso ao administrador</h3>
+          <p>O administrador da Página deve conceder acesso ao seu perfil pessoal. Depois que você aceitar esse acesso, volte ao CRM e repita a conexão.</p>
+          <div class="do-not"><strong>Não peça o token da Página.</strong> O CRM recebe a autorização pela janela oficial do Facebook e guarda o vínculo de forma protegida.</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:24px">
+        <h3>O que você deve ter ao final desta parte</h3>
+        <div class="small-grid" style="margin-top:14px">
+          <div class="card soft"><strong>Perfil</strong>Tester aceito</div>
+          <div class="card soft"><strong>Página</strong>visível no Business Suite</div>
+          <div class="card soft"><strong>Formulário</strong>criado na Meta</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="kicker">Parte 4 · conexão</div>
+      <h2>Conecte seu Facebook ao CRM</h2>
+      <p class="section-intro">Com os dois convites aceitos e a Página visível, a conexão é feita pela tela do próprio Imobiturbo.</p>
+
+      <div class="step">
+        <div class="step-num">11</div>
+        <div class="step-body">
+          <div class="step-meta">Entrar</div>
+          <h3>Abra a tela Formulários Meta</h3>
+          <p>Entre no CRM e acesse diretamente:</p>
+          <div class="path">https://os.imobiturbo.com.br/app/integrations/meta</div>
+          <p style="margin-top:12px">Se a tela bloquear o acesso, peça à Imobiturbo para confirmar que sua conta foi cadastrada como <strong>gerente</strong> da organização.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">12</div>
+        <div class="step-body">
+          <div class="step-meta">Conectar</div>
+          <h3>Clique em “Conectar Facebook”</h3>
+          <p>O CRM redireciona você para a Meta. Não feche a janela nem troque de perfil durante a autorização.</p>
+          <div class="visual"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY4MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkNvbmVjdGFyIEZhY2Vib29rIG5vIEltb2JpdHVyYm88L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5JbHVzdHJhw6fDo28gZGEgdGVsYSBGb3JtdWzDoXJpb3MgTWV0YSBjb20gbyBib3TDo28gQ29uZWN0YXIgRmFjZWJvb2suPC9kZXNjPgogIDxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjY4MCIgcng9IjI4IiBmaWxsPSIjZjNmMWVjIi8+CiAgPHJlY3QgeD0iOTAiIHk9IjU0IiB3aWR0aD0iMTAyMCIgaGVpZ2h0PSI1NzIiIHJ4PSIxOCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjZTdlM2RhIiBzdHJva2Utd2lkdGg9IjMiLz4KICA8cmVjdCB4PSI5MCIgeT0iNTQiIHdpZHRoPSIyMDQiIGhlaWdodD0iNTcyIiByeD0iMTgiIGZpbGw9IiNmYWY5ZjYiLz4KICA8cmVjdCB4PSIxMTgiIHk9IjkxIiB3aWR0aD0iNDQiIGhlaWdodD0iNDQiIHJ4PSIxMSIgZmlsbD0iIzUwNmQ0OCIvPgogIDx0ZXh0IHg9IjE0MCIgeT0iMTIyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiI+STwvdGV4dD4KICA8dGV4dCB4PSIxODAiIHk9IjEyMCIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYzFhMTYiPkltb2JpdHVyYm88L3RleHQ+CiAgPHRleHQgeD0iMTI2IiB5PSIyMDIiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjN2Q3ODZjIj5QQUlORUw8L3RleHQ+CiAgPHJlY3QgeD0iMTE0IiB5PSIyMjYiIHdpZHRoPSIxNTYiIGhlaWdodD0iNDQiIHJ4PSI4IiBmaWxsPSIjZTRlYmUwIi8+CiAgPHRleHQgeD0iMTM1IiB5PSIyNTQiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjNTA2ZDQ4Ij5JbnRlZ3Jhw6fDtWVzPC90ZXh0PgogIDx0ZXh0IHg9IjEyNiIgeT0iMzE2IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzVkNTk0ZiI+SW5ib3g8L3RleHQ+CiAgPHRleHQgeD0iMTI2IiB5PSIzNjAiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNWQ1OTRmIj5GdW5pbCBkZSB2ZW5kYXM8L3RleHQ+CiAgPHRleHQgeD0iMTI2IiB5PSI0MDQiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNWQ1OTRmIj5BdXRvbWHDp8O1ZXM8L3RleHQ+CiAgPHRleHQgeD0iMzM4IiB5PSIxNDIiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjMwIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMWMxYTE2Ij5Gb3JtdWzDoXJpb3MgTWV0YTwvdGV4dD4KICA8dGV4dCB4PSIzMzgiIHk9IjE3OSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM1ZDU5NGYiPkZhY2Vib29rIGUgSW5zdGFncmFtIMK3IEluc3RhbnQgRm9ybXM8L3RleHQ+CiAgPHJlY3QgeD0iODQyIiB5PSIxMTMiIHdpZHRoPSIyMjIiIGhlaWdodD0iNTYiIHJ4PSIxMCIgZmlsbD0iIzUwNmQ0OCIvPgogIDxjaXJjbGUgY3g9Ijg3NCIgY3k9IjE0MSIgcj0iMTMiIGZpbGw9IiNmZmYiLz4KICA8dGV4dCB4PSI4NzQiIHk9IjE0OCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjAiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiM1MDZkNDgiPmY8L3RleHQ+CiAgPHRleHQgeD0iOTcyIiB5PSIxNDgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmIj5Db25lY3RhciBGYWNlYm9vazwvdGV4dD4KICA8cmVjdCB4PSIzMzgiIHk9IjI0MiIgd2lkdGg9IjcyNiIgaGVpZ2h0PSIxNDIiIHJ4PSIxNCIgZmlsbD0iI2Y3ZjRlOSIvPgogIDx0ZXh0IHg9IjM3MiIgeT0iMjg1IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzZiNWIyZSI+QW50ZXMgZGUgY29uZWN0YXI8L3RleHQ+CiAgPHRleHQgeD0iMzcyIiB5PSIzMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiBmaWxsPSIjODA2YTMyIj5Vc2UgbyBtZXNtbyBGYWNlYm9vayBxdWUgYWNlaXRvdSBvIGNvbnZpdGUgZGUgVGVzdGVyPC90ZXh0PgogIDx0ZXh0IHg9IjM3MiIgeT0iMzQ5IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzgwNmEzMiI+ZSBxdWUgdGVtIGFjZXNzbyDDoCBQw6FnaW5hIGRhIGltb2JpbGnDoXJpYS48L3RleHQ+CiAgPHJlY3QgeD0iMzM4IiB5PSI0MjgiIHdpZHRoPSI3MjYiIGhlaWdodD0iMTEyIiByeD0iMTQiIGZpbGw9IiNmN2Y5ZmMiIHN0cm9rZT0iI2RjZTNlZCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPGNpcmNsZSBjeD0iMzgyIiBjeT0iNDg0IiByPSIyNSIgZmlsbD0iI2RmZjFlNCIvPgogIDxwYXRoIGQ9Ik0zNjkgNDg0bDkgOSAxOC0yMSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTA2ZDQ4IiBzdHJva2Utd2lkdGg9IjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPgogIDx0ZXh0IHg9IjQyOCIgeT0iNDc4IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFjMWExNiI+UHLDs3hpbW8gcGFzc288L3RleHQ+CiAgPHRleHQgeD0iNDI4IiB5PSI1MDkiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNWQ1OTRmIj5PIEZhY2Vib29rIGFicmlyw6EgdW1hIGphbmVsYSBwYXJhIHZvY8OqIGF1dG9yaXphciBhIGNvbmV4w6NvLjwvdGV4dD4KPC9zdmc+Cg==" alt="Ilustração da tela Formulários Meta com o botão Conectar Facebook" /><div class="caption">Tela do produto representada de forma orientativa, com o fluxo e os rótulos do CRM.</div></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">13</div>
+        <div class="step-body">
+          <div class="step-meta">Facebook Login for Business</div>
+          <h3>Escolha a empresa e a Página</h3>
+          <p>Na janela da Meta:</p>
+          <ul>
+            <li>Selecione o Business Manager/portfólio correto, se a Meta perguntar.</li>
+            <li>Selecione a Página que receberá os leads.</li>
+            <li>Continue com as permissões solicitadas pelo aplicativo.</li>
+            <li>Finalize em <strong>Permitir</strong>, <strong>Continuar</strong> ou botão equivalente.</li>
+          </ul>
+          <div class="notice warn"><strong>Não altere o perfil no meio do caminho.</strong> Se a Meta abrir uma conta diferente, cancele, saia dela e recomece com o perfil que foi adicionado como Tester.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">14</div>
+        <div class="step-body">
+          <div class="step-meta">Retorno</div>
+          <h3>Volte ao CRM e confirme a Página conectada</h3>
+          <p>Ao retornar, a Página aparece como <span class="tag">Conectada</span>. Clique em <strong>Atualizar</strong> se a lista ainda estiver carregando.</p>
+          <p class="micro">Se a Página aparece mas fica como “Conectando”, aguarde alguns segundos e atualize uma vez. Se continuar, envie um print para a equipe.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="kicker">Parte 5 · escolha do formulário</div>
+      <h2>Ative o Instant Form no seu funil</h2>
+      <p class="section-intro">A conexão da Página não ativa todos os formulários automaticamente. Você escolhe quais formulários devem criar oportunidades no CRM.</p>
+
+      <div class="step">
+        <div class="step-num">15</div>
+        <div class="step-body">
+          <div class="step-meta">Lista</div>
+          <h3>Clique em “Ver formulários”</h3>
+          <p>Na página conectada, abra a lista de Instant Forms. Você verá os formulários disponíveis nessa Página.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">16</div>
+        <div class="step-body">
+          <div class="step-meta">Escolha</div>
+          <h3>Encontre o formulário correto</h3>
+          <p>Confira o nome do formulário usado nas campanhas. Se nenhum aparecer, confirme na Meta se ele foi criado na Página correta e clique em <strong>Atualizar lista</strong>.</p>
+          <div class="notice warn"><strong>Formulário novo?</strong> Crie ou publique o Instant Form no Gerenciador de Anúncios da Meta antes de tentar ativá-lo no CRM.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">17</div>
+        <div class="step-body">
+          <div class="step-meta">Ativação</div>
+          <h3>Clique em “Ativar”</h3>
+          <p>Escolha:</p>
+          <ul>
+            <li>um nome fácil de reconhecer;</li>
+            <li>o funil de destino;</li>
+            <li>a etapa inicial, normalmente <strong>Novo lead</strong>;</li>
+            <li>o mapeamento das perguntas, se o CRM solicitar.</li>
+          </ul>
+          <div class="visual"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY4MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkF0aXZhciBJbnN0YW50IEZvcm0gbm8gQ1JNPC90aXRsZT4KICA8ZGVzYyBpZD0iZGVzYyI+SWx1c3RyYcOnw6NvIGRlIHVtYSBQw6FnaW5hIGNvbmVjdGFkYSwgbGlzdGEgZGUgZm9ybXVsw6FyaW9zIGUgYXRpdmHDp8OjbyBubyBmdW5pbC48L2Rlc2M+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjgwIiByeD0iMjgiIGZpbGw9IiNmM2YxZWMiLz4KICA8cmVjdCB4PSI4NCIgeT0iNDgiIHdpZHRoPSIxMDMyIiBoZWlnaHQ9IjU4NCIgcng9IjE4IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNlN2UzZGEiIHN0cm9rZS13aWR0aD0iMyIvPgogIDx0ZXh0IHg9IjEyNCIgeT0iMTA1IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFjMWExNiI+UMOhZ2luYSBkYSBpbW9iaWxpw6FyaWE8L3RleHQ+CiAgPHJlY3QgeD0iODc0IiB5PSI3NCIgd2lkdGg9IjE4NCIgaGVpZ2h0PSI0OCIgcng9IjkiIGZpbGw9IiM1MDZkNDgiLz4KICA8dGV4dCB4PSI5NjYiIHk9IjEwNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTciIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiNmZmYiPlZlciBmb3JtdWzDoXJpb3M8L3RleHQ+CiAgPHJlY3QgeD0iMTI0IiB5PSIxNTMiIHdpZHRoPSI2MjgiIGhlaWdodD0iMTEyIiByeD0iMTQiIGZpbGw9IiNmN2Y5ZmMiIHN0cm9rZT0iI2RjZTNlZCIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHRleHQgeD0iMTU0IiB5PSIxOTUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIwIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMWMxYTE2Ij5Gb3JtdWzDoXJpbyDigJQgTGFuw6dhbWVudG88L3RleHQ+CiAgPHRleHQgeD0iMTU0IiB5PSIyMjgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNWQ1OTRmIj5Ob21lIMK3IHRlbGVmb25lIMK3IGUtbWFpbCDCtyBiYWlycm88L3RleHQ+CiAgPHJlY3QgeD0iNzkwIiB5PSIxODMiIHdpZHRoPSIyMTQiIGhlaWdodD0iNTIiIHJ4PSI5IiBmaWxsPSIjNTA2ZDQ4Ii8+CiAgPHRleHQgeD0iODk3IiB5PSIyMTYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjZmZmIj5BdGl2YXI8L3RleHQ+CiAgPHJlY3QgeD0iMTI0IiB5PSIzMDAiIHdpZHRoPSI4NzYiIGhlaWdodD0iMjcwIiByeD0iMTYiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2U3ZTNkYSIgc3Ryb2tlLXdpZHRoPSIzIi8+CiAgPHRleHQgeD0iMTYwIiB5PSIzNDkiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIzIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMWMxYTE2Ij5BdGl2YXIgZm9ybXVsw6FyaW88L3RleHQ+CiAgPHRleHQgeD0iMTYwIiB5PSIzODYiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiBmaWxsPSIjNWQ1OTRmIj5Fc2NvbGhhIG9uZGUgZXN0ZSBsZWFkIGRldmUgZW50cmFyIG5vIENSTS48L3RleHQ+CiAgPHJlY3QgeD0iMTYwIiB5PSI0MjEiIHdpZHRoPSIyMzgiIGhlaWdodD0iNTYiIHJ4PSI4IiBmaWxsPSIjZmFmOWY2IiBzdHJva2U9IiNkMmNkYmYiIHN0cm9rZS13aWR0aD0iMiIvPgogIDx0ZXh0IHg9IjE4MCIgeT0iNDU2IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzVkNTk0ZiI+RnVuaWw6IFZlbmRhczwvdGV4dD4KICA8dGV4dCB4PSIzNzQiIHk9IjQ1NiIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMjEiIGZpbGw9IiM3ZDc4NmMiPuKMhDwvdGV4dD4KICA8cmVjdCB4PSI0MjAiIHk9IjQyMSIgd2lkdGg9IjIzOCIgaGVpZ2h0PSI1NiIgcng9IjgiIGZpbGw9IiNmYWY5ZjYiIHN0cm9rZT0iI2QyY2RiZiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPHRleHQgeD0iNDQwIiB5PSI0NTYiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNWQ1OTRmIj5FdGFwYTogTm92byBsZWFkPC90ZXh0PgogIDx0ZXh0IHg9IjYzNCIgeT0iNDU2IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMSIgZmlsbD0iIzdkNzg2YyI+4oyEPC90ZXh0PgogIDxyZWN0IHg9IjE2MCIgeT0iNTAzIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjQ0IiByeD0iOCIgZmlsbD0iIzUwNmQ0OCIvPgogIDx0ZXh0IHg9IjI2MCIgeT0iNTMxIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiI+U2FsdmFyIGUgYXRpdmFyPC90ZXh0PgogIDxyZWN0IHg9Ijc2MCIgeT0iMzQwIiB3aWR0aD0iMTg0IiBoZWlnaHQ9Ijg0IiByeD0iMTQiIGZpbGw9IiNlNGViZTAiLz4KICA8dGV4dCB4PSI4NTIiIHk9IjM3NCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1MDZkNDgiPkRlcG9pcyBkZSBzYWx2YXI8L3RleHQ+CiAgPHRleHQgeD0iODUyIiB5PSI0MDIiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjNTA2ZDQ4Ij5BdGl2byBubyBDUk08L3RleHQ+Cjwvc3ZnPgo=" alt="Ilustração do modal de ativação do formulário no funil" /><div class="caption">Escolha o funil e a etapa onde cada novo lead deve entrar.</div></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">18</div>
+        <div class="step-body">
+          <div class="step-meta">Salvar</div>
+          <h3>Salve e confira o selo “Ativo no CRM”</h3>
+          <p>Depois de salvar, o formulário deve aparecer com o status <span class="tag">Ativo no CRM</span>. A partir desse momento, os novos leads desse formulário podem entrar no funil.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">19</div>
+        <div class="step-body">
+          <div class="step-meta">Opcional · automação</div>
+          <h3>Combine o formulário com uma automação</h3>
+          <p>Se a Imobiturbo já preparou uma automação, ela pode enviar uma mensagem, aplicar uma etiqueta, distribuir o lead ou chamar um webhook quando o lead entrar.</p>
+          <p class="micro">Essa parte é opcional para começar. Primeiro confirme que o lead chega no CRM.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="kicker">Parte 6 · teste e confirmação</div>
+      <h2>Faça o primeiro teste</h2>
+      <p class="section-intro">Existem dois testes diferentes. Faça os dois quando possível: um verifica o CRM; o outro verifica a entrega real da Meta.</p>
+
+      <div class="two-col" style="margin-top:24px">
+        <div class="card soft">
+          <span class="tag">Teste do CRM</span>
+          <h3 style="margin-top:12px">Lead de teste</h3>
+          <p>Cria um lead sintético para confirmar funil, etapa, campos e automações. Não é uma pessoa real e não prova a entrega de um anúncio.</p>
+        </div>
+        <div class="card blue">
+          <span class="tag blue">Teste da Meta</span>
+          <h3 style="margin-top:12px">Lead Ads Testing Tool</h3>
+          <p>Confirma a notificação da Meta e a leitura do lead pelo formulário. Pode exigir que o perfil de teste e a Página estejam corretamente autorizados.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">20</div>
+        <div class="step-body">
+          <div class="step-meta">Primeiro teste</div>
+          <h3>Use o botão “Lead de teste” no formulário ativo</h3>
+          <p>Abra o card do formulário no CRM e execute o teste. Confirme que um novo contato aparece no funil escolhido.</p>
+          <div class="card soft"><strong>Resultado esperado:</strong> contato criado, telefone reconhecido, oportunidade na etapa correta e respostas do formulário visíveis.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">21</div>
+        <div class="step-body">
+          <div class="step-meta">Teste real controlado</div>
+          <h3>Envie um lead de teste pela Meta</h3>
+          <p>Use a ferramenta de teste da Meta ou preencha o Instant Form com um número de teste autorizado. Aguarde alguns instantes e atualize o CRM.</p>
+          <div class="notice warn"><strong>Não use dados de um lead real só para testar.</strong> Prefira um telefone de teste e avise a equipe para que o registro possa ser identificado.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">22</div>
+        <div class="step-body">
+          <div class="step-meta">Confirmação final</div>
+          <h3>Confira o lead no funil</h3>
+          <p>O contato deve aparecer em <strong>Novo lead</strong> ou na etapa escolhida. A identificação de origem deve indicar o formulário Meta.</p>
+          <div class="visual"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDY4MCIgcm9sZT0iaW1nIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiPgogIDx0aXRsZSBpZD0idGl0bGUiPkxlYWQgZG8gTWV0YSBubyBDUk08L3RpdGxlPgogIDxkZXNjIGlkPSJkZXNjIj5JbHVzdHJhw6fDo28gZG8gZnVuaWwgZG8gQ1JNIGNvbSB1bSBub3ZvIGxlYWQgdmluZG8gZG8gZm9ybXVsw6FyaW8gTWV0YS48L2Rlc2M+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjgwIiByeD0iMjgiIGZpbGw9IiNmM2YxZWMiLz4KICA8cmVjdCB4PSI3OCIgeT0iNTAiIHdpZHRoPSIxMDQ0IiBoZWlnaHQ9IjU4MCIgcng9IjE4IiBmaWxsPSIjZmZmIiBzdHJva2U9IiNlN2UzZGEiIHN0cm9rZS13aWR0aD0iMyIvPgogIDx0ZXh0IHg9IjExOCIgeT0iMTA2IiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyOSIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzFjMWExNiI+RnVuaWwgZGUgdmVuZGFzPC90ZXh0PgogIDx0ZXh0IHg9IjExOCIgeT0iMTQwIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNyIgZmlsbD0iIzVkNTk0ZiI+Tm92b3MgY29udGF0b3MgY2FwdGFkb3MgcGVsb3MgZm9ybXVsw6FyaW9zIE1ldGE8L3RleHQ+CiAgPHJlY3QgeD0iMTE4IiB5PSIxODgiIHdpZHRoPSIzMDIiIGhlaWdodD0iMzgwIiByeD0iMTQiIGZpbGw9IiNmYWY5ZjYiLz4KICA8cmVjdCB4PSIxMTgiIHk9IjE4OCIgd2lkdGg9IjMwMiIgaGVpZ2h0PSI1OCIgcng9IjE0IiBmaWxsPSIjZTRlYmUwIi8+CiAgPHRleHQgeD0iMTQ4IiB5PSIyMjQiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjNTA2ZDQ4Ij5OT1ZPIExFQUQ8L3RleHQ+CiAgPHJlY3QgeD0iMTQyIiB5PSIyNzAiIHdpZHRoPSIyNTQiIGhlaWdodD0iMTY0IiByeD0iMTIiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2QyY2RiZiIgc3Ryb2tlLXdpZHRoPSIyIi8+CiAgPGNpcmNsZSBjeD0iMTgyIiBjeT0iMzEyIiByPSIyMiIgZmlsbD0iIzUwNmQ0OCIvPgogIDx0ZXh0IHg9IjE4MiIgeT0iMzIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI2ZmZiI+TTwvdGV4dD4KICA8dGV4dCB4PSIyMTgiIHk9IjMwOSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiMxYzFhMTYiPk1hcmlhbmEgU2lsdmE8L3RleHQ+CiAgPHRleHQgeD0iMTY0IiB5PSIzNTQiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNWQ1OTRmIj4oMTEpIDk5OTk5LTAwMDA8L3RleHQ+CiAgPHRleHQgeD0iMTY0IiB5PSIzODIiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNWQ1OTRmIj5Gb3JtdWzDoXJpbyBNZXRhPC90ZXh0PgogIDxyZWN0IHg9IjE2NCIgeT0iNDAwIiB3aWR0aD0iMTI2IiBoZWlnaHQ9IjI0IiByeD0iMTIiIGZpbGw9IiNlNGViZTAiLz4KICA8dGV4dCB4PSIyMjciIHk9IjQxNyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiM1MDZkNDgiPk1ldGEgTGVhZCBBZHM8L3RleHQ+CiAgPHJlY3QgeD0iNDcwIiB5PSIxODgiIHdpZHRoPSIzMDIiIGhlaWdodD0iMzgwIiByeD0iMTQiIGZpbGw9IiNmYWY5ZjYiLz4KICA8cmVjdCB4PSI0NzAiIHk9IjE4OCIgd2lkdGg9IjMwMiIgaGVpZ2h0PSI1OCIgcng9IjE0IiBmaWxsPSIjZjdmNGU5Ii8+CiAgPHRleHQgeD0iNTAwIiB5PSIyMjQiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjODA2YTMyIj5FTSBRVUFMSUZJQ0HDh8ODTzwvdGV4dD4KICA8cmVjdCB4PSI4MjIiIHk9IjE4OCIgd2lkdGg9IjI2MiIgaGVpZ2h0PSIzODAiIHJ4PSIxNCIgZmlsbD0iI2ZhZjlmNiIvPgogIDxyZWN0IHg9IjgyMiIgeT0iMTg4IiB3aWR0aD0iMjYyIiBoZWlnaHQ9IjU4IiByeD0iMTQiIGZpbGw9IiNlZWYyZjUiLz4KICA8dGV4dCB4PSI4NTIiIHk9IjIyNCIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiIGZpbGw9IiM0YTdhOTMiPkNPTlRBVE8gSFVNQU5PPC90ZXh0PgogIDxwYXRoIGQ9Ik00MzAgMzc2aDMyIiBzdHJva2U9IiNhNGJhOWEiIHN0cm9rZS13aWR0aD0iNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPHBhdGggZD0iTTc4MiAzNzZoMzIiIHN0cm9rZT0iI2E0YmE5YSIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8dGV4dCB4PSIxMTgiIHk9IjU5OCIgZm9udC1mYW1pbHk9IkFyaWFsLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM1ZDU5NGYiPkEgcGFydGlyIGRhcXVpLCBhcyBhdXRvbWHDp8O1ZXMgZSBvIGF0ZW5kaW1lbnRvIHNlZ3VlbSBvIGZsdXhvIG5vcm1hbCBkbyBDUk0uPC90ZXh0Pgo8L3N2Zz4K" alt="Ilustração de um lead Meta no funil do CRM" /><div class="caption">O lead entra no CRM como uma oportunidade comum, com a origem do formulário preservada.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="kicker">Se algo não aparecer</div>
+      <h2>Diagnóstico rápido</h2>
+      <p class="section-intro">Não tente criar outro app, trocar tokens ou compartilhar sua senha. Use a situação abaixo para localizar o próximo passo.</p>
+
+      <table class="trouble">
+        <thead><tr><th>O que aconteceu</th><th>O que fazer</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Não recebi o convite do CRM</strong></td><td>Verifique Spam/Promoções e confirme o e-mail. O link vale 24 horas; peça um novo convite à Imobiturbo.</td></tr>
+          <tr><td><strong>Convite do Meta não aparece</strong></td><td>Entre em developers.facebook.com com o perfil correto. Se ainda não aparecer, peça para a Imobiturbo confirmar o perfil convidado e reenviar.</td></tr>
+          <tr><td><strong>Usei o Facebook errado</strong></td><td>Saia desse perfil, entre com o perfil que foi adicionado como Tester e repita a conexão.</td></tr>
+          <tr><td><strong>A Página não aparece no CRM</strong></td><td>Confirme o acesso à Página no Business Suite e se você escolheu o Business Manager correto durante a autorização.</td></tr>
+          <tr><td><strong>Não aparecem formulários</strong></td><td>Confirme se o Instant Form foi criado na Página correta, atualize a lista e peça à equipe para verificar as permissões pendentes.</td></tr>
+          <tr><td><strong>O CRM fica em “Conectando”</strong></td><td>Atualize uma vez. Se persistir, envie print da Página, do usuário Facebook usado e da mensagem exibida — nunca envie token.</td></tr>
+          <tr><td><strong>O teste cria lead, mas o lead real não chega</strong></td><td>O teste sintético só verifica o CRM. A equipe deve revisar a autorização da Página, o formulário ativo e a entrega da Meta.</td></tr>
+          <tr><td><strong>Erro dizendo que a Página já está conectada</strong></td><td>Avise a Imobiturbo. Uma Página não deve ficar vinculada a duas organizações do CRM ao mesmo tempo.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="rule"></div>
+      <div class="card">
+        <h3>Dados que ajudam o suporte</h3>
+        <ul class="checklist">
+          <li>Nome da Página e nome do formulário.</li>
+          <li>Perfil pessoal do Facebook usado na conexão.</li>
+          <li>Etapa em que o erro apareceu.</li>
+          <li>Print da mensagem de erro, sem mostrar tokens, códigos ou senhas.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="page page-break">
+      <div class="final-box">
+        <div class="kicker" style="color:#a4ba9a">Resumo para o cliente</div>
+        <h2>Você termina com quatro confirmações verdes</h2>
+        <ul class="checklist" style="color:#e4ebe0">
+          <li>Convite do CRM aceito.</li>
+          <li>Convite de Tester da Meta aceito no perfil pessoal correto.</li>
+          <li>Página conectada ao Imobiturbo.</li>
+          <li>Instant Form ativo e lead entrando no funil.</li>
+        </ul>
+        <p style="margin-top:22px"><strong>Quando a Meta aprovar o aplicativo:</strong> a Imobiturbo cuidará da transição. Você não precisará criar outro app; a equipe avisará se for necessário reconectar a Página.</p>
+      </div>
+
+      <div style="margin-top:34px" class="card soft">
+        <h3>Links úteis</h3>
+        <p><a href="https://os.imobiturbo.com.br/app/integrations/meta">Abrir Formulários Meta no CRM</a></p>
+        <p><a href="https://developers.facebook.com/">Abrir Meta for Developers</a></p>
+        <p><a href="https://business.facebook.com/">Abrir Meta Business Suite</a></p>
+      </div>
+
+      <div class="notice warn" style="margin-top:24px">
+        <strong>Privacidade e segurança</strong>
+        A Imobiturbo nunca precisa da sua senha do Facebook, do App Secret, do token da Página ou de um código de login enviado por e-mail. A autorização é feita somente pela janela oficial do Facebook e pelo CRM.
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div><strong>Imobiturbo OS</strong><br />Guia do cliente · Meta Lead Ads</div>
+        <div>Documento orientativo<br />A interface da Meta pode mudar.</div>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

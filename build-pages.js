@@ -27,6 +27,7 @@ const entries = [
   'prompts-para-anuncios',
   'test',
   'ui_kits',
+  'guia',
 ];
 
 execFileSync(process.execPath, ['build.js'], { cwd: root, stdio: 'inherit' });
