@@ -28,6 +28,12 @@ const entries = [
   'test',
   'ui_kits',
   'guia',
+  'downloads',
+  'lovable',
+  'robots.txt',
+  'sitemap.xml',
+  'llms.txt',
+  'llms-full.txt',
 ];
 
 execFileSync(process.execPath, ['build.js'], { cwd: root, stdio: 'inherit' });

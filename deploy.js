@@ -17,6 +17,13 @@ const FILES_TO_UPLOAD = [
   { local: 'corretor-autonomo/index.html', remote: 'corretor-autonomo/index.html' },
   { local: 'imobiliarias/index.html', remote: 'imobiliarias/index.html' },
   { local: 'construtoras-incorporadoras/index.html', remote: 'construtoras-incorporadoras/index.html' },
+  { local: 'lovable/index.html', remote: 'lovable/index.html' },
+  { local: 'downloads/Imobiturbo-Lovable-Extensao-PRO.zip', remote: 'downloads/Imobiturbo-Lovable-Extensao-PRO.zip' },
+  { local: 'downloads/Guia-Imobiturbo-Lovable-Creditos-Ilimitados.pdf', remote: 'downloads/Guia-Imobiturbo-Lovable-Creditos-Ilimitados.pdf' },
+  { local: 'robots.txt', remote: 'robots.txt' },
+  { local: 'sitemap.xml', remote: 'sitemap.xml' },
+  { local: 'llms.txt', remote: 'llms.txt' },
+  { local: 'llms-full.txt', remote: 'llms-full.txt' },
 
   // React components
   { local: 'ui_kits/imobiturbo-app/components.jsx', remote: 'ui_kits/imobiturbo-app/components.jsx' },

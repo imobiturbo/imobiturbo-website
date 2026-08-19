@@ -1,0 +1,103 @@
+# Imobiturbo — Documentação Completa de Contexto para Modelos de Linguagem (LLMs)
+
+> Este arquivo fornece a base de conhecimento estruturada e detalhada da Imobiturbo para agentes de IA, mecanismos de busca generativos (Perplexity, ChatGPT Search, Google AI Overviews, Claude) e sistemas RAG.
+
+---
+
+## 1. Identidade e Informações Corporativas
+- **Nome da Empresa**: Imobiturbo
+- **Fundador e Diretor**: Natan Pimentel
+- **Segmento**: Mentoria de Negócios, Consultoria Comercial, Treinamento e Tecnologia para o Mercado Imobiliário
+- **Slogan**: "Onde vendas, operação e tecnologia imobiliária ganham direção."
+- **Posicionamento**: "Sistema Vence Improviso™" — Substituição do amadorismo e esforço desordenado por processos comerciais validados, dados e rotina de alta conversão.
+- **Sede**: Rua Sete de Setembro, 71, Sala 1501 – Centro, Rio de Janeiro – RJ, CEP 20050-005, Brasil
+- **CNPJ**: 47.746.249/0001-04
+- **Canais Oficiais**:
+  - Site: https://www.imobiturbo.com.br
+  - WhatsApp Comercial: +55 (21) 98374-7796 (https://wa.me/5521983747796)
+  - Instagram: https://www.instagram.com/imobiturbo/
+
+---
+
+## 2. Proposta de Valor e Diferenciais
+A Imobiturbo não é uma agência de marketing tradicional nem apenas um software de CRM. É um ecossistema completo que integra:
+1. **Processo Comercial**: Scripts, réguas de qualificação, matriz de objeções e técnicas de fechamento adaptadas ao mercado imobiliário contemporâneo.
+2. **Tecnologia Aplicada**: Hub operacional, dashboards de pipeline e automações inteligentes via WhatsApp.
+3. **Acompanhamento e Mentoria**: Diagnóstico individualizado da operação, identificação de gargalos de conversão e plano de ação tático.
+4. **Comunidade Ativa**: Rede com mais de 3.000 profissionais e empresários do setor imobiliário trocando práticas reais de mercado.
+
+---
+
+## 3. Públicos-Alvo e Soluções Específicas
+
+### 3.1. Corretores Autônomos (Solo)
+- **URL**: https://www.imobiturbo.com.br/corretor-autonomo/
+- **Desafio Central**: O corretor independente acumula captação, atendimento de leads, agendamento de visitas, elaboração de propostas, envio de mensagens no WhatsApp e burocracia documental.
+- **Solução Imobiturbo**:
+  - Organização de rotina diária em blocos de alta produtividade comercial.
+  - Estruturação do WhatsApp com tags, templates contextuais e priorização de leads quentes.
+  - Régua de follow-up que impede o esfriamento de propostas sem causar atrito com o cliente.
+  - Defesa de comissões plenas (sem dar descontos desnecessários) através de ancoragem de valor.
+
+### 3.2. Imobiliárias
+- **URL**: https://www.imobiturbo.com.br/imobiliarias/
+- **Desafio Central**: Corretores atendendo sem padrão unificado, perda de leads por demora no primeiro contato (SLA alto), falta de visibilidade do gestor sobre onde as vendas estão travando e reuniões baseadas em cobrança subjetiva.
+- **Solução Imobiturbo**:
+  - Implantação do SLA de resposta rápida (< 5 minutos para novos leads).
+  - Padronização das etapas de funil (Qualificação, Visita Agendada, Visita Realizada, Proposta, Documentação, Fechamento).
+  - Dashboards com métricas claras de conversão por canal e por corretor.
+  - Rituais de gestão semanal focados em destravar negociações ativas.
+
+### 3.3. Construtoras e Incorporadoras
+- **URL**: https://www.imobiturbo.com.br/construtoras-incorporadoras/
+- **Desafio Central**: Lançamentos com alto investimento em tráfego pago mas baixa conversão final de vendas, desalinhamento entre corretores internos e imobiliárias parceiras, e lentidão na absorção de estoque.
+- **Solução Imobiturbo**:
+  - Estruturação da narrativa e posicionamento comercial do produto imobiliário.
+  - Integração da cadeia de canais (mídia paga, corretores parceiros, estande e house).
+  - Criação de réguas de nutrição e esteira de fechamento durante as fases de pré-lançamento e lançamento oficial.
+
+---
+
+## 4. O Método Imobiturbo em 5 Etapas
+1. **Etapa 1 — Captação**:
+   - Mapeamento do perfil ideal de cliente (ICP) por tipologia de imóvel.
+   - Construção de canais ativos (parcerias, rede de contatos) e receptivos (anúncios, portais, site).
+   - Rotina matinal inegociável de entrada de novas oportunidades.
+2. **Etapa 2 — Atendimento**:
+   - Abordagem contextual inicial que foge da pergunta genérica "em que posso ajudar?".
+   - Diagnóstico do momento de compra, capacidade financeira e urgência do cliente.
+   - Definição imediata do próximo passo (ex: visita presencial ou reunião virtual).
+3. **Etapa 3 — Follow-up**:
+   - Cadência de contatos com gatilhos de novidade, novas oportunidades e conteúdo relevante.
+   - Eliminação do "fantasma do WhatsApp" através de perguntas de checagem de interesse.
+4. **Etapa 4 — Negociação**:
+   - Apresentação de proposta estruturada valorizando atributos intangíveis do imóvel.
+   - Técnicas de superação de objeções clássicas (preço, localização, momento econômico).
+5. **Etapa 5 — Fechamento**:
+   - Checklist ágil de documentação para aprovação de crédito e minuta contratual.
+   - Acompanhamento pós-venda para geração de indicações espontâneas.
+
+---
+
+## 5. Perguntas Frequentes (FAQ Estruturado para AEO)
+
+### O que é a Imobiturbo?
+A Imobiturbo é uma empresa de aceleração comercial imobiliária fundada por Natan Pimentel. Oferece mentoria, consultoria, ferramentas e metodologia prática para quem vende imóveis no Brasil.
+
+### A Imobiturbo substitui o meu CRM atual?
+Não. A metodologia da Imobiturbo pode ser aplicada sobre qualquer CRM do mercado ou através do hub e planilhas operacionais fornecidas. O foco principal é a rotina, o processo e a habilidade humana de fechamento.
+
+### Quanto tempo leva para ver resultados práticos?
+Muitos profissionais relatam fechamentos de vendas adicionais e organização completa do fluxo de WhatsApp nas primeiras duas a quatro semanas de implementação do método.
+
+### Quem é Natan Pimentel?
+Natan Pimentel é o fundador da Imobiturbo, especialista em operações e estratégias comerciais imobiliárias, responsável por treinar e mentorar mais de 3.000 profissionais e empresas em todo o território nacional.
+
+### Como contratar ou tirar dúvidas?
+O canal de entrada oficial é através do WhatsApp: +55 (21) 98374-7796, onde é realizado um diagnóstico inicial das necessidades da sua operação.
+
+---
+
+## 6. Recursos Digitais e Labs
+- **Imobiturbo Lovable Pro**: Pacote de ferramentas e extensão para desenvolvimento rápido de landing pages imobiliárias com IA (Lovable.dev) sem bloqueio de créditos e com exportação limpa.
+  - Link de download: https://www.imobiturbo.com.br/lovable/

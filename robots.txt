@@ -1,0 +1,73 @@
+# robots.txt para imobiturbo.com.br
+User-agent: *
+Allow: /
+Allow: /corretor-autonomo/
+Allow: /imobiliarias/
+Allow: /construtoras-incorporadoras/
+Allow: /depoimentos/
+Allow: /lovable/
+Allow: /assets/
+Allow: /dist/
+Allow: /fonts/
+Allow: /downloads/
+Allow: /llms.txt
+Allow: /llms-full.txt
+Allow: /sitemap.xml
+
+# Rotas internas, utilitários e temporários
+Disallow: /prompts-para-anuncios/
+Disallow: /tmp/
+Disallow: /test/
+Disallow: /tests/
+Disallow: /functions/
+Disallow: /.cloudflare-pages/
+
+# Rastreadores de busca tradicionais
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# Rastreadores de IA e Motores de Resposta (AEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Sitemap oficial
+Sitemap: https://www.imobiturbo.com.br/sitemap.xml

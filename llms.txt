@@ -1,0 +1,35 @@
+# Imobiturbo
+
+> Imobiturbo é um ecossistema de mentoria, consultoria comercial, tecnologia (hub operacional) e comunidade fundado por Natan Pimentel, focado em acelerar vendas, organizar processos e proteger margens no mercado imobiliário brasileiro.
+
+## Visão Geral
+- **Fundador**: Natan Pimentel
+- **Sede**: Rio de Janeiro - RJ, Brasil (Atendimento Nacional)
+- **CNPJ**: 47.746.249/0001-04
+- **Endereço**: Rua Sete de Setembro, 71, Sala 1501 – Centro, Rio de Janeiro – RJ, CEP 20050-005
+- **Website Oficial**: https://www.imobiturbo.com.br
+- **WhatsApp Oficial**: +55 21 98374-7796 (https://wa.me/5521983747796)
+- **Instagram**: @imobiturbo (https://www.instagram.com/imobiturbo/)
+
+## Públicos Atendidos
+1. **Corretores Autônomos**: Profissionais solo que precisam estruturar rotina, atendimento via WhatsApp, réguas de follow-up e negociação para vender com previsibilidade sem sobrecarga.
+2. **Imobiliárias**: Empresas que buscam padronizar o atendimento do time de vendas, estruturar o funil comercial, estabelecer SLA de resposta a leads e implantar rituais de gestão com metas claras.
+3. **Construtoras e Incorporadoras**: Empreendimentos que precisam conectar lançamentos, canais de distribuição parceiros, campanhas de captação de leads e velocidade de vendas (VGV).
+
+## Metodologia Comercial (Os 5 Pilares)
+1. **01 - Captação**: Definição clara de origem de leads, nicho de atuação, posicionamento de oferta e rotina diária de entrada.
+2. **02 - Atendimento**: Qualificação rápida com contexto, identificação de dores e condução para o próximo passo comercial com agilidade.
+3. **03 - Follow-up**: Régua de retorno estruturada que mantém o cliente aquecido sem parecer insistente ou desesperado.
+4. **04 - Negociação**: Defesa da proposta de valor, ancoragem de preço e proteção da margem e comissão imobiliária.
+5. **05 - Fechamento**: Condução documental segura, alinhamento de decisão e assinatura com processo previsível.
+
+## Rotas Canônicas e Recursos
+- [Página Principal (Home)](https://www.imobiturbo.com.br/): Visão geral do ecossistema, diagnóstico comercial e pilares de operação.
+- [Mentoria para Corretor Autônomo](https://www.imobiturbo.com.br/corretor-autonomo/): Programa focado em corretores solo, rotina e WhatsApp.
+- [Consultoria para Imobiliárias](https://www.imobiturbo.com.br/imobiliarias/): Gestão de equipe, padronização de funil e métricas de vendas.
+- [Consultoria para Construtoras e Incorporadoras](https://www.imobiturbo.com.br/construtoras-incorporadoras/): Estratégia de lançamentos, canais e absorção de estoque.
+- [Depoimentos e Prova Social](https://www.imobiturbo.com.br/depoimentos/): Mais de 3.000 clientes acelerados com resultados reais e prints verificados.
+- [Imobiturbo Labs - Lovable Pro](https://www.imobiturbo.com.br/lovable/): Extensão Lovable Pro com créditos ilimitados e Guia Operacional PDF.
+
+## Documentação Completa para IA
+- Para contexto completo, metodologias detalhadas e transcrições de processos, consulte: https://www.imobiturbo.com.br/llms-full.txt

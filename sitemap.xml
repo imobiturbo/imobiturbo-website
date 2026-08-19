@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://www.imobiturbo.com.br/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.imobiturbo.com.br/assets/home-hero-operacao-imobiliaria.webp</image:loc>
+      <image:title>Imobiturbo - Direção para Operações Imobiliárias</image:title>
+      <image:caption>Mentoria, hub e consultoria para o mercado imobiliário</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.imobiturbo.com.br/assets/home-metodo-corretor-solo.webp</image:loc>
+      <image:title>Método Comercial para Corretores Autônomos</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://www.imobiturbo.com.br/assets/home-consultoria-warroom.webp</image:loc>
+      <image:title>Consultoria Comercial e Gestão de Operações</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.imobiturbo.com.br/corretor-autonomo/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.imobiturbo.com.br/assets/home-metodo-corretor-solo.webp</image:loc>
+      <image:title>Mentoria e Processos para Corretor de Imóveis Autônomo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.imobiturbo.com.br/imobiliarias/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.imobiturbo.com.br/assets/home-consultoria-warroom.webp</image:loc>
+      <image:title>Consultoria Comercial e Gestão de Funil para Imobiliárias</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.imobiturbo.com.br/construtoras-incorporadoras/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.imobiturbo.com.br/assets/home-hero-operacao-imobiliaria.webp</image:loc>
+      <image:title>Consultoria Comercial para Construtoras e Incorporadoras</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.imobiturbo.com.br/depoimentos/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.imobiturbo.com.br/assets/testimonials/resultados-01.webp</image:loc>
+      <image:title>Resultados Reais e Depoimentos de Clientes Imobiturbo</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://www.imobiturbo.com.br/lovable/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.imobiturbo.com.br/assets/logo-imobiturbo-white.png</image:loc>
+      <image:title>Extensão Imobiturbo Lovable Pro e Guia PDF</image:title>
+    </image:image>
+  </url>
+</urlset>
