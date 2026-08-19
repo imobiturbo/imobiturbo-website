@@ -19,7 +19,8 @@ test("sitemap.xml exists, is valid XML, and covers all canonical routes", () => 
     "https://www.imobiturbo.com.br/imobiliarias/",
     "https://www.imobiturbo.com.br/construtoras-incorporadoras/",
     "https://www.imobiturbo.com.br/depoimentos/",
-    "https://www.imobiturbo.com.br/lovable/"
+    "https://www.imobiturbo.com.br/lovable/",
+    "https://www.imobiturbo.com.br/guia/meta-lead-ads/"
   ];
 
   for (const url of requiredUrls) {
@@ -65,7 +66,8 @@ test("all public HTML pages contain required SEO & AEO meta tags and structured 
     { file: "imobiliarias/index.html", canonical: "https://www.imobiturbo.com.br/imobiliarias/" },
     { file: "construtoras-incorporadoras/index.html", canonical: "https://www.imobiturbo.com.br/construtoras-incorporadoras/" },
     { file: "depoimentos/index.html", canonical: "https://www.imobiturbo.com.br/depoimentos/" },
-    { file: "lovable/index.html", canonical: "https://www.imobiturbo.com.br/lovable/" }
+    { file: "lovable/index.html", canonical: "https://www.imobiturbo.com.br/lovable/" },
+    { file: "guia/meta-lead-ads/index.html", canonical: "https://www.imobiturbo.com.br/guia/meta-lead-ads/" }
   ];
 
   for (const { file, canonical } of pages) {
@@ -84,7 +86,8 @@ test("all public HTML pages contain required SEO & AEO meta tags and structured 
     assert.ok(descMatch && descMatch[1].length >= 40, `${file} must have a meta description with at least 40 characters`);
 
     // Canonical link
-    assert.ok(html.includes(`<link rel="canonical" href="${canonical}">`), `${file} must have canonical link pointing to ${canonical}`);
+    const canonicalMatch = html.match(new RegExp(`<link\\s+rel=["\x27]canonical["\x27]\\s+href=["\x27]${canonical}["\x27]\\s*\\/?>`, 'i'));
+    assert.ok(canonicalMatch, `${file} must have canonical link pointing to ${canonical}`);
 
     // OpenGraph tags
     assert.ok(html.includes('property="og:title"'), `${file} must have og:title`);

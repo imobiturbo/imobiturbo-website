@@ -70,4 +70,14 @@
       <image:title>Extensão Imobiturbo Lovable Pro e Guia PDF</image:title>
     </image:image>
   </url>
+  <url>
+    <loc>https://www.imobiturbo.com.br/guia/meta-lead-ads/</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://www.imobiturbo.com.br/assets/logo-imobiturbo-black-bg.png</image:loc>
+      <image:title>Guia de Integração Meta Lead Ads Imobiturbo</image:title>
+    </image:image>
+  </url>
 </urlset>

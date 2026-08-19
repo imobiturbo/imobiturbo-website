@@ -6,6 +6,7 @@ Allow: /imobiliarias/
 Allow: /construtoras-incorporadoras/
 Allow: /depoimentos/
 Allow: /lovable/
+Allow: /guia/
 Allow: /assets/
 Allow: /dist/
 Allow: /fonts/
