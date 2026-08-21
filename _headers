@@ -1,0 +1,12 @@
+/guia/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+/prompts-para-anuncios/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+/lp-pages/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+/lp-simulador/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+/test/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+/tests/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
