@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Velora — Real Estate Investment & Capital Growth | Imobiturbo</title>
-  <meta name="description" content="Demonstração do modelo Velora: foco em investimentos imobiliários de alto rendimento, dashboards de retorno e carteira institucional.">
+  <title>Velora Capital — Investimentos Imobiliários de Alto Rendimento no Brasil | Imobiturbo</title>
+  <meta name="description" content="Plataforma de coinvestimento imobiliário de alta renda. Alocação em resorts boutique, studios short-stay e empreendimentos com TIR superior a 18% a.a.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,215 +12,294 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    body { font-family: "Plus Jakarta Sans", sans-serif; background-color: #0A0D0E; color: #FFFFFF; }
-    .velora-accent { color: #50E3C2; }
-    .velora-bg { background-color: #50E3C2; }
+    body { font-family: "Plus Jakarta Sans", sans-serif; background-color: #0A0E11; color: #FFFFFF; }
+    .velora-mint { color: #50E3C2; }
+    .bg-velora-mint { background-color: #50E3C2; }
+    .reveal-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
-<body class="bg-[#0A0D0E] text-white antialiased selection:bg-[#50E3C2] selection:text-black">
+<body class="bg-[#0A0E11] text-white antialiased selection:bg-[#50E3C2] selection:text-black">
 
   <!-- Imobiturbo Demo Top Banner -->
-  <div class="sticky top-0 z-[60] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
+  <div class="sticky top-0 z-[70] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
     <div class="flex items-center gap-3">
       <a href="/demo/" class="text-[#BFD730] font-bold hover:underline flex items-center gap-1">
         <span>← Todas as Demos</span>
       </a>
       <span class="text-white/40">|</span>
-      <span class="text-white/80 font-medium">Modelo: <b>Velora</b> (Real Estate Investment & Yield)</span>
+      <span class="text-white/90 font-medium">Modelo 05: <b>Velora Capital</b> (Investimentos Imobiliários & Yield Brasil)</span>
     </div>
-    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20no%20estilo%20Velora" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
-      Quero esse modelo
+    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20imobiliario%20no%20estilo%20Velora" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3.5 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
+      Quero este Modelo no meu Negócio
     </a>
   </div>
 
-  <!-- Navbar -->
+  <!-- Header -->
   <header class="fixed top-8 left-0 right-0 z-50">
     <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
-      <a href="#top" class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-[#50E3C2]/10 border border-[#50E3C2]/40 flex items-center justify-center font-black text-[#50E3C2]">V</div>
-        <span class="text-xl font-black tracking-widest text-white">VELORA</span>
+      <a href="#top" class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-[#50E3C2]/15 border border-[#50E3C2]/50 flex items-center justify-center font-extrabold text-[#50E3C2]">V</div>
+        <div class="flex flex-col">
+          <span class="text-xl font-extrabold tracking-widest text-white leading-none">VELORA</span>
+          <span class="text-[8px] font-bold tracking-[0.25em] text-[#50E3C2] uppercase mt-0.5">CAPITAL IMOBILIÁRIO</span>
+        </div>
       </a>
 
       <nav class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-white/70">
-        <a href="#portfolio" class="hover:text-[#50E3C2] transition-colors">Yield Portfolio</a>
-        <a href="#calculator" class="hover:text-[#50E3C2] transition-colors">ROI Modeling</a>
-        <a href="#governance" class="hover:text-[#50E3C2] transition-colors">Governance</a>
+        <a href="#simulador" class="hover:text-[#50E3C2] transition-colors">Simulador de Renda</a>
+        <a href="#ativos" class="hover:text-[#50E3C2] transition-colors">Ativos em Captação</a>
+        <a href="#governanca" class="hover:text-[#50E3C2] transition-colors">Segurança & SPE</a>
+        <a href="#passo-a-passo" class="hover:text-[#50E3C2] transition-colors">Como Investir</a>
       </nav>
 
-      <a href="https://wa.me/5521983747796?text=Quero%20analisar%20investimentos%20Velora" target="_blank" class="hidden sm:inline-flex bg-[#50E3C2] text-black text-xs font-extrabold uppercase tracking-widest px-6 py-2.5 rounded-none hover:bg-white transition-all shadow-[0_0_20px_rgba(80,227,194,0.3)]">
-        Investment Deck
+      <a href="https://wa.me/5521983747796?text=Quero%20receber%20a%20tese%20de%20investimentos%20Velora" target="_blank" class="hidden sm:inline-flex bg-velora-mint text-black text-xs font-black uppercase tracking-widest px-6 py-2.5 rounded-none hover:bg-white transition-all shadow-[0_0_20px_rgba(80,227,194,0.3)]">
+        Baixar Tese de Investimento
       </a>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section id="top" class="relative min-h-[90vh] md:min-h-screen w-full flex items-center overflow-hidden">
-    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" alt="Velora Investment" class="absolute inset-0 w-full h-full object-cover opacity-30">
-    <div class="absolute inset-0 bg-gradient-to-r from-[#0A0D0E] via-[#0A0D0E]/80 to-transparent"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0D0E] via-transparent to-[#0A0D0E]"></div>
+  <!-- DOBRA 1: Hero Investimentos -->
+  <section id="top" class="relative min-h-screen w-full flex items-center overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop" alt="Velora Capital" class="absolute inset-0 w-full h-full object-cover opacity-25">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#0A0E11] via-[#0A0E11]/85 to-transparent"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0A0E11] via-transparent to-[#0A0E11]"></div>
 
     <div class="relative z-20 max-w-7xl mx-auto px-6 md:px-12 pt-24 pb-20 w-full">
-      <div class="max-w-2xl">
+      <div class="max-w-3xl">
         <span class="text-[#50E3C2] text-xs font-bold uppercase tracking-[0.25em] flex items-center gap-2">
-          <i data-lucide="shield-check" class="w-4 h-4"></i> Institutional Property Capital
+          <i data-lucide="trending-up" class="w-4 h-4"></i> Rendimento Imobiliário Estruturado
         </span>
-        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.05] mt-4">
-          Real Estate Yield Engineered for Precision.
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mt-4">
+          Multiplique seu Patrimônio com Tijolos de Alta Renda.
         </h1>
-        <p class="text-white/60 text-base md:text-lg mt-6 leading-relaxed font-light">
-          Deploying capital across premium residential developments, short-stay hospitality assets, and inflation-protected commercial leases with targeted 16%+ net annualized IRR.
+        <p class="text-white/70 text-base md:text-lg mt-6 leading-relaxed font-light">
+          Acesso institucional a projetos imobiliários de alta demanda no Brasil: resorts turísticos, studios short-stay em capitais nobres e loteamentos com <b>TIR projetada superior a 18% ao ano</b>.
         </p>
 
         <div class="mt-10 flex flex-wrap items-center gap-4">
-          <a href="#calculator" class="bg-[#50E3C2] text-black px-8 py-4 text-xs font-black uppercase tracking-wider hover:bg-white transition-all">
-            Calculate Projected Yield
+          <a href="#simulador" class="bg-velora-mint text-black px-8 py-4 text-xs font-black uppercase tracking-wider hover:bg-white transition-all shadow-xl">
+            Simular Rendimento da Sua Carteira
           </a>
-          <a href="#portfolio" class="border border-white/20 text-white px-7 py-4 text-xs font-bold uppercase tracking-wider hover:border-[#50E3C2] hover:text-[#50E3C2] transition-all">
-            View Live Assets
+          <a href="#ativos" class="border border-white/20 text-white px-7 py-4 text-xs font-bold uppercase tracking-wider hover:border-[#50E3C2] hover:text-[#50E3C2] transition-all">
+            Ver Empreendimentos Abertos
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Interactive ROI Calculator Widget -->
-  <section id="calculator" class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-    <div class="bg-[#12181A] border border-white/10 p-8 md:p-14 rounded-none shadow-2xl">
+  <!-- DOBRA 2: Métricas de Gestão -->
+  <section class="py-16 bg-[#11171C] border-y border-white/10">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-white/10">
+        <div class="p-4">
+          <p class="text-4xl font-extrabold text-[#50E3C2]">R$ 640 MI</p>
+          <span class="text-xs text-white/50 uppercase tracking-widest mt-1 block">VGV em Desenvolvimento</span>
+        </div>
+        <div class="p-4">
+          <p class="text-4xl font-extrabold text-white">18.6%</p>
+          <span class="text-xs text-white/50 uppercase tracking-widest mt-1 block">TIR Média Histórica a.a.</span>
+        </div>
+        <div class="p-4">
+          <p class="text-4xl font-extrabold text-[#50E3C2]">2.800+</p>
+          <span class="text-xs text-white/50 uppercase tracking-widest mt-1 block">Investidores Ativos</span>
+        </div>
+        <div class="p-4">
+          <p class="text-4xl font-extrabold text-white">100%</p>
+          <span class="text-xs text-white/50 uppercase tracking-widest mt-1 block">Patrimônio de Afetação</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOBRA 3: Calculadora Dinâmica de Rendimento em R$ -->
+  <section id="simulador" class="py-24 px-6 md:px-12 max-w-7xl mx-auto reveal-on-scroll">
+    <div class="bg-[#12191F] border border-white/10 p-8 md:p-14 rounded-2xl shadow-2xl">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <!-- Controls -->
+        <!-- Sliders -->
         <div class="lg:col-span-6 space-y-6">
-          <span class="text-[#50E3C2] text-xs font-bold uppercase tracking-widest">Yield Simulation</span>
-          <h2 class="text-3xl font-extrabold">Interactive Portfolio Calculator</h2>
+          <span class="text-[#50E3C2] text-xs font-bold uppercase tracking-widest">Simulador Interativo de Retorno</span>
+          <h2 class="text-3xl font-extrabold">Compare o Crescimento do Seu Capital</h2>
           
-          <div class="space-y-4 pt-4">
+          <div class="space-y-6 pt-4">
             <div>
               <div class="flex justify-between text-xs font-bold mb-2">
-                <span class="text-white/70">Allocation Amount:</span>
-                <span id="alloc-val" class="text-[#50E3C2] text-sm font-black">$500,000</span>
+                <span class="text-white/70">Aporte Inicial:</span>
+                <span id="aporte-txt" class="text-[#50E3C2] text-base font-black">R$ 200.000</span>
               </div>
-              <input id="alloc-slider" type="range" min="100000" max="5000000" step="50000" value="500000" class="w-full accent-[#50E3C2] cursor-pointer">
+              <input id="aporte-range" type="range" min="50000" max="2000000" step="50000" value="200000" class="w-full accent-[#50E3C2] cursor-pointer">
             </div>
 
             <div>
               <div class="flex justify-between text-xs font-bold mb-2">
-                <span class="text-white/70">Investment Horizon:</span>
-                <span id="years-val" class="text-[#50E3C2] text-sm font-black">5 Years</span>
+                <span class="text-white/70">Prazo de Alocação:</span>
+                <span id="prazo-txt" class="text-[#50E3C2] text-base font-black">4 Anos</span>
               </div>
-              <input id="years-slider" type="range" min="1" max="10" step="1" value="5" class="w-full accent-[#50E3C2] cursor-pointer">
+              <input id="prazo-range" type="range" min="1" max="8" step="1" value="4" class="w-full accent-[#50E3C2] cursor-pointer">
             </div>
           </div>
         </div>
 
-        <!-- Result Box -->
-        <div class="lg:col-span-6 bg-[#182124] border border-[#50E3C2]/30 p-8 text-center">
-          <span class="text-xs text-white/50 uppercase tracking-widest font-bold">Estimated Total Capital Return</span>
-          <p id="calc-total" class="text-4xl sm:text-5xl font-black text-[#50E3C2] mt-2">$1,050,000</p>
-          <div class="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-white/10 text-left">
-            <div>
-              <span class="text-[10px] text-white/40 uppercase">Annualized Net IRR</span>
-              <p class="text-lg font-bold text-white mt-0.5">15.8% / year</p>
+        <!-- Result Box Comparativo -->
+        <div class="lg:col-span-6 bg-[#172129] border border-[#50E3C2]/40 p-8 rounded-xl text-center">
+          <span class="text-xs text-white/50 uppercase tracking-widest font-bold">Projeção de Patrimônio Acumulado (Velora)</span>
+          <p id="total-velora" class="text-4xl sm:text-5xl font-black text-[#50E3C2] mt-2">R$ 396.000</p>
+          
+          <div class="grid grid-cols-2 gap-4 mt-6 pt-6 border-t border-white/10 text-left text-xs">
+            <div class="bg-black/30 p-3 rounded">
+              <span class="text-white/40 block">No CDI 100% (Líquido):</span>
+              <p id="total-cdi" class="text-sm font-bold text-white mt-1">R$ 289.000</p>
             </div>
-            <div>
-              <span class="text-[10px] text-white/40 uppercase">Quarterly Cash Flow</span>
-              <p id="calc-quarter" class="text-lg font-bold text-white mt-0.5">$18,750</p>
+            <div class="bg-black/30 p-3 rounded">
+              <span class="text-white/40 block">Ganho Excedente Velora:</span>
+              <p id="total-diff" class="text-sm font-bold text-[#50E3C2] mt-1">+ R$ 107.000</p>
             </div>
           </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20simular%20meu%20investimento%20Velora" target="_blank" class="mt-8 block bg-[#50E3C2] text-black font-extrabold text-xs uppercase tracking-widest py-3.5 hover:bg-white transition-all">
-            Request Formal Prospectus
+
+          <a href="https://wa.me/5521983747796?text=Quero%20receber%20a%20simulacao%20de%20investimento%20Velora" target="_blank" class="mt-8 block bg-velora-mint text-black font-extrabold text-xs uppercase tracking-widest py-4 rounded hover:bg-white transition-all">
+            Falar com Gestor de Alocação
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Portfolio Grid -->
-  <section id="portfolio" class="py-24 px-6 md:px-12 max-w-7xl mx-auto border-t border-white/5">
+  <!-- DOBRA 4: Ativos em Captação -->
+  <section id="ativos" class="py-24 px-6 md:px-12 max-w-7xl mx-auto reveal-on-scroll">
     <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
       <div>
-        <span class="text-[#50E3C2] text-xs font-bold uppercase tracking-widest">Active Assets</span>
-        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2">HIGH-YIELD PROPERTY OPPORTUNITIES</h2>
+        <span class="text-[#50E3C2] text-xs font-bold uppercase tracking-widest">Oportunidades Abertas</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2">PORTFÓLIO EM CAPTAÇÃO</h2>
       </div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div class="bg-[#12181A] border border-white/10 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1280&auto=format&fit=crop" alt="Residencial Lumina" class="h-60 w-full object-cover">
+      <div class="bg-[#12191F] border border-white/10 overflow-hidden rounded-xl">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1280&auto=format&fit=crop" alt="Resort Praia do Forte" class="h-60 w-full object-cover">
         <div class="p-6">
-          <span class="text-[#50E3C2] text-[10px] font-bold uppercase tracking-widest">Residencial Prime</span>
-          <h3 class="text-xl font-bold mt-1">Lumina Luxury Villas</h3>
-          <p class="text-xs text-white/50 mt-1">Algarve · Portugal</p>
+          <span class="text-[#50E3C2] text-[10px] font-bold uppercase tracking-widest">Resort Boutique</span>
+          <h3 class="text-xl font-bold mt-1">Villas do Mar Praia do Forte</h3>
+          <p class="text-xs text-white/50 mt-1">Litoral Norte · Bahia</p>
           <div class="flex justify-between items-center mt-6 pt-4 border-t border-white/10 text-xs">
-            <span>Target IRR: <b class="text-[#50E3C2]">17.2%</b></span>
-            <span>Min. Entry: <b>$250k</b></span>
+            <span>TIR Estimada: <b class="text-[#50E3C2]">21.4% a.a.</b></span>
+            <span>Aporte Mínimo: <b>R$ 100k</b></span>
           </div>
         </div>
       </div>
 
-      <div class="bg-[#12181A] border border-white/10 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1280&auto=format&fit=crop" alt="Residencial Urban" class="h-60 w-full object-cover">
+      <div class="bg-[#12191F] border border-white/10 overflow-hidden rounded-xl">
+        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1280&auto=format&fit=crop" alt="Studios Ipanema" class="h-60 w-full object-cover">
         <div class="p-6">
-          <span class="text-[#50E3C2] text-[10px] font-bold uppercase tracking-widest">Boutique Hospitality</span>
-          <h3 class="text-xl font-bold mt-1">Urban Oasis Suites</h3>
-          <p class="text-xs text-white/50 mt-1">Madrid · Spain</p>
+          <span class="text-[#50E3C2] text-[10px] font-bold uppercase tracking-widest">Short-Stay Airbnb</span>
+          <h3 class="text-xl font-bold mt-1">Ipanema Wave Studios</h3>
+          <p class="text-xs text-white/50 mt-1">Zona Sul · Rio de Janeiro</p>
           <div class="flex justify-between items-center mt-6 pt-4 border-t border-white/10 text-xs">
-            <span>Target IRR: <b class="text-[#50E3C2]">18.4%</b></span>
-            <span>Min. Entry: <b>$150k</b></span>
+            <span>TIR Estimada: <b class="text-[#50E3C2]">18.8% a.a.</b></span>
+            <span>Aporte Mínimo: <b>R$ 50k</b></span>
           </div>
         </div>
       </div>
 
-      <div class="bg-[#12181A] border border-white/10 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1280&auto=format&fit=crop" alt="Coastal Living" class="h-60 w-full object-cover">
+      <div class="bg-[#12191F] border border-white/10 overflow-hidden rounded-xl">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1280&auto=format&fit=crop" alt="Hotel Gramado" class="h-60 w-full object-cover">
         <div class="p-6">
-          <span class="text-[#50E3C2] text-[10px] font-bold uppercase tracking-widest">Coastal Masterplan</span>
-          <h3 class="text-xl font-bold mt-1">Azure Bay Residences</h3>
-          <p class="text-xs text-white/50 mt-1">Miami Beach · USA</p>
+          <span class="text-[#50E3C2] text-[10px] font-bold uppercase tracking-widest">Hotelaria de Serra</span>
+          <h3 class="text-xl font-bold mt-1">Gramado Alpine Suites</h3>
+          <p class="text-xs text-white/50 mt-1">Serra Gaúcha · RS</p>
           <div class="flex justify-between items-center mt-6 pt-4 border-t border-white/10 text-xs">
-            <span>Target IRR: <b class="text-[#50E3C2]">16.0%</b></span>
-            <span>Min. Entry: <b>$500k</b></span>
+            <span>TIR Estimada: <b class="text-[#50E3C2]">19.5% a.a.</b></span>
+            <span>Aporte Mínimo: <b>R$ 80k</b></span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer CTA -->
-  <footer class="py-24 bg-black text-center border-t border-white/10">
+  <!-- DOBRA 5: Segurança & Governança Jurídica -->
+  <section id="governanca" class="py-24 bg-[#070A0D] border-t border-white/10 reveal-on-scroll">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="text-center max-w-2xl mx-auto mb-16">
+        <span class="text-[#50E3C2] text-xs font-bold uppercase tracking-widest">Blindagem Patrimonial</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold mt-2">SEGURANÇA JURÍDICA COMPLETA</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-[#12191F] p-8 rounded-xl border border-white/10">
+          <i data-lucide="shield-check" class="w-8 h-8 text-[#50E3C2] mb-4"></i>
+          <h4 class="font-bold text-lg">Patrimônio de Afetação</h4>
+          <p class="text-xs text-white/60 mt-2 leading-relaxed">Os recursos de cada obra são totalmente segregados da construtora, garantindo que o dinheiro investido vá 100% para o empreendimento.</p>
+        </div>
+        <div class="bg-[#12191F] p-8 rounded-xl border border-white/10">
+          <i data-lucide="file-text" class="w-8 h-8 text-[#50E3C2] mb-4"></i>
+          <h4 class="font-bold text-lg">Registro de Incorporação (R.I.)</h4>
+          <p class="text-xs text-white/60 mt-2 leading-relaxed">Todos os projetos contam com alvará municipal aprovado e matrícula individualizada registrada no Cartório de Registro de Imóveis.</p>
+        </div>
+        <div class="bg-[#12191F] p-8 rounded-xl border border-white/10">
+          <i data-lucide="landmark" class="w-8 h-8 text-[#50E3C2] mb-4"></i>
+          <h4 class="font-bold text-lg">Auditoria Externa Independente</h4>
+          <p class="text-xs text-white/60 mt-2 leading-relaxed">Acompanhamento contábil e fiscal trimestral com relatórios abertos para todos os cotistas e investidores.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="passo-a-passo" class="py-20 bg-black text-center border-t border-white/10 text-xs text-white/40">
     <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-3xl sm:text-5xl font-black">Structure Your Real Estate Capital.</h2>
-      <p class="text-white/60 text-sm mt-3 max-w-lg mx-auto">Speak with a managing director today.</p>
+      <h3 class="text-xl font-bold text-white">VELORA CAPITAL IMOBILIÁRIO</h3>
+      <p class="mt-2 text-white/60">São Paulo · Rio de Janeiro · Salvador</p>
       <div class="mt-8">
-        <a href="https://wa.me/5521983747796?text=Quero%20conversar%20sobre%20investimentos%20Velora" target="_blank" rel="noopener noreferrer" class="bg-[#50E3C2] text-black font-black text-xs uppercase tracking-widest px-8 py-4 inline-block hover:bg-white transition-all">
-          Connect via WhatsApp
+        <a href="https://wa.me/5521983747796?text=Quero%20conversar%20com%20a%20Velora%20Capital" target="_blank" class="bg-velora-mint text-black font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 rounded-none inline-block hover:bg-white transition-all">
+          Atendimento a Investidores no WhatsApp
         </a>
       </div>
+      <p class="mt-12 text-[10px] text-white/30 uppercase tracking-widest">© 2026 Velora Capital · Demonstração Imobiturbo™</p>
     </div>
   </footer>
 
   <script>
     lucide.createIcons();
-    const allocSlider = document.getElementById("alloc-slider");
-    const yearsSlider = document.getElementById("years-slider");
-    const allocVal = document.getElementById("alloc-val");
-    const yearsVal = document.getElementById("years-val");
-    const calcTotal = document.getElementById("calc-total");
-    const calcQuarter = document.getElementById("calc-quarter");
+    const reveals = document.querySelectorAll(".reveal-on-scroll");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add("is-visible");
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => observer.observe(r));
 
-    function updateCalc() {
-      const p = parseFloat(allocSlider.value);
-      const y = parseInt(yearsSlider.value);
-      const r = 0.158;
-      const total = p * Math.pow(1 + r, y);
-      const quarterCash = (p * 0.15) / 4;
+    // Calculadora
+    const aporteRange = document.getElementById("aporte-range");
+    const prazoRange = document.getElementById("prazo-range");
+    const aporteTxt = document.getElementById("aporte-txt");
+    const prazoTxt = document.getElementById("prazo-txt");
+    const totalVelora = document.getElementById("total-velora");
+    const totalCdi = document.getElementById("total-cdi");
+    const totalDiff = document.getElementById("total-diff");
 
-      allocVal.innerText = "$" + p.toLocaleString("en-US");
-      yearsVal.innerText = y + (y === 1 ? " Year" : " Years");
-      calcTotal.innerText = "$" + Math.round(total).toLocaleString("en-US");
-      calcQuarter.innerText = "$" + Math.round(quarterCash).toLocaleString("en-US");
+    function formatBRL(val) {
+      return "R$ " + Math.round(val).toLocaleString("pt-BR");
     }
 
-    allocSlider.addEventListener("input", updateCalc);
-    yearsSlider.addEventListener("input", updateCalc);
+    function calcSim() {
+      const p = parseFloat(aporteRange.value);
+      const y = parseInt(prazoRange.value);
+      const rVelora = 0.185; // 18.5% a.a.
+      const rCdi = 0.095; // 9.5% a.a. liquido
+
+      const vVelora = p * Math.pow(1 + rVelora, y);
+      const vCdi = p * Math.pow(1 + rCdi, y);
+      const diff = vVelora - vCdi;
+
+      aporteTxt.innerText = formatBRL(p);
+      prazoTxt.innerText = y + (y === 1 ? " Ano" : " Anos");
+      totalVelora.innerText = formatBRL(vVelora);
+      totalCdi.innerText = formatBRL(vCdi);
+      totalDiff.innerText = "+ " + formatBRL(diff);
+    }
+
+    aporteRange.addEventListener("input", calcSim);
+    prazoRange.addEventListener("input", calcSim);
   </script>
 </body>
 </html>

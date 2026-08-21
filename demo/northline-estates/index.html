@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Northline — Commercial & Prime Real Estate | Imobiturbo</title>
-  <meta name="description" content="Demonstração do modelo Northline: landing page de alto impacto para empreendimentos comerciais e residenciais premium.">
+  <title>Northline — Lajes Corporativas & Empreendimentos Triple A em São Paulo | Imobiturbo</title>
+  <meta name="description" content="Edifícios corporativos e lajes comerciais de alto padrão na Faria Lima, Berrini e Chucri Zaidan. Locação e desinvestimento para fundos e multinacionais.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,235 +13,246 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     body { font-family: "Plus Jakarta Sans", sans-serif; background-color: #0B0E14; color: #FFFFFF; }
-    .gold-text { color: #d4af37; }
-    .gold-bg { background-color: #d4af37; }
-    .gold-border { border-color: #d4af37; }
+    .gold-accent { color: #D4AF37; }
+    .gold-bg { background-color: #D4AF37; }
+    .reveal-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
   </style>
 </head>
-<body class="bg-[#0B0E14] text-white antialiased selection:bg-[#d4af37] selection:text-black">
+<body class="bg-[#0B0E14] text-white antialiased selection:bg-[#D4AF37] selection:text-black">
 
   <!-- Imobiturbo Demo Top Banner -->
-  <div class="sticky top-0 z-[60] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
+  <div class="sticky top-0 z-[70] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
     <div class="flex items-center gap-3">
       <a href="/demo/" class="text-[#BFD730] font-bold hover:underline flex items-center gap-1">
         <span>← Todas as Demos</span>
       </a>
       <span class="text-white/40">|</span>
-      <span class="text-white/80 font-medium">Modelo: <b>Northline</b> (Commercial & Prime Estates)</span>
+      <span class="text-white/90 font-medium">Modelo 03: <b>Northline Corporate</b> (Edifícios Comerciais & Faria Lima SP)</span>
     </div>
-    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20no%20estilo%20Northline" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
-      Quero esse modelo
+    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20imobiliario%20no%20estilo%20Northline" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3.5 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
+      Quero este Modelo no meu Negócio
     </a>
   </div>
 
-  <!-- Navbar -->
+  <!-- Header -->
   <header class="absolute top-8 left-0 right-0 z-50">
     <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
-      <!-- Logo with 3 vertical bars -->
       <a href="#top" class="flex items-center gap-3 group">
         <div class="flex items-end gap-1 h-6">
-          <span class="w-1 bg-[#d4af37] h-3 group-hover:h-5 transition-all duration-300"></span>
-          <span class="w-1 bg-[#d4af37] h-6 group-hover:h-6 transition-all duration-300"></span>
-          <span class="w-1 bg-[#d4af37] h-4 group-hover:h-6 transition-all duration-300"></span>
+          <span class="w-1 bg-[#D4AF37] h-3"></span>
+          <span class="w-1 bg-[#D4AF37] h-6"></span>
+          <span class="w-1 bg-[#D4AF37] h-4"></span>
         </div>
         <div class="flex flex-col">
           <span class="text-lg font-extrabold tracking-widest text-white leading-none">NORTHLINE</span>
-          <span class="text-[9px] font-bold tracking-[0.3em] text-[#d4af37] leading-none mt-0.5">COMMERCIAL</span>
+          <span class="text-[9px] font-bold tracking-[0.25em] text-[#D4AF37] leading-none mt-0.5">CORPORATE · SP</span>
         </div>
       </a>
 
-      <!-- Desktop Links -->
-      <nav class="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-white/80">
-        <a href="#about" class="hover:text-[#d4af37] transition-colors">About Us</a>
-        <a href="#features" class="hover:text-[#d4af37] transition-colors">Capabilities</a>
-        <a href="#properties" class="hover:text-[#d4af37] transition-colors">Developments</a>
-        <a href="#services" class="hover:text-[#d4af37] transition-colors">Advisory</a>
+      <nav class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-white/80">
+        <a href="#especificacoes" class="hover:text-[#D4AF37] transition-colors">Padrão Construtivo</a>
+        <a href="#lajes" class="hover:text-[#D4AF37] transition-colors">Lajes Disponíveis</a>
+        <a href="#analise" class="hover:text-[#D4AF37] transition-colors">Yield & Renda</a>
+        <a href="#contato" class="hover:text-[#D4AF37] transition-colors">Falar com Novos Negócios</a>
       </nav>
 
-      <!-- CTA -->
-      <div class="hidden sm:block">
-        <a href="https://wa.me/5521983747796?text=Quero%20falar%20com%20a%20Northline" target="_blank" rel="noopener noreferrer" class="border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition-all px-6 py-2.5 text-xs font-bold uppercase tracking-wider">
-          Get in Touch
-        </a>
-      </div>
+      <a href="https://wa.me/5521983747796?text=Quero%20informacoes%20sobre%20lajes%20corporativas%20Northline" target="_blank" class="hidden sm:inline-flex border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-all px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider">
+        Contato Corporativo
+      </a>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section id="top" class="relative min-h-[90vh] md:min-h-screen w-full flex items-center overflow-hidden">
-    <video src="https://strvid.nyc3.cdn.digitaloceanspaces.com/motionsite/real_estate_bg_hero_1.mp4" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-60 z-0"></video>
-    <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent z-10"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-black/60 z-10"></div>
+  <!-- DOBRA 1: Hero Corporativo -->
+  <section id="top" class="relative min-h-screen w-full flex items-center overflow-hidden">
+    <video src="https://strvid.nyc3.cdn.digitaloceanspaces.com/motionsite/real_estate_bg_hero_1.mp4" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-50 z-0"></video>
+    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent z-10"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-black/70 z-10"></div>
 
-    <div class="relative z-20 max-w-7xl mx-auto px-6 md:px-12 w-full pt-20 pb-32">
-      <div class="max-w-2xl">
-        <span class="text-[#d4af37] text-xs font-bold uppercase tracking-[0.25em] flex items-center gap-2">
-          <i data-lucide="building-2" class="w-4 h-4"></i> Premium Spaces · Prime Locations
+    <div class="relative z-20 max-w-7xl mx-auto px-6 md:px-12 pt-24 pb-32 w-full">
+      <div class="max-w-3xl">
+        <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.25em] flex items-center gap-2">
+          <i data-lucide="building-2" class="w-4 h-4"></i> Lajes Corporativas Triple A · São Paulo
         </span>
         <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mt-4">
-          Spaces That Inspire Success.
+          Espaços que Impulsionam Grandes Negócios.
         </h1>
         <p class="text-white/70 text-base md:text-lg mt-6 leading-relaxed font-light">
-          Transforming urban skylines with landmark commercial real estate, grade-A corporate towers, and high-yield mixed-use developments.
+          Desenvolvimento, locação e gestão de edifícios corporativos icônicos nos maiores eixos financeiros do país: Av. Faria Lima, Berrini e Chucri Zaidan.
         </p>
         <div class="mt-10 flex flex-wrap items-center gap-4">
-          <a href="#properties" class="gold-bg text-black px-8 py-4 text-xs font-bold uppercase tracking-wider hover:bg-white transition-all flex items-center gap-2">
-            Explore Properties <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          <a href="#lajes" class="gold-bg text-black px-8 py-4 text-xs font-extrabold uppercase tracking-wider hover:bg-white transition-all flex items-center gap-2 shadow-xl">
+            Ver Lajes Disponíveis <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </a>
-          <a href="https://wa.me/5521983747796" target="_blank" class="border border-white/30 text-white px-7 py-4 text-xs font-bold uppercase tracking-wider hover:border-[#d4af37] hover:text-[#d4af37] transition-all flex items-center gap-2">
-            <i data-lucide="phone" class="w-4 h-4 text-[#d4af37]"></i> Schedule Advisory
+          <a href="https://wa.me/5521983747796" target="_blank" class="border border-white/30 text-white px-7 py-4 text-xs font-bold uppercase tracking-wider hover:border-[#D4AF37] hover:text-[#D4AF37] transition-all">
+            Falar com a Equipe de Locação
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Overlapping Features Grid -->
-  <section id="features" class="relative z-30 max-w-7xl mx-auto px-6 md:px-12 lg:-mt-20">
-    <div class="bg-[#121722]/95 backdrop-blur-xl border border-white/10 shadow-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
+  <!-- DOBRA 2: Grid Flutuante de Especificações Técnicas -->
+  <section id="especificacoes" class="relative z-30 max-w-7xl mx-auto px-6 md:px-12 lg:-mt-20">
+    <div class="bg-[#131924]/95 backdrop-blur-xl border border-white/10 shadow-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
       <div class="p-8 group hover:bg-white/5 transition-colors">
-        <i data-lucide="building-2" class="w-8 h-8 text-[#d4af37] mb-4 group-hover:scale-110 transition-transform"></i>
-        <h3 class="font-bold text-base text-white">Prime Urban Hubs</h3>
-        <p class="text-xs text-white/50 leading-relaxed mt-2">Strategically positioned assets in top global financial districts.</p>
+        <i data-lucide="award" class="w-8 h-8 text-[#D4AF37] mb-3 group-hover:scale-110 transition-transform"></i>
+        <h3 class="font-bold text-base text-white">LEED Platinum</h3>
+        <p class="text-xs text-white/50 mt-1 leading-relaxed">Eficiência energética de ponta e reuso integral de águas pluviais.</p>
       </div>
       <div class="p-8 group hover:bg-white/5 transition-colors">
-        <i data-lucide="gem" class="w-8 h-8 text-[#d4af37] mb-4 group-hover:scale-110 transition-transform"></i>
-        <h3 class="font-bold text-base text-white">Grade-A Standards</h3>
-        <p class="text-xs text-white/50 leading-relaxed mt-2">LEED Platinum certified architectural design and sustainable engineering.</p>
+        <i data-lucide="zap" class="w-8 h-8 text-[#D4AF37] mb-3 group-hover:scale-110 transition-transform"></i>
+        <h3 class="font-bold text-base text-white">Gerador 100% Pleno</h3>
+        <p class="text-xs text-white/50 mt-1 leading-relaxed">Suporte ininterrupto para áreas privativas, ar condicionado e data centers.</p>
       </div>
       <div class="p-8 group hover:bg-white/5 transition-colors">
-        <i data-lucide="user-check" class="w-8 h-8 text-[#d4af37] mb-4 group-hover:scale-110 transition-transform"></i>
-        <h3 class="font-bold text-base text-white">Institutional Tenants</h3>
-        <p class="text-xs text-white/50 leading-relaxed mt-2">Long-term lease agreements with Fortune 500 multinationals.</p>
+        <i data-lucide="shield" class="w-8 h-8 text-[#D4AF37] mb-3 group-hover:scale-110 transition-transform"></i>
+        <h3 class="font-bold text-base text-white">Piso Elevado & VRF</h3>
+        <p class="text-xs text-white/50 mt-1 leading-relaxed">Flexibilidade total de cabeamento e climatização setorizada por zona.</p>
       </div>
       <div class="p-8 group hover:bg-white/5 transition-colors">
-        <i data-lucide="trending-up" class="w-8 h-8 text-[#d4af37] mb-4 group-hover:scale-110 transition-transform"></i>
-        <h3 class="font-bold text-base text-white">Superior Yields</h3>
-        <p class="text-xs text-white/50 leading-relaxed mt-2">Consistently outperforming benchmark commercial real estate indices.</p>
+        <i data-lucide="navigation-2" class="w-8 h-8 text-[#D4AF37] mb-3 group-hover:scale-110 transition-transform"></i>
+        <h3 class="font-bold text-base text-white">Heliponto 6 Toneladas</h3>
+        <p class="text-xs text-white/50 mt-1 leading-relaxed">Homologação para aeronaves executivas bimotoras de grande porte.</p>
       </div>
     </div>
   </section>
 
-  <!-- About Section -->
-  <section id="about" class="py-28 px-6 md:px-12 max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-      <!-- Left Content -->
-      <div class="lg:col-span-6 space-y-6">
-        <span class="text-[#d4af37] text-xs font-bold uppercase tracking-[0.25em]">About Northline</span>
-        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-          Two Decades of Excellence in Commercial Architecture.
-        </h2>
-        <p class="text-white/70 text-sm md:text-base leading-relaxed font-light">
-          We combine capital intelligence with visionary building design. Our developments do not merely occupy space; they define the economic pulse of thriving metropolitan centers.
-        </p>
+  <!-- DOBRA 3: Lajes Corporativas Disponíveis -->
+  <section id="lajes" class="py-28 px-6 md:px-12 max-w-7xl mx-auto reveal-on-scroll">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+      <div>
+        <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.25em]">Locação e Desinvestimento</span>
+        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2">LAJES EM DESTAQUE EM SÃO PAULO</h2>
+      </div>
+      <p class="text-white/50 text-sm max-w-md">Opções moduladas a partir de 500 m² até monousuários corporativos inteiros.</p>
+    </div>
 
-        <!-- Stats Grid -->
-        <div class="grid grid-cols-3 gap-6 py-6 border-y border-white/10 text-center">
-          <div>
-            <p class="text-3xl font-extrabold text-[#d4af37]">20+</p>
-            <span class="text-[11px] text-white/50 uppercase tracking-wider">Years Experience</span>
-          </div>
-          <div>
-            <p class="text-3xl font-extrabold text-[#d4af37]">150+</p>
-            <span class="text-[11px] text-white/50 uppercase tracking-wider">Projects Completed</span>
-          </div>
-          <div>
-            <p class="text-3xl font-extrabold text-[#d4af37]">5M+</p>
-            <span class="text-[11px] text-white/50 uppercase tracking-wider">Sq. Ft. Managed</span>
-          </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Edifício 1 -->
+      <div class="bg-[#131924] border border-white/10 overflow-hidden group">
+        <div class="h-64 overflow-hidden relative">
+          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1280&auto=format&fit=crop" alt="Faria Lima Plaza" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#D4AF37] tracking-widest">AV. FARIA LIMA · SP</span>
         </div>
-
-        <div>
-          <a href="https://wa.me/5521983747796" target="_blank" class="gold-bg text-black px-8 py-3.5 text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2 hover:bg-white transition-all">
-            Download Portfolio Brief <i data-lucide="download" class="w-4 h-4"></i>
+        <div class="p-6">
+          <h3 class="font-bold text-xl text-white">Torre Faria Lima Financial</h3>
+          <p class="text-xs text-white/50 mt-1">Ao lado da estação Faria Lima do Metrô</p>
+          <div class="mt-4 pt-4 border-t border-white/10 space-y-1.5 text-xs text-white/70">
+            <div class="flex justify-between"><span>Área da Laje:</span> <b class="text-white">1.850 m² úteis</b></div>
+            <div class="flex justify-between"><span>Vagas Demarcadas:</span> <b class="text-white">48 vagas / laje</b></div>
+            <div class="flex justify-between text-[#D4AF37]"><span>Valor Locação:</span> <b class="font-bold">R$ 290 / m²</b></div>
+          </div>
+          <a href="https://wa.me/5521983747796?text=Quero%20proposta%20para%20a%20Torre%20Faria%20Lima" target="_blank" class="mt-6 block text-center gold-bg text-black py-3 text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-colors">
+            Solicitar Book Técnico
           </a>
         </div>
       </div>
 
-      <!-- Right Image -->
-      <div class="lg:col-span-6 relative h-[450px] md:h-[550px] overflow-hidden rounded-lg border border-white/10 group">
-        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1280&auto=format&fit=crop" alt="Northline Corporate Tower" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-        <div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
-          <div>
-            <span class="text-xs text-[#d4af37] font-bold">NORTHLINE TOWER I</span>
-            <p class="text-xs text-white/70">Avenue of the Americas · Flagship Asset</p>
+      <!-- Edifício 2 -->
+      <div class="bg-[#131924] border border-white/10 overflow-hidden group border-[#D4AF37]/50">
+        <div class="h-64 overflow-hidden relative">
+          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1280&auto=format&fit=crop" alt="Berrini Prime" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#D4AF37] tracking-widest">ENG. LUÍS CARLOS BERRINI · SP</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-bold text-xl text-white">Berrini Corporate Tower</h3>
+          <p class="text-xs text-white/50 mt-1">Próximo à Estação Berrini da CPTM</p>
+          <div class="mt-4 pt-4 border-t border-white/10 space-y-1.5 text-xs text-white/70">
+            <div class="flex justify-between"><span>Área da Laje:</span> <b class="text-white">2.400 m² moduláveis</b></div>
+            <div class="flex justify-between"><span>Vagas Demarcadas:</span> <b class="text-white">62 vagas / laje</b></div>
+            <div class="flex justify-between text-[#D4AF37]"><span>Valor Locação:</span> <b class="font-bold">R$ 160 / m²</b></div>
           </div>
+          <a href="https://wa.me/5521983747796?text=Quero%20proposta%20para%20o%20Berrini%20Corporate" target="_blank" class="mt-6 block text-center gold-bg text-black py-3 text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-colors">
+            Solicitar Book Técnico
+          </a>
+        </div>
+      </div>
+
+      <!-- Edifício 3 -->
+      <div class="bg-[#131924] border border-white/10 overflow-hidden group">
+        <div class="h-64 overflow-hidden relative">
+          <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?q=80&w=1280&auto=format&fit=crop" alt="Chucri Zaidan" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#D4AF37] tracking-widest">DR. CHUCRI ZAIDAN · SP</span>
+        </div>
+        <div class="p-6">
+          <h3 class="font-bold text-xl text-white">Nexus Grand Tower</h3>
+          <p class="text-xs text-white/50 mt-1">Eixo Morumbi / Chucri Zaidan</p>
+          <div class="mt-4 pt-4 border-t border-white/10 space-y-1.5 text-xs text-white/70">
+            <div class="flex justify-between"><span>Área da Laje:</span> <b class="text-white">3.100 m² inteiros</b></div>
+            <div class="flex justify-between"><span>Vagas Demarcadas:</span> <b class="text-white">80 vagas / laje</b></div>
+            <div class="flex justify-between text-[#D4AF37]"><span>Valor Locação:</span> <b class="font-bold">R$ 145 / m²</b></div>
+          </div>
+          <a href="https://wa.me/5521983747796?text=Quero%20proposta%20para%20o%20Nexus%20Grand%20Tower" target="_blank" class="mt-6 block text-center gold-bg text-black py-3 text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-colors">
+            Solicitar Book Técnico
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Featured Developments -->
-  <section id="properties" class="py-24 bg-[#07090D] border-t border-white/5">
+  <!-- DOBRA 4: Análise de Yield & Renda de Aluguel -->
+  <section id="analise" class="py-24 bg-[#07090D] border-t border-white/5 reveal-on-scroll">
     <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
-        <div>
-          <span class="text-[#d4af37] text-xs font-bold uppercase tracking-[0.25em]">Developments</span>
-          <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2">FEATURED ASSETS</h2>
-        </div>
-        <a href="https://wa.me/5521983747796" target="_blank" class="text-xs font-bold text-[#d4af37] uppercase tracking-wider hover:underline flex items-center gap-1">
-          View All Opportunities →
-        </a>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Asset 1 -->
-        <div class="bg-[#121722] border border-white/10 overflow-hidden group">
-          <div class="h-64 overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1280&auto=format&fit=crop" alt="Vortex Financial Center" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <span class="absolute top-4 left-4 bg-black/70 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#d4af37] tracking-widest">GRADE A+ COMMERCIAL</span>
-          </div>
-          <div class="p-6">
-            <h3 class="font-bold text-lg text-white">Vortex Financial Tower</h3>
-            <p class="text-xs text-white/50 mt-1">Financial District · New York</p>
-            <p class="text-xs font-bold text-[#d4af37] mt-4 pt-4 border-t border-white/10">340,000 SQ. FT. · 98% OCCUPIED</p>
-          </div>
-        </div>
-
-        <!-- Asset 2 -->
-        <div class="bg-[#121722] border border-white/10 overflow-hidden group">
-          <div class="h-64 overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1280&auto=format&fit=crop" alt="Horizon Tech Park" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <span class="absolute top-4 left-4 bg-black/70 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#d4af37] tracking-widest">TECH CAMPUS</span>
-          </div>
-          <div class="p-6">
-            <h3 class="font-bold text-lg text-white">Horizon Innovation Hub</h3>
-            <p class="text-xs text-white/50 mt-1">Silicon Valley · San Jose</p>
-            <p class="text-xs font-bold text-[#d4af37] mt-4 pt-4 border-t border-white/10">520,000 SQ. FT. · MULTI-TENANT</p>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-6 space-y-6">
+          <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.25em]">Métricas Para Family Offices e FIIs</span>
+          <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight">
+            Estabilidade com Inquilinos Multinacionais e Contratos Atípicos.
+          </h2>
+          <p class="text-white/70 text-sm md:text-base font-light leading-relaxed">
+            Contratos de locação corporativa estruturados no formato Built-to-Suit ou Sale & Leaseback com prazo de 10 a 15 anos e reajuste anual por IPCA / IGP-M.
+          </p>
+          <div class="grid grid-cols-3 gap-4 pt-4 border-t border-white/10 text-center">
+            <div>
+              <p class="text-3xl font-extrabold text-[#D4AF37]">9.4%</p>
+              <span class="text-[10px] text-white/50 uppercase">Cap Rate Médio a.a.</span>
+            </div>
+            <div>
+              <p class="text-3xl font-extrabold text-white">98.2%</p>
+              <span class="text-[10px] text-white/50 uppercase">Taxa de Ocupação</span>
+            </div>
+            <div>
+              <p class="text-3xl font-extrabold text-[#D4AF37]">AAA</p>
+              <span class="text-[10px] text-white/50 uppercase">Rating de Crédito</span>
+            </div>
           </div>
         </div>
 
-        <!-- Asset 3 -->
-        <div class="bg-[#121722] border border-white/10 overflow-hidden group">
-          <div class="h-64 overflow-hidden relative">
-            <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?q=80&w=1280&auto=format&fit=crop" alt="Apex Logistics Park" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-            <span class="absolute top-4 left-4 bg-black/70 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#d4af37] tracking-widest">INDUSTRIAL LOGISTICS</span>
-          </div>
-          <div class="p-6">
-            <h3 class="font-bold text-lg text-white">Apex Distribution Center</h3>
-            <p class="text-xs text-white/50 mt-1">Cargo Corridor · Chicago</p>
-            <p class="text-xs font-bold text-[#d4af37] mt-4 pt-4 border-t border-white/10">850,000 SQ. FT. · AUTOMATED HUB</p>
-          </div>
+        <div class="lg:col-span-6 bg-[#131924] p-8 border border-white/10">
+          <h3 class="text-lg font-bold text-white mb-4">Solicite o Relatório Trimestral de Vacância e Absorção</h3>
+          <p class="text-xs text-white/60 mb-6">Mapeamento completo dos valores de locação por m² e novas entregas de estoques de escritórios em São Paulo.</p>
+          <a href="https://wa.me/5521983747796?text=Quero%20receber%20o%20relatorio%20de%20vacancia%20e%20absorcao%20Northline" target="_blank" class="block text-center gold-bg text-black py-4 text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-all">
+            Receber Relatório em PDF no WhatsApp
+          </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA Footer -->
-  <footer class="py-20 bg-black text-center border-t border-white/10">
+  <!-- Footer -->
+  <footer id="contato" class="py-20 bg-black text-center border-t border-white/10 text-xs text-white/40">
     <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-3xl sm:text-5xl font-extrabold">Ready to Elevate Your Real Estate Strategy?</h2>
-      <p class="text-white/60 text-sm mt-3 max-w-lg mx-auto">Connect directly with our senior acquisition partners for private briefings.</p>
+      <p class="font-extrabold text-base text-white">NORTHLINE CORPORATE SÃO PAULO</p>
+      <p class="mt-2 text-white/50">Av. Brigadeiro Faria Lima, 3477 · Itaim Bibi, São Paulo - SP</p>
       <div class="mt-8">
-        <a href="https://wa.me/5521983747796?text=Quero%20uma%20apresentacao%20Northline" target="_blank" rel="noopener noreferrer" class="gold-bg text-black font-extrabold text-xs uppercase tracking-widest px-8 py-4 inline-block hover:bg-white transition-all">
-          Contact Advisory on WhatsApp
+        <a href="https://wa.me/5521983747796?text=Quero%20falar%20com%20a%20Northline%20Corporate" target="_blank" class="gold-bg text-black font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 inline-block hover:bg-white transition-all">
+          Atendimento Direto no WhatsApp
         </a>
       </div>
-      <p class="text-[11px] text-white/30 uppercase tracking-widest mt-12">Northline Commercial · Architecture & Capital</p>
+      <p class="mt-12 text-[10px] text-white/30 uppercase tracking-widest">© 2026 Northline Corporate · Demonstração Imobiturbo™</p>
     </div>
   </footer>
 
-  <script>lucide.createIcons();</script>
+  <script>
+    lucide.createIcons();
+    const reveals = document.querySelectorAll(".reveal-on-scroll");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add("is-visible");
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => observer.observe(r));
+  </script>
 </body>
 </html>
