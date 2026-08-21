@@ -3,256 +3,171 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sky Tower — Penthouses & Coberturas em Balneário Camboriú | Imobiturbo</title>
-  <meta name="description" content="O empreendimento mais alto e exclusivo da Barra Sul de Balneário Camboriú. Coberturas triplex, vista 360° para o mar e heliponto privativo.">
+  <title>SKY TOWER — Penthouses no Ponto Mais Alto de Balneário Camboriú</title>
+  <meta name="description" content="O empreendimento mais alto e exclusivo da Barra Sul de Balneário Camboriú. Coberturas triplex, vista 360° e piscina de vidro suspensa a 200 metros.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    body { font-family: "Plus Jakarta Sans", sans-serif; background-color: #030408; color: #FFFFFF; }
+    html, body {
+      margin: 0; padding: 0;
+      overflow-x: clip;
+      background-color: #030509;
+      color: #E6EAF2;
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+    .font-serif-luxury { font-family: "Italiana", serif; }
     .neon-cyan { color: #8BE9FD; text-shadow: 0 0 20px rgba(139, 233, 253, 0.4); }
-    .bg-cyan-glow { background: linear-gradient(135deg, #8BE9FD 0%, #50E3C2 100%); }
-    .sky-card { background: rgba(10, 15, 26, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(139, 233, 253, 0.15); transition: all 0.4s ease; }
-    .sky-card:hover { border-color: rgba(139, 233, 253, 0.5); transform: translateY(-6px); box-shadow: 0 20px 40px -10px rgba(139, 233, 253, 0.15); }
-    .reveal-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
-    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .cyan-glow { background: linear-gradient(135deg, #8BE9FD 0%, #50E3C2 100%); }
+    .sky-monolith { background: rgba(8, 14, 26, 0.7); backdrop-filter: blur(24px); border: 1px solid rgba(139, 233, 253, 0.15); }
   </style>
 </head>
-<body class="bg-[#030408] text-white antialiased selection:bg-[#8BE9FD] selection:text-black">
+<body class="bg-[#030509] text-[#E6EAF2] antialiased selection:bg-[#8BE9FD] selection:text-black">
 
   <!-- Imobiturbo Demo Top Banner -->
-  <div class="sticky top-0 z-[70] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
+  <div class="sticky top-0 z-[80] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
     <div class="flex items-center gap-3">
       <a href="/demo/" class="text-[#BFD730] font-bold hover:underline flex items-center gap-1">
-        <span>← Todas as Demos</span>
+        <span>← Demos Lab</span>
       </a>
       <span class="text-white/40">|</span>
-      <span class="text-white/90 font-medium">Modelo 04: <b>Sky Tower</b> (Penthouses & Balneário Camboriú)</span>
+      <span class="text-white/90 font-medium">Showcase: <b>Sky Tower Balneário</b> (Awwwards Altitude Meter & Dark Sky)</span>
     </div>
-    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20imobiliario%20no%20estilo%20Sky%20Tower" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3.5 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
-      Quero este Modelo no meu Negócio
+    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20imobiliario%20estilo%20Sky%20Tower%20Awwwards" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3.5 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
+      Quero esse Padrão Visual
     </a>
   </div>
 
   <!-- Header -->
-  <header class="fixed top-8 left-0 right-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
+  <header class="fixed top-8 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 md:px-16 py-5 flex items-center justify-between">
       <a href="#top" class="flex items-center gap-2.5">
         <i data-lucide="cloud-moon" class="w-6 h-6 text-[#8BE9FD]"></i>
         <div class="flex flex-col">
-          <span class="text-xl font-extrabold tracking-widest text-white leading-none">SKY TOWER</span>
-          <span class="text-[8px] font-bold tracking-[0.3em] text-[#8BE9FD] uppercase mt-0.5">BALNEÁRIO CAMBORIÚ</span>
+          <span class="font-serif-luxury text-2xl font-normal tracking-[0.2em] text-white leading-none">SKY TOWER</span>
+          <span class="text-[8px] font-bold tracking-[0.35em] text-[#8BE9FD] uppercase mt-0.5">BALNEÁRIO CAMBORIÚ</span>
         </div>
       </a>
 
-      <nav class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-white/70">
-        <a href="#coberturas" class="hover:text-[#8BE9FD] transition-colors">Coberturas & Penthouses</a>
-        <a href="#lazer-ceu" class="hover:text-[#8BE9FD] transition-colors">Lazer a 200m</a>
-        <a href="#tabela" class="hover:text-[#8BE9FD] transition-colors">Parcelamento 100x</a>
-        <a href="#barra-sul" class="hover:text-[#8BE9FD] transition-colors">Barra Sul</a>
-      </nav>
+      <!-- Altitude Meter -->
+      <div class="hidden md:flex items-center gap-3 sky-monolith px-4 py-1.5 rounded-full text-xs font-mono">
+        <span class="text-[#8BE9FD] animate-pulse">●</span>
+        <span class="text-white/50 text-[10px] uppercase tracking-widest">Altitude:</span>
+        <span id="alt-meter" class="font-bold text-[#8BE9FD]">280 METROS</span>
+      </div>
 
-      <a href="https://wa.me/5521983747796?text=Quero%20agendar%20visita%20ao%20Sky%20Tower" target="_blank" class="hidden sm:inline-flex bg-cyan-glow text-black text-xs font-black uppercase tracking-widest px-6 py-2.5 rounded-full hover:bg-white transition-all shadow-[0_0_25px_rgba(139,233,253,0.3)]">
-        Tour no Decorado Virtual
+      <a href="https://wa.me/5521983747796?text=Quero%20agendar%20visita%20ao%20Sky%20Tower" target="_blank" class="hidden sm:inline-flex cyan-glow text-black text-xs font-extrabold uppercase tracking-widest px-6 py-2.5 rounded-full hover:bg-white transition-all">
+        Agendar Apresentação
       </a>
     </div>
   </header>
 
-  <!-- DOBRA 1: Hero Noturno Futurista -->
-  <section id="top" class="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
-    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop" alt="Skyline Balneário Camboriú" class="absolute inset-0 w-full h-full object-cover opacity-45">
-    <div class="absolute inset-0 bg-gradient-to-b from-[#030408]/70 via-[#030408]/30 to-[#030408]"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,233,253,0.12)_0%,transparent_70%)]"></div>
+  <!-- 1. HERO NOTURNO COM ALTITUDE MONUMENTAL -->
+  <section id="top" class="relative h-screen min-h-[750px] w-full flex items-center justify-center overflow-hidden">
+    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop" alt="Sky Tower Balneário" class="absolute inset-0 w-full h-full object-cover opacity-40 z-0">
+    <div class="absolute inset-0 bg-gradient-to-b from-[#030509]/80 via-transparent to-[#030509] z-10"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(139,233,253,0.1)_0%,transparent_70%)] z-10"></div>
 
-    <div class="relative z-20 max-w-5xl mx-auto px-6 text-center pt-28 pb-20">
-      <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-[#8BE9FD]/30 text-[#8BE9FD] text-xs font-bold uppercase tracking-widest mb-6">
-        <span class="w-2 h-2 rounded-full bg-[#8BE9FD] animate-pulse"></span> Andares 65 a 88 · Frente Mar Barra Sul
-      </span>
-      <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight leading-[1.02]">
-        Viva Acima das <br><span class="text-transparent bg-clip-text bg-cyan-glow">Nuvens no Brasil</span>.
+    <div class="relative z-20 max-w-5xl mx-auto px-6 text-center pt-24">
+      <span class="text-[#8BE9FD] text-xs font-bold uppercase tracking-[0.4em] block mb-4">280 Metros de Altitude · Barra Sul</span>
+      <h1 class="font-serif-luxury text-5xl sm:text-7xl lg:text-8xl font-normal leading-[0.95] text-white">
+        Onde o Oceano <br><span class="text-transparent bg-clip-text cyan-glow">Toca as Estrelas</span>.
       </h1>
-      <p class="text-white/70 text-base md:text-lg max-w-2xl mx-auto mt-6 font-light">
-        A monumentalidade arquitetônica de Balneário Camboriú elevada ao seu ápice. Coberturas suspensas com piscina privativa transparente e heliponto para o seu dia a dia.
+      <p class="text-white/60 text-base md:text-lg max-w-xl mx-auto mt-8 font-light leading-relaxed">
+        88 pavimentos na orla mais valorizada do Sul do Brasil. Coberturas suspensas com piscina privativa transparente e heliponto nas nuvens.
       </p>
-      <div class="mt-10 flex flex-wrap justify-center items-center gap-4">
-        <a href="#coberturas" class="bg-cyan-glow text-black font-black text-xs uppercase tracking-widest px-9 py-4 rounded-full hover:bg-white transition-all shadow-[0_0_30px_rgba(139,233,253,0.35)]">
-          Explorar Penthouses
+      <div class="mt-12 flex flex-wrap justify-center items-center gap-5">
+        <a href="#penthouses" class="cyan-glow text-black font-extrabold text-xs uppercase tracking-widest px-10 py-4 rounded-full hover:bg-white transition-all shadow-[0_0_30px_rgba(139,233,253,0.35)]">
+          Conhecer Penthouses
         </a>
         <a href="https://wa.me/5521983747796" target="_blank" class="border border-white/20 text-white font-bold text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:border-[#8BE9FD] hover:text-[#8BE9FD] transition-all">
-          Atendimento no WhatsApp
+          Tabela Direta em 100x
         </a>
       </div>
     </div>
   </section>
 
-  <!-- DOBRA 2: Indicadores Monumentais -->
-  <section class="py-16 bg-[#070A12] border-y border-white/10">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-white/10">
-        <div class="p-4">
-          <p class="text-4xl font-extrabold text-[#8BE9FD]">280m</p>
-          <span class="text-xs text-white/50 uppercase tracking-widest mt-1 block">Altura Total da Torre</span>
-        </div>
-        <div class="p-4">
-          <p class="text-4xl font-extrabold text-white">88</p>
-          <span class="text-xs text-white/50 uppercase tracking-widest mt-1 block">Pavimentos Exclusivos</span>
-        </div>
-        <div class="p-4">
-          <p class="text-4xl font-extrabold text-[#8BE9FD]">360°</p>
-          <span class="text-xs text-white/50 uppercase tracking-widest mt-1 block">Vista Mar & Marina</span>
-        </div>
-        <div class="p-4">
-          <p class="text-4xl font-extrabold text-white">100x</p>
-          <span class="text-xs text-white/50 uppercase tracking-widest mt-1 block">Tabela Direta sem Banco</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 3: Coleção de Penthouses -->
-  <section id="coberturas" class="py-28 px-6 md:px-12 max-w-7xl mx-auto reveal-on-scroll">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-4">
+  <!-- 2. NAVEGADOR 360° (MAR VS MARINA) -->
+  <section id="penthouses" class="py-32 px-6 md:px-16 max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
       <div>
-        <span class="text-[#8BE9FD] text-xs font-bold uppercase tracking-widest">Unidades de Alto Luxo</span>
-        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2">AS COBERTURAS SKY</h2>
-      </div>
-      <p class="text-white/50 text-sm max-w-md">Apartamentos duplex e triplex com pé-direito duplo de 6 metros no living.</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Unidade A -->
-      <div class="sky-card rounded-2xl overflow-hidden group">
-        <div class="aspect-video overflow-hidden relative">
-          <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1280&auto=format&fit=crop" alt="Penthouse Stratos" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-          <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-[#8BE9FD] px-3 py-1 text-xs font-bold rounded-full">ANDAR 82 · TRIPLEX</span>
-        </div>
-        <div class="p-8">
-          <h3 class="text-2xl font-bold text-white">Penthouse Stratos 360°</h3>
-          <p class="text-3xl font-extrabold text-[#8BE9FD] mt-2">R$ 38.000.000</p>
-          <div class="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-white/10 text-xs text-white/70 text-center">
-            <div><span class="font-bold text-white block text-sm">620 m²</span> Privativos</div>
-            <div><span class="font-bold text-white block text-sm">5 Suítes</span> Hidro</div>
-            <div><span class="font-bold text-white block text-sm">6 Vagas</span> + Vaga Náutica</div>
-          </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20proposta%20para%20a%20Penthouse%20Stratos" target="_blank" class="mt-6 block text-center bg-cyan-glow text-black font-extrabold text-xs uppercase tracking-wider py-3.5 rounded-xl hover:bg-white transition-colors">
-            Solicitar Ficha Técnica
-          </a>
-        </div>
+        <span class="text-[#8BE9FD] text-xs font-bold uppercase tracking-[0.3em]">Vista Dupla 360 Graus</span>
+        <h2 class="font-serif-luxury text-4xl sm:text-6xl text-white mt-2">Escolha sua Perspectiva</h2>
       </div>
 
-      <!-- Unidade B -->
-      <div class="sky-card rounded-2xl overflow-hidden group">
-        <div class="aspect-video overflow-hidden relative">
-          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1280&auto=format&fit=crop" alt="Sky Duplex" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-          <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-[#8BE9FD] px-3 py-1 text-xs font-bold rounded-full">ANDAR 70 · DUPLEX</span>
-        </div>
-        <div class="p-8">
-          <h3 class="text-2xl font-bold text-white">Skyline Grand Duplex</h3>
-          <p class="text-3xl font-extrabold text-[#8BE9FD] mt-2">R$ 24.500.000</p>
-          <div class="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-white/10 text-xs text-white/70 text-center">
-            <div><span class="font-bold text-white block text-sm">450 m²</span> Privativos</div>
-            <div><span class="font-bold text-white block text-sm">4 Suítes</span> Vista Mar</div>
-            <div><span class="font-bold text-white block text-sm">5 Vagas</span> Garagem</div>
-          </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20proposta%20para%20o%20Skyline%20Grand%20Duplex" target="_blank" class="mt-6 block text-center bg-cyan-glow text-black font-extrabold text-xs uppercase tracking-wider py-3.5 rounded-xl hover:bg-white transition-colors">
-            Solicitar Ficha Técnica
-          </a>
-        </div>
+      <!-- View Switcher -->
+      <div class="flex gap-2">
+        <button onclick="setView('mar')" class="view-btn px-6 py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider cyan-glow text-black transition-all" data-v="mar">Frente Mar (Praia Central)</button>
+        <button onclick="setView('marina')" class="view-btn px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider text-white/50 hover:text-white transition-all" data-v="marina">Vista Marina Tedesco</button>
       </div>
     </div>
-  </section>
 
-  <!-- DOBRA 4: Lazer a 200 Metros de Altura -->
-  <section id="lazer-ceu" class="py-24 bg-[#080B14] border-t border-white/10 reveal-on-scroll">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="text-center max-w-2xl mx-auto mb-20">
-        <span class="text-[#8BE9FD] text-xs font-bold uppercase tracking-widest">Experiência Celestial</span>
-        <h2 class="text-3xl sm:text-5xl font-extrabold mt-2">LAZER ELEVADO AO EXTREMO</h2>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div class="sky-card p-6 rounded-xl">
-          <i data-lucide="waves" class="w-8 h-8 text-[#8BE9FD] mb-4"></i>
-          <h4 class="font-bold text-lg">Piscina de Vidro Suspensa</h4>
-          <p class="text-xs text-white/60 mt-2">Borda infinita projetada para fora da fachada a mais de 200m do nível do mar.</p>
+    <div class="sky-monolith p-8 md:p-14 rounded-3xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 space-y-6">
+        <div>
+          <span class="text-xs text-[#8BE9FD] font-bold uppercase tracking-widest" id="view-badge">Andar 82 · Cobertura Triplex</span>
+          <h3 class="font-serif-luxury text-4xl text-white mt-1" id="view-title">Penthouse Stratos 360°</h3>
+          <p class="font-serif-luxury text-3xl text-[#8BE9FD] mt-2">R$ 38.000.000</p>
         </div>
-        <div class="sky-card p-6 rounded-xl">
-          <i data-lucide="wine" class="w-8 h-8 text-[#8BE9FD] mb-4"></i>
-          <h4 class="font-bold text-lg">Adega & Charutaria Sky</h4>
-          <p class="text-xs text-white/60 mt-2">Salão panorâmico exclusivo para degustação com exaustão de fumaça profissional.</p>
-        </div>
-        <div class="sky-card p-6 rounded-xl">
-          <i data-lucide="plane-takeoff" class="w-8 h-8 text-[#8BE9FD] mb-4"></i>
-          <h4 class="font-bold text-lg">Heliponto Privativo</h4>
-          <p class="text-xs text-white/60 mt-2">Pouso homologado com lounge de espera climatizado no topo da torre.</p>
-        </div>
-        <div class="sky-card p-6 rounded-xl">
-          <i data-lucide="anchor" class="w-8 h-8 text-[#8BE9FD] mb-4"></i>
-          <h4 class="font-bold text-lg">Vagas Náuticas na Marina</h4>
-          <p class="text-xs text-white/60 mt-2">Convênio de ancoragem e hangar privativo na Marina Tedesco.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 5: Tabela de Parcelamento em 100x -->
-  <section id="tabela" class="py-24 max-w-7xl mx-auto px-6 md:px-12 reveal-on-scroll">
-    <div class="sky-card p-8 md:p-14 rounded-2xl">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div class="lg:col-span-6 space-y-4">
-          <span class="text-[#8BE9FD] text-xs font-bold uppercase tracking-widest">Condição Direta com a Construtora</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold">Parcele seu Imóvel em até 100 Vezes.</h2>
-          <p class="text-white/70 text-sm leading-relaxed font-light">
-            Sem burocracia bancária. Entrada facilitada de 20%, 100 parcelas mensais corrigidas pelo CUB/SC e reforços anuais flexíveis negociados diretamente com o conselho gestor.
-          </p>
-        </div>
-        <div class="lg:col-span-6 bg-black/60 p-6 rounded-xl border border-white/10 space-y-4">
-          <div class="flex justify-between text-xs pb-3 border-b border-white/10">
-            <span>Entrada (20%):</span> <b class="text-[#8BE9FD]">R$ 4.900.000</b>
-          </div>
-          <div class="flex justify-between text-xs pb-3 border-b border-white/10">
-            <span>100x Mensais (50%):</span> <b class="text-white">R$ 122.500 / mês</b>
-          </div>
-          <div class="flex justify-between text-xs pb-3 border-b border-white/10">
-            <span>8x Reforços Semestrais (15%):</span> <b class="text-white">R$ 459.375</b>
-          </div>
-          <div class="flex justify-between text-xs pb-3 border-b border-white/10">
-            <span>Saldo nas Chaves (15%):</span> <b class="text-[#8BE9FD]">R$ 3.675.000</b>
-          </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20simular%20o%20parcelamento%20em%20100x%20do%20Sky%20Tower" target="_blank" class="block text-center bg-cyan-glow text-black font-black text-xs uppercase tracking-wider py-4 rounded-lg mt-4 hover:bg-white transition-colors">
-            Montar Proposta Personalizada
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer id="barra-sul" class="py-20 bg-black text-center border-t border-white/10 text-xs text-white/40">
-    <div class="max-w-4xl mx-auto px-6">
-      <h3 class="text-xl font-bold text-white">SKY TOWER BALNEÁRIO CAMBORIÚ</h3>
-      <p class="mt-2 text-white/60">Av. Atlântica, Barra Sul · Balneário Camboriú, Santa Catarina</p>
-      <div class="mt-8">
-        <a href="https://wa.me/5521983747796?text=Quero%20falar%20com%20o%20plantao%20Sky%20Tower" target="_blank" class="bg-cyan-glow text-black font-black text-xs uppercase tracking-widest px-8 py-3.5 rounded-full inline-block hover:bg-white transition-all">
-          Atendimento no WhatsApp
+        <p class="text-xs sm:text-sm text-white/70 leading-relaxed font-light" id="view-desc">
+          620 m² privativos com piscina de vidro suspensa na varanda a 250m de altura, 5 suítes master com closet e vaga náutica inclusa na Marina Tedesco.
+        </p>
+        <a href="https://wa.me/5521983747796?text=Quero%20proposta%20para%20a%20Penthouse%20Sky%20Tower" target="_blank" class="inline-block cyan-glow text-black font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 rounded-full hover:bg-white transition-all">
+          Solicitar Book em PDF
         </a>
       </div>
-      <p class="mt-12 text-[10px] text-white/30 uppercase tracking-widest">© 2026 Sky Tower Balneário Camboriú · Demonstração Imobiturbo™</p>
+
+      <div class="lg:col-span-7 aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 relative">
+        <img id="view-img" src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1280&auto=format&fit=crop" alt="Vista 360" class="w-full h-full object-cover">
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. FOOTER -->
+  <footer class="py-24 bg-black text-center border-t border-white/10 text-xs text-white/40">
+    <div class="max-w-4xl mx-auto px-6">
+      <span class="font-serif-luxury text-3xl text-white tracking-[0.2em]">SKY TOWER</span>
+      <p class="text-white/60 text-xs mt-3">Av. Atlântica, Barra Sul · Balneário Camboriú - SC</p>
+      <p class="text-[10px] text-white/30 uppercase tracking-widest mt-8">© 2026 Sky Tower Balneário Camboriú · Demonstração Imobiturbo™</p>
     </div>
   </footer>
 
   <script>
     lucide.createIcons();
-    const reveals = document.querySelectorAll(".reveal-on-scroll");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add("is-visible");
+    const views = {
+      mar: {
+        badge: "Andar 82 · Cobertura Triplex",
+        title: "Penthouse Stratos 360°",
+        desc: "620 m² privativos com piscina de vidro suspensa na varanda a 250m de altura, 5 suítes master com closet e vaga náutica inclusa na Marina Tedesco.",
+        img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1280&auto=format&fit=crop"
+      },
+      marina: {
+        badge: "Andar 75 · Sunset & Marina",
+        title: "Skyline Sunset Duplex",
+        desc: "450 m² privativos com pôr do sol indevassável sobre o Rio Camboriú e atracadouro de iates. Pé-direito duplo de 6 metros.",
+        img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1280&auto=format&fit=crop"
+      }
+    };
+
+    function setView(v) {
+      const d = views[v];
+      if (!d) return;
+      document.getElementById("view-badge").innerText = d.badge;
+      document.getElementById("view-title").innerText = d.title;
+      document.getElementById("view-desc").innerText = d.desc;
+      document.getElementById("view-img").src = d.img;
+
+      document.querySelectorAll(".view-btn").forEach(b => {
+        if (b.dataset.v === v) {
+          b.className = "view-btn px-6 py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider cyan-glow text-black transition-all";
+        } else {
+          b.className = "view-btn px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider text-white/50 hover:text-white transition-all";
+        }
       });
-    }, { threshold: 0.12 });
-    reveals.forEach(r => observer.observe(r));
+    }
   </script>
 </body>
 </html>

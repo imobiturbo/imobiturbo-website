@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Northline — Lajes Corporativas & Empreendimentos Triple A em São Paulo | Imobiturbo</title>
+  <title>NORTHLINE — Lajes Corporativas Triple A nos Maiores Centros de São Paulo</title>
   <meta name="description" content="Edifícios corporativos e lajes comerciais de alto padrão na Faria Lima, Berrini e Chucri Zaidan. Locação e desinvestimento para fundos e multinacionais.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -12,33 +12,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    body { font-family: "Plus Jakarta Sans", sans-serif; background-color: #0B0E14; color: #FFFFFF; }
+    html, body {
+      margin: 0; padding: 0;
+      overflow-x: clip;
+      background-color: #07090E;
+      color: #E2E6EE;
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
     .gold-accent { color: #D4AF37; }
     .gold-bg { background-color: #D4AF37; }
-    .reveal-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
-    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .glass-box { background: rgba(16, 22, 34, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
   </style>
 </head>
-<body class="bg-[#0B0E14] text-white antialiased selection:bg-[#D4AF37] selection:text-black">
+<body class="bg-[#07090E] text-[#E2E6EE] antialiased selection:bg-[#D4AF37] selection:text-black">
 
   <!-- Imobiturbo Demo Top Banner -->
-  <div class="sticky top-0 z-[70] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
+  <div class="sticky top-0 z-[80] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
     <div class="flex items-center gap-3">
       <a href="/demo/" class="text-[#BFD730] font-bold hover:underline flex items-center gap-1">
-        <span>← Todas as Demos</span>
+        <span>← Demos Lab</span>
       </a>
       <span class="text-white/40">|</span>
-      <span class="text-white/90 font-medium">Modelo 03: <b>Northline Corporate</b> (Edifícios Comerciais & Faria Lima SP)</span>
+      <span class="text-white/90 font-medium">Showcase: <b>Northline Corporate</b> (Awwwards Swiss Architecture & Lajes SP)</span>
     </div>
-    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20imobiliario%20no%20estilo%20Northline" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3.5 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
-      Quero este Modelo no meu Negócio
+    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20imobiliario%20estilo%20Northline%20Awwwards" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3.5 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
+      Quero esse Padrão Visual
     </a>
   </div>
 
   <!-- Header -->
-  <header class="absolute top-8 left-0 right-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
-      <a href="#top" class="flex items-center gap-3 group">
+  <header class="fixed top-8 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 md:px-16 py-5 flex items-center justify-between">
+      <a href="#top" class="flex items-center gap-3">
         <div class="flex items-end gap-1 h-6">
           <span class="w-1 bg-[#D4AF37] h-3"></span>
           <span class="w-1 bg-[#D4AF37] h-6"></span>
@@ -46,213 +51,140 @@
         </div>
         <div class="flex flex-col">
           <span class="text-lg font-extrabold tracking-widest text-white leading-none">NORTHLINE</span>
-          <span class="text-[9px] font-bold tracking-[0.25em] text-[#D4AF37] leading-none mt-0.5">CORPORATE · SP</span>
+          <span class="text-[8px] font-bold tracking-[0.3em] text-[#D4AF37] leading-none mt-0.5">CORPORATE · SP</span>
         </div>
       </a>
 
-      <nav class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-white/80">
-        <a href="#especificacoes" class="hover:text-[#D4AF37] transition-colors">Padrão Construtivo</a>
-        <a href="#lajes" class="hover:text-[#D4AF37] transition-colors">Lajes Disponíveis</a>
-        <a href="#analise" class="hover:text-[#D4AF37] transition-colors">Yield & Renda</a>
-        <a href="#contato" class="hover:text-[#D4AF37] transition-colors">Falar com Novos Negócios</a>
-      </nav>
-
-      <a href="https://wa.me/5521983747796?text=Quero%20informacoes%20sobre%20lajes%20corporativas%20Northline" target="_blank" class="hidden sm:inline-flex border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-all px-6 py-2.5 text-xs font-extrabold uppercase tracking-wider">
-        Contato Corporativo
+      <a href="https://wa.me/5521983747796?text=Quero%20informacoes%20de%20lajes%20corporativas%20Northline" target="_blank" class="hidden sm:inline-flex border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-all px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider">
+        Mesa de Novos Negócios
       </a>
     </div>
   </header>
 
-  <!-- DOBRA 1: Hero Corporativo -->
+  <!-- 1. HERO COM VÍDEO E GRID SUÍÇO -->
   <section id="top" class="relative min-h-screen w-full flex items-center overflow-hidden">
-    <video src="https://strvid.nyc3.cdn.digitaloceanspaces.com/motionsite/real_estate_bg_hero_1.mp4" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-50 z-0"></video>
-    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent z-10"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-transparent to-black/70 z-10"></div>
+    <video src="https://strvid.nyc3.cdn.digitaloceanspaces.com/motionsite/real_estate_bg_hero_1.mp4" autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-45 z-0"></video>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#07090E] via-[#07090E]/80 to-transparent z-10"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#07090E] via-transparent to-black/60 z-10"></div>
 
-    <div class="relative z-20 max-w-7xl mx-auto px-6 md:px-12 pt-24 pb-32 w-full">
+    <div class="relative z-20 max-w-7xl mx-auto px-6 md:px-16 pt-28 pb-20 w-full">
       <div class="max-w-3xl">
-        <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.25em] flex items-center gap-2">
-          <i data-lucide="building-2" class="w-4 h-4"></i> Lajes Corporativas Triple A · São Paulo
+        <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.3em] flex items-center gap-2">
+          <span class="w-6 h-[1px] bg-[#D4AF37]"></span> Lajes Corporativas Triple A · São Paulo
         </span>
-        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.05] mt-4">
-          Espaços que Impulsionam Grandes Negócios.
+        <h1 class="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[0.98] mt-4">
+          Espaços que Definem o Ritmo Financeiro do País.
         </h1>
         <p class="text-white/70 text-base md:text-lg mt-6 leading-relaxed font-light">
-          Desenvolvimento, locação e gestão de edifícios corporativos icônicos nos maiores eixos financeiros do país: Av. Faria Lima, Berrini e Chucri Zaidan.
+          Desenvolvimento e locação de edifícios corporativos icônicos nos maiores eixos de decisão: Av. Faria Lima, Berrini e Chucri Zaidan.
         </p>
         <div class="mt-10 flex flex-wrap items-center gap-4">
-          <a href="#lajes" class="gold-bg text-black px-8 py-4 text-xs font-extrabold uppercase tracking-wider hover:bg-white transition-all flex items-center gap-2 shadow-xl">
-            Ver Lajes Disponíveis <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          <a href="#lajes" class="gold-bg text-black px-8 py-4 rounded-full text-xs font-extrabold uppercase tracking-wider hover:bg-white transition-all shadow-xl">
+            Explorar Lajes Disponíveis
           </a>
-          <a href="https://wa.me/5521983747796" target="_blank" class="border border-white/30 text-white px-7 py-4 text-xs font-bold uppercase tracking-wider hover:border-[#D4AF37] hover:text-[#D4AF37] transition-all">
-            Falar com a Equipe de Locação
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 2: Grid Flutuante de Especificações Técnicas -->
-  <section id="especificacoes" class="relative z-30 max-w-7xl mx-auto px-6 md:px-12 lg:-mt-20">
-    <div class="bg-[#131924]/95 backdrop-blur-xl border border-white/10 shadow-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/10">
-      <div class="p-8 group hover:bg-white/5 transition-colors">
-        <i data-lucide="award" class="w-8 h-8 text-[#D4AF37] mb-3 group-hover:scale-110 transition-transform"></i>
-        <h3 class="font-bold text-base text-white">LEED Platinum</h3>
-        <p class="text-xs text-white/50 mt-1 leading-relaxed">Eficiência energética de ponta e reuso integral de águas pluviais.</p>
-      </div>
-      <div class="p-8 group hover:bg-white/5 transition-colors">
-        <i data-lucide="zap" class="w-8 h-8 text-[#D4AF37] mb-3 group-hover:scale-110 transition-transform"></i>
-        <h3 class="font-bold text-base text-white">Gerador 100% Pleno</h3>
-        <p class="text-xs text-white/50 mt-1 leading-relaxed">Suporte ininterrupto para áreas privativas, ar condicionado e data centers.</p>
-      </div>
-      <div class="p-8 group hover:bg-white/5 transition-colors">
-        <i data-lucide="shield" class="w-8 h-8 text-[#D4AF37] mb-3 group-hover:scale-110 transition-transform"></i>
-        <h3 class="font-bold text-base text-white">Piso Elevado & VRF</h3>
-        <p class="text-xs text-white/50 mt-1 leading-relaxed">Flexibilidade total de cabeamento e climatização setorizada por zona.</p>
-      </div>
-      <div class="p-8 group hover:bg-white/5 transition-colors">
-        <i data-lucide="navigation-2" class="w-8 h-8 text-[#D4AF37] mb-3 group-hover:scale-110 transition-transform"></i>
-        <h3 class="font-bold text-base text-white">Heliponto 6 Toneladas</h3>
-        <p class="text-xs text-white/50 mt-1 leading-relaxed">Homologação para aeronaves executivas bimotoras de grande porte.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 3: Lajes Corporativas Disponíveis -->
-  <section id="lajes" class="py-28 px-6 md:px-12 max-w-7xl mx-auto reveal-on-scroll">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-      <div>
-        <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.25em]">Locação e Desinvestimento</span>
-        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mt-2">LAJES EM DESTAQUE EM SÃO PAULO</h2>
-      </div>
-      <p class="text-white/50 text-sm max-w-md">Opções moduladas a partir de 500 m² até monousuários corporativos inteiros.</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Edifício 1 -->
-      <div class="bg-[#131924] border border-white/10 overflow-hidden group">
-        <div class="h-64 overflow-hidden relative">
-          <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1280&auto=format&fit=crop" alt="Faria Lima Plaza" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#D4AF37] tracking-widest">AV. FARIA LIMA · SP</span>
-        </div>
-        <div class="p-6">
-          <h3 class="font-bold text-xl text-white">Torre Faria Lima Financial</h3>
-          <p class="text-xs text-white/50 mt-1">Ao lado da estação Faria Lima do Metrô</p>
-          <div class="mt-4 pt-4 border-t border-white/10 space-y-1.5 text-xs text-white/70">
-            <div class="flex justify-between"><span>Área da Laje:</span> <b class="text-white">1.850 m² úteis</b></div>
-            <div class="flex justify-between"><span>Vagas Demarcadas:</span> <b class="text-white">48 vagas / laje</b></div>
-            <div class="flex justify-between text-[#D4AF37]"><span>Valor Locação:</span> <b class="font-bold">R$ 290 / m²</b></div>
-          </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20proposta%20para%20a%20Torre%20Faria%20Lima" target="_blank" class="mt-6 block text-center gold-bg text-black py-3 text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-colors">
-            Solicitar Book Técnico
-          </a>
-        </div>
-      </div>
-
-      <!-- Edifício 2 -->
-      <div class="bg-[#131924] border border-white/10 overflow-hidden group border-[#D4AF37]/50">
-        <div class="h-64 overflow-hidden relative">
-          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1280&auto=format&fit=crop" alt="Berrini Prime" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#D4AF37] tracking-widest">ENG. LUÍS CARLOS BERRINI · SP</span>
-        </div>
-        <div class="p-6">
-          <h3 class="font-bold text-xl text-white">Berrini Corporate Tower</h3>
-          <p class="text-xs text-white/50 mt-1">Próximo à Estação Berrini da CPTM</p>
-          <div class="mt-4 pt-4 border-t border-white/10 space-y-1.5 text-xs text-white/70">
-            <div class="flex justify-between"><span>Área da Laje:</span> <b class="text-white">2.400 m² moduláveis</b></div>
-            <div class="flex justify-between"><span>Vagas Demarcadas:</span> <b class="text-white">62 vagas / laje</b></div>
-            <div class="flex justify-between text-[#D4AF37]"><span>Valor Locação:</span> <b class="font-bold">R$ 160 / m²</b></div>
-          </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20proposta%20para%20o%20Berrini%20Corporate" target="_blank" class="mt-6 block text-center gold-bg text-black py-3 text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-colors">
-            Solicitar Book Técnico
-          </a>
-        </div>
-      </div>
-
-      <!-- Edifício 3 -->
-      <div class="bg-[#131924] border border-white/10 overflow-hidden group">
-        <div class="h-64 overflow-hidden relative">
-          <img src="https://images.unsplash.com/photo-1587293852726-70cdb56c2866?q=80&w=1280&auto=format&fit=crop" alt="Chucri Zaidan" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[10px] font-bold text-[#D4AF37] tracking-widest">DR. CHUCRI ZAIDAN · SP</span>
-        </div>
-        <div class="p-6">
-          <h3 class="font-bold text-xl text-white">Nexus Grand Tower</h3>
-          <p class="text-xs text-white/50 mt-1">Eixo Morumbi / Chucri Zaidan</p>
-          <div class="mt-4 pt-4 border-t border-white/10 space-y-1.5 text-xs text-white/70">
-            <div class="flex justify-between"><span>Área da Laje:</span> <b class="text-white">3.100 m² inteiros</b></div>
-            <div class="flex justify-between"><span>Vagas Demarcadas:</span> <b class="text-white">80 vagas / laje</b></div>
-            <div class="flex justify-between text-[#D4AF37]"><span>Valor Locação:</span> <b class="font-bold">R$ 145 / m²</b></div>
-          </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20proposta%20para%20o%20Nexus%20Grand%20Tower" target="_blank" class="mt-6 block text-center gold-bg text-black py-3 text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-colors">
-            Solicitar Book Técnico
+          <a href="https://wa.me/5521983747796" target="_blank" class="border border-white/20 text-white px-8 py-4 rounded-full text-xs font-bold uppercase tracking-wider hover:border-[#D4AF37] hover:text-[#D4AF37] transition-all">
+            Solicitar Book de Engenharia
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- DOBRA 4: Análise de Yield & Renda de Aluguel -->
-  <section id="analise" class="py-24 bg-[#07090D] border-t border-white/5 reveal-on-scroll">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div class="lg:col-span-6 space-y-6">
-          <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.25em]">Métricas Para Family Offices e FIIs</span>
-          <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight">
-            Estabilidade com Inquilinos Multinacionais e Contratos Atípicos.
-          </h2>
-          <p class="text-white/70 text-sm md:text-base font-light leading-relaxed">
-            Contratos de locação corporativa estruturados no formato Built-to-Suit ou Sale & Leaseback com prazo de 10 a 15 anos e reajuste anual por IPCA / IGP-M.
-          </p>
-          <div class="grid grid-cols-3 gap-4 pt-4 border-t border-white/10 text-center">
-            <div>
-              <p class="text-3xl font-extrabold text-[#D4AF37]">9.4%</p>
-              <span class="text-[10px] text-white/50 uppercase">Cap Rate Médio a.a.</span>
-            </div>
-            <div>
-              <p class="text-3xl font-extrabold text-white">98.2%</p>
-              <span class="text-[10px] text-white/50 uppercase">Taxa de Ocupação</span>
-            </div>
-            <div>
-              <p class="text-3xl font-extrabold text-[#D4AF37]">AAA</p>
-              <span class="text-[10px] text-white/50 uppercase">Rating de Crédito</span>
-            </div>
+  <!-- 2. SIMULADOR DE ANDARES & VISTA PANORÂMICA (Awwwards Element) -->
+  <section id="lajes" class="py-32 px-6 md:px-16 max-w-7xl mx-auto">
+    <div class="mb-16">
+      <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.3em]">Elevador de Pavimentos</span>
+      <h2 class="text-4xl sm:text-6xl font-extrabold text-white mt-2">Navegue pelas Lajes da Faria Lima</h2>
+      <p class="text-white/60 text-sm mt-3">Alterne os andares para visualizar a área útil, vagas privativas e horizonte financeiro.</p>
+    </div>
+
+    <!-- Interactive Floor Navigator -->
+    <div class="glass-box p-8 md:p-12 rounded-3xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 space-y-6">
+        <div>
+          <span class="text-xs text-[#D4AF37] font-bold uppercase tracking-widest" id="fl-corp-badge">Torre Faria Lima · Andar 32</span>
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white mt-1" id="fl-corp-title">Laje Panorâmica Faria Lima</h3>
+          <p class="text-3xl font-extrabold text-[#D4AF37] mt-2" id="fl-corp-area">1.850 m² <span class="text-xs text-white/50 font-normal">úteis</span></p>
+        </div>
+
+        <div class="space-y-3">
+          <label class="text-xs font-bold text-white/70 uppercase">Selecione o Andar:</label>
+          <div class="flex gap-2">
+            <button onclick="setCorpFloor(15)" class="corp-btn px-4 py-2 rounded-lg bg-white/10 text-xs font-bold hover:bg-white hover:text-black transition-all" data-floor="15">15º Andar</button>
+            <button onclick="setCorpFloor(24)" class="corp-btn px-4 py-2 rounded-lg bg-white/10 text-xs font-bold hover:bg-white hover:text-black transition-all" data-floor="24">24º Andar</button>
+            <button onclick="setCorpFloor(32)" class="corp-btn px-4 py-2 rounded-lg gold-bg text-black text-xs font-extrabold transition-all" data-floor="32">32º Andar (Rooftop)</button>
           </div>
         </div>
 
-        <div class="lg:col-span-6 bg-[#131924] p-8 border border-white/10">
-          <h3 class="text-lg font-bold text-white mb-4">Solicite o Relatório Trimestral de Vacância e Absorção</h3>
-          <p class="text-xs text-white/60 mb-6">Mapeamento completo dos valores de locação por m² e novas entregas de estoques de escritórios em São Paulo.</p>
-          <a href="https://wa.me/5521983747796?text=Quero%20receber%20o%20relatorio%20de%20vacancia%20e%20absorcao%20Northline" target="_blank" class="block text-center gold-bg text-black py-4 text-xs uppercase font-extrabold tracking-wider hover:bg-white transition-all">
-            Receber Relatório em PDF no WhatsApp
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
+        <ul class="space-y-2 text-xs text-white/80 border-t border-white/10 pt-4" id="fl-corp-specs">
+          <li>• Piso elevado de 15cm e ar-condicionado central VRF</li>
+          <li>• 48 Vagas demarcadas no subsolo com serviço de valet</li>
+          <li>• Certificação LEED Platinum de eficiência energética</li>
+        </ul>
 
-  <!-- Footer -->
-  <footer id="contato" class="py-20 bg-black text-center border-t border-white/10 text-xs text-white/40">
-    <div class="max-w-4xl mx-auto px-6">
-      <p class="font-extrabold text-base text-white">NORTHLINE CORPORATE SÃO PAULO</p>
-      <p class="mt-2 text-white/50">Av. Brigadeiro Faria Lima, 3477 · Itaim Bibi, São Paulo - SP</p>
-      <div class="mt-8">
-        <a href="https://wa.me/5521983747796?text=Quero%20falar%20com%20a%20Northline%20Corporate" target="_blank" class="gold-bg text-black font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 inline-block hover:bg-white transition-all">
-          Atendimento Direto no WhatsApp
+        <a href="https://wa.me/5521983747796?text=Quero%20proposta%20para%20a%20Laje%20Faria%20Lima" target="_blank" class="inline-block gold-bg text-black font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 rounded-full hover:bg-white transition-all">
+          Solicitar Proposta de Locação
         </a>
       </div>
-      <p class="mt-12 text-[10px] text-white/30 uppercase tracking-widest">© 2026 Northline Corporate · Demonstração Imobiturbo™</p>
+
+      <div class="lg:col-span-7 aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 relative">
+        <img id="fl-corp-img" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1280&auto=format&fit=crop" alt="Vista Corporativa" class="w-full h-full object-cover">
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. FOOTER -->
+  <footer class="py-24 bg-black text-center border-t border-white/10 text-xs text-white/40">
+    <div class="max-w-4xl mx-auto px-6">
+      <p class="text-lg font-extrabold text-white tracking-widest">NORTHLINE CORPORATE SÃO PAULO</p>
+      <p class="text-white/60 text-xs mt-2">Av. Brigadeiro Faria Lima, 3477 · Itaim Bibi, São Paulo - SP</p>
+      <p class="text-[10px] text-white/30 uppercase tracking-widest mt-8">© 2026 Northline Corporate · Demonstração Imobiturbo™</p>
     </div>
   </footer>
 
   <script>
     lucide.createIcons();
-    const reveals = document.querySelectorAll(".reveal-on-scroll");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add("is-visible");
+    const corpFloors = {
+      15: {
+        badge: "Torre Faria Lima · Andar 15",
+        title: "Laje Corporativa Modulada",
+        area: "950 m² <span class="text-xs text-white/50 font-normal">úteis</span>",
+        specs: "<li>• Módulo flexível para até 180 postos de trabalho</li><li>• 24 Vagas demarcadas</li><li>• Pé-direito livre de 2,80m</li>",
+        img: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1280&auto=format&fit=crop"
+      },
+      24: {
+        badge: "Torre Faria Lima · Andar 24",
+        title: "Laje Dupla Corporativa",
+        area: "1.400 m² <span class="text-xs text-white/50 font-normal">úteis</span>",
+        specs: "<li>• Vão livre sem colunas centrais</li><li>• 36 Vagas demarcadas</li><li>• Gerador 100% pleno para ar e tomadas</li>",
+        img: "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?q=80&w=1280&auto=format&fit=crop"
+      },
+      32: {
+        badge: "Torre Faria Lima · Andar 32",
+        title: "Laje Panorâmica Faria Lima",
+        area: "1.850 m² <span class="text-xs text-white/50 font-normal">úteis</span>",
+        specs: "<li>• Vista 360° para a Faria Lima e o Jockey Club</li><li>• 48 Vagas demarcadas</li><li>• Heliponto homologado para 6 toneladas</li>",
+        img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1280&auto=format&fit=crop"
+      }
+    };
+
+    function setCorpFloor(f) {
+      const d = corpFloors[f];
+      if (!d) return;
+      document.getElementById("fl-corp-badge").innerText = d.badge;
+      document.getElementById("fl-corp-title").innerText = d.title;
+      document.getElementById("fl-corp-area").innerHTML = d.area;
+      document.getElementById("fl-corp-specs").innerHTML = d.specs;
+      document.getElementById("fl-corp-img").src = d.img;
+
+      document.querySelectorAll(".corp-btn").forEach(b => {
+        if (parseInt(b.dataset.floor, 10) === f) {
+          b.className = "corp-btn px-4 py-2 rounded-lg gold-bg text-black text-xs font-extrabold transition-all";
+        } else {
+          b.className = "corp-btn px-4 py-2 rounded-lg bg-white/10 text-xs font-bold hover:bg-white hover:text-black transition-all";
+        }
       });
-    }, { threshold: 0.12 });
-    reveals.forEach(r => observer.observe(r));
+    }
   </script>
 </body>
 </html>

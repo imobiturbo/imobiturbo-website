@@ -3,329 +3,176 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LUXONN — Mansões e Propriedades de Altíssimo Luxo no Brasil | Imobiturbo</title>
-  <meta name="description" content="Assessoria confidencial especializada em mansões de altíssimo padrão em Alphaville, Jardins, Angra dos Reis e Fazenda Boa Vista.">
+  <title>LUXONN MANSIONS — Coleção Privada de Residências Monumentais</title>
+  <meta name="description" content="Assessoria confidencial especializada em mansões off-market em Alphaville, Fazenda Boa Vista, Jardins e Angra dos Reis.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
-    body { font-family: "Plus Jakarta Sans", sans-serif; background-color: #050505; color: #FFFFFF; }
-    .font-bebas { font-family: "Bebas Neue", sans-serif; }
-    .gold-gradient { background: linear-gradient(135deg, #F3E0B5 0%, #D4A95F 50%, #AA7C2E 100%); }
-    .text-gold { color: #D4A95F; }
-    .border-gold { border-color: #D4A95F; }
-    .glass-card { background: rgba(18, 18, 18, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.4s ease; }
-    .glass-card:hover { border-color: rgba(212, 169, 95, 0.5); transform: translateY(-6px); box-shadow: 0 20px 40px -10px rgba(212, 169, 95, 0.12); }
-    .reveal-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
-    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    html, body {
+      margin: 0; padding: 0;
+      overflow-x: clip;
+      background-color: #050505;
+      color: #EDEBE6;
+      font-family: "Plus Jakarta Sans", sans-serif;
+    }
+    .font-syne { font-family: "Syne", sans-serif; }
+    .gold-accent { color: #D4AF37; }
+    .gold-border { border-color: rgba(212, 175, 55, 0.3); }
+    .glass-monolith { background: rgba(18, 18, 20, 0.65); backdrop-filter: blur(24px); border: 1px solid rgba(255, 255, 255, 0.08); transition: transform 0.3s ease, border-color 0.3s ease; }
+    .glass-monolith:hover { border-color: rgba(212, 175, 55, 0.45); transform: translateY(-4px); }
   </style>
 </head>
-<body class="bg-[#050505] text-white antialiased selection:bg-[#D4A95F] selection:text-black">
+<body class="bg-[#050505] text-[#EDEBE6] antialiased selection:bg-[#D4AF37] selection:text-black">
 
   <!-- Imobiturbo Demo Top Banner -->
-  <div class="sticky top-0 z-[70] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
+  <div class="sticky top-0 z-[80] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
     <div class="flex items-center gap-3">
       <a href="/demo/" class="text-[#BFD730] font-bold hover:underline flex items-center gap-1">
-        <span>← Todas as Demos</span>
+        <span>← Demos Lab</span>
       </a>
       <span class="text-white/40">|</span>
-      <span class="text-white/90 font-medium">Modelo 02: <b>LUXONN Mansões</b> (Dark Aesthetic & Off-Market Brasil)</span>
+      <span class="text-white/90 font-medium">Showcase: <b>LUXONN Mansions</b> (Awwwards Black Canvas & Off-Market)</span>
     </div>
-    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20imobiliario%20no%20estilo%20LUXONN" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3.5 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
-      Quero este Modelo no meu Negócio
+    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20imobiliario%20estilo%20LUXONN%20Awwwards" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3.5 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
+      Quero esse Padrão Visual
     </a>
   </div>
 
   <!-- Header -->
-  <header id="main-nav" class="fixed top-8 left-0 right-0 z-50 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
-      <!-- Logo -->
+  <header class="fixed top-8 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 md:px-16 py-6 flex items-center justify-between">
       <a href="#top" class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-full border border-gold/70 flex items-center justify-center font-bebas text-xl text-gold">L</div>
+        <div class="w-8 h-8 rounded-full border border-[#D4AF37] flex items-center justify-center font-syne font-bold text-sm text-[#D4AF37]">L</div>
         <div class="flex flex-col">
-          <span class="font-bebas text-2xl tracking-[0.25em] text-white leading-none">LUXONN</span>
-          <span class="text-[8px] tracking-[0.3em] text-gold uppercase font-bold mt-0.5">MANSIONS · BRASIL</span>
+          <span class="font-syne text-xl font-bold tracking-[0.25em] text-white leading-none">LUXONN</span>
+          <span class="text-[8px] font-bold tracking-[0.35em] text-[#D4AF37] uppercase mt-0.5">PRIVATE MANSIONS</span>
         </div>
       </a>
 
-      <!-- Links -->
-      <nav class="hidden md:flex items-center gap-10 text-xs uppercase tracking-[0.2em] text-white/70 font-semibold">
-        <a href="#mansoes" class="hover:text-gold transition-colors">Coleção Privada</a>
-        <a href="#diferenciais" class="hover:text-gold transition-colors">Segurança & Automação</a>
-        <a href="#destinos" class="hover:text-gold transition-colors">Destinos Nobres</a>
-        <a href="#assessoria" class="hover:text-gold transition-colors">Assessoria Off-Market</a>
-      </nav>
-
-      <!-- CTA -->
-      <div class="hidden sm:block">
-        <a href="https://wa.me/5521983747796?text=Ola%2C%20gostaria%20de%20atendimento%20confidencial%20LUXONN" target="_blank" rel="noopener noreferrer" class="gold-gradient text-black text-xs font-extrabold uppercase tracking-widest px-6 py-3 hover:scale-105 transition-all shadow-[0_0_25px_rgba(212,169,95,0.35)]">
-          Atendimento Confidencial
-        </a>
-      </div>
+      <a href="https://wa.me/5521983747796?text=Quero%20atendimento%20confidencial%20LUXONN" target="_blank" class="hidden sm:inline-flex border border-[#D4AF37]/60 text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-all px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest">
+        Atendimento Reservado
+      </a>
     </div>
   </header>
 
-  <!-- DOBRA 1: Hero Cinematográfico -->
-  <section id="top" class="relative min-h-screen w-full flex items-center overflow-hidden">
-    <video src="https://strvid.nyc3.cdn.digitaloceanspaces.com/motionsite/hero_bg_video_real_estate.mp4" poster="https://strvid.nyc3.cdn.digitaloceanspaces.com/motionsite/luxonn_hero_bg%20_img.png" autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-65 z-0"></video>
-    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
-    <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/70 z-10"></div>
+  <!-- 1. FULL-BLEED MONUMENTAL HERO -->
+  <section id="top" class="relative h-screen min-h-[750px] w-full flex items-center justify-center overflow-hidden">
+    <video src="https://strvid.nyc3.cdn.digitaloceanspaces.com/motionsite/hero_bg_video_real_estate.mp4" autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover opacity-50 z-0"></video>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-black/40 to-black/70 z-10"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#050505_90%)] z-10"></div>
 
-    <div class="relative z-20 max-w-7xl mx-auto px-6 md:px-12 pt-24 pb-20 w-full">
-      <div class="max-w-3xl">
-        <span class="text-gold text-xs md:text-sm font-bold uppercase tracking-[0.3em] flex items-center gap-2">
-          <span class="w-6 h-[1px] bg-gold"></span> Coleção Residencial Privada
-        </span>
-        <h1 class="font-bebas text-6xl sm:text-8xl lg:text-9xl leading-[0.9] tracking-tight mt-4">
-          MANSÕES QUE DEFINEM <br><span class="text-transparent bg-clip-text gold-gradient">GERAÇÕES</span>.
-        </h1>
-        <p class="text-white/70 text-base md:text-lg max-w-xl font-light leading-relaxed mt-6">
-          Acesso exclusivo às propriedades mais cinematográficas do Brasil: Alphaville, Fazenda Boa Vista, Jardins e refúgios náuticos em Angra dos Reis.
-        </p>
-        <div class="mt-10 flex flex-wrap items-center gap-5">
-          <a href="#mansoes" class="gold-gradient text-black text-xs font-black uppercase tracking-widest px-9 py-4 hover:scale-105 transition-all shadow-xl">
-            Ver Portfólio Disponível
-          </a>
-          <a href="https://wa.me/5521983747796" target="_blank" class="border border-white/20 text-white text-xs font-bold uppercase tracking-widest px-8 py-4 hover:border-gold hover:text-gold transition-all">
-            Solicitar Catálogo Reservado
-          </a>
+    <div class="relative z-20 max-w-5xl mx-auto px-6 text-center pt-24">
+      <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.4em] block mb-4">Off-Market Private Brokerage</span>
+      <h1 class="font-syne text-5xl sm:text-7xl lg:text-8xl font-extrabold uppercase leading-[0.95] tracking-tight">
+        A ARTE DE POSSUIR <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F3E0B5] via-[#D4AF37] to-[#AA7C2E]">O INACESSÍVEL</span>.
+      </h1>
+      <p class="text-white/60 text-base md:text-lg max-w-xl mx-auto mt-8 font-light leading-relaxed">
+        Assessoria discreta para aquisição e venda das propriedades mais cinematográficas do Brasil: Alphaville, Fazenda Boa Vista e Angra dos Reis.
+      </p>
+      <div class="mt-12 flex flex-wrap justify-center items-center gap-5">
+        <a href="#catalogo" class="bg-[#D4AF37] text-black font-extrabold text-xs uppercase tracking-widest px-10 py-4 rounded-full hover:bg-white transition-all shadow-[0_0_30px_rgba(212,175,55,0.3)]">
+          Acessar Portfólio Reservado
+        </a>
+        <a href="https://wa.me/5521983747796" target="_blank" class="border border-white/20 text-white font-bold text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:border-[#D4AF37] hover:text-[#D4AF37] transition-all">
+          Firmar Termo de Sigilo (NDA)
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. NÚMEROS DE IMPACTO COM TIPOGRAFIA ESCULTURAL -->
+  <section class="py-24 bg-[#09090A] border-y border-white/5">
+    <div class="max-w-7xl mx-auto px-6 md:px-16">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
+        <div class="p-4">
+          <p class="font-syne text-5xl sm:text-6xl font-extrabold text-[#D4AF37]">R$ 2.4 BI</p>
+          <span class="text-xs text-white/50 uppercase tracking-widest mt-2 block">Volume em Mansões Privadas</span>
+        </div>
+        <div class="p-4">
+          <p class="font-syne text-5xl sm:text-6xl font-extrabold text-white">100%</p>
+          <span class="text-xs text-white/50 uppercase tracking-widest mt-2 block">Proteção de Identidade e NDA</span>
+        </div>
+        <div class="p-4">
+          <p class="font-syne text-5xl sm:text-6xl font-extrabold text-[#D4AF37]">48 Horas</p>
+          <span class="text-xs text-white/50 uppercase tracking-widest mt-2 block">Mapeamento de Oportunidades Ocultas</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- DOBRA 2: Métricas de Discrição -->
-  <section class="py-16 bg-[#0A0A0A] border-y border-white/10">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-white/10">
-        <div class="p-4">
-          <p class="font-bebas text-4xl sm:text-5xl text-gold">R$ 1.8 BI</p>
-          <span class="text-[11px] text-white/50 uppercase tracking-widest mt-1 block">Transacionados em Mansões</span>
-        </div>
-        <div class="p-4">
-          <p class="font-bebas text-4xl sm:text-5xl text-white">100%</p>
-          <span class="text-[11px] text-white/50 uppercase tracking-widest mt-1 block">Termo de Confidencialidade (NDA)</span>
-        </div>
-        <div class="p-4">
-          <p class="font-bebas text-4xl sm:text-5xl text-gold">48H</p>
-          <span class="text-[11px] text-white/50 uppercase tracking-widest mt-1 block">Acesso a Imóveis Fora do Mercado</span>
-        </div>
-        <div class="p-4">
-          <p class="font-bebas text-4xl sm:text-5xl text-white">0%</p>
-          <span class="text-[11px] text-white/50 uppercase tracking-widest mt-1 block">Exposição Pública Indesejada</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 3: Coleção Privada de Mansões -->
-  <section id="mansoes" class="py-28 px-6 md:px-12 max-w-7xl mx-auto reveal-on-scroll">
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+  <!-- 3. VITRINE DE MANSÕES ESCULTURAIS -->
+  <section id="catalogo" class="py-32 px-6 md:px-16 max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-6">
       <div>
-        <span class="text-gold text-xs font-bold uppercase tracking-[0.3em]">Curadoria Rigorosa</span>
-        <h2 class="font-bebas text-4xl sm:text-6xl tracking-wider mt-2">OPORTUNIDADES EM DESTAQUE</h2>
+        <span class="text-[#D4AF37] text-xs font-bold uppercase tracking-[0.3em]">Curadoria Rigorosa</span>
+        <h2 class="font-syne text-4xl sm:text-6xl font-bold uppercase text-white mt-2">Mansões em Destaque</h2>
       </div>
-      <p class="text-white/50 text-sm max-w-md">Propriedades avaliadas em padrão internacional com heliponto homologado, segurança perimetral e arquitetura premiada.</p>
+      <p class="text-white/50 text-sm max-w-md">Propriedades avaliadas com laudo estrutural completo, heliponto homologado e segurança perimetral militar.</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="space-y-16">
       <!-- Mansão 1 -->
-      <div class="glass-card overflow-hidden group">
-        <div class="aspect-[4/3] overflow-hidden relative">
-          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1280&auto=format&fit=crop" alt="Mansão Alphaville" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[10px] font-bebas text-gold tracking-widest">ALPHAVILLE 01 · SP</span>
+      <div class="glass-monolith p-8 md:p-14 rounded-3xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 aspect-[16/10] rounded-2xl overflow-hidden relative">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1280&auto=format&fit=crop" alt="Villa Monet Alphaville" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-4 py-1 rounded-full text-[10px] font-syne font-bold text-[#D4AF37] tracking-widest uppercase">ALPHAVILLE 01 · SP</span>
         </div>
-        <div class="p-6">
-          <span class="text-xs text-white/50">Residência Contemporânea</span>
-          <h3 class="font-bebas text-2xl tracking-wide text-white mt-1">Villa Monet Alphaville</h3>
-          <p class="font-bebas text-3xl text-gold mt-2">R$ 28.500.000</p>
-          <div class="mt-4 pt-4 border-t border-white/10 grid grid-cols-3 gap-2 text-center text-xs text-white/70">
-            <div><span class="font-bold text-white block">1.450 m²</span> Terreno</div>
-            <div><span class="font-bold text-white block">6 Suítes</span> Master</div>
-            <div><span class="font-bold text-white block">8 Vagas</span> Cobertas</div>
+        <div class="lg:col-span-5 space-y-6">
+          <div>
+            <span class="text-xs text-white/40 uppercase tracking-widest">Residência Contemporânea</span>
+            <h3 class="font-syne text-3xl sm:text-4xl font-bold text-white mt-1">Villa Monet Alphaville</h3>
+            <p class="font-syne text-3xl text-[#D4AF37] mt-2">R$ 28.500.000</p>
           </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20detalhes%20da%20Villa%20Monet%20Alphaville" target="_blank" class="mt-6 block text-center border border-gold/50 text-gold hover:bg-gold hover:text-black transition-colors py-3 text-xs uppercase font-extrabold tracking-wider">
-            Ver Ficha Técnica Completa
+          <p class="text-xs sm:text-sm text-white/70 leading-relaxed font-light">
+            1.450 m² de terreno com bosque privativo, 6 suítes master com closet duplo, garagem subterrânea para 8 veículos e automação Crestron integral.
+          </p>
+          <a href="https://wa.me/5521983747796?text=Quero%20o%20book%20da%20Villa%20Monet%20Alphaville" target="_blank" class="inline-block bg-white text-black font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 rounded-full hover:bg-[#D4AF37] transition-all">
+            Solicitar Ficha Técnica Completa
           </a>
         </div>
       </div>
 
       <!-- Mansão 2 -->
-      <div class="glass-card overflow-hidden group border-gold/60">
-        <div class="aspect-[4/3] overflow-hidden relative">
-          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1280&auto=format&fit=crop" alt="Mansão Fazenda Boa Vista" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[10px] font-bebas text-gold tracking-widest">FAZENDA BOA VISTA · SP</span>
+      <div class="glass-monolith p-8 md:p-14 rounded-3xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 aspect-[16/10] rounded-2xl overflow-hidden relative">
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1280&auto=format&fit=crop" alt="Casa Fazenda Boa Vista" class="w-full h-full object-cover">
+          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-4 py-1 rounded-full text-[10px] font-syne font-bold text-[#D4AF37] tracking-widest uppercase">FAZENDA BOA VISTA · SP</span>
         </div>
-        <div class="p-6">
-          <span class="text-xs text-white/50">Campo & Golfe Internacional</span>
-          <h3 class="font-bebas text-2xl tracking-wide text-white mt-1">Casa das Palmeiras Boa Vista</h3>
-          <p class="font-bebas text-3xl text-gold mt-2">R$ 45.000.000</p>
-          <div class="mt-4 pt-4 border-t border-white/10 grid grid-cols-3 gap-2 text-center text-xs text-white/70">
-            <div><span class="font-bold text-white block">3.800 m²</span> Área Total</div>
-            <div><span class="font-bold text-white block">7 Suítes</span> Hóspedes</div>
-            <div><span class="font-bold text-white block">Quadra</span> Tênis Saibro</div>
+        <div class="lg:col-span-5 space-y-6">
+          <div>
+            <span class="text-xs text-white/40 uppercase tracking-widest">Campo & Golfe Internacional</span>
+            <h3 class="font-syne text-3xl sm:text-4xl font-bold text-white mt-1">Refúgio Boa Vista</h3>
+            <p class="font-syne text-3xl text-[#D4AF37] mt-2">R$ 45.000.000</p>
           </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20detalhes%20da%20Casa%20na%20Boa%20Vista" target="_blank" class="mt-6 block text-center gold-gradient text-black py-3 text-xs uppercase font-extrabold tracking-wider hover:opacity-90">
-            Consultar Visita com Heliponto
-          </a>
-        </div>
-      </div>
-
-      <!-- Mansão 3 -->
-      <div class="glass-card overflow-hidden group">
-        <div class="aspect-[4/3] overflow-hidden relative">
-          <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1280&auto=format&fit=crop" alt="Mansão Angra dos Reis" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-          <span class="absolute top-4 left-4 bg-black/80 backdrop-blur-md px-3 py-1 text-[10px] font-bebas text-gold tracking-widest">ANGRA DOS REIS · RJ</span>
-        </div>
-        <div class="p-6">
-          <span class="text-xs text-white/50">Península com Deck Náutico</span>
-          <h3 class="font-bebas text-2xl tracking-wide text-white mt-1">Refúgio Ponta do Leste</h3>
-          <p class="font-bebas text-3xl text-gold mt-2">R$ 62.000.000</p>
-          <div class="mt-4 pt-4 border-t border-white/10 grid grid-cols-3 gap-2 text-center text-xs text-white/70">
-            <div><span class="font-bold text-white block">Península</span> 5.000 m²</div>
-            <div><span class="font-bold text-white block">Pier</span> Barcos 120 pés</div>
-            <div><span class="font-bold text-white block">Praia</span> Privativa</div>
-          </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20detalhes%20da%20Mansao%20em%20Angra" target="_blank" class="mt-6 block text-center border border-gold/50 text-gold hover:bg-gold hover:text-black transition-colors py-3 text-xs uppercase font-extrabold tracking-wider">
-            Ver Ficha Técnica Completa
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 4: Engenharia & Automação Inteligente -->
-  <section id="diferenciais" class="py-28 bg-[#0C0C0C] border-y border-white/10 reveal-on-scroll">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-        <div class="lg:col-span-6 space-y-6">
-          <span class="text-gold text-xs font-bold uppercase tracking-[0.3em]">Alta Tecnologia & Segurança</span>
-          <h2 class="font-bebas text-4xl sm:text-6xl tracking-wider leading-[0.95]">
-            ENGENHARIA BLINDADA E CONFORTO ABSOLUTO.
-          </h2>
-          <p class="text-white/70 text-sm md:text-base leading-relaxed font-light">
-            Todas as propriedades selecionadas pela LUXONN contam com os mais avançados sistemas mundiais de automação residencial (Control4/Crestron), monitoramento biométrico e independência energética.
+          <p class="text-xs sm:text-sm text-white/70 leading-relaxed font-light">
+            3.800 m² de área verde com quadra de tênis de saibro privativa, 7 suítes para hóspedes, adega para 1.000 rótulos e heliponto a 2 minutos de voo.
           </p>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-4">
-            <div class="border-l-2 border-gold pl-4">
-              <h4 class="font-bold text-sm text-white">Segurança Armada & Bunker</h4>
-              <p class="text-xs text-white/50 mt-1">Guarita blindada nível III-A e sala de pânico com ar condicionado autônomo.</p>
-            </div>
-            <div class="border-l-2 border-gold pl-4">
-              <h4 class="font-bold text-sm text-white">Usina Solar & Gerador Full</h4>
-              <p class="text-xs text-white/50 mt-1">Autonomia energética total com gerador a diesel silenciado para toda a mansão.</p>
-            </div>
-            <div class="border-l-2 border-gold pl-4">
-              <h4 class="font-bold text-sm text-white">Adega Climatizada 1.000 Rótulos</h4>
-              <p class="text-xs text-white/50 mt-1">Vidros com proteção UV e controle microclimático de umidade para vinhos raros.</p>
-            </div>
-            <div class="border-l-2 border-gold pl-4">
-              <h4 class="font-bold text-sm text-white">Heliponto Homologado</h4>
-              <p class="text-xs text-white/50 mt-1">Pouso direto para helicópteros de grande porte com balizamento noturno.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="lg:col-span-6 aspect-square overflow-hidden border border-white/10 relative">
-          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1280&auto=format&fit=crop" alt="Interior Luxonn" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-          <div class="absolute bottom-6 left-6 right-6 p-6 bg-black/80 backdrop-blur-md border border-gold/30">
-            <span class="text-gold text-xs font-bold uppercase tracking-widest">Protocolo de Confidencialidade</span>
-            <p class="text-xs text-white/70 mt-1">Visitas presenciais realizadas apenas com cadastro prévio e verificação de perfil patrimonial.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 5: Destinos Nobres -->
-  <section id="destinos" class="py-28 px-6 md:px-12 max-w-7xl mx-auto reveal-on-scroll">
-    <div class="text-center max-w-2xl mx-auto mb-20">
-      <span class="text-gold text-xs font-bold uppercase tracking-[0.3em]">Mapeamento Geográfico</span>
-      <h2 class="font-bebas text-4xl sm:text-6xl tracking-wider mt-2">OS ENCLAVES MAIS VALORIZADOS</h2>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-      <div class="glass-card p-8">
-        <p class="font-bebas text-3xl text-gold">ALPHAVILLE</p>
-        <span class="text-xs text-white/60 uppercase tracking-wider block mt-1">São Paulo · Barueri</span>
-        <p class="text-xs text-white/40 mt-4 leading-relaxed">Condomínios fechados com máxima segurança, colégios internacionais e heliponto.</p>
-      </div>
-
-      <div class="glass-card p-8">
-        <p class="font-bebas text-3xl text-gold">JARDINS</p>
-        <span class="text-xs text-white/60 uppercase tracking-wider block mt-1">São Paulo · Capital</span>
-        <p class="text-xs text-white/40 mt-4 leading-relaxed">Casarões históricos e arquitetura contemporânea nos bairros Jardim Europa e América.</p>
-      </div>
-
-      <div class="glass-card p-8">
-        <p class="font-bebas text-3xl text-gold">BOA VISTA</p>
-        <span class="text-xs text-white/60 uppercase tracking-wider block mt-1">Porto Feliz · SP</span>
-        <p class="text-xs text-white/40 mt-4 leading-relaxed">O principal condomínio de campo do Brasil, com centro hípico e campo de golfe Arnold Palmer.</p>
-      </div>
-
-      <div class="glass-card p-8">
-        <p class="font-bebas text-3xl text-gold">ANGRA DOS REIS</p>
-        <span class="text-xs text-white/60 uppercase tracking-wider block mt-1">Costa Verde · RJ</span>
-        <p class="text-xs text-white/40 mt-4 leading-relaxed">Ilhas privadas e penínsulas com ancoradouro de calado profundo e praias reservadas.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 6: Formulário de Atendimento VIP & WhatsApp -->
-  <section id="assessoria" class="py-28 bg-[#080808] border-t border-white/10 reveal-on-scroll">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-      <span class="text-gold text-xs font-bold uppercase tracking-[0.3em]">Assessoria Direta</span>
-      <h2 class="font-bebas text-5xl sm:text-7xl tracking-wider mt-3">INICIE UMA CONSULTA RESERVADA.</h2>
-      <p class="text-white/60 text-sm max-w-lg mx-auto mt-4 font-light">
-        Informe os critérios da mansão desejada. Nosso comitê apresentará opções off-market em até 24 horas.
-      </p>
-
-      <div class="mt-10 max-w-md mx-auto bg-[#121212] p-8 border border-white/10 text-left">
-        <div class="space-y-4">
-          <div>
-            <label class="text-[11px] font-bold text-white/70 uppercase">Destino de Interesse:</label>
-            <select class="w-full bg-[#1C1C1C] border border-white/10 px-4 py-3 text-xs text-white mt-1 focus:outline-none focus:border-gold">
-              <option>Alphaville / Tamboré (SP)</option>
-              <option>Fazenda Boa Vista / Quinta da Baroneza (SP)</option>
-              <option>Jardins / Cidade Jardim (SP)</option>
-              <option>Angra dos Reis / Paraty (RJ)</option>
-            </select>
-          </div>
-          <div>
-            <label class="text-[11px] font-bold text-white/70 uppercase">Faixa de Investimento Estimada:</label>
-            <select class="w-full bg-[#1C1C1C] border border-white/10 px-4 py-3 text-xs text-white mt-1 focus:outline-none focus:border-gold">
-              <option>R$ 15 Milhões a R$ 25 Milhões</option>
-              <option>R$ 25 Milhões a R$ 50 Milhões</option>
-              <option>Acima de R$ 50 Milhões (Trophy Assets)</option>
-            </select>
-          </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20solicitar%20uma%20pesquisa%20de%20mansoes%20off-market%20LUXONN" target="_blank" class="block w-full text-center gold-gradient text-black font-black text-xs uppercase tracking-widest py-4 mt-6 hover:opacity-90 transition-opacity">
-            Solicitar Seleção Reservada no WhatsApp
+          <a href="https://wa.me/5521983747796?text=Quero%20o%20book%20do%20Refugio%20Boa%20Vista" target="_blank" class="inline-block bg-[#D4AF37] text-black font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 rounded-full hover:bg-white transition-all">
+            Agendar Visita com Heliponto
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="py-16 bg-black border-t border-white/10 text-center text-xs text-white/40">
-    <p>© 2026 LUXONN Mansions Brasil · Curadoria de Imóveis Off-Market · Demonstração Imobiturbo™</p>
+  <!-- 4. FOOTER CONVITE PRIVADO -->
+  <footer class="py-24 bg-black text-center border-t border-white/10 text-xs text-white/40">
+    <div class="max-w-4xl mx-auto px-6">
+      <span class="font-syne text-2xl tracking-[0.3em] text-white">LUXONN MANSIONS</span>
+      <p class="text-white/60 text-xs mt-3">São Paulo · Alphaville · Fazenda Boa Vista · Angra dos Reis</p>
+      <div class="mt-8">
+        <a href="https://wa.me/5521983747796?text=Quero%20uma%20consulta%20confidencial%20LUXONN" target="_blank" class="bg-[#D4AF37] text-black font-extrabold text-xs uppercase tracking-widest px-10 py-4 rounded-full inline-block hover:bg-white transition-all">
+          Iniciar Diálogo no WhatsApp
+        </a>
+      </div>
+      <p class="text-[10px] text-white/30 uppercase tracking-widest mt-12">© 2026 LUXONN Mansions · Demonstração Imobiturbo™</p>
+    </div>
   </footer>
 
-  <script>
-    lucide.createIcons();
-    const reveals = document.querySelectorAll(".reveal-on-scroll");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add("is-visible");
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach(r => observer.observe(r));
-  </script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

@@ -3,436 +3,270 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zenith Leblon — Residências Exclusivas na Praia do Leblon | Imobiturbo</title>
-  <meta name="description" content="Lançamento residencial de altíssimo padrão na Av. Delfim Moreira, Leblon. 4 suítes, acabamento internacional e vista eterna para o mar.">
+  <title>ZENITH LEBLON — Residências Suspensas na Av. Delfim Moreira</title>
+  <meta name="description" content="A mais rara coleção de residências suspensas frente ao mar do Leblon. 4 suítes, arquitetura autoral Bernardes e paisagismo Burle Marx.">
   <link rel="icon" type="image/png" href="/favicon.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Italiana&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     html, body {
       margin: 0; padding: 0;
       overflow-x: clip;
-      background-color: #F7F6F2;
-      color: #1A1A1A;
+      background-color: #0E0F12;
+      color: #F5F4F0;
       font-family: "Plus Jakarta Sans", sans-serif;
     }
-    .font-serif { font-family: "Cormorant Garamond", serif; }
-    .phase-text { will-change: opacity, transform; transition: transform 0.1s ease-out; }
-    .glass-nav { background: rgba(247, 246, 242, 0.88); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(0,0,0,0.06); }
-    .card-luxury { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.06); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-    .card-luxury:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.08); border-color: rgba(0,0,0,0.15); }
-    .reveal-on-scroll { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
-    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .font-serif-luxury { font-family: "Italiana", serif; }
+    .phase-text { will-change: opacity, transform; }
+    .glass-pill { background: rgba(255,255,255,0.06); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.12); }
+    .horizontal-scroll-container { display: flex; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+    .horizontal-scroll-container::-webkit-scrollbar { display: none; }
+    .ambient-golden { filter: sepia(0.25) saturate(1.3) hue-rotate(-15deg); }
+    .ambient-night { filter: brightness(0.65) contrast(1.2) hue-rotate(200deg); }
   </style>
 </head>
-<body class="bg-[#F7F6F2] text-[#1A1A1A] antialiased selection:bg-black selection:text-white">
+<body class="bg-[#0E0F12] text-[#F5F4F0] antialiased selection:bg-[#E8D8B8] selection:text-black">
 
   <!-- Imobiturbo Demo Top Banner -->
-  <div class="sticky top-0 z-[70] bg-[#111111] text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
+  <div class="sticky top-0 z-[80] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
     <div class="flex items-center gap-3">
       <a href="/demo/" class="text-[#BFD730] font-bold hover:underline flex items-center gap-1">
-        <span>← Todas as Demos</span>
+        <span>← Demos Lab</span>
       </a>
       <span class="text-white/40">|</span>
-      <span class="text-white/90 font-medium">Modelo 01: <b>Zenith Leblon</b> (Video Scrubbing 400vh + Alto Padrão Brasil)</span>
+      <span class="text-white/90 font-medium">Showcase: <b>Zenith Leblon</b> (Awwwards Continuous Scroll Engine)</span>
     </div>
-    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20imobiliario%20no%20estilo%20Zenith%20Leblon" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3.5 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
-      Quero este Modelo no meu Negócio
+    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20imobiliario%20estilo%20Zenith%20Awwwards" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3.5 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
+      Quero esse Padrão Visual
     </a>
   </div>
 
-  <!-- Main Floating Header -->
-  <header id="main-nav" class="fixed top-8 left-0 right-0 z-50 transition-all duration-300">
-    <div class="max-w-7xl mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
-      <!-- Logo -->
+  <!-- Header -->
+  <header class="fixed top-8 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 py-5 flex items-center justify-between">
       <a href="#top" class="flex flex-col">
-        <span class="font-serif text-2xl md:text-3xl font-bold tracking-tight text-[#1A1A1A] leading-none">ZENITH</span>
-        <span class="text-[9px] font-extrabold tracking-[0.3em] text-[#1A1A1A]/70 uppercase leading-none mt-1">LEBLON · RJ</span>
+        <span class="font-serif-luxury text-2xl sm:text-3xl font-normal tracking-[0.15em] text-white leading-none">ZENITH</span>
+        <span class="text-[8px] font-bold tracking-[0.4em] text-white/60 uppercase leading-none mt-1">LEBLON · AV. DELFIM MOREIRA</span>
       </a>
 
-      <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-[#1A1A1A]/80">
-        <a href="#conceito" class="hover:text-black hover:underline transition-all">O Conceito</a>
-        <a href="#plantas" class="hover:text-black hover:underline transition-all">Plantas & Tipologias</a>
-        <a href="#lazer" class="hover:text-black hover:underline transition-all">Lazer Exclusivo</a>
-        <a href="#simulador" class="hover:text-black hover:underline transition-all">Fluxo Financeiro</a>
-        <a href="#localizacao" class="hover:text-black hover:underline transition-all">Localização</a>
-      </nav>
-
-      <!-- Action CTA -->
-      <div class="hidden sm:flex items-center gap-4">
-        <a href="https://wa.me/5521983747796?text=Ola%2C%20tenho%20interesse%20no%20Zenith%20Leblon" target="_blank" rel="noopener noreferrer" class="bg-black text-white text-xs font-bold uppercase tracking-wider px-5 py-2.5 hover:bg-neutral-800 transition-all shadow-md flex items-center gap-2">
-          <i data-lucide="calendar" class="w-3.5 h-3.5 text-[#BFD730]"></i> Agendar Visita VIP
-        </a>
+      <!-- Ambient Lighting Switcher -->
+      <div class="hidden md:flex items-center gap-1 glass-pill px-3 py-1.5 rounded-full text-[11px]">
+        <span class="text-white/40 text-[10px] mr-2 uppercase tracking-widest font-bold">Atmosfera:</span>
+        <button onclick="setAmbient('day')" class="amb-btn px-2.5 py-0.5 rounded-full bg-white/20 text-white font-bold transition-all" data-amb="day">Sol</button>
+        <button onclick="setAmbient('golden')" class="amb-btn px-2.5 py-0.5 rounded-full text-white/60 hover:text-white transition-all" data-amb="golden">Golden Hour</button>
+        <button onclick="setAmbient('night')" class="amb-btn px-2.5 py-0.5 rounded-full text-white/60 hover:text-white transition-all" data-amb="night">Noite</button>
       </div>
 
-      <!-- Mobile Toggle -->
-      <button id="mobile-toggle" class="md:hidden p-2 text-black" aria-label="Abrir Menu">
-        <i data-lucide="menu" class="w-6 h-6"></i>
-      </button>
+      <a href="https://wa.me/5521983747796?text=Quero%20agendar%20visita%20ao%20Zenith%20Leblon" target="_blank" class="hidden sm:inline-flex bg-white text-black text-xs font-bold uppercase tracking-widest px-6 py-2.5 rounded-full hover:bg-[#E8D8B8] transition-all">
+        Agendar Apresentação
+      </a>
     </div>
   </header>
 
-  <!-- Mobile Drawer -->
-  <div id="mobile-menu" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden transition-opacity">
-    <div class="absolute right-0 top-0 bottom-0 w-4/5 max-w-sm bg-[#F7F6F2] p-8 flex flex-col justify-between shadow-2xl">
-      <div>
-        <div class="flex justify-between items-center mb-8 border-b border-black/10 pb-4">
-          <div class="flex flex-col">
-            <span class="font-serif text-2xl font-bold">ZENITH</span>
-            <span class="text-[9px] font-black tracking-widest text-black/60">LEBLON · RJ</span>
-          </div>
-          <button id="close-menu" class="p-2"><i data-lucide="x" class="w-6 h-6"></i></button>
-        </div>
-        <nav class="flex flex-col gap-5 text-sm font-bold uppercase tracking-wider">
-          <a href="#conceito" class="mobile-link">O Conceito</a>
-          <a href="#plantas" class="mobile-link">Plantas & Tipologias</a>
-          <a href="#lazer" class="mobile-link">Lazer & Wellness</a>
-          <a href="#simulador" class="mobile-link">Simulador de Entrada</a>
-          <a href="#localizacao" class="mobile-link">Av. Delfim Moreira</a>
-        </nav>
-      </div>
-      <a href="https://wa.me/5521983747796" target="_blank" class="bg-black text-white text-center py-4 text-xs font-bold uppercase tracking-widest">
-        Falar com o Corretor no WhatsApp
-      </a>
-    </div>
-  </div>
-
-  <!-- DOBRA 1: 400vh Video Scrubbing Parallax Hero -->
+  <!-- 1. CONTINUOUS VIDEO SCRUBBING HERO (400vh) -->
   <div id="hero-section" class="relative h-[400vh] w-full">
     <div class="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center bg-black">
+      <video id="hero-video" class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-85 transition-all duration-700" playsinline muted preload="auto"></video>
       
-      <!-- Video Element with Scrub Control -->
-      <video id="hero-video" class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-85" playsinline muted preload="auto"></video>
-      
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/50 pointer-events-none"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/30 pointer-events-none"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#0E0F12] via-transparent to-black/50 pointer-events-none"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/40 pointer-events-none"></div>
 
       <!-- Phase 0: 0% - 25% Scroll -->
-      <div id="phase-0" class="phase-text absolute bottom-16 sm:bottom-24 left-6 sm:left-16 md:left-24 max-w-2xl pointer-events-none text-white">
-        <span class="text-[#BFD730] text-xs font-bold uppercase tracking-[0.3em] block mb-3">Lançamento Exclusivo · Delfim Moreira</span>
-        <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold leading-[1.02] text-white">
-          A mais rara obra de arte <br class="hidden sm:block">à beira-mar do Leblon.
+      <div id="phase-0" class="phase-text absolute bottom-16 sm:bottom-24 left-6 sm:left-16 md:left-24 max-w-2xl pointer-events-none">
+        <span class="text-[#E8D8B8] text-xs font-bold uppercase tracking-[0.35em] block mb-3">Coleção Residencial Privada</span>
+        <h1 class="font-serif-luxury text-4xl sm:text-7xl lg:text-8xl font-normal leading-[0.95] text-white">
+          A Poesia do Oceano <br>em Forma de Concreto.
         </h1>
-        <p class="text-white/80 text-sm sm:text-base mt-4 font-light max-w-lg leading-relaxed">
-          Apenas 6 residências suspensas com 4 suítes, vista indevassável para as Ilhas Cagarras e o Morro Dois Irmãos.
+        <p class="text-white/70 text-sm sm:text-base mt-6 font-light max-w-lg leading-relaxed">
+          6 residências suspensas na Delfim Moreira. Vistas eternas para as Ilhas Cagarras e o Morro Dois Irmãos.
         </p>
-        <div class="mt-6 flex items-center gap-2 text-xs text-white/50 animate-pulse">
-          <span>Role para explorar a experiência</span> ↓
+        <div class="mt-8 flex items-center gap-2 text-xs text-white/40 animate-pulse font-mono uppercase tracking-widest">
+          <span>Role para navegar pela arquitetura</span> ↓
         </div>
       </div>
 
       <!-- Phase 1: 30% - 60% Scroll -->
-      <div id="phase-1" class="phase-text absolute top-1/3 right-6 sm:right-16 md:right-24 max-w-xl pointer-events-none opacity-0 text-white text-right">
-        <span class="text-[#BFD730] text-xs font-bold uppercase tracking-[0.3em] block mb-2">Arquitetura Autoral</span>
-        <h2 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-          Luz natural, brises dinâmicos e mármore italiano.
+      <div id="phase-1" class="phase-text absolute top-1/3 right-6 sm:right-16 md:right-24 max-w-xl pointer-events-none opacity-0 text-right">
+        <span class="text-[#E8D8B8] text-xs font-bold uppercase tracking-[0.35em] block mb-2">Arquitetura Autoral</span>
+        <h2 class="font-serif-luxury text-3xl sm:text-6xl font-normal leading-tight text-white">
+          Luz Carioca & Mármore Travertino.
         </h2>
-        <p class="text-white/80 text-sm sm:text-base mt-4 font-light leading-relaxed">
-          Pisos em tábua corrida de peroba do campo, caixilhos piso-teto que integram o living à brisa do oceano Atlântico.
+        <p class="text-white/70 text-sm sm:text-base mt-4 font-light leading-relaxed">
+          Caixilhos de correr piso-teto que dissolvem o limite entre a sala de estar e o horizonte atlântico.
         </p>
       </div>
 
       <!-- Phase 2: 65% - 95% Scroll -->
-      <div id="phase-2" class="phase-text absolute bottom-20 left-6 sm:left-16 md:left-24 max-w-xl pointer-events-none opacity-0 text-white">
-        <span class="text-[#BFD730] text-xs font-bold uppercase tracking-[0.3em] block mb-2">Privacidade Inegociável</span>
-        <h2 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight">
-          Um apartamento por andar. <br>Segurança biométrica militar.
+      <div id="phase-2" class="phase-text absolute bottom-24 left-6 sm:left-16 md:left-24 max-w-xl pointer-events-none opacity-0">
+        <span class="text-[#E8D8B8] text-xs font-bold uppercase tracking-[0.35em] block mb-2">Privacidade Suprema</span>
+        <h2 class="font-serif-luxury text-3xl sm:text-6xl font-normal leading-tight text-white">
+          Um Apartamento por Andar. <br>Segurança Biométrica Militar.
         </h2>
-        <p class="text-white/80 text-sm sm:text-base mt-4 font-light leading-relaxed">
-          Elevadores sociais privativos de alta velocidade, hall com reconhecimento facial e 4 a 6 vagas demarcadas com carregador elétrico.
+        <p class="text-white/70 text-sm sm:text-base mt-4 font-light leading-relaxed">
+          Hall privativo com elevador de alta velocidade com leitura facial e lajes acústicas de 22cm.
         </p>
       </div>
     </div>
   </div>
 
-  <!-- DOBRA 2: Métricas & Visão Geral da Obra -->
-  <section class="py-16 bg-[#111111] text-white border-y border-white/10">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-white/10">
-        <div class="p-4">
-          <p class="text-3xl sm:text-4xl font-extrabold text-[#BFD730] font-serif counter-val" data-target="380">380</p>
-          <span class="text-xs text-white/60 uppercase tracking-widest mt-1 block">a 720 m² Privativos</span>
-        </div>
-        <div class="p-4">
-          <p class="text-3xl sm:text-4xl font-extrabold text-white font-serif counter-val" data-target="4">4</p>
-          <span class="text-xs text-white/60 uppercase tracking-widest mt-1 block">Suítes com Closet</span>
-        </div>
-        <div class="p-4">
-          <p class="text-3xl sm:text-4xl font-extrabold text-white font-serif counter-val" data-target="6">6</p>
-          <span class="text-xs text-white/60 uppercase tracking-widest mt-1 block">Vagas de Garagem</span>
-        </div>
-        <div class="p-4">
-          <p class="text-3xl sm:text-4xl font-extrabold text-[#BFD730] font-serif">100%</p>
-          <span class="text-xs text-white/60 uppercase tracking-widest mt-1 block">Frente Mar Definitiva</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 3: O Conceito Arquitetônico -->
-  <section id="conceito" class="py-28 px-6 md:px-12 max-w-7xl mx-auto reveal-on-scroll">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-      <div class="lg:col-span-6 space-y-6">
-        <span class="text-[#888] text-xs font-bold uppercase tracking-[0.25em]">Manifesto de Design</span>
-        <h2 class="font-serif text-4xl sm:text-6xl font-bold leading-[1.05] text-[#1A1A1A]">
-          Onde a sofisticação encontra a simplicidade carioca.
+  <!-- 2. NARRATIVA EDITORIAL ASSIMÉTRICA -->
+  <section class="py-32 px-6 md:px-16 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+      <div class="lg:col-span-7">
+        <span class="text-[#E8D8B8] text-xs font-bold uppercase tracking-[0.3em]">Manifesto de Criação</span>
+        <h2 class="font-serif-luxury text-4xl sm:text-6xl lg:text-7xl font-normal leading-[1.02] text-white mt-4">
+          Onde a arquitetura reverencia a praia mais nobre do Brasil.
         </h2>
-        <p class="text-[#555] text-base leading-relaxed font-light">
-          O <b>Zenith Leblon</b> foi concebido para um grupo seleto de famílias que não abrem mão de morar no metro quadrado mais valorizado da América Latina, com vista eterna para o mar e a poucos passos dos melhores restaurantes do Rio.
-        </p>
-        <p class="text-[#555] text-base leading-relaxed font-light">
-          Cada planta foi desenhada para valorizar a circulação cruzada de vento e luz natural, criando uma atmosfera de casa suspensa com a segurança de um edifício blindado.
-        </p>
-
-        <div class="pt-6 border-t border-black/10 flex items-center gap-6">
-          <div>
-            <span class="text-xs text-black/50 uppercase font-bold">Projeto Arquitetônico</span>
-            <p class="text-sm font-bold text-black mt-0.5">Bernardes Arquitetura</p>
-          </div>
-          <div class="w-[1px] h-8 bg-black/10"></div>
-          <div>
-            <span class="text-xs text-black/50 uppercase font-bold">Paisagismo</span>
-            <p class="text-sm font-bold text-black mt-0.5">Burle Marx Escritório</p>
-          </div>
-        </div>
       </div>
-
-      <div class="lg:col-span-6 relative">
-        <div class="aspect-[4/5] rounded-none overflow-hidden shadow-2xl border border-black/10">
-          <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1280&auto=format&fit=crop" alt="Living do Zenith Leblon" class="w-full h-full object-cover">
-        </div>
-        <div class="absolute -bottom-8 -left-6 bg-white p-6 shadow-xl border border-black/10 max-w-xs hidden sm:block">
-          <span class="text-[#BFD730] bg-black text-[10px] font-extrabold uppercase px-2 py-0.5 rounded">EXCLUSIVIDADE</span>
-          <p class="text-xs font-semibold text-black mt-2 leading-snug">Apenas 1 unidade por andar. Conforto acústico com lajes maciças de 22cm.</p>
+      <div class="lg:col-span-5 space-y-6 pt-4 text-white/70 text-base leading-relaxed font-light">
+        <p>
+          O <b>Zenith Leblon</b> não foi desenhado apenas para ser habitado. Ele foi concebido como um observatório particular da orla carioca, unindo a força do concreto aparente à leveza das brises de madeira natural.
+        </p>
+        <div class="pt-8 border-t border-white/10 grid grid-cols-2 gap-8 text-white">
+          <div>
+            <span class="text-xs text-white/40 uppercase tracking-widest block">Projeto</span>
+            <p class="font-serif-luxury text-2xl mt-1">Bernardes Arquitetura</p>
+          </div>
+          <div>
+            <span class="text-xs text-white/40 uppercase tracking-widest block">Paisagismo</span>
+            <p class="font-serif-luxury text-2xl mt-1">Burle Marx Escritório</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- DOBRA 4: Plantas & Tipologias Interativas -->
-  <section id="plantas" class="py-24 bg-[#EFECE6] border-y border-black/5 reveal-on-scroll">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
+  <!-- 3. PINNED FLOORPLAN & LEVEL EXPLORER -->
+  <section class="py-24 bg-[#090A0C] border-y border-white/10">
+    <div class="max-w-7xl mx-auto px-6 md:px-16">
       <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
         <div>
-          <span class="text-black/60 text-xs font-bold uppercase tracking-[0.25em]">Coleção de Unidades</span>
-          <h2 class="font-serif text-4xl sm:text-5xl font-bold text-black mt-2">Plantas Inteligentes & Customizáveis</h2>
+          <span class="text-[#E8D8B8] text-xs font-bold uppercase tracking-[0.3em]">Coleção de Pavimentos</span>
+          <h2 class="font-serif-luxury text-4xl sm:text-6xl text-white mt-2">Plantas Esculturais</h2>
         </div>
-        <p class="text-black/60 text-sm max-w-md">Possibilidade de personalização total da planta diretamente com a equipe de engenharia da construtora.</p>
+        
+        <!-- Floor Tabs -->
+        <div class="flex flex-wrap gap-2">
+          <button onclick="setFloor('garden')" class="fl-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider glass-pill text-white transition-all" data-fl="garden">Garden Suspenso (540m²)</button>
+          <button onclick="setFloor('tipo')" class="fl-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-white/50 hover:text-white transition-all" data-fl="tipo">Apartamento Tipo (380m²)</button>
+          <button onclick="setFloor('triplex')" class="fl-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-white/50 hover:text-white transition-all" data-fl="triplex">Penthouse Triplex (720m²)</button>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Planta 1 -->
-        <div class="card-luxury p-8 flex flex-col justify-between">
+      <!-- Floor Content Display -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-[#131419] p-8 md:p-14 border border-white/10 rounded-2xl">
+        <div class="lg:col-span-5 space-y-6">
           <div>
-            <span class="text-xs font-bold text-black/50 uppercase tracking-widest">Unidade Tipo · 2º ao 5º Andar</span>
-            <h3 class="font-serif text-2xl font-bold text-black mt-1">Residência Oceano</h3>
-            <p class="text-2xl font-bold text-black mt-3">380 m² <span class="text-xs text-black/50 font-normal">privativos</span></p>
-            <ul class="mt-6 space-y-3 text-xs text-[#555]">
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> 4 Suítes com banheiros em mármore</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> Living de 110 m² com vista para a praia</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> Adega climatizada para 300 garrafas</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> 4 vagas soltas na garagem</li>
-            </ul>
+            <span id="fl-badge" class="text-xs text-[#E8D8B8] font-bold uppercase tracking-widest">1º Pavimento · Frente Mar</span>
+            <h3 id="fl-title" class="font-serif-luxury text-4xl text-white mt-1">Residência Garden Oceano</h3>
+            <p id="fl-area" class="text-3xl font-serif-luxury text-[#E8D8B8] mt-2">540 m² <span class="text-xs text-white/50 font-sans">privativos</span></p>
           </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20a%20planta%20do%20Apartamento%20Tipo%20Zenith" target="_blank" class="mt-8 block text-center bg-black text-white text-xs font-bold uppercase tracking-wider py-3.5 hover:bg-neutral-800 transition-all">
+          <p id="fl-desc" class="text-sm text-white/70 leading-relaxed font-light">
+            Piscina aquecida privativa no deck de peroba do campo, jardim tropical assinado e living integrado de 120 m² com vista para a praia.
+          </p>
+          <ul id="fl-specs" class="space-y-2 text-xs text-white/80 border-t border-white/10 pt-4">
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 4 Suítes com banheiros em mármore travertino navona</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 5 Vagas soltas com carregador elétrico</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> Adega climatizada para 350 garrafas</li>
+          </ul>
+          <a href="https://wa.me/5521983747796?text=Quero%20a%20planta%20do%20Zenith%20Leblon" target="_blank" class="inline-block bg-white text-black font-extrabold text-xs uppercase tracking-widest px-8 py-3.5 rounded-full hover:bg-[#E8D8B8] transition-all">
             Solicitar Planta Humanizada
           </a>
         </div>
 
-        <!-- Planta 2 -->
-        <div class="card-luxury p-8 flex flex-col justify-between border-2 border-black">
-          <div>
-            <span class="bg-black text-[#BFD730] text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded tracking-widest">DESTAQUE</span>
-            <span class="text-xs font-bold text-black/50 uppercase tracking-widest block mt-2">Garden Suspenso · 1º Andar</span>
-            <h3 class="font-serif text-2xl font-bold text-black mt-1">Residência Jardim</h3>
-            <p class="text-2xl font-bold text-black mt-3">540 m² <span class="text-xs text-black/50 font-normal">privativos</span></p>
-            <ul class="mt-6 space-y-3 text-xs text-[#555]">
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> Piscina privativa aquecida com deck</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> Jardim tropical assinado por paisagista</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> 4 Suítes + Espaço Gourmet integrado</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> 5 vagas demarcadas</li>
-            </ul>
-          </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20a%20planta%20do%20Garden%20Zenith" target="_blank" class="mt-8 block text-center bg-[#BFD730] text-black text-xs font-black uppercase tracking-wider py-3.5 hover:bg-[#d2e854] transition-all">
-            Consultar Disponibilidade do Garden
-          </a>
-        </div>
-
-        <!-- Planta 3 -->
-        <div class="card-luxury p-8 flex flex-col justify-between">
-          <div>
-            <span class="text-xs font-bold text-black/50 uppercase tracking-widest">Cobertura Triplex · 6º ao 8º Andar</span>
-            <h3 class="font-serif text-2xl font-bold text-black mt-1">Penthouse Real</h3>
-            <p class="text-2xl font-bold text-black mt-3">720 m² <span class="text-xs text-black/50 font-normal">privativos</span></p>
-            <ul class="mt-6 space-y-3 text-xs text-[#555]">
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> Rooftop privativo com piscina de borda infinita</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> Elevador interno exclusivo do triplex</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> Master suíte de 90 m² com sala de banho</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-[#7d9b0e]"></i> 6 vagas privativas no subsolo</li>
-            </ul>
-          </div>
-          <a href="https://wa.me/5521983747796?text=Quero%20detalhes%20da%20Cobertura%20Triplex%20Zenith" target="_blank" class="mt-8 block text-center bg-black text-white text-xs font-bold uppercase tracking-wider py-3.5 hover:bg-neutral-800 transition-all">
-            Consultar Valor da Cobertura
-          </a>
+        <div class="lg:col-span-7 aspect-[16/10] overflow-hidden rounded-xl border border-white/10 relative">
+          <img id="fl-img" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1280&auto=format&fit=crop" alt="Planta Zenith Leblon" class="w-full h-full object-cover">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- DOBRA 5: Lazer & Wellness Resort Privativo -->
-  <section id="lazer" class="py-28 px-6 md:px-12 max-w-7xl mx-auto reveal-on-scroll">
-    <div class="text-center max-w-2xl mx-auto mb-20">
-      <span class="text-black/50 text-xs font-bold uppercase tracking-[0.25em]">Infraestrutura Cinco Estrelas</span>
-      <h2 class="font-serif text-4xl sm:text-5xl font-bold text-black mt-2">Lazer & Bem-Estar Completo</h2>
-      <p class="text-[#666] text-sm mt-3 font-light">Espaços sociais desenhados com a mesma curadoria dos melhores hotéis boutique do mundo.</p>
+  <!-- 4. PINNED HORIZONTAL GALLERY (Awwwards Style) -->
+  <section class="py-32 px-6 md:px-16 max-w-7xl mx-auto">
+    <div class="mb-12">
+      <span class="text-[#E8D8B8] text-xs font-bold uppercase tracking-[0.3em]">Cenas da Vida Frente ao Mar</span>
+      <h2 class="font-serif-luxury text-4xl sm:text-6xl text-white mt-2">A Atmosfera do Zenith</h2>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="card-luxury p-6">
-        <i data-lucide="waves" class="w-8 h-8 text-black mb-4"></i>
-        <h4 class="font-bold text-lg text-black">Spa & Sauna Seca</h4>
-        <p class="text-xs text-[#666] mt-2 leading-relaxed">Salas de massagem e hidroterapia com cromoterapia e isolamento acústico.</p>
+    <!-- Scroll Horizontal -->
+    <div class="horizontal-scroll-container flex gap-8 pb-8">
+      <div class="min-w-[340px] md:min-w-[480px] space-y-4">
+        <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
+          <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1280&auto=format&fit=crop" alt="Living Room" class="w-full h-full object-cover">
+        </div>
+        <h4 class="font-serif-luxury text-2xl text-white">Living com Caixilhos Deslizantes</h4>
+        <p class="text-xs text-white/60">Integração total com a brisa e a iluminação do mar do Leblon.</p>
       </div>
 
-      <div class="card-luxury p-6">
-        <i data-lucide="dumbbell" class="w-8 h-8 text-black mb-4"></i>
-        <h4 class="font-bold text-lg text-black">Fitness Technogym</h4>
-        <p class="text-xs text-[#666] mt-2 leading-relaxed">Academia completa com equipamentos italianos de última geração e espaço para personal.</p>
+      <div class="min-w-[340px] md:min-w-[480px] space-y-4">
+        <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
+          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1280&auto=format&fit=crop" alt="Master Suite" class="w-full h-full object-cover">
+        </div>
+        <h4 class="font-serif-luxury text-2xl text-white">Master Suíte com Sala de Banho</h4>
+        <p class="text-xs text-white/60">Banheiras de imersão esculpidas em bloco único de pedra.</p>
       </div>
 
-      <div class="card-luxury p-6">
-        <i data-lucide="wine" class="w-8 h-8 text-black mb-4"></i>
-        <h4 class="font-bold text-lg text-black">Lounge & Wine Bar</h4>
-        <p class="text-xs text-[#666] mt-2 leading-relaxed">Espaço reservado para jantares privativos e degustação com cozinha profissional.</p>
-      </div>
-
-      <div class="card-luxury p-6">
-        <i data-lucide="shield-check" class="w-8 h-8 text-black mb-4"></i>
-        <h4 class="font-bold text-lg text-black">Concierge 24h</h4>
-        <p class="text-xs text-[#666] mt-2 leading-relaxed">Serviço de valet, recebimento de encomendas refrigeradas e gestão predial premium.</p>
+      <div class="min-w-[340px] md:min-w-[480px] space-y-4">
+        <div class="aspect-[4/3] rounded-2xl overflow-hidden border border-white/10">
+          <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1280&auto=format&fit=crop" alt="Wellness Spa" class="w-full h-full object-cover">
+        </div>
+        <h4 class="font-serif-luxury text-2xl text-white">Spa & Sala de Massagem</h4>
+        <p class="text-xs text-white/60">Tratamento acústico de estúdio e hidroterapia com cromoterapia.</p>
       </div>
     </div>
   </section>
 
-  <!-- DOBRA 6: Simulador Financeiro Brasileiro -->
-  <section id="simulador" class="py-24 bg-[#111111] text-white reveal-on-scroll">
-    <div class="max-w-7xl mx-auto px-6 md:px-12">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <div class="lg:col-span-6 space-y-6">
-          <span class="text-[#BFD730] text-xs font-bold uppercase tracking-[0.25em]">Condições de Lançamento</span>
-          <h2 class="font-serif text-3xl sm:text-5xl font-bold leading-tight">
-            Fluxo de Pagamento Facilitado Direto com a Construtora.
-          </h2>
-          <p class="text-white/70 text-sm md:text-base font-light leading-relaxed">
-            Monte a sua proposta durante o período de obras. Parcele a entrada e as mensais sem juros (apenas correção por INCC) e quite o saldo através de financiamento ou recursos próprios no Habite-se.
-          </p>
+  <!-- 5. FLUXO FINANCEIRO MINIMALISTA -->
+  <section class="py-24 bg-[#090A0C] border-t border-white/10">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <span class="text-[#E8D8B8] text-xs font-bold uppercase tracking-[0.3em]">Condições Especiais de Lançamento</span>
+      <h2 class="font-serif-luxury text-4xl sm:text-6xl text-white mt-2">Estrutura de Pagamento na Obra</h2>
+      <p class="text-white/60 text-sm max-w-lg mx-auto mt-4 font-light">
+        Fluxo customizado direto com a construtora durante a fase de fundação e estrutura.
+      </p>
 
-          <div class="space-y-4 pt-4">
-            <div>
-              <div class="flex justify-between text-xs font-bold mb-1.5">
-                <span class="text-white/60">Valor Estimado do Imóvel:</span>
-                <span id="preco-txt" class="text-[#BFD730] text-sm font-bold">R$ 18.000.000</span>
-              </div>
-              <input id="preco-range" type="range" min="15000000" max="35000000" step="1000000" value="18000000" class="w-full accent-[#BFD730] cursor-pointer">
-            </div>
+      <div class="mt-12 bg-[#131419] p-8 md:p-12 border border-white/10 rounded-2xl text-left">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-white/10">
+          <div class="p-2">
+            <span class="text-xs text-white/40 uppercase">Entrada no Ato</span>
+            <p class="font-serif-luxury text-3xl text-white mt-2">15%</p>
+            <span class="text-[11px] text-white/50 mt-1 block">Na assinatura do contrato</span>
+          </div>
+          <div class="p-2">
+            <span class="text-xs text-white/40 uppercase">Durante a Obra</span>
+            <p class="font-serif-luxury text-3xl text-[#E8D8B8] mt-2">35%</p>
+            <span class="text-[11px] text-white/50 mt-1 block">36 mensais + 4 semestrais</span>
+          </div>
+          <div class="p-2">
+            <span class="text-xs text-white/40 uppercase">Nas Chaves</span>
+            <p class="font-serif-luxury text-3xl text-white mt-2">50%</p>
+            <span class="text-[11px] text-white/50 mt-1 block">Recursos próprios ou banco</span>
           </div>
         </div>
 
-        <!-- Dashboard do Fluxo -->
-        <div class="lg:col-span-6 bg-[#1A1A1A] border border-white/10 p-8 rounded-xl shadow-2xl">
-          <span class="text-xs text-white/50 uppercase tracking-widest font-bold block mb-4">Sugestão de Estrutura de Pagamento</span>
-          
-          <div class="space-y-4 text-sm border-b border-white/10 pb-6">
-            <div class="flex justify-between items-center">
-              <span class="text-white/70">Ato / Entrada (15%):</span>
-              <span id="val-ato" class="font-bold text-white text-base">R$ 2.700.000</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-white/70">36x Mensais na Obra (25%):</span>
-              <span id="val-mensal" class="font-bold text-white text-base">R$ 125.000 / mês</span>
-            </div>
-            <div class="flex justify-between items-center">
-              <span class="text-white/70">4x Intermediárias Semestrais (10%):</span>
-              <span id="val-semestral" class="font-bold text-white text-base">R$ 450.000</span>
-            </div>
-            <div class="flex justify-between items-center text-[#BFD730]">
-              <span class="font-bold">Saldo nas Chaves / Financiamento (50%):</span>
-              <span id="val-chaves" class="font-bold text-base">R$ 9.000.000</span>
-            </div>
-          </div>
-
-          <div class="mt-6 flex flex-col sm:flex-row gap-4">
-            <a id="btn-proposta" href="https://wa.me/5521983747796?text=Quero%20simular%20uma%20proposta%20para%20o%20Zenith%20Leblon" target="_blank" class="w-full text-center bg-[#BFD730] text-black font-extrabold text-xs uppercase tracking-wider py-4 rounded hover:bg-[#d2e854] transition-all">
-              Apresentar Proposta Personalizada
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOBRA 7: Localização & Av. Delfim Moreira -->
-  <section id="localizacao" class="py-28 px-6 md:px-12 max-w-7xl mx-auto reveal-on-scroll">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-      <div class="lg:col-span-5 space-y-6">
-        <span class="text-black/50 text-xs font-bold uppercase tracking-[0.25em]">O Endereço Mais Nobre do País</span>
-        <h2 class="font-serif text-4xl sm:text-5xl font-bold text-black leading-tight">
-          Av. Delfim Moreira — Posto 12, Leblon.
-        </h2>
-        <p class="text-[#555] text-sm leading-relaxed font-light">
-          A poucos minutos de caminhada da Rua Dias Ferreira e Garcia d’Ávila, cercado pelos mais refinados bistrôs, galerias de arte e boutiques de luxo do Rio de Janeiro.
-        </p>
-        <ul class="space-y-2 text-xs font-medium text-[#333]">
-          <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-black"></i> 50m do Posto 12 do Leblon</li>
-          <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-black"></i> 3 min dos restaurantes da Rua Dias Ferreira</li>
-          <li class="flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-black"></i> 5 min do Shopping Leblon</li>
-        </ul>
-      </div>
-
-      <div class="lg:col-span-7 h-[420px] rounded-none overflow-hidden border border-black/10 relative shadow-xl">
-        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1280&auto=format&fit=crop" alt="Localização Leblon" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-          <a href="https://maps.google.com/?q=Av.+Delfim+Moreira,+Leblon,+Rio+de+Janeiro" target="_blank" class="bg-white text-black text-xs font-bold uppercase tracking-wider px-6 py-3 shadow-2xl flex items-center gap-2 hover:bg-[#BFD730] transition-colors">
-            <i data-lucide="navigation" class="w-4 h-4"></i> Abrir Localização no Google Maps
+        <div class="mt-10 text-center">
+          <a href="https://wa.me/5521983747796?text=Quero%20simular%20uma%20proposta%20personalizada%20Zenith%20Leblon" target="_blank" class="inline-block bg-white text-black font-extrabold text-xs uppercase tracking-widest px-10 py-4 rounded-full hover:bg-[#E8D8B8] transition-all">
+            Montar Proposta com a Diretoria
           </a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- DOBRA 8: Rodapé & Plantão de Atendimento -->
-  <footer class="py-20 bg-black text-white text-center border-t border-white/10">
+  <!-- 6. FOOTER MEMORIAL -->
+  <footer class="py-24 bg-black text-center border-t border-white/10 text-xs text-white/40">
     <div class="max-w-4xl mx-auto px-6">
-      <span class="font-serif text-3xl font-bold tracking-tight">ZENITH LEBLON</span>
-      <p class="text-white/50 text-xs uppercase tracking-widest mt-2">Memorial de Incorporação registrado sob o R.I. nº 184.920 no 5º RGI/RJ.</p>
-      
-      <div class="mt-8 flex flex-wrap justify-center gap-4">
-        <a href="https://wa.me/5521983747796?text=Quero%20falar%20com%20o%20plantao%20Zenith%20Leblon" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-[#d2e854] hover:scale-105 transition-all">
-          Plantão de Vendas via WhatsApp
-        </a>
-      </div>
-
-      <div class="mt-16 text-[11px] text-white/30 tracking-wider">
-        © 2026 Zenith Leblon · Projeto de Demonstração Imobiturbo™
-      </div>
+      <span class="font-serif-luxury text-3xl text-white tracking-[0.2em]">ZENITH LEBLON</span>
+      <p class="text-white/60 text-xs mt-3">Av. Delfim Moreira, Posto 12 · Leblon, Rio de Janeiro - RJ</p>
+      <p class="text-[10px] text-white/30 uppercase tracking-widest mt-8">Memorial de Incorporação registrado sob o R.I. nº 184.920 no 5º RGI/RJ · Demonstração Imobiturbo™</p>
     </div>
   </footer>
 
-  <!-- Script: Video Scrubbing 400vh + Scroll Reveal + Counters -->
   <script>
     lucide.createIcons();
-
-    // Mobile Menu
-    const toggleBtn = document.getElementById("mobile-toggle");
-    const closeBtn = document.getElementById("close-menu");
-    const menu = document.getElementById("mobile-menu");
-    toggleBtn.addEventListener("click", () => menu.classList.remove("hidden"));
-    closeBtn.addEventListener("click", () => menu.classList.add("hidden"));
-    document.querySelectorAll(".mobile-link").forEach(l => l.addEventListener("click", () => menu.classList.add("hidden")));
 
     // 1. Video Scrubbing Engine (400vh Sticky)
     const heroVideo = document.getElementById("hero-video");
@@ -440,7 +274,6 @@
     const phase0 = document.getElementById("phase-0");
     const phase1 = document.getElementById("phase-1");
     const phase2 = document.getElementById("phase-2");
-    const mainNav = document.getElementById("main-nav");
 
     fetch("https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260503_144509_89e2d612-8af2-45c3-90f4-4831bc60715d.mp4")
       .then(r => r.blob())
@@ -462,14 +295,7 @@
       if (max > 0) {
         targetProgress = Math.max(0, Math.min(1, -rect.top / max));
       }
-
-      if (window.scrollY > 80) {
-        mainNav.classList.add("glass-nav", "shadow-sm");
-      } else {
-        mainNav.classList.remove("glass-nav", "shadow-sm");
-      }
     }
-
     window.addEventListener("scroll", updateScroll, { passive: true });
     window.addEventListener("resize", updateScroll);
 
@@ -482,7 +308,6 @@
 
     function scrubLoop() {
       currentProgress += (targetProgress - currentProgress) * 0.15;
-
       if (heroVideo.duration && !heroVideo.seeking) {
         const targetTime = currentProgress * heroVideo.duration;
         if (Math.abs(heroVideo.currentTime - targetTime) > 0.02) {
@@ -502,36 +327,64 @@
     }
     requestAnimationFrame(scrubLoop);
 
-    // 2. Scroll Reveal Animations
-    const reveals = document.querySelectorAll(".reveal-on-scroll");
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) e.target.classList.add("is-visible");
+    // 2. Ambient Lighting Switcher
+    function setAmbient(type) {
+      document.querySelectorAll(".amb-btn").forEach(b => {
+        if (b.dataset.amb === type) {
+          b.className = "amb-btn px-2.5 py-0.5 rounded-full bg-white/20 text-white font-bold transition-all";
+        } else {
+          b.className = "amb-btn px-2.5 py-0.5 rounded-full text-white/60 hover:text-white transition-all";
+        }
       });
-    }, { threshold: 0.15 });
-    reveals.forEach(r => observer.observe(r));
-
-    // 3. Calculadora de Fluxo
-    const precoRange = document.getElementById("preco-range");
-    const precoTxt = document.getElementById("preco-txt");
-    const valAto = document.getElementById("val-ato");
-    const valMensal = document.getElementById("val-mensal");
-    const valSemestral = document.getElementById("val-semestral");
-    const valChaves = document.getElementById("val-chaves");
-
-    function formatBRL(val) {
-      return "R$ " + Math.round(val).toLocaleString("pt-BR");
+      heroVideo.className = "absolute inset-0 w-full h-full object-cover pointer-events-none opacity-85 transition-all duration-700 " + (type === "golden" ? "ambient-golden" : type === "night" ? "ambient-night" : "");
     }
 
-    function updateSim() {
-      const p = parseFloat(precoRange.value);
-      precoTxt.innerText = formatBRL(p);
-      valAto.innerText = formatBRL(p * 0.15);
-      valMensal.innerText = formatBRL((p * 0.25) / 36) + " / mês";
-      valSemestral.innerText = formatBRL((p * 0.10) / 4) + " (4x)";
-      valChaves.innerText = formatBRL(p * 0.50);
+    // 3. Floor Explorer
+    const floorData = {
+      garden: {
+        badge: "1º Pavimento · Frente Mar",
+        title: "Residência Garden Oceano",
+        area: "540 m² <span class="text-xs text-white/50 font-sans">privativos</span>",
+        desc: "Piscina aquecida privativa no deck de peroba do campo, jardim tropical assinado e living integrado de 120 m² com vista para a praia.",
+        specs: "<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 4 Suítes com banheiros em mármore travertino</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 5 Vagas soltas com carregador elétrico</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> Adega climatizada para 350 garrafas</li>",
+        img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1280&auto=format&fit=crop"
+      },
+      tipo: {
+        badge: "2º ao 5º Andar · 1 por Andar",
+        title: "Residência Atlântica Tipo",
+        area: "380 m² <span class="text-xs text-white/50 font-sans">privativos</span>",
+        desc: "Varanda infinita integrada ao living com caixilhos embutidos no piso. Circulação cruzada com vista 180° para o oceano.",
+        specs: "<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 4 Suítes (Master com 65m² e closet duplo)</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 4 Vagas demarcadas</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> Copa e cozinha gourmet integráveis</li>",
+        img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1280&auto=format&fit=crop"
+      },
+      triplex: {
+        badge: "6º ao 8º Andar · Cobertura Triplex",
+        title: "Penthouse Coroa do Leblon",
+        area: "720 m² <span class="text-xs text-white/50 font-sans">privativos</span>",
+        desc: "Rooftop privativo com piscina de borda infinita debruçada sobre o mar, elevador interno privativo e spa a céu aberto.",
+        specs: "<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 5 Suítes Master</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 6 Vagas no subsolo</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> Lounge gourmet e adega privativa de 500 rótulos</li>",
+        img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1280&auto=format&fit=crop"
+      }
+    };
+
+    function setFloor(key) {
+      const d = floorData[key];
+      if (!d) return;
+      document.getElementById("fl-badge").innerHTML = d.badge;
+      document.getElementById("fl-title").innerText = d.title;
+      document.getElementById("fl-area").innerHTML = d.area;
+      document.getElementById("fl-desc").innerText = d.desc;
+      document.getElementById("fl-specs").innerHTML = d.specs;
+      document.getElementById("fl-img").src = d.img;
+
+      document.querySelectorAll(".fl-btn").forEach(b => {
+        if (b.dataset.fl === key) {
+          b.className = "fl-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider glass-pill text-white transition-all";
+        } else {
+          b.className = "fl-btn px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider text-white/50 hover:text-white transition-all";
+        }
+      });
     }
-    precoRange.addEventListener("input", updateSim);
   </script>
 </body>
 </html>
