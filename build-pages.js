@@ -30,6 +30,7 @@ const entries = [
   'guia',
   'downloads',
   'lovable',
+  'demo',
   'robots.txt',
   'sitemap.xml',
   'llms.txt',

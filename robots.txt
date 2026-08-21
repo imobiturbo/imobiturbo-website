@@ -7,6 +7,7 @@ Allow: /construtoras-incorporadoras/
 Allow: /depoimentos/
 Allow: /lovable/
 Allow: /guia/
+Allow: /demo/
 Allow: /assets/
 Allow: /dist/
 Allow: /fonts/

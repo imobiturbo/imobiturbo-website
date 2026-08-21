@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zenith Realty — Luxury Real Estate Demo | Imobiturbo</title>
+  <meta name="description" content="Demonstração do modelo Zenith Realty: landing page de alto padrão para imóveis de luxo com hero em vídeo e gráficos de rentabilidade.">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body { font-family: "Lato", sans-serif; background-color: #F8F8F8; color: #141414; }
+    .glass-btn { border: 1px solid rgba(0,0,0,0.1); background: rgba(255,255,255,0.85); backdrop-filter: blur(12px); }
+  </style>
+</head>
+<body class="bg-[#F8F8F8] text-[#141414] antialiased selection:bg-black selection:text-white">
+
+  <!-- Imobiturbo Demo Top Banner -->
+  <div class="sticky top-0 z-[60] bg-black/90 text-white backdrop-blur-md border-b border-white/10 px-4 py-2 text-xs flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="/demo/" class="text-[#BFD730] font-bold hover:underline flex items-center gap-1">
+        <span>← Todas as Demos</span>
+      </a>
+      <span class="text-white/40">|</span>
+      <span class="text-white/80 font-medium">Modelo: <b>Zenith Realty</b> (Luxury Living)</span>
+    </div>
+    <a href="https://wa.me/5521983747796?text=Quero%20um%20site%20no%20estilo%20Zenith%20Realty" target="_blank" rel="noopener noreferrer" class="bg-[#BFD730] text-black font-extrabold px-3 py-1 rounded-full text-[11px] hover:bg-[#d2e854] transition-all">
+      Quero esse modelo
+    </a>
+  </div>
+
+  <!-- Navbar -->
+  <header class="fixed top-8 left-0 right-0 z-50 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 md:px-12 py-4 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#top" class="flex flex-col">
+        <span class="text-2xl font-black leading-none tracking-tighter text-[#141414]">ZENITH</span>
+        <span class="text-[11px] font-black tracking-[0.25em] text-[#141414]/70 leading-none">REALTY</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-8">
+        <div class="relative group">
+          <a href="#properties" class="flex items-center gap-1 text-[13px] font-medium tracking-tight text-[#141414] hover:opacity-60 transition-opacity">
+            Properties <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+          </a>
+        </div>
+        <a href="#investment" class="flex items-center gap-1.5 text-[13px] font-medium tracking-tight text-[#141414] hover:opacity-60 transition-opacity">
+          Mortgage <span class="bg-black text-white text-[9px] px-1.5 py-0.5 rounded font-bold leading-none">NEW</span>
+        </a>
+        <a href="#how-it-works" class="text-[13px] font-medium tracking-tight text-[#141414] hover:opacity-60 transition-opacity">Company</a>
+        <a href="#investment" class="flex items-center gap-1 text-[13px] font-medium tracking-tight text-[#141414] hover:opacity-60 transition-opacity">
+          Investments <i data-lucide="chevron-down" class="w-3.5 h-3.5"></i>
+        </a>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="hidden sm:flex items-center gap-4">
+        <a href="https://wa.me/5521983747796?text=Quero%20anunciar%20um%20imovel%20de%20luxo" target="_blank" rel="noopener noreferrer" class="glass-btn px-5 py-2.5 rounded-none text-[13px] font-medium hover:bg-white transition-all flex items-center gap-2 shadow-sm">
+          <i data-lucide="home" class="w-4 h-4 text-black"></i> Post a property
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger -->
+      <button id="mobile-toggle" class="md:hidden p-2 text-black" aria-label="Abrir Menu">
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Menu Drawer -->
+  <div id="mobile-menu" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden transition-opacity">
+    <div class="absolute right-0 top-0 bottom-0 w-4/5 max-w-sm bg-white p-8 flex flex-col justify-between shadow-2xl">
+      <div>
+        <div class="flex justify-between items-center mb-8 border-b pb-4">
+          <div class="flex flex-col">
+            <span class="text-xl font-black leading-none">ZENITH</span>
+            <span class="text-[10px] font-black tracking-[0.2em] text-black/60">REALTY</span>
+          </div>
+          <button id="close-menu" class="p-2"><i data-lucide="x" class="w-6 h-6"></i></button>
+        </div>
+        <nav class="flex flex-col gap-5 text-base font-semibold">
+          <a href="#properties" class="mobile-link">Properties</a>
+          <a href="#how-it-works" class="mobile-link">How it Works</a>
+          <a href="#investment" class="mobile-link">Investment Analytics</a>
+          <a href="https://wa.me/5521983747796" class="mobile-link text-[#7d9b0e]">WhatsApp Consult</a>
+        </nav>
+      </div>
+      <a href="https://wa.me/5521983747796" target="_blank" class="bg-black text-white text-center py-3.5 text-xs uppercase tracking-widest font-bold">
+        Book a Call
+      </a>
+    </div>
+  </div>
+
+  <!-- Section 1: Hero -->
+  <section id="top" class="relative h-screen min-h-[640px] w-full overflow-hidden flex items-center justify-center">
+    <!-- Background Video -->
+    <video src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260503_144509_89e2d612-8af2-45c3-90f4-4831bc60715d.mp4" autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0"></video>
+    <div class="absolute inset-0 bg-white/10 backdrop-blur-[2px] z-10"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#F8F8F8] via-transparent to-white/40 z-10"></div>
+
+    <div class="relative z-20 max-w-7xl mx-auto px-6 md:px-12 w-full pt-20">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-end">
+        <div class="md:col-span-8">
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-medium tracking-tight leading-[1.05] text-[#141414] max-w-2xl">
+            Discover space you truly belong in.
+          </h1>
+          <div class="mt-8 flex flex-wrap items-center gap-4">
+            <a href="https://wa.me/5521983747796?text=Quero%20agendar%20uma%20chamada" target="_blank" rel="noopener noreferrer" class="bg-[#141414] text-white px-9 py-4 text-[13px] font-medium uppercase tracking-wider shadow-2xl hover:bg-black hover:scale-105 transition-all">
+              Book a call
+            </a>
+            <a href="#properties" class="glass-btn text-[#141414] px-7 py-4 text-[13px] font-medium uppercase tracking-wider hover:bg-white transition-all">
+              Explore Portfolio
+            </a>
+          </div>
+        </div>
+        <div class="md:col-span-4 md:col-start-9">
+          <p class="text-[#5C5C5C] text-[15px] md:text-[17px] leading-[1.5]">
+            Experience more than a house; find a sanctuary where your journey unfolds, rich with comfort, architectural brilliance, and endless opportunities.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Properties -->
+  <section id="properties" class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end mb-16">
+      <div class="md:col-span-8">
+        <h2 class="text-3xl md:text-5xl font-medium tracking-tight leading-[1.1] text-[#141414]">
+          Guiding you toward the residence of your dreams.
+        </h2>
+      </div>
+      <div class="md:col-span-4 md:col-start-9">
+        <p class="text-[#7A7A7A] text-[14px] leading-relaxed">
+          Our vision bridges balance, design, and attention so that every client resides in a space reflecting their deepest values.
+        </p>
+      </div>
+    </div>
+
+    <!-- Properties Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Card 1 -->
+      <div class="group bg-white rounded-none overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-black/5">
+        <div class="aspect-[4/3] md:aspect-square overflow-hidden relative">
+          <img src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260503_145701_de344c15-5eac-4c64-8bd6-19a2811bba4a.png&w=1280&q=85" alt="Aether Heights" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-xs font-bold">$345,000</span>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-[#141414]">Aether Heights</h3>
+          <p class="text-xs text-black/50 mt-0.5">USA / California / Malibu</p>
+          <div class="mt-6 pt-4 border-t border-black/10 flex flex-wrap items-center gap-4 text-[11px] font-medium text-[#141414]">
+            <span class="flex items-center gap-1.5"><i data-lucide="square" class="w-3.5 h-3.5 text-[#888]"></i> 300 m²</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="layers" class="w-3.5 h-3.5 text-[#888]"></i> 1 floor</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="bed" class="w-3.5 h-3.5 text-[#888]"></i> 6 beds</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="bath" class="w-3.5 h-3.5 text-[#888]"></i> 2 baths</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="group bg-white rounded-none overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-black/5">
+        <div class="aspect-[4/3] md:aspect-square overflow-hidden relative">
+          <img src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260503_145923_c1a9880c-0fab-4a76-8289-bd650d5e5dce.png&w=1280&q=85" alt="Azure Sanctuary" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-xs font-bold">$225,000</span>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-[#141414]">Azure Sanctuary</h3>
+          <p class="text-xs text-black/50 mt-0.5">Caribbean / Bahamas / Bimini</p>
+          <div class="mt-6 pt-4 border-t border-black/10 flex flex-wrap items-center gap-4 text-[11px] font-medium text-[#141414]">
+            <span class="flex items-center gap-1.5"><i data-lucide="square" class="w-3.5 h-3.5 text-[#888]"></i> 250 m²</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="layers" class="w-3.5 h-3.5 text-[#888]"></i> 1 floor</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="bed" class="w-3.5 h-3.5 text-[#888]"></i> 4 beds</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="bath" class="w-3.5 h-3.5 text-[#888]"></i> 1 bath</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="group bg-white rounded-none overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-black/5">
+        <div class="aspect-[4/3] md:aspect-square overflow-hidden relative">
+          <img src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260503_150022_cdda0eaa-1c17-4f59-8188-4f98b328619f.png&w=1280&q=85" alt="Summit Pavilion" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 text-xs font-bold">$510,000</span>
+        </div>
+        <div class="p-6">
+          <h3 class="text-xl font-bold text-[#141414]">Summit Pavilion</h3>
+          <p class="text-xs text-black/50 mt-0.5">USA / Colorado / Vail</p>
+          <div class="mt-6 pt-4 border-t border-black/10 flex flex-wrap items-center gap-4 text-[11px] font-medium text-[#141414]">
+            <span class="flex items-center gap-1.5"><i data-lucide="square" class="w-3.5 h-3.5 text-[#888]"></i> 400 m²</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="layers" class="w-3.5 h-3.5 text-[#888]"></i> 3 floors</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="bed" class="w-3.5 h-3.5 text-[#888]"></i> 6 beds</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="bath" class="w-3.5 h-3.5 text-[#888]"></i> 3 baths</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: How it Works -->
+  <section id="how-it-works" class="py-24 bg-[#EFEFEF]">
+    <div class="max-w-7xl mx-auto px-6 md:px-12">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end mb-12">
+        <div class="md:col-span-7">
+          <h2 class="text-3xl md:text-5xl font-medium tracking-tight text-[#141414]">
+            Explore our service and the process.
+          </h2>
+        </div>
+        <div class="md:col-span-5">
+          <p class="text-[#7A7A7A] text-[14px]">
+            Digital walk-throughs, select portfolios, and professional insight — all the tools to search and secure with ease.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 bg-white border border-black/5 shadow-lg overflow-hidden">
+        <!-- Left Panel -->
+        <div class="md:col-span-5 p-8 md:p-14 flex flex-col justify-between">
+          <div>
+            <h3 class="text-2xl md:text-3xl font-bold text-[#141414]" id="tab-title">Exclusive collection</h3>
+            <p class="text-[#666] text-sm md:text-base leading-relaxed mt-4" id="tab-desc">
+              Consultants curate custom lists of vetted luxury homes. Featuring 4K media, VR walk-ins, and private physical VIP tours.
+            </p>
+            <div class="mt-8">
+              <a href="https://wa.me/5521983747796?text=Quero%20uma%20consultoria%20gratuita" target="_blank" rel="noopener noreferrer" class="inline-flex border border-black px-6 py-3 text-xs uppercase font-bold tracking-widest hover:bg-black hover:text-white transition-all">
+                Free consult
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-12 flex flex-col gap-3 border-t pt-8">
+            <button onclick="setTab('market')" class="tab-btn text-left text-[13px] font-medium text-[#A5A5A5] hover:text-[#141414] transition-colors" data-tab="market">01. Market Analysis</button>
+            <button onclick="setTab('collection')" class="tab-btn text-left text-[13px] font-bold text-[#141414] transition-colors" data-tab="collection">02. Exclusive collection</button>
+            <button onclick="setTab('policy')" class="tab-btn text-left text-[13px] font-medium text-[#A5A5A5] hover:text-[#141414] transition-colors" data-tab="policy">03. Policy Support</button>
+            <button onclick="setTab('deal')" class="tab-btn text-left text-[13px] font-medium text-[#A5A5A5] hover:text-[#141414] transition-colors" data-tab="deal">04. Closing Deal</button>
+          </div>
+        </div>
+
+        <!-- Right Panel Image -->
+        <div class="md:col-span-7 aspect-video md:aspect-auto relative min-h-[380px]">
+          <img id="tab-img" src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260503_150112_2b0e700f-7af4-4459-b326-7d9e2f468daa.png&w=1280&q=85" alt="Process Architecture" class="w-full h-full object-cover">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Investment / Analytics -->
+  <section id="investment" class="py-24 px-6 md:px-12 max-w-7xl mx-auto">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end mb-16">
+      <div class="md:col-span-7">
+        <h2 class="text-3xl md:text-5xl font-medium tracking-tight text-[#141414]">
+          Trusted frameworks for secure growth.
+        </h2>
+      </div>
+      <div class="md:col-span-5 space-y-2 text-[#7A7A7A] text-[14px]">
+        <p>Our holdings go beyond floor plans; they represent a vehicle for your wealth to thrive consistently.</p>
+        <p>We meticulously vet the premier market offerings for our valued partners.</p>
+      </div>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Chart Card 1 -->
+      <div class="bg-white p-6 border border-black/5 flex flex-col justify-between shadow-sm">
+        <div>
+          <span class="text-[#141414]/40 text-[12px] font-medium tracking-tight uppercase">Annual growth</span>
+          <p class="text-4xl font-medium text-[#141414] mt-1">19%</p>
+        </div>
+        <!-- Bar Visualizer -->
+        <div class="h-24 flex items-end justify-between gap-1 mt-8">
+          <div class="w-full bg-[#141414]/5 h-[35%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[60%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[45%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[40%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[55%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[75%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[60%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[80%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[55%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[30%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+        </div>
+      </div>
+
+      <!-- Chart Card 2 -->
+      <div class="bg-white p-6 border border-black/5 flex flex-col justify-between shadow-sm">
+        <div>
+          <span class="text-[#141414]/40 text-[12px] font-medium tracking-tight uppercase">Aggregate yield profit</span>
+          <p class="text-4xl font-medium text-[#141414] mt-1">$820,000</p>
+        </div>
+        <!-- Bar Visualizer -->
+        <div class="h-24 flex items-end justify-between gap-1 mt-8">
+          <div class="w-full bg-[#141414]/5 h-[8%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[12%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[18%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[28%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[32%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[38%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[55%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[70%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[85%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+        </div>
+      </div>
+
+      <!-- Chart Card 3 -->
+      <div class="bg-white p-6 border border-black/5 flex flex-col justify-between shadow-sm">
+        <div>
+          <span class="text-[#141414]/40 text-[12px] font-medium tracking-tight uppercase">Median returns</span>
+          <p class="text-4xl font-medium text-[#141414] mt-1">14%</p>
+        </div>
+        <!-- Bar Visualizer -->
+        <div class="h-24 flex items-end justify-between gap-1 mt-8">
+          <div class="w-full bg-[#141414]/5 h-[10%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[75%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[20%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[35%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[30%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[65%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[55%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[25%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+          <div class="w-full bg-[#141414]/5 h-[40%] relative"><div class="absolute top-0 inset-x-0 h-[2px] bg-[#141414]"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Scripts -->
+  <script>
+    lucide.createIcons();
+
+    // Mobile Menu
+    const toggleBtn = document.getElementById("mobile-toggle");
+    const closeBtn = document.getElementById("close-menu");
+    const menu = document.getElementById("mobile-menu");
+
+    toggleBtn.addEventListener("click", () => menu.classList.remove("hidden"));
+    closeBtn.addEventListener("click", () => menu.classList.add("hidden"));
+    document.querySelectorAll(".mobile-link").forEach(l => l.addEventListener("click", () => menu.classList.add("hidden")));
+
+    // Process Tabs Data
+    const tabData = {
+      market: {
+        title: "Market Analysis",
+        desc: "In-depth valuation modeling, neighborhood trend forecasting, and proprietary price-per-square-meter analytics.",
+        img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=1280&auto=format&fit=crop"
+      },
+      collection: {
+        title: "Exclusive collection",
+        desc: "Consultants curate custom lists of vetted luxury homes. Featuring 4K media, VR walk-ins, and private physical VIP tours.",
+        img: "https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260503_150112_2b0e700f-7af4-4459-b326-7d9e2f468daa.png&w=1280&q=85"
+      },
+      policy: {
+        title: "Policy & Title Support",
+        desc: "Complete legal security, offshore acquisition structuring, and tax-efficient property conveyance handled by top specialists.",
+        img: "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1280&auto=format&fit=crop"
+      },
+      deal: {
+        title: "Closing the Deal",
+        desc: "White-glove transaction management ensuring escrow protection, discreet signing, and swift keys handover.",
+        img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1280&auto=format&fit=crop"
+      }
+    };
+
+    function setTab(key) {
+      const data = tabData[key];
+      if (!data) return;
+      document.getElementById("tab-title").innerText = data.title;
+      document.getElementById("tab-desc").innerText = data.desc;
+      document.getElementById("tab-img").src = data.img;
+
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        if (btn.dataset.tab === key) {
+          btn.className = "tab-btn text-left text-[13px] font-bold text-[#141414] transition-colors";
+        } else {
+          btn.className = "tab-btn text-left text-[13px] font-medium text-[#A5A5A5] hover:text-[#141414] transition-colors";
+        }
+      });
+    }
+  </script>
+</body>
+</html>
