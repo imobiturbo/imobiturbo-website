@@ -5,7 +5,6 @@ Allow: /corretor-autonomo/
 Allow: /imobiliarias/
 Allow: /construtoras-incorporadoras/
 Allow: /depoimentos/
-Allow: /lovable/
 Allow: /demo/
 Allow: /assets/
 Allow: /dist/
@@ -15,7 +14,8 @@ Allow: /llms.txt
 Allow: /llms-full.txt
 Allow: /sitemap.xml
 
-# Rotas bloqueadas de indexação (Privadas, Apps, Painéis, CRM, Guias Internos e Temporários)
+# Rotas bloqueadas de indexação (Privadas, Apps, Painéis, CRM, Guias, Lovable, Utilitários e Temporários)
+Disallow: /lovable/
 Disallow: /guia/
 Disallow: /prompts-para-anuncios/
 Disallow: /app/
@@ -40,6 +40,7 @@ Disallow: /.cloudflare-pages/
 # Rastreadores de busca tradicionais
 User-agent: Googlebot
 Allow: /
+Disallow: /lovable/
 Disallow: /guia/
 Disallow: /prompts-para-anuncios/
 Disallow: /app/
@@ -63,6 +64,7 @@ Disallow: /.cloudflare-pages/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /lovable/
 Disallow: /guia/
 Disallow: /prompts-para-anuncios/
 Disallow: /app/
@@ -82,6 +84,7 @@ Disallow: /lp-simulador/
 # Rastreadores de IA e Motores de Resposta (AEO)
 User-agent: GPTBot
 Allow: /
+Disallow: /lovable/
 Disallow: /guia/
 Disallow: /prompts-para-anuncios/
 Disallow: /app/
@@ -99,6 +102,7 @@ Disallow: /lp-pages/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /lovable/
 Disallow: /guia/
 Disallow: /prompts-para-anuncios/
 Disallow: /app/
@@ -111,6 +115,7 @@ Disallow: /stat/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /lovable/
 Disallow: /guia/
 Disallow: /prompts-para-anuncios/
 Disallow: /app/
@@ -123,6 +128,7 @@ Disallow: /stat/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /lovable/
 Disallow: /guia/
 Disallow: /prompts-para-anuncios/
 Disallow: /app/
@@ -135,6 +141,7 @@ Disallow: /stat/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /lovable/
 Disallow: /guia/
 Disallow: /prompts-para-anuncios/
 Disallow: /app/
