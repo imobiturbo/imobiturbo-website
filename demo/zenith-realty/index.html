@@ -77,7 +77,7 @@
        ========================================== -->
   <div id="hero-section" class="relative h-[400vh] w-full">
     <div class="sticky top-0 w-full h-screen overflow-hidden flex items-center justify-center bg-black">
-      <video id="hero-video" class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-85 transition-all duration-700" playsinline muted preload="auto"></video>
+      <video id="hero-video" class="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-85 transition-all duration-700" src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260503_144509_89e2d612-8af2-45c3-90f4-4831bc60715d.mp4" poster="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1920&q=85" playsinline muted preload="auto" loop></video>
       
       <div class="absolute inset-0 bg-gradient-to-t from-[#07080B] via-transparent to-black/60 pointer-events-none"></div>
       <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/40 pointer-events-none"></div>
@@ -463,21 +463,18 @@
     const phase1 = document.getElementById("phase-1");
     const phase2 = document.getElementById("phase-2");
 
-    fetch("https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260503_144509_89e2d612-8af2-45c3-90f4-4831bc60715d.mp4")
-      .then(r => r.blob())
-      .then(blob => {
-        heroVideo.src = URL.createObjectURL(blob);
-        heroVideo.load();
-      })
-      .catch(() => {
-        heroVideo.src = "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260503_144509_89e2d612-8af2-45c3-90f4-4831bc60715d.mp4";
-        heroVideo.load();
-      });
+    if (heroVideo) {
+      heroVideo.play().then(() => {
+        // Pauses briefly so scroll scrubbing controls playback
+        setTimeout(() => { if (!heroVideo.seeking) heroVideo.pause(); }, 150);
+      }).catch(() => {});
+    }
 
     let targetProgress = 0;
     let currentProgress = 0;
 
     function updateScroll() {
+      if (!heroSection) return;
       const rect = heroSection.getBoundingClientRect();
       const max = rect.height - window.innerHeight;
       if (max > 0) {
@@ -486,6 +483,7 @@
     }
     window.addEventListener("scroll", updateScroll, { passive: true });
     window.addEventListener("resize", updateScroll);
+    updateScroll();
 
     function calcOpacity(progress, enterStart, enterEnd, exitStart, exitEnd) {
       if (progress < enterStart || progress > exitEnd) return 0;
@@ -496,16 +494,16 @@
 
     function scrubLoop() {
       currentProgress += (targetProgress - currentProgress) * 0.15;
-      if (heroVideo.duration && !heroVideo.seeking) {
+      if (heroVideo && heroVideo.duration && !heroVideo.seeking) {
         const targetTime = currentProgress * heroVideo.duration;
-        if (Math.abs(heroVideo.currentTime - targetTime) > 0.02) {
+        if (Math.abs(heroVideo.currentTime - targetTime) > 0.03) {
           heroVideo.currentTime = targetTime;
         }
       }
 
-      const op0 = calcOpacity(targetProgress, 0.0, 0.05, 0.22, 0.30);
-      const op1 = calcOpacity(targetProgress, 0.30, 0.40, 0.58, 0.68);
-      const op2 = calcOpacity(targetProgress, 0.68, 0.78, 0.92, 0.99);
+      const op0 = calcOpacity(targetProgress, 0.0, 0.04, 0.28, 0.38);
+      const op1 = calcOpacity(targetProgress, 0.32, 0.42, 0.62, 0.72);
+      const op2 = calcOpacity(targetProgress, 0.66, 0.76, 0.94, 1.00);
 
       if (phase0) { phase0.style.opacity = op0.toFixed(3); phase0.style.transform = "translateY(" + (-targetProgress * 40) + "px)"; }
       if (phase1) { phase1.style.opacity = op1.toFixed(3); phase1.style.transform = "translateY(" + ((0.5 - targetProgress) * 35) + "px)"; }
@@ -524,7 +522,9 @@
           b.className = "amb-btn px-3 py-0.5 rounded-full text-white/60 hover:text-white transition-all";
         }
       });
-      heroVideo.className = "absolute inset-0 w-full h-full object-cover pointer-events-none opacity-85 transition-all duration-700 " + (type === "golden" ? "ambient-golden" : type === "night" ? "ambient-night" : "");
+      if (heroVideo) {
+        heroVideo.className = "absolute inset-0 w-full h-full object-cover pointer-events-none opacity-85 transition-all duration-700 " + (type === "golden" ? "ambient-golden" : type === "night" ? "ambient-night" : "");
+      }
     }
 
     // 3. Floor Explorer
@@ -532,25 +532,25 @@
       garden: {
         badge: "1º Pavimento · Frente Mar",
         title: "Residência Garden Oceano",
-        area: "540 m² <span class="text-xs text-white/50 font-sans">privativos</span>",
+        area: '540 m² <span class="text-xs text-white/50 font-sans">privativos</span>',
         desc: "Piscina aquecida privativa no deck de peroba do campo, jardim tropical assinado por Burle Marx e living integrado de 120 m² com vista para a praia.",
-        specs: "<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 4 Suítes com banheiros em mármore travertino navona</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 5 Vagas soltas com carregador elétrico</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> Adega climatizada para 350 garrafas</li>",
+        specs: '<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 4 Suítes com banheiros em mármore travertino navona</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 5 Vagas soltas com carregador elétrico</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> Adega climatizada para 350 garrafas</li>',
         img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1280&auto=format&fit=crop"
       },
       tipo: {
         badge: "2º ao 5º Andar · 1 por Andar",
         title: "Residência Atlântica Tipo",
-        area: "380 m² <span class="text-xs text-white/50 font-sans">privativos</span>",
+        area: '380 m² <span class="text-xs text-white/50 font-sans">privativos</span>',
         desc: "Varanda infinita integrada ao living com caixilhos embutidos no piso. Circulação cruzada com vista 180° para o oceano.",
-        specs: "<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 4 Suítes (Master com 65m² e closet duplo)</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 4 Vagas demarcadas</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> Copa e cozinha gourmet integráveis</li>",
+        specs: '<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 4 Suítes (Master com 65m² e closet duplo)</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 4 Vagas demarcadas</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> Copa e cozinha gourmet integráveis</li>',
         img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=1280&auto=format&fit=crop"
       },
       triplex: {
         badge: "6º ao 8º Andar · Cobertura Triplex",
         title: "Penthouse Coroa do Leblon",
-        area: "720 m² <span class="text-xs text-white/50 font-sans">privativos</span>",
+        area: '720 m² <span class="text-xs text-white/50 font-sans">privativos</span>',
         desc: "Rooftop privativo com piscina de borda infinita debruçada sobre o mar, elevador interno privativo e spa a céu aberto.",
-        specs: "<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 5 Suítes Master</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 6 Vagas no subsolo</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> Lounge gourmet e adega privativa de 500 rótulos</li>",
+        specs: '<li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 5 Suítes Master</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> 6 Vagas no subsolo</li><li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-[#E8D8B8]"></span> Lounge gourmet e adega privativa de 500 rótulos</li>',
         img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1280&auto=format&fit=crop"
       }
     };
