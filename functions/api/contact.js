@@ -1,7 +1,7 @@
 /**
- * Cloudflare Pages Function: POST /api/contact
- * Recebe o formulário de contato do site, assina com HMAC SHA-256 usando o webhook secret
- * e envia para o endpoint de captação do Imobiturbo OS.
+ * Cloudflare Pages Function: POST /api/contact e POST /api/asaas
+ * Recebe tanto o formulário web quanto webhooks do Asaas (PAYMENT_CONFIRMED, PAYMENT_RECEIVED, CHECKOUT_PAID),
+ * normaliza a identidade do cliente (Nome, WhatsApp, E-mail), assina com HMAC SHA-256 e entrega ao Imobiturbo OS.
  */
 
 const WEBHOOK_URL = 'https://os.imobiturbo.com.br/api/v1/webhooks/in/i7F0QAdp3xKbXOSzSft0lCjkzXggzPxV';
@@ -14,7 +14,7 @@ const jsonResponse = (data, status = 200) =>
       'content-type': 'application/json; charset=utf-8',
       'access-control-allow-origin': '*',
       'access-control-allow-methods': 'POST, OPTIONS',
-      'access-control-allow-headers': 'content-type, authorization, x-imobiturbo-signature',
+      'access-control-allow-headers': 'content-type, authorization, x-imobiturbo-signature, asaas-access-token',
     },
   });
 
@@ -40,7 +40,7 @@ export async function onRequest({ request, env }) {
       headers: {
         'access-control-allow-origin': '*',
         'access-control-allow-methods': 'POST, OPTIONS',
-        'access-control-allow-headers': 'content-type, authorization, x-imobiturbo-signature',
+        'access-control-allow-headers': 'content-type, authorization, x-imobiturbo-signature, asaas-access-token',
         'access-control-max-age': '86400',
       },
     });
@@ -66,31 +66,84 @@ export async function onRequest({ request, env }) {
     return jsonResponse({ error: 'invalid_payload', message: 'Corpo da requisição inválido' }, 400);
   }
 
-  const name = typeof body.name === 'string' ? body.name.trim() : '';
-  const phone = typeof body.phone === 'string' ? body.phone.trim() : '';
-  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  // Identificação do formato (Asaas Webhook vs Formulário Web)
+  const isAsaas = Boolean(
+    body.event ||
+    body.payment ||
+    request.headers.get('asaas-access-token')
+  );
 
-  if (!name) {
-    return jsonResponse({ error: 'missing_field', field: 'name', message: 'Nome é obrigatório' }, 400);
+  const asaasEvent = typeof body.event === 'string' ? body.event.toUpperCase() : null;
+
+  // Filtragem de eventos do Asaas: só prossegue para compra aprovada
+  if (isAsaas && asaasEvent && !['PAYMENT_CONFIRMED', 'PAYMENT_RECEIVED', 'CHECKOUT_PAID'].includes(asaasEvent)) {
+    return jsonResponse({ ok: true, status: 'ignored_event', event: asaasEvent, message: 'Evento não requer criação de cliente.' });
   }
-  if (!phone) {
-    return jsonResponse({ error: 'missing_field', field: 'phone', message: 'WhatsApp é obrigatório' }, 400);
+
+  const payment = body.payment && typeof body.payment === 'object' ? body.payment : {};
+  const customer = body.customer && typeof body.customer === 'object' ? body.customer : {};
+
+  // Extração inteligente de campos em múltiplos formatos (Asaas nested vs flat)
+  const name = (
+    (typeof payment.customerName === 'string' && payment.customerName) ||
+    (typeof customer.name === 'string' && customer.name) ||
+    (typeof body.customerName === 'string' && body.customerName) ||
+    (typeof body.name === 'string' && body.name) ||
+    (typeof body.nome === 'string' && body.nome) ||
+    ''
+  ).trim();
+
+  const rawPhone = (
+    (typeof payment.customerMobilePhone === 'string' && payment.customerMobilePhone) ||
+    (typeof payment.customerPhone === 'string' && payment.customerPhone) ||
+    (typeof customer.mobilePhone === 'string' && customer.mobilePhone) ||
+    (typeof customer.phone === 'string' && customer.phone) ||
+    (typeof body.customerMobilePhone === 'string' && body.customerMobilePhone) ||
+    (typeof body.customerPhone === 'string' && body.customerPhone) ||
+    (typeof body.phone === 'string' && body.phone) ||
+    (typeof body.telefone === 'string' && body.telefone) ||
+    (typeof body.whatsapp === 'string' && body.whatsapp) ||
+    ''
+  ).trim();
+
+  const email = (
+    (typeof payment.customerEmail === 'string' && payment.customerEmail) ||
+    (typeof customer.email === 'string' && customer.email) ||
+    (typeof body.customerEmail === 'string' && body.customerEmail) ||
+    (typeof body.email === 'string' && body.email) ||
+    ''
+  ).trim();
+
+  if (!name && !rawPhone && !email) {
+    return jsonResponse({ error: 'missing_field', message: 'Nenhum dado identificável de contato encontrado no payload' }, 400);
   }
 
   const secret = env.IMOBITURBO_WEBHOOK_SECRET || DEFAULT_SECRET;
 
+  // External ID para idempotência (payment.id evita duplicação entre PAYMENT_CONFIRMED e PAYMENT_RECEIVED)
+  const externalId = payment.id || body.id || (isAsaas ? `asaas_${Date.now()}` : undefined);
+
   const payloadToSend = {
-    name,
-    phone,
+    name: name || 'Cliente Asaas',
+    ...(rawPhone ? { phone: rawPhone } : {}),
     ...(email ? { email } : {}),
-    ...(body.message ? { message: body.message } : {}),
-    ...(body.perfil ? { perfil: body.perfil } : {}),
-    ...(body.utm_source ? { utm_source: body.utm_source } : {}),
-    ...(body.utm_medium ? { utm_medium: body.utm_medium } : {}),
-    ...(body.utm_campaign ? { utm_campaign: body.utm_campaign } : {}),
-    ...(body.utm_content ? { utm_content: body.utm_content } : {}),
-    ...(body.utm_term ? { utm_term: body.utm_term } : {}),
-    origem: 'site_imobiturbo_contato',
+    ...(isAsaas ? {
+      tipo_contato: 'cliente',
+      status_compra: 'aprovado',
+      asaas_event: asaasEvent || 'PAYMENT_APPROVED',
+      asaas_payment_id: payment.id || '',
+      asaas_value: payment.value ? String(payment.value) : '',
+      asaas_billing_type: payment.billingType || '',
+      origem: 'asaas_compra_aprovada',
+    } : {
+      ...(body.message ? { message: body.message } : {}),
+      ...(body.perfil ? { perfil: body.perfil } : {}),
+      ...(body.utm_source ? { utm_source: body.utm_source } : {}),
+      ...(body.utm_medium ? { utm_medium: body.utm_medium } : {}),
+      ...(body.utm_campaign ? { utm_campaign: body.utm_campaign } : {}),
+      origem: 'site_imobiturbo_contato',
+    }),
+    ...(externalId ? { external_id: String(externalId) } : {}),
     origem_url: request.url,
     user_agent: request.headers.get('user-agent') || '',
     submitted_at: new Date().toISOString(),
@@ -132,7 +185,7 @@ export async function onRequest({ request, env }) {
         {
           error: 'upstream_error',
           status: upstreamRes.status,
-          message: upstreamData.message || 'Erro ao processar contato',
+          message: upstreamData.message || 'Erro ao processar lead/cliente',
         },
         upstreamRes.status
       );
@@ -140,7 +193,7 @@ export async function onRequest({ request, env }) {
 
     return jsonResponse({
       ok: true,
-      message: 'Contato enviado com sucesso!',
+      message: isAsaas ? 'Cliente e compra processados com sucesso!' : 'Contato enviado com sucesso!',
       data: upstreamData.data || upstreamData,
     });
   } catch (err) {
