@@ -7,4 +7,5 @@ Thumbs.db
 .impeccable/
 skills-lock.json
 .cloudflare-pages/
+.wrangler/
 output/

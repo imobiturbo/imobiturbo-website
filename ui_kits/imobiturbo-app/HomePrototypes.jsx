@@ -23,6 +23,7 @@ const HOME_NAV_LINKS = [
   ['Como faz', '#como-faz'],
   ['Método', '#metodo'],
   ['Depoimentos', '#depoimentos'],
+  ['Contato', '#contato'],
 ];
 
 const HOME_AUDIENCES = [
@@ -600,6 +601,367 @@ function DiagnosticSection() {
   );
 }
 
+const CONTACT_WEBHOOK_URL = 'https://os.imobiturbo.com.br/api/v1/webhooks/in/i7F0QAdp3xKbXOSzSft0lCjkzXggzPxV';
+const CONTACT_WEBHOOK_SECRET = 'whsec_asnPLHWJWNjXM28ppgf6dWlM97KXWIms4_NpWUn3zwk';
+
+function formatPhoneBR(value) {
+  const digits = value.replace(/\D/g, '').slice(0, 11);
+  if (digits.length <= 2) return digits.length > 0 ? `(${digits}` : '';
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+}
+
+async function computeHmacSha256(secret, message) {
+  try {
+    const encoder = new TextEncoder();
+    const key = await window.crypto.subtle.importKey(
+      'raw',
+      encoder.encode(secret),
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['sign']
+    );
+    const signature = await window.crypto.subtle.sign('HMAC', key, encoder.encode(message));
+    return Array.from(new Uint8Array(signature))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
+  } catch (err) {
+    return '';
+  }
+}
+
+function ContactSection() {
+  const [formData, setFormData] = React.useState({
+    name: '',
+    phone: '',
+    email: '',
+    perfil: 'Corretor autônomo',
+    message: '',
+  });
+  const [status, setStatus] = React.useState('idle'); // 'idle' | 'loading' | 'success' | 'error'
+  const [errorMessage, setErrorMessage] = React.useState('');
+  const [submittedData, setSubmittedData] = React.useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'phone') {
+      setFormData((prev) => ({ ...prev, phone: formatPhoneBR(value) }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const cleanPhone = formData.phone.replace(/\D/g, '');
+    if (!formData.name.trim()) {
+      setStatus('error');
+      setErrorMessage('Por favor, informe seu nome completo.');
+      return;
+    }
+    if (cleanPhone.length < 10) {
+      setStatus('error');
+      setErrorMessage('Por favor, informe um número de WhatsApp válido com DDD.');
+      return;
+    }
+
+    setStatus('loading');
+    setErrorMessage('');
+
+    const payload = {
+      name: formData.name.trim(),
+      phone: formData.phone.trim(),
+      ...(formData.email.trim() ? { email: formData.email.trim() } : {}),
+      perfil: formData.perfil,
+      ...(formData.message.trim() ? { message: formData.message.trim() } : {}),
+      origem: 'site_imobiturbo_home_contato',
+      page: typeof window !== 'undefined' ? window.location.pathname : '/',
+    };
+
+    trackHomeEvent('generate_lead', {
+      method: 'form',
+      form: 'contato_principal',
+      name: payload.name,
+      perfil: payload.perfil,
+    });
+
+    try {
+      let success = false;
+      // 1. Tenta o endpoint da Cloudflare Pages Function
+      try {
+        const cfRes = await fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (cfRes.ok) {
+          success = true;
+        }
+      } catch (cfErr) {
+        // Segue para fallback
+      }
+
+      // 2. Fallback direto para o webhook do Imobiturbo OS caso a função não responda
+      if (!success) {
+        const rawBody = JSON.stringify(payload);
+        const sig = await computeHmacSha256(CONTACT_WEBHOOK_SECRET, rawBody);
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${CONTACT_WEBHOOK_SECRET}`,
+        };
+        if (sig) headers['X-Imobiturbo-Signature'] = sig;
+
+        const directRes = await fetch(CONTACT_WEBHOOK_URL, {
+          method: 'POST',
+          headers,
+          body: rawBody,
+        });
+        if (!directRes.ok) {
+          throw new Error('Falha na resposta do servidor.');
+        }
+      }
+
+      setSubmittedData({ ...formData });
+      setStatus('success');
+    } catch (err) {
+      setStatus('error');
+      setErrorMessage('Ocorreu um erro ao enviar os dados. Por favor, tente novamente ou fale conosco diretamente pelo WhatsApp.');
+    }
+  };
+
+  const handleReset = () => {
+    setFormData({
+      name: '',
+      phone: '',
+      email: '',
+      perfil: 'Corretor autônomo',
+      message: '',
+    });
+    setStatus('idle');
+    setErrorMessage('');
+    setSubmittedData(null);
+  };
+
+  const whatsappDirectUrl = submittedData
+    ? `https://wa.me/5521983747796?text=${encodeURIComponent(`Olá Natan! Acabei de enviar o formulário de contato no site.\n\nNome: ${submittedData.name}\nWhatsApp: ${submittedData.phone}\nPerfil: ${submittedData.perfil}${submittedData.email ? `\nE-mail: ${submittedData.email}` : ''}`)}`
+    : HOME_WHATSAPP_URL;
+
+  return (
+    <section className="contact-section" id="contato">
+      <div className="home-container contact-layout">
+        <div className="contact-copy">
+          <p className="contact-kicker">Atendimento comercial</p>
+          <h2>Pronto para dar direção à sua operação comercial<span className="lime-dot">.</span></h2>
+          <p className="contact-lead">
+            Preencha o formulário para falar diretamente com nosso time. Mapeamos seu momento, gargalos e apresentamos o formato ideal para sua operação.
+          </p>
+
+          <div className="contact-benefits">
+            <div className="contact-benefit-item">
+              <div className="contact-benefit-icon">
+                <Icon name="whatsapp" size={22} stroke={2} />
+              </div>
+              <div>
+                <strong>Retorno ágil no WhatsApp</strong>
+                <span>Atendimento direto pelo time comercial sem burocracia.</span>
+              </div>
+            </div>
+
+            <div className="contact-benefit-item">
+              <div className="contact-benefit-icon">
+                <Icon name="target" size={22} stroke={2} />
+              </div>
+              <div>
+                <strong>Diagnóstico sob medida</strong>
+                <span>Soluções personalizadas para corretores solo, imobiliárias ou incorporadoras.</span>
+              </div>
+            </div>
+
+            <div className="contact-benefit-item">
+              <div className="contact-benefit-icon">
+                <Icon name="trending" size={22} stroke={2} />
+              </div>
+              <div>
+                <strong>Método comprovado</strong>
+                <span>Processos, tecnologia e acompanhamento com foco em margem e fechamentos reais.</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="contact-direct-wrap">
+            <span className="contact-direct-label">Prefere atendimento imediato?</span>
+            <a className="contact-direct-link" href={HOME_WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+              <Icon name="whatsapp" size={20} stroke={2} />
+              <span>Chamar no WhatsApp (+55 21 98374-7796)</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="contact-form-wrapper">
+          {status === 'success' ? (
+            <div className="contact-success-card" aria-live="polite">
+              <div className="contact-success-icon-wrap">
+                <Icon name="checkCircle" size={48} stroke={2.2} color="var(--home-lime)" />
+              </div>
+              <h3>Contato enviado com sucesso<span className="lime-dot">.</span></h3>
+              <p className="contact-success-text">
+                Obrigado, <strong>{submittedData?.name}</strong>! Recebemos seus dados e nosso time comercial entrará em contato pelo seu WhatsApp (<strong>{submittedData?.phone}</strong>) em breve.
+              </p>
+
+              <div className="contact-success-actions">
+                <a
+                  className="contact-whatsapp-instant-btn"
+                  href={whatsappDirectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => trackHomeEvent('generate_lead', {
+                    method: 'whatsapp_after_form',
+                    form: 'contato_principal',
+                    name: submittedData?.name,
+                  })}
+                >
+                  <Icon name="whatsapp" size={20} stroke={2} />
+                  <span>Falar no WhatsApp agora</span>
+                </a>
+                <button className="contact-reset-btn" type="button" onClick={handleReset}>
+                  Enviar outra mensagem
+                </button>
+              </div>
+            </div>
+          ) : (
+            <form className="contact-form-card" onSubmit={handleSubmit} noValidate>
+              <div className="contact-form-header">
+                <h3>Solicitar contato comercial</h3>
+                <p>Preencha os campos abaixo para iniciar a conversa:</p>
+              </div>
+
+              {status === 'error' && errorMessage && (
+                <div className="contact-error-alert" role="alert">
+                  <Icon name="alertCircle" size={20} stroke={2} color="#FF5A4E" />
+                  <span>{errorMessage}</span>
+                </div>
+              )}
+
+              <div className="contact-field-group">
+                <label htmlFor="contact-name">
+                  Nome completo <span className="required-star">*</span>
+                </label>
+                <div className="contact-input-wrap">
+                  <Icon name="user" size={18} stroke={1.8} className="contact-input-icon" />
+                  <input
+                    id="contact-name"
+                    name="name"
+                    type="text"
+                    placeholder="Seu nome completo"
+                    value={formData.name}
+                    onChange={handleChange}
+                    disabled={status === 'loading'}
+                    required
+                    autoComplete="name"
+                  />
+                </div>
+              </div>
+
+              <div className="contact-field-group">
+                <label htmlFor="contact-phone">
+                  WhatsApp com DDD <span className="required-star">*</span>
+                </label>
+                <div className="contact-input-wrap">
+                  <Icon name="whatsapp" size={18} stroke={1.8} className="contact-input-icon" />
+                  <input
+                    id="contact-phone"
+                    name="phone"
+                    type="tel"
+                    placeholder="(21) 98374-7796"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    disabled={status === 'loading'}
+                    required
+                    autoComplete="tel"
+                  />
+                </div>
+              </div>
+
+              <div className="contact-field-group">
+                <label htmlFor="contact-email">
+                  E-mail <span className="optional-tag">(opcional)</span>
+                </label>
+                <div className="contact-input-wrap">
+                  <Icon name="mail" size={18} stroke={1.8} className="contact-input-icon" />
+                  <input
+                    id="contact-email"
+                    name="email"
+                    type="email"
+                    placeholder="seu.email@exemplo.com.br"
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={status === 'loading'}
+                    autoComplete="email"
+                  />
+                </div>
+              </div>
+
+              <div className="contact-field-group">
+                <label htmlFor="contact-perfil">Seu perfil comercial</label>
+                <div className="contact-select-wrap">
+                  <select
+                    id="contact-perfil"
+                    name="perfil"
+                    value={formData.perfil}
+                    onChange={handleChange}
+                    disabled={status === 'loading'}
+                  >
+                    <option value="Corretor autônomo">Corretor autônomo</option>
+                    <option value="Imobiliária">Imobiliária</option>
+                    <option value="Construtora ou incorporadora">Construtora ou incorporadora</option>
+                    <option value="Outro perfil">Outro perfil comercial</option>
+                  </select>
+                  <Icon name="chevronDown" size={16} stroke={2} className="contact-select-icon" />
+                </div>
+              </div>
+
+              <div className="contact-field-group">
+                <label htmlFor="contact-message">
+                  Como podemos te ajudar? <span className="optional-tag">(opcional)</span>
+                </label>
+                <textarea
+                  id="contact-message"
+                  name="message"
+                  rows={3}
+                  placeholder="Conte rapidamente o momento da sua operação..."
+                  value={formData.message}
+                  onChange={handleChange}
+                  disabled={status === 'loading'}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="contact-submit-btn"
+                disabled={status === 'loading'}
+              >
+                {status === 'loading' ? (
+                  <span>Enviando dados...</span>
+                ) : (
+                  <>
+                    <span>Enviar solicitação de contato</span>
+                    <Icon name="arrowRight" size={18} stroke={2.2} />
+                  </>
+                )}
+              </button>
+
+              <p className="contact-privacy-note">
+                🔒 Seus dados estão seguros e serão utilizados exclusivamente para retorno do contato pela Imobiturbo.
+              </p>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FinalCtaSection() {
   return (
     <section className="final-cta">
@@ -638,6 +1000,7 @@ function HomeFooter() {
         </div>
         <div className="footer-column">
           <strong>Contato</strong>
+          <a href="#contato">Formulário de contato</a>
           <a href={HOME_WHATSAPP_URL} target="_blank" rel="noopener noreferrer">WhatsApp</a>
           <a href={HOME_INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram</a>
           <a href={HOME_TESTIMONIALS_URL}>Depoimentos</a>
@@ -661,6 +1024,7 @@ function HomePrototypes() {
         <MethodSection />
         <ProofSection />
         <DiagnosticSection />
+        <ContactSection />
         <FinalCtaSection />
       </main>
       <HomeFooter />
@@ -669,3 +1033,4 @@ function HomePrototypes() {
 }
 
 window.HomePrototypes = HomePrototypes;
+
