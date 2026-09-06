@@ -108,4 +108,14 @@
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://www.imobiturbo.com.br/vagas/</loc>
+    <lastmod>2026-09-06</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://www.imobiturbo.com.br/assets/natan-studio.jpg</image:loc>
+      <image:title>Vagas Comunidade Imobiturbo - CRM Imobiliário com IA</image:title>
+    </image:image>
+  </url>
 </urlset>

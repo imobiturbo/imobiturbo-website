@@ -31,6 +31,7 @@ const entries = [
   'downloads',
   'lovable',
   'demo',
+  'vagas',
   'robots.txt',
   'sitemap.xml',
   'llms.txt',
