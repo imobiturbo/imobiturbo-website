@@ -8,3 +8,4 @@ Thumbs.db
 skills-lock.json
 .cloudflare-pages/
 output/
+.env*
