@@ -72,20 +72,11 @@
 </head>
 <body>
 
-  <!-- Top Announcement Bar (Razor thin neon lime) -->
+  <!-- Top Announcement Bar (Razor thin neon lime com rec-dot pulsante) -->
   <aside class="announce-bar" id="announceBar">
-    <span class="dot">●</span>
+    <span class="rec-dot" aria-hidden="true"></span>
     <span id="announceText">VAGAS ABERTAS PARA A COMUNIDADE IMOBITURBO</span>
   </aside>
-
-  <!-- Hero Variant Switcher (Permite testar as 4 versões na hora) -->
-  <nav class="variant-switcher" aria-label="Seletor de Versões da Hero">
-    <span class="variant-label">Hero:</span>
-    <button class="v-btn" data-v="1" type="button">V1: Vantagem Desleal</button>
-    <button class="v-btn" data-v="2" type="button">V2: Anti-Gambiarra</button>
-    <button class="v-btn" data-v="3" type="button">V3: Falta só a IA Vender</button>
-    <button class="v-btn active" data-v="4" type="button">V4: VGV Turbinado</button>
-  </nav>
 
   <main>
     <!-- HERO SECTION -->
@@ -1238,73 +1229,9 @@
     <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
   </div>
 
-  <!-- JAVASCRIPT: Alternador das 4 Versões da Hero + Seletor de Planos -->
+  <!-- JAVASCRIPT: Seletor de Planos -->
   <script>
     (function() {
-      // 4 Variantes da Hero solicitadas pelo Natan
-      const variants = {
-        '1': {
-          announce: 'MENTORIA AO VIVO TODA SEMANA',
-          title: 'Quem fatura de verdade paga por <span class="lime-txt">informação privilegiada</span>.',
-          sub: 'É o que o Imobiturbo te entrega: o que já vende no mercado imobiliário e o melhor CRM com IA que atende em 10 segundos e agenda a visita na sua mão.',
-          cta: 'Quero minha vantagem desleal'
-        },
-        '2': {
-          announce: 'CRM IMOBILIÁRIO + IA INTEGRADA NATIVA',
-          title: 'Quem fatura alto com imóveis não perde tempo colando <span class="lime-txt">10 ferramentas</span>.',
-          sub: 'Enquanto o mercado te empurra cursos gravados e ferramentas gringas que não se conversam, o Imobiturbo coloca toda a sua operação para rodar no automático em um só clique.',
-          cta: 'Quero meu acesso ao ecossistema'
-        },
-        '3': {
-          announce: 'O NOVO JOGO DAS VENDAS IMOBILIÁRIAS',
-          title: 'Ao apertar um botão, falta só a IA <span class="lime-txt">vender sozinha para você</span>.',
-          sub: 'O primeiro CRM do Brasil que responde seus leads no WhatsApp em 10 segundos, faz a triagem do poder de compra e coloca a visita agendada direto na sua mão.',
-          cta: 'Garantir minha vaga na comunidade'
-        },
-        '4': {
-          announce: 'VAGAS ABERTAS PARA A COMUNIDADE IMOBITURBO',
-          title: 'O ecossistema que transforma anúncios em <span class="lime-txt">visitas agendadas e comissões</span>.',
-          sub: 'O melhor CRM para corretores e imobiliárias de elite, com inteligência artificial treinada no mercado imobiliário e mentoria ao vivo toda semana com Natan Pimentel.',
-          cta: 'Quero entrar na Comunidade Imobiturbo'
-        }
-      };
-
-      const titleEl = document.getElementById('hero-title');
-      const subEl = document.getElementById('hero-sub');
-      const ctaEl = document.getElementById('hero-cta');
-      const stickyCtaEl = document.querySelector('.sticky-cta .btn');
-      const announceEl = document.getElementById('announceText');
-      const buttons = document.querySelectorAll('.v-btn');
-
-      function applyVariant(v) {
-        if (!variants[v]) v = '4';
-        const data = variants[v];
-        if (titleEl) titleEl.innerHTML = data.title;
-        if (subEl) subEl.innerHTML = data.sub;
-        if (ctaEl) ctaEl.innerText = data.cta;
-        if (stickyCtaEl) stickyCtaEl.innerText = data.cta;
-        if (announceEl) announceEl.innerText = data.announce;
-
-        buttons.forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('data-v') === v);
-        });
-
-        localStorage.setItem('imobiturbo_vagas_variant', v);
-      }
-
-      // Checa URL param ?v=1..4 ou localStorage (Default: 4 VGV Turbinado)
-      const urlParams = new URLSearchParams(window.location.search);
-      const paramV = urlParams.get('v');
-      const savedV = localStorage.getItem('imobiturbo_vagas_variant');
-      applyVariant(paramV || savedV || '4');
-
-      buttons.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const v = this.getAttribute('data-v');
-          applyVariant(v);
-        });
-      });
-
       // Seletor de Planos dinâmico
       const planRadios = document.querySelectorAll('input[name="plano"]');
       const checkoutBtn = document.getElementById('checkoutBtn');
