@@ -1072,36 +1072,6 @@ body {
   }
 }
 
-/* Rodapé do slider com link para galeria */
-.proof-slider-footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.proof-view-all {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--muted);
-  text-decoration: none;
-  padding: 8px 18px;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--line);
-  transition: all 0.2s ease;
-}
-
-.proof-view-all:hover {
-  color: var(--lime);
-  border-color: rgba(var(--accent-rgb), 0.3);
-  background: rgba(var(--accent-rgb), 0.06);
-  transform: translateY(-1px);
-}
-
 /* Lightbox Modal — Inspirado em /depoimentos/ */
 .proof-lightbox {
   position: fixed;
