@@ -60,10 +60,32 @@ Localizados em [`/assets/subproducts/`](file:///mnt/d/Projetos/imobiturbo-design
 * **Imobiturbo Ads:** `subproduct-ads-for-white-bg.webp` (Claro) | `subproduct-ads-for-black-bg.webp` (Escuro)
 * **Imobiturbo Sites:** `subproduct-sites-for-white-bg.webp` (Claro) | `subproduct-sites-for-black-bg.webp` (Escuro)
 * **Imobiturbo Clone:** `subproduct-clone-for-white-bg.webp` (Claro) | `subproduct-clone-for-black-bg.webp` (Escuro)
+* **Imobiturbo News:** `subproduct-news-for-white-bg.webp` (Claro) | `subproduct-news-for-black-bg.webp` (Escuro)
 
 ---
 
-## 4. Tipografia Oficial
+## 5. Regra Mandatória de Dimensionamento de Logos (Padrão 2x Proporcional)
+
+> **RESOLUÇÃO NATIVA DOS ARQUIVOS E REGRA DOS 2X:**  
+> Todos os arquivos de logo e ícones oficiais são master WebP de altíssima definição:
+> - **Logos Master (Brand Mãe):** `7.853 x 1.139 px` (~8K widescreen)
+> - **Ícones / Símbolos Quadrados:** `4.687 x 4.687 px` (~4.7K)
+> - **Logos de Subprodutos:** `~3.000 x 729 px` (~3K widescreen)
+>
+> **NÃO HÁ RISCO DE PIXELIZAÇÃO OU PERDA DE QUALIDADE.** O erro em implementações anteriores foi limitar o CSS a alturas tímidas (`height: 26px` ou `32px`), gerando marcas minúsculas e sem autoridade.  
+> **A REGRA OFICIAL É O PADRÃO 2X PROPORCIONAL:**
+
+| Contexto de Aplicação | Altura Mínima (Desktop) | Largura Proporcional | Altura Mínima (Mobile) | Regra de CSS Obrigatória |
+| :--- | :---: | :---: | :---: | :--- |
+| **Header / Navbar Principal (Logo Master)** | **56px a 64px** | ~380px a 440px | **40px a 44px** | `height: 56px; width: auto; max-width: 100%;` (Nunca `< 48px` no desktop) |
+| **Faixa de Ecossistema (Subprodutos)** | **52px** | ~215px a 230px | **40px** | `height: 52px; width: auto; object-fit: contain;` (O dobro dos 26px legados) |
+| **Grid / Cards de Ferramentas / Vitrines** | **64px a 72px** | ~260px a 300px | **48px a 52px** | `height: 64px; width: auto; max-width: 280px;` |
+| **Ícone / Launcher de Apps (Quadrado)** | **64x64px a 80x80px** | Proporção 1:1 | **48x48px** | `width: 64px; height: 64px; border-radius: 14px;` |
+| **Rodapé Institucional** | **48px a 56px** | ~320px a 380px | **36px a 40px** | `height: 48px; width: auto;` |
+
+---
+
+## 6. Tipografia Oficial
 
 * **Família Primária & Títulos:** `Plus Jakarta Sans`
   * Pesos aceitos: 400 (Regular), 500 (Medium), 600 (SemiBold), 700 (Bold), 800 (ExtraBold).
@@ -74,7 +96,7 @@ Localizados em [`/assets/subproducts/`](file:///mnt/d/Projetos/imobiturbo-design
 
 ---
 
-## 5. Diretrizes de Ergonomia para o Público 40+ (Corretores e Empresários)
+## 7. Diretrizes de Ergonomia para o Público 40+ (Corretores e Empresários)
 
 1. **Tamanho Mínimo de Leitura:** Textos de parágrafo nunca devem ter menos de 16px em telas mobile e desktop.
 2. **Espaçamento de Linha:** Mínimo de `line-height: 1.55` para evitar que as linhas de texto fiquem coladas.

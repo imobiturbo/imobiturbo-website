@@ -359,8 +359,9 @@ body {
 }
 
 .eco-item img {
-  height: 26px;
+  height: 52px;
   width: auto;
+  max-width: 240px;
   object-fit: contain;
   display: block;
 }
@@ -370,13 +371,14 @@ body {
     padding: 0 0 32px;
   }
   .ecosystem-strip {
-    padding: 16px 14px;
+    padding: 20px 16px;
   }
   .ecosystem-logos {
-    gap: 16px 22px;
+    gap: 20px 24px;
   }
   .eco-item img {
-    height: 21px;
+    height: 40px;
+    max-width: 190px;
   }
 }
 
@@ -693,9 +695,9 @@ body {
 }
 
 .afn-nm .app-logo-brand {
-  height: 22px;
+  height: 44px;
   width: auto;
-  max-width: 140px;
+  max-width: 220px;
   object-fit: contain;
   display: inline-block;
   vertical-align: middle;
@@ -1085,11 +1087,12 @@ body {
 
 .proof-slider-wrapper {
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
   border-radius: var(--radius-md);
   padding: 8px 0;
   user-select: none;
   -webkit-user-select: none;
+  min-height: 480px;
 }
 
 .proof-slider-wrapper::before,
@@ -1114,7 +1117,7 @@ body {
 .proof-slider-track {
   display: flex;
   gap: 16px;
-  align-items: flex-start;
+  align-items: center;
   width: max-content;
   padding: 8px 0 24px;
   will-change: transform;
@@ -1141,10 +1144,11 @@ body {
   }
 }
 
-/* Container flexível: largura uniforme, altura adaptativa e natural */
+/* Container de card uniforme com proporção elegante de smartphone */
 .proof-card {
   flex: 0 0 280px;
   width: 280px;
+  height: 460px;
   border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: var(--card);
@@ -1155,6 +1159,9 @@ body {
               border-color 0.25s ease,
               box-shadow 0.25s ease;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .proof-card:hover {
@@ -1163,18 +1170,23 @@ body {
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
-/* Imagem inteira com proporção preservada, sem corte */
+/* Imagem focada no topo do print, ocupando o card como preview */
 .proof-card img {
   width: 100%;
-  height: auto;
+  height: 100%;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: top center;
 }
 
 @media (max-width: 640px) {
+  .proof-slider-wrapper {
+    min-height: 410px;
+  }
   .proof-card {
     flex: 0 0 240px;
     width: 240px;
+    height: 390px;
   }
   .proof-slider-header {
     flex-direction: column;

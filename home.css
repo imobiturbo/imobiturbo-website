@@ -118,7 +118,7 @@ a {
 .site-header-inner {
   height: 100%;
   display: grid;
-  grid-template-columns: 248px 1fr auto;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: clamp(24px, 3vw, 56px);
 }
@@ -132,8 +132,10 @@ a {
 
 .site-logo {
   display: block;
-  width: 220px;
+  width: 380px;
+  max-height: 56px;
   height: auto;
+  object-fit: contain;
 }
 
 .site-nav {
@@ -1743,12 +1745,13 @@ a {
 
 @media (max-width: 1260px) {
   .site-header-inner {
-    grid-template-columns: 200px 1fr auto;
+    grid-template-columns: auto 1fr auto;
     gap: 22px;
   }
 
   .site-logo {
-    width: 190px;
+    width: 280px;
+    max-height: 48px;
   }
 
   .site-nav {
@@ -1799,7 +1802,8 @@ a {
   }
 
   .site-logo {
-    width: 176px;
+    width: 240px;
+    max-height: 44px;
   }
 
   .site-nav,
@@ -2090,7 +2094,8 @@ a {
   }
 
   .site-logo {
-    width: 154px;
+    width: 210px;
+    max-height: 40px;
   }
 
   .menu-toggle {
@@ -2592,7 +2597,8 @@ a {
   }
 
   .site-logo {
-    width: 142px;
+    width: 190px;
+    max-height: 38px;
   }
 
   .diagnostic-card-top {
@@ -2681,7 +2687,7 @@ a {
 }
 
 .portal-header-logo {
-  height: 32px;
+  height: 56px;
   width: auto;
   object-fit: contain;
 }
@@ -2970,12 +2976,12 @@ a {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  min-width: 150px;
+  min-width: 240px;
 }
 
 .portal-app-logo {
-  height: 38px;
-  max-width: 160px;
+  height: 64px;
+  max-width: 280px;
   width: auto;
   object-fit: contain;
 }
