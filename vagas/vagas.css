@@ -1300,9 +1300,10 @@ body {
 }
 
 .psel-cta {
-  max-width: 580px;
+  display: flex;
+  width: 100%;
+  max-width: 600px;
   margin: 0 auto 12px;
-  display: inline-flex;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -1914,4 +1915,413 @@ body {
 .anchoring-row span.val {
   font-family: var(--mono);
   font-weight: 700;
+}
+
+/* ==========================================================================
+   NATIVE EMBEDDED CHECKOUT MODAL (ABACATEPAY + ASAAS FALLBACK)
+   ========================================================================== */
+.chk-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(4, 6, 10, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chk-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.chk-modal-box {
+  position: relative;
+  width: 100%;
+  max-width: 490px;
+  max-height: 92vh;
+  overflow-y: auto;
+  background: #0B0F17;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  box-shadow: 0 32px 100px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(191, 215, 48, 0.15);
+  padding: 24px;
+  color: var(--white);
+  animation: chkModalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes chkModalIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.chk-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.chk-modal-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--white);
+}
+
+.chk-modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  color: var(--lime);
+  background: rgba(191, 215, 48, 0.12);
+  border: 1px solid rgba(191, 215, 48, 0.25);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.chk-modal-title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.chk-modal-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+/* Plan summary pill inside modal */
+.chk-plan-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 18px;
+}
+
+.chk-plan-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.chk-plan-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.chk-plan-sub {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.chk-plan-val {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--lime);
+}
+
+/* Tabs: PIX vs CARTÃO */
+.chk-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.chk-tab {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.chk-tab.active {
+  background: rgba(191, 215, 48, 0.12);
+  border-color: var(--lime);
+  box-shadow: 0 0 16px rgba(191, 215, 48, 0.15);
+}
+
+.chk-tab-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chk-tab.active .chk-tab-label {
+  color: var(--lime);
+}
+
+.chk-tab-desc {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Fields & Inputs */
+.chk-field {
+  margin-bottom: 12px;
+}
+
+.chk-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 5px;
+}
+
+.chk-input {
+  width: 100%;
+  background: #111622;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--white);
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.chk-input:focus {
+  border-color: var(--lime);
+  box-shadow: 0 0 0 3px rgba(191, 215, 48, 0.18);
+}
+
+.chk-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* CTA submit button */
+.chk-btn-submit {
+  width: 100%;
+  background: var(--lime);
+  color: #10130C !important;
+  font-weight: 800 !important;
+  font-size: 16px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 24px rgba(191, 215, 48, 0.3);
+}
+
+.chk-btn-submit:hover {
+  background: var(--lime-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(191, 215, 48, 0.4);
+}
+
+.chk-btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.chk-guarantee-note {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+/* State 2: Pix QR Code Screen */
+.chk-pix-view {
+  text-align: center;
+  padding: 10px 0;
+}
+
+.chk-pulse-radar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--lime);
+  background: rgba(191, 215, 48, 0.1);
+  border: 1px solid rgba(191, 215, 48, 0.2);
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+
+.chk-radar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  animation: chkPulse 1.5s infinite;
+}
+
+@keyframes chkPulse {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(191, 215, 48, 0.7); }
+  70% { transform: scale(1.2); box-shadow: 0 0 0 8px rgba(191, 215, 48, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(191, 215, 48, 0); }
+}
+
+.chk-qr-frame {
+  background: #FFFFFF;
+  padding: 14px;
+  border-radius: 16px;
+  display: inline-block;
+  margin: 0 auto 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+.chk-qr-img {
+  width: 190px;
+  height: 190px;
+  display: block;
+}
+
+.chk-pix-code-wrap {
+  position: relative;
+  margin-bottom: 14px;
+}
+
+.chk-pix-textarea {
+  width: 100%;
+  height: 60px;
+  background: #111622;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 11px;
+  font-family: var(--mono);
+  color: #94a3b8;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.chk-copy-btn {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--white);
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.chk-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--lime);
+  color: var(--lime);
+}
+
+.chk-timer-bar {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.chk-timer-bar b {
+  color: var(--white);
+  font-family: var(--mono);
+}
+
+/* State 3: Success Screen */
+.chk-success-view {
+  text-align: center;
+  padding: 24px 10px;
+}
+
+.chk-success-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(191, 215, 48, 0.15);
+  border: 2px solid var(--lime);
+  color: var(--lime);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 16px;
+  animation: chkPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes chkPop {
+  0% { transform: scale(0); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.chk-success-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+
+.chk-success-desc {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin-bottom: 20px;
 }

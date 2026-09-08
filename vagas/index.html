@@ -28,7 +28,7 @@
   <link rel="preload" href="./assets/hero-bg.webp" as="image">
 
   <!-- Fonts & Stylesheet -->
-  <link rel="stylesheet" href="./vagas.css?v=20260906-v2">
+  <link rel="stylesheet" href="./vagas.css?v=20260908-v1">
 
   <!-- Structured Data JSON-LD -->
   <script type="application/ld+json">
@@ -67,7 +67,7 @@
   </script>
 
   <!-- Tracking Scripts -->
-  <script defer src="https://tracking.imobiturbo.com.br/tracker/v1.js" data-site-key="imobiturbo-public-v1" data-default-consent="granted"></script>
+  <script defer src="https://hub.imobiturbo.com.br/api/tracking/tracker.js" data-site-key="comunidade-imobiturbo" data-default-consent="granted"></script>
   <script defer src="../site-tracking.js?v=20260906"></script>
 </head>
 <body>
@@ -1301,25 +1301,580 @@
     </div>
   </div>
 
+  <!-- MODAL DE CHECKOUT EMBEDDED (ABACATEPAY + ASAAS FALLBACK) -->
+  <div id="checkoutModalOverlay" class="chk-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="chk-modal-box">
+      <button type="button" class="chk-modal-close" id="checkoutModalClose" aria-label="Fechar">&times;</button>
+
+      <!-- VIEW 1: FORMULÁRIO DE DADOS E PAGAMENTO -->
+      <div id="chkFormView">
+        <div class="chk-modal-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Checkout 100% Seguro · 256-bit SSL
+        </div>
+        <h3 class="chk-modal-title">Finalizar Inscrição</h3>
+        <p class="chk-modal-subtitle">Preencha seus dados para receber o acesso imediato à Comunidade Imobiturbo.</p>
+
+        <!-- Resumo do Plano Selecionado -->
+        <div class="chk-plan-summary">
+          <div class="chk-plan-info">
+            <span class="chk-plan-name" id="chkModalPlanName">Plano Anual</span>
+            <span class="chk-plan-sub" id="chkModalPlanSub">Acesso Completo por 12 meses</span>
+          </div>
+          <div class="chk-plan-val" id="chkModalPlanPrice">12x R$ 97</div>
+        </div>
+
+        <!-- Seletor de Método de Pagamento -->
+        <div class="chk-tabs">
+          <div class="chk-tab active" id="tabPix" data-method="PIX">
+            <span class="chk-tab-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.005 2.002a2.49 2.49 0 0 0-1.763.732L5.42 7.556a2.492 2.492 0 0 0 0 3.525l4.822 4.822a2.49 2.49 0 0 0 3.525 0l4.822-4.822a2.492 2.492 0 0 0 0-3.525l-4.822-4.822a2.49 2.49 0 0 0-1.762-.732zm0 3.535 3.536 3.536-3.536 3.535-3.535-3.535 3.535-3.536z"/></svg>
+              Pix
+            </span>
+            <span class="chk-tab-desc">Aprovação imediata</span>
+          </div>
+          <div class="chk-tab" id="tabCard" data-method="CREDIT_CARD">
+            <span class="chk-tab-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              Cartão
+            </span>
+            <span class="chk-tab-desc">Até 12x no cartão</span>
+          </div>
+        </div>
+
+        <!-- Formulário -->
+        <form id="chkNativeForm" onsubmit="return false;">
+          <div class="chk-field">
+            <label for="chkName">Nome Completo</label>
+            <input type="text" id="chkName" class="chk-input" placeholder="Seu nome completo" required autocomplete="name">
+          </div>
+
+          <div class="chk-field">
+            <label for="chkEmail">E-mail (para receber o acesso)</label>
+            <input type="email" id="chkEmail" class="chk-input" placeholder="seuemail@exemplo.com" required autocomplete="email">
+          </div>
+
+          <div class="chk-grid-2">
+            <div class="chk-field">
+              <label for="chkPhone">WhatsApp</label>
+              <input type="tel" id="chkPhone" class="chk-input" placeholder="(00) 00000-0000" required autocomplete="tel">
+            </div>
+            <div class="chk-field">
+              <label for="chkCpf">CPF</label>
+              <input type="text" id="chkCpf" class="chk-input" placeholder="000.000.000-00" required>
+            </div>
+          </div>
+
+          <!-- Campos exclusivos de Cartão de Crédito -->
+          <div id="chkCardFields" style="display: none;">
+            <div class="chk-field">
+              <label for="chkCardNumber">Número do Cartão</label>
+              <input type="text" id="chkCardNumber" class="chk-input" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
+            </div>
+
+            <div class="chk-field">
+              <label for="chkCardHolder">Nome impresso no Cartão</label>
+              <input type="text" id="chkCardHolder" class="chk-input" placeholder="NOME COMO NO CARTÃO" autocomplete="cc-name">
+            </div>
+
+            <div class="chk-grid-2">
+              <div class="chk-field">
+                <label for="chkCardExpiry">Validade</label>
+                <input type="text" id="chkCardExpiry" class="chk-input" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp">
+              </div>
+              <div class="chk-field">
+                <label for="chkCardCvv">CVV</label>
+                <input type="text" id="chkCardCvv" class="chk-input" placeholder="123" maxlength="4" autocomplete="cc-csc">
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensagem de Erro se houver -->
+          <div id="chkErrorMsg" style="display: none; color: #ef4444; font-size: 13px; margin: 8px 0; text-align: center;"></div>
+
+          <!-- Botão de Ação -->
+          <button type="submit" class="chk-btn-submit" id="chkSubmitBtn">
+            <span id="chkBtnText">Gerar QR Code Pix de R$ 957</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+
+          <div class="chk-guarantee-note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Garantia incondicional de 7 dias · Risco Zero
+          </div>
+        </form>
+      </div>
+
+      <!-- VIEW 2: TELA DO PIX (QR CODE + COPIA E COLA + POLLER) -->
+      <div id="chkPixView" class="chk-pix-view" style="display: none;">
+        <div class="chk-pulse-radar">
+          <span class="chk-radar-dot"></span>
+          Aguardando pagamento... Identificação automática
+        </div>
+
+        <div class="chk-qr-frame">
+          <img id="chkPixQrImg" class="chk-qr-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="QR Code Pix">
+        </div>
+
+        <div class="chk-pix-code-wrap">
+          <textarea id="chkPixPayload" class="chk-pix-textarea" readonly></textarea>
+        </div>
+
+        <button type="button" class="chk-copy-btn" id="chkCopyPixBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="chkCopyBtnText">Copiar Código Pix</span>
+        </button>
+
+        <div class="chk-timer-bar">
+          QR Code válido por: <b id="chkPixTimer">15:00</b>
+        </div>
+      </div>
+
+      <!-- VIEW 3: SUCESSO / APROVADO -->
+      <div id="chkSuccessView" class="chk-success-view" style="display: none;">
+        <div class="chk-success-icon">✓</div>
+        <h3 class="chk-success-title">Pagamento Aprovado!</h3>
+        <p class="chk-success-desc">
+          Parabéns! Sua vaga na Comunidade Imobiturbo está confirmada.<br>
+          Enviamos as instruções e seu acesso para o seu e-mail e WhatsApp.
+        </p>
+        <a href="https://app.imobiturbo.com.br/onboarding" class="chk-btn-submit" style="text-decoration: none;">
+          Acessar Minha Área de Membros
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT: Seletor de Planos + Carrossel Slider de Comprovantes com Lightbox -->
   <script>
     (function() {
-      // 1. Seletor de Planos dinâmico
+      // 1. Seletor de Planos e Controle do Modal de Checkout Nativo
       const planRadios = document.querySelectorAll('input[name="plano"]');
       const checkoutBtn = document.getElementById('checkoutBtn');
-      const planUrls = {
-        'anual': 'https://checkout.imobiturbo.com.br/plano-anual',
-        'trimestral': 'https://checkout.imobiturbo.com.br/plano-trimestral',
-        'mensal': 'https://checkout.imobiturbo.com.br/plano-mensal'
+      const modalOverlay = document.getElementById('checkoutModalOverlay');
+      const modalClose = document.getElementById('checkoutModalClose');
+
+      const modalPlanName = document.getElementById('chkModalPlanName');
+      const modalPlanSub = document.getElementById('chkModalPlanSub');
+      const modalPlanPrice = document.getElementById('chkModalPlanPrice');
+      const btnText = document.getElementById('chkBtnText');
+      const submitBtn = document.getElementById('chkSubmitBtn');
+
+      const tabPix = document.getElementById('tabPix');
+      const tabCard = document.getElementById('tabCard');
+      const cardFields = document.getElementById('chkCardFields');
+      const errorMsg = document.getElementById('chkErrorMsg');
+
+      const formView = document.getElementById('chkFormView');
+      const pixView = document.getElementById('chkPixView');
+      const successView = document.getElementById('chkSuccessView');
+      const pixQrImg = document.getElementById('chkPixQrImg');
+      const pixPayload = document.getElementById('chkPixPayload');
+      const copyPixBtn = document.getElementById('chkCopyPixBtn');
+      const copyBtnText = document.getElementById('chkCopyBtnText');
+      const pixTimer = document.getElementById('chkPixTimer');
+
+      const nativeForm = document.getElementById('chkNativeForm');
+      const inputName = document.getElementById('chkName');
+      const inputEmail = document.getElementById('chkEmail');
+      const inputPhone = document.getElementById('chkPhone');
+      const inputCpf = document.getElementById('chkCpf');
+      const inputCardNumber = document.getElementById('chkCardNumber');
+      const inputCardHolder = document.getElementById('chkCardHolder');
+      const inputCardExpiry = document.getElementById('chkCardExpiry');
+      const inputCardCvv = document.getElementById('chkCardCvv');
+
+      const PLAN_CONFIG = {
+        'anual': {
+          name: 'Plano Anual',
+          sub: '12 meses de acesso completo + CRM IA',
+          priceDisplay: '12x R$ 97',
+          pixVal: 'R$ 957',
+          cardVal: '12x R$ 97'
+        },
+        'trimestral': {
+          name: 'Plano Trimestral',
+          sub: '3 meses de acesso completo + CRM IA',
+          priceDisplay: 'R$ 357 à vista',
+          pixVal: 'R$ 357',
+          cardVal: '3x R$ 127'
+        },
+        'mensal': {
+          name: 'Plano Mensal',
+          sub: 'Mensalidade com cancelamento livre',
+          priceDisplay: 'R$ 147/mês',
+          pixVal: 'R$ 147',
+          cardVal: 'R$ 147/mês'
+        }
       };
+
+      let currentPlan = 'anual';
+      let currentMethod = 'PIX';
+      let pollingInterval = null;
+      let timerInterval = null;
+
+      function getSelectedPlan() {
+        const checked = document.querySelector('input[name="plano"]:checked');
+        return checked ? checked.value : 'anual';
+      }
+
+      function updateModalPlanUI(planKey) {
+        currentPlan = planKey;
+        const info = PLAN_CONFIG[planKey] || PLAN_CONFIG.anual;
+        if (modalPlanName) modalPlanName.textContent = info.name;
+        if (modalPlanSub) modalPlanSub.textContent = info.sub;
+        if (modalPlanPrice) modalPlanPrice.textContent = info.priceDisplay;
+        updateCtaButtonText();
+      }
+
+      function updateCtaButtonText() {
+        const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
+        if (btnText) {
+          if (currentMethod === 'PIX') {
+            btnText.textContent = 'Gerar QR Code Pix de ' + info.pixVal;
+          } else {
+            btnText.textContent = 'Confirmar Pagamento de ' + info.cardVal;
+          }
+        }
+      }
 
       planRadios.forEach(radio => {
         radio.addEventListener('change', function() {
-          if (checkoutBtn && planUrls[this.value]) {
-            checkoutBtn.href = planUrls[this.value];
-          }
+          updateModalPlanUI(this.value);
         });
       });
+
+      // Máscaras de entrada
+      if (inputPhone) {
+        inputPhone.addEventListener('input', function(e) {
+          let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+          if (v.length > 10) {
+            v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+          } else if (v.length > 6) {
+            v = v.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+          } else if (v.length > 2) {
+            v = v.replace(/^(\d{2})(\d{0,5})$/, '($1) $2');
+          }
+          e.target.value = v;
+        });
+      }
+
+      if (inputCpf) {
+        inputCpf.addEventListener('input', function(e) {
+          let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+          if (v.length > 9) {
+            v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+          } else if (v.length > 6) {
+            v = v.replace(/^(\d{3})(\d{3})(\d{0,3})$/, '$1.$2.$3');
+          } else if (v.length > 3) {
+            v = v.replace(/^(\d{3})(\d{0,3})$/, '$1.$2');
+          }
+          e.target.value = v;
+        });
+      }
+
+      if (inputCardNumber) {
+        inputCardNumber.addEventListener('input', function(e) {
+          let v = e.target.value.replace(/\D/g, '').slice(0, 16);
+          e.target.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+        });
+      }
+
+      if (inputCardExpiry) {
+        inputCardExpiry.addEventListener('input', function(e) {
+          let v = e.target.value.replace(/\D/g, '').slice(0, 4);
+          if (v.length > 2) {
+            v = v.replace(/^(\d{2})(\d{0,2})$/, '$1/$2');
+          }
+          e.target.value = v;
+        });
+      }
+
+      // Alternador de Abas (Pix / Cartão)
+      if (tabPix && tabCard) {
+        tabPix.addEventListener('click', () => {
+          tabPix.classList.add('active');
+          tabCard.classList.remove('active');
+          currentMethod = 'PIX';
+          if (cardFields) cardFields.style.display = 'none';
+          if (inputCardNumber) inputCardNumber.required = false;
+          updateCtaButtonText();
+        });
+
+        tabCard.addEventListener('click', () => {
+          tabCard.classList.add('active');
+          tabPix.classList.remove('active');
+          currentMethod = 'CREDIT_CARD';
+          if (cardFields) cardFields.style.display = 'block';
+          if (inputCardNumber) inputCardNumber.required = true;
+          updateCtaButtonText();
+        });
+      }
+
+      // Abertura do Modal pelo botão principal
+      function openCheckoutModal(e) {
+        if (e) e.preventDefault();
+        updateModalPlanUI(getSelectedPlan());
+        if (modalOverlay) {
+          modalOverlay.classList.add('active');
+          modalOverlay.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+        // Dispara InitiateCheckout no tracking do browser
+        const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
+        if (window.fbq) {
+          window.fbq('track', 'InitiateCheckout', {
+            content_name: currentInfo.name,
+            currency: 'BRL',
+            value: currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147
+          });
+        }
+      }
+
+      function closeCheckoutModal() {
+        if (modalOverlay) {
+          modalOverlay.classList.remove('active');
+          modalOverlay.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+        if (pollingInterval) clearInterval(pollingInterval);
+        if (timerInterval) clearInterval(timerInterval);
+      }
+
+      if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', openCheckoutModal);
+      }
+
+      if (modalClose) {
+        modalClose.addEventListener('click', closeCheckoutModal);
+      }
+
+      if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+          if (e.target === modalOverlay) closeCheckoutModal();
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
+          closeCheckoutModal();
+        }
+      });
+
+      // Copiar código PIX
+      if (copyPixBtn && pixPayload) {
+        copyPixBtn.addEventListener('click', () => {
+          if (navigator.clipboard && pixPayload.value) {
+            navigator.clipboard.writeText(pixPayload.value).then(() => {
+              if (copyBtnText) copyBtnText.textContent = '✓ Código Pix Copiado!';
+              copyPixBtn.style.borderColor = 'var(--lime)';
+              copyPixBtn.style.color = 'var(--lime)';
+              setTimeout(() => {
+                if (copyBtnText) copyBtnText.textContent = 'Copiar Código Pix';
+                copyPixBtn.style.borderColor = '';
+                copyPixBtn.style.color = '';
+              }, 3000);
+            });
+          }
+        });
+      }
+
+      // Helper para extrair cookies de tracking
+      function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? match[2] : null;
+      }
+
+      // Helper de UTMs e SCK (Allan Tracker / M.A.P)
+      function getUtms() {
+        const params = new URLSearchParams(window.location.search);
+        const trkCtx = (typeof window !== 'undefined' && window.getTrackingData) ? window.getTrackingData() : {};
+        return {
+          sck: trkCtx.sck || getCookie('_sck') || undefined,
+          utm_source: params.get('utm_source') || trkCtx.utm_source || undefined,
+          utm_medium: params.get('utm_medium') || trkCtx.utm_medium || undefined,
+          utm_campaign: params.get('utm_campaign') || trkCtx.utm_campaign || undefined,
+          utm_content: params.get('utm_content') || trkCtx.utm_content || undefined,
+          utm_term: params.get('utm_term') || trkCtx.utm_term || undefined,
+          fbclid: params.get('fbclid') || trkCtx.fbclid || undefined,
+          gclid: params.get('gclid') || trkCtx.gclid || undefined,
+          fbp: getCookie('_fbp') || trkCtx.fbp || undefined,
+          fbc: getCookie('_fbc') || trkCtx.fbc || undefined,
+        };
+      }
+
+      // Submissão do Formulário
+      if (nativeForm) {
+        nativeForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          if (errorMsg) {
+            errorMsg.style.display = 'none';
+            errorMsg.textContent = '';
+          }
+
+          const name = (inputName ? inputName.value : '').trim();
+          const email = (inputEmail ? inputEmail.value : '').trim();
+          const phone = (inputPhone ? inputPhone.value : '').trim();
+          const cpf = (inputCpf ? inputCpf.value : '').trim();
+
+          if (!name || !email || !phone || !cpf) {
+            if (errorMsg) {
+              errorMsg.textContent = 'Por favor, preencha todos os campos obrigatórios.';
+              errorMsg.style.display = 'block';
+            }
+            return;
+          }
+
+          const cleanCpf = cpf.replace(/\D/g, '');
+          if (cleanCpf.length < 11) {
+            if (errorMsg) {
+              errorMsg.textContent = 'Por favor, informe um CPF válido.';
+              errorMsg.style.display = 'block';
+            }
+            return;
+          }
+
+          let cardData = null;
+          if (currentMethod === 'CREDIT_CARD') {
+            const cardNum = (inputCardNumber ? inputCardNumber.value : '').replace(/\D/g, '');
+            const cardHolder = (inputCardHolder ? inputCardHolder.value : '').trim();
+            const cardExp = (inputCardExpiry ? inputCardExpiry.value : '').trim();
+            const cardCvv = (inputCardCvv ? inputCardCvv.value : '').trim();
+
+            if (!cardNum || cardNum.length < 13 || !cardHolder || !cardExp || !cardCvv) {
+              if (errorMsg) {
+                errorMsg.textContent = 'Por favor, confira os dados do cartão de crédito.';
+                errorMsg.style.display = 'block';
+              }
+              return;
+            }
+
+            const expParts = cardExp.split('/');
+            const expMonth = expParts[0];
+            const expYear = expParts[1] ? (expParts[1].length === 2 ? '20' + expParts[1] : expParts[1]) : '';
+
+            cardData = {
+              holderName: cardHolder,
+              number: cardNum,
+              expiryMonth: expMonth,
+              expiryYear: expYear,
+              ccv: cardCvv
+            };
+          }
+
+          if (submitBtn) submitBtn.disabled = true;
+          if (btnText) btnText.textContent = 'Gerando cobrança segura...';
+
+          const eventId = 'vagas_evt_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+          const payload = {
+            plan: currentPlan,
+            paymentMethod: currentMethod,
+            name,
+            email,
+            phone,
+            cpfCnpj: cpf,
+            creditCard: cardData,
+            tracking: getUtms(),
+            eventId
+          };
+
+          try {
+            const response = await fetch('/api/checkout', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            const res = await response.json();
+
+            if (!response.ok || !res.success) {
+              throw new Error(res.error || 'Falha ao processar pagamento.');
+            }
+
+            // Tratamento do retorno PIX
+            if (currentMethod === 'PIX' && res.pix) {
+              if (formView) formView.style.display = 'none';
+              if (pixView) pixView.style.display = 'block';
+
+              if (pixQrImg) pixQrImg.src = res.pix.qrCodeBase64;
+              if (pixPayload) pixPayload.value = res.pix.copyPaste;
+
+              // Inicia contador regressivo de 15 minutos
+              let secondsLeft = 15 * 60;
+              if (timerInterval) clearInterval(timerInterval);
+              timerInterval = setInterval(() => {
+                secondsLeft--;
+                if (secondsLeft <= 0) {
+                  clearInterval(timerInterval);
+                  if (pixTimer) pixTimer.textContent = 'Expirado';
+                } else if (pixTimer) {
+                  const m = Math.floor(secondsLeft / 60);
+                  const s = secondsLeft % 60;
+                  pixTimer.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+                }
+              }, 1000);
+
+              // Inicia Polling de status a cada 3 segundos
+              if (pollingInterval) clearInterval(pollingInterval);
+              pollingInterval = setInterval(async () => {
+                try {
+                  const stResp = await fetch('/api/checkout/status?gateway=' + encodeURIComponent(res.gateway) + '&paymentId=' + encodeURIComponent(res.paymentId));
+                  const stData = await stResp.json();
+                  if (stData && stData.paid) {
+                    clearInterval(pollingInterval);
+                    clearInterval(timerInterval);
+                    onPaymentApproved(eventId, res.amount || 957);
+                  }
+                } catch {
+                  // poller silencioso
+                }
+              }, 3000);
+
+            } else if (currentMethod === 'CREDIT_CARD') {
+              if (res.isApproved || res.status === 'CONFIRMED' || res.status === 'RECEIVED') {
+                onPaymentApproved(eventId, res.amount || 957);
+              } else {
+                throw new Error(res.error || 'Cartão em análise. Por favor tente novamente ou escolha Pix.');
+              }
+            }
+
+          } catch (err) {
+            if (errorMsg) {
+              errorMsg.textContent = err.message || 'Erro inesperado. Tente novamente em instantes.';
+              errorMsg.style.display = 'block';
+            }
+            if (submitBtn) submitBtn.disabled = false;
+            updateCtaButtonText();
+          }
+        });
+      }
+
+      function onPaymentApproved(eventId, val) {
+        if (pixView) pixView.style.display = 'none';
+        if (formView) formView.style.display = 'none';
+        if (successView) successView.style.display = 'block';
+
+        // Disparo de Purchase com eventID para deduplicação server-side perfeita
+        if (window.fbq) {
+          window.fbq('track', 'Purchase', {
+            content_name: 'Comunidade Imobiturbo (' + currentPlan + ')',
+            currency: 'BRL',
+            value: Number(val),
+          }, { eventID: eventId });
+        }
+        if (window.gtag) {
+          window.gtag('event', 'purchase', {
+            transaction_id: eventId,
+            value: Number(val),
+            currency: 'BRL'
+          });
+        }
+
+        // Redirecionamento suave após 3.5 segundos
+        setTimeout(() => {
+          window.location.href = 'https://app.imobiturbo.com.br/onboarding';
+        }, 3500);
+      }
 
       // 2. Carrossel Slider de Comprovantes com Container Flexível
       const track = document.getElementById('proofSliderTrack');

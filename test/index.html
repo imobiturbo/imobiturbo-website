@@ -47,7 +47,7 @@
     .login-input::placeholder { color: var(--muted-2); letter-spacing: 0; }
     .login-error { font-size: 12px; color: #ff6b6b; display: none; }
     .login-error.show { display: block; }
-    .login-btn { width: 100%; padding: 13px; border-radius: var(--r-sm); border: none; background: var(--accent); color: #000; font-family: var(--font); font-size: 14px; font-weight: 700; cursor: pointer; letter-spacing: -0.01em; transition: background .15s, transform .1s; }
+    .login-btn { width: 100%; padding: 13px; border-radius: var(--r-sm); border: none; background: var(--accent); color: #10130C; font-family: var(--font); font-size: 14px; font-weight: 800; cursor: pointer; letter-spacing: -0.01em; transition: background .15s, transform .1s; }
     .login-btn:hover { background: #bfff8e; }
     .login-btn:active { transform: scale(.98); }
 
@@ -63,7 +63,7 @@
     /* ── BUTTONS ── */
     button { appearance: none; border: 0; border-radius: var(--r-sm); padding: 9px 14px; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; transition: all .15s; -webkit-tap-highlight-color: transparent; letter-spacing: -0.01em; }
     button:active { transform: scale(.97); }
-    .btn-accent { color: #000; background: var(--accent); }
+    .btn-accent { color: #10130C; background: var(--accent); font-weight: 800; }
     .btn-accent:hover { background: #bfff8e; }
     .btn-outline { color: var(--text); background: transparent; border: 1px solid var(--line); }
     .btn-outline:hover { border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.03); }
@@ -148,7 +148,7 @@
     .prompt-card { overflow: hidden; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--bg-3); }
     .prompt-head { padding: 10px 13px; border-bottom: 1px solid var(--line-2); display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
     .prompt-meta { display: flex; align-items: center; gap: 9px; }
-    .prompt-num { width: 21px; height: 21px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #000; flex-shrink: 0; background: var(--accent); }
+    .prompt-num { width: 21px; height: 21px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #10130C; flex-shrink: 0; background: var(--accent); }
     .prompt-label strong { display: block; font-size: 12px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1px; }
     .prompt-label span { color: var(--muted); font-size: 10px; }
     .prompt-actions { display: flex; gap: 5px; align-items: center; }
@@ -160,7 +160,7 @@
     pre::-webkit-scrollbar-thumb { background: rgba(255,255,255,.07); border-radius: 3px; }
 
     .generate-cta { margin-top: 12px; }
-    .btn-generate { width: 100%; padding: 13px 20px; font-size: 14px; font-weight: 700; border-radius: var(--r-sm); color: #000; background: var(--accent); letter-spacing: -0.02em; }
+    .btn-generate { width: 100%; padding: 13px 20px; font-size: 14px; font-weight: 800; border-radius: var(--r-sm); color: #10130C; background: var(--accent); letter-spacing: -0.02em; }
     .btn-generate:hover { background: #bfff8e; }
 
     .footer-note { margin-top: 10px; padding: 10px 13px; border-radius: var(--r-sm); border: 1px solid var(--line-2); font-size: 11px; color: var(--muted); line-height: 1.6; }
@@ -173,7 +173,7 @@
     .mob-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 50; background: rgba(6,6,8,.97); backdrop-filter: blur(16px); border-top: 1px solid var(--line); padding: 9px 12px; padding-bottom: max(9px, env(safe-area-inset-bottom)); gap: 7px; align-items: center; }
     .mob-tab { width: 42px; height: 42px; border-radius: var(--r-sm); border: 1px solid var(--line); background: var(--bg-2); color: var(--muted); font-size: 16px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
     .mob-tab.on { background: var(--accent-dim); border-color: rgba(168,255,108,.25); color: var(--accent); }
-    .mob-gen-btn { flex: 1; height: 42px; border-radius: var(--r-sm); border: none; background: var(--accent); color: #000; font-weight: 700; font-size: 13px; font-family: var(--font); cursor: pointer; transition: all .15s; }
+    .mob-gen-btn { flex: 1; height: 42px; border-radius: var(--r-sm); border: none; background: var(--accent); color: #10130C; font-weight: 800; font-size: 13px; font-family: var(--font); cursor: pointer; transition: all .15s; }
     .mob-gen-btn:active { transform: scale(.97); }
 
     @media (max-width: 960px) {

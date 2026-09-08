@@ -724,7 +724,7 @@ function AudienceCta({ page }) {
             {displayedStep === 0 && (
               <>
                 <div>
-                  <div className="aud-kicker" style={{ color: '#7a911c' }}>Próximo passo</div>
+                  <div className="aud-kicker" style={{ color: '#166534', fontWeight: 800 }}>Próximo passo</div>
                   <div className="aud-card-title" style={{ color: 'var(--it-ink)', marginTop: 12 }}>Comece pelo diagnóstico.</div>
                   <p className="aud-card-text" style={{ color: 'rgba(0,0,0,0.65)', lineHeight: 1.5, marginTop: 10 }}>
                     Responda a 3 perguntas rápidas para mapear o gargalo comercial da sua operação imobiliária.
@@ -742,7 +742,7 @@ function AudienceCta({ page }) {
               <>
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                    <span style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#7a911c' }}>
+                    <span style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#166534' }}>
                       Diagnóstico Comercial
                     </span>
                     <span style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', color: 'rgba(0,0,0,0.5)' }}>
@@ -767,8 +767,8 @@ function AudienceCta({ page }) {
                           style={{
                             width: '100%',
                             textAlign: 'left',
-                            background: isHovered ? 'rgba(191, 215, 48, 0.09)' : '#fcfcfc',
-                            border: isHovered ? '1.5px solid #7a911c' : '1.5px solid rgba(0,0,0,0.08)',
+                            background: isHovered ? '#F4FBE8' : '#fcfcfc',
+                            border: isHovered ? '1.5px solid #166534' : '1.5px solid rgba(0,0,0,0.08)',
                             borderRadius: 8,
                             padding: '11px 14px',
                             font: '700 13px var(--font-body)',
@@ -786,7 +786,7 @@ function AudienceCta({ page }) {
                             width: 6,
                             height: 6,
                             borderRadius: 999,
-                            background: isHovered ? '#7a911c' : 'transparent',
+                            background: isHovered ? '#166534' : 'transparent',
                             transition: 'background 120ms'
                           }} />
                         </button>
@@ -806,7 +806,7 @@ function AudienceCta({ page }) {
                       font: '800 12px "Futura LT Cond", "Barlow Condensed", sans-serif',
                       textTransform: 'uppercase',
                       letterSpacing: '0.04em',
-                      color: hoveredBtn ? '#7a911c' : 'rgba(0,0,0,0.5)',
+                      color: hoveredBtn ? '#166534' : 'rgba(0,0,0,0.5)',
                       cursor: 'pointer',
                       transition: 'color 120ms'
                     }}
@@ -820,8 +820,8 @@ function AudienceCta({ page }) {
             {displayedStep === 4 && diagnostic && scores && (
               <>
                 <div>
-                  <div style={{ height: 4, background: '#7a911c', borderRadius: 2, marginBottom: 14 }} />
-                  <span style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#7a911c' }}>
+                  <div style={{ height: 4, background: '#166534', borderRadius: 2, marginBottom: 14 }} />
+                  <span style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#166534' }}>
                     Resultado do Diagnóstico
                   </span>
                   <h3 style={{ font: '800 18px/1.2 var(--font-body)', color: 'var(--it-ink)', margin: '6px 0 10px' }}>
@@ -835,7 +835,7 @@ function AudienceCta({ page }) {
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', font: '800 11px var(--font-body)', textTransform: 'uppercase', color: 'var(--it-ink)', marginBottom: 4 }}>
                         <span>Organização Comercial</span>
-                        <span style={{ color: '#7a911c' }}>{scores.organizacao}%</span>
+                        <span style={{ color: '#166534', fontWeight: 800 }}>{scores.organizacao}%</span>
                       </div>
                       <div style={{ height: 8, background: 'rgba(0,0,0,0.06)', borderRadius: 999, overflow: 'hidden' }}>
                         <div className="aud-score-bar-fill" style={{ width: scoresRevealed ? `${scores.organizacao}%` : '0%' }} />
@@ -844,7 +844,7 @@ function AudienceCta({ page }) {
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', font: '800 11px var(--font-body)', textTransform: 'uppercase', color: 'var(--it-ink)', marginBottom: 4 }}>
                         <span>Cadência Comercial</span>
-                        <span style={{ color: '#7a911c' }}>{scores.cadencia}%</span>
+                        <span style={{ color: '#166534', fontWeight: 800 }}>{scores.cadencia}%</span>
                       </div>
                       <div style={{ height: 8, background: 'rgba(0,0,0,0.06)', borderRadius: 999, overflow: 'hidden' }}>
                         <div className="aud-score-bar-fill" style={{ width: scoresRevealed ? `${scores.cadencia}%` : '0%' }} />
@@ -853,7 +853,7 @@ function AudienceCta({ page }) {
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', font: '800 11px var(--font-body)', textTransform: 'uppercase', color: 'var(--it-ink)', marginBottom: 4 }}>
                         <span>Eficiência de Tempo</span>
-                        <span style={{ color: '#7a911c' }}>{scores.tempo}%</span>
+                        <span style={{ color: '#166534', fontWeight: 800 }}>{scores.tempo}%</span>
                       </div>
                       <div style={{ height: 8, background: 'rgba(0,0,0,0.06)', borderRadius: 999, overflow: 'hidden' }}>
                         <div className="aud-score-bar-fill" style={{ width: scoresRevealed ? `${scores.tempo}%` : '0%' }} />
@@ -861,8 +861,8 @@ function AudienceCta({ page }) {
                     </div>
                   </div>
 
-                  <div style={{ background: 'rgba(191, 215, 48, 0.08)', border: '1.5px solid rgba(191, 215, 48, 0.22)', borderRadius: 10, padding: 12 }}>
-                    <div style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', color: '#7a911c', marginBottom: 4 }}>
+                  <div style={{ background: '#F4FBE8', border: '1.5px solid #166534', borderRadius: 10, padding: 12 }}>
+                    <div style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', color: '#166534', marginBottom: 4 }}>
                       Recomendação Imobiturbo
                     </div>
                     <p style={{ font: '700 12px/1.45 var(--font-body)', color: 'var(--it-ink)', margin: 0 }}>

@@ -332,7 +332,7 @@ a {
 .aud-cta {
   padding: 88px 0;
   background: linear-gradient(135deg, var(--it-lime) 0%, #d7f04c 100%);
-  color: var(--it-black);
+  color: var(--fg-on-lime);
 }
 
 .aud-cta-grid {
@@ -344,6 +344,7 @@ a {
 
 .aud-cta-title {
   margin: 0;
+  color: var(--fg-on-lime);
   font: 800 clamp(30px, 4vw, 52px)/1.06 var(--font-body);
   letter-spacing: 0;
 }
@@ -351,7 +352,7 @@ a {
 .aud-cta-text {
   max-width: 620px;
   margin: 16px 0 0;
-  color: rgba(0, 0, 0, 0.72);
+  color: #10130C;
   font: 600 16px/1.65 var(--font-body);
 }
 
@@ -406,14 +407,14 @@ a {
 /* Spring-like transition for diagnostic score bar */
 .aud-score-bar-fill {
   height: 100%;
-  background: #7a911c;
+  background: var(--it-military);
   border-radius: 999px;
   transition: width 800ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .aud-progress-bar-fill {
   height: 100%;
-  background: #7a911c;
+  background: var(--it-military);
   transition: width 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 

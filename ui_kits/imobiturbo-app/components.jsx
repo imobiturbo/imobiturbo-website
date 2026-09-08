@@ -52,16 +52,16 @@ function Icon({ name, size = 20, color = 'currentColor', stroke = 1.75, fill = '
 // ---------- Button ----------
 function Button({ children, variant = 'primary', size = 'md', icon, iconRight, onClick, fullWidth, disabled, style }) {
   const sizes = {
-    sm: { padding: '8px 14px', font: '600 13px Inter', icon: 14 },
-    md: { padding: '12px 20px', font: '600 15px Inter', icon: 16 },
-    lg: { padding: '16px 28px', font: '700 17px Inter', icon: 18 },
+    sm: { padding: '8px 14px', font: '800 13px Inter', icon: 14 },
+    md: { padding: '12px 20px', font: '800 15px Inter', icon: 16 },
+    lg: { padding: '16px 28px', font: '800 17px Inter', icon: 18 },
   };
   const variants = {
-    primary: { background: '#BFD730', color: '#0A0A0A', border: '0' },
-    ghost:   { background: 'transparent', color: '#fff', border: '1.5px solid #2A2A2A' },
-    limeGhost:{background: 'transparent', color: '#BFD730', border: '1.5px solid #BFD730' },
-    text:    { background: 'transparent', color: '#fff', border: '0' },
-    dark:    { background: '#0A0A0A', color: '#fff', border: '1.5px solid #0A0A0A' },
+    primary: { background: '#BFD730', color: '#10130C', border: '0', fontWeight: 800 },
+    ghost:   { background: 'transparent', color: '#fff', border: '1.5px solid #2A2A2A', fontWeight: 600 },
+    limeGhost:{background: 'transparent', color: '#BFD730', border: '1.5px solid #BFD730', fontWeight: 700 },
+    text:    { background: 'transparent', color: '#fff', border: '0', fontWeight: 600 },
+    dark:    { background: '#0A0A0A', color: '#fff', border: '1.5px solid #0A0A0A', fontWeight: 800 },
   };
   const s = sizes[size]; const v = variants[variant];
   const [hover, setHover] = useState(false);
@@ -77,7 +77,8 @@ function Button({ children, variant = 'primary', size = 'md', icon, iconRight, o
       onMouseEnter={() => setHover(true)} onMouseLeave={() => { setHover(false); setPress(false); }}
       onMouseDown={() => setPress(true)} onMouseUp={() => setPress(false)}
       style={{
-        ...s, padding: s.padding, font: s.font, background: bg, color: c, border,
+        ...s, padding: s.padding, font: s.font, fontWeight: variant === 'primary' ? 800 : (v.fontWeight || 600),
+        background: bg, color: variant === 'primary' ? '#10130C' : c, border,
         borderRadius: 8, cursor: disabled ? 'not-allowed' : 'pointer',
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
         boxShadow: shadow, transform: tr, transition: 'background 200ms var(--ease-out), color 200ms, transform 80ms, box-shadow 240ms',
@@ -95,7 +96,7 @@ function Button({ children, variant = 'primary', size = 'md', icon, iconRight, o
 // ---------- Badge ----------
 function Badge({ children, tone = 'neutral', solid = false }) {
   const tones = {
-    lime:     { bg: '#BFD730', fg: '#0A0A0A' },
+    lime:     { bg: '#BFD730', fg: '#10130C' },
     success:  { bg: '#6FD16F', fg: '#0A0A0A' },
     danger:   { bg: '#FF5A4E', fg: '#fff' },
     warning:  { bg: '#FFB020', fg: '#0A0A0A' },
@@ -202,7 +203,7 @@ function Input({ label, value, onChange, placeholder, icon, error }) {
 function Avatar({ name, size = 36, tone = 'lime' }) {
   const initials = (name || '?').split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
   const tones = {
-    lime: { bg: '#BFD730', fg: '#0A0A0A' },
+    lime: { bg: '#BFD730', fg: '#10130C' },
     dark: { bg: '#2A2A2A', fg: '#fff' },
     ink:  { bg: '#0A0A0A', fg: '#BFD730' },
   };

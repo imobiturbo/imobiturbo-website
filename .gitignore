@@ -9,3 +9,4 @@ skills-lock.json
 .cloudflare-pages/
 output/
 .env*
+.wrangler/

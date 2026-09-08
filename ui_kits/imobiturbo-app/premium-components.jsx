@@ -196,7 +196,7 @@ function PremiumActionPill({ icon, label, active = false, onClick }) {
         height: 28,
         borderRadius: 8,
         background: active ? 'var(--it-lime)' : 'rgba(191,215,48,0.10)',
-        color: active ? 'var(--it-ink)' : 'var(--it-lime)',
+        color: active ? '#10130C' : 'var(--it-lime)',
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -541,7 +541,7 @@ function RecentCard({ title, status, value, date, progress, icon }) {
         alignItems: 'flex-start',
         justifyContent: 'space-between',
       }}>
-        <span style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--it-lime)', color: 'var(--it-ink)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+        <span style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--it-lime)', color: '#10130C', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
           <Icon name={icon} size={19} />
         </span>
         <Badge tone={status === 'novo' ? 'lime' : 'neutral'}>{status}</Badge>

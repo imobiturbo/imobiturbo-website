@@ -27,7 +27,11 @@
   --it-lime:        #BFD730;   /* Pantone 13-0550 TCX Lime Punch */
   --it-lime-hi:     #D2E854;   /* hover / lifted */
   --it-lime-lo:     #A6BC1F;   /* press / darker accent */
-  --it-lime-ink:    #2A3107;   /* readable text-on-lime */
+  --it-lime-ink:    #10130C;   /* strict readable text-on-lime */
+  --it-military:    #166534;   /* Verde Militar - WCAG AAA > 7:1 contrast on light backgrounds */
+  --it-military-hi: #14532D;   /* Verde Militar hover */
+  --it-mint-bg:     #F4FBE8;   /* Soft mint background for badges/secondary CTAs on light surfaces */
+  --it-mint-border: #D9F99D;   /* Soft mint border for badges/secondary CTAs on light surfaces */
 
   /* Neutral scale — anchored at true black */
   --it-black:       #000000;
@@ -60,10 +64,11 @@
   --fg-1:           var(--it-white);    /* primary text on dark */
   --fg-2:           var(--it-fog-3);    /* secondary text on dark */
   --fg-3:           var(--it-fog-1);    /* muted text on dark */
-  --fg-on-lime:     var(--it-ink);      /* always black on lime */
+  --fg-on-lime:     #10130C;            /* strictly #10130C on lime */
   --fg-inverse-1:   var(--it-ink);      /* primary text on light */
   --fg-inverse-2:   var(--it-fog-1);    /* secondary text on light */
   --fg-inverse-3:   var(--it-fog-2);    /* muted text on light */
+  --fg-military:    var(--it-military); /* high contrast green on light */
 
   /* Background */
   --bg-0:           var(--it-black);    /* canvas */
@@ -78,13 +83,24 @@
   --accent:         var(--it-lime);
   --accent-hover:   var(--it-lime-hi);
   --accent-press:   var(--it-lime-lo);
-  --accent-ink:     var(--it-lime-ink);
+  --accent-ink:     #10130C;
+  --accent-light:   var(--it-military);
+  --accent-light-hover: var(--it-military-hi);
+
+  /* Light surface components */
+  --badge-light-bg:     var(--it-mint-bg);
+  --badge-light-border: var(--it-mint-border);
+  --badge-light-text:   var(--it-military);
+  --btn-secondary-light-bg:     var(--it-mint-bg);
+  --btn-secondary-light-border: var(--it-mint-border);
+  --btn-secondary-light-text:   var(--it-military);
 
   /* Border / divider */
   --border-1:       var(--it-ink-4);    /* on dark */
   --border-2:       var(--it-ink-5);
   --border-inverse-1: rgba(0,0,0,0.10);
   --border-inverse-2: rgba(0,0,0,0.06);
+  --border-military:  var(--it-military);
 
   /* Focus */
   --focus-ring:     0 0 0 3px rgba(191, 215, 48, 0.45);
@@ -292,7 +308,7 @@
 }
 
 /* Selection mirrors the brand */
-::selection { background: var(--it-lime); color: var(--it-ink); }
+::selection { background: var(--it-lime); color: var(--fg-on-lime); }
 
 /* Footer Links */
 .footer-link {
@@ -304,4 +320,95 @@
 .footer-link:hover {
   color: var(--it-lime) !important;
 }
+
+/* ============================================================
+   LIGHT-MODE & CONTRAST UTILITIES
+   WCAG AAA > 7:1 Contrast guarantees on light backgrounds
+   ============================================================ */
+
+/* Primary CTA Button (Strict black text on lime) */
+.btn-primary, .btn-cta-lime {
+  background: var(--it-lime) !important;
+  color: var(--fg-on-lime) !important;
+  font-weight: 800 !important;
+  border: none !important;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--dur-base) var(--ease-out), transform 80ms;
+}
+.btn-primary:hover, .btn-cta-lime:hover {
+  background: var(--it-lime-hi) !important;
+  color: var(--fg-on-lime) !important;
+}
+
+/* Secondary / Ghost Buttons in Light Mode */
+.btn-secondary-light, .btn-ghost-light {
+  background: var(--btn-secondary-light-bg) !important;
+  border: 1.5px solid var(--btn-secondary-light-border) !important;
+  color: var(--btn-secondary-light-text) !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--dur-base) var(--ease-out);
+}
+.btn-secondary-light:hover, .btn-ghost-light:hover {
+  background: var(--btn-secondary-light-border) !important;
+  color: var(--accent-light-hover) !important;
+}
+
+.btn-outline-light {
+  background: transparent !important;
+  border: 1.5px solid var(--it-military) !important;
+  color: var(--it-military) !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: all var(--dur-base) var(--ease-out);
+}
+.btn-outline-light:hover {
+  background: var(--it-mint-bg) !important;
+  border-color: var(--it-military-hi) !important;
+  color: var(--it-military-hi) !important;
+}
+
+/* Badges & Pills in Light Mode */
+.badge-light, .pill-light {
+  background: var(--badge-light-bg) !important;
+  border: 1px solid var(--badge-light-border) !important;
+  color: var(--badge-light-text) !important;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--type-ui-label);
+  letter-spacing: 0px;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Subtitles, kickers and typographic highlights on light surfaces */
+.text-military, .kicker-light, .highlight-light {
+  color: var(--it-military) !important;
+  font-weight: 800;
+}
+.link-military {
+  color: var(--it-military) !important;
+  font-weight: 800;
+  text-decoration: none;
+}
+.link-military:hover {
+  color: var(--it-military-hi) !important;
+  text-decoration: underline;
+}
+
 

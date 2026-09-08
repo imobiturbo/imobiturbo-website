@@ -60,7 +60,7 @@
             onkeydown="if(event.key==='Enter')checkPw()">
         <p id="pw-error" style="color:#f87171;font-size:0.8rem;margin-top:0.6rem;min-height:1.2em;font-family:Inter,sans-serif;"></p>
         <button onclick="checkPw()"
-            style="margin-top:0.5rem;width:100%;background:#a3e635;color:#000;font-weight:700;font-size:1rem;padding:0.75rem;border:none;border-radius:0.75rem;cursor:pointer;font-family:Inter,sans-serif;">
+            style="margin-top:0.5rem;width:100%;background:#BFD730;color:#10130C;font-weight:800;font-size:1rem;padding:0.75rem;border:none;border-radius:0.75rem;cursor:pointer;font-family:Inter,sans-serif;">
             Entrar
         </button>
     </div>
@@ -91,7 +91,7 @@ window.addEventListener('load', () => document.getElementById('pw-input').focus(
 
     <!-- ABAS -->
     <div class="flex gap-2 mb-8 bg-[#1b1c1d] p-1.5 rounded-2xl max-w-lg mx-auto">
-        <button onclick="switchTab('autonomo')" id="tab-autonomo" class="tab-btn flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold bg-lime-400 text-black">Corretor Autônomo</button>
+        <button onclick="switchTab('autonomo')" id="tab-autonomo" class="tab-btn flex-1 py-2.5 px-4 rounded-xl text-sm font-extrabold bg-[#BFD730] text-[#10130C]">Corretor Autônomo</button>
         <button onclick="switchTab('imobiliaria')" id="tab-imobiliaria" class="tab-btn flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold text-gray-400 hover:text-white">Imobiliária</button>
         <button onclick="switchTab('gestor')" id="tab-gestor" class="tab-btn flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold text-gray-400 hover:text-white">Gestor Comercial</button>
     </div>
@@ -1444,7 +1444,7 @@ function switchTab(tab) {
     const nameMap = { autonomo: 'autonomo', imobiliaria: 'imobiliaria', gestor: 'gestor' };
     document.getElementById(`content-${tab}`).classList.add('active');
     document.getElementById(`tab-${tab}`).className =
-        'tab-btn flex-1 py-2.5 px-4 rounded-xl text-sm font-semibold bg-lime-400 text-black';
+        'tab-btn flex-1 py-2.5 px-4 rounded-xl text-sm font-extrabold bg-[#BFD730] text-[#10130C]';
 }
 
 // Init
