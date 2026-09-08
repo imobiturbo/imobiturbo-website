@@ -38,6 +38,10 @@
   padding: 0;
 }
 
+button, input, select, textarea {
+  font-family: var(--sans);
+}
+
 html {
   scroll-behavior: smooth;
   color-scheme: dark;
@@ -1953,6 +1957,7 @@ body {
   box-shadow: 0 32px 100px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(191, 215, 48, 0.15);
   padding: 24px;
   color: var(--white);
+  font-family: var(--sans);
   animation: chkModalIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -2230,8 +2235,10 @@ body {
   width: 100%;
   background: var(--lime);
   color: #10130C !important;
+  font-family: var(--sans) !important;
   font-weight: 800 !important;
   font-size: 16px;
+  letter-spacing: -0.01em;
   padding: 14px 20px;
   border: none;
   border-radius: 12px;
@@ -2243,6 +2250,12 @@ body {
   margin-top: 14px;
   transition: all 0.2s ease;
   box-shadow: 0 8px 24px rgba(191, 215, 48, 0.3);
+}
+
+.chk-btn-submit span {
+  font-family: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
 }
 
 .chk-btn-submit:hover {

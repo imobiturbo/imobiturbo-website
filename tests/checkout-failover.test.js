@@ -52,6 +52,7 @@ test("vagas/vagas.css enforces proper styling and contrast on checkout buttons",
   assert.ok(css.includes(".chk-btn-submit"), "Must define .chk-btn-submit");
   assert.ok(css.includes("color: #10130C !important;"), "Submit button must strictly enforce #10130C ink");
   assert.ok(css.includes("font-weight: 800 !important;"), "Submit button must strictly enforce font-weight: 800");
+  assert.ok(css.includes("font-family: var(--sans) !important;"), "Submit button must strictly enforce brand font var(--sans)");
   assert.ok(css.includes(".chk-pulse-radar"), "Must define radar pulsing animation");
   assert.ok(css.includes(".psel-cta {"), "Must define .psel-cta");
   assert.ok(css.includes("max-width: 600px;"), "Plan checkout button must align with cards max-width 600px");
