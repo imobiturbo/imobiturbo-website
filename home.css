@@ -2843,7 +2843,7 @@ a {
 }
 
 .portal-polaroid-img.natan-portrait {
-  object-position: center 25%;
+  object-position: center 12%;
 }
 
 .portal-polaroid-metric {
@@ -2954,7 +2954,7 @@ a {
 
 .portal-app-card {
   display: grid;
-  grid-template-columns: 170px 1fr auto;
+  grid-template-columns: 220px 1fr auto;
   align-items: center;
   gap: 20px;
   background: var(--portal-card-bg);
@@ -2976,12 +2976,13 @@ a {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  min-width: 240px;
+  width: 220px;
+  min-width: 200px;
 }
 
 .portal-app-logo {
-  height: 64px;
-  max-width: 280px;
+  height: 56px;
+  max-width: 220px;
   width: auto;
   object-fit: contain;
 }

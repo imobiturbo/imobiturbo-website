@@ -1,7 +1,7 @@
 /* eslint-disable */
 // Imobiturbo home — desktop-first redesign with a fully responsive mobile layout.
 
-const HOME_WHATSAPP_URL = 'https://wa.me/5521983747796?text=Quero%20mapear%20minha%20opera%C3%A7%C3%A3o%20comercial%20com%20a%20Imobiturbo';
+const HOME_WHATSAPP_URL = 'https://wa.me/5521959361607?text=Quero%20mapear%20minha%20opera%C3%A7%C3%A3o%20comercial%20com%20a%20Imobiturbo';
 const HOME_INSTAGRAM_URL = 'https://www.instagram.com/imobiturbo/';
 const HOME_TESTIMONIALS_URL = '/depoimentos/';
 
@@ -765,6 +765,14 @@ function EcosystemPortal() {
       badge: 'Verificar Acesso 🔒',
       isLive: false,
       url: '#',
+    },
+    {
+      name: 'imobiturbo.news',
+      slug: 'news',
+      desc: 'Portal de notícias, tendências e inteligência estratégica para o mercado imobiliário',
+      badge: 'Acessar →',
+      isLive: true,
+      url: 'https://news.imobiturbo.com.br',
     },
   ];
 

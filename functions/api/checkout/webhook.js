@@ -152,6 +152,16 @@ export async function onRequestPost(context) {
         }
       );
       metaResult = await metaResp.json().catch(() => ({}));
+
+      // Libera acesso automático na plataforma Sites Imobiturbo (VIP Mentoria)
+      if (email) {
+        fetch("https://sites.imobiturbo.com.br/api/webhook/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, nome: name, telefone: phone }),
+          signal: AbortSignal.timeout(5000),
+        }).catch((e) => console.error("Sites webhook sync error:", e));
+      }
     }
 
     return new Response(
