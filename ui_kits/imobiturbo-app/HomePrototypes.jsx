@@ -715,7 +715,7 @@ function EcosystemPortal() {
     }
   };
 
-  const logoDir = isDark ? 'assets/brand/light' : 'assets/brand/dark';
+  const logoDir = isDark ? 'assets/brand/theme-dark' : 'assets/brand/theme-white';
 
   const products = [
     {
