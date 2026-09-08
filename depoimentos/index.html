@@ -87,7 +87,7 @@
     <link rel="stylesheet" href="../colors_and_type.css?v=20260612">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Barlow+Condensed:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Tailwind Config to Align with Imobiturbo Brand Identity -->
     <script>
@@ -95,24 +95,23 @@
             theme: {
                 extend: {
                     colors: {
-                        'fundo': '#000000',           /* Canvas */
-                        'fundo-2': '#0A0A0A',         /* Primary dark surface */
+                        'fundo': '#000000',           /* High-contrast black canvas */
                         'card-surf': '#101010',       /* Raised surface for cards */
-                        'realce': '#BFD730',          /* Pantone Lime Punch */
-                        'realce-hover': '#D2E854',    /* Lime hover state */
-                        'realce-dark': '#10130C',     /* Text on lime */
+                        'realce': '#C5FF5E',          /* Limão Fluor Oficial 2026 */
+                        'realce-hover': '#D8FF85',    /* Lime hover state */
+                        'realce-dark': '#000000',     /* Text on lime */
                         'border-subtle': 'rgba(255, 255, 255, 0.07)',
-                        'border-lime': 'rgba(191, 215, 48, 0.22)',
+                        'border-lime': 'rgba(197, 255, 94, 0.22)',
                         'texto': '#FFFFFF',           /* fg-1 primary */
                         'texto-muted': '#B8B8B8',     /* fg-2 secondary */
                         'texto-dark': '#5C5C5C',      /* fg-3 muted */
                     },
                     fontFamily: {
-                        'display': ['"Futura LT Cond"', '"Barlow Condensed"', 'Oswald', 'system-ui', 'sans-serif'],
-                        'body': ['Inter', '"Helvetica Neue"', 'Helvetica', 'Arial', 'system-ui', 'sans-serif'],
+                        'display': ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        'body': ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
                     },
                     letterSpacing: {
-                        'display': '-0.04em',
+                        'display': '-0.02em',
                     }
                 }
             }
@@ -121,7 +120,7 @@
 
     <style>
         body { 
-            font-family: 'Inter', "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             background: 
                 radial-gradient(circle at 50% 0%, rgba(191, 215, 48, 0.12), rgba(191, 215, 48, 0) 40%),
                 linear-gradient(180deg, #020302 0%, #000000 70%);

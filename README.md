@@ -78,9 +78,8 @@ npm run deploy:xpertinformatica-route
 
 ---
 
-## 🎨 Diretrizes de Design & Marca
+## 🎨 Diretrizes de Design & Marca (Rebranding 2026 Oficial)
 
-* **Dark Theme:** Fundo `#0D0E11` / `#13151A`.
-* **Accent Color:** *Lime Punch* (`#BFD730`) utilizado estrategicamente para CTAs e ênfase (até 10% da tela).
-* **Tipografia:** Barlow Condensed / Futura LT Cond para títulos (tracking condensado `-0.04em`) e sans-serif neutra para corpo.
-* **Diretrizes detalhadas:** Consulte [`DESIGN.md`](DESIGN.md) e [`PRODUCT.md`](PRODUCT.md).
+* **Paleta Oficial:** Preto puro (`#000000`), Acento Limão (`#C5FF5E`), Verde Intermediário da Marca (`#6CA438`) no fundo claro, Verde-Escuro Nobre (`#2F400D`) em containers de autoridade e Off-White (`#FAF9F6`).
+* **Tipografia Única:** `Plus Jakarta Sans` para toda a hierarquia (Display, Títulos, Subtítulos, UI e Corpo), com dados financeiros e métricas em `JetBrains Mono`.
+* **Manual Canônico:** Consulte [`MANUAL_DE_MARCA.md`](MANUAL_DE_MARCA.md) e [`DESIGN.md`](DESIGN.md). Proibido expressamente o uso de Futura, Barlow Condensed ou Inter.

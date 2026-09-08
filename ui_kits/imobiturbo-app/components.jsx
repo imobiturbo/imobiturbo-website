@@ -108,7 +108,7 @@ function Badge({ children, tone = 'neutral', solid = false }) {
   return (
     <span style={{
       background: t.bg, color: t.fg, border: t.border || 'none',
-      padding: '4px 10px', borderRadius: 999, font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif',
+      padding: '4px 10px', borderRadius: 999, font: '800 13px "Plus Jakarta Sans", sans-serif',
       letterSpacing: '0px', textTransform: 'uppercase', whiteSpace: 'nowrap',
       display: 'inline-flex', alignItems: 'center', gap: 4,
     }}>{children}</span>
@@ -125,18 +125,18 @@ function KpiTile({ label, value, suffix, delta, deltaTone = 'up', icon }) {
       display: 'flex', flexDirection: 'column', gap: 4,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', letterSpacing: '0px', textTransform: 'uppercase', color: '#8A8A8A' }}>{label}</div>
+        <div style={{ font: '800 13px "Plus Jakarta Sans", sans-serif', letterSpacing: '0px', textTransform: 'uppercase', color: '#8A8A8A' }}>{label}</div>
         {icon && <Icon name={icon} size={16} color="#BFD730" />}
       </div>
       <div style={{
-        fontFamily: 'Futura LT Cond, Barlow Condensed, sans-serif', fontWeight: 800,
+        fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800,
         textTransform: 'uppercase', letterSpacing: '-0.01em', lineHeight: 0.92,
         fontSize: 56, color: '#fff', marginTop: 6,
       }}>
         {value}{suffix && <span style={{ fontSize: 28, color: '#8A8A8A' }}>{suffix}</span>}
       </div>
       {delta && (
-        <div style={{ font: '500 13px "Futura LT Cond", "Barlow Condensed", sans-serif', color: dColor, marginTop: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
+        <div style={{ font: '500 13px "Plus Jakarta Sans", sans-serif', color: dColor, marginTop: 6, display: 'flex', alignItems: 'center', gap: 4 }}>
           {deltaTone === 'up' ? '↗' : deltaTone === 'down' ? '↘' : '·'} {delta}
         </div>
       )}
@@ -173,7 +173,7 @@ function Input({ label, value, onChange, placeholder, icon, error }) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: '100%' }}>
       {label && (
         <label style={{
-          font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', letterSpacing: '0px',
+          font: '800 13px "Plus Jakarta Sans", sans-serif', textTransform: 'uppercase', letterSpacing: '0px',
           color: error ? '#FF5A4E' : '#8A8A8A',
         }}>{label}</label>
       )}
@@ -236,7 +236,7 @@ function Sidebar({ active = 'home', onNavigate }) {
       <div style={{ padding: '4px 8px 16px', display: 'flex', alignItems: 'center', gap: 10 }}>
         <img src="../../assets/symbol-imobiturbo-black-bg.png" style={{ width: 28, height: 28, borderRadius: 6 }} />
         <span style={{
-          font: '800 18px "Futura LT Cond", Barlow Condensed, sans-serif',
+          font: '800 18px "Plus Jakarta Sans", Barlow Condensed, sans-serif',
           textTransform: 'uppercase', letterSpacing: '-0.01em', color: '#fff',
         }}>imobiturbo</span>
       </div>
@@ -279,7 +279,7 @@ function TopNav({ title, breadcrumb, action }) {
     }}>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {breadcrumb && (
-          <div style={{ font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', color: '#8A8A8A', display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ font: '800 13px "Plus Jakarta Sans", sans-serif', color: '#8A8A8A', display: 'flex', alignItems: 'center', gap: 6 }}>
             {breadcrumb.map((b, i) => (
               <React.Fragment key={i}>
                 <span style={{ color: i === breadcrumb.length - 1 ? '#fff' : '#8A8A8A' }}>{b}</span>
@@ -289,7 +289,7 @@ function TopNav({ title, breadcrumb, action }) {
           </div>
         )}
         <div style={{
-          font: '800 22px "Futura LT Cond", Barlow Condensed, sans-serif',
+          font: '800 22px "Plus Jakarta Sans", Barlow Condensed, sans-serif',
           textTransform: 'uppercase', letterSpacing: '-0.01em', color: '#fff', lineHeight: 1,
         }}>{title}</div>
       </div>

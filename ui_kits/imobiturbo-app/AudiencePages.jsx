@@ -195,7 +195,7 @@ function AudienceTopbar() {
 
   const linkStyle = {
     color: 'rgba(255,255,255,0.86)',
-    font: '800 13px/1 "Futura LT Cond", "Barlow Condensed", system-ui, sans-serif',
+    font: '800 13px/1 "Plus Jakarta Sans", system-ui, sans-serif',
     letterSpacing: 0,
     textTransform: 'uppercase',
     textDecoration: 'none',
@@ -294,7 +294,7 @@ function AudienceTopbar() {
               onClick={closeMenu} 
               style={{
                 color: 'rgba(255, 255, 255, 0.86)',
-                font: '800 13px/1 "Futura LT Cond", "Barlow Condensed", system-ui, sans-serif',
+                font: '800 13px/1 "Plus Jakarta Sans", system-ui, sans-serif',
                 letterSpacing: '0px',
                 textTransform: 'uppercase',
                 textDecoration: 'none',
@@ -742,10 +742,10 @@ function AudienceCta({ page }) {
               <>
                 <div>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                    <span style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#166534' }}>
+                    <span style={{ font: '800 11px "Plus Jakarta Sans", sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#166534' }}>
                       Diagnóstico Comercial
                     </span>
-                    <span style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', color: 'rgba(0,0,0,0.5)' }}>
+                    <span style={{ font: '800 11px "Plus Jakarta Sans", sans-serif', textTransform: 'uppercase', color: 'rgba(0,0,0,0.5)' }}>
                       Passo {displayedStep} de 3
                     </span>
                   </div>
@@ -803,7 +803,7 @@ function AudienceCta({ page }) {
                       background: 'transparent',
                       border: 0,
                       padding: 0,
-                      font: '800 12px "Futura LT Cond", "Barlow Condensed", sans-serif',
+                      font: '800 12px "Plus Jakarta Sans", sans-serif',
                       textTransform: 'uppercase',
                       letterSpacing: '0.04em',
                       color: hoveredBtn ? '#166534' : 'rgba(0,0,0,0.5)',
@@ -821,7 +821,7 @@ function AudienceCta({ page }) {
               <>
                 <div>
                   <div style={{ height: 4, background: '#166534', borderRadius: 2, marginBottom: 14 }} />
-                  <span style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#166534' }}>
+                  <span style={{ font: '800 11px "Plus Jakarta Sans", sans-serif', textTransform: 'uppercase', letterSpacing: '0.05em', color: '#166534' }}>
                     Resultado do Diagnóstico
                   </span>
                   <h3 style={{ font: '800 18px/1.2 var(--font-body)', color: 'var(--it-ink)', margin: '6px 0 10px' }}>
@@ -862,7 +862,7 @@ function AudienceCta({ page }) {
                   </div>
 
                   <div style={{ background: '#F4FBE8', border: '1.5px solid #166534', borderRadius: 10, padding: 12 }}>
-                    <div style={{ font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif', textTransform: 'uppercase', color: '#166534', marginBottom: 4 }}>
+                    <div style={{ font: '800 11px "Plus Jakarta Sans", sans-serif', textTransform: 'uppercase', color: '#166534', marginBottom: 4 }}>
                       Recomendação Imobiturbo
                     </div>
                     <p style={{ font: '700 12px/1.45 var(--font-body)', color: 'var(--it-ink)', margin: 0 }}>
@@ -905,7 +905,7 @@ function AudienceCta({ page }) {
                       background: 'transparent',
                       border: 0,
                       padding: 0,
-                      font: '800 11px "Futura LT Cond", "Barlow Condensed", sans-serif',
+                      font: '800 11px "Plus Jakarta Sans", sans-serif',
                       textTransform: 'uppercase',
                       letterSpacing: '0.04em',
                       color: 'rgba(0,0,0,0.4)',

@@ -37,7 +37,8 @@ const FILES_TO_UPLOAD = [
   { local: 'dist/audience.bundle.js', remote: 'dist/audience.bundle.js' },
 
   // Assets da home
-  { local: 'fonts/FuturaLT-CondExtraBold.ttf', remote: 'fonts/FuturaLT-CondExtraBold.ttf' },
+  { local: 'fonts/PlusJakartaSans-Bold.ttf', remote: 'fonts/PlusJakartaSans-Bold.ttf' },
+  { local: 'fonts/PlusJakartaSans-Variable.ttf', remote: 'fonts/PlusJakartaSans-Variable.ttf' },
   { local: 'assets/favicon.png', remote: 'assets/favicon.png' },
   { local: 'assets/logo-imobiturbo-white.png', remote: 'assets/logo-imobiturbo-white.png' },
   { local: 'assets/logo-imobiturbo-black-bg.png', remote: 'assets/logo-imobiturbo-black-bg.png' },

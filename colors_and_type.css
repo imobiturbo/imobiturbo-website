@@ -3,19 +3,23 @@
    Colors + Type tokens (base + semantic)
    ============================================================ */
 
-/* ---------- FONTS ---------- */
+/* ---------- FONTS (Plus Jakarta Sans Oficial 2026) ---------- */
 @font-face {
-  font-family: "Futura LT Cond";
-  src: url("fonts/FuturaLT-CondExtraBold.ttf") format("truetype");
-  font-weight: 800;
+  font-family: "Plus Jakarta Sans";
+  src: url("fonts/PlusJakartaSans-Variable.ttf") format("truetype-variations"),
+       url("fonts/PlusJakartaSans-Bold.ttf") format("truetype");
+  font-weight: 200 800;
   font-style: normal;
   font-display: swap;
 }
 
-/* Google Fonts substitutes (load via <link> in HTML):
-   - Inter (body / UI)
-   - Barlow Condensed (display fallback when Futura LT Cond unavailable)
-*/
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("fonts/PlusJakartaSans-Italic-Variable.ttf") format("truetype-variations");
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+}
 
 :root {
   /* ============================================================
@@ -30,6 +34,8 @@
   --it-lime-ink:    #10130C;   /* strict readable text-on-lime */
   --it-military:    #166534;   /* Verde Militar - WCAG AAA > 7:1 contrast on light backgrounds */
   --it-military-hi: #14532D;   /* Verde Militar hover */
+  --it-accent-green: #6CA438;  /* Verde Intermediário Oficial da Marca (Fundo Claro) */
+  --it-dark-green:  #2F400D;   /* Verde-Escuro Nobre Oficial da Marca (Containers/Fundos) */
   --it-mint-bg:     #F4FBE8;   /* Soft mint background for badges/secondary CTAs on light surfaces */
   --it-mint-border: #D9F99D;   /* Soft mint border for badges/secondary CTAs on light surfaces */
 
@@ -108,9 +114,9 @@
   /* ============================================================
      TYPOGRAPHY — base tokens
      ============================================================ */
-  --font-display:   "Futura LT Cond", "Barlow Condensed", "Oswald", system-ui, sans-serif;
-  --font-body:      "Inter", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
-  --font-mono:      "Futura LT Cond", "Barlow Condensed", system-ui, sans-serif;
+  --font-display:   "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body:      "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:      "JetBrains Mono", ui-monospace, Menlo, monospace;
 
   /* Scale (modular, tuned for direct, punchy hierarchy) */
   --fs-xs:    11px;

@@ -14,8 +14,8 @@
   --home-white: #fff;
   --home-muted: #c6c6c6;
   --home-dark-muted: #484848;
-  --home-display: "Futura LT Cond", "Barlow Condensed", Impact, sans-serif;
-  --home-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --home-display: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --home-body: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   --home-header-height: 88px;
   --home-radius: 14px;
   --home-radius-small: 8px;

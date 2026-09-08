@@ -9,13 +9,13 @@
   --line: rgba(0, 0, 0, 0.08);
   --line-2: rgba(0, 0, 0, 0.14);
   
-  --lime: #BFD730;         /* Pantone 13-0550 TCX Lime Punch */
-  --lime-hover: #D2E854;
-  --lime-ink: #10130C;     /* Strict contrast on lime */
-  --accent-rgb: 191, 215, 48;
+  --lime: #C5FF5E;         /* Limão Fluor Oficial 2026 */
+  --lime-hover: #D8FF85;
+  --lime-ink: #000000;     /* Strict contrast on lime */
+  --accent-rgb: 197, 255, 94;
 
-  --military: #69a438;     /* Verde da Marca para fundo branco */
-  --military-hi: #588c2f;
+  --military: #6CA438;     /* Verde Intermediário da Marca para fundo branco */
+  --military-hi: #5A8F2E;
   --mint-bg: #F4FBE8;      /* Soft mint background for badges */
   --mint-border: #D9F99D;  /* Soft mint border */
 

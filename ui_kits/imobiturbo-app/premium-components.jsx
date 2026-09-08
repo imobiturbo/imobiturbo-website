@@ -3,9 +3,9 @@
 // Loaded as text/babel after components.jsx. Components exposed on window.
 
 const premiumText = {
-  display: '"Futura LT Cond", "Barlow Condensed", sans-serif',
+  display: '"Plus Jakarta Sans", sans-serif',
   body: 'Inter, system-ui, sans-serif',
-  mono: '"Futura LT Cond", "Barlow Condensed", sans-serif',
+  mono: '"Plus Jakarta Sans", sans-serif',
 };
 
 const premiumLabelText = {
@@ -102,7 +102,7 @@ function PremiumMetric({ label, value, suffix, delta, icon = 'trending', compact
         {value}{suffix && <span style={{ fontSize: compact ? 22 : 28, color: 'var(--fg-3)', marginLeft: 4 }}>{suffix}</span>}
       </div>
       {delta && (
-        <div style={{ marginTop: 10, color: 'var(--it-lime)', font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>
+        <div style={{ marginTop: 10, color: 'var(--it-lime)', font: '800 13px "Plus Jakarta Sans", sans-serif', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>
           {delta}
         </div>
       )}
@@ -241,7 +241,7 @@ function ProductMockup() {
           <span style={{ width: 7, height: 7, borderRadius: 999, background: 'var(--it-lime)' }} />
           <span style={{ width: 7, height: 7, borderRadius: 999, background: 'var(--it-ink-4)' }} />
           <span style={{ width: 7, height: 7, borderRadius: 999, background: 'var(--it-ink-4)' }} />
-          <span style={{ marginLeft: 14, color: 'var(--fg-3)', font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>pipeline.imobiturbo</span>
+          <span style={{ marginLeft: 14, color: 'var(--fg-3)', font: '800 13px "Plus Jakarta Sans", sans-serif', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>pipeline.imobiturbo</span>
         </div>
         <div style={{ display: 'grid', gridTemplateColumns: '1.45fr 1fr', gap: 18, padding: 24 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -281,7 +281,7 @@ function ProductMockup() {
                 <div style={{ minWidth: 0 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'center' }}>
                     <div style={{ font: '700 13px Inter', color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{name}</div>
-                    <div style={{ color: 'var(--it-lime)', font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>{value}</div>
+                    <div style={{ color: 'var(--it-lime)', font: '800 13px "Plus Jakarta Sans", sans-serif', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>{value}</div>
                   </div>
                   <div style={{ marginTop: 4, font: '500 12px Inter', color: 'var(--fg-3)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{property}</div>
                 </div>
@@ -306,7 +306,7 @@ function PricingCard({ name, price, description, features, highlighted = false, 
           background: 'var(--state-selected-bg)',
           border: '1px solid var(--border-lime-soft)',
           color: 'var(--it-lime)',
-          font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif',
+          font: '800 13px "Plus Jakarta Sans", sans-serif',
           letterSpacing: '0px',
           textTransform: 'uppercase',
         }}>Mais escolhido</div>
@@ -426,7 +426,7 @@ function PremiumSidebar({ active = 'Início' }) {
       </div>
       {groups.map(([label, items]) => (
         <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--fg-3)', font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', letterSpacing: '0px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: 'var(--fg-3)', font: '800 13px "Plus Jakarta Sans", sans-serif', letterSpacing: '0px' }}>
             <span style={{ color: 'var(--it-lime)' }}>{label.slice(0, 2)}</span>
             <span>{label.slice(3)}</span>
           </div>
@@ -460,7 +460,7 @@ function PremiumSidebar({ active = 'Início' }) {
             <Avatar name="Natan Pimentel" size={36} tone="lime" />
             <div style={{ minWidth: 0 }}>
               <div style={{ font: '700 13px Inter', color: '#fff', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Natan Pimentel</div>
-              <div style={{ font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', color: 'var(--fg-3)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Workspace Imobiturbo</div>
+              <div style={{ font: '800 13px "Plus Jakarta Sans", sans-serif', color: 'var(--fg-3)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Workspace Imobiturbo</div>
             </div>
           </div>
         </PremiumCard>
@@ -548,7 +548,7 @@ function RecentCard({ title, status, value, date, progress, icon }) {
       </div>
       <div style={{ padding: 16 }}>
         <div style={{ font: '700 15px Inter', color: '#fff', lineHeight: 1.35 }}>{title}</div>
-        <div style={{ marginTop: 8, display: 'flex', justifyContent: 'space-between', gap: 12, color: 'var(--fg-3)', font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>
+        <div style={{ marginTop: 8, display: 'flex', justifyContent: 'space-between', gap: 12, color: 'var(--fg-3)', font: '800 13px "Plus Jakarta Sans", sans-serif', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1 }}>
           <span>{date}</span>
           <span style={{ color: 'var(--it-lime)' }}>{value}</span>
         </div>
@@ -603,7 +603,7 @@ function FunnelRow({ label, value, progress, gridTemplate = '112px 1fr 48px' }) 
       <div style={{ height: 28, borderRadius: 8, border: '1px solid var(--border-subtle)', background: 'var(--surface-sidebar)', overflow: 'hidden' }}>
         <div style={{ height: '100%', width: `${progress}%`, background: 'rgba(191,215,48,0.72)', borderRadius: 8 }} />
       </div>
-      <div style={{ font: '800 13px "Futura LT Cond", "Barlow Condensed", sans-serif', color: 'var(--fg-2)', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1, textAlign: 'right' }}>
+      <div style={{ font: '800 13px "Plus Jakarta Sans", sans-serif', color: 'var(--fg-2)', letterSpacing: '0px', textTransform: 'uppercase', lineHeight: 1, textAlign: 'right' }}>
         {value}
       </div>
     </div>
@@ -617,7 +617,7 @@ function KpiCard({ value, label, size = 'md' }) {
       <div style={{ color: '#fff', fontFamily: premiumText.display, fontWeight: 800, fontSize: size === 'lg' ? 42 : 34, lineHeight: 0.9, letterSpacing: '-0.04em' }}>
         {value}
       </div>
-      <div style={{ marginTop: 8, color: 'var(--fg-3)', font: '800 13px "Futura LT Cond", "Barlow Condensed", system-ui, sans-serif', letterSpacing: 'var(--tracking-eyebrow)', textTransform: 'uppercase', lineHeight: 1 }}>
+      <div style={{ marginTop: 8, color: 'var(--fg-3)', font: '800 13px "Plus Jakarta Sans", system-ui, sans-serif', letterSpacing: 'var(--tracking-eyebrow)', textTransform: 'uppercase', lineHeight: 1 }}>
         {label}
       </div>
     </div>

@@ -66,7 +66,7 @@ test("vagas/vagas.css enforces proper styling and contrast on checkout buttons",
 
   // Light mode tokens
   assert.ok(css.includes("--bg: #FFFFFF;"), "Must define clean white canvas --bg");
-  assert.ok(css.includes("--military: #69a438;"), "Must define Brand Green #69a438 for light background");
+  assert.ok(css.includes("--military: #6CA438;") || css.includes("--military: #6ca438;"), "Must define Brand Green #6CA438 for light background");
   assert.ok(css.includes("--white: #0A0A0A;"), "Must invert --white token for high-contrast dark ink headings");
 
   // Continuous infinite slider marquee
