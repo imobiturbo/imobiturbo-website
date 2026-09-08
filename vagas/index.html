@@ -28,7 +28,7 @@
   <link rel="preload" href="./assets/hero-bg.webp" as="image">
 
   <!-- Fonts & Stylesheet -->
-  <link rel="stylesheet" href="./vagas.css?v=20260908-v1">
+  <link rel="stylesheet" href="./vagas.css?v=20260908-v2">
 
   <!-- Structured Data JSON-LD -->
   <script type="application/ld+json">
@@ -1321,7 +1321,36 @@
             <span class="chk-plan-name" id="chkModalPlanName">Plano Anual</span>
             <span class="chk-plan-sub" id="chkModalPlanSub">Acesso Completo por 12 meses</span>
           </div>
-          <div class="chk-plan-val" id="chkModalPlanPrice">12x R$ 97</div>
+          <div class="chk-plan-side">
+            <div class="chk-plan-val" id="chkModalPlanPrice">12x R$ 97</div>
+            <button type="button" class="chk-plan-change-btn" id="chkChangePlanTrigger">Trocar plano</button>
+          </div>
+        </div>
+
+        <!-- Dropdown Seletor de Plano no Modal -->
+        <div class="chk-plan-dropdown" id="chkPlanDropdown" style="display: none;">
+          <label class="chk-plan-opt" data-plan="anual">
+            <input type="radio" name="chkModalPlanRadio" value="anual" checked>
+            <div class="chk-plan-opt-info">
+              <b>Plano Anual</b>
+              <span>12 meses · R$ 957 à vista ou 12x R$ 97</span>
+            </div>
+            <span class="chk-plan-badge">Economiza R$ 800</span>
+          </label>
+          <label class="chk-plan-opt" data-plan="trimestral">
+            <input type="radio" name="chkModalPlanRadio" value="trimestral">
+            <div class="chk-plan-opt-info">
+              <b>Plano Trimestral</b>
+              <span>3 meses · R$ 357 à vista ou 3x R$ 127</span>
+            </div>
+          </label>
+          <label class="chk-plan-opt" data-plan="mensal">
+            <input type="radio" name="chkModalPlanRadio" value="mensal">
+            <div class="chk-plan-opt-info">
+              <b>Plano Mensal</b>
+              <span>R$ 147/mês · Cancela quando quiser</span>
+            </div>
+          </label>
         </div>
 
         <!-- Seletor de Método de Pagamento -->
@@ -1354,15 +1383,9 @@
             <input type="email" id="chkEmail" class="chk-input" placeholder="seuemail@exemplo.com" required autocomplete="email">
           </div>
 
-          <div class="chk-grid-2">
-            <div class="chk-field">
-              <label for="chkPhone">WhatsApp</label>
-              <input type="tel" id="chkPhone" class="chk-input" placeholder="(00) 00000-0000" required autocomplete="tel">
-            </div>
-            <div class="chk-field">
-              <label for="chkCpf">CPF</label>
-              <input type="text" id="chkCpf" class="chk-input" placeholder="000.000.000-00" required>
-            </div>
+          <div class="chk-field">
+            <label for="chkPhone">WhatsApp</label>
+            <input type="tel" id="chkPhone" class="chk-input" placeholder="(00) 00000-0000" required autocomplete="tel">
           </div>
 
           <!-- Campos exclusivos de Cartão de Crédito -->
@@ -1386,6 +1409,11 @@
                 <label for="chkCardCvv">CVV</label>
                 <input type="text" id="chkCardCvv" class="chk-input" placeholder="123" maxlength="4" autocomplete="cc-csc">
               </div>
+            </div>
+
+            <div class="chk-field">
+              <label for="chkCpf">CPF do Titular do Cartão</label>
+              <input type="text" id="chkCpf" class="chk-input" placeholder="000.000.000-00">
             </div>
           </div>
 
@@ -1428,6 +1456,11 @@
         <div class="chk-timer-bar">
           QR Code válido por: <b id="chkPixTimer">15:00</b>
         </div>
+
+        <button type="button" class="chk-btn-back" id="chkBackToPlanBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Alterar plano ou dados
+        </button>
       </div>
 
       <!-- VIEW 3: SUCESSO / APROVADO -->
@@ -1513,6 +1546,11 @@
       let pollingInterval = null;
       let timerInterval = null;
 
+      const changePlanTrigger = document.getElementById('chkChangePlanTrigger');
+      const planDropdown = document.getElementById('chkPlanDropdown');
+      const modalPlanRadios = document.querySelectorAll('input[name="chkModalPlanRadio"]');
+      const backToPlanBtn = document.getElementById('chkBackToPlanBtn');
+
       function getSelectedPlan() {
         const checked = document.querySelector('input[name="plano"]:checked');
         return checked ? checked.value : 'anual';
@@ -1524,7 +1562,25 @@
         if (modalPlanName) modalPlanName.textContent = info.name;
         if (modalPlanSub) modalPlanSub.textContent = info.sub;
         if (modalPlanPrice) modalPlanPrice.textContent = info.priceDisplay;
+        const modalRadio = document.querySelector('input[name="chkModalPlanRadio"][value="' + planKey + '"]');
+        if (modalRadio) modalRadio.checked = true;
         updateCtaButtonText();
+      }
+
+      function resetToFormView(targetPlan) {
+        if (pollingInterval) clearInterval(pollingInterval);
+        if (timerInterval) clearInterval(timerInterval);
+        if (pixView) pixView.style.display = 'none';
+        if (successView) successView.style.display = 'none';
+        if (formView) formView.style.display = 'block';
+        if (submitBtn) submitBtn.disabled = false;
+        if (errorMsg) {
+          errorMsg.style.display = 'none';
+          errorMsg.textContent = '';
+        }
+        if (planDropdown) planDropdown.style.display = 'none';
+        const plan = targetPlan || getSelectedPlan();
+        updateModalPlanUI(plan);
       }
 
       function updateCtaButtonText() {
@@ -1543,6 +1599,31 @@
           updateModalPlanUI(this.value);
         });
       });
+
+      // Dropdown de troca rápida de plano no modal
+      if (changePlanTrigger && planDropdown) {
+        changePlanTrigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isHidden = planDropdown.style.display === 'none';
+          planDropdown.style.display = isHidden ? 'flex' : 'none';
+        });
+      }
+
+      modalPlanRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+          const newPlan = this.value;
+          const pageRadio = document.querySelector('input[name="plano"][value="' + newPlan + '"]');
+          if (pageRadio) pageRadio.checked = true;
+          resetToFormView(newPlan);
+        });
+      });
+
+      // Botão de voltar da tela do Pix para o formulário
+      if (backToPlanBtn) {
+        backToPlanBtn.addEventListener('click', () => {
+          resetToFormView(getSelectedPlan());
+        });
+      }
 
       // Máscaras de entrada
       if (inputPhone) {
@@ -1598,6 +1679,7 @@
           currentMethod = 'PIX';
           if (cardFields) cardFields.style.display = 'none';
           if (inputCardNumber) inputCardNumber.required = false;
+          if (inputCpf) inputCpf.required = false;
           updateCtaButtonText();
         });
 
@@ -1607,6 +1689,7 @@
           currentMethod = 'CREDIT_CARD';
           if (cardFields) cardFields.style.display = 'block';
           if (inputCardNumber) inputCardNumber.required = true;
+          if (inputCpf) inputCpf.required = true;
           updateCtaButtonText();
         });
       }
@@ -1614,7 +1697,12 @@
       // Abertura do Modal pelo botão principal
       function openCheckoutModal(e) {
         if (e) e.preventDefault();
-        updateModalPlanUI(getSelectedPlan());
+        const selected = getSelectedPlan();
+        if (selected !== currentPlan || (pixView && pixView.style.display !== 'none')) {
+          resetToFormView(selected);
+        } else {
+          updateModalPlanUI(selected);
+        }
         if (modalOverlay) {
           modalOverlay.classList.add('active');
           modalOverlay.setAttribute('aria-hidden', 'false');
@@ -1637,6 +1725,7 @@
           modalOverlay.setAttribute('aria-hidden', 'true');
           document.body.style.overflow = '';
         }
+        if (planDropdown) planDropdown.style.display = 'none';
         if (pollingInterval) clearInterval(pollingInterval);
         if (timerInterval) clearInterval(timerInterval);
       }
@@ -1717,25 +1806,34 @@
           const phone = (inputPhone ? inputPhone.value : '').trim();
           const cpf = (inputCpf ? inputCpf.value : '').trim();
 
-          if (!name || !email || !phone || !cpf) {
+          if (!name || !email || !phone) {
             if (errorMsg) {
-              errorMsg.textContent = 'Por favor, preencha todos os campos obrigatórios.';
+              errorMsg.textContent = 'Por favor, preencha seu nome, e-mail e WhatsApp.';
+              errorMsg.style.display = 'block';
+            }
+            return;
+          }
+
+          const cleanPhone = phone.replace(/\D/g, '');
+          if (cleanPhone.length < 10) {
+            if (errorMsg) {
+              errorMsg.textContent = 'Por favor, informe um WhatsApp válido com DDD.';
               errorMsg.style.display = 'block';
             }
             return;
           }
 
           const cleanCpf = cpf.replace(/\D/g, '');
-          if (cleanCpf.length < 11) {
-            if (errorMsg) {
-              errorMsg.textContent = 'Por favor, informe um CPF válido.';
-              errorMsg.style.display = 'block';
-            }
-            return;
-          }
 
           let cardData = null;
           if (currentMethod === 'CREDIT_CARD') {
+            if (!cleanCpf || cleanCpf.length < 11) {
+              if (errorMsg) {
+                errorMsg.textContent = 'Por favor, informe o CPF do titular do cartão.';
+                errorMsg.style.display = 'block';
+              }
+              return;
+            }
             const cardNum = (inputCardNumber ? inputCardNumber.value : '').replace(/\D/g, '');
             const cardHolder = (inputCardHolder ? inputCardHolder.value : '').trim();
             const cardExp = (inputCardExpiry ? inputCardExpiry.value : '').trim();

@@ -34,6 +34,10 @@ test("vagas/index.html contains complete embedded checkout modal markup and comp
   assert.ok(html.includes('id="chkCopyPixBtn"'), "Must contain #chkCopyPixBtn");
   assert.ok(html.includes('id="chkPixTimer"'), "Must contain #chkPixTimer");
 
+  // Plan switching and navigation
+  assert.ok(html.includes('id="chkBackToPlanBtn"'), "Must contain #chkBackToPlanBtn to change plan/data from Pix");
+  assert.ok(html.includes('id="chkChangePlanTrigger"'), "Must contain #chkChangePlanTrigger to switch plans");
+
   // Success screen
   assert.ok(html.includes("Pagamento Aprovado!"), "Must contain approved payment message");
   assert.ok(html.includes("https://app.imobiturbo.com.br/onboarding"), "Must link to onboarding");

@@ -2057,6 +2057,90 @@ body {
   color: var(--lime);
 }
 
+.chk-plan-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.chk-plan-change-btn {
+  background: none;
+  border: none;
+  color: var(--lime);
+  font-family: var(--sans);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.15s ease;
+}
+
+.chk-plan-change-btn:hover {
+  opacity: 0.8;
+}
+
+.chk-plan-dropdown {
+  background: #141926;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 8px;
+  margin-top: -12px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: chkModalIn 0.2s ease;
+}
+
+.chk-plan-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  font-size: 13px;
+}
+
+.chk-plan-opt:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.chk-plan-opt input[type="radio"] {
+  accent-color: var(--lime);
+  width: 16px;
+  height: 16px;
+}
+
+.chk-plan-opt-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.chk-plan-opt-info b {
+  color: var(--white);
+  font-size: 13px;
+}
+
+.chk-plan-opt-info span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.chk-plan-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--lime);
+  background: rgba(216, 255, 62, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: var(--mono);
+}
+
 /* Tabs: PIX vs CARTÃO */
 .chk-tabs {
   display: grid;
@@ -2284,6 +2368,31 @@ body {
 .chk-timer-bar b {
   color: var(--white);
   font-family: var(--mono);
+}
+
+.chk-btn-back {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 11px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+  transition: all 0.2s ease;
+}
+
+.chk-btn-back:hover {
+  border-color: var(--lime);
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 /* State 3: Success Screen */
