@@ -422,7 +422,7 @@ function PremiumSidebar({ active = 'Início' }) {
       flexShrink: 0,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', padding: '4px 4px 14px' }}>
-        <img src="../../assets/logo-imobiturbo-white.png" alt="Imobiturbo" style={{ width: 150, height: 'auto', display: 'block' }} />
+        <img src="../../assets/logo-imobiturbo-white.webp" alt="Imobiturbo" style={{ width: 150, height: 'auto', display: 'block' }} />
       </div>
       {groups.map(([label, items]) => (
         <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

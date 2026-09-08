@@ -50,6 +50,31 @@ const FILES_TO_UPLOAD = [
   { local: 'assets/testimonials/resultados-03.webp', remote: 'assets/testimonials/resultados-03.webp' }
 ];
 
+// Scan brand assets (product logos for light/dark themes)
+for (const themeDir of ['assets/brand/dark', 'assets/brand/light']) {
+  if (fs.existsSync(themeDir)) {
+    for (const file of fs.readdirSync(themeDir).filter((f) => f.endsWith('.webp'))) {
+      FILES_TO_UPLOAD.push({
+        local: path.posix.join(themeDir, file),
+        remote: path.posix.join(themeDir, file)
+      });
+    }
+  }
+}
+
+// Portal assets
+const portalAssets = [
+  'assets/logo-imobiturbo-white.webp',
+  'assets/logo-imobiturbo-black.webp',
+  'assets/natan-profile.png',
+  'assets/natan-studio.jpg',
+];
+for (const asset of portalAssets) {
+  if (fs.existsSync(asset)) {
+    FILES_TO_UPLOAD.push({ local: asset, remote: asset });
+  }
+}
+
 const testimonialsGalleryDir = 'assets/testimonials/gallery';
 
 if (fs.existsSync(testimonialsGalleryDir)) {

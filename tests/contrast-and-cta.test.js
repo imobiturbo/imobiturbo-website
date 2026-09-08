@@ -11,7 +11,7 @@ test("colors_and_type.css guarantees strict #10130C and font-weight 800 on all L
 
   assert.ok(content.includes("--fg-on-lime:     #10130C;"), "Token --fg-on-lime must be strictly #10130C");
   assert.ok(content.includes("--accent-ink:     #10130C;"), "Token --accent-ink must be strictly #10130C");
-  assert.ok(content.includes("--it-military:    #166534;"), "Token --it-military must be Verde Militar #166534");
+  assert.ok(content.includes("--it-military:    #69a537;"), "Token --it-military must be Verde Militar #69a537");
 
   // .btn-primary and .btn-cta-lime
   const btnPrimaryMatch = content.match(/\.btn-primary,\s*\.btn-cta-lime\s*\{([^}]+)\}/);
@@ -28,7 +28,7 @@ test("home.css guarantees Verde Militar on light backgrounds and strict #10130C 
   const cssPath = path.join(root, "home.css");
   const content = fs.readFileSync(cssPath, "utf8");
 
-  assert.ok(content.includes("--home-military: #166534;"), "home.css must define --home-military as #166534");
+  assert.ok(content.includes("--home-military: #69a537;"), "home.css must define --home-military as #69a537");
   assert.ok(content.includes("--home-cta-text: #10130c;"), "home.css must define --home-cta-text as #10130c");
 
   // Light-section lime-dots and accents must use Verde Militar
@@ -58,8 +58,8 @@ test("AudiencePages and diagnostic panel use Verde Militar on white card surface
   // No murky #7a911c or lime on white card
   assert.ok(!content.includes("color: '#7a911c'"), "AudiencePages.jsx must not contain #7a911c");
   assert.ok(!content.includes("border: '1.5px solid #7a911c'"), "AudiencePages.jsx must not contain #7a911c border");
-  assert.ok(content.includes("color: '#166534'"), "AudiencePages.jsx must use Verde Militar #166534");
-  assert.ok(content.includes("border: isHovered ? '1.5px solid #166534'"), "AudiencePages.jsx hover border must use #166534");
+  assert.ok(content.includes("color: '#69a537'"), "AudiencePages.jsx must use Verde Militar #69a537");
+  assert.ok(content.includes("border: isHovered ? '1.5px solid #69a537'"), "AudiencePages.jsx hover border must use #69a537");
 });
 
 test("Landing pages and lovable enforce strictly #10130C on CTA buttons", () => {

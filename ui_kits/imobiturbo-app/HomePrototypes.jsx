@@ -14,7 +14,7 @@ const HOME_ASSETS = {
   hero: 'assets/home-hero-operacao-imobiliaria.webp',
   method: 'assets/home-metodo-corretor-solo.webp',
   warRoom: 'assets/home-consultoria-warroom.webp',
-  logo: 'assets/logo-imobiturbo-white.png',
+  logo: 'assets/logo-imobiturbo-white.webp',
 };
 
 const HOME_NAV_LINKS = [
@@ -715,7 +715,7 @@ function EcosystemPortal() {
     }
   };
 
-  const logoDir = isDark ? 'assets/brand/dark' : 'assets/brand/light';
+  const logoDir = isDark ? 'assets/brand/light' : 'assets/brand/dark';
 
   const products = [
     {
@@ -782,7 +782,7 @@ function EcosystemPortal() {
       <header className="portal-header">
         <a href="/" className="portal-header-logo-link" aria-label="Imobiturbo Home">
           <img 
-            src={isDark ? "assets/logo-imobiturbo-white.png" : "assets/logo-imobiturbo-black.png"} 
+            src={isDark ? "assets/logo-imobiturbo-white.webp" : "assets/logo-imobiturbo-black.webp"} 
             alt="Imobiturbo" 
             className="portal-header-logo" 
           />

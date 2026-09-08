@@ -28,12 +28,12 @@
      ============================================================ */
 
   /* Brand */
-  --it-lime:        #BFD730;   /* Pantone 13-0550 TCX Lime Punch */
+  --it-lime:        #c4fe5d;   /* Lime 3.0 */
   --it-lime-hi:     #D2E854;   /* hover / lifted */
   --it-lime-lo:     #A6BC1F;   /* press / darker accent */
   --it-lime-ink:    #10130C;   /* strict readable text-on-lime */
-  --it-military:    #166534;   /* Verde Militar - WCAG AAA > 7:1 contrast on light backgrounds */
-  --it-military-hi: #14532D;   /* Verde Militar hover */
+  --it-military:    #69a537;   /* Verde Militar 3.0 */
+  --it-military-hi: #5a8f2e;   /* Verde Militar hover */
   --it-accent-green: #6CA438;  /* Verde Intermediário Oficial da Marca (Fundo Claro) */
   --it-dark-green:  #2F400D;   /* Verde-Escuro Nobre Oficial da Marca (Containers/Fundos) */
   --it-mint-bg:     #F4FBE8;   /* Soft mint background for badges/secondary CTAs on light surfaces */
@@ -114,7 +114,7 @@
   /* ============================================================
      TYPOGRAPHY — base tokens
      ============================================================ */
-  --font-display:   "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display:   "Barlow Condensed", "Futura LT Cond", sans-serif;
   --font-body:      "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono:      "JetBrains Mono", ui-monospace, Menlo, monospace;
 
