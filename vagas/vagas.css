@@ -1716,16 +1716,16 @@ body {
 }
 
 /* ==========================================================================
-   MULTI-MODEL AI CRM CONSOLE (ChatGPT, Claude & Gemini)
+   MULTI-MODEL AI CRM CONSOLE (ChatGPT, Claude & Gemini) — LIGHT CANVAS
    ========================================================================== */
 .spot-console {
-  background: linear-gradient(180deg, #0F172A 0%, #090D16 100%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #FFFFFF;
+  border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   padding: 24px;
   margin-top: 24px;
-  color: #F8FAFC;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.06);
 }
 
 .spot-console-top {
@@ -1733,7 +1733,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--line);
   padding-bottom: 14px;
   margin-bottom: 16px;
 }
@@ -1746,15 +1746,15 @@ body {
   font-size: 11.5px;
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: #A3E635;
+  color: var(--military-hi);
 }
 
 .spot-console-badge .live-dot {
   width: 8px;
   height: 8px;
-  background: #A3E635;
+  background: #16A34A;
   border-radius: 50%;
-  box-shadow: 0 0 10px #A3E635;
+  box-shadow: 0 0 8px rgba(22, 163, 74, 0.5);
   animation: pulse-dot 2s infinite ease-in-out;
 }
 
@@ -1766,7 +1766,7 @@ body {
 .spot-console-ver {
   font-family: var(--mono);
   font-size: 11px;
-  color: #94A3B8;
+  color: var(--muted-2);
   letter-spacing: 0.02em;
 }
 
@@ -1777,8 +1777,8 @@ body {
 }
 
 .spot-prompt-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #F8FAFC;
+  border: 1px solid var(--line);
   border-radius: var(--radius-md);
   padding: 16px 18px;
   display: flex;
@@ -1788,8 +1788,9 @@ body {
 }
 
 .spot-prompt-card:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.16);
+  background: #FFFFFF;
+  border-color: rgba(108, 164, 56, 0.35);
+  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.05);
   transform: translateY(-1px);
 }
 
@@ -1803,11 +1804,11 @@ body {
 .spot-model-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 700;
-  padding: 3px 10px;
+  padding: 4px 10px;
   border-radius: var(--radius-pill);
   line-height: 1.2;
 }
@@ -1817,30 +1818,30 @@ body {
 }
 
 .spot-model-chip.chip-openai {
-  color: #6EE7B7;
-  background: rgba(16, 163, 127, 0.14);
-  border: 1px solid rgba(110, 231, 183, 0.3);
+  color: #065F46;
+  background: #ECFDF5;
+  border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
 .spot-model-chip.chip-claude {
-  color: #FCD34D;
-  background: rgba(217, 119, 6, 0.14);
-  border: 1px solid rgba(252, 211, 77, 0.3);
+  color: #92400E;
+  background: #FEF3C7;
+  border: 1px solid rgba(217, 119, 6, 0.25);
 }
 
 .spot-model-chip.chip-gemini {
-  color: #C4B5FD;
-  background: rgba(129, 140, 248, 0.14);
-  border: 1px solid rgba(196, 181, 253, 0.3);
+  color: #3730A3;
+  background: #EEF2FF;
+  border: 1px solid rgba(99, 102, 241, 0.25);
 }
 
 .spot-action-pill {
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
-  color: #94A3B8;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #475569;
+  background: #FFFFFF;
+  border: 1px solid var(--line-2);
   padding: 3px 9px;
   border-radius: 6px;
   flex-shrink: 0;
@@ -1849,43 +1850,54 @@ body {
 .spot-prompt-text {
   font-size: 14.5px;
   line-height: 1.55;
-  color: #F8FAFC;
+  color: #0F172A;
   font-weight: 500;
   word-break: break-word;
 }
 
 .spot-prompt-text span.prompt-quote {
-  color: #F1F5F9;
+  color: #0F172A;
 }
 
 .spot-telemetry {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  align-items: flex-start;
+  gap: 7px;
+  flex-wrap: nowrap;
   font-family: var(--mono);
-  font-size: 11.5px;
-  color: #94A3B8;
+  font-size: 12px;
+  color: #475569;
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  line-height: 1.4;
+  border-top: 1px solid var(--line);
+  line-height: 1.45;
 }
 
 .spot-telemetry .tele-icon {
-  color: #A3E635;
-  font-weight: 700;
   flex-shrink: 0;
+  line-height: 1.45;
+  font-size: 13px;
+}
+
+.spot-telemetry .tele-text {
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
 }
 
 .spot-console-result {
   margin-top: 16px;
   padding: 14px 18px;
-  background: rgba(197, 255, 94, 0.05);
-  border: 1px solid rgba(197, 255, 94, 0.2);
-  border-left: 3px solid #C5FF5E;
+  background: #F4FBE8;
+  border: 1px solid #D9F99D;
+  border-left: 3px solid var(--military);
   border-radius: var(--radius-sm);
   font-size: 13.5px;
-  color: #F1F5F9;
+  color: #1F2937;
   line-height: 1.55;
+}
+
+.spot-console-result b {
+  color: var(--military-hi);
 }
 
 @media (max-width: 640px) {
@@ -1913,8 +1925,8 @@ body {
   }
 
   .spot-model-chip {
-    font-size: 10.5px;
-    padding: 2.5px 8px;
+    font-size: 11px;
+    padding: 3px 8px;
   }
 
   .spot-action-pill {
@@ -1928,9 +1940,9 @@ body {
   }
 
   .spot-telemetry {
-    font-size: 10.5px;
-    flex-wrap: wrap;
+    font-size: 11px;
     padding-top: 6px;
+    gap: 6px;
   }
 
   .spot-console-result {
