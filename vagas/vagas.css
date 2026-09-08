@@ -1715,22 +1715,26 @@ body {
   line-height: 1.55;
 }
 
-/* CHATGPT CRM SIMULATOR CONSOLE */
+/* ==========================================================================
+   MULTI-MODEL AI CRM CONSOLE (ChatGPT, Claude & Gemini)
+   ========================================================================== */
 .spot-console {
-  background: #0F172A;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-md);
-  padding: 22px;
-  margin-top: 20px;
+  background: linear-gradient(180deg, #0F172A 0%, #090D16 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-top: 24px;
   color: #F8FAFC;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .spot-console-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 12px;
+  padding-bottom: 14px;
   margin-bottom: 16px;
 }
 
@@ -1739,8 +1743,9 @@ body {
   align-items: center;
   gap: 8px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
+  letter-spacing: 0.04em;
   color: #A3E635;
 }
 
@@ -1750,63 +1755,188 @@ body {
   background: #A3E635;
   border-radius: 50%;
   box-shadow: 0 0 10px #A3E635;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.spot-console-ver {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #94A3B8;
+  letter-spacing: 0.02em;
 }
 
 .spot-prompts {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
-.spot-prompt-btn {
-  background: rgba(255, 255, 255, 0.04);
+.spot-prompt-card {
+  background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: var(--radius-sm);
-  padding: 13px 18px;
-  color: #F1F5F9;
-  font-size: 14px;
-  text-align: left;
+  border-radius: var(--radius-md);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.spot-prompt-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.spot-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  cursor: default;
-  transition: all 0.15s ease;
+  gap: 10px;
 }
 
-.spot-prompt-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(163, 230, 53, 0.4);
-  color: #FFFFFF;
-}
-
-.spot-prompt-btn code {
-  color: #A3E635;
+.spot-model-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   font-family: var(--mono);
-  font-size: 13.5px;
-  font-weight: 600;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  line-height: 1.2;
 }
 
-.spot-prompt-btn span.badge-action {
+.spot-model-chip svg {
+  flex-shrink: 0;
+}
+
+.spot-model-chip.chip-openai {
+  color: #6EE7B7;
+  background: rgba(16, 163, 127, 0.14);
+  border: 1px solid rgba(110, 231, 183, 0.3);
+}
+
+.spot-model-chip.chip-claude {
+  color: #FCD34D;
+  background: rgba(217, 119, 6, 0.14);
+  border: 1px solid rgba(252, 211, 77, 0.3);
+}
+
+.spot-model-chip.chip-gemini {
+  color: #C4B5FD;
+  background: rgba(129, 140, 248, 0.14);
+  border: 1px solid rgba(196, 181, 253, 0.3);
+}
+
+.spot-action-pill {
   font-family: var(--mono);
   font-size: 11px;
   font-weight: 600;
   color: #94A3B8;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  padding: 3px 8px;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 3px 9px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.spot-prompt-text {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: #F8FAFC;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.spot-prompt-text span.prompt-quote {
+  color: #F1F5F9;
+}
+
+.spot-telemetry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  color: #94A3B8;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  line-height: 1.4;
+}
+
+.spot-telemetry .tele-icon {
+  color: #A3E635;
+  font-weight: 700;
   flex-shrink: 0;
 }
 
 .spot-console-result {
-  margin-top: 14px;
+  margin-top: 16px;
   padding: 14px 18px;
-  background: rgba(255, 255, 255, 0.06);
-  border-left: 3px solid #A3E635;
-  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: rgba(197, 255, 94, 0.05);
+  border: 1px solid rgba(197, 255, 94, 0.2);
+  border-left: 3px solid #C5FF5E;
+  border-radius: var(--radius-sm);
   font-size: 13.5px;
   color: #F1F5F9;
   line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .spot-console {
+    padding: 16px 14px;
+    margin-top: 18px;
+  }
+
+  .spot-console-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  .spot-prompt-card {
+    padding: 13px 14px;
+    gap: 8px;
+  }
+
+  .spot-card-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .spot-model-chip {
+    font-size: 10.5px;
+    padding: 2.5px 8px;
+  }
+
+  .spot-action-pill {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+
+  .spot-prompt-text {
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+
+  .spot-telemetry {
+    font-size: 10.5px;
+    flex-wrap: wrap;
+    padding-top: 6px;
+  }
+
+  .spot-console-result {
+    padding: 12px 14px;
+    font-size: 12.5px;
+  }
 }
 
 /* ==========================================================================
