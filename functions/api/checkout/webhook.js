@@ -1,6 +1,9 @@
 // Cloudflare Pages Function: /api/checkout/webhook
 // Processa webhooks de liquidação do AbacatePay e Asaas para Imobiturbo
 // Dispara evento Purchase server-side garantido e idempotente para Meta CAPI (Graph API v25.0)
+// Dispara Kit de Boas-Vindas 4 em 1: E-mail Resend + WhatsApp Oficial (Template status_confirmado_120626) + Sites D1
+
+import { sendPostPurchaseNotifications } from "./_notifications.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -47,6 +50,7 @@ export async function onRequestPost(context) {
     let fbc = "";
     let externalRef = "";
     let contentName = "Comunidade Imobiturbo";
+    let plan = "anual";
 
     // 1. AbacatePay Webhook Detection
     if (
@@ -59,12 +63,13 @@ export async function onRequestPost(context) {
       // AbacatePay amount em centavos -> converter para reais
       amount = typeof data.amount === "number" ? data.amount / 100 : 0;
       const cust = data.customer || payload.customer || {};
-      email = cust.email || "";
-      phone = cust.cellphone || cust.phone || "";
-      name = cust.name || "";
+      email = cust.email || data.metadata?.email || "";
+      phone = cust.cellphone || cust.phone || data.metadata?.phone || "";
+      name = cust.name || data.metadata?.name || "";
       fbp = data.metadata?.fbp || cookies["_fbp"] || "";
       fbc = data.metadata?.fbc || cookies["_fbc"] || "";
       externalRef = data.metadata?.eventId || "";
+      if (data.metadata?.plan) plan = data.metadata.plan;
       if (data.description) contentName = data.description;
     }
     // 2. Asaas Webhook Detection
@@ -83,7 +88,33 @@ export async function onRequestPost(context) {
       fbp = cookies["_fbp"] || "";
       fbc = cookies["_fbc"] || "";
       externalRef = payment.externalReference || "";
-      if (payment.description) contentName = payment.description;
+      if (payment.description) {
+        contentName = payment.description;
+        const descLower = payment.description.toLowerCase();
+        if (descLower.includes("trimestral")) plan = "trimestral";
+        else if (descLower.includes("mensal")) plan = "mensal";
+      }
+
+      // Se o Asaas enviou apenas o customer ID, busca dados cadastrais diretamente na API
+      if ((!email || !phone) && typeof payment.customer === "string") {
+        const asaasKey = (env && env.ASAAS_API_KEY) || "";
+        if (asaasKey) {
+          try {
+            const cusResp = await fetch(
+              `https://api.asaas.com/v3/customers/${encodeURIComponent(payment.customer)}`,
+              { headers: { access_token: asaasKey }, signal: AbortSignal.timeout(4000) }
+            );
+            if (cusResp.ok) {
+              const cusData = await cusResp.json();
+              if (!email) email = cusData.email || "";
+              if (!phone) phone = cusData.mobilePhone || cusData.phone || "";
+              if (!name) name = cusData.name || "";
+            }
+          } catch (err) {
+            console.error("Asaas customer lookup fallback error:", err);
+          }
+        }
+      }
     } else {
       // Eventos não-financeiros (ex: PAYMENT_CREATED, PAYMENT_UPDATED) retornam 200 OK sem disparar compra
       return new Response(
@@ -153,14 +184,24 @@ export async function onRequestPost(context) {
       );
       metaResult = await metaResp.json().catch(() => ({}));
 
-      // Libera acesso automático na plataforma Sites Imobiturbo (VIP Mentoria)
-      if (email) {
-        fetch("https://sites.imobiturbo.com.br/api/webhook/checkout", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, nome: name, telefone: phone }),
-          signal: AbortSignal.timeout(5000),
-        }).catch((e) => console.error("Sites webhook sync error:", e));
+      // Disparo unificado do Kit de Boas-Vindas 4 em 1:
+      // 1. E-mail Único Completo via Resend (Área de Membros Comunidade 1x/semana, Radar, Sites e CRM)
+      // 2. WhatsApp Oficial via Meta Cloud API (Template status_confirmado_120626)
+      // 3. Sincronização automática no banco D1 do Sites Imobiturbo
+      let notifResult = null;
+      if (email || phone) {
+        try {
+          notifResult = await sendPostPurchaseNotifications({
+            email,
+            name,
+            phone,
+            plan: plan || "anual",
+            paymentId,
+            env,
+          });
+        } catch (e) {
+          console.error("Post-purchase notification error in webhook:", e);
+        }
       }
     }
 
@@ -170,6 +211,7 @@ export async function onRequestPost(context) {
         paid: isPaid,
         event_id: eventId,
         meta_result: metaResult,
+        notifications: notifResult,
       }),
       { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
     );
