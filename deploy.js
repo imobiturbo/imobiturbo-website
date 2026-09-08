@@ -35,6 +35,8 @@ const FILES_TO_UPLOAD = [
   // Compiled assets
   { local: 'dist/home.bundle.js', remote: 'dist/home.bundle.js' },
   { local: 'dist/audience.bundle.js', remote: 'dist/audience.bundle.js' },
+  { local: 'dist/react.production.min.js', remote: 'dist/react.production.min.js' },
+  { local: 'dist/react-dom.production.min.js', remote: 'dist/react-dom.production.min.js' },
 
   // Assets da home
   { local: 'fonts/PlusJakartaSans-Bold.ttf', remote: 'fonts/PlusJakartaSans-Bold.ttf' },

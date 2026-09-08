@@ -44,7 +44,22 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="colors_and_type.css?v=20260908-v8">
-  <link rel="stylesheet" href="home.css?v=20260908-v8">
+  <link rel="stylesheet" href="home.css?v=20260908-v9">
+  <link rel="preload" href="dist/react.production.min.js" as="script">
+  <link rel="preload" href="dist/react-dom.production.min.js" as="script">
+  <link rel="preload" href="dist/home.bundle.js?v=20260908-v9" as="script">
+  <script>
+    (function() {
+      try {
+        var theme = localStorage.getItem('imobiturbo_portal_theme');
+        if (theme === 'dark' || (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      } catch (e) {}
+    })();
+  </script>
   
   <!-- Structured Data (JSON-LD) for SEO & AEO -->
   <script type="application/ld+json">
@@ -171,11 +186,10 @@
 
   <script defer src="https://tracking.imobiturbo.com.br/tracker/v1.js" data-site-key="imobiturbo-public-v1" data-default-consent="granted"></script>
   <script defer src="site-tracking.js?v=20260722"></script>
-  <script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" crossorigin></script>
 </head>
 <body>
-  <div id="root" data-imt-decorate>
+  <div id="root" data-imt-decorate></div>
+  <noscript>
     <!-- Fallback semântico indexável para mecanismos de busca e rastreadores sem JavaScript -->
     <header style="padding:20px; text-align:center;">
       <a href="/"><img src="assets/logo-imobiturbo-white.webp" alt="Imobiturbo" style="height:32px;"></a>
@@ -221,8 +235,10 @@
         </ol>
       </section>
     </main>
-  </div>
-  <script src="dist/home.bundle.js?v=20260908-v8"></script>
+  </noscript>
+  <script src="dist/react.production.min.js"></script>
+  <script src="dist/react-dom.production.min.js"></script>
+  <script src="dist/home.bundle.js?v=20260908-v9"></script>
   <script>
     ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(window.HomePrototypes));
   </script>

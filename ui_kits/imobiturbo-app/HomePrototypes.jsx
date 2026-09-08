@@ -649,21 +649,21 @@ function HomeFooter() {
 }
 
 function EcosystemPortal() {
-  const [isDark, setIsDark] = React.useState(false);
+  const [isDark, setIsDark] = React.useState(() => {
+    if (typeof window === 'undefined') return false;
+    const savedTheme = localStorage.getItem('imobiturbo_portal_theme');
+    if (savedTheme === 'dark') return true;
+    if (savedTheme === 'light') return false;
+    return Boolean(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  });
   const [modalProduct, setModalProduct] = React.useState(null);
   const [checkEmail, setCheckEmail] = React.useState('');
   const [checkState, setCheckState] = React.useState({ loading: false, result: null, error: null });
 
   React.useEffect(() => {
-    const savedTheme = localStorage.getItem('imobiturbo_portal_theme');
-    if (savedTheme === 'dark') {
-      setIsDark(true);
-      document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-      setIsDark(false);
-      document.documentElement.setAttribute('data-theme', 'light');
-    }
-  }, []);
+    const mode = isDark ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', mode);
+  }, [isDark]);
 
   const toggleTheme = () => {
     const nextDark = !isDark;

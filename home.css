@@ -25,13 +25,13 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: var(--home-header-height);
-  background: var(--home-black);
+  background: var(--portal-bg, var(--home-black));
 }
 
 body {
   margin: 0;
-  background: var(--home-black);
-  color: var(--home-white);
+  background: var(--portal-bg, var(--home-black));
+  color: var(--portal-text-main, var(--home-white));
   font-family: var(--home-body);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
