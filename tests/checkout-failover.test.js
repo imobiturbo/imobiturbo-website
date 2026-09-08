@@ -65,8 +65,8 @@ test("vagas/vagas.css enforces proper styling and contrast on checkout buttons",
   assert.ok(css.includes(".chk-plan-val b {"), "Must define bold number styling for modal price");
 
   // Light mode tokens
-  assert.ok(css.includes("--bg: #FAFAF7;"), "Must define clean light canvas --bg");
-  assert.ok(css.includes("--military: #166534;"), "Must define Verde Militar #166534 for high contrast on light mode");
+  assert.ok(css.includes("--bg: #FFFFFF;"), "Must define clean white canvas --bg");
+  assert.ok(css.includes("--military: #69a438;"), "Must define Brand Green #69a438 for light background");
   assert.ok(css.includes("--white: #0A0A0A;"), "Must invert --white token for high-contrast dark ink headings");
 
   // Continuous infinite slider marquee

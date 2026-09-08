@@ -25,10 +25,9 @@
 
   <!-- Preload hero image -->
   <link rel="preload" href="./assets/hero-vsl-poster.jpg" as="image" fetchpriority="high">
-  <link rel="preload" href="./assets/hero-bg.webp" as="image">
 
   <!-- Fonts & Stylesheet -->
-  <link rel="stylesheet" href="./vagas.css?v=20260908-v4">
+  <link rel="stylesheet" href="./vagas.css?v=20260908-v5">
 
   <!-- Structured Data JSON-LD -->
   <script type="application/ld+json">
@@ -69,6 +68,73 @@
   <!-- Tracking Scripts -->
   <script defer src="https://hub.imobiturbo.com.br/api/tracking/tracker.js" data-site-key="comunidade-imobiturbo" data-default-consent="granted"></script>
   <script defer src="../site-tracking.js?v=20260906"></script>
+
+  <!-- Meta Pixel Code with Dual-Track Deduplication -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1025303472485246');
+
+    // Dual-Track Standard Helpers
+    window.imtGenerateUUID = function() {
+      if (window.crypto && window.crypto.randomUUID) {
+        return window.crypto.randomUUID();
+      }
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, function(c) {
+        return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
+      });
+    };
+
+    window.imtSendCapi = function(eventName, eventId, customData, userData) {
+      var getCookie = function(name) {
+        var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+        return m ? decodeURIComponent(m[1]) : '';
+      };
+      var payload = {
+        event_name: eventName,
+        event_id: eventId,
+        event_time: Math.floor(Date.now() / 1000),
+        event_source_url: window.location.href,
+        custom_data: customData || undefined,
+        user_data: Object.assign({
+          fbp: getCookie('_fbp'),
+          fbc: getCookie('_fbc')
+        }, userData || {})
+      };
+      var str = JSON.stringify(payload);
+      var sent = false;
+      if (navigator.sendBeacon && typeof Blob !== 'undefined') {
+        try {
+          sent = navigator.sendBeacon('/tracker', new Blob([str], { type: 'application/json' }));
+        } catch (_) {
+          sent = false;
+        }
+      }
+      if (!sent && typeof fetch === 'function') {
+        fetch('/tracker', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: str,
+          keepalive: true
+        }).catch(function() {});
+      }
+    };
+
+    // PageView Dispatch (Browser + Server Deduplicated)
+    var pageViewId = window.imtGenerateUUID();
+    fbq('track', 'PageView', {}, { eventID: pageViewId });
+    window.imtSendCapi('PageView', pageViewId);
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1025303472485246&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
 </head>
 <body>
 
@@ -81,13 +147,6 @@
   <main>
     <!-- HERO SECTION -->
     <section class="hero" id="hero" data-screen-label="hero" aria-labelledby="hero-title">
-      <div class="hero-bg">
-        <picture>
-          <source media="(max-width:640px)" srcset="./assets/hero-bg-mobile.webp">
-          <img src="./assets/hero-bg.webp" alt="" width="1920" height="1080">
-        </picture>
-      </div>
-
       <div class="wrap">
         <div class="col-txt">
           <h1 class="h-hero" id="hero-title">
@@ -1708,13 +1767,22 @@
           modalOverlay.setAttribute('aria-hidden', 'false');
           document.body.style.overflow = 'hidden';
         }
-        // Dispara InitiateCheckout no tracking do browser
+        // Dispara InitiateCheckout dual-track (Browser + Server deduplicado)
         const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
+        const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+        const initCheckoutId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'chk_' + Date.now());
         if (window.fbq) {
           window.fbq('track', 'InitiateCheckout', {
             content_name: currentInfo.name,
             currency: 'BRL',
-            value: currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147
+            value: planVal
+          }, { eventID: initCheckoutId });
+        }
+        if (window.imtSendCapi) {
+          window.imtSendCapi('InitiateCheckout', initCheckoutId, {
+            content_name: currentInfo.name,
+            currency: 'BRL',
+            value: planVal
           });
         }
       }
@@ -1863,7 +1931,27 @@
           if (submitBtn) submitBtn.disabled = true;
           if (btnText) btnText.textContent = 'Gerando cobrança segura...';
 
-          const eventId = 'vagas_evt_' + Date.now() + '_' + Math.random().toString(36).slice(2, 9);
+          const eventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now());
+          const leadEventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'lead_' + Date.now());
+          const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
+          const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+
+          // Dispara Lead dual-track (Browser + Server deduplicado) com PII do cliente
+          if (window.fbq) {
+            window.fbq('track', 'Lead', {
+              content_name: currentInfo.name,
+              currency: 'BRL',
+              value: planVal
+            }, { eventID: leadEventId });
+          }
+          if (window.imtSendCapi) {
+            window.imtSendCapi('Lead', leadEventId, {
+              content_name: currentInfo.name,
+              currency: 'BRL',
+              value: planVal
+            }, { em: email, ph: phone, fn: name });
+          }
+
           const payload = {
             plan: currentPlan,
             paymentMethod: currentMethod,
@@ -1952,18 +2040,27 @@
         if (formView) formView.style.display = 'none';
         if (successView) successView.style.display = 'block';
 
+        const purchaseVal = Number(val) || (currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147);
+
         // Disparo de Purchase com eventID para deduplicação server-side perfeita
         if (window.fbq) {
           window.fbq('track', 'Purchase', {
             content_name: 'Comunidade Imobiturbo (' + currentPlan + ')',
             currency: 'BRL',
-            value: Number(val),
+            value: purchaseVal,
           }, { eventID: eventId });
+        }
+        if (window.imtSendCapi) {
+          window.imtSendCapi('Purchase', eventId, {
+            content_name: 'Comunidade Imobiturbo (' + currentPlan + ')',
+            currency: 'BRL',
+            value: purchaseVal
+          });
         }
         if (window.gtag) {
           window.gtag('event', 'purchase', {
             transaction_id: eventId,
-            value: Number(val),
+            value: purchaseVal,
             currency: 'BRL'
           });
         }
@@ -1974,7 +2071,7 @@
         }, 3500);
       }
 
-      // 2. Carrossel Contínuo Infinito (InfiniteSlider Marquee) com Lightbox
+      // 2. Carrossel Contínuo Infinito (Continuous Smooth Ribbon) com Navegação e Lightbox
       const track = document.getElementById('proofSliderTrack');
       const prevBtn = document.getElementById('proofPrevBtn');
       const nextBtn = document.getElementById('proofNextBtn');
@@ -1984,7 +2081,7 @@
       const lightboxBackdrop = document.getElementById('proofLightboxBackdrop');
 
       if (track) {
-        // Clona os cards originais para criar a fita contínua infinita de 100% / -50%
+        // Clona os cards originais para criar a fita contínua infinita
         const originalCards = Array.from(track.children);
         originalCards.forEach(card => {
           const clone = card.cloneNode(true);
@@ -1992,30 +2089,153 @@
           track.appendChild(clone);
         });
 
-        // Pausa no hover e no toque para leitura confortável
-        track.addEventListener('mouseenter', () => {
+        let offset = 0;
+        let isPaused = false;
+        let resumeTimer = null;
+        let isTransitioning = false;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartOffset = 0;
+        let dragDistance = 0;
+        let lastTimestamp = null;
+        const scrollSpeed = 0.75; // ~45px/s de autoscroll contínuo e suave
+
+        function getHalfWidth() {
+          return track.scrollWidth / 2;
+        }
+
+        // Loop contínuo com requestAnimationFrame
+        function glide(timestamp) {
+          if (!lastTimestamp) lastTimestamp = timestamp;
+          const delta = Math.min((timestamp - lastTimestamp) / 16.666, 2.5);
+          lastTimestamp = timestamp;
+
+          const half = getHalfWidth();
+
+          if (!isPaused && !isTransitioning && !isDragging && half > 0) {
+            offset += scrollSpeed * delta;
+            if (offset >= half) {
+              offset -= half;
+            }
+            track.style.transform = `translate3d(-${offset}px, 0, 0)`;
+          }
+          requestAnimationFrame(glide);
+        }
+        requestAnimationFrame(glide);
+
+        function pauseAutoScroll(delay = 3500) {
+          isPaused = true;
           track.classList.add('is-paused');
+          clearTimeout(resumeTimer);
+          if (delay > 0) {
+            resumeTimer = setTimeout(() => {
+              if (!lightbox || !lightbox.classList.contains('active')) {
+                isPaused = false;
+                track.classList.remove('is-paused');
+              }
+            }, delay);
+          }
+        }
+
+        // Navegação por clique nos botões Próximo e Anterior
+        function nudge(amount) {
+          pauseAutoScroll(4000);
+          const half = getHalfWidth();
+          if (half <= 0) return;
+
+          // Se estiver perto do início e indo para trás, pula para o fim da primeira metade
+          if (amount < 0 && offset < 30) {
+            offset += half;
+            track.style.transition = 'none';
+            track.style.transform = `translate3d(-${offset}px, 0, 0)`;
+            void track.offsetWidth; // Força reflow
+          }
+
+          isTransitioning = true;
+          track.style.transition = 'transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1)';
+          offset += amount;
+
+          if (offset >= half) {
+            setTimeout(() => {
+              offset -= half;
+              track.style.transition = 'none';
+              track.style.transform = `translate3d(-${offset}px, 0, 0)`;
+              isTransitioning = false;
+            }, 420);
+          } else {
+            setTimeout(() => {
+              track.style.transition = 'none';
+              isTransitioning = false;
+            }, 420);
+          }
+
+          track.style.transform = `translate3d(-${offset}px, 0, 0)`;
+        }
+
+        const getStep = () => (window.innerWidth <= 640 ? 256 : 296);
+
+        if (nextBtn) {
+          nextBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            nudge(getStep());
+          });
+        }
+
+        if (prevBtn) {
+          prevBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            nudge(-getStep());
+          });
+        }
+
+        // Pausa no hover
+        track.addEventListener('mouseenter', () => {
+          pauseAutoScroll(0);
         });
         track.addEventListener('mouseleave', () => {
           if (!lightbox || !lightbox.classList.contains('active')) {
-            track.classList.remove('is-paused');
+            pauseAutoScroll(1200);
           }
         });
 
-        track.addEventListener('touchstart', () => {
-          track.classList.add('is-paused');
+        // Suporte a Touch em dispositivos móveis
+        track.addEventListener('touchstart', (e) => {
+          pauseAutoScroll(0);
+          if (e.touches && e.touches.length === 1) {
+            dragStartX = e.touches[0].clientX;
+            dragStartOffset = offset;
+            dragDistance = 0;
+            isDragging = true;
+          }
+        }, { passive: true });
+
+        track.addEventListener('touchmove', (e) => {
+          if (!isDragging || !e.touches || e.touches.length !== 1) return;
+          const currentX = e.touches[0].clientX;
+          const diff = currentX - dragStartX;
+          dragDistance = Math.abs(diff);
+          const half = getHalfWidth();
+          let target = dragStartOffset - diff;
+          if (target < 0 && half > 0) target += half;
+          if (target >= half && half > 0) target -= half;
+          offset = target;
+          track.style.transition = 'none';
+          track.style.transform = `translate3d(-${offset}px, 0, 0)`;
         }, { passive: true });
 
         track.addEventListener('touchend', () => {
-          setTimeout(() => {
-            if (!lightbox || !lightbox.classList.contains('active')) {
-              track.classList.remove('is-paused');
-            }
-          }, 1800);
+          if (isDragging) {
+            isDragging = false;
+            pauseAutoScroll(2500);
+          }
         }, { passive: true });
 
-        // Delegação de clique no track para abrir Lightbox em qualquer card (original ou clone)
+        // Delegação de clique no track para abrir Lightbox
         track.addEventListener('click', (e) => {
+          if (dragDistance > 10) {
+            dragDistance = 0;
+            return;
+          }
           const card = e.target.closest('.proof-card');
           if (!card) return;
           const src = card.getAttribute('data-src') || (card.querySelector('img') && card.querySelector('img').src);
@@ -2024,7 +2244,7 @@
             lightbox.classList.add('active');
             lightbox.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
-            track.classList.add('is-paused');
+            pauseAutoScroll(0);
           }
         });
 
@@ -2033,7 +2253,7 @@
             lightbox.classList.remove('active');
             lightbox.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = '';
-            track.classList.remove('is-paused');
+            pauseAutoScroll(1500);
           }
         }
 
@@ -2045,20 +2265,6 @@
             closeLightbox();
           }
         });
-
-        // Botões de navegação rápida: acelera ou pausa para inspeção
-        if (prevBtn) {
-          prevBtn.addEventListener('click', () => {
-            track.classList.add('is-paused');
-            setTimeout(() => track.classList.remove('is-paused'), 3500);
-          });
-        }
-        if (nextBtn) {
-          nextBtn.addEventListener('click', () => {
-            track.classList.add('is-paused');
-            setTimeout(() => track.classList.remove('is-paused'), 3500);
-          });
-        }
       }
     })();
   </script>
