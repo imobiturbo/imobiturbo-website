@@ -648,24 +648,319 @@ function HomeFooter() {
   );
 }
 
-function HomePrototypes() {
+function EcosystemPortal() {
+  const [theme, setTheme] = React.useState(function() {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      return window.localStorage.getItem('imt-theme') || 'light';
+    }
+    return 'light';
+  });
+
+  const [modalProduct, setModalProduct] = React.useState(null);
+  const [checkEmail, setCheckEmail] = React.useState('');
+  const [checkState, setCheckState] = React.useState({ loading: false, result: null, error: null });
+
+  React.useEffect(function() {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.setItem('imt-theme', theme);
+    }
+  }, [theme]);
+
+  const toggleTheme = function() {
+    setTheme(function(prev) { return prev === 'light' ? 'dark' : 'light'; });
+  };
+
+  const openGatekeeper = function(product, e) {
+    if (e) e.preventDefault();
+    setModalProduct(product);
+    setCheckEmail('');
+    setCheckState({ loading: false, result: null, error: null });
+    trackHomeEvent('view_content', { content_name: 'gatekeeper_' + product.slug });
+  };
+
+  const closeModal = function() {
+    setModalProduct(null);
+  };
+
+  const handleVerify = async function(e) {
+    e.preventDefault();
+    if (!checkEmail || !checkEmail.includes('@')) {
+      setCheckState({ loading: false, result: null, error: 'Por favor, digite um e-mail válido.' });
+      return;
+    }
+
+    setCheckState({ loading: true, result: null, error: null });
+    try {
+      const res = await fetch('https://api.os.imobiturbo.com.br/rest/v1/rpc/check_user_product_access', {
+        method: 'POST',
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlzcyI6InN1cGFiYXNlIiwiaWF0IjoxNzg1NzIzNzAzLCJleHAiOjE5NDM0MDM3MDN9.guEVZK63x5eZ30YlE-WqhnbJqjVmyRuireMFbJ-y7Ek',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ p_email: checkEmail, p_product: modalProduct.slug })
+      });
+      const data = await res.json();
+      setCheckState({ loading: false, result: data, error: null });
+      if (data.allowed) {
+        trackHomeEvent('generate_lead', { email: checkEmail, product: modalProduct.slug, status: 'allowed' });
+      } else {
+        trackHomeEvent('quiz_step_viewed', { step: 'access_denied', product: modalProduct.slug });
+      }
+    } catch (err) {
+      setCheckState({ loading: false, result: null, error: 'Falha ao consultar acesso. Verifique sua conexão.' });
+    }
+  };
+
+  const products = [
+    {
+      slug: 'os',
+      name: 'imobiturbo.os',
+      desc: 'O nosso sistema operacional, nosso CRM com inteligência artificial no seu WhatsApp',
+      url: 'https://os.imobiturbo.com.br',
+      isLive: true,
+      badge: 'Entrar ➔'
+    },
+    {
+      slug: 'radar',
+      name: 'imobiturbo.radar',
+      desc: 'Informações privilegiadas de mercado: tipos de imóvel mais acessados e anúncios com melhor performance em tempo real',
+      url: 'https://radar.imobiturbo.com.br',
+      isLive: true,
+      badge: 'Entrar ➔'
+    },
+    {
+      slug: 'club',
+      name: 'imobiturbo.club',
+      desc: 'Onde estão nossas aulas, trilhas práticas, mentorias ao vivo e acervo completo',
+      url: 'https://club.imobiturbo.com.br',
+      isLive: true,
+      badge: 'Entrar ➔'
+    },
+    {
+      slug: 'ads',
+      name: 'imobiturbo.ads',
+      desc: 'Faz anúncios e criativos imobiliários de alta conversão para você',
+      url: '#',
+      isLive: false,
+      badge: 'Verificar Acesso 🔒'
+    },
+    {
+      slug: 'sites',
+      name: 'imobiturbo.sites',
+      desc: 'Faça os seus próprios sites para os seus imóveis, estilo landing page em 1 clique',
+      url: '#',
+      isLive: false,
+      badge: 'Verificar Acesso 🔒'
+    },
+    {
+      slug: 'clone',
+      name: 'imobiturbo.clone',
+      desc: 'O seu clone de IA para apresentações, narração de tours e roteiros em vídeo',
+      url: '#',
+      isLive: false,
+      badge: 'Verificar Acesso 🔒'
+    }
+  ];
+
+  const logoDir = theme === 'dark' ? 'assets/brand/dark' : 'assets/brand/light';
+
   return (
-    <div className="home-page it-root">
-      <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
-      <HomeHeader />
-      <main id="conteudo">
-        <HeroSection />
-        <ProblemSection />
-        <AudiencesSection />
-        <EcosystemSection />
-        <MethodSection />
-        <ProofSection />
-        <DiagnosticSection />
-        <FinalCtaSection />
+    <div className="portal-root">
+      <div className="portal-topbar">
+        <a href="/" className="portal-badge-chip">
+          <span className="portal-badge-dot" />
+          <span>imobiturbo</span>
+        </a>
+        <button type="button" className="portal-theme-toggle" onClick={toggleTheme} aria-label="Alternar tema">
+          <span>{theme === 'light' ? '🌙 Modo Escuro' : '☀️ Modo Claro'}</span>
+        </button>
+      </div>
+
+      <main className="portal-container">
+        {/* Profile */}
+        <div className="portal-profile-avatar">
+          <img src="assets/natan-profile.png" alt="Natan Pimentel" />
+          <span className="online-indicator" title="Online" />
+        </div>
+
+        <h1 className="portal-name">natan pimentel</h1>
+        <div className="portal-greeting">fala, parceiro!</div>
+        <p className="portal-bio">
+          acesse as ferramentas exclusivas e aceleradores de vendas para membros da comunidade imobiturbo
+        </p>
+
+        {/* Quem sou / Prova real polaroid */}
+        <div className="portal-section-tag">quem sou</div>
+        <div className="portal-section-sub">as placas e as operações reais</div>
+
+        <div className="portal-polaroids-row">
+          <div className="portal-polaroid-card">
+            <img src="assets/home-hero-operacao-imobiliaria.webp" alt="VGV Imobiturbo" className="portal-polaroid-img" />
+            <div className="portal-polaroid-metric">R$10M+</div>
+            <div className="portal-polaroid-desc">VGV Transacionado</div>
+          </div>
+          <div className="portal-polaroid-card">
+            <img src="assets/natan-studio.jpg" alt="Natan Pimentel em operação" className="portal-polaroid-img" />
+            <div className="portal-polaroid-metric">Top Mentoria</div>
+            <div className="portal-polaroid-desc">Natan Pimentel</div>
+          </div>
+          <div className="portal-polaroid-card">
+            <img src="assets/home-consultoria-warroom.webp" alt="Comunidade Imobiturbo" className="portal-polaroid-img" />
+            <div className="portal-polaroid-metric">Operações</div>
+            <div className="portal-polaroid-desc">Brasil Inteiro</div>
+          </div>
+        </div>
+
+        {/* Links Estratégicos */}
+        <div className="portal-links-stack">
+          <a href="https://www.imobiturbo.com.br/vagas/" className="portal-link-btn featured">
+            <div className="portal-link-content">
+              <span className="portal-link-title">vagas</span>
+              <span className="portal-link-subtitle">entra na comunidade e mentoria imobiturbo</span>
+            </div>
+            <span className="portal-link-icon">🎫</span>
+          </a>
+
+          <a href="https://wa.me/5521983747796?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20meu%20acesso%20na%20Imobiturbo" target="_blank" rel="noopener noreferrer" className="portal-link-btn">
+            <div className="portal-link-content">
+              <span className="portal-link-title">suporte</span>
+              <span className="portal-link-subtitle">fala com o time oficial quando travar</span>
+            </div>
+            <span className="portal-link-icon">🧑‍💻</span>
+          </a>
+
+          <a href="https://club.imobiturbo.com.br" className="portal-link-btn">
+            <div className="portal-link-content">
+              <span className="portal-link-title">comunidade</span>
+              <span className="portal-link-subtitle">o grupo exclusivo dos membros</span>
+            </div>
+            <span className="portal-link-icon">👥</span>
+          </a>
+
+          <a href="https://club.imobiturbo.com.br" className="portal-link-btn">
+            <div className="portal-link-content">
+              <span className="portal-link-title">mentoria ao vivo</span>
+              <span className="portal-link-subtitle">as aulas ao vivo e o acervo de gravações</span>
+            </div>
+            <span className="portal-link-icon">🧑‍🏫</span>
+          </a>
+        </div>
+
+        {/* Apps da Suíte */}
+        <div className="portal-apps-section">
+          <div className="portal-apps-heading">apps</div>
+          <div className="portal-section-sub">suíte operacional exclusiva de ferramentas</div>
+
+          {products.map(function(prod) {
+            const logoPath = logoDir + '/imobiturbo-' + prod.slug + '.webp';
+            const handleClick = function(e) {
+              if (!prod.isLive) {
+                openGatekeeper(prod, e);
+              }
+            };
+
+            return (
+              <a 
+                key={prod.slug}
+                href={prod.url}
+                className="portal-app-card"
+                onClick={handleClick}
+                target={prod.isLive ? '_blank' : undefined}
+                rel={prod.isLive ? 'noopener noreferrer' : undefined}
+              >
+                <div className="portal-app-main">
+                  <div className="portal-app-logo-wrap">
+                    <img src={logoPath} alt={prod.name} className="portal-app-logo" />
+                  </div>
+                  <span className="portal-app-desc">{prod.desc}</span>
+                </div>
+                <div className="portal-app-action">
+                  {prod.badge}
+                </div>
+              </a>
+            );
+          })}
+        </div>
+
+        {/* Footer */}
+        <footer className="portal-footer">
+          <div className="portal-footer-links">
+            <a href="/corretor-autonomo/">Corretores</a>
+            <a href="/imobiliarias/">Imobiliárias</a>
+            <a href="/depoimentos/">Depoimentos</a>
+            <a href="https://www.imobiturbo.com.br/vagas/">Vagas</a>
+          </div>
+          <div>Imobiturbo Tecnologia & Operações Imobiliárias LTDA</div>
+          <div>CNPJ 47.746.249/0001-04 • Rio de Janeiro/RJ • © 2026</div>
+        </footer>
       </main>
-      <HomeFooter />
+
+      {/* Modal Gatekeeper Universal */}
+      {modalProduct && (
+        <div className="portal-modal-backdrop" onClick={closeModal}>
+          <div className="portal-modal-card" onClick={function(e) { e.stopPropagation(); }}>
+            <button type="button" className="portal-modal-close" onClick={closeModal} aria-label="Fechar">✕</button>
+            <img 
+              src={logoDir + '/imobiturbo-' + modalProduct.slug + '.webp'} 
+              alt={modalProduct.name} 
+              className="portal-modal-logo" 
+            />
+            <h2 className="portal-modal-title">Acesso Exclusivo</h2>
+            <p className="portal-modal-sub">
+              Digite seu e-mail cadastrado na Imobiturbo para validar sua liberação de acesso:
+            </p>
+
+            <form onSubmit={handleVerify}>
+              <div className="portal-input-group">
+                <input 
+                  type="email" 
+                  className="portal-input" 
+                  placeholder="seu-email@exemplo.com.br"
+                  value={checkEmail}
+                  onChange={function(e) { setCheckEmail(e.target.value); }}
+                  required
+                />
+                <button type="submit" className="portal-btn-primary" disabled={checkState.loading}>
+                  {checkState.loading ? 'Verificando no banco central...' : 'Verificar Acesso ➔'}
+                </button>
+              </div>
+            </form>
+
+            {checkState.error && (
+              <div className="portal-result-card denied">
+                {checkState.error}
+              </div>
+            )}
+
+            {checkState.result && (
+              <div>
+                {checkState.result.allowed ? (
+                  <div className="portal-result-card allowed">
+                    <strong>✅ Acesso Liberado!</strong>
+                    <p style={{ margin: '4px 0 0' }}>Seu e-mail está autorizado no banco central para esta ferramenta.</p>
+                  </div>
+                ) : (
+                  <div className="portal-result-card denied">
+                    <strong>⚠️ Acesso Não Encontrado</strong>
+                    <p style={{ margin: '4px 0 12px' }}>{checkState.result.message || 'Esse e-mail não possui cadastro ativo nesta ferramenta.'}</p>
+                    <a href={checkState.result.checkout_url || 'https://www.imobiturbo.com.br/vagas/'} className="portal-btn-checkout">
+                      Garantir Minha Vaga na Comunidade 🎫
+                    </a>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
+function HomePrototypes() {
+  return <EcosystemPortal />;
+}
+
 window.HomePrototypes = HomePrototypes;
+
