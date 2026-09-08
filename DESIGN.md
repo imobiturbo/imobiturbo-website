@@ -92,24 +92,26 @@ surface: web
 - `assets/icons/icon-black-green-transparent.webp` (Ícone preto com acento verde escuro transparente)
 - `assets/icons/icon-black-green-on-white.webp` (Ícone preto com acento verde escuro fundo branco)
 
-## 7. Regra Mandatória de Dimensionamento de Logos (Padrão 2x Proporcional)
+## 7. Regra Mandatória de Dimensionamento de Logos (Padrão 56px Internacional)
 
-> **RESOLUÇÃO NATIVA DOS ASSETS E REGRA DOS 2X:**  
+> ⚠️ **REGRA CRÍTICA DE MARCA (FUNDO BRANCO OBRIGATÓRIO):**  
+> **NÃO EXISTE LOGO COM FUNDO OFF-WHITE!** A aplicação clara da logo e de todos os subprodutos é **ESTRITAMENTE sobre FUNDO BRANCO PURO (`#FFFFFF`)**. É expressamente proibido aplicar logos sobre superfícies off-white (`#FAF9F6`), bege ou acinzentadas.
+
+> **RESOLUÇÃO NATIVA DOS ASSETS E REGRA DOS 56PX:**  
 > Todos os arquivos de logo e ícones oficiais são master WebP de altíssima definição:
 > - **Logos Master:** `7.853 x 1.139 px` (~8K widescreen, ~40 KB)
 > - **Ícones Quadrados:** `4.687 x 4.687 px` (~4.7K ultra-quadrado, ~52-75 KB)
 > - **Logos de Subprodutos:** `~3.000 x 729 px` (~3K widescreen, ~25-35 KB)
 >
-> **NÃO HÁ RISCO DE PIXELIZAÇÃO OU BORRADO.** O erro anterior era aplicar travas de CSS tímidas (`height: 26px` ou `32px`), o que tornava a marca ilegível e apagada.  
-> **A REGRA OFICIAL É O PADRÃO 2X PROPORCIONAL:**
+> **NÃO HÁ RISCO DE PIXELIZAÇÃO OU BORRADO.** O padrão oficial de altura visual para o ecossistema é **56px (Padrão Internacional Canônico)**.
 
 ### Matriz de Dimensões Obrigatórias no Front-end:
 
 | Contexto de Aplicação | Altura Mínima (Desktop) | Largura Proporcional | Altura Mínima (Mobile) | Regra de CSS Obrigatória |
 | :--- | :---: | :---: | :---: | :--- |
 | **Header / Navbar Principal (Logo Master)** | **56px a 64px** | ~380px a 440px | **40px a 44px** | `height: 56px; width: auto; max-width: 100%;` (Nunca `< 48px` no desktop) |
-| **Faixa de Ecossistema (Subprodutos)** | **52px** | ~215px a 230px | **40px** | `height: 52px; width: auto; object-fit: contain;` (O dobro dos 26px legados) |
-| **Grid / Cards de Ferramentas / Vitrines** | **64px a 72px** | ~260px a 300px | **48px a 52px** | `height: 64px; width: auto; max-width: 280px;` |
+| **Faixa de Ecossistema (Subprodutos)** | **56px** | ~230px a 250px | **44px** | `height: 56px; width: auto; object-fit: contain;` (Padrão Internacional) |
+| **Grid / Cards de Ferramentas / Vitrines** | **56px a 64px** | ~240px a 280px | **44px a 48px** | `height: 56px; width: auto; max-width: 280px;` |
 | **Ícone / Launcher de Apps (Quadrado)** | **64x64px a 80x80px** | Proporção 1:1 | **48x48px** | `width: 64px; height: 64px; border-radius: 14px;` |
 | **Rodapé Institucional** | **48px a 56px** | ~320px a 380px | **36px a 40px** | `height: 48px; width: auto;` |
 
