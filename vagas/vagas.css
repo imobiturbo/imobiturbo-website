@@ -1016,8 +1016,8 @@ body {
 
 /* WhatsApp Proof Continuous Infinite Slider (Marquee) */
 .proof-slider-section {
-  max-width: var(--maxw);
-  margin: 44px auto 0;
+  width: 100%;
+  margin: 48px 0 0;
   position: relative;
 }
 
@@ -1087,9 +1087,10 @@ body {
 
 .proof-slider-wrapper {
   position: relative;
+  width: 100%;
   overflow: hidden;
   border-radius: var(--radius-md);
-  padding: 8px 0;
+  padding: 8px 0 24px;
   user-select: none;
   -webkit-user-select: none;
   min-height: 480px;
@@ -1101,21 +1102,22 @@ body {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 60px;
+  width: 90px;
   z-index: 4;
   pointer-events: none;
 }
 .proof-slider-wrapper::before {
   left: 0;
-  background: linear-gradient(to right, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to right, #FFFFFF 15%, rgba(255, 255, 255, 0) 100%);
 }
 .proof-slider-wrapper::after {
   right: 0;
-  background: linear-gradient(to left, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(to left, #FFFFFF 15%, rgba(255, 255, 255, 0) 100%);
 }
 
 .proof-slider-track {
   display: flex;
+  flex-wrap: nowrap;
   gap: 16px;
   align-items: center;
   width: max-content;
@@ -1139,8 +1141,6 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .proof-slider-track {
     animation: none;
-    overflow-x: auto;
-    width: auto;
   }
 }
 
