@@ -57,6 +57,39 @@ test("vagas/vagas.css enforces proper styling and contrast on checkout buttons",
   assert.ok(css.includes(".psel-cta {"), "Must define .psel-cta");
   assert.ok(css.includes("max-width: 600px;"), "Plan checkout button must align with cards max-width 600px");
   assert.ok(css.includes("margin: 0 auto 12px;"), "Plan checkout button must be centered horizontally with margin auto");
+
+  // Mobile modal price formatting
+  assert.ok(css.includes(".chk-plan-val {"), "Must define .chk-plan-val");
+  assert.ok(css.includes("white-space: nowrap;"), "Modal price must enforce white-space: nowrap for single line display");
+  assert.ok(css.includes(".chk-plan-val small {"), "Must define smaller prefix styling for 12x R$");
+  assert.ok(css.includes(".chk-plan-val b {"), "Must define bold number styling for modal price");
+
+  // Light mode tokens
+  assert.ok(css.includes("--bg: #FAFAF7;"), "Must define clean light canvas --bg");
+  assert.ok(css.includes("--military: #166534;"), "Must define Verde Militar #166534 for high contrast on light mode");
+  assert.ok(css.includes("--white: #0A0A0A;"), "Must invert --white token for high-contrast dark ink headings");
+
+  // Continuous infinite slider marquee
+  assert.ok(css.includes("@keyframes proofMarquee"), "Must define @keyframes proofMarquee for continuous infinite scroll");
+  assert.ok(css.includes("transform: translate3d(-50%, 0, 0);"), "Marquee must translate -50% for seamless looping");
+  assert.ok(css.includes(".proof-slider-track.is-paused"), "Must support pause on hover / touch");
+});
+
+test("vagas/index.html enforces Light Mode and continuous infinite slider markup", () => {
+  const htmlPath = path.join(root, "vagas/index.html");
+  const html = fs.readFileSync(htmlPath, "utf8");
+
+  // Light Mode
+  assert.ok(html.includes('<html lang="pt-BR" class="light">'), "Must set html class to light");
+  assert.ok(html.includes('content="light"'), "Must declare color-scheme light");
+
+  // Mobile price formatting in markup & PLAN_CONFIG
+  assert.ok(html.includes('<small>12x R$ </small><b>97</b>'), "Must render 12x R$ in small and 97 in bold");
+  assert.ok(html.includes("priceDisplay: '<small>12x R$ </small><b>97</b>'"), "PLAN_CONFIG must format anual plan with small prefix");
+
+  // Infinite slider script
+  assert.ok(html.includes("track.appendChild(clone)"), "Script must clone cards to create 50% continuous marquee ribbon");
+  assert.ok(html.includes("track.classList.add('is-paused')"), "Script must pause marquee on mouseenter and touch");
 });
 
 test("functions/api/checkout/index.js implements primary AbacatePay and fallback Asaas", () => {
