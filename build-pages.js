@@ -6,6 +6,7 @@ const root = __dirname;
 const output = path.join(root, '.cloudflare-pages');
 const entries = [
   'index.html',
+  'legal.css',
   'colors_and_type.css',
   'home.css',
   'site-tracking.js',
@@ -33,6 +34,9 @@ const entries = [
   'lovable',
   'demo',
   'vagas',
+  'politica-de-privacidade',
+  'exclusao-de-dados',
+  'termos-de-servico',
   'robots.txt',
   'sitemap.xml',
   'llms.txt',
