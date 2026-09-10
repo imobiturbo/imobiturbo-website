@@ -701,7 +701,7 @@ function EcosystemPortal() {
     {
       name: 'imobiturbo.os',
       slug: 'os',
-      desc: 'O nosso sistema operacional, nosso CRM com inteligência artificial no seu WhatsApp',
+      desc: 'CRM com IA no seu WhatsApp.',
       badge: 'Entrar →',
       isLive: true,
       url: 'https://os.imobiturbo.com.br',
@@ -709,7 +709,7 @@ function EcosystemPortal() {
     {
       name: 'imobiturbo.radar',
       slug: 'radar',
-      desc: 'Informações privilegiadas de mercado: tipos de imóvel mais acessados e anúncios com melhor performance em tempo real',
+      desc: 'Veja tendências e anúncios em destaque.',
       badge: 'Entrar →',
       isLive: true,
       url: 'https://radar.imobiturbo.com.br',
@@ -717,7 +717,7 @@ function EcosystemPortal() {
     {
       name: 'imobiturbo.club',
       slug: 'club',
-      desc: 'Onde estão nossas aulas, trilhas práticas, mentorias ao vivo e acervo completo',
+      desc: 'Aulas e mentorias ao vivo.',
       badge: 'Entrar →',
       isLive: true,
       url: 'https://club.imobiturbo.com.br',
@@ -725,7 +725,7 @@ function EcosystemPortal() {
     {
       name: 'imobiturbo.ads',
       slug: 'ads',
-      desc: 'Faz anúncios e criativos imobiliários de alta conversão para você',
+      desc: 'Crie anúncios e criativos imobiliários.',
       badge: 'Verificar Acesso 🔒',
       isLive: false,
       url: '#',
@@ -733,7 +733,7 @@ function EcosystemPortal() {
     {
       name: 'imobiturbo.sites',
       slug: 'sites',
-      desc: 'Faça os seus próprios sites para os seus imóveis, estilo landing page em 1 clique',
+      desc: 'Crie páginas para vender seus imóveis.',
       badge: 'Verificar Acesso 🔒',
       isLive: false,
       url: '#',
@@ -741,7 +741,7 @@ function EcosystemPortal() {
     {
       name: 'imobiturbo.clone',
       slug: 'clone',
-      desc: 'O seu clone de IA para apresentações, narração de tours e roteiros em vídeo',
+      desc: 'Seu clone para apresentações e vídeos.',
       badge: 'Verificar Acesso 🔒',
       isLive: false,
       url: '#',
@@ -749,7 +749,7 @@ function EcosystemPortal() {
     {
       name: 'imobiturbo.news',
       slug: 'news',
-      desc: 'Portal de notícias, tendências e inteligência estratégica para o mercado imobiliário',
+      desc: 'Acompanhe as notícias do mercado imobiliário.',
       badge: 'Acessar →',
       isLive: true,
       url: 'https://news.imobiturbo.com.br',
@@ -768,7 +768,7 @@ function EcosystemPortal() {
         <h1 className="portal-name"><img src="assets/logo-imobiturbo-black.webp" alt="Imobiturbo" /></h1>
         <div className="portal-role-tag">Aceleração Imobiliária 360º</div>
         <p className="portal-bio">
-          acesse as ferramentas exclusivas e aceleradores de vendas para membros da comunidade imobiturbo
+          Ferramentas para acelerar suas vendas imobiliárias.
         </p>
 
         {/* Quem sou / Prova real polaroid */}
@@ -812,7 +812,7 @@ function EcosystemPortal() {
           <a href="https://www.imobiturbo.com.br/vagas/" className="portal-link-btn featured">
             <div className="portal-link-content">
               <span className="portal-link-title">vagas</span>
-              <span className="portal-link-subtitle">entra na comunidade e mentoria imobiturbo</span>
+              <span className="portal-link-subtitle">Entre na comunidade e mentoria.</span>
             </div>
             <span className="portal-link-icon">🎫</span>
           </a>
@@ -825,7 +825,7 @@ function EcosystemPortal() {
           >
             <div className="portal-link-content">
               <span className="portal-link-title">suporte</span>
-              <span className="portal-link-subtitle">fala com o time oficial quando travar</span>
+              <span className="portal-link-subtitle">Fale com o suporte oficial.</span>
             </div>
             <span className="portal-link-icon">🧑‍💻</span>
           </a>
@@ -833,7 +833,7 @@ function EcosystemPortal() {
           <a href="https://club.imobiturbo.com.br" className="portal-link-btn">
             <div className="portal-link-content">
               <span className="portal-link-title">comunidade</span>
-              <span className="portal-link-subtitle">o grupo exclusivo dos membros</span>
+              <span className="portal-link-subtitle">Conecte-se com outros membros.</span>
             </div>
             <span className="portal-link-icon">👥</span>
           </a>
@@ -842,7 +842,7 @@ function EcosystemPortal() {
         {/* Apps da suíte: logo e descrição alinhados à esquerda, ação à direita */}
         <div className="portal-apps-section">
           <div className="portal-apps-heading">apps</div>
-          <div className="portal-section-sub">suíte operacional exclusiva de ferramentas</div>
+          <div className="portal-section-sub">Sua operação imobiliária em um lugar.</div>
 
           <div className="portal-apps-list">
             {products.map(function(prod) {
