@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -8,8 +8,8 @@
   <meta name="keywords" content="Imobiturbo, Natan Pimentel, mentoria imobiliária, consultoria para imobiliárias, vendas de imóveis, captação de imóveis, CRM imobiliário, follow-up imobiliário, corretor de imóveis, construtoras, incorporadoras, marketing imobiliário Rio de Janeiro, marketing imobiliário Brasil, fechamento imobiliário">
   <meta name="author" content="Imobiturbo">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <meta name="theme-color" content="#000000">
-  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#f8fafc">
+  <meta name="color-scheme" content="light">
 
   <!-- Geo & Regional SEO Tags -->
   <meta name="geo.region" content="BR-RJ">
@@ -44,22 +44,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="colors_and_type.css?v=20260908-v8">
-  <link rel="stylesheet" href="home.css?v=20260908-v9">
+  <link rel="stylesheet" href="home.css?v=20260910-portal-v1">
   <link rel="preload" href="dist/react.production.min.js" as="script">
   <link rel="preload" href="dist/react-dom.production.min.js" as="script">
-  <link rel="preload" href="dist/home.bundle.js?v=20260908-v9" as="script">
-  <script>
-    (function() {
-      try {
-        var theme = localStorage.getItem('imobiturbo_portal_theme');
-        if (theme === 'dark' || (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.setAttribute('data-theme', 'dark');
-        } else {
-          document.documentElement.setAttribute('data-theme', 'light');
-        }
-      } catch (e) {}
-    })();
-  </script>
+  <link rel="preload" href="dist/home.bundle.js?v=20260910-portal-v1" as="script">
   
   <!-- Structured Data (JSON-LD) for SEO & AEO -->
   <script type="application/ld+json">
@@ -238,7 +226,7 @@
   </noscript>
   <script src="dist/react.production.min.js"></script>
   <script src="dist/react-dom.production.min.js"></script>
-  <script src="dist/home.bundle.js?v=20260908-v9"></script>
+  <script src="dist/home.bundle.js?v=20260910-portal-v1"></script>
   <script>
     ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(window.HomePrototypes));
   </script>

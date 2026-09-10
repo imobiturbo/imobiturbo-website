@@ -649,29 +649,9 @@ function HomeFooter() {
 }
 
 function EcosystemPortal() {
-  const [isDark, setIsDark] = React.useState(() => {
-    if (typeof window === 'undefined') return false;
-    const savedTheme = localStorage.getItem('imobiturbo_portal_theme');
-    if (savedTheme === 'dark') return true;
-    if (savedTheme === 'light') return false;
-    return Boolean(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  });
   const [modalProduct, setModalProduct] = React.useState(null);
   const [checkEmail, setCheckEmail] = React.useState('');
   const [checkState, setCheckState] = React.useState({ loading: false, result: null, error: null });
-
-  React.useEffect(() => {
-    const mode = isDark ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', mode);
-  }, [isDark]);
-
-  const toggleTheme = () => {
-    const nextDark = !isDark;
-    setIsDark(nextDark);
-    const mode = nextDark ? 'dark' : 'light';
-    localStorage.setItem('imobiturbo_portal_theme', mode);
-    document.documentElement.setAttribute('data-theme', mode);
-  };
 
   const openGatekeeper = (prod, e) => {
     if (e) e.preventDefault();
@@ -715,7 +695,7 @@ function EcosystemPortal() {
     }
   };
 
-  const logoDir = isDark ? 'assets/brand/theme-dark' : 'assets/brand/theme-white';
+  const logoDir = 'assets/brand/theme-white';
 
   const products = [
     {
@@ -777,44 +757,23 @@ function EcosystemPortal() {
   ];
 
   return (
-    <div className={`portal-root ${isDark ? 'dark-theme' : 'light-theme'}`}>
-      {/* Header com Logo Oficial e Botão de Tema */}
-      <header className="portal-header">
-        <a href="/" className="portal-header-logo-link" aria-label="Imobiturbo Home">
-          <img 
-            src={isDark ? "assets/logo-imobiturbo-white.webp" : "assets/logo-imobiturbo-black.webp"} 
-            alt="Imobiturbo" 
-            className="portal-header-logo" 
-          />
-        </a>
-
-        <button 
-          type="button" 
-          onClick={toggleTheme} 
-          className="portal-theme-toggle" 
-          aria-label="Alternar tema"
-        >
-          {isDark ? '☀️ Modo Claro' : '🌙 Modo Escuro'}
-        </button>
-      </header>
-
+    <div className="portal-root light-theme">
       {/* Main Container */}
       <main className="portal-main">
         {/* Profile Card */}
         <div className="portal-avatar-wrap">
-          <img src="assets/natan-profile.png" alt="Natan Pimentel" className="portal-avatar" />
-          <span className="portal-avatar-dot" title="Online"></span>
+          <img src="assets/icon-imobiturbo-official.png" alt="Ícone Imobiturbo" className="portal-avatar" />
         </div>
 
-        <h1 className="portal-name">natan pimentel</h1>
-        <div className="portal-role-tag">diretor de marketing</div>
+        <h1 className="portal-name"><img src="assets/logo-imobiturbo-black.webp" alt="Imobiturbo" /></h1>
+        <div className="portal-role-tag">Aceleração Imobiliária 360º</div>
         <p className="portal-bio">
           acesse as ferramentas exclusivas e aceleradores de vendas para membros da comunidade imobiturbo
         </p>
 
         {/* Quem sou / Prova real polaroid */}
-        <div className="portal-section-tag">quem sou</div>
-        <div className="portal-section-sub">as placas e as operações reais</div>
+        <div className="portal-section-tag">sobre nós</div>
+        <div className="portal-section-sub">história e resultados</div>
 
         <div className="portal-polaroids-row">
           <div className="portal-polaroid-card">
@@ -833,8 +792,8 @@ function EcosystemPortal() {
               alt="Natan Pimentel" 
               className="portal-polaroid-img natan-portrait" 
             />
-            <div className="portal-polaroid-metric">Eng. Civil</div>
-            <div className="portal-polaroid-desc">MBA em Mkt</div>
+            <div className="portal-polaroid-metric">Natan Pimentel</div>
+            <div className="portal-polaroid-desc">founder &amp; engineer</div>
           </div>
 
           <div className="portal-polaroid-card">
@@ -880,7 +839,7 @@ function EcosystemPortal() {
           </a>
         </div>
 
-        {/* Apps da Suíte: 3 colunas (logo maior | texto centralizado | botão a direita) */}
+        {/* Apps da suíte: logo e descrição alinhados à esquerda, ação à direita */}
         <div className="portal-apps-section">
           <div className="portal-apps-heading">apps</div>
           <div className="portal-section-sub">suíte operacional exclusiva de ferramentas</div>
@@ -900,18 +859,21 @@ function EcosystemPortal() {
                   href={prod.url}
                   className="portal-app-card"
                   onClick={handleClick}
+                  aria-label={`${prod.isLive ? 'Entrar' : 'Verificar acesso'} em ${prod.name}`}
                   target={prod.isLive ? '_blank' : undefined}
                   rel={prod.isLive ? 'noopener noreferrer' : undefined}
                 >
-                  <div className="portal-app-col-logo">
-                    <img src={logoPath} alt={prod.name} className="portal-app-logo" />
-                  </div>
-                  <div className="portal-app-col-text">
-                    <p className="portal-app-desc">{prod.desc}</p>
+                  <div className="portal-app-info">
+                    <div className="portal-app-col-logo">
+                      <img src={logoPath} alt={prod.name} className="portal-app-logo" />
+                    </div>
+                    <div className="portal-app-col-text">
+                      <p className="portal-app-desc">{prod.desc}</p>
+                    </div>
                   </div>
                   <div className="portal-app-col-action">
                     <span className={`portal-app-badge ${prod.isLive ? 'live' : 'locked'}`}>
-                      {prod.badge}
+                      <svg aria-hidden="true" viewBox="0 0 16 16" focusable="false"><path d="m6 3 5 5-5 5" /></svg>
                     </span>
                   </div>
                 </a>
@@ -922,13 +884,6 @@ function EcosystemPortal() {
 
         {/* Footer */}
         <footer className="portal-footer">
-          <div className="portal-footer-links">
-            <a href="/corretor-autonomo/">Corretores</a>
-            <a href="/imobiliarias/">Imobiliárias</a>
-            <a href="/depoimentos/">Depoimentos</a>
-            <a href="https://www.imobiturbo.com.br/vagas/">Vagas</a>
-          </div>
-          <div>Imobiturbo Tecnologia & Operações Imobiliárias LTDA</div>
           <div>CNPJ 47.746.249/0001-04 • Rio de Janeiro/RJ • © 2026</div>
         </footer>
       </main>
