@@ -1,7 +1,7 @@
 /* eslint-disable */
 // Imobiturbo home — desktop-first redesign with a fully responsive mobile layout.
 
-const HOME_WHATSAPP_URL = 'https://wa.me/5521959361607?text=Quero%20mapear%20minha%20opera%C3%A7%C3%A3o%20comercial%20com%20a%20Imobiturbo';
+const HOME_WHATSAPP_URL = 'https://wa.me/5521969516183?text=Quero%20mapear%20minha%20opera%C3%A7%C3%A3o%20comercial%20com%20a%20Imobiturbo';
 const HOME_INSTAGRAM_URL = 'https://www.instagram.com/imobiturbo/';
 const HOME_TESTIMONIALS_URL = '/depoimentos/';
 
@@ -818,7 +818,7 @@ function EcosystemPortal() {
           </a>
 
           <a 
-            href="https://wa.me/5521959361607?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20meu%20acesso%20na%20Imobiturbo" 
+            href="https://wa.me/5521969516183?text=Ol%C3%A1%2C%20preciso%20de%20ajuda%20com%20meu%20acesso%20na%20Imobiturbo"
             target="_blank" 
             rel="noopener noreferrer" 
             className="portal-link-btn"
