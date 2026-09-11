@@ -159,7 +159,6 @@
 
         <div class="hero-mock">
           <div class="hero-vsl">
-            <img src="./assets/hero-vsl-poster.webp" alt="Apresentação oficial Imobiturbo OS com Natan Pimentel" width="1010" height="568" fetchpriority="high">
             <button class="play" type="button" aria-label="Assistir apresentação oficial">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
@@ -604,7 +603,6 @@
         <div class="com-stage">
           <div class="com-vsl">
             <span class="com-live-badge"><span class="live-dot" aria-hidden="true"></span>● AO VIVO</span>
-            <img src="./assets/natan-stage-mentoria.webp" alt="Natan Pimentel na mentoria ao vivo para mais de mil corretores" width="960" height="536" loading="lazy">
             <div class="com-strip">
               <span>toda semana · <b>quarta-feira 20h</b> · fica gravado</span>
               <span><b>+1.200</b> corretores e imobiliárias</span>
@@ -1531,6 +1529,47 @@
   <!-- JAVASCRIPT: Seletor de Planos + Carrossel Slider de Comprovantes com Lightbox -->
   <script>
     (function() {
+      // Helper para envio de eventos ao sistema de tracking do Hub (hub.imobiturbo.com.br)
+      function trackHubEvent(eventName, properties) {
+        if (typeof window.imtTrack === 'function') {
+          return window.imtTrack(eventName, properties);
+        }
+        if (window.__track && typeof window.__track.track === 'function') {
+          return window.__track.track(eventName, properties);
+        }
+        try {
+          var sid = (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('_imt_sid')) || '';
+          var vid = (typeof localStorage !== 'undefined' && localStorage.getItem('_imt_vid')) || '';
+          var sckMatch = document.cookie.match(/(?:^|; )_sck=([^;]*)/);
+          var sck = sckMatch ? decodeURIComponent(sckMatch[1]) : '';
+          var payload = {
+            site_key: 'comunidade-imobiturbo',
+            events: [{
+              event_id: (window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now())),
+              event_name: eventName,
+              occurred_at: new Date().toISOString(),
+              page_url: window.location.href,
+              referrer: document.referrer || null,
+              session_id: sid,
+              visitor_id: vid,
+              consent: { analytics: 'granted', ads: 'granted' },
+              context: {
+                sck: sck,
+                landing_page_url: window.location.href,
+                user_agent: (typeof navigator !== 'undefined' && navigator.userAgent) || ''
+              },
+              properties: properties || {}
+            }]
+          };
+          fetch('https://hub.imobiturbo.com.br/api/tracking/v1/events', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            keepalive: true
+          }).catch(function() {});
+        } catch (_) {}
+      }
+
       // 1. Seletor de Planos e Controle do Modal de Checkout Nativo
       const planRadios = document.querySelectorAll('input[name="plano"]');
       const checkoutBtn = document.getElementById('checkoutBtn');
@@ -1758,24 +1797,33 @@
           modalOverlay.setAttribute('aria-hidden', 'false');
           document.body.style.overflow = 'hidden';
         }
-        // Dispara InitiateCheckout dual-track (Browser + Server deduplicado)
+        // Dispara InitiateCheckout dual-track (Browser + Server deduplicado) e Hub tracking
         const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
         const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
         const initCheckoutId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'chk_' + Date.now());
         if (window.fbq) {
           window.fbq('track', 'InitiateCheckout', {
-            content_name: currentInfo.name,
+            content_name: 'Comunidade Imobiturbo',
+            offer: 'Comunidade Imobiturbo',
             currency: 'BRL',
             value: planVal
           }, { eventID: initCheckoutId });
         }
         if (window.imtSendCapi) {
           window.imtSendCapi('InitiateCheckout', initCheckoutId, {
-            content_name: currentInfo.name,
+            content_name: 'Comunidade Imobiturbo',
+            offer: 'Comunidade Imobiturbo',
             currency: 'BRL',
             value: planVal
           });
         }
+        trackHubEvent('initiate_checkout', {
+          offer: 'Comunidade Imobiturbo',
+          content_name: 'Comunidade Imobiturbo',
+          plan: currentPlan,
+          value: planVal,
+          currency: 'BRL'
+        });
       }
 
       function closeCheckoutModal() {
@@ -1976,6 +2024,41 @@
               if (pixQrImg) pixQrImg.src = res.pix.qrCodeBase64;
               if (pixPayload) pixPayload.value = res.pix.copyPaste;
 
+              // Disparo de Purchase pendente (Pix gerado, ainda não efetivado)
+              const pixPendingEventId = 'pend_' + eventId;
+              if (window.fbq) {
+                window.fbq('trackCustom', 'PurchasePending', {
+                  offer: 'Comunidade Imobiturbo',
+                  content_name: 'Comunidade Imobiturbo',
+                  payment_method: 'PIX',
+                  status: 'pending',
+                  currency: 'BRL',
+                  value: planVal
+                }, { eventID: pixPendingEventId });
+              }
+              if (window.imtSendCapi) {
+                window.imtSendCapi('PurchasePending', pixPendingEventId, {
+                  offer: 'Comunidade Imobiturbo',
+                  content_name: 'Comunidade Imobiturbo',
+                  payment_method: 'PIX',
+                  status: 'pending',
+                  currency: 'BRL',
+                  value: planVal
+                }, { em: email, ph: phone, fn: name });
+              }
+              trackHubEvent('purchase', {
+                status: 'pending',
+                payment_status: 'pending',
+                is_pending: true,
+                offer: 'Comunidade Imobiturbo',
+                content_name: 'Comunidade Imobiturbo',
+                payment_method: 'PIX',
+                plan: currentPlan,
+                value: planVal,
+                currency: 'BRL',
+                event_id: pixPendingEventId
+              });
+
               // Inicia contador regressivo de 15 minutos
               let secondsLeft = 15 * 60;
               if (timerInterval) clearInterval(timerInterval);
@@ -2033,21 +2116,39 @@
 
         const purchaseVal = Number(val) || (currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147);
 
-        // Disparo de Purchase com eventID para deduplicação server-side perfeita
+        // Disparo de Purchase real e definitivo com eventID para deduplicação server-side perfeita
         if (window.fbq) {
           window.fbq('track', 'Purchase', {
+            offer: 'Comunidade Imobiturbo',
             content_name: 'Comunidade Imobiturbo (' + currentPlan + ')',
             currency: 'BRL',
             value: purchaseVal,
+            payment_method: currentMethod,
+            status: 'paid'
           }, { eventID: eventId });
         }
         if (window.imtSendCapi) {
           window.imtSendCapi('Purchase', eventId, {
+            offer: 'Comunidade Imobiturbo',
             content_name: 'Comunidade Imobiturbo (' + currentPlan + ')',
             currency: 'BRL',
-            value: purchaseVal
+            value: purchaseVal,
+            payment_method: currentMethod,
+            status: 'paid'
           });
         }
+        trackHubEvent('purchase', {
+          status: 'paid',
+          payment_status: 'paid',
+          is_pending: false,
+          offer: 'Comunidade Imobiturbo',
+          content_name: 'Comunidade Imobiturbo',
+          payment_method: currentMethod,
+          plan: currentPlan,
+          value: purchaseVal,
+          currency: 'BRL',
+          event_id: eventId
+        });
         if (window.gtag) {
           window.gtag('event', 'purchase', {
             transaction_id: eventId,
