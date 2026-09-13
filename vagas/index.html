@@ -1,2356 +1,590 @@
 <!doctype html>
-<html lang="pt-BR" class="light">
+<html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Imobiturbo | Vagas da Comunidade & CRM com IA</title>
-  <meta name="description" content="Para de queimar verba testando no escuro. O ecossistema all-in-one para o mercado imobiliário: espionagem do que já vende, CRM ultrarrápido e IA nativa no WhatsApp que qualifica e agenda visitas na sua mão.">
-  <meta name="keywords" content="CRM imobiliário, IA para corretores, WhatsApp imobiliário, comunidade imobiturbo, Natan Pimentel, VGV turbinado">
-  <meta name="author" content="Natan Pimentel — Imobiturbo">
-  <meta name="robots" content="index, follow">
-  <meta name="theme-color" content="#FAFAF7">
-  <meta name="color-scheme" content="light">
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="pt_BR">
-  <meta property="og:site_name" content="Imobiturbo">
-  <meta property="og:title" content="Imobiturbo | Vagas da Comunidade & CRM com IA">
-  <meta property="og:description" content="O ecossistema que coloca a operação de vendas da sua imobiliária ou corretagem no piloto automático.">
-  <meta property="og:image" content="https://www.imobiturbo.com.br/vagas/assets/hero-vsl-poster.jpg">
-  <meta property="og:url" content="https://www.imobiturbo.com.br/vagas/">
-
-  <link rel="canonical" href="https://www.imobiturbo.com.br/vagas/">
-  <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon.png">
-
-  <!-- Preload hero image -->
-  <link rel="preload" href="./assets/hero-vsl-poster.jpg" as="image" fetchpriority="high">
-
-  <!-- Fonts & Stylesheet -->
-  <link rel="stylesheet" href="./vagas.css?v=20260908-v9">
-
-  <!-- Structured Data JSON-LD -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Product",
-        "name": "Comunidade Imobiturbo · CRM com IA + Mentoria",
-        "description": "Assinatura all-in-one para corretores e imobiliárias com CRM ultrarrápido, IA no WhatsApp e mentoria semanal ao vivo.",
-        "brand": { "@type": "Brand", "name": "Imobiturbo" },
-        "offers": [
-          {
-            "@type": "Offer",
-            "name": "Plano Anual",
-            "price": "957.00",
-            "priceCurrency": "BRL"
-          }
-        ]
-      },
-      {
-        "@type": "FAQPage",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "Isso é mais um curso?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Não. Curso te dá teoria e te deixa sozinho. Aqui o Imobiturbo entrega o CRM mais rápido do Brasil, a IA que atende no WhatsApp e a mentoria semanal ao vivo com Natan Pimentel."
-            }
-          }
-        ]
-      }
-    ]
-  }
-  </script>
-
-  <!-- Tracking Scripts -->
-  <script defer src="https://hub.imobiturbo.com.br/api/tracking/tracker.js" data-site-key="comunidade-imobiturbo" data-default-consent="granted"></script>
-  <script defer src="../site-tracking.js?v=20260906"></script>
-
-  <!-- Meta Pixel Code with Dual-Track Deduplication -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1025303472485246');
-
-    // Dual-Track Standard Helpers
-    window.imtGenerateUUID = function() {
-      if (window.crypto && window.crypto.randomUUID) {
-        return window.crypto.randomUUID();
-      }
-      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, function(c) {
-        return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
-      });
-    };
-
-    window.imtSendCapi = function(eventName, eventId, customData, userData) {
-      var getCookie = function(name) {
-        var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
-        return m ? decodeURIComponent(m[1]) : '';
-      };
-      var payload = {
-        event_name: eventName,
-        event_id: eventId,
-        event_time: Math.floor(Date.now() / 1000),
-        event_source_url: window.location.href,
-        custom_data: customData || undefined,
-        user_data: Object.assign({
-          fbp: getCookie('_fbp'),
-          fbc: getCookie('_fbc')
-        }, userData || {})
-      };
-      var str = JSON.stringify(payload);
-      var sent = false;
-      if (navigator.sendBeacon && typeof Blob !== 'undefined') {
-        try {
-          sent = navigator.sendBeacon('/tracker', new Blob([str], { type: 'application/json' }));
-        } catch (_) {
-          sent = false;
-        }
-      }
-      if (!sent && typeof fetch === 'function') {
-        fetch('/tracker', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: str,
-          keepalive: true
-        }).catch(function() {});
-      }
-    };
-
-    // PageView Dispatch (Browser + Server Deduplicated)
-    var pageViewId = window.imtGenerateUUID();
-    fbq('track', 'PageView', {}, { eventID: pageViewId });
-    window.imtSendCapi('PageView', pageViewId);
-  </script>
-  <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1025303472485246&ev=PageView&noscript=1"
-  /></noscript>
-  <!-- End Meta Pixel Code -->
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="description" content="Conheça a proposta da Comunidade Imobiturbo: CRM, aprendizado e apoio por IA. Prévia com mídias e condições em revisão.">
+  <meta name="theme-color" content="#FFFFFF">
+  <title>Comunidade Imobiturbo — prévia da nova página</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="../fonts/PlusJakartaSans-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="vagas.css">
 </head>
 <body>
-
-  <!-- Top Announcement Bar (Razor thin neon lime com rec-dot pulsante) -->
-  <aside class="announce-bar" id="announceBar">
-    <span class="rec-dot" aria-hidden="true"></span>
-    <span id="announceText">VAGAS ABERTAS PARA A COMUNIDADE IMOBITURBO</span>
-  </aside>
-
-  <main>
-    <!-- HERO SECTION -->
-    <section class="hero" id="hero" data-screen-label="hero" aria-labelledby="hero-title">
-      <div class="wrap">
-        <div class="col-txt">
-          <h1 class="h-hero" id="hero-title">
-            O ecossistema que transforma anúncios em <span class="lime-txt">visitas agendadas e comissões</span>.
-          </h1>
-          <p class="sub" id="hero-sub">
-            O ecossistema imobiliário para a elite, com dados atualizados do mercado, CRM com inteligência artificial, mentorias e mais de mil aulas gravadas.
-          </p>
-        </div>
-
-        <div class="hero-cta-below">
-          <a class="btn" id="hero-cta" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAIXA PROVA SOCIAL -->
-    <section class="faixa-prova" data-screen-label="faixa-prova" aria-label="Junte-se aos membros da Comunidade Imobiturbo">
-      <div class="wrap">
-        <div class="fava">
-          <span class="fava-imgs" aria-hidden="true">
-            <img src="./assets/student-fernando.webp" alt="Fernando Tavares, membro Imobiturbo" width="32" height="32" loading="lazy">
-            <img src="./assets/student-joyce.webp" alt="Joyce, membro Imobiturbo" width="32" height="32" loading="lazy">
-            <img src="./assets/student-filipe.webp" alt="Filipe, membro Imobiturbo" width="32" height="32" loading="lazy">
-            <img src="./assets/student-joan.webp" alt="Joan, membro Imobiturbo" width="32" height="32" loading="lazy">
-            <img src="./assets/student-aline.webp" alt="Aline, membro Imobiturbo" width="32" height="32" loading="lazy">
-          </span>
-          <span class="fava-txt">junte-se a <b>+1.200 corretores e imobiliárias</b></span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ECOSSISTEMA OFICIAL -->
-    <section class="sec-ecosystem-suite" aria-label="Plataformas oficiais Imobiturbo">
-      <div class="wrap">
-        <div class="ecosystem-strip">
-          <p class="ecosystem-label">As plataformas centrais da sua operação integradas:</p>
-          <div class="ecosystem-logos">
-            <div class="eco-item" title="Imobiturbo OS: O nosso sistema operacional, nosso CRM com IA no seu WhatsApp">
-              <img src="./assets/brand/light/imobiturbo-os.webp" alt="Imobiturbo OS" width="240" height="56" loading="lazy">
-            </div>
-            <div class="eco-item" title="Imobiturbo Club: Onde estão nossas aulas e mentorias">
-              <img src="./assets/brand/light/imobiturbo-club.webp" alt="Imobiturbo Club" width="240" height="56" loading="lazy">
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- MECANISMO (A RESPOSTA) -->
-    <section class="sec" data-screen-label="mecanismo" aria-labelledby="mecanismo-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">A resposta</span>
-          <h2 class="h-sec" id="mecanismo-title">
-            A vantagem desleal, <span class="lime-txt">por dentro</span>.
-          </h2>
-          <p class="sec-lead">
-            É a operação completa: atendimento instantâneo no WhatsApp com IA, o CRM mais rápido do mercado e a metodologia prática da comunidade.
-          </p>
-        </div>
-
-        <div class="mec-cards">
-          <div class="mec-card">
-            <div class="mec-card-top">
-              <span class="mec-tag">01 · IMOBITURBO OS (IA)</span>
-              <svg class="card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-            </div>
-            <h3>IA Nativa no WhatsApp</h3>
-            <p>
-              Sem Typebot caindo, sem Z-API quebrando domingo. A inteligência artificial do Imobiturbo OS responde com linguagem acolhedora, voz humana, faz triagem de renda e propõe horários de visita.
-            </p>
-          </div>
-
-          <div class="mec-card">
-            <div class="mec-card-top">
-              <span class="mec-tag">02 · IMOBITURBO OS (CRM)</span>
-              <svg class="card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="5" height="18" rx="1"/><rect x="11" y="3" width="5" height="12" rx="1"/><rect x="19" y="3" width="5" height="15" rx="1"/></svg>
-            </div>
-            <h3>O CRM Mais Rápido do Brasil</h3>
-            <p>
-              O sistema operacional completo. O lead qualificado pela IA cai direto na coluna de Visita Agendada com resumo financeiro pronto no seu celular.
-            </p>
-          </div>
-
-          <div class="mec-card">
-            <div class="mec-card-top">
-              <span class="mec-tag">03 · IMOBITURBO CLUB</span>
-              <svg class="card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-            </div>
-            <h3>Aulas e Mentorias Práticas</h3>
-            <p>
-              Mais de 1.000 aulas gravadas, mentorias ao vivo semanais com Natan Pimentel, acervo completo e comunidade de corretores para parcerias.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ESPIONAGEM REVERSA (DADOS DO MERCADO) -->
-    <section class="sec" data-screen-label="espiao" aria-labelledby="espiao-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">Inteligência de Mercado</span>
-          <h2 class="h-sec" id="espiao-title">
-            Eles tentaram se esconder <span class="lime-txt">por muito tempo</span>.
-          </h2>
-          <p class="sec-lead">
-            Quem vende imóvel de alta comissão não chuta anúncio. Veja o volume de inteligência que você passa a ter acesso:
-          </p>
-        </div>
-
-        <div class="esp-grid">
-          <div class="esp-box">
-            <svg class="stat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            <span class="num">+20</span>
-            <span class="label">Canais e Portais</span>
-            <span class="desc">Varredura contínua de criativos e ofertas</span>
-          </div>
-          <div class="esp-box">
-            <svg class="stat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><path d="M10 22v-4h4v4"/></svg>
-            <span class="num">+15 mil</span>
-            <span class="label">Imóveis Analisados</span>
-            <span class="desc">Preço de m², margem e apelo comercial</span>
-          </div>
-          <div class="esp-box">
-            <svg class="stat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-            <span class="num">+30 mil</span>
-            <span class="label">Criativos Mapeados</span>
-            <span class="desc">Vídeos, carrosséis e copys validadas</span>
-          </div>
-          <div class="esp-box">
-            <svg class="stat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            <span class="num">10s</span>
-            <span class="label">Tempo de Resposta</span>
-            <span class="desc">Atendimento da IA no WhatsApp 24 horas por dia</span>
-          </div>
-          <div class="esp-box">
-            <svg class="stat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
-            <span class="num">+R$ 100M</span>
-            <span class="label">VGV Acelerado</span>
-            <span class="desc">Gerado pela metodologia dos nossos membros</span>
-          </div>
-          <div class="esp-box">
-            <svg class="stat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span class="num">1 Clique</span>
-            <span class="label">Integração Total</span>
-            <span class="desc">Aperte um botão e tudo opera sincronizado</span>
-          </div>
-        </div>
-
-        <div class="sec-cta">
-          <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- NA PRÁTICA (COMO FUNCIONA) -->
-    <section class="sec" data-screen-label="plataforma" aria-labelledby="plataforma-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">Na Prática</span>
-          <h2 class="h-sec" id="plataforma-title">
-            Assim o Imobiturbo OS <span class="lime-txt">funciona</span>.
-          </h2>
-          <p class="sec-lead">
-            Ao apertar um botão, falta só a IA vender sozinha para você. Veja o ciclo em 4 passos:
-          </p>
-        </div>
-
-        <div class="mec-cards">
-          <div class="mec-card">
-            <div class="mec-card-top">
-              <span class="mec-tag">PASSO 01</span>
-              <svg class="card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-            </div>
-            <h3>Lead Entra do Anúncio</h3>
-            <p>O comprador clica no anúncio e cai no seu WhatsApp oficial já contextualizado com o imóvel de interesse.</p>
-          </div>
-          <div class="mec-card">
-            <div class="mec-card-top">
-              <span class="mec-tag">PASSO 02</span>
-              <svg class="card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            </div>
-            <h3>Atendimento Instantâneo</h3>
-            <p>Em 10 segundos, a IA responde com voz e texto naturais, respondendo dúvidas sobre metragem, condomínio e localização.</p>
-          </div>
-          <div class="mec-card">
-            <div class="mec-card-top">
-              <span class="mec-tag">PASSO 03</span>
-              <svg class="card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 6v2m0 8v2"/></svg>
-            </div>
-            <h3>Triagem Financeira</h3>
-            <p>A IA descobre a renda, intenção de moradia/investimento e forma de pagamento com empatia e autoridade.</p>
-          </div>
-        </div>
-
-        <div class="mec-card mec-card-highlight">
-          <div class="mec-card-top" style="justify-content: center; gap: 8px; margin-bottom: 6px;">
-            <svg class="card-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <span class="mec-tag" style="justify-content: center;">PASSO 04 · FECHAMENTO</span>
-          </div>
-          <h3 class="mec-highlight-title">Visita Agendada Direto na Sua Mão</h3>
-          <p style="max-width: 620px; margin: 0 auto; font-size: 15px;">
-            A IA propõe horários de visita no WhatsApp, confirma a presença do comprador qualificado e entrega o lead pronto na coluna "Visita Agendada" do CRM. Você só comparece para conduzir a visita e fechar a comissão.
-          </p>
-        </div>
-
-        <!-- MÁQUINA DE 1 CLIQUE & CHATGPT NATIVO NO CRM (FACILIDADE E TEMPO) -->
-        <div class="spotlight-box">
-          <div class="spotlight-head">
-            <span class="badge">Produtividade Máxima · 1 Clique</span>
-            <h3 class="spotlight-title">
-              A Máquina de 1 Clique: <span class="lime-txt">Facilidade e Tempo</span>.
-            </h3>
-            <p class="spotlight-lead">
-              Você aperta um botão para turbinar no Instagram e a IA resolve todo o resto. Sem perder tempo, sem quebrar a cabeça e sem precisar ser técnico.
-            </p>
-          </div>
-
-          <div class="spot-steps">
-            <div class="spot-step">
-              <span class="spot-step-tag">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-                01 · TURBINAR NO INSTAGRAM
-              </span>
-              <h4>1 Clique no Anúncio</h4>
-              <p>Aperte o botão de turbinar no Instagram ou suba seu anúncio. Os leads caem instantaneamente sincronizados no CRM e na IA do WhatsApp.</p>
-            </div>
-
-            <div class="spot-step">
-              <span class="spot-step-tag">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-2h2zm0-4h-2V7h2z"/></svg>
-                02 · COMANDOS DE IA MULTI-MODELO
-              </span>
-              <h4>IA Nativa no CRM (ChatGPT, Claude & Gemini)</h4>
-              <p>Peça para a IA no CRM fazer o trabalho pesado da sua base de contatos: reaquecer leads parados, filtrar quem tem renda e disparar mensagens.</p>
-            </div>
-
-            <div class="spot-step">
-              <span class="spot-step-tag">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
-                03 · VISITA NA SUA MÃO
-              </span>
-              <h4>Falta só a IA Vender Sozinha</h4>
-              <p>O atendimento de 10 segundos qualifica a intenção de compra, tira dúvidas sobre o imóvel e entrega a visita agendada na sua mão.</p>
-            </div>
-          </div>
-
-          <!-- CONSOLE IA MULTI-MODELO NO CRM -->
-          <div class="spot-console">
-            <div class="spot-console-top">
-              <span class="spot-console-badge">
-                <span class="live-dot" aria-hidden="true"></span>
-                COMANDOS DE IA NATIVOS NO CRM
-              </span>
-              <span class="spot-console-ver">IMOBITURBO OS · v2.4</span>
-            </div>
-
-            <div class="spot-prompts">
-              <!-- CHATGPT -->
-              <div class="spot-prompt-card">
-                <div class="spot-card-header">
-                  <span class="spot-model-chip chip-openai">
-                    <svg viewBox="0 0 24 24" width="15" height="15" fill="#10A37F" aria-hidden="true">
-                      <path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.5045 4.5045 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.6669zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/>
-                    </svg>
-                    ChatGPT
-                  </span>
-                  <span class="spot-action-pill">Executar no CRM</span>
-                </div>
-                <div class="spot-prompt-text">
-                  <span class="prompt-quote">"Reaqueça todos os contatos parados há mais de 15 dias usando a nova condição de tabela da construtora."</span>
-                </div>
-                <div class="spot-telemetry">
-                  <span class="tele-icon">⚡</span>
-                  <span class="tele-text">Disparo nativo via WhatsApp · 28 contatos reaquecidos em 1 clique</span>
-                </div>
-              </div>
-
-              <!-- CLAUDE -->
-              <div class="spot-prompt-card">
-                <div class="spot-card-header">
-                  <span class="spot-model-chip chip-claude">
-                    <svg viewBox="0 0 24 24" width="15" height="15" fill="#D97757" aria-hidden="true">
-                      <path d="m4.7144 15.9555 4.7174-2.6471.079-.2307-.079-.1275h-.2307l-.7893-.0486-2.6956-.0729-2.3375-.0971-2.2646-.1214-.5707-.1215-.5343-.7042.0546-.3522.4797-.3218.686.0608 1.5179.1032 2.2767.1578 1.6514.0972 2.4468.255h.3886l.0546-.1579-.1336-.0971-.1032-.0972L6.973 9.8356l-2.55-1.6879-1.3356-.9714-.7225-.4918-.3643-.4614-.1578-1.0078.6557-.7225.8803.0607.2246.0607.8925.686 1.9064 1.4754 2.4893 1.8336.3643.3035.1457-.1032.0182-.0728-.164-.2733-1.3539-2.4467-1.445-2.4893-.6435-1.032-.17-.6194c-.0607-.255-.1032-.4674-.1032-.7285L6.287.1335 6.6997 0l.9957.1336.419.3642.6192 1.4147 1.0018 2.2282 1.5543 3.0296.4553.8985.2429.8318.091.255h.1579v-.1457l.1275-1.706.2368-2.0947.2307-2.6957.0789-.7589.3764-.9107.7468-.4918.5828.2793.4797.686-.0668.4433-.2853 1.8517-.5586 2.9021-.3643 1.9429h.2125l.2429-.2429.9835-1.3053 1.6514-2.0643.7286-.8196.85-.9046.5464-.4311h1.0321l.759 1.1293-.34 1.1657-1.0625 1.3478-.8804 1.1414-1.2628 1.7-.7893 1.36.0729.1093.1882-.0183 2.8535-.607 1.5421-.2794 1.8396-.3157.8318.3886.091.3946-.3278.8075-1.967.4857-2.3072.4614-3.4364.8136-.0425.0304.0486.0607 1.5482.1457.6618.0364h1.621l3.0175.2247.7892.522.4736.6376-.079.4857-1.2142.6193-1.6393-.3886-3.825-.9107-1.3113-.3279h-.1822v.1093l1.0929 1.0686 2.0035 1.8092 2.5075 2.3314.1275.5768-.3218.4554-.34-.0486-2.2039-1.6575-.85-.7468-1.9246-1.621h-.1275v.17l.4432.6496 2.3436 3.5214.1214 1.0807-.17.3521-.6071.2125-.6679-.1214-1.3721-1.9246L14.38 17.959l-1.1414-1.9428-.1397.079-.674 7.2552-.3156.3703-.7286.2793-.6071-.4614-.3218-.7468.3218-1.4753.3886-1.9246.3157-1.53.2853-1.9004.17-.6314-.0121-.0425-.1397.0182-1.4328 1.9672-2.1796 2.9446-1.7243 1.8456-.4128.164-.7164-.3704.0667-.6618.4008-.5889 2.386-3.0357 1.4389-1.882.929-1.0868-.0062-.1579h-.0546l-6.3385 4.1164-1.1293.1457-.4857-.4554.0608-.7467.2307-.2429 1.9064-1.3114Z"/>
-                    </svg>
-                    Claude
-                  </span>
-                  <span class="spot-action-pill">Filtrar Pipeline</span>
-                </div>
-                <div class="spot-prompt-text">
-                  <span class="prompt-quote">"Identifique os 5 contatos com maior score de renda e perfil de investidor prontos para fechamento nesta semana."</span>
-                </div>
-                <div class="spot-telemetry">
-                  <span class="tele-icon">🎯</span>
-                  <span class="tele-text">Score preditivo de renda · 5 compradores qualificados com simulação pronta</span>
-                </div>
-              </div>
-
-              <!-- GEMINI -->
-              <div class="spot-prompt-card">
-                <div class="spot-card-header">
-                  <span class="spot-model-chip chip-gemini">
-                    <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true">
-                      <defs>
-                        <linearGradient id="gemini-icon-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stop-color="#1BA1E3"/>
-                          <stop offset="50%" stop-color="#5468FF"/>
-                          <stop offset="100%" stop-color="#9B42F5"/>
-                        </linearGradient>
-                      </defs>
-                      <path fill="url(#gemini-icon-grad)" d="M11.04 19.32Q12 21.51 12 24q0-2.49.93-4.68.96-2.19 2.58-3.81t3.81-2.55Q21.51 12 24 12q-2.49 0-4.68-.93a12.3 12.3 0 0 1-3.81-2.58 12.3 12.3 0 0 1-2.58-3.81Q12 2.49 12 0q0 2.49-.96 4.68-.93 2.19-2.55 3.81a12.3 12.3 0 0 1-3.81 2.58Q2.49 12 0 12q2.49 0 4.68.96 2.19.93 3.81 2.55t2.55 3.81"/>
-                    </svg>
-                    Gemini
-                  </span>
-                  <span class="spot-action-pill">Disparo IA</span>
-                </div>
-                <div class="spot-prompt-text">
-                  <span class="prompt-quote">"Dispare convite VIP de visita ao decorado para os interessados da zona sul e sincronize os horários na agenda."</span>
-                </div>
-                <div class="spot-telemetry">
-                  <span class="tele-icon">📅</span>
-                  <span class="tele-text">Agendamento em tempo real · 4 visitas marcadas direto na agenda do Google</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="spot-console-result">
-              <b>✓ Resultado real em 1 clique:</b> Você fala como falaria com um assistente. O CRM executa os filtros, personaliza as mensagens e sincroniza com a IA do WhatsApp sem você encostar no teclado.
-            </div>
-          </div>
-        </div>
-
-        <div class="sec-cta">
-          <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- O QUE VOCÊ GANHA COM CADA APP (STACK DE PRODUTO MODELADO DO JEFF COM PREVIEWS) -->
-    <section class="sec" data-screen-label="apps" aria-labelledby="apps-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">O Que Você Leva</span>
-          <h2 class="h-sec" id="apps-title">
-            O ecossistema completo <span class="lime-txt">pra vender imóvel com IA</span>.
-          </h2>
-          <p class="sec-lead">
-            Oferta, tráfego, atendimento e CRM integrados: cada módulo na ordem que a venda acontece.
-          </p>
-        </div>
-
-        <ol class="afn" aria-label="Os 4 módulos centrais do ecossistema Imobiturbo">
-          <!-- 01 OS -->
-          <li class="afn-it">
-            <div class="afn-media">
-              <img class="afn-th" src="./assets/preview-crm.webp" alt="Interface do CRM Kanban Imobiturbo OS" width="640" height="360" loading="lazy">
-              <span class="afn-price"><s aria-hidden="true">R$ 397</s> <b aria-hidden="true">incluso</b></span>
-            </div>
-            <div class="afn-bd">
-              <p class="afn-nm">
-                <i>01</i>
-                <img class="app-logo-brand" src="./assets/brand/light/imobiturbo-os.webp" alt="Imobiturbo OS" height="44" loading="lazy">
-              </p>
-              <p class="afn-gn">O sistema operacional e CRM com IA no WhatsApp</p>
-              <p class="afn-pv">Pipeline Kanban ultrarrápido sem telas travadas, cálculo automático de comissão, histórico na mão e atendimento de IA que qualifica em 10 segundos.</p>
-            </div>
-          </li>
-
-          <!-- 02 CLUB -->
-          <li class="afn-it">
-            <div class="afn-media">
-              <img class="afn-th" src="./assets/preview-vip.webp" alt="Plataforma de Aulas Imobiturbo Club" width="640" height="360" loading="lazy">
-              <span class="afn-price"><s aria-hidden="true">R$ 497</s> <b aria-hidden="true">incluso</b></span>
-            </div>
-            <div class="afn-bd">
-              <p class="afn-nm">
-                <i>02</i>
-                <img class="app-logo-brand" src="./assets/brand/light/imobiturbo-club.webp" alt="Imobiturbo Club" height="44" loading="lazy">
-              </p>
-              <p class="afn-gn">Onde estão todas as nossas aulas e mentorias</p>
-              <p class="afn-pv">Mais de 1.000 aulas gravadas, +100h de mapas práticos, oráculo imobiliário com IA integrado e encontros semanais ao vivo com o Natan.</p>
-            </div>
-          </li>
-
-          <!-- 03 SCRIPTS ANTI-VÁCUO -->
-          <li class="afn-it">
-            <div class="afn-media">
-              <img class="afn-th" src="./assets/preview-antivacuo.webp" alt="Automações e réguas de follow-up anti-vácuo" width="640" height="360" loading="lazy">
-              <span class="afn-price"><s aria-hidden="true">R$ 147</s> <b aria-hidden="true">incluso</b></span>
-            </div>
-            <div class="afn-bd">
-              <p class="afn-nm">
-                <svg class="app-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><polyline points="23 20 23 14 17 14"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
-                <i>03</i><b>Scripts Anti-Vácuo</b>
-              </p>
-              <p class="afn-gn">Réguas para resgatar compradores parados</p>
-              <p class="afn-pv">Sequências testadas que reengajam leads antigos que pararam de responder sem parecer insistente.</p>
-            </div>
-          </li>
-
-          <!-- 04 SUPORTE VIP & WAR ROOM -->
-          <li class="afn-it">
-            <div class="afn-media">
-              <img class="afn-th" src="./assets/preview-whatsapp.webp" alt="Suporte VIP especializado e War Room Imobiliário" width="640" height="360" loading="lazy">
-              <span class="afn-price"><s aria-hidden="true">R$ 497</s> <b aria-hidden="true">incluso</b></span>
-            </div>
-            <div class="afn-bd">
-              <p class="afn-nm">
-                <svg class="app-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                <i>04</i><b>Suporte VIP & Retaguarda Técnica</b>
-              </p>
-              <p class="afn-gn">Tua operação com retaguarda técnica especializada</p>
-              <p class="afn-pv">Time técnico que entende de mercado imobiliário para te destravar via chat e WhatsApp sempre que precisar.</p>
-            </div>
-          </li>
-        </ol>
-
-        <div class="app-total-box">
-          <p class="total-desc">Valor real por fora de todas as ferramentas:</p>
-          <div class="total-val">
-            <s>R$ 1.538 / mês</s>
-            <span>INCLUSO NA SUA VAGA</span>
-          </div>
-          <div class="sec-cta" style="margin-top: 0;">
-            <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- COMUNIDADE & MENTORIA AO VIVO (MODELADO DO JEFF) -->
-    <section class="sec" id="comunidade" data-screen-label="comunidade" aria-labelledby="comunidade-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">É aí que eu entro</span>
-          <h2 class="h-sec" id="comunidade-title">
-            Os sistemas executam. <span class="lime-txt">Eu te puxo ao vivo</span>.
-          </h2>
-          <p class="sec-lead">
-            Mentoria comigo toda semana, monitores no plantão e +1.200 membros no mesmo jogo que você.
-          </p>
-        </div>
-
-        <div class="com-stage">
-          <div class="com-vsl">
-            <span class="com-live-badge"><span class="live-dot" aria-hidden="true"></span>● AO VIVO</span>
-            <div class="com-strip">
-              <span>toda semana · <b>quarta-feira 20h</b> · fica gravado</span>
-              <span><b>+1.200</b> corretores e imobiliárias</span>
-            </div>
-            <button class="play" type="button" aria-label="Assistir trecho da mentoria ao vivo">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="sec-cta">
-          <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- LINHA DO TEMPO & AUTORIDADE (+R$ 100M MODELADO DO JEFF) -->
-    <section class="sec" id="mentor" data-screen-label="mentor" aria-labelledby="mentor-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <h2 class="h-sec" id="mentor-title">
-            +R$ 100M <span class="lime-txt">já gerados pela comunidade</span>.
-          </h2>
-          <p class="sec-lead">
-            Eu joguei com informação privilegiada antes de todo mundo. As placas mostram onde isso dá:
-          </p>
-        </div>
-
-        <ol class="mtl" aria-label="Linha do tempo das conquistas da metodologia Imobiturbo">
-          <li class="ma-item">
-            <img src="./assets/natan-placa-100m.webp" alt="Natan Pimentel com a placa oficial de R$ 100 Milhões em VGV Turbinado" width="700" height="700" loading="lazy">
-            <figcaption>
-              <b>R$ 100M</b>
-              <span>Placa Oficial VGV Turbinado · Metodologia Validada</span>
-            </figcaption>
-          </li>
-          <li class="ma-item">
-            <img src="./assets/natan-stage-mentoria.webp" alt="Natan Pimentel em imersão presencial com corretores de imóveis" width="960" height="536" loading="lazy">
-            <figcaption>
-              <b>Ao Vivo</b>
-              <span>Auditório Lotado · Mentorias e Imersões Semanais</span>
-            </figcaption>
-          </li>
-          <li class="ma-item">
-            <img src="./assets/preview-vip.webp" alt="War Room de consultoria estratégica com imobiliárias parceiras" width="640" height="360" loading="lazy">
-            <figcaption>
-              <b>War Room</b>
-              <span>Análise de Campanhas e Funis Imobiliários</span>
-            </figcaption>
-          </li>
-          <li class="ma-item">
-            <img src="./assets/preview-creatives.webp" alt="Comunidade de corretores acelerados no Brasil todo" width="640" height="360" loading="lazy">
-            <figcaption>
-              <b>+1.200 Membros</b>
-              <span>A maior comunidade de elite em vendas com IA</span>
-            </figcaption>
-          </li>
-        </ol>
-
-        <div style="max-width: 680px; margin: 32px auto 0; text-align: center; color: var(--muted); font-size: 14.5px; line-height: 1.6;">
-          <p>"Tecnologia sem direção vira custo. No Imobiturbo você tem a melhor ferramenta do mercado e senta comigo toda semana em sala ao vivo para analisar seus anúncios, ajustar sua qualificação e destravar suas visitas."</p>
-          <p style="margin-top: 8px; font-weight: 700; color: var(--white);">— Natan Pimentel, Fundador da Imobiturbo</p>
-        </div>
-
-        <div class="sec-cta">
-          <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- PROVA SOCIAL (DEPOIMENTOS COM FOTOS DE CORRETORES MODELADO DO JEFF) -->
-    <section class="sec" data-screen-label="prova-primeira-venda" aria-labelledby="prova-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">Resultados</span>
-          <h2 class="h-sec" id="prova-title">
-            Todos começaram no escuro. <span class="lime-txt">Nenhum ficou lá</span>.
-          </h2>
-          <p class="sec-lead">
-            Resultados reais de quem usa o Imobiturbo OS na rotina diária de vendas:
-          </p>
-        </div>
-
-        <ol class="munum" aria-label="Depoimentos de corretores e imobiliárias">
-          <li>
-            <article class="mos-card mn-row">
-              <img class="mn-th" src="./assets/student-fernando.webp" alt="Fernando Tavares" width="56" height="56" loading="lazy">
-              <span class="mn-tx">
-                <span class="mn-fala">“Com o método, o WhatsApp não para de tocar. <b>Em 3 semanas fechei quase R$ 70 mil em comissões</b> no bolso.”</span>
-                <span class="mn-author">Fernando Tavares · Corretor de Imóveis (SP) <span class="mn-tag">✓ Verificado</span></span>
-              </span>
-            </article>
-          </li>
-
-          <li>
-            <article class="mos-card mn-row">
-              <img class="mn-th" src="./assets/student-joyce.webp" alt="Joyce" width="56" height="56" loading="lazy">
-              <span class="mn-tx">
-                <span class="mn-fala">“Estruturei todo o meu atendimento e parei de perder lead. <b>Fiz fechamento logo na primeira semana</b>.”</span>
-                <span class="mn-author">Joyce · Corretora Autônoma <span class="mn-tag">✓ Verificado</span></span>
-              </span>
-            </article>
-          </li>
-
-          <li>
-            <article class="mos-card mn-row">
-              <img class="mn-th" src="./assets/student-filipe.webp" alt="Filipe" width="56" height="56" loading="lazy">
-              <span class="mn-tx">
-                <span class="mn-fala">“Em apenas uma semana tive o retorno do investimento. A IA <b>só me entrega o comprador pronto para fechar</b>.”</span>
-                <span class="mn-author">Filipe · Especialista em Lançamentos <span class="mn-tag">✓ Verificado</span></span>
-              </span>
-            </article>
-          </li>
-
-          <li>
-            <article class="mos-card mn-row">
-              <img class="mn-th" src="./assets/student-joan.webp" alt="Joan" width="56" height="56" loading="lazy">
-              <span class="mn-tx">
-                <span class="mn-fala">“Vendi em João Pessoa/PB um imóvel com lead qualificado pela automação. <b>Resultado prático no primeiro mês</b>.”</span>
-                <span class="mn-author">Joan · Corretor Alto Padrão (João Pessoa, PB) <span class="mn-tag">✓ Verificado</span></span>
-              </span>
-            </article>
-          </li>
-
-          <li>
-            <article class="mos-card mn-row">
-              <img class="mn-th" src="./assets/student-aline.webp" alt="Aline" width="56" height="56" loading="lazy">
-              <span class="mn-tx">
-                <span class="mn-fala">“Como dona de imobiliária, gostaria que todos os corretores fizessem. <b>Padronizou o atendimento da equipe inteira</b>.”</span>
-                <span class="mn-author">Aline · Sócia de Imobiliária <span class="mn-tag">✓ Verificado</span></span>
-              </span>
-            </article>
-          </li>
-
-          <li>
-            <article class="mos-card mn-row">
-              <img class="mn-th" src="./assets/student-sandro.webp" alt="Sandro Dias" width="56" height="56" loading="lazy">
-              <span class="mn-tx">
-                <span class="mn-fala">“Sou corretor aqui no RJ. O sistema aumentou minhas visitas e <b>economizou dezenas de horas de prospecção fria</b>.”</span>
-                <span class="mn-author">Sandro Dias · Corretor de Imóveis (RJ) <span class="mn-tag">✓ Verificado</span></span>
-              </span>
-            </article>
-          </li>
-
-          <li>
-            <article class="mos-card mn-row">
-              <img class="mn-th" src="./assets/student-mariana.webp" alt="Mariana" width="56" height="56" loading="lazy">
-              <span class="mn-tx">
-                <span class="mn-fala">“Tinha dificuldade para agendar visitas. Com a esteira automatizada, <b>fechei 2 unidades em 30 dias</b>.”</span>
-                <span class="mn-author">Mariana · Corretora de Imóveis <span class="mn-tag">✓ Verificado</span></span>
-              </span>
-            </article>
-          </li>
-
-          <li>
-            <article class="mos-card mn-row">
-              <img class="mn-th" src="./assets/student-taina.webp" alt="Tainá Souza" width="56" height="56" loading="lazy">
-              <span class="mn-tx">
-                <span class="mn-fala">“Sou de Vitória/ES, comecei do zero com o Imobiturbo e <b>já no primeiro mês fechei contrato assinado</b>.”</span>
-                <span class="mn-author">Tainá Souza · Corretora de Imóveis (Vitória, ES) <span class="mn-tag">✓ Verificado</span></span>
-              </span>
-            </article>
-          </li>
-        </ol>
-      </div>
-
-      <!-- Comprovantes de Resultados no WhatsApp (Carrossel Fita Contínua Sangria Total) -->
-      <div class="proof-slider-section">
-        <div class="wrap">
-          <div class="proof-slider-header">
-            <div class="proof-slider-title-group">
-              <span class="badge">Sem filtro</span>
-              <h3 class="proof-slider-heading">Comprovantes reais no WhatsApp</h3>
-              <p class="proof-slider-sub">Prints autênticos compartilhados por corretores e imobiliárias nos nossos grupos e mentorias (clique para ampliar)</p>
-            </div>
-            <div class="proof-slider-nav">
-              <button class="proof-nav-btn" id="proofPrevBtn" type="button" aria-label="Print anterior">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-              </button>
-              <button class="proof-nav-btn" id="proofNextBtn" type="button" aria-label="Próximo print">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="proof-slider-wrapper">
-          <div class="proof-slider-track" id="proofSliderTrack" tabindex="0" role="region" aria-label="Carrossel de prints de comprovantes">
-            <div class="proof-card" data-src="/assets/testimonials/gallery/10.webp">
-              <img src="/assets/testimonials/gallery/10.webp" alt="Comprovante de resultado WhatsApp: R$ 44 investidos para R$ 15.000 de retorno" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/12.webp">
-              <img src="/assets/testimonials/gallery/12.webp" alt="Comprovante WhatsApp: 19 leads, 66 reais investidos e casa vendida" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/15.webp">
-              <img src="/assets/testimonials/gallery/15.webp" alt="Comprovante WhatsApp: 8 leads em 4 dias, primeiro apartamento vendido e comissão de R$ 7.200" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/20.webp">
-              <img src="/assets/testimonials/gallery/20.webp" alt="Comprovante WhatsApp: Grupo VIP de mentoria e resultados" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/22.webp">
-              <img src="/assets/testimonials/gallery/22.webp" alt="Comprovante WhatsApp: Fechamento de contrato com leads qualificados" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/7.webp">
-              <img src="/assets/testimonials/gallery/7.webp" alt="Comprovante WhatsApp: Atendimento imediato e agendamento de visita" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/16.webp">
-              <img src="/assets/testimonials/gallery/16.webp" alt="Comprovante WhatsApp: Venda concretizada com método Imobiturbo" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/17.webp">
-              <img src="/assets/testimonials/gallery/17.webp" alt="Comprovante WhatsApp: Lead qualificado transformado em comissão" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/19.webp">
-              <img src="/assets/testimonials/gallery/19.webp" alt="Comprovante WhatsApp: Fechamento de venda com esteira automatizada" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/21.webp">
-              <img src="/assets/testimonials/gallery/21.webp" alt="Comprovante WhatsApp: Visita agendada e cliente fechado" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/24.webp">
-              <img src="/assets/testimonials/gallery/24.webp" alt="Comprovante WhatsApp: Depoimento de aluno sobre previsibilidade de vendas" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/26.webp">
-              <img src="/assets/testimonials/gallery/26.webp" alt="Comprovante WhatsApp: IA respondendo e qualificando compradores" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/28.webp">
-              <img src="/assets/testimonials/gallery/28.webp" alt="Comprovante WhatsApp: Contrato assinado em tempo recorde" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/32.webp">
-              <img src="/assets/testimonials/gallery/32.webp" alt="Comprovante WhatsApp: Venda de imóvel de alto padrão com alta comissão" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/36.webp">
-              <img src="/assets/testimonials/gallery/36.webp" alt="Comprovante WhatsApp: Métricas de campanha com retorno real comprovado" loading="eager" width="280" height="460">
-            </div>
-            <div class="proof-card" data-src="/assets/testimonials/gallery/38.webp">
-              <img src="/assets/testimonials/gallery/38.webp" alt="Comprovante WhatsApp: Agendamento rápido e fechamento com cliente" loading="eager" width="280" height="460">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="wrap">
-        <div class="sec-cta">
-          <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRA QUEM NÃO É / PRA QUEM É -->
-    <section class="sec" data-screen-label="pra-quem-nao-e" aria-labelledby="pqne-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">O Filtro</span>
-          <h2 class="h-sec" id="pqne-title">
-            Não é pra <span class="lime-txt">qualquer um</span>.
-          </h2>
-        </div>
-
-        <div class="pqne-grid">
-          <div class="pqne-col bad">
-            <h4>✕ Para quem NÃO é</h4>
-            <ul class="pqne-list">
-              <li><span>✕</span> Quem ainda espera sorte ou indicação cair do céu</li>
-              <li><span>✕</span> Quem procura fórmula mágica sem apertar o botão</li>
-              <li><span>✕</span> Quem acha que lead no WhatsApp pode esperar 2 horas</li>
-              <li><span>✕</span> Amadores que não encaram a corretagem como empresa</li>
-            </ul>
-          </div>
-
-          <div class="pqne-col good">
-            <h4>✓ Para quem É</h4>
-            <ul class="pqne-list">
-              <li><span>✓</span> Cansou de queimar verba em anúncios à toa</li>
-              <li><span>✓</span> Quer partir do que já vende no mercado imobiliário</li>
-              <li><span>✓</span> Quer um CRM ultrarrápido com IA nativa sem código</li>
-              <li><span>✓</span> Quer método, previsibilidade de visitas e comissões</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- O COFRE DE BÔNUS DO CLUB IMOBITURBO (ANCORAGEM FIRME) -->
-    <section class="sec" id="bonus" data-screen-label="bonus" aria-labelledby="bonus-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">O Cofre de Bônus</span>
-          <h2 class="h-sec" id="bonus-title">
-            Liberamos todo o Club Imobiturbo <span class="lime-txt">como bônus pra você</span>.
-          </h2>
-          <p class="sec-lead">
-            Além do CRM mais rápido do Brasil e da IA no WhatsApp, você destrava o acervo completo de estratégias práticas, oráculo com IA e mentorias para acelerar suas vendas hoje:
-          </p>
-        </div>
-
-        <div class="bonus-grid">
-          <!-- BÔNUS 01 -->
-          <article class="bonus-card">
-            <div>
-              <div class="bonus-head">
-                <span class="bonus-tag">BÔNUS EXCLUSIVO 01</span>
-                <span class="bonus-val"><s>R$ 1.997</s> <b>GRÁTIS</b></span>
-              </div>
-              <h3>Todas as Trilhas do Club Imobiturbo (+100h)</h3>
-              <p>O mapa prático passo a passo para sair do zero e dominar o mercado imobiliário com método comprovado.</p>
-              <ul class="bonus-list">
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span><b>Trilha Corretor Solo Acelerado:</b> Feche contratos sozinho sem equipe.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span><b>Trilha Imobiliária no Automático:</b> Escale corretores e processos.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span><b>Trilha Meta Ads Descomplicado:</b> Anúncios de alta conversão para imóveis.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span><b>Trilha Lançamentos & Alto Padrão:</b> Captação e vendas de alto ticket.</span>
-                </li>
-              </ul>
-            </div>
-          </article>
-
-          <!-- BÔNUS 02 -->
-          <article class="bonus-card">
-            <div>
-              <div class="bonus-head">
-                <span class="bonus-tag">BÔNUS EXCLUSIVO 02</span>
-                <span class="bonus-val"><s>R$ 997</s> <b>GRÁTIS</b></span>
-              </div>
-              <h3>O Oráculo Imobiliário (ChatGPT no Club & CRM)</h3>
-              <p>Seu consultor de vendas imobiliárias disponível 24 horas por dia integrado diretamente à sua operação.</p>
-              <ul class="bonus-list">
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Treinado exclusivamente nos maiores fechamentos imobiliários do país.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Quebra imediata de objeções difíceis de preço, juros e documentação.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Criação de propostas e contrapropostas irrecusáveis para compradores.</span>
-                </li>
-              </ul>
-            </div>
-          </article>
-
-          <!-- BÔNUS 03 -->
-          <article class="bonus-card">
-            <div>
-              <div class="bonus-head">
-                <span class="bonus-tag">BÔNUS EXCLUSIVO 03</span>
-                <span class="bonus-val"><s>R$ 1.497</s> <b>GRÁTIS</b></span>
-              </div>
-              <h3>Acervo Vault de Mentorias Gravadas (+50 Encontros)</h3>
-              <p>Acesso irrestrito a todas as gravações dos encontros ao vivo com Natan Pimentel e membros acelerados.</p>
-              <ul class="bonus-list">
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Análises ao vivo de anúncios e funis reais que faturaram milhões.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Estudos de caso reais de corretores que conquistaram a placa de R$ 100M.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Plano de ação pronto para copiar e executar no seu mercado local.</span>
-                </li>
-              </ul>
-            </div>
-          </article>
-
-          <!-- BÔNUS 04 -->
-          <article class="bonus-card">
-            <div>
-              <div class="bonus-head">
-                <span class="bonus-tag">BÔNUS EXCLUSIVO 04</span>
-                <span class="bonus-val"><s>R$ 497</s> <b>GRÁTIS</b></span>
-              </div>
-              <h3>Banco de Copys e Criativos Validados</h3>
-              <p>O cofre de templates prontos para você nunca mais travar na hora de criar anúncios de imóveis.</p>
-              <ul class="bonus-list">
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Modelos de textos persuasivos para Minha Casa Minha Vida e Médio Padrão.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Copys elegantes e magnéticas para imóveis de luxo e coberturas.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Roteiros testados para gravar vídeos curtos e tours de alto engajamento.</span>
-                </li>
-              </ul>
-            </div>
-          </article>
-
-          <!-- BÔNUS 05 -->
-          <article class="bonus-card">
-            <div>
-              <div class="bonus-head">
-                <span class="bonus-tag">BÔNUS EXCLUSIVO 05</span>
-                <span class="bonus-val"><s>R$ 997</s> <b>GRÁTIS</b></span>
-              </div>
-              <h3>Comunidade de Membros & Parcerias 50/50</h3>
-              <p>Rede nacional de negócios com mais de 1.200 corretores e donos de imobiliárias de elite.</p>
-              <ul class="bonus-list">
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Feche parcerias 50/50 com corretores que têm clientes comprando em outros estados.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Troca diária de estratégias que estão gerando visitas no mercado real.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Zero amadorismo: ambiente focado em comissões e fechamentos de alto valor.</span>
-                </li>
-              </ul>
-            </div>
-          </article>
-
-          <!-- BÔNUS 06 -->
-          <article class="bonus-card">
-            <div>
-              <div class="bonus-head">
-                <span class="bonus-tag">BÔNUS EXCLUSIVO 06</span>
-                <span class="bonus-val"><s>R$ 600</s> <b>GRÁTIS</b></span>
-              </div>
-              <h3>Suporte VIP 24h & Plantão de Especialistas</h3>
-              <p>Você nunca mais fica travado com dúvidas de anúncios, integração ou atendimento.</p>
-              <ul class="bonus-list">
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Equipe técnica que entende o vocabulário e a urgência do corretor de imóveis.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Atendimento ágil direto no WhatsApp e na plataforma para destravar sua operação.</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Orientação passo a passo para manter seus anúncios e seu CRM sempre no ar.</span>
-                </li>
-              </ul>
-            </div>
-          </article>
-        </div>
-
-        <!-- TOTALIZADOR DE BÔNUS -->
-        <div class="bonus-total-box">
-          <p class="total-desc">Valor total de todos os bônus vendidos separadamente:</p>
-          <p class="total-amount">
-            <s>R$ 6.585</s> <b>100% GRÁTIS NA SUA VAGA</b>
-          </p>
-          <p class="total-highlight">
-            Ao garantir sua vaga hoje, você não paga 1 centavo a mais por nenhum desses bônus. Tudo já está liberado dentro do seu acesso.
-          </p>
-          <div class="sec-cta" style="margin-top: 0;">
-            <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SEU PLANO (RADIO SELETOR MODELADO DO JEFF COM CHECKLIST E ANCORAGEM TOTAL) -->
-    <section class="sec" id="planos" data-screen-label="planos" aria-labelledby="planos-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">Seu Plano</span>
-          <h2 class="h-sec" id="planos-title">
-            Escolhe como você entra.
-          </h2>
-          <p class="sec-lead">
-            Cada dia sem o Imobiturbo é lead que o concorrente atende primeiro, e sua comissão deixada na mesa.
-          </p>
-        </div>
-
-        <!-- CHECKLIST INTERATIVO DA VAGA -->
-        <div class="chk-box">
-          <div class="chk-head">
-            <h3>Tudo o que você desbloqueia ao entrar hoje:</h3>
-            <p>Acesso imediato ao ecossistema completo de vendas imobiliárias com IA</p>
-          </div>
-
-          <div class="chk-grid">
-            <div class="chk-it">
-              <svg class="chk-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 9 10.5 15 8 12.5"/></svg>
-              <span class="chk-txt"><b>Imobiturbo OS:</b> O sistema operacional e CRM mais rápido do Brasil com IA no WhatsApp</span>
-            </div>
-            <div class="chk-it">
-              <svg class="chk-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 9 10.5 15 8 12.5"/></svg>
-              <span class="chk-txt"><b>Imobiturbo Club:</b> Onde estão todas as nossas aulas (+1.000 aulas, +100h de trilhas práticas e oráculo)</span>
-            </div>
-            <div class="chk-it">
-              <svg class="chk-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 9 10.5 15 8 12.5"/></svg>
-              <span class="chk-txt"><b>Scripts Anti-Vácuo:</b> Réguas automáticas para recuperar compradores parados</span>
-            </div>
-            <div class="chk-it">
-              <svg class="chk-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 9 10.5 15 8 12.5"/></svg>
-              <span class="chk-txt"><b>Mentorias Semanais com Natan Pimentel:</b> Ao vivo toda quarta-feira às 20h</span>
-            </div>
-            <div class="chk-it">
-              <svg class="chk-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 9 10.5 15 8 12.5"/></svg>
-              <span class="chk-txt"><b>Retaguarda Técnica VIP:</b> Suporte especializado em mercado imobiliário no WhatsApp</span>
-            </div>
-            <div class="chk-it">
-              <svg class="chk-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 9 10.5 15 8 12.5"/></svg>
-              <span class="chk-txt"><b>Rede de Parcerias 50/50:</b> Conexão com mais de 1.200 corretores de elite no Brasil</span>
-            </div>
-            <div class="chk-it">
-              <svg class="chk-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="16 9 10.5 15 8 12.5"/></svg>
-              <span class="chk-txt"><b>Garantia Incondicional de 7 Dias:</b> 100% de devolução sem perguntas se não gostar</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- ANCORAGEM TOTAL DO STACK -->
-        <div class="anchoring-card">
-          <div class="anchoring-row">
-            <span>Plataformas e Ferramentas (por fora):</span>
-            <span class="val"><s>R$ 18.456 / ano</s></span>
-          </div>
-          <div class="anchoring-row">
-            <span>O Cofre de Bônus do Club Imobiturbo:</span>
-            <span class="val"><s>R$ 6.585</s></span>
-          </div>
-          <div class="anchoring-row">
-            <span>Valor Total Entregue:</span>
-            <span class="val" style="color: var(--danger);"><s>R$ 35.097 / ano</s></span>
-          </div>
-          <div class="anchoring-row anchoring-row-highlight">
-            <span>Seu investimento hoje no Plano Anual:</span>
-            <span class="val">12x R$ 97</span>
-          </div>
-        </div>
-
-        <form class="psel-rows" id="planForm">
-          <!-- Plano Anual -->
-          <label class="psel-row">
-            <div class="psel-left">
-              <input class="psel-radio" type="radio" name="plano" value="anual" checked>
-              <div>
-                <span class="psel-nm">
-                  Anual
-                  <em class="psel-selo">economiza R$ 800</em>
-                </span>
-                <span class="psel-sub">ou R$ 957 à vista no Pix</span>
-              </div>
-            </div>
-            <div class="psel-prc">
-              <b>R$ 97</b>/mês
-            </div>
-          </label>
-
-          <!-- Plano Trimestral -->
-          <label class="psel-row">
-            <div class="psel-left">
-              <input class="psel-radio" type="radio" name="plano" value="trimestral">
-              <div>
-                <span class="psel-nm">Trimestral</span>
-                <span class="psel-sub">ou R$ 357 à vista</span>
-              </div>
-            </div>
-            <div class="psel-prc">
-              <b>R$ 127</b>/mês
-            </div>
-          </label>
-
-          <!-- Plano Mensal -->
-          <label class="psel-row">
-            <div class="psel-left">
-              <input class="psel-radio" type="radio" name="plano" value="mensal">
-              <div>
-                <span class="psel-nm">Mensal</span>
-                <span class="psel-sub">cancela quando quiser</span>
-              </div>
-            </div>
-            <div class="psel-prc">
-              <b>R$ 147</b>/mês
-            </div>
-          </label>
-        </form>
-
-        <a class="btn psel-cta" id="checkoutBtn" href="https://checkout.imobiturbo.com.br/plano-anual">
-          Testar 7 dias sem risco
-        </a>
-
-        <p class="psel-selos">
-          Pagamento 100% seguro · Garantia incondicional de 7 dias · Cancela quando quiser em qualquer plano
-        </p>
-
-        <div style="text-align: center; margin-top: 36px; font-size: 14px; color: var(--muted);">
-          Ainda com o dedo no botão? <b style="color: var(--white);">Deixa eu tirar o risco da sua mão.</b>
-        </div>
-      </div>
-    </section>
-
-    <!-- GARANTIA (RISCO ZERO) -->
-    <section class="sec" data-screen-label="garantia" aria-labelledby="garantia-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">Risco Zero</span>
-          <h2 class="h-sec" id="garantia-title">
-            O risco é meu, não seu.
-          </h2>
-        </div>
-
-        <div class="grt-box">
-          <p style="font-family: var(--mono); font-size: 11px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px;">
-            vale-reembolso · garantia de 7 dias
-          </p>
-          <h3 style="font-size: 22px; color: var(--white); margin-bottom: 8px;">
-            1 reembolso integral, sem perguntas
-          </h3>
-          <p>
-            Resgatável em 1 clique nos seus primeiros 7 dias. Você entra, acessa o CRM, configura a IA, assiste à mentoria ao vivo. Se não fizer sentido, devolvo 100%.
-          </p>
-          <span class="grt-code">GARANTIA-RISCO-ZERO-7D</span>
-          <div class="sec-cta" style="margin-top: 24px;">
-            <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-          </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 36px; font-size: 14px; color: var(--muted);">
-          Se ainda tem algo te segurando, <b style="color: var(--white);">provavelmente é uma dessas nove dúvidas:</b>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="sec" data-screen-label="faq" aria-labelledby="faq-title">
-      <div class="wrap">
-        <div class="sec-head">
-          <span class="badge">Dúvidas</span>
-          <h2 class="h-sec" id="faq-title">
-            As nove que seguram quem tá quase entrando.
-          </h2>
-        </div>
-
-        <div class="faq-list">
-          <details class="faq-it">
-            <summary><span class="num">01</span>Isso é mais um curso?<span class="faq-toggle">+</span></summary>
-            <p>Não. Curso te dá teoria e te abandona. Aqui você recebe o CRM mais rápido do mercado pronto, a IA operando no seu WhatsApp e mentoria ao vivo toda semana comigo.</p>
-          </details>
-
-          <details class="faq-it">
-            <summary><span class="num">02</span>Funciona para corretor autônomo?<span class="faq-toggle">+</span></summary>
-            <p>Sim. Dá ao corretor solo o poder de atendimento de uma imobiliária de 10 pessoas, permitindo fazer visitas na rua enquanto a IA atende novos contatos.</p>
-          </details>
-
-          <details class="faq-it">
-            <summary><span class="num">03</span>Não tenho tempo. Dá pra fazer assim?<span class="faq-toggle">+</span></summary>
-            <p>Dá. Ao apertar um botão, a IA faz o trabalho pesado de atender e qualificar. Você só precisa atender os clientes que já estão com a visita agendada.</p>
-          </details>
-
-          <details class="faq-it">
-            <summary><span class="num">04</span>Preciso saber de tecnologia?<span class="faq-toggle">+</span></summary>
-            <p>Não. Zero código, zero gambiarra de webhooks: tudo é nativo e já vem pré-configurado com os melhores modelos imobiliários do Brasil.</p>
-          </details>
-
-          <details class="faq-it">
-            <summary><span class="num">05</span>Já tenho CRM (Kenlo, Vista, RD). Serve pra mim?<span class="faq-toggle">+</span></summary>
-            <p>Serve perfeitamente. Você pode importar sua base de contatos em poucos cliques ou rodar o Imobiturbo como seu motor de atração e velocidade.</p>
-          </details>
-
-          <details class="faq-it">
-            <summary><span class="num">06</span>Tem pegadinha no preço?<span class="faq-toggle">+</span></summary>
-            <p>Zero. Anual sai por R$ 97/mês em 12x (ou R$ 957 à vista), trimestral R$ 127/mês, mensal R$ 147/mês. Preço travado e sem letras miúdas.</p>
-          </details>
-
-          <details class="faq-it">
-            <summary><span class="num">07</span>O que tá incluso na assinatura?<span class="faq-toggle">+</span></summary>
-            <p>Tudo. Imobiturbo OS, IA no WhatsApp, construtor de páginas, criador de criativos, scripts anti-vácuo, comunidade exclusiva e mentorias ao vivo toda semana.</p>
-          </details>
-
-          <details class="faq-it">
-            <summary><span class="num">08</span>Além da assinatura, quanto preciso pra anúncio?<span class="faq-toggle">+</span></summary>
-            <p>A verba de anúncios é sua. Mas com a espionagem e os criativos validados, você sobe apenas o que já vende sem queimar dinheiro no escuro.</p>
-          </details>
-
-          <details class="faq-it">
-            <summary><span class="num">09</span>Em quanto tempo vem a primeira visita agendada?<span class="faq-toggle">+</span></summary>
-            <p>A partir do momento em que a IA é conectada ao seu WhatsApp, qualquer novo lead já é atendido e qualificado no mesmo instante. Nossos membros frequentemente agendam visitas nos primeiros 3 a 5 dias.</p>
-          </details>
-        </div>
-
-        <div class="sec-cta">
-          <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER / FECHAMENTO NATAN -->
-    <footer class="sec" style="padding-top: 20px; padding-bottom: 60px;">
-      <div class="wrap">
-        <div class="foot-turn">
-          <figure class="ft-polaroid">
-            <img src="./assets/hero-vsl-poster.webp" alt="Natan Pimentel">
-            <figcaption>te espero lá dentro</figcaption>
-          </figure>
-
-          <div class="ft-note">
-            <p>O próximo que vende imóvel de alta comissão pode ser <span class="lime-txt">você</span>.</p>
-            <p class="ft-author">— natan pimentel</p>
-          </div>
-
-          <div class="sec-cta" style="margin-top: 0;">
-            <a class="btn" href="#planos" style="max-width: 360px;">Quero entrar na Comunidade Imobiturbo</a>
-          </div>
-        </div>
-
-        <div class="foot-legal">
-          <nav style="margin-bottom: 12px;">
-            <a href="/">Início</a>
-            <a href="/corretor-autonomo/">Corretores</a>
-            <a href="/imobiliarias/">Imobiliárias</a>
-            <a href="https://wa.me/5521983747796">Suporte</a>
-          </nav>
-          <p>© 2026 Imobiturbo Tecnologia & Soluções Imobiliárias Ltda. Todos os direitos reservados.</p>
-        </div>
-      </div>
-    </footer>
-  </main>
-
-  <!-- STICKY CTA MOBILE (Identico ao Jeff: Quero entrar na Comunidade Imobiturbo) -->
-  <div class="sticky-cta" id="stickyCta">
-    <a class="btn" href="#planos">Quero entrar na Comunidade Imobiturbo</a>
-  </div>
-
-  <!-- Lightbox Modal para visualização ampliada dos prints -->
-  <div id="proofLightbox" class="proof-lightbox" aria-hidden="true" role="dialog" aria-label="Visualização ampliada do comprovante">
-    <div class="proof-lightbox-backdrop" id="proofLightboxBackdrop"></div>
-    <div class="proof-lightbox-content">
-      <button class="proof-lightbox-close" id="proofLightboxClose" aria-label="Fechar ampliação">&times;</button>
-      <img id="proofLightboxImg" class="proof-lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Comprovante de resultado ampliado">
-    </div>
-  </div>
-
-  <!-- MODAL DE CHECKOUT EMBEDDED (ABACATEPAY + ASAAS FALLBACK) -->
-  <div id="checkoutModalOverlay" class="chk-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true">
-    <div class="chk-modal-box">
-      <button type="button" class="chk-modal-close" id="checkoutModalClose" aria-label="Fechar">&times;</button>
-
-      <!-- VIEW 1: FORMULÁRIO DE DADOS E PAGAMENTO -->
-      <div id="chkFormView">
-        <div class="chk-modal-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Checkout 100% Seguro · 256-bit SSL
-        </div>
-        <h3 class="chk-modal-title">Finalizar Inscrição</h3>
-        <p class="chk-modal-subtitle">Preencha seus dados para receber o acesso imediato à Comunidade Imobiturbo.</p>
-
-        <!-- Resumo do Plano Selecionado -->
-        <div class="chk-plan-summary">
-          <div class="chk-plan-info">
-            <span class="chk-plan-name" id="chkModalPlanName">Plano Anual</span>
-            <span class="chk-plan-sub" id="chkModalPlanSub">Acesso Completo por 12 meses</span>
-          </div>
-          <div class="chk-plan-side">
-            <div class="chk-plan-val" id="chkModalPlanPrice"><small>12x R$ </small><b>97</b></div>
-            <button type="button" class="chk-plan-change-btn" id="chkChangePlanTrigger">Trocar plano</button>
-          </div>
-        </div>
-
-        <!-- Dropdown Seletor de Plano no Modal -->
-        <div class="chk-plan-dropdown" id="chkPlanDropdown" style="display: none;">
-          <label class="chk-plan-opt" data-plan="anual">
-            <input type="radio" name="chkModalPlanRadio" value="anual" checked>
-            <div class="chk-plan-opt-info">
-              <b>Plano Anual</b>
-              <span>12 meses · R$ 957 à vista ou 12x R$ 97</span>
-            </div>
-            <span class="chk-plan-badge">Economiza R$ 800</span>
-          </label>
-          <label class="chk-plan-opt" data-plan="trimestral">
-            <input type="radio" name="chkModalPlanRadio" value="trimestral">
-            <div class="chk-plan-opt-info">
-              <b>Plano Trimestral</b>
-              <span>3 meses · R$ 357 à vista ou 3x R$ 127</span>
-            </div>
-          </label>
-          <label class="chk-plan-opt" data-plan="mensal">
-            <input type="radio" name="chkModalPlanRadio" value="mensal">
-            <div class="chk-plan-opt-info">
-              <b>Plano Mensal</b>
-              <span>R$ 147/mês · Cancela quando quiser</span>
-            </div>
-          </label>
-        </div>
-
-        <!-- Seletor de Método de Pagamento -->
-        <div class="chk-tabs">
-          <div class="chk-tab active" id="tabPix" data-method="PIX">
-            <span class="chk-tab-label">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.005 2.002a2.49 2.49 0 0 0-1.763.732L5.42 7.556a2.492 2.492 0 0 0 0 3.525l4.822 4.822a2.49 2.49 0 0 0 3.525 0l4.822-4.822a2.492 2.492 0 0 0 0-3.525l-4.822-4.822a2.49 2.49 0 0 0-1.762-.732zm0 3.535 3.536 3.536-3.536 3.535-3.535-3.535 3.535-3.536z"/></svg>
-              Pix
-            </span>
-            <span class="chk-tab-desc">Aprovação imediata</span>
-          </div>
-          <div class="chk-tab" id="tabCard" data-method="CREDIT_CARD">
-            <span class="chk-tab-label">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-              Cartão
-            </span>
-            <span class="chk-tab-desc">Até 12x no cartão</span>
-          </div>
-        </div>
-
-        <!-- Formulário -->
-        <form id="chkNativeForm" onsubmit="return false;">
-          <div class="chk-field">
-            <label for="chkName">Nome Completo</label>
-            <input type="text" id="chkName" class="chk-input" placeholder="Seu nome completo" required autocomplete="name">
-          </div>
-
-          <div class="chk-field">
-            <label for="chkEmail">E-mail (para receber o acesso)</label>
-            <input type="email" id="chkEmail" class="chk-input" placeholder="seuemail@exemplo.com" required autocomplete="email">
-          </div>
-
-          <div class="chk-field">
-            <label for="chkPhone">WhatsApp</label>
-            <input type="tel" id="chkPhone" class="chk-input" placeholder="(00) 00000-0000" required autocomplete="tel">
-          </div>
-
-          <!-- Campos exclusivos de Cartão de Crédito -->
-          <div id="chkCardFields" style="display: none;">
-            <div class="chk-field">
-              <label for="chkCardNumber">Número do Cartão</label>
-              <input type="text" id="chkCardNumber" class="chk-input" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
-            </div>
-
-            <div class="chk-field">
-              <label for="chkCardHolder">Nome impresso no Cartão</label>
-              <input type="text" id="chkCardHolder" class="chk-input" placeholder="NOME COMO NO CARTÃO" autocomplete="cc-name">
-            </div>
-
-            <div class="chk-grid-2">
-              <div class="chk-field">
-                <label for="chkCardExpiry">Validade</label>
-                <input type="text" id="chkCardExpiry" class="chk-input" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp">
-              </div>
-              <div class="chk-field">
-                <label for="chkCardCvv">CVV</label>
-                <input type="text" id="chkCardCvv" class="chk-input" placeholder="123" maxlength="4" autocomplete="cc-csc">
-              </div>
-            </div>
-
-            <div class="chk-field">
-              <label for="chkCpf">CPF do Titular do Cartão</label>
-              <input type="text" id="chkCpf" class="chk-input" placeholder="000.000.000-00">
-            </div>
-          </div>
-
-          <!-- Mensagem de Erro se houver -->
-          <div id="chkErrorMsg" style="display: none; color: #ef4444; font-size: 13px; margin: 8px 0; text-align: center;"></div>
-
-          <!-- Botão de Ação -->
-          <button type="submit" class="chk-btn-submit" id="chkSubmitBtn">
-            <span id="chkBtnText">Gerar QR Code Pix de R$ 957</span>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
-
-          <div class="chk-guarantee-note">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            Garantia incondicional de 7 dias · Risco Zero
-          </div>
-        </form>
-      </div>
-
-      <!-- VIEW 2: TELA DO PIX (QR CODE + COPIA E COLA + POLLER) -->
-      <div id="chkPixView" class="chk-pix-view" style="display: none;">
-        <div class="chk-pulse-radar">
-          <span class="chk-radar-dot"></span>
-          Aguardando pagamento... Identificação automática
-        </div>
-
-        <div class="chk-qr-frame">
-          <img id="chkPixQrImg" class="chk-qr-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="QR Code Pix">
-        </div>
-
-        <div class="chk-pix-code-wrap">
-          <textarea id="chkPixPayload" class="chk-pix-textarea" readonly></textarea>
-        </div>
-
-        <button type="button" class="chk-copy-btn" id="chkCopyPixBtn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          <span id="chkCopyBtnText">Copiar Código Pix</span>
-        </button>
-
-        <div class="chk-timer-bar">
-          QR Code válido por: <b id="chkPixTimer">15:00</b>
-        </div>
-
-        <button type="button" class="chk-btn-back" id="chkBackToPlanBtn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Alterar plano ou dados
-        </button>
-      </div>
-
-      <!-- VIEW 3: SUCESSO / APROVADO -->
-      <div id="chkSuccessView" class="chk-success-view" style="display: none;">
-        <div class="chk-success-icon">✓</div>
-        <h3 class="chk-success-title">Pagamento Aprovado!</h3>
-        <p class="chk-success-desc">
-          Parabéns! Sua vaga na Comunidade Imobiturbo está confirmada.<br>
-          Enviamos as instruções e seu acesso para o seu e-mail e WhatsApp.
-        </p>
-        <a href="https://app.imobiturbo.com.br/onboarding" class="chk-btn-submit" style="text-decoration: none;">
-          Acessar Minha Área de Membros
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT: Seletor de Planos + Carrossel Slider de Comprovantes com Lightbox -->
-  <script>
-    (function() {
-      // Helper para envio de eventos ao sistema de tracking do Hub (hub.imobiturbo.com.br)
-      function trackHubEvent(eventName, properties) {
-        if (typeof window.imtTrack === 'function') {
-          return window.imtTrack(eventName, properties);
-        }
-        if (window.__track && typeof window.__track.track === 'function') {
-          return window.__track.track(eventName, properties);
-        }
-        try {
-          var sid = (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('_imt_sid')) || '';
-          var vid = (typeof localStorage !== 'undefined' && localStorage.getItem('_imt_vid')) || '';
-          var sckMatch = document.cookie.match(/(?:^|; )_sck=([^;]*)/);
-          var sck = sckMatch ? decodeURIComponent(sckMatch[1]) : '';
-          var payload = {
-            site_key: 'comunidade-imobiturbo',
-            events: [{
-              event_id: (window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now())),
-              event_name: eventName,
-              occurred_at: new Date().toISOString(),
-              page_url: window.location.href,
-              referrer: document.referrer || null,
-              session_id: sid,
-              visitor_id: vid,
-              consent: { analytics: 'granted', ads: 'granted' },
-              context: {
-                sck: sck,
-                landing_page_url: window.location.href,
-                user_agent: (typeof navigator !== 'undefined' && navigator.userAgent) || ''
-              },
-              properties: properties || {}
-            }]
-          };
-          fetch('https://hub.imobiturbo.com.br/api/tracking/v1/events', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            keepalive: true
-          }).catch(function() {});
-        } catch (_) {}
-      }
-
-      // 1. Seletor de Planos e Controle do Modal de Checkout Nativo
-      const planRadios = document.querySelectorAll('input[name="plano"]');
-      const checkoutBtn = document.getElementById('checkoutBtn');
-      const modalOverlay = document.getElementById('checkoutModalOverlay');
-      const modalClose = document.getElementById('checkoutModalClose');
-
-      const modalPlanName = document.getElementById('chkModalPlanName');
-      const modalPlanSub = document.getElementById('chkModalPlanSub');
-      const modalPlanPrice = document.getElementById('chkModalPlanPrice');
-      const btnText = document.getElementById('chkBtnText');
-      const submitBtn = document.getElementById('chkSubmitBtn');
-
-      const tabPix = document.getElementById('tabPix');
-      const tabCard = document.getElementById('tabCard');
-      const cardFields = document.getElementById('chkCardFields');
-      const errorMsg = document.getElementById('chkErrorMsg');
-
-      const formView = document.getElementById('chkFormView');
-      const pixView = document.getElementById('chkPixView');
-      const successView = document.getElementById('chkSuccessView');
-      const pixQrImg = document.getElementById('chkPixQrImg');
-      const pixPayload = document.getElementById('chkPixPayload');
-      const copyPixBtn = document.getElementById('chkCopyPixBtn');
-      const copyBtnText = document.getElementById('chkCopyBtnText');
-      const pixTimer = document.getElementById('chkPixTimer');
-
-      const nativeForm = document.getElementById('chkNativeForm');
-      const inputName = document.getElementById('chkName');
-      const inputEmail = document.getElementById('chkEmail');
-      const inputPhone = document.getElementById('chkPhone');
-      const inputCpf = document.getElementById('chkCpf');
-      const inputCardNumber = document.getElementById('chkCardNumber');
-      const inputCardHolder = document.getElementById('chkCardHolder');
-      const inputCardExpiry = document.getElementById('chkCardExpiry');
-      const inputCardCvv = document.getElementById('chkCardCvv');
-
-      const PLAN_CONFIG = {
-        'anual': {
-          name: 'Plano Anual',
-          sub: '12 meses de acesso completo + CRM IA',
-          priceDisplay: '<small>12x R$ </small><b>97</b>',
-          pixVal: 'R$ 957',
-          cardVal: '12x R$ 97'
-        },
-        'trimestral': {
-          name: 'Plano Trimestral',
-          sub: '3 meses de acesso completo + CRM IA',
-          priceDisplay: '<small>3x R$ </small><b>127</b>',
-          pixVal: 'R$ 357',
-          cardVal: '3x R$ 127'
-        },
-        'mensal': {
-          name: 'Plano Mensal',
-          sub: 'Mensalidade com cancelamento livre',
-          priceDisplay: '<b>R$ 147</b><small>/mês</small>',
-          pixVal: 'R$ 147',
-          cardVal: 'R$ 147/mês'
-        }
-      };
-
-      let currentPlan = 'anual';
-      let currentMethod = 'PIX';
-      let pollingInterval = null;
-      let timerInterval = null;
-
-      const changePlanTrigger = document.getElementById('chkChangePlanTrigger');
-      const planDropdown = document.getElementById('chkPlanDropdown');
-      const modalPlanRadios = document.querySelectorAll('input[name="chkModalPlanRadio"]');
-      const backToPlanBtn = document.getElementById('chkBackToPlanBtn');
-
-      function getSelectedPlan() {
-        const checked = document.querySelector('input[name="plano"]:checked');
-        return checked ? checked.value : 'anual';
-      }
-
-      function updateModalPlanUI(planKey) {
-        currentPlan = planKey;
-        const info = PLAN_CONFIG[planKey] || PLAN_CONFIG.anual;
-        if (modalPlanName) modalPlanName.textContent = info.name;
-        if (modalPlanSub) modalPlanSub.textContent = info.sub;
-        if (modalPlanPrice) modalPlanPrice.innerHTML = info.priceDisplay;
-        const modalRadio = document.querySelector('input[name="chkModalPlanRadio"][value="' + planKey + '"]');
-        if (modalRadio) modalRadio.checked = true;
-        updateCtaButtonText();
-      }
-
-      function resetToFormView(targetPlan) {
-        if (pollingInterval) clearInterval(pollingInterval);
-        if (timerInterval) clearInterval(timerInterval);
-        if (pixView) pixView.style.display = 'none';
-        if (successView) successView.style.display = 'none';
-        if (formView) formView.style.display = 'block';
-        if (submitBtn) submitBtn.disabled = false;
-        if (errorMsg) {
-          errorMsg.style.display = 'none';
-          errorMsg.textContent = '';
-        }
-        if (planDropdown) planDropdown.style.display = 'none';
-        const plan = targetPlan || getSelectedPlan();
-        updateModalPlanUI(plan);
-      }
-
-      function updateCtaButtonText() {
-        const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
-        if (btnText) {
-          if (currentMethod === 'PIX') {
-            btnText.textContent = 'Gerar QR Code Pix de ' + info.pixVal;
-          } else {
-            btnText.textContent = 'Confirmar Pagamento de ' + info.cardVal;
-          }
-        }
-      }
-
-      planRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-          updateModalPlanUI(this.value);
-        });
-      });
-
-      // Dropdown de troca rápida de plano no modal
-      if (changePlanTrigger && planDropdown) {
-        changePlanTrigger.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const isHidden = planDropdown.style.display === 'none';
-          planDropdown.style.display = isHidden ? 'flex' : 'none';
-        });
-      }
-
-      modalPlanRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-          const newPlan = this.value;
-          const pageRadio = document.querySelector('input[name="plano"][value="' + newPlan + '"]');
-          if (pageRadio) pageRadio.checked = true;
-          resetToFormView(newPlan);
-        });
-      });
-
-      // Botão de voltar da tela do Pix para o formulário
-      if (backToPlanBtn) {
-        backToPlanBtn.addEventListener('click', () => {
-          resetToFormView(getSelectedPlan());
-        });
-      }
-
-      // Máscaras de entrada
-      if (inputPhone) {
-        inputPhone.addEventListener('input', function(e) {
-          let v = e.target.value.replace(/\D/g, '').slice(0, 11);
-          if (v.length > 10) {
-            v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
-          } else if (v.length > 6) {
-            v = v.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
-          } else if (v.length > 2) {
-            v = v.replace(/^(\d{2})(\d{0,5})$/, '($1) $2');
-          }
-          e.target.value = v;
-        });
-      }
-
-      if (inputCpf) {
-        inputCpf.addEventListener('input', function(e) {
-          let v = e.target.value.replace(/\D/g, '').slice(0, 11);
-          if (v.length > 9) {
-            v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
-          } else if (v.length > 6) {
-            v = v.replace(/^(\d{3})(\d{3})(\d{0,3})$/, '$1.$2.$3');
-          } else if (v.length > 3) {
-            v = v.replace(/^(\d{3})(\d{0,3})$/, '$1.$2');
-          }
-          e.target.value = v;
-        });
-      }
-
-      if (inputCardNumber) {
-        inputCardNumber.addEventListener('input', function(e) {
-          let v = e.target.value.replace(/\D/g, '').slice(0, 16);
-          e.target.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');
-        });
-      }
-
-      if (inputCardExpiry) {
-        inputCardExpiry.addEventListener('input', function(e) {
-          let v = e.target.value.replace(/\D/g, '').slice(0, 4);
-          if (v.length > 2) {
-            v = v.replace(/^(\d{2})(\d{0,2})$/, '$1/$2');
-          }
-          e.target.value = v;
-        });
-      }
-
-      // Alternador de Abas (Pix / Cartão)
-      if (tabPix && tabCard) {
-        tabPix.addEventListener('click', () => {
-          tabPix.classList.add('active');
-          tabCard.classList.remove('active');
-          currentMethod = 'PIX';
-          if (cardFields) cardFields.style.display = 'none';
-          if (inputCardNumber) inputCardNumber.required = false;
-          if (inputCpf) inputCpf.required = false;
-          updateCtaButtonText();
-        });
-
-        tabCard.addEventListener('click', () => {
-          tabCard.classList.add('active');
-          tabPix.classList.remove('active');
-          currentMethod = 'CREDIT_CARD';
-          if (cardFields) cardFields.style.display = 'block';
-          if (inputCardNumber) inputCardNumber.required = true;
-          if (inputCpf) inputCpf.required = true;
-          updateCtaButtonText();
-        });
-      }
-
-      // Abertura do Modal pelo botão principal
-      function openCheckoutModal(e) {
-        if (e) e.preventDefault();
-        const selected = getSelectedPlan();
-        if (selected !== currentPlan || (pixView && pixView.style.display !== 'none')) {
-          resetToFormView(selected);
-        } else {
-          updateModalPlanUI(selected);
-        }
-        if (modalOverlay) {
-          modalOverlay.classList.add('active');
-          modalOverlay.setAttribute('aria-hidden', 'false');
-          document.body.style.overflow = 'hidden';
-        }
-        // Dispara InitiateCheckout dual-track (Browser + Server deduplicado) e Hub tracking
-        const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
-        const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
-        const initCheckoutId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'chk_' + Date.now());
-        if (window.fbq) {
-          window.fbq('track', 'InitiateCheckout', {
-            content_name: 'Comunidade Imobiturbo',
-            offer: 'Comunidade Imobiturbo',
-            currency: 'BRL',
-            value: planVal
-          }, { eventID: initCheckoutId });
-        }
-        if (window.imtSendCapi) {
-          window.imtSendCapi('InitiateCheckout', initCheckoutId, {
-            content_name: 'Comunidade Imobiturbo',
-            offer: 'Comunidade Imobiturbo',
-            currency: 'BRL',
-            value: planVal
-          });
-        }
-        trackHubEvent('initiate_checkout', {
-          offer: 'Comunidade Imobiturbo',
-          content_name: 'Comunidade Imobiturbo',
-          plan: currentPlan,
-          value: planVal,
-          currency: 'BRL'
-        });
-      }
-
-      function closeCheckoutModal() {
-        if (modalOverlay) {
-          modalOverlay.classList.remove('active');
-          modalOverlay.setAttribute('aria-hidden', 'true');
-          document.body.style.overflow = '';
-        }
-        if (planDropdown) planDropdown.style.display = 'none';
-        if (pollingInterval) clearInterval(pollingInterval);
-        if (timerInterval) clearInterval(timerInterval);
-      }
-
-      if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', openCheckoutModal);
-      }
-
-      if (modalClose) {
-        modalClose.addEventListener('click', closeCheckoutModal);
-      }
-
-      if (modalOverlay) {
-        modalOverlay.addEventListener('click', (e) => {
-          if (e.target === modalOverlay) closeCheckoutModal();
-        });
-      }
-
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
-          closeCheckoutModal();
-        }
-      });
-
-      // Copiar código PIX
-      if (copyPixBtn && pixPayload) {
-        copyPixBtn.addEventListener('click', () => {
-          if (navigator.clipboard && pixPayload.value) {
-            navigator.clipboard.writeText(pixPayload.value).then(() => {
-              if (copyBtnText) copyBtnText.textContent = '✓ Código Pix Copiado!';
-              copyPixBtn.style.borderColor = 'var(--lime)';
-              copyPixBtn.style.color = 'var(--lime)';
-              setTimeout(() => {
-                if (copyBtnText) copyBtnText.textContent = 'Copiar Código Pix';
-                copyPixBtn.style.borderColor = '';
-                copyPixBtn.style.color = '';
-              }, 3000);
-            });
-          }
-        });
-      }
-
-      // Helper para extrair cookies de tracking
-      function getCookie(name) {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? match[2] : null;
-      }
-
-      // Helper de UTMs e SCK (Allan Tracker / M.A.P)
-      function getUtms() {
-        const params = new URLSearchParams(window.location.search);
-        const trkCtx = (typeof window !== 'undefined' && window.getTrackingData) ? window.getTrackingData() : {};
-        return {
-          sck: trkCtx.sck || getCookie('_sck') || undefined,
-          utm_source: params.get('utm_source') || trkCtx.utm_source || undefined,
-          utm_medium: params.get('utm_medium') || trkCtx.utm_medium || undefined,
-          utm_campaign: params.get('utm_campaign') || trkCtx.utm_campaign || undefined,
-          utm_content: params.get('utm_content') || trkCtx.utm_content || undefined,
-          utm_term: params.get('utm_term') || trkCtx.utm_term || undefined,
-          fbclid: params.get('fbclid') || trkCtx.fbclid || undefined,
-          gclid: params.get('gclid') || trkCtx.gclid || undefined,
-          fbp: getCookie('_fbp') || trkCtx.fbp || undefined,
-          fbc: getCookie('_fbc') || trkCtx.fbc || undefined,
-        };
-      }
-
-      // Submissão do Formulário
-      if (nativeForm) {
-        nativeForm.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          if (errorMsg) {
-            errorMsg.style.display = 'none';
-            errorMsg.textContent = '';
-          }
-
-          const name = (inputName ? inputName.value : '').trim();
-          const email = (inputEmail ? inputEmail.value : '').trim();
-          const phone = (inputPhone ? inputPhone.value : '').trim();
-          const cpf = (inputCpf ? inputCpf.value : '').trim();
-
-          if (!name || !email || !phone) {
-            if (errorMsg) {
-              errorMsg.textContent = 'Por favor, preencha seu nome, e-mail e WhatsApp.';
-              errorMsg.style.display = 'block';
-            }
-            return;
-          }
-
-          const cleanPhone = phone.replace(/\D/g, '');
-          if (cleanPhone.length < 10) {
-            if (errorMsg) {
-              errorMsg.textContent = 'Por favor, informe um WhatsApp válido com DDD.';
-              errorMsg.style.display = 'block';
-            }
-            return;
-          }
-
-          const cleanCpf = cpf.replace(/\D/g, '');
-
-          let cardData = null;
-          if (currentMethod === 'CREDIT_CARD') {
-            if (!cleanCpf || cleanCpf.length < 11) {
-              if (errorMsg) {
-                errorMsg.textContent = 'Por favor, informe o CPF do titular do cartão.';
-                errorMsg.style.display = 'block';
-              }
-              return;
-            }
-            const cardNum = (inputCardNumber ? inputCardNumber.value : '').replace(/\D/g, '');
-            const cardHolder = (inputCardHolder ? inputCardHolder.value : '').trim();
-            const cardExp = (inputCardExpiry ? inputCardExpiry.value : '').trim();
-            const cardCvv = (inputCardCvv ? inputCardCvv.value : '').trim();
-
-            if (!cardNum || cardNum.length < 13 || !cardHolder || !cardExp || !cardCvv) {
-              if (errorMsg) {
-                errorMsg.textContent = 'Por favor, confira os dados do cartão de crédito.';
-                errorMsg.style.display = 'block';
-              }
-              return;
-            }
-
-            const expParts = cardExp.split('/');
-            const expMonth = expParts[0];
-            const expYear = expParts[1] ? (expParts[1].length === 2 ? '20' + expParts[1] : expParts[1]) : '';
-
-            cardData = {
-              holderName: cardHolder,
-              number: cardNum,
-              expiryMonth: expMonth,
-              expiryYear: expYear,
-              ccv: cardCvv
-            };
-          }
-
-          if (submitBtn) submitBtn.disabled = true;
-          if (btnText) btnText.textContent = 'Gerando cobrança segura...';
-
-          const eventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now());
-          const leadEventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'lead_' + Date.now());
-          const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
-          const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
-
-          // Dispara Lead dual-track (Browser + Server deduplicado) com PII do cliente
-          if (window.fbq) {
-            window.fbq('track', 'Lead', {
-              content_name: currentInfo.name,
-              currency: 'BRL',
-              value: planVal
-            }, { eventID: leadEventId });
-          }
-          if (window.imtSendCapi) {
-            window.imtSendCapi('Lead', leadEventId, {
-              content_name: currentInfo.name,
-              currency: 'BRL',
-              value: planVal
-            }, { em: email, ph: phone, fn: name });
-          }
-
-          const payload = {
-            plan: currentPlan,
-            paymentMethod: currentMethod,
-            name,
-            email,
-            phone,
-            cpfCnpj: cpf,
-            creditCard: cardData,
-            tracking: getUtms(),
-            eventId
-          };
-
-          try {
-            const response = await fetch('/api/checkout', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-
-            const res = await response.json();
-
-            if (!response.ok || !res.success) {
-              throw new Error(res.error || 'Falha ao processar pagamento.');
-            }
-
-            // Tratamento do retorno PIX
-            if (currentMethod === 'PIX' && res.pix) {
-              if (formView) formView.style.display = 'none';
-              if (pixView) pixView.style.display = 'block';
-
-              if (pixQrImg) pixQrImg.src = res.pix.qrCodeBase64;
-              if (pixPayload) pixPayload.value = res.pix.copyPaste;
-
-              // Disparo de Purchase pendente (Pix gerado, ainda não efetivado)
-              const pixPendingEventId = 'pend_' + eventId;
-              if (window.fbq) {
-                window.fbq('trackCustom', 'PurchasePending', {
-                  offer: 'Comunidade Imobiturbo',
-                  content_name: 'Comunidade Imobiturbo',
-                  payment_method: 'PIX',
-                  status: 'pending',
-                  currency: 'BRL',
-                  value: planVal
-                }, { eventID: pixPendingEventId });
-              }
-              if (window.imtSendCapi) {
-                window.imtSendCapi('PurchasePending', pixPendingEventId, {
-                  offer: 'Comunidade Imobiturbo',
-                  content_name: 'Comunidade Imobiturbo',
-                  payment_method: 'PIX',
-                  status: 'pending',
-                  currency: 'BRL',
-                  value: planVal
-                }, { em: email, ph: phone, fn: name });
-              }
-              trackHubEvent('purchase', {
-                status: 'pending',
-                payment_status: 'pending',
-                is_pending: true,
-                offer: 'Comunidade Imobiturbo',
-                content_name: 'Comunidade Imobiturbo',
-                payment_method: 'PIX',
-                plan: currentPlan,
-                value: planVal,
-                currency: 'BRL',
-                event_id: pixPendingEventId
-              });
-
-              // Inicia contador regressivo de 15 minutos
-              let secondsLeft = 15 * 60;
-              if (timerInterval) clearInterval(timerInterval);
-              timerInterval = setInterval(() => {
-                secondsLeft--;
-                if (secondsLeft <= 0) {
-                  clearInterval(timerInterval);
-                  if (pixTimer) pixTimer.textContent = 'Expirado';
-                } else if (pixTimer) {
-                  const m = Math.floor(secondsLeft / 60);
-                  const s = secondsLeft % 60;
-                  pixTimer.textContent = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
-                }
-              }, 1000);
-
-              // Inicia Polling de status a cada 3 segundos
-              if (pollingInterval) clearInterval(pollingInterval);
-              pollingInterval = setInterval(async () => {
-                try {
-                  const stResp = await fetch('/api/checkout/status?gateway=' + encodeURIComponent(res.gateway) + '&paymentId=' + encodeURIComponent(res.paymentId));
-                  const stData = await stResp.json();
-                  if (stData && stData.paid) {
-                    clearInterval(pollingInterval);
-                    clearInterval(timerInterval);
-                    onPaymentApproved(eventId, res.amount || 957);
-                  }
-                } catch {
-                  // poller silencioso
-                }
-              }, 3000);
-
-            } else if (currentMethod === 'CREDIT_CARD') {
-              if (res.isApproved || res.status === 'CONFIRMED' || res.status === 'RECEIVED') {
-                onPaymentApproved(eventId, res.amount || 957);
-              } else {
-                throw new Error(res.error || 'Cartão em análise. Por favor tente novamente ou escolha Pix.');
-              }
-            }
-
-          } catch (err) {
-            if (errorMsg) {
-              errorMsg.textContent = err.message || 'Erro inesperado. Tente novamente em instantes.';
-              errorMsg.style.display = 'block';
-            }
-            if (submitBtn) submitBtn.disabled = false;
-            updateCtaButtonText();
-          }
-        });
-      }
-
-      function onPaymentApproved(eventId, val) {
-        if (pixView) pixView.style.display = 'none';
-        if (formView) formView.style.display = 'none';
-        if (successView) successView.style.display = 'block';
-
-        const purchaseVal = Number(val) || (currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147);
-
-        // Disparo de Purchase real e definitivo com eventID para deduplicação server-side perfeita
-        if (window.fbq) {
-          window.fbq('track', 'Purchase', {
-            offer: 'Comunidade Imobiturbo',
-            content_name: 'Comunidade Imobiturbo (' + currentPlan + ')',
-            currency: 'BRL',
-            value: purchaseVal,
-            payment_method: currentMethod,
-            status: 'paid'
-          }, { eventID: eventId });
-        }
-        if (window.imtSendCapi) {
-          window.imtSendCapi('Purchase', eventId, {
-            offer: 'Comunidade Imobiturbo',
-            content_name: 'Comunidade Imobiturbo (' + currentPlan + ')',
-            currency: 'BRL',
-            value: purchaseVal,
-            payment_method: currentMethod,
-            status: 'paid'
-          });
-        }
-        trackHubEvent('purchase', {
-          status: 'paid',
-          payment_status: 'paid',
-          is_pending: false,
-          offer: 'Comunidade Imobiturbo',
-          content_name: 'Comunidade Imobiturbo',
-          payment_method: currentMethod,
-          plan: currentPlan,
-          value: purchaseVal,
-          currency: 'BRL',
-          event_id: eventId
-        });
-        if (window.gtag) {
-          window.gtag('event', 'purchase', {
-            transaction_id: eventId,
-            value: purchaseVal,
-            currency: 'BRL'
-          });
-        }
-
-        // Redirecionamento suave após 3.5 segundos
-        setTimeout(() => {
-          window.location.href = 'https://app.imobiturbo.com.br/onboarding';
-        }, 3500);
-      }
-
-      // 2. Carrossel Contínuo Infinito (Continuous Smooth Ribbon) com Navegação e Lightbox
-      const track = document.getElementById('proofSliderTrack');
-      const prevBtn = document.getElementById('proofPrevBtn');
-      const nextBtn = document.getElementById('proofNextBtn');
-      const lightbox = document.getElementById('proofLightbox');
-      const lightboxImg = document.getElementById('proofLightboxImg');
-      const lightboxClose = document.getElementById('proofLightboxClose');
-      const lightboxBackdrop = document.getElementById('proofLightboxBackdrop');
-
-      if (track) {
-        // Clona os cards originais para criar a fita contínua infinita
-        const originalCards = Array.from(track.children);
-        originalCards.forEach(card => {
-          const clone = card.cloneNode(true);
-          clone.setAttribute('aria-hidden', 'true');
-          track.appendChild(clone);
-        });
-
-        let offset = 0;
-        let isPaused = false;
-        let resumeTimer = null;
-        let isTransitioning = false;
-        let isDragging = false;
-        let dragStartX = 0;
-        let dragStartOffset = 0;
-        let dragDistance = 0;
-        let lastTimestamp = null;
-        const scrollSpeed = 0.75; // ~45px/s de autoscroll contínuo e suave
-
-        function getHalfWidth() {
-          return track.scrollWidth / 2;
-        }
-
-        // Loop contínuo com requestAnimationFrame
-        function glide(timestamp) {
-          if (!lastTimestamp) lastTimestamp = timestamp;
-          const delta = Math.min((timestamp - lastTimestamp) / 16.666, 2.5);
-          lastTimestamp = timestamp;
-
-          const half = getHalfWidth();
-
-          if (!isPaused && !isTransitioning && !isDragging && half > 0) {
-            offset += scrollSpeed * delta;
-            if (offset >= half) {
-              offset -= half;
-            }
-            track.style.transform = `translate3d(-${offset}px, 0, 0)`;
-          }
-          requestAnimationFrame(glide);
-        }
-        requestAnimationFrame(glide);
-
-        function pauseAutoScroll(delay = 4000) {
-          isPaused = true;
-          track.classList.add('is-paused');
-          clearTimeout(resumeTimer);
-          if (delay > 0) {
-            resumeTimer = setTimeout(() => {
-              if (!lightbox || !lightbox.classList.contains('active')) {
-                isPaused = false;
-                track.classList.remove('is-paused');
-              }
-            }, delay);
-          }
-        }
-
-        // Navegação por clique nos botões Próximo e Anterior (com wrap seguro sem salto/vazio)
-        function nudge(amount) {
-          pauseAutoScroll(4500);
-          const half = getHalfWidth();
-          if (half <= 0) return;
-
-          // Se estiver recuando e offset for menor que o passo, wrap antecipado para a segunda metade
-          if (amount < 0 && offset < Math.abs(amount)) {
-            offset += half;
-            track.style.transition = 'none';
-            track.style.transform = `translate3d(-${offset}px, 0, 0)`;
-            void track.offsetWidth; // Força reflow síncrono
-          }
-
-          isTransitioning = true;
-          track.style.transition = 'transform 0.45s cubic-bezier(0.22, 1, 0.36, 1)';
-          offset += amount;
-
-          setTimeout(() => {
-            if (offset >= half) {
-              offset -= half;
-            } else if (offset < 0) {
-              offset += half;
-            }
-            track.style.transition = 'none';
-            track.style.transform = `translate3d(-${offset}px, 0, 0)`;
-            isTransitioning = false;
-          }, 470);
-
-          track.style.transform = `translate3d(-${offset}px, 0, 0)`;
-        }
-
-        const getStep = () => (window.innerWidth <= 640 ? 256 : 296);
-
-        if (nextBtn) {
-          nextBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            nudge(getStep());
-          });
-        }
-
-        if (prevBtn) {
-          prevBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            nudge(-getStep());
-          });
-        }
-
-        // Pausa no hover
-        track.addEventListener('mouseenter', () => {
-          pauseAutoScroll(0);
-        });
-        track.addEventListener('mouseleave', () => {
-          if (!lightbox || !lightbox.classList.contains('active')) {
-            pauseAutoScroll(1200);
-          }
-        });
-
-        // Suporte a Touch e Mouse Drag unificado (Pointer Events com fallback)
-        track.addEventListener('pointerdown', (e) => {
-          if (e.button !== 0 && e.pointerType === 'mouse') return;
-          pauseAutoScroll(0);
-          dragStartX = e.clientX;
-          dragStartOffset = offset;
-          dragDistance = 0;
-          isDragging = true;
-          try { track.setPointerCapture(e.pointerId); } catch (_) {}
-        });
-
-        track.addEventListener('pointermove', (e) => {
-          if (!isDragging) return;
-          const diff = e.clientX - dragStartX;
-          dragDistance = Math.abs(diff);
-          const half = getHalfWidth();
-          let target = dragStartOffset - diff;
-          if (target < 0 && half > 0) target += half;
-          if (target >= half && half > 0) target -= half;
-          offset = target;
-          track.style.transition = 'none';
-          track.style.transform = `translate3d(-${offset}px, 0, 0)`;
-        });
-
-        const endDrag = (e) => {
-          if (isDragging) {
-            isDragging = false;
-            try { track.releasePointerCapture(e.pointerId); } catch (_) {}
-            pauseAutoScroll(2500);
-          }
-        };
-
-        track.addEventListener('pointerup', endDrag);
-        track.addEventListener('pointercancel', endDrag);
-
-        // Delegação de clique no track para abrir Lightbox
-        track.addEventListener('click', (e) => {
-          if (dragDistance > 10) {
-            dragDistance = 0;
-            return;
-          }
-          const card = e.target.closest('.proof-card');
-          if (!card) return;
-          const src = card.getAttribute('data-src') || (card.querySelector('img') && card.querySelector('img').src);
-          if (src && lightbox && lightboxImg) {
-            lightboxImg.src = src;
-            lightbox.classList.add('active');
-            lightbox.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-            pauseAutoScroll(0);
-          }
-        });
-
-        function closeLightbox() {
-          if (lightbox) {
-            lightbox.classList.remove('active');
-            lightbox.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-            pauseAutoScroll(1500);
-          }
-        }
-
-        if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
-        if (lightboxBackdrop) lightboxBackdrop.addEventListener('click', closeLightbox);
-
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) {
-            closeLightbox();
-          }
-        });
-      }
-    })();
-  </script>
+<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+<div class="community-strip">Comunidade Imobiturbo</div>
+<header class="site-header">
+<div class="container header-inner">
+<span class="brand ">
+<img src="assets/brand/current/imobiturbo.webp" alt="Imobiturbo" width="2456" height="875">
+</span>
+<nav class="desktop-nav" aria-label="Navegação principal">
+<a href="#como-funciona">Como funciona</a>
+<a href="#assinatura">O que inclui</a>
+<a href="#duvidas">Dúvidas</a>
+</nav>
+<details class="mobile-menu">
+<summary aria-label="Menu de navegação">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<path d="M4 6h16M4 12h16M4 18h16"/>
+</svg>
+</summary>
+<nav aria-label="Navegação móvel">
+<a href="#como-funciona">Como funciona</a>
+<a href="#assinatura">O que inclui</a>
+<a href="#duvidas">Dúvidas</a>
+</nav>
+</details>
+</div>
+</header>
+<main id="conteudo" tabindex="-1">
+
+<section class="hero grid-ground" data-section="01" aria-labelledby="hero-title">
+<div class="container">
+<div class="hero-layout">
+<div class="hero-copy">
+<p class="eyebrow">COMUNIDADE IMOBITURBO</p>
+<h1 id="hero-title">Organize sua operação imobiliária e <span class="accent">avance com IA.</span>
+</h1>
+<p class="lead">Tenha acesso ao CRM Imobiturbo com IA no WhatsApp, suporte técnico por IA 24 horas e ao Club, com aulas, exercícios e mentor IA para orientar sua aplicação.</p>
+</div>
+<div class="media-placeholder hero-media" data-placeholder="hero-video">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<rect x="3" y="5" width="13" height="14" rx="2"/>
+<path d="m16 10 5-4v12l-5-4"/>
+</svg>
+<strong>VÍDEO DE APRESENTAÇÃO</strong>
+<span>Gravação da comunidade a fornecer</span>
+</div>
+<div class="hero-actions">
+<a class="button" href="#assinatura">Quero entrar na Comunidade Imobiturbo</a>
+<div class="proof-pending" data-placeholder="hero-proof">
+<strong>PROVA SOCIAL</strong>
+<p>Dados e pessoas reais a fornecer</p>
+</div>
+</div>
+</div>
+<p class="transition">Veja como essa estrutura entra na sua rotina.</p>
+</div>
+</section>
+
+<section id="como-funciona" class="section" data-section="02">
+<div class="container">
+<div class="section-intro">
+<p class="eyebrow">COMO FUNCIONA</p>
+<h2>Aprenda o processo. Execute no CRM. <span class="accent">Recorra à IA.</span>
+</h2>
+<p class="lead">A comunidade combina aprendizado, ferramenta de trabalho e orientação por IA para apoiar sua rotina imobiliária.</p>
+</div>
+<ol class="process">
+<li>
+<span class="step-number">01</span>
+<h3>Aprender o processo</h3>
+<p>Estude aulas e trilhas, pratique com exercícios e entenda o que aplicar.</p>
+<div class="concept lesson-concept" aria-hidden="true">
+<span>
+</span>
+<i>
+</i>
+<i>
+</i>
+<i>
+</i>
+</div>
+</li>
+<li>
+<span class="step-number">02</span>
+<h3>Executar no CRM</h3>
+<p>Use o Imobiturbo OS para organizar o trabalho e acompanhar suas oportunidades.</p>
+<div class="concept kanban-concept" aria-hidden="true">
+<span>
+<i>
+</i>
+<i>
+</i>
+</span>
+<span>
+<i>
+</i>
+</span>
+<span>
+<i>
+</i>
+<i>
+</i>
+</span>
+</div>
+</li>
+<li>
+<span class="step-number">03</span>
+<h3>Recorrer à orientação</h3>
+<p>Busque ajuda por IA para aplicar o conteúdo ou esclarecer dúvidas de utilização.</p>
+<div class="concept chat-concept" aria-hidden="true">
+<span>
+</span>
+<span>
+</span>
+</div>
+</li>
+</ol>
+<p class="note process-note">Este fluxo representa seu percurso de uso, não uma integração automática entre os assistentes.</p>
+<p class="transition">Começando pelo lugar onde você trabalha suas oportunidades.</p>
+</div>
+</section>
+
+<section id="imobiturbo-os" class="section surface" data-section="03">
+<div class="container">
+<div class="section-intro">
+<span class="brand brand-os">
+<img src="assets/brand/current/imobiturbo-os.webp" alt="Imobiturbo OS" width="3259" height="875">
+</span>
+<h2>Sua operação comercial, <span class="accent">mais organizada.</span>
+</h2>
+<p class="lead">Use o CRM para organizar o trabalho e acompanhar suas oportunidades de venda com mais clareza.</p>
+</div>
+<div class="os-layout">
+<div class="media-placeholder " data-placeholder="os-demo">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<rect x="3" y="4" width="18" height="16" rx="2"/>
+<path d="M3 9h18M9 9v11"/>
+</svg>
+<strong>DEMONSTRAÇÃO REAL DO IMOBITURBO OS</strong>
+<span>Captura ou vídeo a fornecer</span>
+</div>
+<ol class="annotations">
+<li>
+<span class="annotation-number">01</span>
+<div>
+<h3>Veja a organização</h3>
+<p>Entenda como suas oportunidades ficam apresentadas no sistema.</p>
+</div>
+</li>
+<li>
+<span class="annotation-number">02</span>
+<div>
+<h3>Acompanhe o trabalho</h3>
+<p>Observe como o CRM apoia o acompanhamento da operação comercial.</p>
+</div>
+</li>
+<li>
+<span class="annotation-number">03</span>
+<div>
+<h3>Consulte as informações</h3>
+<p>Veja o contexto disponível na oportunidade apresentada.</p>
+</div>
+</li>
+</ol>
+</div>
+<p class="transition">Organizar é uma parte. E o atendimento no WhatsApp?</p>
+</div>
+</section>
+
+<section id="whatsapp" class="section" data-section="04">
+<div class="container">
+<div class="whatsapp-layout">
+<div class="whatsapp-intro">
+<div class="section-intro">
+<p class="eyebrow">IA NO WHATSAPP</p>
+<h2>IA para <span class="accent">apoiar o atendimento</span> no seu WhatsApp.</h2>
+<p class="lead">Conte com apoio de IA na rotina de atendimento, dentro das tarefas disponíveis no CRM.</p>
+</div>
+</div>
+<div class="conversation panel" data-placeholder="whatsapp-example">
+<h3>Demonstração de atendimento</h3>
+<p class="note">Tarefa real da IA a confirmar</p>
+<div class="bubble">
+<strong>Contato</strong>
+<p>[MENSAGEM DO CONTATO A FORNECER]</p>
+</div>
+<div class="bubble bubble-ai">
+<strong>Assistente IA</strong>
+<p>[RESPOSTA REAL DA IA A FORNECER]</p>
+</div>
+<div class="bubble">
+<strong>Contato</strong>
+<p>[CONTINUAÇÃO DO EXEMPLO REAL A FORNECER]</p>
+</div>
+<p class="note">Conteúdo demonstrativo pendente de material real.</p>
+</div>
+<div class="responsibilities">
+<div>
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<path d="M5 16H3V9a9 9 0 0 1 18 0v7h-2M5 9v9H3V9zM19 9v9h2V9zM19 18a4 4 0 0 1-4 4h-3"/>
+</svg>
+<h3>O apoio da IA</h3>
+<p>Apoiar o atendimento nas tarefas e condições disponibilizadas pelo sistema.</p>
+</div>
+<div>
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="7" r="4"/>
+<path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
+</svg>
+<h3>A atuação do corretor</h3>
+<p>Conduzir a relação comercial e tomar as decisões da negociação.</p>
+</div>
+</div>
+</div>
+<p class="transition">Mas ter a ferramenta não resolve a dúvida sobre o que fazer.</p>
+</div>
+</section>
+
+<section id="club" class="section club-section" data-section="05">
+<div class="container">
+<div class="section-intro">
+<span class="brand brand-club">
+<img src="assets/brand/current/imobiturbo-club.webp" alt="Imobiturbo Club" width="3596" height="875">
+</span>
+<h2>Aprenda no seu ritmo, com <span class="accent">orientação para aplicar.</span>
+</h2>
+<p class="lead">Aulas, trilhas, exercícios e assistentes de IA para ajudar você a transformar o conteúdo em um próximo passo mais claro.</p>
+</div>
+<div class="study-panel panel">
+<div class="lesson">
+<h3>Aulas e trilhas</h3>
+<p>Estude os conteúdos organizados no Club, no seu ritmo.</p>
+<div class="media-placeholder " data-placeholder="club-lesson">
+<strong>AULA REAL NO CLUB</strong>
+<span>Vídeo ou captura a fornecer</span>
+</div>
+</div>
+<div class="guidance">
+<h3>Orientação contextualizada</h3>
+<p>Tire dúvidas com o mentor IA baseado no conhecimento de Natan e com os assistentes das aulas e trilhas.</p>
+<div class="text-placeholder" data-placeholder="club-guidance">[TRECHO REAL DE ORIENTAÇÃO POR IA A FORNECER]</div>
+<p class="note">Orientação por IA não é atendimento pessoal de Natan.</p>
+</div>
+</div>
+<div class="exercise panel">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<rect x="4" y="4" width="16" height="17" rx="2"/>
+<path d="M9 3h6v4H9zM8 13l2 2 5-5"/>
+</svg>
+<h3>Exercício e próximo passo</h3>
+<p>Pratique o conteúdo estudado e organize o que aplicar na sua rotina.</p>
+<div class="text-placeholder" data-placeholder="club-exercise">[EXERCÍCIO REAL A FORNECER]</div>
+</div>
+<div class="recordings">
+<h3>Acesso às mentorias gravadas</h3>
+<p>Assista às gravações disponibilizadas no Club e acompanhe as orientações e discussões dos encontros.</p>
+<p class="note">Acesso às gravações disponibilizadas.<br>Participação nas mentorias ao vivo não incluída.</p>
+</div>
+<a class="button" href="#assinatura">Ver a assinatura</a>
+<p class="transition">E quando a dúvida for sobre como usar o próprio sistema?</p>
+</div>
+</section>
+
+<section id="apoio" class="section support-section" data-section="06">
+<div class="container">
+<div class="section-intro">
+<p class="eyebrow">APOIO NO USO</p>
+<h2>Use o CRM com mais apoio e <span class="accent">menos travas.</span>
+</h2>
+<p class="lead">Consulte o suporte técnico por IA e os artigos de utilização para esclarecer dúvidas sobre o sistema.</p>
+</div>
+<div class="support-panel panel">
+<div class="support-example">
+<h3>Sua dúvida</h3>
+<div class="text-placeholder" data-placeholder="support-question">[DÚVIDA REAL SOBRE O USO DO CRM A FORNECER]</div>
+<h3>Orientação por IA</h3>
+<div class="text-placeholder tinted" data-placeholder="support-answer">[RESPOSTA REAL DO ASSISTENTE A FORNECER]</div>
+<p class="note">Suporte técnico por IA, disponível 24 horas.</p>
+</div>
+<div class="support-guide">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5"/>
+</svg>
+<h3>Artigos de utilização</h3>
+<p>Consulte instruções e procedimentos de uso do CRM.</p>
+<div class="media-placeholder guide-placeholder" data-placeholder="support-guide">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6M8 13h8M8 17h5"/>
+</svg>
+<strong>GUIA DO CRM</strong>
+<span>Captura ou trecho a fornecer</span>
+</div>
+</div>
+</div>
+<p class="note support-note">A disponibilidade de 24 horas se refere ao assistente de IA.</p>
+<p class="transition">Quem está por trás dessa estrutura e do conteúdo?</p>
+</div>
+</section>
+
+<section id="natan" class="section authority-section" data-section="07">
+<div class="container">
+<div class="authority-layout">
+<div class="authority-heading">
+<div class="section-intro">
+<p class="eyebrow">QUEM ESTÁ POR TRÁS</p>
+<h2>Conheça quem construiu a Imobiturbo.</h2>
+</div>
+</div>
+<div class="media-placeholder portrait-placeholder" data-placeholder="natan-photo">
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="7" r="4"/>
+<path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
+</svg>
+<strong>FOTO REAL DE NATAN</strong>
+<span>Material a fornecer</span>
+</div>
+<div class="authority-copy">
+<h3 class="founder-name">Natan Pimentel</h3>
+<p class="founder-role">Criador da Imobiturbo</p>
+<p>O mentor IA do Club é baseado no conhecimento de Natan e oferece orientação para a aplicação dos conteúdos.</p>
+<p class="pending-copy" data-placeholder="natan-bio">[APRESENTAÇÃO PROFISSIONAL A VALIDAR]</p>
+<ul class="evidence-list">
+<li data-placeholder="natan-evidence-1">
+<strong>[EVIDÊNCIA REAL 01 A FORNECER]</strong>
+<span>Contexto e origem a informar</span>
+</li>
+<li data-placeholder="natan-evidence-2">
+<strong>[EVIDÊNCIA REAL 02 A FORNECER]</strong>
+<span>Contexto e origem a informar</span>
+</li>
+<li data-placeholder="natan-evidence-3">
+<strong>[EVIDÊNCIA REAL 03 A FORNECER]</strong>
+<span>Contexto e origem a informar</span>
+</li>
+</ul>
+<p class="note">Orientação por IA não é atendimento pessoal de Natan.</p>
+</div>
+</div>
+<p class="transition">Além de conhecer quem criou, veja a experiência de quem usa.</p>
+</div>
+</section>
+
+<section id="experiencias" class="section" data-section="08">
+<div class="container">
+<div class="section-intro">
+<p class="eyebrow">EXPERIÊNCIAS DE CLIENTES</p>
+<h2>Veja a experiência de quem usa.</h2>
+<p class="lead">Relatos sobre organização comercial, atendimento, aprendizado e utilização do sistema.</p>
+</div>
+<div class="testimonials">
+<article class="testimonial panel" data-placeholder="testimonial-1">
+<h3>[RELATO REAL 01 A FORNECER]</h3>
+<div class="media-placeholder testimonial-media" data-placeholder="testimonial-video">
+<strong>MÍDIA DO DEPOIMENTO</strong>
+<span>Material real a fornecer</span>
+</div>
+<div class="testimonial-source">
+<strong>[NOME]</strong>
+<p>[CONTEXTO DA CONTRATAÇÃO]</p>
+<p>[ORIGEM DO RELATO]</p>
+</div>
+</article>
+<article class="testimonial panel" data-placeholder="testimonial-2">
+<h3>[RELATO REAL 02 A FORNECER]</h3>
+<p class="testimonial-quote">[TRECHO APROVADO A FORNECER]</p>
+<div class="testimonial-source">
+<strong>[NOME]</strong>
+<p>[CONTEXTO DA CONTRATAÇÃO]</p>
+<p>[ORIGEM DO RELATO]</p>
+</div>
+</article>
+<article class="testimonial panel" data-placeholder="testimonial-3">
+<h3>[RELATO REAL 03 A FORNECER]</h3>
+<p class="testimonial-quote">[TRECHO APROVADO A FORNECER]</p>
+<div class="testimonial-source">
+<strong>[NOME]</strong>
+<p>[CONTEXTO DA CONTRATAÇÃO]</p>
+<p>[ORIGEM DO RELATO]</p>
+</div>
+</article>
+</div>
+<p class="transition">Agora, veja se essa proposta corresponde ao que você procura.</p>
+</div>
+</section>
+
+<section id="perfil" class="section profile-section" data-section="09">
+<div class="container">
+<div class="section-intro">
+<p class="eyebrow">PARA QUEM FAZ SENTIDO</p>
+<h2>Veja se esta proposta combina com o que você procura.</h2>
+</div>
+<div class="comparison">
+<div class="panel tinted">
+<h3>
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="12" r="10"/>
+<path d="m7 12 3 3 7-7"/>
+</svg>Faz sentido para quem…</h3>
+<ul>
+<li>Quer organizar contatos e acompanhar oportunidades no CRM.</li>
+<li>Busca estudar processos e aplicá-los na própria rotina.</li>
+<li>Quer apoio de IA no atendimento, no aprendizado e no uso do sistema.</li>
+</ul>
+</div>
+<div class="panel">
+<h3>
+<svg class="icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="12" cy="12" r="10"/>
+<path d="M12 11v6M12 7v.1"/>
+</svg>Não é uma proposta de…</h3>
+<ul>
+<li>Ter toda a operação comercial executada por terceiros.</li>
+<li>Receber uma promessa de vendas ou comissões garantidas.</li>
+<li>Participar das mentorias humanas ao vivo pela assinatura da comunidade.</li>
+</ul>
+</div>
+</div>
+<p class="transition">Veja exatamente o que entra na assinatura.</p>
+</div>
+</section>
+
+<section id="assinatura" class="section surface offer-section" data-section="10">
+<div class="container">
+<div class="section-intro">
+<p class="eyebrow">SUA ASSINATURA</p>
+<h2>O que você recebe na Comunidade Imobiturbo.</h2>
+<p class="lead">Ferramenta para trabalhar, aprendizado para aplicar e ajuda por IA na rotina.</p>
+</div>
+<div class="offer-layout">
+<div class="offer-includes">
+<div>
+<h3>Trabalhar</h3>
+<ul>
+<li>Imobiturbo OS para organizar a operação comercial.</li>
+<li>IA no WhatsApp incluída na assinatura.</li>
+</ul>
+</div>
+<div>
+<h3>Aprender e aplicar</h3>
+<ul>
+<li>Aulas e trilhas disponibilizadas no Club.</li>
+<li>Exercícios e orientação com mentor IA e assistentes contextualizados.</li>
+<li>Acesso às mentorias gravadas disponibilizadas.</li>
+</ul>
+</div>
+<div>
+<h3>Conseguir usar</h3>
+<ul>
+<li>Suporte técnico por IA disponível 24 horas.</li>
+<li>Artigos e guias de utilização do CRM.</li>
+</ul>
+</div>
+</div>
+<div class="offer-card panel">
+<h3>Comunidade Imobiturbo</h3>
+<p class="price pending-copy">[PREÇO A CONFIRMAR]</p>
+<p class="offer-pending">[PERIODICIDADE A CONFIRMAR]<br>[CONDIÇÕES DE ACESSO A CONFIRMAR]</p>
+<button class="button" type="button" disabled aria-describedby="checkout-status">Quero entrar na Comunidade Imobiturbo</button>
+<p id="checkout-status" class="note checkout-status">Contratação ainda não configurada nesta prévia.</p>
+<div class="offer-conditions">
+<p>Participação nas mentorias ao vivo não incluída.</p>
+<p>Orientação por IA não é atendimento pessoal de Natan.</p>
+<ul>
+<li>Limites da IA: a confirmar</li>
+<li>Custos externos: a confirmar</li>
+<li>Garantia: a confirmar</li>
+<li>Cancelamento: a confirmar</li>
+<li>Destino do checkout: a confirmar</li>
+</ul>
+</div>
+</div>
+</div>
+<p class="transition">Ainda ficou alguma dúvida sobre o acesso?</p>
+</div>
+</section>
+
+<section id="duvidas" class="section faq-section" data-section="11">
+<div class="container narrow">
+<div class="section-intro">
+<p class="eyebrow">DÚVIDAS FREQUENTES</p>
+<h2>O que você precisa saber antes de entrar.</h2>
+</div>
+<div class="faq-list">
+<details class="faq-item" open>
+<summary>O que está incluído na comunidade?<span class="disclosure" aria-hidden="true">
+</span>
+</summary>
+<p>A assinatura combina o Imobiturbo OS, IA no WhatsApp, conteúdos disponibilizados no Club, exercícios, orientação por IA, acesso às mentorias gravadas disponibilizadas e apoio de uso com suporte técnico por IA e artigos do CRM.</p>
+</details>
+<details class="faq-item">
+<summary>Posso participar das mentorias ao vivo?<span class="disclosure" aria-hidden="true">
+</span>
+</summary>
+<p>Participação nas mentorias ao vivo não incluída. A assinatura dá acesso às gravações disponibilizadas no Club.</p>
+</details>
+<details class="faq-item">
+<summary>O mentor IA é atendimento pessoal do Natan?<span class="disclosure" aria-hidden="true">
+</span>
+</summary>
+<p>Orientação por IA não é atendimento pessoal de Natan. O mentor IA do Club é baseado no conhecimento de Natan e oferece orientação para a aplicação dos conteúdos.</p>
+</details>
+<details class="faq-item">
+<summary>A IA no WhatsApp está incluída?<span class="disclosure" aria-hidden="true">
+</span>
+</summary>
+<p>IA no WhatsApp incluída na assinatura, dentro das tarefas e condições disponibilizadas pelo sistema. Limites da IA e custos externos: a confirmar.</p>
+</details>
+<details class="faq-item">
+<summary>O suporte é humano 24 horas?<span class="disclosure" aria-hidden="true">
+</span>
+</summary>
+<p>A disponibilidade de 24 horas se refere ao assistente de IA.</p>
+</details>
+<details class="faq-item">
+<summary>Radar, Ads, Sites e Clone estão disponíveis?<span class="disclosure" aria-hidden="true">
+</span>
+</summary>
+<p>Disponibilidade de Radar, Ads, Sites e Clone: a confirmar. Esses produtos não integram a lista de entregas confirmadas nesta prévia.</p>
+</details>
+<details class="faq-item">
+<summary>Como funcionam cobrança, acesso e cancelamento?<span class="disclosure" aria-hidden="true">
+</span>
+</summary>
+<p>Preço, periodicidade, condições de acesso, cancelamento e destino do checkout: a confirmar. Contratação ainda não configurada nesta prévia.</p>
+</details>
+<details class="faq-item">
+<summary>Existe garantia?<span class="disclosure" aria-hidden="true">
+</span>
+</summary>
+<p>Garantia: a confirmar. As condições serão preenchidas nesta página antes de disponibilizar a contratação.</p>
+</details>
+</div>
+<p class="transition">Ferramenta para trabalhar, aprendizado para aplicar e IA para apoiar sua rotina.</p>
+</div>
+</section>
+
+<section class="section closing grid-ground" data-section="12">
+<div class="container">
+<h2>Ferramenta para trabalhar.<br>Aprendizado para aplicar.<br>
+<span class="accent">IA para apoiar.</span>
+</h2>
+<p class="lead">Conheça as entregas e as condições da Comunidade Imobiturbo.</p>
+<a class="button" href="#assinatura">Ver a assinatura</a>
+</div>
+</section>
+</main>
+
+<footer class="site-footer" data-section="13">
+<div class="container">
+<div class="footer-main">
+<span class="brand ">
+<img src="assets/brand/current/imobiturbo.webp" alt="Imobiturbo" width="2456" height="875">
+</span>
+<div>
+<h2>Contato</h2>
+<p data-placeholder="official-contact">[CANAL OFICIAL DE CONTATO A CONFIRMAR]</p>
+</div>
+<div>
+<h2>Informações</h2>
+<ul>
+<li>
+<span>Termos de uso</span>
+</li>
+<li>
+<span>Política de privacidade</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="footer-legal">
+<p data-placeholder="legal-identity">[RAZÃO SOCIAL E IDENTIFICAÇÃO DA EMPRESA A CONFIRMAR]</p>
+<p>© [ANO DO PROJETO] Imobiturbo.</p>
+</div>
+</div>
+</footer>
 </body>
 </html>

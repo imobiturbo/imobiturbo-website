@@ -5,6 +5,12 @@ description: "Hub de aceleração imobiliária — Rebranding 2026: Preto puro (
 surface: web
 ---
 
+## Perfil da LP /vagas/ — 13/09/2026
+
+Para a prévia em `vagas/`, prevalecem os13 briefs e37 protótipos: branco #FFFFFF, títulos #0A0A0A, corpo #52606D, acento grande #69A440, rótulos #4A742D, CTA #C1FF6B (acento em título sobre superfície #649D3C para contraste3:1), bordas #E7EAE4 e superfície #F7F9F4. Plus Jakarta Sans local. Logos somente Imobiturbo/OS/Club, com largura visual discreta conforme os protótipos. A faixa, os rótulos, os diagramas abstratos e o grid leve da hero/encerramento são elementos pedidos pelo usuário. Sem alteração do mundo visual das demais rotas.
+
+HTML mantém conteúdo editável e mídias pendentes identificadas. Recortes mobile são continuações, sem alturas fixas de prancheta. Botão de contratação desabilitado enquanto termos/checkout estiverem pendentes. Consultar `docs/vagas/IMPLEMENTACAO.md` e `docs/vagas/AUDITORIA-E-PROMPTS.md`.
+
 # Imobiturbo Design System
 
 > Category: Real Estate
