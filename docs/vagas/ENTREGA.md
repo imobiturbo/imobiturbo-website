@@ -48,3 +48,20 @@ As evidências estão em `.impeccable/review/` no worktree e em `imobiturbo-infr
 As imagens retornadas têm aproximadamente 1672×941 desktop e 941×1672 mobile, não as resoluções maiores pretendidas nos briefs. O runtime completo do OpenDesign não foi comprovado; manifesto e referência estática foram verificados. O detector Impeccable operou degradado por ausência de parsers, e seus findings de fonte/grid correspondem a requisitos explícitos dos briefs.
 
 Restam vídeos/capturas reais, retrato, relatos, trechos de conversa/IA/exercício/guia, condições comerciais e dados institucionais listados na auditoria. Os prompts de geração não substituem a fonte factual desses materiais. Esta entrega é a prévia revisável; a oferta antiga continua ativa. O passo de produto seguinte é preencher os itens auditados antes de ativar a nova contratação.
+
+
+## Publicação em produção autorizada posteriormente
+
+Em 13/09/2026, após revisar a entrega, Natan solicitou publicar a mesma versão em produção. Esta autorização substitui a restrição anterior de manter a entrega somente em preview. Preço, checkout e mídias pendentes foram mantidos exatamente como na versão revisada.
+
+- URL oficial: https://www.imobiturbo.com.br/vagas/
+- PR #1 integrado; commit publicado `12bfd7290af5e2ae12728aa5a512cebb51febb54`.
+- Build completo do website e worker na VPS3, checkout limpo, sob lock CI. Quatro testes focados passaram e build Pages concluiu com exit 0. HTML/CSS da LP permanecem idênticos aos da prévia.
+- Deployment de produção `418d0234-9a06-4add-ad08-7d537c826cfb`, sucesso confirmado pela API em 13/09/2026 às 11:12:47 UTC (08:12:47 BRT), `main`, `commit_dirty: false`.
+- Domínios com e sem www: HTTP 200, 13 seções, fonte e quatro logos carregadas, sem overflow em 1440/768/390/320 px. Menu e oito itens do FAQ operados por teclado; sem erros de página.
+- HTML, CSS, três arquivos de marca e fonte servidos correspondem aos arquivos revisados. Home, CSS/bundles, ícone e três páginas de público preservados por comparação de hashes.
+- A comparação inicial das três páginas legais apontou diferenças. Investigação contra o deployment anterior comprovou que eram somente proteção de e-mail e scripts variáveis da Cloudflare; após decodificação, o conteúdo permanece idêntico. Evidências brutas e comparação normalizada foram preservadas.
+- Backup restaurável anterior mantido. Rollback Cloudflare disponível: `79a3e333-b163-491c-98f9-75522d745df9`.
+- Evidências desta publicação: `imobiturbo-infra/data/prompts-vagas-20260913/production-*.json`, capturas `production-{largura}.png` e `production-deploy.log`.
+
+A LP está publicada, com contratação desabilitada e materiais/condições pendentes conforme solicitado para esta versão. A galeria e a auditoria continuam disponíveis no endereço de preview.
