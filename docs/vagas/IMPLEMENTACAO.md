@@ -42,9 +42,9 @@ Recortes mobile são reunidos em fluxo contínuo. Na hero o vídeo vem antes do 
 
 ## Verificação
 
-- TDD na VPS3: quatro testes inicialmente vermelhos sobre a LP antiga e quatro verdes na nova prévia; `node --test tests/vagas-preview.test.js`, exit0.
-- Chromium: 1440,768,390 e320px; zero overflow horizontal, quatro logos carregadas, oito FAQ e uma aberta, sem erros de página.
-- Capturas reais das13 seções em desktop/mobile e reprodução da hero em 1672×941. Primeira tentativa de captura por seletor retornou branco e foi descartada; evidência válida recapturada diretamente no Chromium.
+- TDD na VPS3: quatro testes inicialmente vermelhos sobre a LP antiga e quatro verdes na nova prévia; `node --test tests/vagas-preview.test.js`, exit 0.
+- Chromium: 1440, 768, 390 e 320 px; zero overflow horizontal, quatro logos carregadas, oito FAQ e uma aberta, sem erros de página.
+- Capturas reais das 13 seções em desktop/mobile e reprodução da hero em 1672×941. Primeira tentativa de captura por seletor retornou branco e foi descartada; evidência válida recapturada diretamente no Chromium.
 - Detector Impeccable executado uma vez, em modo degradado por ausência de parser. Findings de Plus Jakarta Sans e grid são exceções requeridas pelos briefs.
 - Polimento: contraste do título verde sobre superfície ajustado para #649D3C (3.081:1); legendas da mídia de depoimento ampliadas.
 - Revisão independente e build final registrados ao concluir a validação.

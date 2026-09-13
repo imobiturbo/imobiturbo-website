@@ -44,6 +44,7 @@ a:focus-visible, button:focus-visible, summary:focus-visible { outline: 3px soli
 .surface .accent { color: #649d3c; }
 .note { font-size: 15px; line-height: 1.6; }
 .transition { margin-top: 44px; padding-top: 25px; border-top: 1px solid var(--border); font-size: 17px; line-height: 1.55; }
+[data-section="03"] .transition, [data-section="04"] .transition, [data-section="05"] .transition, [data-section="06"] .transition, [data-section="10"] .transition { color: var(--heading); font-size: 24px; font-weight: 700; }
 .surface, .tinted { background: var(--surface); }
 .grid-ground { background-color: #fff; background-image: linear-gradient(#f0f0f060 1px, transparent 1px), linear-gradient(90deg, #f0f0f060 1px, transparent 1px); background-size: 32px 32px; }
 .button { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; max-width: 100%; padding: 16px 28px; border-radius: 999px; background: var(--action); color: #000; text-align: center; font-size: 16px; line-height: 1.5; font-weight: 800; transition: background-color .15s, box-shadow .15s; }
@@ -87,17 +88,18 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .text-placeholder.tinted { background: #eef5e7; }
 .process { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; list-style: none; padding: 0; }
 .process li { position: relative; display: grid; grid-template-rows: auto auto 1fr auto; align-items: start; }
-.process li::before { content: ''; position: absolute; top: 18px; left: 36px; width: calc(100% + 36px); height: 1px; background: var(--border); }
+.process li::before { content: ''; position: absolute; top: 22px; left: 44px; width: calc(100% + 36px); height: 1px; background: var(--border); }
 .process li:last-child::before { display: none; }
-.step-number { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: var(--action); color: #000; font-size: 14px; font-weight: 700; margin-bottom: 24px; }
+.step-number { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: var(--action); color: #000; font-size: 15px; font-weight: 700; margin-bottom: 24px; }
 .process h3 { margin-bottom: 12px; }
-.concept { height: 108px; margin-top: 28px; width: min(280px, 100%); }
-.lesson-concept { display: grid; grid-template-columns: 44% 1fr; grid-template-rows: repeat(3, 1fr); gap: 13px 20px; align-items: center; padding: 15px 0; }
+.concept { height: 140px; margin-top: 28px; width: min(348px, 100%); padding: 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+.lesson-concept { display: grid; grid-template-columns: 44% 1fr; grid-template-rows: repeat(3, 1fr); gap: 13px 20px; align-items: center; }
 .lesson-concept span { grid-row: span 3; height: 100%; background: #edf0e9; border: 1px solid var(--border); border-radius: 8px; }
 .lesson-concept i { display: block; height: 8px; background: var(--border); border-radius: 3px; }
 .lesson-concept i:last-child { width: 70%; }
 .kanban-concept { display: flex; gap: 12px; }
-.kanban-concept span { flex: 1; padding: 12px 8px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+.kanban-concept span { flex: 1; padding-right: 12px; border-right: 1px solid var(--border); }
+.kanban-concept span:last-child { padding-right: 0; border-right: 0; }
 .kanban-concept i { display: block; height: 24px; background: #e8ece3; border-radius: 4px; margin-bottom: 8px; }
 .chat-concept { display: flex; flex-direction: column; justify-content: center; gap: 14px; }
 .chat-concept span { width: 78%; height: 34px; border: 1px solid var(--border); border-radius: 12px 12px 12px 3px; background: #fff; }
@@ -107,7 +109,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .surface .media-placeholder { background: #fff; box-shadow: 0 8px 24px #1e361c06; }
 .annotations { list-style: none; padding: 0; display: grid; gap: 28px; }
 .annotations li { display: flex; align-items: flex-start; gap: 15px; }
-.annotation-number { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; color: var(--label); border: 1px solid #cbd9bc; border-radius: 50%; font-size: 12px; font-weight: 700; }
+.annotation-number { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; color: #000; background: var(--action); border-radius: 50%; font-size: 14px; font-weight: 700; }
 .annotations h3 { font-size: 21px; margin-bottom: 8px; }
 .annotations p { font-size: 17px; }
 .whatsapp-layout { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.2fr); gap: 0 48px; grid-template-areas: 'intro conversation' 'roles conversation'; align-items: start; }
@@ -135,7 +137,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .exercise .text-placeholder { margin-top: 24px; }
 .recordings { margin-top: 32px; border-top: 1px solid var(--border); padding-top: 28px; max-width: 940px; }
 .recordings p { margin-top: 12px; }
-.recordings .note { margin-top: 18px; }
+.recordings .note { margin-top: 18px; color: var(--heading); font-size: 17px; font-weight: 700; }
 .club-section .button { margin-top: 30px; }
 .support-section { padding-top: 56px; }
 .support-panel { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 30px; }
@@ -178,7 +180,9 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .comparison ul { padding-left: 22px; display: grid; gap: 20px; }
 .comparison li { padding-left: 5px; }
 .comparison li::marker { color: var(--label); }
-.offer-section .section-intro { max-width: 1100px; }
+.offer-section .section-intro { max-width: 1100px; margin-inline: auto; text-align: center; }
+.offer-section .section-intro .lead { margin-inline: auto; }
+.offer-section .transition { text-align: center; }
 .offer-layout { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 44px; align-items: start; }
 .offer-includes > div + div { margin-top: 26px; border-top: 1px solid var(--border); padding-top: 26px; }
 .offer-includes h3 { margin-bottom: 14px; }
@@ -239,6 +243,9 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .section-intro h2 + .lead { margin-top: 18px; }
   .note { font-size: 15px; }
   .transition { font-size: 16px; margin-top: 30px; padding-top: 24px; }
+  [data-section="03"] .transition { font-size: 21px; }
+  [data-section="04"] .transition, [data-section="05"] .transition, [data-section="06"] .transition, [data-section="10"] .transition { color: var(--body); font-size: 16px; font-weight: 400; }
+  [data-section="05"] .transition, [data-section="06"] .transition { border: 0; padding-top: 0; }
   .header-inner { min-height: 64px; }
   .brand { width: 165px; }
   .brand-os { width: 190px; }
@@ -266,15 +273,16 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .text-placeholder { font-size: 16px; padding: 18px; }
   .process { grid-template-columns: 1fr; gap: 32px; }
   .process li { display: block; padding-left: 54px; }
-  .step-number { position: absolute; left: 0; top: 0; margin: 0; }
+  .step-number { position: absolute; left: 0; top: 0; width: 36px; height: 36px; font-size: 14px; margin: 0; }
   .process li::before { left: 17px; top: 36px; width: 1px; height: calc(100% + 32px); }
   .process h3 { margin-bottom: 10px; }
-  .concept { height: 88px; margin-top: 20px; }
+  .concept { height: 110px; margin-top: 20px; padding: 14px; }
   .process-note { margin-top: 30px; }
   .os-layout { grid-template-columns: 1fr; gap: 30px; }
   .annotations { gap: 26px; }
   .annotations h3 { font-size: 21px; }
   .annotations li { gap: 14px; }
+  .annotation-number { width: 36px; height: 36px; }
   .whatsapp-layout { grid-template-columns: 1fr; grid-template-areas: 'intro' 'conversation' 'roles'; }
   .conversation { padding: 18px; }
   .conversation h3 { font-size: 19px; }
@@ -287,6 +295,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .guidance .text-placeholder { margin-top: 20px; }
   .exercise { margin-top: 24px; }
   .recordings { margin-top: 28px; padding-top: 26px; }
+  .recordings .note { padding: 20px; border-radius: 16px; background: var(--surface); color: var(--body); font-size: 15px; font-weight: 400; }
   .club-section .button { width: 100%; margin-top: 26px; }
   .support-panel { grid-template-columns: 1fr; gap: 28px; }
   .support-guide { padding: 26px 0 0; border-left: 0; border-top: 1px solid var(--border); }
@@ -309,6 +318,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .comparison .icon { width: 30px; height: 30px; }
   .comparison ul { gap: 20px; }
   .offer-layout { grid-template-columns: 1fr; gap: 32px; }
+  .offer-section .section-intro, .offer-section .transition { text-align: left; }
   .offer-includes h3 { font-size: 22px; }
   .offer-includes ul { list-style: disc; padding-left: 20px; gap: 10px; }
   .offer-includes li { padding-left: 3px; }
