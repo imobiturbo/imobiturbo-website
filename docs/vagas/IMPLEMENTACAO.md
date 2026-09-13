@@ -47,6 +47,6 @@ Recortes mobile são reunidos em fluxo contínuo. Na hero o vídeo vem antes do 
 - Capturas reais das 13 seções em desktop/mobile e reprodução da hero em 1672×941. Primeira tentativa de captura por seletor retornou branco e foi descartada; evidência válida recapturada diretamente no Chromium.
 - Detector Impeccable executado uma vez, em modo degradado por ausência de parser. Findings de Plus Jakarta Sans e grid são exceções requeridas pelos briefs.
 - Polimento: contraste do título verde sobre superfície ajustado para #649D3C (3.081:1); legendas da mídia de depoimento ampliadas.
-- Revisão independente e build final registrados ao concluir a validação.
+- Revisão independente Impeccable: `ship` após sete correções verificadas nas capturas. Build final do código `79ca7a5` na VPS3, quatro testes verdes, checkout limpo e HTML/CSS comparados por SHA-256 com os arquivos construídos.
 
 A auditoria e os prompts de preenchimento estão em [AUDITORIA-E-PROMPTS.md](AUDITORIA-E-PROMPTS.md).

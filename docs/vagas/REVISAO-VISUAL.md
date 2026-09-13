@@ -29,10 +29,18 @@ Referência: os 37 quadros gerados a partir dos 13 briefs fornecidos, com as dua
 - Detector executado uma vez. Degradado por ausência dos módulos de parser, portanto não foi tratado como prova de contraste ou aprovação visual. Fonte Plus Jakarta Sans e grid foram os dois findings mecânicos; ambos são requisitos explícitos dos briefs.
 - Testes focados e build Pages concluídos na VPS3, exit 0, em checkout limpo. Fonte HTML/CSS comparada por SHA-256 com o artefato construído.
 
-Capturas e resultados detalhados estão em `.impeccable/review/` no worktree da missão e no pacote de evidências local. O parecer independente será anexado ao concluir a revisão.
+Capturas e resultados detalhados estão em `.impeccable/review/` no worktree da missão e no pacote de evidências local. O parecer independente concluiu `disposition: ship` após a correção dos sete achados, sem pendências materiais nesse escopo.
 
 ## Correções após a primeira revisão independente
 
 Sete pontos corrigidos: hierarquia das transições 03/04/05/06/10; aviso de gravações; molduras dos diagramas e escala dos marcadores 02; introdução da oferta centralizada no desktop; marcadores lime preenchidos no OS; remoção dos ícones de vídeo excedentes em Club e relatos; nome acessível neutro do menu mobile.
 
 As transições mobile seguem seus próprios quadros: destaque escuro em 03-M-B; texto de apoio cinza em 04-M-B, 05-M-C, 06-M e 10-M-B. O aviso de gravações tem peso forte no desktop e superfície pálida no mobile. Capturas renovadas nas quatro larguras sem overflow ou imagens quebradas.
+
+## Parecer final e build
+
+Revisor independente gpt-5.6-luna, esforço max: `disposition: ship`. Os sete achados foram resolvidos; não foram identificadas regressões materiais nas capturas renovadas. O detector não foi repetido. Não houve nova rodada de sugestões cosméticas após o parecer final.
+
+Build final do código `79ca7a555e5c5650e0f498c9c6461b83dc580d67` na VPS3, checkout limpo, sob `/var/lock/imobiturbo-ci.lock`: quatro testes focados passaram e `npm run build:pages` concluiu com exit 0. HTML e CSS construídos são idênticos à fonte por SHA-256.
+
+Este parecer aprova o acabamento da prévia. Mídias reais e condições comerciais continuam pendentes conforme a auditoria.
