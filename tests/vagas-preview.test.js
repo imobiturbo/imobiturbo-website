@@ -41,6 +41,28 @@ test('vagas is ready for production traffic: indexed, active checkout and zero p
   }
 });
 
+test('section 02 process cards contain rich realistic micro-UI and zero empty skeleton wireframes', () => {
+  // No empty skeleton elements inside .concept
+  assert.ok(!html.includes('<span><i></i><i></i></span>'));
+  
+  // Rich micro-UI elements
+  assert.ok(html.includes('class="concept lesson-concept"'));
+  assert.ok(html.includes('class="lesson-play-btn"'));
+  assert.ok(html.includes('Captação Exclusiva com IA'));
+  assert.ok(html.includes('class="lesson-progress-bar"'));
+
+  assert.ok(html.includes('class="concept kanban-concept"'));
+  assert.ok(html.includes('class="kanban-col"'));
+  assert.ok(html.includes('Carlos M.'));
+  assert.ok(html.includes('Dra. Silvia'));
+
+  assert.ok(html.includes('class="concept chat-concept"'));
+  assert.ok(html.includes('class="chat-bubble chat-bubble-user"'));
+  assert.ok(html.includes('class="chat-bubble chat-bubble-ai"'));
+  assert.ok(html.includes('Cliente pediu desconto na comissão'));
+  assert.ok(html.includes('Assistente Imobiturbo'));
+});
+
 test('FAQ discloses eight questions with only the first answer initially open', () => {
   const details = [...html.matchAll(/<details\b([^>]*class="faq-item"[^>]*)>([\s\S]*?)<\/details>/g)];
   assert.equal(details.length, 8);
