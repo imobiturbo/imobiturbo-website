@@ -5,12 +5,40 @@ const path = require('node:path');
 const root = path.join(__dirname, '..');
 const html = fs.readFileSync(path.join(root, 'vagas/index.html'), 'utf8');
 
-test('unfinished commercial terms cannot start a checkout or tracking journey', () => {
-  assert.match(html, /<meta name="robots" content="noindex,nofollow">/);
-  assert.match(html, /<button[^>]*disabled[^>]*>Quero entrar na Comunidade Imobiturbo<\/button>/);
-  assert.match(html, /Contratação ainda não configurada nesta prévia\./);
-  assert.doesNotMatch(html, /<script\b|<form\b|data-checkout|checkout\.abacatepay|12x\s*(?:de\s*)?R\$/i);
-  for (const text of ['[PREÇO A CONFIRMAR]', '[PERIODICIDADE A CONFIRMAR]', 'Limites da IA: a confirmar', 'Cancelamento: a confirmar']) assert.ok(html.includes(text), text);
+test('vagas is ready for production traffic: indexed, active checkout and zero placeholder text', () => {
+  assert.match(html, /<meta name="robots" content="index, follow">/);
+  assert.match(html, /<button[^>]*id="checkoutBtn"[^>]*>\s*Quero entrar na Comunidade Imobiturbo\s*<\/button>/);
+  assert.ok(!html.includes('disabled aria-describedby="checkout-status"'));
+  assert.ok(html.includes('id="checkoutModalOverlay"'));
+
+  const forbiddenPlaceholders = [
+    '[PREÇO A CONFIRMAR]',
+    '[PERIODICIDADE A CONFIRMAR]',
+    '[CONDIÇÕES DE ACESSO A CONFIRMAR]',
+    'Limites da IA: a confirmar',
+    'Cancelamento: a confirmar',
+    'Contratação ainda não configurada nesta prévia.',
+    '[MENSAGEM DO CONTATO A FORNECER]',
+    '[RESPOSTA REAL DA IA A FORNECER]',
+    '[CONTINUAÇÃO DO EXEMPLO REAL A FORNECER]',
+    '[TRECHO REAL DE ORIENTAÇÃO POR IA A FORNECER]',
+    '[EXERCÍCIO REAL A FORNECER]',
+    '[DÚVIDA REAL SOBRE O USO DO CRM A FORNECER]',
+    '[RESPOSTA REAL DO ASSISTENTE A FORNECER]',
+    '[APRESENTAÇÃO PROFISSIONAL A VALIDAR]',
+    '[EVIDÊNCIA REAL 01 A FORNECER]',
+    '[EVIDÊNCIA REAL 02 A FORNECER]',
+    '[EVIDÊNCIA REAL 03 A FORNECER]',
+    '[RELATO REAL 01 A FORNECER]',
+    '[RELATO REAL 02 A FORNECER]',
+    '[RELATO REAL 03 A FORNECER]',
+    '[CANAL OFICIAL DE CONTATO A CONFIRMAR]',
+    '[RAZÃO SOCIAL E IDENTIFICAÇÃO DA EMPRESA A CONFIRMAR]',
+    '[ANO DO PROJETO]'
+  ];
+  for (const text of forbiddenPlaceholders) {
+    assert.ok(!html.includes(text), `Must not contain placeholder: ${text}`);
+  }
 });
 
 test('FAQ discloses eight questions with only the first answer initially open', () => {
@@ -27,27 +55,29 @@ test('FAQ discloses eight questions with only the first answer initially open', 
   assert.ok(html.includes('Orientação por IA não é atendimento pessoal de Natan.'));
 });
 
-test('preview navigation resolves locally and pending media has no false controls', () => {
+test('page navigation resolves locally and covers all 13 semantic sections', () => {
   const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]));
-  const links = [...html.matchAll(/<a\b[^>]*href="([^"]+)"/g)].map(m => m[1]);
-  assert.ok(links.length >= 6);
-  for (const href of links) {
-    assert.ok(href.startsWith('#'), href);
-    assert.ok(ids.has(href.slice(1)), href);
+  const internalLinks = [...html.matchAll(/<a\b[^>]*href="(#[^"]+)"/g)].map(m => m[1]);
+  assert.ok(internalLinks.length >= 6);
+  for (const href of internalLinks) {
+    assert.ok(ids.has(href.slice(1)), `Internal link target ${href} must exist`);
   }
-  assert.doesNotMatch(html, /<iframe\b|<video\b|<audio\b|<input\b/i);
   assert.equal([...html.matchAll(/data-section="\d{2}"/g)].length, 13);
 });
 
-test('all page images are real local brand files with explicit dimensions', () => {
+test('all page images are real local brand/case files with explicit dimensions', () => {
   const imgs = [...html.matchAll(/<img\b([^>]+)>/g)];
-  assert.equal(imgs.length, 4);
+  assert.ok(imgs.length >= 20, "Page should contain all case proofs and assets");
   for (const [, attrs] of imgs) {
-    const src = attrs.match(/\bsrc="([^"]+)"/)[1];
-    assert.ok(src.startsWith('assets/brand/current/'));
-    assert.ok(fs.existsSync(path.join(root, 'vagas', src)), src);
+    const srcMatch = attrs.match(/\bsrc="([^"]+)"/);
+    assert.ok(srcMatch, "Image must have src");
+    const src = srcMatch[1];
+    if (!src.startsWith('data:')) {
+      const cleanSrc = src.replace(/^\.\//, '');
+      assert.ok(fs.existsSync(path.join(root, 'vagas', cleanSrc)), `Image file ${cleanSrc} must exist`);
+    }
     assert.match(attrs, /\bwidth="\d+"/);
     assert.match(attrs, /\bheight="\d+"/);
-    assert.match(attrs, /\balt="Imobiturbo/);
+    assert.match(attrs, /\balt="[^"]+"/);
   }
 });
