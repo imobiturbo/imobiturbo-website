@@ -65,3 +65,17 @@ Em 13/09/2026, após revisar a entrega, Natan solicitou publicar a mesma versão
 - Evidências desta publicação: `imobiturbo-infra/data/prompts-vagas-20260913/production-*.json`, capturas `production-{largura}.png` e `production-deploy.log`.
 
 A LP está publicada, com contratação desabilitada e materiais/condições pendentes conforme solicitado para esta versão. A galeria e a auditoria continuam disponíveis no endereço de preview.
+
+## Publicação em produção com tráfego ativado e checkout AbacatePay — 2026-09-16
+
+Em 16/09/2026, Natan solicitou a ativação completa da página para tráfego com preenchimento persuasivo dos 13 módulos, cases reais selecionados e 3 planos de precificação no AbacatePay.
+
+- URL oficial: https://www.imobiturbo.com.br/vagas/
+- Deployment imutável: https://91b68223.imobiturbo-website.pages.dev
+- Commit publicado: `c16c4d935a68baa01541f5c9ae76166c7f01148a`.
+- Deployment ID Cloudflare Pages: `91b68223-289a-412e-a58f-b98358485fc3`, ambiente `production`, branch `main`, criado em 16/09/2026 às 07:23:05 UTC (04:23:05 BRT).
+- Cache Cloudflare: Purge total da zona `74c17d7bcb0ec866da4915197f0dad15` executado com sucesso.
+- Status do edge: HTTP 200 em `https://imobiturbo-website.pages.dev/vagas/` e na URL imutável.
+- Endpoints de API: `/api/checkout` e `/api/checkout/status` ativos no Worker com suporte a CORS e respostas HTTP 204/200.
+- Rollback Cloudflare disponível: deployment anterior `418d0234-9a06-4add-ad08-7d537c826cfb`.
+- Testes automatizados: 32/32 aprovados com 100% de sucesso.
