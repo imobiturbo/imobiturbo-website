@@ -68,14 +68,10 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .community-strip { min-height: 28px; display: flex; justify-content: center; align-items: center; background: var(--action); color: #000; font-size: 12px; font-weight: 700; }
 .site-header { position: relative; z-index: 2; background: #fff; border-bottom: 1px solid var(--border); }
 .header-inner { display: flex; justify-content: space-between; align-items: center; min-height: 80px; gap: 30px; }
-/* The official files contain transparent vertical margins. Frame those margins
-   in CSS so the visible logo is sized consistently, preserving original bytes. */
-.brand { display: block; width: 190px; aspect-ratio: 2456 / 347; overflow: hidden; flex-shrink: 0; }
-.brand img { width: 100%; height: auto; max-width: none; transform: translateY(-32%); }
-.brand-os { width: 218px; aspect-ratio: 3031 / 347; }
-.brand-os img { width: 107.5223%; }
-.brand-club { width: 242px; aspect-ratio: 3406 / 347; }
-.brand-club img { width: 105.5784%; }
+.brand { display: block; width: 190px; flex-shrink: 0; line-height: 0; }
+.brand img { width: 100%; height: auto; max-width: 100%; transform: none; }
+.brand-os { width: 218px; }
+.brand-club { width: 242px; }
 .desktop-nav { display: flex; align-items: center; gap: 36px; font-size: 15px; font-weight: 600; }
 .desktop-nav a { padding-block: 12px; }
 .desktop-nav a:hover, .mobile-menu a:hover { color: var(--label); }
@@ -91,7 +87,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .proof-pending { margin-top: 18px; padding: 16px 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); font-size: 15px; }
 .proof-pending strong { color: var(--label); font-size: 12px; letter-spacing: .055em; }
 .proof-pending p { margin-top: 3px; }
-.hero .transition { text-align: center; border: 0; padding-top: 0; margin-top: 42px; font-size: 14px; }
+.hero .transition { max-width: 520px; text-align: left; padding-top: 18px; margin-top: 28px; font-size: 14px; color: var(--body); }
 .media-placeholder { aspect-ratio: 16 / 9; min-width: 0; padding: 24px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--media); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 9px; text-align: center; }
 .media-placeholder > .icon { width: 46px; height: 46px; margin-bottom: 8px; }
 .media-placeholder strong { font-size: 14px; line-height: 1.5; font-weight: 700; letter-spacing: .025em; }
@@ -144,15 +140,20 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .chat-concept .chat-bubble-user .chat-sender { color: var(--body); }
 .chat-concept .ai-badge { background: var(--military); color: #fff; font-size: 12px; padding: 1px 4px; border-radius: 3px; font-weight: 800; }
 .chat-concept .chat-text { margin: 0; font-size: 13px; line-height: 1.5; color: inherit; }
-.process-note { margin-top: 36px; max-width: 840px; }
-.os-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.process-tail { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); gap: 28px; align-items: center; margin-top: 34px; padding-top: 24px; border-top: 1px solid var(--border); }
+.process-note { max-width: none; padding: 16px 18px; border-radius: 12px; background: var(--surface); }
+.process-tail .transition { margin: 0; padding: 0; border: 0; color: var(--heading); font-size: 17px; font-weight: 700; }
+.os-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); grid-template-areas: 'demo annotations' 'transition annotations'; gap: 24px 40px; align-items: start; }
+.os-layout .os-demo-frame { grid-area: demo; }
+.os-layout .annotations { grid-area: annotations; }
+.os-layout > .transition { grid-area: transition; margin-top: 0; align-self: end; }
 .surface .media-placeholder { background: #fff; box-shadow: 0 8px 24px #1e361c06; }
 .annotations { list-style: none; padding: 0; display: grid; gap: 28px; }
 .annotations li { display: flex; align-items: flex-start; gap: 15px; }
 .annotation-number { display: grid; place-items: center; flex-shrink: 0; width: 40px; height: 40px; color: #000; background: var(--action); border-radius: 50%; font-size: 14px; font-weight: 700; }
 .annotations h3 { font-size: 21px; margin-bottom: 8px; }
 .annotations p { font-size: 17px; }
-.whatsapp-layout { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.2fr); grid-template-rows: auto 1fr; gap: 0 48px; grid-template-areas: 'intro conversation' 'roles conversation'; align-items: start; }
+.whatsapp-layout { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.2fr); grid-template-rows: auto auto 1fr; gap: 0 48px; grid-template-areas: 'intro conversation' 'roles conversation' 'transition conversation'; align-items: start; }
 .whatsapp-intro { grid-area: intro; }
 .whatsapp-intro .section-intro { margin-bottom: 28px; }
 .conversation { grid-area: conversation; box-shadow: 0 8px 24px #1e361c05; }
@@ -162,6 +163,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .bubble strong { display: block; color: var(--heading); font-size: 14px; margin-bottom: 7px; }
 .bubble-ai { margin-left: auto; background: #edf5e5; border-radius: 14px 14px 4px 14px; }
 .responsibilities { grid-area: roles; display: grid; gap: 28px; }
+.whatsapp-layout > .transition { grid-area: transition; align-self: end; margin-top: 30px; }
 .responsibilities .icon { color: var(--label); margin-bottom: 12px; }
 .responsibilities h3 { margin-bottom: 10px; }
 .club-section { border-top: 1px solid var(--border); }
@@ -175,9 +177,10 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .exercise .icon { color: var(--label); margin-bottom: 16px; }
 .exercise p { margin-top: 8px; }
 .exercise .text-placeholder { margin-top: 24px; }
-.recordings { margin-top: 32px; border-top: 1px solid var(--border); padding-top: 28px; max-width: 940px; }
-.recordings p { margin-top: 12px; }
-.recordings .note { margin-top: 18px; color: var(--heading); font-size: 17px; font-weight: 700; }
+.recordings { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .72fr); grid-template-areas: 'heading note' 'copy note'; gap: 10px 40px; margin-top: 32px; border-top: 1px solid var(--border); padding-top: 28px; }
+.recordings h3 { grid-area: heading; }
+.recordings > p:not(.note) { grid-area: copy; margin-top: 0; }
+.recordings .note { grid-area: note; align-self: center; margin-top: 0; padding: 18px 20px; border-radius: 14px; background: var(--surface); color: var(--heading); font-size: 16px; font-weight: 700; }
 .club-section .button { margin-top: 30px; }
 .support-section { padding-top: 56px; }
 .support-panel { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 30px; }
@@ -189,12 +192,14 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .support-guide .guide-placeholder { margin-top: 22px; aspect-ratio: auto; min-height: 150px; padding: 20px; }
 .guide-placeholder > .icon { display: none; }
 .support-note { margin-top: 20px; }
-.authority-layout { display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, 1.2fr); grid-template-rows: auto 1fr; grid-template-areas: 'portrait heading' 'portrait copy'; gap: 0 64px; align-items: start; }
+.authority-layout { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); grid-template-areas: 'portrait heading' 'portrait copy' 'evidence evidence' 'note note'; gap: 0 64px; align-items: start; }
 .authority-heading { grid-area: heading; }
 .authority-heading .section-intro { margin-bottom: 26px; }
 .portrait-placeholder { grid-area: portrait; width: 100%; max-width: 400px; aspect-ratio: 4 / 5; align-self: center; }
 .portrait-placeholder > .icon { display: none; }
 .authority-copy { grid-area: copy; }
+.authority-evidence { grid-area: evidence; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 34px; }
+.authority-note { grid-area: note; margin-top: 14px; }
 .founder-name { font-size: 27px; }
 .founder-role { margin: 5px 0 22px; }
 .pending-copy { overflow-wrap: break-word; }
@@ -465,9 +470,9 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   scrollbar-color: var(--label) var(--surface);
 }
 .proof-card {
-  flex: 0 0 min(280px, 80vw);
-  width: min(280px, 80vw);
-  height: 460px;
+  flex: 0 0 auto;
+  width: auto;
+  height: min(460px, 118vw);
   padding: 0;
   scroll-snap-align: start;
   border-radius: var(--radius-md);
@@ -490,11 +495,10 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 .proof-card img {
-  width: 100%;
+  width: auto;
   height: 100%;
   display: block;
-  object-fit: cover;
-  object-position: top center;
+  object-fit: contain;
 }
 .proof-slider-nav {
   display: flex;
@@ -1190,6 +1194,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .os-layout { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; }
   .whatsapp-layout { gap: 0 32px; }
   .authority-layout { gap: 0 36px; }
+  .authority-evidence { grid-template-columns: 1fr; }
   .offer-layout { grid-template-columns: 1fr; gap: 32px; }
   .offer-card, .offer-includes { width: min(640px, 100%); margin-inline: auto; }
   .testimonials { gap: 16px; }
@@ -1254,34 +1259,41 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .concept { grid-column: 1 / -1; min-height: 160px; height: auto; margin-top: 20px; padding: 12px; }
   .chat-concept { padding: 10px 12px; gap: 6px; }
   .chat-concept .chat-bubble { padding: 6px 9px; }
-  .os-layout { grid-template-columns: 1fr; gap: 30px; }
+  .process-tail { grid-template-columns: 1fr; gap: 14px; margin-top: 28px; padding-top: 22px; }
+  .process-tail .transition { font-size: 16px; font-weight: 600; }
+  .os-layout { grid-template-columns: 1fr; grid-template-areas: 'demo' 'annotations' 'transition'; gap: 30px; }
+  .os-layout > .transition { margin-top: 0; }
   .annotations { gap: 26px; }
   .annotations h3 { font-size: 21px; }
   .annotations li { gap: 14px; }
   .annotation-number { width: 36px; height: 36px; }
-  .whatsapp-layout { grid-template-columns: 1fr; grid-template-rows: auto; grid-template-areas: 'intro' 'conversation' 'roles'; }
+  .whatsapp-layout { grid-template-columns: 1fr; grid-template-rows: auto; grid-template-areas: 'intro' 'conversation' 'roles' 'transition'; }
   .conversation { padding: 18px; }
   .conversation h3 { font-size: 19px; }
   .bubble { padding: 16px; max-width: 92%; }
   .responsibilities { margin-top: 32px; gap: 30px; }
+  .whatsapp-layout > .transition { margin-top: 30px; }
   .study-panel { grid-template-columns: 1fr; padding: 0; }
   .lesson, .guidance { padding: 22px; }
   .guidance { border-left: 0; border-top: 1px solid var(--border); }
   .lesson .media-placeholder { margin-top: 20px; }
   .guidance .text-placeholder { margin-top: 20px; }
   .exercise { margin-top: 24px; }
-  .recordings { margin-top: 28px; padding-top: 26px; }
-  .recordings .note { padding: 20px; border-radius: 16px; background: var(--surface); color: var(--body); font-size: 15px; font-weight: 400; }
+  .recordings { display: block; margin-top: 28px; padding-top: 26px; }
+  .recordings > p:not(.note) { margin-top: 12px; }
+  .recordings .note { margin-top: 18px; padding: 20px; border-radius: 16px; background: var(--surface); color: var(--body); font-size: 15px; font-weight: 400; }
   .club-section .button { width: 100%; margin-top: 26px; }
   .support-panel { grid-template-columns: 1fr; gap: 28px; }
   .support-guide { padding: 26px 0 0; border-left: 0; border-top: 1px solid var(--border); }
   .support-guide .guide-placeholder { min-height: 135px; }
-  .authority-layout { grid-template-columns: 1fr; grid-template-rows: auto; grid-template-areas: 'heading' 'portrait' 'copy'; gap: 0; }
+  .authority-layout { grid-template-columns: 1fr; grid-template-rows: auto; grid-template-areas: 'heading' 'portrait' 'copy' 'evidence' 'note'; gap: 0; }
   .authority-heading .section-intro { margin-bottom: 28px; }
   .portrait-placeholder { width: min(310px, 100%); margin: 0 auto 28px; }
   .portrait-frame { width: min(360px, 100%); margin: 0 auto 28px; }
   .founder-name { font-size: 25px; }
   .founder-role { margin-bottom: 24px; }
+  .authority-evidence { grid-template-columns: 1fr; margin-top: 28px; }
+  .authority-note { margin-top: 14px; }
   .evidence-list strong { font-size: 16px; }
   .testimonials { grid-template-columns: 1fr; gap: 20px; }
   .testimonial { padding: 24px; }

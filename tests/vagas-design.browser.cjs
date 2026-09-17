@@ -86,7 +86,28 @@ test('responsive layout keeps founder content together and every plan readable',
             scrollWidth: row.scrollWidth, clientWidth: row.clientWidth
           })),
           imagesLoaded: [...document.querySelectorAll('main img')].every(image => image.naturalWidth > 0),
-          fontLoaded: document.fonts.check('600 18px "Plus Jakarta Sans"')
+          fontLoaded: document.fonts.check('600 18px "Plus Jakarta Sans"'),
+          brands: [...document.querySelectorAll('.brand')].map(brand => {
+            const image = brand.querySelector('img');
+            const frame = brand.getBoundingClientRect();
+            const rendered = image.getBoundingClientRect();
+            return {
+              overflow: getComputedStyle(brand).overflow,
+              transform: getComputedStyle(image).transform,
+              frame: frame.toJSON(),
+              rendered: rendered.toJSON()
+            };
+          }),
+          proofs: [...document.querySelectorAll('.proof-card img')].map(image => {
+            const rendered = image.getBoundingClientRect();
+            return {
+              nativeRatio: image.naturalWidth / image.naturalHeight,
+              renderedRatio: rendered.width / rendered.height,
+              width: rendered.width,
+              height: rendered.height
+            };
+          }),
+          footerLegal: document.querySelector('.footer-legal p')?.textContent.trim()
         };
       });
       measurements.push(geometry);
@@ -109,6 +130,11 @@ test('responsive layout keeps founder content together and every plan readable',
       assert.ok(geometry.kanban.frame.left >= 0 && geometry.kanban.frame.right <= width, 'Kanban scroll stays inside its illustration');
       assert.ok(geometry.kanban.columns.every(column => column >= 108), 'Kanban columns keep readable widths');
       assert.ok(geometry.imagesLoaded && geometry.fontLoaded, 'local images and font load');
+      assert.equal(geometry.footerLegal, 'CNPJ 47.746.249/0001-04', 'footer keeps only the requested legal identifier');
+      assert.ok(geometry.brands.every(brand => brand.overflow !== 'hidden' && brand.transform === 'none'), 'logos are not cropped or translated inside their frames');
+      assert.ok(geometry.brands.every(brand => brand.rendered.top >= brand.frame.top - 1 && brand.rendered.bottom <= brand.frame.bottom + 1), 'complete logo image stays inside its natural frame');
+      assert.ok(geometry.proofs.every(proof => Math.abs(proof.nativeRatio - proof.renderedRatio) < .02), 'gallery images preserve their native proportions');
+      assert.ok(new Set(geometry.proofs.slice(0, 5).map(proof => Math.round(proof.width))).size >= 3, 'gallery cards adapt to different screenshot widths');
       if (width > 760) {
         assert.ok(geometry.copy.top - geometry.heading.bottom < 40, 'founder heading and biography must not have an empty grid row between them');
       } else {
@@ -207,7 +233,12 @@ test('reduced motion stops gallery drift and keeps manual navigation', async t =
   const start = await position();
   await page.waitForTimeout(250);
   assert.equal(await position(), start, 'gallery must not move automatically with reduced motion');
+  const offsets = await track.evaluate(node => [...node.querySelectorAll('.proof-card')].map(card => card.offsetLeft - node.offsetLeft));
   await page.locator('#proofNextBtn').click();
   await page.waitForTimeout(100);
   assert.notEqual(await position(), start, 'next button still works');
+  assert.ok(Math.abs((await track.evaluate(node => node.scrollLeft)) - offsets[1]) < 2, 'first next lands on the second variable-width card');
+  await page.locator('#proofNextBtn').click();
+  await page.waitForTimeout(100);
+  assert.ok(Math.abs((await track.evaluate(node => node.scrollLeft)) - offsets[2]) < 2, 'second next lands on the third variable-width card');
 });
