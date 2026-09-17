@@ -66,16 +66,12 @@ test("vagas/vagas.css enforces proper styling and contrast on checkout buttons",
 
   // Light mode tokens
   assert.ok(css.includes("--bg: #FFFFFF;"), "Must define clean white canvas --bg");
-  assert.ok(css.includes("--military: #6CA438;") || css.includes("--military: #6ca438;"), "Must define Brand Green #6CA438 for light background");
   assert.ok(css.includes("--white: #0A0A0A;"), "Must invert --white token for high-contrast dark ink headings");
-
-  // Continuous infinite slider marquee
-  assert.ok(css.includes("@keyframes proofMarquee"), "Must define @keyframes proofMarquee for continuous infinite scroll");
-  assert.ok(css.includes("transform: translate3d(-50%, 0, 0);"), "Marquee must translate -50% for seamless looping");
-  assert.ok(css.includes(".proof-slider-track.is-paused"), "Must support pause on hover / touch");
+  // Actual label contrast and manual gallery navigation are exercised in
+  // vagas-design.browser.cjs instead of pinning an inaccessible color/marquee.
 });
 
-test("vagas/index.html enforces Light Mode and continuous infinite slider markup", () => {
+test("vagas/index.html enforces Light Mode and annual plan price formatting", () => {
   const htmlPath = path.join(root, "vagas/index.html");
   const html = fs.readFileSync(htmlPath, "utf8");
 
@@ -87,9 +83,6 @@ test("vagas/index.html enforces Light Mode and continuous infinite slider markup
   assert.ok(html.includes('<small>12x R$ </small><b>97</b>'), "Must render 12x R$ in small and 97 in bold");
   assert.ok(html.includes("priceDisplay: '<small>12x R$ </small><b>97</b>'"), "PLAN_CONFIG must format anual plan with small prefix");
 
-  // Infinite slider script
-  assert.ok(html.includes("track.appendChild(clone)"), "Script must clone cards to create 50% continuous marquee ribbon");
-  assert.ok(html.includes("track.classList.add('is-paused')"), "Script must pause marquee on mouseenter and touch");
 });
 
 test("functions/api/checkout/index.js implements primary AbacatePay and fallback Asaas", () => {
