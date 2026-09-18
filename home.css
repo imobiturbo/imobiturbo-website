@@ -3524,3 +3524,383 @@ a {
   font-size: 12px;
   color: var(--portal-text-subtle);
 }
+
+/* ==========================================================================
+   IMOBITURBO OS LEAD CAPTURE FORM & MODAL
+   ========================================================================== */
+
+.lead-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 220ms var(--home-ease), visibility 220ms var(--home-ease);
+}
+
+.lead-modal-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lead-modal-card {
+  position: relative;
+  background: #0d0f0d;
+  border: 1px solid rgba(191, 215, 48, 0.25);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 540px;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.85), 0 0 45px rgba(191, 215, 48, 0.08);
+  padding: 32px 28px 36px;
+  box-sizing: border-box;
+  transform: scale(0.96) translateY(12px);
+  transition: transform 260ms var(--home-ease);
+}
+
+.lead-modal-backdrop.is-open .lead-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.lead-modal-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease, color 180ms ease;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.lead-modal-close:hover {
+  background: rgba(191, 215, 48, 0.15);
+  border-color: var(--home-lime);
+  color: var(--home-lime);
+  transform: rotate(90deg);
+}
+
+.lead-modal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(191, 215, 48, 0.12);
+  border: 1px solid rgba(191, 215, 48, 0.28);
+  color: var(--home-lime);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 12px;
+}
+
+.lead-modal-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--home-lime);
+  box-shadow: 0 0 8px var(--home-lime);
+}
+
+.lead-modal-title {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  line-height: 1.25;
+}
+
+.lead-modal-desc {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #a3a3a3;
+}
+
+.lead-modal-context-pill {
+  background: rgba(191, 215, 48, 0.05);
+  border: 1px solid rgba(191, 215, 48, 0.18);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-bottom: 20px;
+  font-size: 12.5px;
+  color: #d1d5db;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lead-modal-context-pill strong {
+  color: var(--home-lime);
+  font-weight: 700;
+}
+
+/* Form Elements */
+.lead-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lead-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lead-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e5e5e5;
+  letter-spacing: -0.01em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lead-label span.required-mark {
+  color: var(--home-lime);
+  margin-left: 2px;
+}
+
+.lead-label span.optional-tag {
+  font-size: 11px;
+  color: #737373;
+  font-weight: 400;
+}
+
+.lead-input,
+.lead-select {
+  width: 100%;
+  box-sizing: border-box;
+  background: #141814;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: var(--home-body);
+  font-size: 14px;
+  color: #fff;
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.lead-input::placeholder {
+  color: #555d55;
+}
+
+.lead-input:focus,
+.lead-select:focus {
+  border-color: var(--home-lime);
+  box-shadow: 0 0 0 3px rgba(191, 215, 48, 0.18);
+  background: #181e18;
+}
+
+.lead-chips-group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 520px) {
+  .lead-chips-group {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lead-chip {
+  background: #141814;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 9px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #a3a3a3;
+  text-align: center;
+  cursor: pointer;
+  transition: all 160ms ease;
+  font-family: var(--home-body);
+}
+
+.lead-chip:hover {
+  background: #1c221c;
+  color: #fff;
+  border-color: rgba(191, 215, 48, 0.4);
+}
+
+.lead-chip.is-active {
+  background: rgba(191, 215, 48, 0.15);
+  border-color: var(--home-lime);
+  color: var(--home-lime);
+  font-weight: 700;
+}
+
+.lead-submit-btn {
+  margin-top: 6px;
+  background: var(--home-lime);
+  color: #10130c;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 22px;
+  font-family: var(--home-body);
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 180ms ease, transform 180ms var(--home-ease), box-shadow 180ms ease;
+  box-shadow: 0 4px 18px rgba(191, 215, 48, 0.25);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.lead-submit-btn:hover:not(:disabled) {
+  background: var(--home-lime-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(191, 215, 48, 0.4);
+}
+
+.lead-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.lead-form-footer-note {
+  font-size: 11.5px;
+  color: #6e766e;
+  text-align: center;
+  margin-top: -4px;
+  line-height: 1.4;
+}
+
+/* Success Card */
+.lead-success-box {
+  text-align: center;
+  padding: 20px 8px;
+}
+
+.lead-success-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(191, 215, 48, 0.14);
+  border: 1px solid var(--home-lime);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+  color: var(--home-lime);
+  box-shadow: 0 0 35px rgba(191, 215, 48, 0.3);
+}
+
+.lead-success-title {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.lead-success-desc {
+  margin: 0 0 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #a3a3a3;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lead-success-badge {
+  display: inline-block;
+  background: rgba(191, 215, 48, 0.1);
+  border: 1px solid rgba(191, 215, 48, 0.3);
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: var(--home-lime);
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.lead-error-banner {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #fca5a5;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Header & Footer CTA Adapters */
+.header-cta-btn {
+  background: var(--home-lime) !important;
+  color: #10130c !important;
+  font-weight: 800 !important;
+  border: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--home-body);
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 180ms ease, transform 180ms var(--home-ease), box-shadow 180ms ease;
+  box-shadow: 0 4px 18px rgba(191, 215, 48, 0.25);
+}
+
+.header-cta-btn:hover {
+  background: var(--home-lime-hover) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(191, 215, 48, 0.4);
+}
+
+.footer-lead-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #fff;
+  opacity: 0.65;
+  font-family: var(--home-body);
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
+  transition: opacity 160ms ease, color 160ms ease;
+}
+
+.footer-lead-btn:hover {
+  opacity: 1;
+  color: var(--home-lime);
+}
+
+.final-lead-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--home-body);
+}
+

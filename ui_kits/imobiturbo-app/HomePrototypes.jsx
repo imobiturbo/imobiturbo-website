@@ -1,7 +1,6 @@
 /* eslint-disable */
 // Imobiturbo home — desktop-first redesign with a fully responsive mobile layout.
 
-const HOME_WHATSAPP_URL = 'https://wa.me/5521969516183?text=Quero%20mapear%20minha%20opera%C3%A7%C3%A3o%20comercial%20com%20a%20Imobiturbo';
 const HOME_INSTAGRAM_URL = 'https://www.instagram.com/imobiturbo/';
 const HOME_TESTIMONIALS_URL = '/depoimentos/';
 
@@ -143,7 +142,360 @@ const HOME_FAQ_ITEMS = [
   },
 ];
 
+function formatPhoneBR(value) {
+  if (!value) return '';
+  const digits = value.replace(/\D/g, '').slice(0, 11);
+  if (digits.length <= 2) return digits.length ? `(${digits}` : '';
+  if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+}
+
+function getUtmParams() {
+  if (typeof window === 'undefined') return {};
+  const params = new URLSearchParams(window.location.search);
+  const utm = {};
+  ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach((key) => {
+    const val = params.get(key);
+    if (val) utm[key] = val;
+  });
+  return utm;
+}
+
+async function sendLeadToOS(leadData) {
+  const utms = getUtmParams();
+  const payload = {
+    ...leadData,
+    ...utms,
+    referrer: typeof document !== 'undefined' ? document.referrer : '',
+    origem_pagina: typeof window !== 'undefined' ? window.location.href : '',
+  };
+
+  // 1. Tentar rota primária first-party Cloudflare Pages Functions
+  try {
+    const res = await fetch('/api/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) {
+      return await res.json();
+    }
+  } catch (err) {
+    console.warn('Endpoint /api/lead indisponível, tentando envio direto ao OS:', err);
+  }
+
+  // 2. Fallback direto para o endpoint público do Imobiturbo OS
+  const directRes = await fetch(
+    'https://os.imobiturbo.com.br/api/v1/public/form-sources/imt_lp_oficial_30e9db2c23e85e4915f76d8407f0d3f2',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }
+  );
+
+  if (!directRes.ok) {
+    const errorText = await directRes.text();
+    throw new Error(errorText || 'Erro na comunicação com o servidor');
+  }
+
+  return await directRes.json();
+}
+
+const LeadModalContext = React.createContext({
+  isOpen: false,
+  openModal: () => {},
+  closeModal: () => {},
+  modalData: {},
+});
+
+function LeadCaptureForm({ initialData = {}, onSuccess, inline = false, ctaText = 'Enviar solicitação de diagnóstico' }) {
+  const [nome, setNome] = React.useState('');
+  const [telefone, setTelefone] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [perfil, setPerfil] = React.useState(initialData.perfil || 'Corretor autônomo');
+  const [gargalo, setGargalo] = React.useState(initialData.gargalo || 'Follow-up inconsistente');
+  const [faturamento, setFaturamento] = React.useState('');
+  const [status, setStatus] = React.useState('idle'); // 'idle' | 'submitting' | 'success' | 'error'
+  const [errorMessage, setErrorMessage] = React.useState('');
+
+  React.useEffect(() => {
+    if (initialData.perfil) setPerfil(initialData.perfil);
+    if (initialData.gargalo) setGargalo(initialData.gargalo);
+  }, [initialData.perfil, initialData.gargalo]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!nome.trim() || !telefone.trim() || !email.trim()) {
+      setErrorMessage('Preencha seu nome, WhatsApp e e-mail para prosseguir.');
+      setStatus('error');
+      return;
+    }
+
+    setStatus('submitting');
+    setErrorMessage('');
+
+    try {
+      const payload = {
+        nome: nome.trim(),
+        telefone: telefone.trim(),
+        email: email.trim().toLowerCase(),
+        perfil,
+        gargalo,
+        faturamento: faturamento || undefined,
+        origem_cta: initialData.origem_cta || (inline ? 'diagnostico_inline' : 'formulario'),
+        produto_interesse: initialData.produto_interesse || undefined,
+        estrutura: initialData.estrutura || undefined,
+        recomendacao: initialData.recomendacao || undefined,
+      };
+
+      await sendLeadToOS(payload);
+
+      trackHomeEvent('generate_lead', {
+        method: 'form_os',
+        form: 'lp_oficial_imobiturbo',
+        profile: perfil,
+        origem_cta: payload.origem_cta,
+      });
+
+      setStatus('success');
+      if (typeof onSuccess === 'function') onSuccess();
+    } catch (err) {
+      console.error('Erro ao enviar lead para Imobiturbo OS:', err);
+      setErrorMessage('Não foi possível enviar agora. Verifique sua conexão e tente novamente.');
+      setStatus('error');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div className="lead-success-box" aria-live="polite">
+        <div className="lead-success-icon-wrap" aria-hidden="true">
+          <Icon name="check" size={32} stroke={2.5} />
+        </div>
+        <h3 className="lead-success-title">Solicitação recebida com sucesso!</h3>
+        <span className="lead-success-badge">Cadastrado no 0. Funil de Vendas — Novo Lead</span>
+        <p className="lead-success-desc">
+          Seus dados foram integrados diretamente no <strong>Imobiturbo OS</strong>. Nossa equipe entrará em contato com você via WhatsApp com o plano ideal para sua operação.
+        </p>
+        <button
+          type="button"
+          className="lead-submit-btn"
+          onClick={() => {
+            setStatus('idle');
+            setNome('');
+            setTelefone('');
+            setEmail('');
+          }}
+        >
+          Enviar nova solicitação
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <form className="lead-form" onSubmit={handleSubmit} noValidate>
+      {initialData.recomendacao && (
+        <div className="lead-modal-context-pill">
+          <div><strong>Diagnóstico:</strong> {initialData.perfil} • {initialData.gargalo}</div>
+          <div><strong>Próximo passo:</strong> {initialData.recomendacao}</div>
+        </div>
+      )}
+
+      {initialData.produto_interesse && (
+        <div className="lead-modal-context-pill">
+          <div><strong>Interesse:</strong> {initialData.produto_interesse}</div>
+        </div>
+      )}
+
+      {status === 'error' && errorMessage && (
+        <div className="lead-error-banner" role="alert">
+          <Icon name="x" size={18} />
+          <span>{errorMessage}</span>
+        </div>
+      )}
+
+      <div className="lead-field">
+        <label className="lead-label" htmlFor={inline ? 'lead-name-inline' : 'lead-name-modal'}>
+          <span>Seu nome completo<span className="required-mark">*</span></span>
+        </label>
+        <input
+          id={inline ? 'lead-name-inline' : 'lead-name-modal'}
+          type="text"
+          className="lead-input"
+          placeholder="Ex: João da Silva"
+          value={nome}
+          onChange={(e) => setNome(e.target.value)}
+          required
+        />
+      </div>
+
+      <div className="lead-field">
+        <label className="lead-label" htmlFor={inline ? 'lead-phone-inline' : 'lead-phone-modal'}>
+          <span>WhatsApp comercial com DDD<span className="required-mark">*</span></span>
+        </label>
+        <input
+          id={inline ? 'lead-phone-inline' : 'lead-phone-modal'}
+          type="tel"
+          className="lead-input"
+          placeholder="(21) 99999-9999"
+          value={telefone}
+          onChange={(e) => setTelefone(formatPhoneBR(e.target.value))}
+          required
+        />
+      </div>
+
+      <div className="lead-field">
+        <label className="lead-label" htmlFor={inline ? 'lead-email-inline' : 'lead-email-modal'}>
+          <span>E-mail profissional<span className="required-mark">*</span></span>
+        </label>
+        <input
+          id={inline ? 'lead-email-inline' : 'lead-email-modal'}
+          type="email"
+          className="lead-input"
+          placeholder="Ex: joao@imobiliaria.com.br"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+      </div>
+
+      <div className="lead-field">
+        <label className="lead-label">
+          <span>Perfil da operação</span>
+        </label>
+        <div className="lead-chips-group">
+          {['Corretor autônomo', 'Imobiliária', 'Construtora ou incorporadora'].map((opt) => (
+            <button
+              type="button"
+              key={opt}
+              className={`lead-chip ${perfil === opt ? 'is-active' : ''}`}
+              onClick={() => setPerfil(opt)}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="lead-field">
+        <label className="lead-label" htmlFor={inline ? 'lead-bottleneck-inline' : 'lead-bottleneck-modal'}>
+          <span>Maior gargalo hoje</span>
+        </label>
+        <select
+          id={inline ? 'lead-bottleneck-inline' : 'lead-bottleneck-modal'}
+          className="lead-select"
+          value={gargalo}
+          onChange={(e) => setGargalo(e.target.value)}
+        >
+          <option value="Follow-up inconsistente">Follow-up inconsistente / leads esfriam</option>
+          <option value="Atendimento sem padrão">Atendimento sem padrão / demora na resposta</option>
+          <option value="Leads sem prioridade">Leads sem prioridade / tráfego fraco</option>
+          <option value="Gestão sem visibilidade">Gestão sem visibilidade / sem CRM</option>
+          <option value="Quero IA no WhatsApp">Quero automação com IA no WhatsApp</option>
+        </select>
+      </div>
+
+      <div className="lead-field">
+        <label className="lead-label" htmlFor={inline ? 'lead-volume-inline' : 'lead-volume-modal'}>
+          <span>Faixa de faturamento mensal</span>
+          <span className="optional-tag">opcional</span>
+        </label>
+        <select
+          id={inline ? 'lead-volume-inline' : 'lead-volume-modal'}
+          className="lead-select"
+          value={faturamento}
+          onChange={(e) => setFaturamento(e.target.value)}
+        >
+          <option value="">Selecione a faixa aproximada</option>
+          <option value="Até R$ 10 mil/mês">Até R$ 10 mil/mês</option>
+          <option value="R$ 10 mil a R$ 30 mil/mês">R$ 10 mil a R$ 30 mil/mês</option>
+          <option value="R$ 30 mil a R$ 100 mil/mês">R$ 30 mil a R$ 100 mil/mês</option>
+          <option value="Acima de R$ 100 mil/mês">Acima de R$ 100 mil/mês</option>
+        </select>
+      </div>
+
+      <button type="submit" className="lead-submit-btn" disabled={status === 'submitting'}>
+        {status === 'submitting' ? (
+          <>Enviando dados para o Imobiturbo OS...</>
+        ) : (
+          <>
+            <span>{ctaText}</span>
+            <Icon name="arrowRight" size={18} stroke={2.2} />
+          </>
+        )}
+      </button>
+      <div className="lead-form-footer-note">
+        🔒 Seus dados serão cadastrados com segurança na 1ª etapa do nosso funil comercial no Imobiturbo OS.
+      </div>
+    </form>
+  );
+}
+
+function LeadModal({ isOpen, onClose, initialData = {} }) {
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [isOpen, onClose]);
+
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className={`lead-modal-backdrop ${isOpen ? 'is-open' : ''}`}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lead-modal-title"
+    >
+      <div className="lead-modal-card">
+        <button
+          type="button"
+          className="lead-modal-close"
+          onClick={onClose}
+          aria-label="Fechar formulário"
+        >
+          ✕
+        </button>
+        <div className="lead-modal-badge">
+          <span className="lead-modal-badge-dot" aria-hidden="true" />
+          <span>Imobiturbo OS • Diagnóstico de Operação</span>
+        </div>
+        <h2 className="lead-modal-title" id="lead-modal-title">
+          Mapeie sua operação comercial
+        </h2>
+        <p className="lead-modal-desc">
+          Preencha os dados da sua operação para nossa equipe mapear seu cenário e retornar com o direcionamento ideal.
+        </p>
+
+        <LeadCaptureForm initialData={initialData} onSuccess={() => {}} />
+      </div>
+    </div>
+  );
+}
+
 function HomeButton({ href, children, variant = 'lime', icon, iconRight = true, target, onClick }) {
+  if (onClick || !href) {
+    return (
+      <button
+        type="button"
+        className={`home-button home-button-${variant}`}
+        onClick={onClick}
+      >
+        {icon && <Icon name={icon} size={20} stroke={2} />}
+        <span>{children}</span>
+        {iconRight && <Icon name="arrowRight" size={19} stroke={2.2} />}
+      </button>
+    );
+  }
   return (
     <a
       className={`home-button home-button-${variant}`}
@@ -160,6 +512,7 @@ function HomeButton({ href, children, variant = 'lime', icon, iconRight = true, 
 }
 
 function HomeHeader() {
+  const { openModal } = React.useContext(LeadModalContext);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const [scrolled, setScrolled] = React.useState(false);
 
@@ -197,10 +550,15 @@ function HomeHeader() {
           ))}
         </nav>
 
-        <a className="header-whatsapp" href={HOME_WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
-          <Icon name="whatsapp" size={19} stroke={2} />
-          <span>Falar no WhatsApp</span>
-        </a>
+        <button
+          type="button"
+          className="header-whatsapp header-cta-btn"
+          onClick={() => openModal({ origem_cta: 'header' })}
+          aria-label="Mapear Operação"
+        >
+          <Icon name="target" size={18} stroke={2.2} />
+          <span>Mapear Operação</span>
+        </button>
 
         <button
           className="menu-toggle"
@@ -221,10 +579,17 @@ function HomeHeader() {
           {HOME_NAV_LINKS.map(([label, href]) => (
             <a href={href} key={href} onClick={closeMenu}>{label}<Icon name="arrowRight" size={18} /></a>
           ))}
-          <a className="mobile-menu-cta" href={HOME_WHATSAPP_URL} target="_blank" rel="noopener noreferrer" onClick={closeMenu}>
-            <Icon name="whatsapp" size={20} stroke={2} />
-            Falar no WhatsApp
-          </a>
+          <button
+            type="button"
+            className="mobile-menu-cta"
+            onClick={() => {
+              closeMenu();
+              openModal({ origem_cta: 'mobile_menu' });
+            }}
+          >
+            <Icon name="target" size={20} stroke={2.2} />
+            Mapear minha operação
+          </button>
         </div>
       </nav>
     </header>
@@ -232,6 +597,7 @@ function HomeHeader() {
 }
 
 function HeroSection() {
+  const { openModal } = React.useContext(LeadModalContext);
   const benefits = [
     ['target', 'Processo comercial'],
     ['trending', 'Tecnologia aplicada'],
@@ -250,7 +616,7 @@ function HeroSection() {
         <h1>Onde vendas, operação e tecnologia imobiliária ganham direção<span className="lime-dot">.</span></h1>
         <p className="hero-lead">Mentoria prática, hub operacional e consultoria comercial para transformar esforço comercial em processo, margem e previsibilidade.</p>
         <div className="hero-actions">
-          <HomeButton href="#diagnostico" icon="target" iconRight={false}>Mapear minha operação</HomeButton>
+          <HomeButton onClick={() => openModal({ origem_cta: 'hero' })} icon="target" iconRight={false}>Mapear minha operação</HomeButton>
           <a className="hero-text-link" href="#como-faz">Ver como funciona <Icon name="arrowDown" size={16} /></a>
         </div>
 
@@ -321,10 +687,12 @@ function HeroSection() {
 }
 
 function ProblemSection() {
+  const { openModal } = React.useContext(LeadModalContext);
   const dialogRef = React.useRef(null);
   const pains = [
-    'Muito lead.\nPouca prioridade.',
-    'Agenda cheia.\nPouca previsibilidade.',
+    'Leads chegando sem\ncritério de qualificação.',
+    'Atendimento sem padrão\ne sem tempo de resposta.',
+    'Follow-up que para\nna primeira tentativa.',
     'Proposta parada\nno WhatsApp.',
     'Time ativo.\nGestão sem visibilidade.',
   ];
@@ -353,7 +721,7 @@ function ProblemSection() {
         <div className="problem-copy">
           <h2>Você carrega muita coisa. Não precisa operar no escuro<span className="lime-dot">.</span></h2>
           <p>A Imobiturbo organiza decisão, rotina e acompanhamento para transformar esforço comercial em processo.</p>
-          <HomeButton href="#diagnostico" variant="dark">Identificar o gargalo</HomeButton>
+          <HomeButton onClick={() => openModal({ origem_cta: 'problema' })} variant="dark">Identificar o gargalo</HomeButton>
         </div>
       </div>
 
@@ -383,7 +751,7 @@ function ProblemSection() {
             <span className="operation-dialog-kicker">Por dentro da operação</span>
             <h2 id="operation-dialog-title">Decisão, rotina e acompanhamento no mesmo quadro.</h2>
             <p>A Imobiturbo conecta prioridades, responsáveis e próximos passos para o funil deixar de depender da memória.</p>
-            <HomeButton href="#como-faz" onClick={() => dialogRef.current?.close()}>Ver como funciona</HomeButton>
+            <HomeButton onClick={() => { dialogRef.current?.close(); openModal({ origem_cta: 'problema_dialog' }); }}>Mapear minha operação</HomeButton>
           </div>
         </div>
       </dialog>
@@ -434,6 +802,7 @@ function MiniHubVisual() {
 }
 
 function EcosystemSection() {
+  const { openModal } = React.useContext(LeadModalContext);
   const items = [
     {
       title: 'Mentoria',
@@ -449,7 +818,7 @@ function EcosystemSection() {
       title: 'Comunidade',
       body: 'Troca com quem vive os mesmos desafios do mercado.',
       visual: (
-        <div className="community-visual">
+        <div className="mini-community-visual">
           <img src={HOME_ASSETS.warRoom} alt="Encontro de profissionais para discutir a operação comercial." loading="lazy" />
           <strong>Operação<br />com direção</strong>
         </div>
@@ -470,7 +839,7 @@ function EcosystemSection() {
           <p>Visão, rotina, repertório e execução conectados em uma única lógica de crescimento.</p>
         </div>
         <div className="ecosystem-aside">
-          <HomeButton href="#metodo" variant="dark">Ver o ecossistema em ação</HomeButton>
+          <HomeButton onClick={() => openModal({ origem_cta: 'ecossistema' })} variant="dark">Ver o ecossistema em ação</HomeButton>
           <p>Um sistema integrado que alinha estratégia, ferramentas, pessoas e inteligência para gerar resultados consistentes.</p>
         </div>
       </div>
@@ -501,10 +870,12 @@ function EcosystemSection() {
           {ECOSYSTEM_PRODUCTS.map((prod) => (
             <a
               key={prod.name}
-              href={prod.href}
+              href="#diagnostico"
               className="ecosystem-app-card"
-              target={prod.href.startsWith('http') ? '_blank' : undefined}
-              rel={prod.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              onClick={(e) => {
+                e.preventDefault();
+                openModal({ origem_cta: 'ecossistema_' + prod.name, produto_interesse: prod.name });
+              }}
             >
               <img src={prod.logo} alt={prod.name} className="ecosystem-app-logo" />
               <p className="ecosystem-app-desc">{prod.desc}</p>
@@ -517,6 +888,7 @@ function EcosystemSection() {
 }
 
 function MethodSection() {
+  const { openModal } = React.useContext(LeadModalContext);
   return (
     <section className="method-section" id="metodo">
       <img className="method-background" src={HOME_ASSETS.method} alt="Método comercial aplicado da captação ao fechamento." loading="lazy" />
@@ -525,7 +897,7 @@ function MethodSection() {
         <div className="method-copy">
           <h2>Da captação ao fechamento. Método para a rotina real<span className="lime-dot">.</span></h2>
           <p>Um processo claro para priorizar oportunidades, conduzir conversas e avançar decisões.</p>
-          <HomeButton href="#diagnostico">Conhecer o método</HomeButton>
+          <HomeButton onClick={() => openModal({ origem_cta: 'metodo' })}>Conhecer o método</HomeButton>
         </div>
 
         <ol className="method-steps">
@@ -543,6 +915,7 @@ function MethodSection() {
 }
 
 function ProofSection() {
+  const { openModal } = React.useContext(LeadModalContext);
   return (
     <section className="proof-section" id="depoimentos">
       <div className="proof-copy">
@@ -550,7 +923,7 @@ function ProofSection() {
           <h2>Resultados reais. Conversas reais. Processo que aparece<span className="lime-dot">.</span></h2>
           <p>A prova não vem de promessa genérica. Vem de quem organizou a operação, aplicou o método e começou a avançar.</p>
           <blockquote>“Implementei tudo certinho. Em 4 dias foram 8 leads. Fechei o primeiro apartamento ontem.”</blockquote>
-          <HomeButton href={HOME_TESTIMONIALS_URL} variant="dark">Ver todos os depoimentos</HomeButton>
+          <HomeButton onClick={() => openModal({ origem_cta: 'depoimentos' })} variant="dark">Quero acelerar minha operação</HomeButton>
         </div>
       </div>
 
@@ -616,10 +989,6 @@ function DiagnosticQuiz() {
     setAnswers({});
   };
 
-  const resultWhatsappUrl = result
-    ? `https://wa.me/5521969516183?text=${encodeURIComponent(`Olá Natan! Fiz o diagnóstico no site da Imobiturbo.\n\nPerfil: ${result.profile}\nPrincipal gargalo: ${result.bottleneck}\nAcompanhamento atual: ${result.structure}\n\nRecomendação inicial: ${result.recommendation}\n\nQuero mapear os próximos passos.`)}`
-    : HOME_WHATSAPP_URL;
-
   return (
     <div className="diagnostic-card">
       {!complete ? (
@@ -665,21 +1034,20 @@ function DiagnosticQuiz() {
             <div><dt>Gargalo principal</dt><dd>{result.bottleneck}</dd></div>
             <div><dt>Próximo passo</dt><dd>{result.recommendation}</dd></div>
           </dl>
-          <a
-            className="diagnostic-result-cta"
-            href={resultWhatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => trackHomeEvent('generate_lead', {
-              method: 'whatsapp',
-              form: 'diagnostico_operacao',
-              profile: result.profile,
-            })}
-          >
-            <Icon name="whatsapp" size={21} stroke={2} />
-            Enviar diagnóstico no WhatsApp
-          </a>
-          <button className="diagnostic-reset" type="button" onClick={resetQuiz}>Refazer diagnóstico</button>
+          <div style={{ marginTop: '20px', borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: '16px' }}>
+            <LeadCaptureForm
+              inline
+              initialData={{
+                perfil: result.profile,
+                gargalo: result.bottleneck,
+                estrutura: result.structure,
+                recomendacao: result.recommendation,
+                origem_cta: 'diagnostico_quiz',
+              }}
+              ctaText="Receber plano de ação da operação"
+            />
+          </div>
+          <button className="diagnostic-reset" type="button" onClick={resetQuiz} style={{ marginTop: '14px' }}>Refazer diagnóstico</button>
         </div>
       )}
     </div>
@@ -753,6 +1121,7 @@ function FaqSection() {
 }
 
 function FinalCtaSection() {
+  const { openModal } = React.useContext(LeadModalContext);
   return (
     <section className="final-cta">
       <img src={HOME_ASSETS.hero} alt="Operação imobiliária preparada para crescer com direção." loading="lazy" />
@@ -760,14 +1129,21 @@ function FinalCtaSection() {
       <div className="home-container final-cta-content">
         <h2>A direção que falta pode começar em uma conversa<span className="lime-dot">.</span></h2>
         <p>Mapeie o gargalo, entenda o próximo passo e descubra qual formato faz sentido para a sua operação.</p>
-        <HomeButton href={HOME_WHATSAPP_URL} icon="whatsapp" iconRight={false} target="_blank">Falar com a Imobiturbo</HomeButton>
-        <a className="final-testimonials-link" href={HOME_TESTIMONIALS_URL}>Ver depoimentos <Icon name="arrowRight" size={17} /></a>
+        <HomeButton onClick={() => openModal({ origem_cta: 'final_cta' })} icon="target" iconRight={false}>Mapear minha operação</HomeButton>
+        <button
+          type="button"
+          className="final-testimonials-link final-lead-link"
+          onClick={() => openModal({ origem_cta: 'final_cta_secundario' })}
+        >
+          Falar com especialista <Icon name="arrowRight" size={17} />
+        </button>
       </div>
     </section>
   );
 }
 
 function HomeFooter() {
+  const { openModal } = React.useContext(LeadModalContext);
   return (
     <footer className="home-footer">
       <div className="home-container footer-main">
@@ -794,7 +1170,13 @@ function HomeFooter() {
           <a href="/termos-de-servico/">Termos de Serviço</a>
           <a href="/exclusao-de-dados/">Exclusão de Dados</a>
           <a href={HOME_TESTIMONIALS_URL}>Depoimentos</a>
-          <a href={HOME_WHATSAPP_URL} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          <button
+            type="button"
+            className="footer-lead-btn"
+            onClick={() => openModal({ origem_cta: 'footer' })}
+          >
+            Contato comercial
+          </button>
         </div>
       </div>
       <div className="home-container footer-bottom">© 2026 Imobiturbo. CNPJ 47.746.249/0001-04 • Rio de Janeiro/RJ • Todos os direitos reservados.</div>
@@ -1105,23 +1487,38 @@ function EcosystemPortal() {
 }
 
 function HomePrototypes() {
+  const [modalOpen, setModalOpen] = React.useState(false);
+  const [modalData, setModalData] = React.useState({});
+
+  const openModal = React.useCallback((data = {}) => {
+    setModalData(data);
+    setModalOpen(true);
+  }, []);
+
+  const closeModal = React.useCallback(() => {
+    setModalOpen(false);
+  }, []);
+
   return (
-    <div className="home-page it-root">
-      <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
-      <HomeHeader />
-      <main id="conteudo">
-        <HeroSection />
-        <ProblemSection />
-        <AudiencesSection />
-        <EcosystemSection />
-        <MethodSection />
-        <ProofSection />
-        <DiagnosticSection />
-        <FaqSection />
-        <FinalCtaSection />
-      </main>
-      <HomeFooter />
-    </div>
+    <LeadModalContext.Provider value={{ isOpen: modalOpen, openModal, closeModal, modalData }}>
+      <div className="home-page it-root">
+        <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
+        <HomeHeader />
+        <main id="conteudo">
+          <HeroSection />
+          <ProblemSection />
+          <AudiencesSection />
+          <EcosystemSection />
+          <MethodSection />
+          <ProofSection />
+          <DiagnosticSection />
+          <FaqSection />
+          <FinalCtaSection />
+        </main>
+        <HomeFooter />
+        <LeadModal isOpen={modalOpen} onClose={closeModal} initialData={modalData} />
+      </div>
+    </LeadModalContext.Provider>
   );
 }
 
