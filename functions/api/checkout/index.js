@@ -46,28 +46,28 @@ export async function onRequestPost(context) {
   // Tabela canônica de planos
   const PLAN_DETAILS = {
     anual: {
-      title: "Comunidade Imobiturbo - Plano Anual",
-      pixCents: 95700,
-      pixReais: 957.0,
+      title: "Imobiturbo OS - Plano Anual",
+      pixCents: 99700,
+      pixReais: 997.0,
       cardInstallmentCount: 12,
-      cardInstallmentValue: 97.0,
-      cardTotalValue: 1164.0,
+      cardInstallmentValue: 99.70,
+      cardTotalValue: 1196.40,
     },
-    trimestral: {
-      title: "Comunidade Imobiturbo - Plano Trimestral",
-      pixCents: 35700,
-      pixReais: 357.0,
-      cardInstallmentCount: 3,
-      cardInstallmentValue: 127.0,
-      cardTotalValue: 381.0,
+    semestral: {
+      title: "Imobiturbo OS - Plano Semestral",
+      pixCents: 74700,
+      pixReais: 747.0,
+      cardInstallmentCount: 6,
+      cardInstallmentValue: 147.0,
+      cardTotalValue: 882.0,
     },
     mensal: {
-      title: "Comunidade Imobiturbo - Plano Mensal",
-      pixCents: 14700,
-      pixReais: 147.0,
+      title: "Imobiturbo OS - Plano Mensal",
+      pixCents: 9700,
+      pixReais: 97.0,
       cardInstallmentCount: 1,
-      cardInstallmentValue: 147.0,
-      cardTotalValue: 147.0,
+      cardInstallmentValue: 97.0,
+      cardTotalValue: 97.0,
     },
   };
 

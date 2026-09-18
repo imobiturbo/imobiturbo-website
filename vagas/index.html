@@ -90,9 +90,9 @@
 </head>
 <body>
 
-  <!-- 1. LIVE BAR STICKY TOP -->
+  <!-- 1. LIVE BAR STICKY TOP (ESTILO JEFF ECOM) -->
   <div class="livebar" role="note">
-    <span class="lb-dot"></span> INSTÂNCIAS DE IA ATIVAS · ATIVAÇÃO AUTÔNOMA EM 15 MINUTOS SEM FILA
+    <span class="lb-dot"></span> MENTORIAS EXCLUSIVAS TODA SEMANA
   </div>
 
   <!-- 2. HERO SECTION -->
@@ -103,7 +103,7 @@
           Quem mais fatura no imobiliário paga por <span class="lime-txt">inteligência privilegiada</span>.
         </h1>
         <p class="sub">
-          Para de queimar lead no escuro. O Imobiturbo OS atende em áudio humano no WhatsApp com tom de corretor sênior, apura renda e entrega visitas confirmadas direto na sua agenda.
+          Para de queimar lead no escuro. A IA atende em áudio humano no WhatsApp e entrega visitas confirmadas na sua agenda.
         </p>
 
         <!-- Mockup VSL Facade Player -->
@@ -123,19 +123,19 @@
     </div>
   </section>
 
-  <!-- 3. FAIXA DE PROVA SOCIAL -->
+  <!-- 3. FAIXA DE PROVA SOCIAL (CÁPSULA HORIZONTAL ESTILO JEFF ECOM) -->
   <section class="faixa-prova">
-    <div class="wrap">
-      <div class="fava">
-        <span class="fava-imgs" aria-hidden="true">
-          <img src="./assets/broker-1.webp" alt="Corretor parceiro" width="36" height="36" loading="lazy">
-          <img src="./assets/broker-2.webp" alt="Corretor parceiro" width="36" height="36" loading="lazy">
-          <img src="./assets/broker-3.webp" alt="Corretor parceiro" width="36" height="36" loading="lazy">
-          <img src="./assets/broker-4.webp" alt="Corretor parceiro" width="36" height="36" loading="lazy">
-          <img src="./assets/broker-5.webp" alt="Corretor parceiro" width="36" height="36" loading="lazy">
-          <img src="./assets/broker-6.webp" alt="Corretor parceiro" width="36" height="36" loading="lazy">
-        </span>
-        <p>junte-se a <b>+500 corretores e imobiliárias de alta performance</b> no Brasil</p>
+    <div class="fava-pill">
+      <span class="fava-imgs" aria-hidden="true">
+        <img src="./assets/broker-1.webp" alt="Corretor parceiro" width="32" height="32" loading="lazy">
+        <img src="./assets/broker-2.webp" alt="Corretor parceiro" width="32" height="32" loading="lazy">
+        <img src="./assets/broker-3.webp" alt="Corretor parceiro" width="32" height="32" loading="lazy">
+        <img src="./assets/broker-4.webp" alt="Corretor parceiro" width="32" height="32" loading="lazy">
+        <img src="./assets/broker-5.webp" alt="Corretor parceiro" width="32" height="32" loading="lazy">
+      </span>
+      <div class="fava-txt">
+        junte-se a <b>+4.000</b><br>
+        <b>corretores e imobiliárias</b> no Brasil
       </div>
     </div>
   </section>
@@ -323,16 +323,16 @@
   <section class="sec sec-bg" id="mentor">
     <div class="wrap">
       <div class="sec-head">
-        <h2 class="h-sec">+R$ 100M <span class="lime-txt">já gerados no ecossistema</span>.</h2>
+        <h2 class="h-sec">+R$ 500M <span class="lime-txt">já gerados no ecossistema</span>.</h2>
         <p class="sub">Engenharia de growth e infraestrutura de vendas desenvolvidas por quem opera na trincheira real do mercado imobiliário brasileiro.</p>
       </div>
 
       <ol class="mtl">
         <li class="mtl-mk">
           <figure>
-            <img src="./assets/natan-placa-100m.webp" alt="Natan Pimentel com a placa de +R$ 100M em VGV" width="640" height="480" loading="lazy">
+            <img src="./assets/natan-placa-100m.webp" alt="Natan Pimentel com a placa de +R$ 500M em VGV" width="640" height="480" loading="lazy">
             <figcaption>
-              <b>+R$ 100M</b>
+              <b>+R$ 500M</b>
               <span>VGV Gerado em Vendas Imobiliárias</span>
             </figcaption>
           </figure>
@@ -532,27 +532,6 @@
         </label>
       </fieldset>
 
-      <!-- ORDER BUMPS DIGITAIS (OPCIONAL) -->
-      <div class="obump-container" id="obumpContainer">
-        <label class="obump-box" id="obumpBox1">
-          <input class="obump-check" type="checkbox" id="obump1" onchange="toggleOrderBump(1)">
-          <div class="obump-content">
-            <span class="obump-tag">+ LEVE JUNTO</span>
-            <div class="obump-title">Vault 100 Criativos & Copys Prontas de Alto Padrão (+<span class="obump-price">R$ 47</span>)</div>
-            <p class="obump-desc">Modelos no Canva 100% editáveis + prompts de copy para anúncios de imóveis prontos para rodar hoje.</p>
-          </div>
-        </label>
-
-        <label class="obump-box" id="obumpBox2">
-          <input class="obump-check" type="checkbox" id="obump2" onchange="toggleOrderBump(2)">
-          <div class="obump-content">
-            <span class="obump-tag">+ LEVE JUNTO</span>
-            <div class="obump-title">Protocolo Anti-Vácuo de WhatsApp (15 Scripts Psicológicos) (+<span class="obump-price">R$ 67</span>)</div>
-            <p class="obump-desc">Os exatos 15 scripts prontos para copiar e colar que resgatam leads imobiliários que visualizaram e não responderam.</p>
-          </div>
-        </label>
-      </div>
-
       <button class="btn psel-cta" type="button" id="mainCtaBtn" onclick="openCheckoutWithCurrentPlan()">
         Testar 7 dias sem risco
       </button>
@@ -686,140 +665,159 @@
     <a class="btn" href="#planos">Quero minha vantagem desleal ➔</a>
   </div>
 
-  <!-- 15. MODAL DE CHECKOUT INTEGRADO (DARK THEME) -->
-  <dialog id="checkoutModal" class="chk-modal-overlay">
-    <div class="chk-modal-box">
-      <button type="button" class="chk-modal-close" onclick="closeCheckoutModal()" aria-label="Fechar">&times;</button>
+  <!-- 15. MODAL DE PRÉ-CHECKOUT E LEAD CAPTURE (ABACATEPAY DIRECT) -->
+  <dialog id="leadCaptureModal" class="lead-modal-overlay" onclick="handleModalBackdropClick(event)">
+    <div class="lead-modal-card" role="dialog" aria-modal="true">
       
-      <span class="chk-modal-badge">🔒 AMBIENTE CRIPTOGRAFADO · 256-BIT SSL</span>
-      <h3 class="chk-modal-title">Finalizar Inscrição</h3>
-      <p class="chk-modal-subtitle">Liberação autônoma imediata da sua instância do Imobiturbo OS</p>
-
-      <div class="chk-plan-summary">
-        <div>
-          <span class="chk-plan-name" id="modalPlanTitle">Plano Anual (Recomendado)</span>
-          <span class="chk-plan-sub" id="modalPlanSub">12 meses de acesso completo à infraestrutura + Comunidade</span>
+      <!-- Top Step & Progress Bar -->
+      <div class="lm-progress-row">
+        <span class="lm-step-badge">O ÚLTIMO PASSO</span>
+        <div class="lm-bar-track">
+          <div class="lm-bar-fill"></div>
         </div>
-        <div class="chk-plan-val">
-          <b id="modalPlanPrice">12x R$ 99,70</b>
+        <span class="lm-pct">70%</span>
+      </div>
+
+      <!-- Heading -->
+      <h2 class="lm-title">
+        Você consegue automatizar sua imobiliária com inteligência que <span class="lm-pill-highlight">vende todo santo dia</span>.
+      </h2>
+
+      <!-- Benefit Checkmark -->
+      <div class="lm-benefit">
+        <svg class="lm-check-icon" width="18" height="18" viewBox="0 0 14 14" fill="none">
+          <circle cx="7" cy="7" r="5.6" stroke="#14A69B" stroke-width="1.5"></circle>
+          <polyline points="4.6,7.2 6.4,9 9.6,5.4" stroke="#14A69B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        </svg>
+        <div class="lm-benefit-txt">
+          Agentes de IA atendem seus leads em áudio e agendam visitas.
+          <strong>100% plug-and-play em 15 minutos, sem reuniões.</strong>
         </div>
       </div>
 
-      <div class="chk-tabs">
-        <button type="button" class="chk-tab active" id="tabBtnPix" onclick="setCheckoutMethod('PIX')">⚡ Pix Imediato</button>
-        <button type="button" class="chk-tab" id="tabBtnCard" onclick="setCheckoutMethod('CARD')">💳 Cartão de Crédito</button>
-      </div>
+      <p class="lm-sub-prompt">Preencha os dados abaixo em menos de 10 segundos.</p>
 
-      <form id="checkoutNativeForm" onsubmit="handleCheckoutSubmit(event)">
-        <div class="chk-field">
-          <label for="chkName">Seu Nome Completo</label>
-          <input type="text" id="chkName" class="chk-input" placeholder="Nome e sobrenome" required>
+      <!-- State 1: Form de Captura e Pagamento -->
+      <form id="leadModalForm" onsubmit="handleLeadSubmit(event)">
+        <div class="lm-field">
+          <input class="lm-input" type="text" id="leadFullname" placeholder="Nome completo" required autocomplete="name">
         </div>
 
-        <div class="chk-field">
-          <label for="chkEmail">Seu Melhor E-mail (para login)</label>
-          <input type="email" id="chkEmail" class="chk-input" placeholder="seuemail@imobiliaria.com.br" required>
+        <div class="lm-field">
+          <input class="lm-input" type="email" id="leadEmail" placeholder="Seu melhor email" required autocomplete="email" pattern="[^@\s]+@[^@\s]+\.[^@\s]+">
         </div>
 
-        <div class="chk-field">
-          <label for="chkPhone">WhatsApp com DDD</label>
-          <input type="tel" id="chkPhone" class="chk-input" placeholder="(00) 90000-0000" required>
-        </div>
-
-        <div id="cardFieldsContainer" style="display: none;">
-          <div class="chk-field">
-            <label for="chkCardNumber">Número do Cartão</label>
-            <input type="text" id="chkCardNumber" class="chk-input" placeholder="0000 0000 0000 0000">
+        <div class="lm-phone-row">
+          <div class="lm-ddi-box">
+            <img src="https://flagcdn.com/24x18/br.png" alt="Brasil" width="20" height="15">
+            <span>+55</span>
           </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <div class="chk-field">
-              <label for="chkCardExp">Validade</label>
-              <input type="text" id="chkCardExp" class="chk-input" placeholder="MM/AA">
-            </div>
-            <div class="chk-field">
-              <label for="chkCardCvv">CVV</label>
-              <input type="text" id="chkCardCvv" class="chk-input" placeholder="123">
-            </div>
-          </div>
+          <input class="lm-input lm-phone-input" type="tel" id="leadPhone" placeholder="Seu WhatsApp (com DDD)" maxlength="15" required autocomplete="tel" oninput="maskPhone(this)">
         </div>
 
-        <button type="submit" class="chk-btn-submit" id="submitOrderBtn">
-          Confirmar e Liberar Acesso Agora ➔
+        <!-- Badge do Plano Selecionado -->
+        <div class="lm-plan-badge" id="lmPlanBadge">
+          Plano Selecionado: <b id="lmPlanLabel">Anual · 12x de R$ 99,70 (ou R$ 997 à vista)</b>
+        </div>
+
+        <button type="submit" class="lm-submit-btn" id="lmSubmitBtn">
+          <span>Quero minha vantagem desleal</span>
+          <span class="lm-btn-arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 12L12 4M12 4H5.5M12 4v6.5" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
         </button>
-
-        <p style="text-align: center; font-size: 11px; color: var(--muted); margin-top: 12px;">
-          🛡️ Garantia incondicional de 7 dias · Risco Zero
-        </p>
       </form>
+
+      <!-- State 2: PIX AbacatePay Container (Exibido após envio do formulário) -->
+      <div id="lmPixResult" style="display: none;">
+        <div class="lm-pix-header">
+          <span class="lm-pix-tag">⚡ PIX IMEDIATO GERADO VIA ABACATEPAY</span>
+          <p class="lm-pix-price" id="lmPixPriceDisplay">R$ 997,00</p>
+          <p class="lm-pix-sub">Escaneie o QR Code abaixo no app do seu banco ou use o Copia e Cola para liberar o acesso instantâneo:</p>
+        </div>
+
+        <div class="lm-qr-box">
+          <img id="lmQrCodeImg" src="" alt="QR Code Pix AbacatePay" width="180" height="180">
+        </div>
+
+        <div class="lm-copia-cola-wrap">
+          <input type="text" id="lmPixCodeInput" readonly class="lm-pix-input">
+          <button type="button" class="lm-copy-btn" id="lmCopyBtn" onclick="copyPixCode()">
+            Copiar Pix
+          </button>
+        </div>
+
+        <div class="lm-pix-status">
+          <span class="lm-pulse-dot"></span> Aguardando pagamento... Liberação automática imediata.
+        </div>
+      </div>
+
+      <!-- Social Proof no Rodapé do Modal -->
+      <div class="lm-foot-proof">
+        <p class="lm-foot-msg">Pessoas comuns estão vendendo no imobiliário.</p>
+        <div class="lm-avatar-stack">
+          <div class="lm-avatars">
+            <img src="./assets/broker-1.webp" alt="Corretor parceiro" width="26" height="26" loading="lazy">
+            <img src="./assets/broker-2.webp" alt="Corretor parceiro" width="26" height="26" loading="lazy">
+            <img src="./assets/broker-3.webp" alt="Corretor parceiro" width="26" height="26" loading="lazy">
+            <span class="lm-more-badge">+</span>
+          </div>
+          <p class="lm-proof-num">+4.000 corretores já aceleraram · <span>★</span> <b>4,9/5</b></p>
+        </div>
+      </div>
+
+      <!-- Botão Fechar (X) -->
+      <button type="button" class="lm-close-btn" onclick="closeCheckoutModal()" aria-label="Fechar modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
     </div>
   </dialog>
 
-  <!-- JAVASCRIPT: CONTROLE DO SELETOR E CHECKOUT -->
+  <!-- JAVASCRIPT: CONTROLE DO SELETOR E CHECKOUT ABACATEPAY -->
   <script>
     let currentPlan = 'anual';
-    let currentMethod = 'PIX';
-    let bump1 = false;
-    let bump2 = false;
 
     const planData = {
       anual: {
-        title: 'Plano Anual (Recomendado)',
-        sub: '12 meses de acesso completo à infraestrutura + Comunidade',
-        price: '12x R$ 99,70',
-        summary: 'plano anual · 12x de R$ 99,70 (ou R$ 997 à vista no Pix)',
+        title: 'Plano Anual',
+        label: 'Anual · 12x de R$ 99,70 (ou R$ 997 à vista no Pix)',
+        pixDisplay: 'R$ 997,00',
+        summary: 'plano anual · 12x de R$ 99,70 (ou R$ 997 à vista)',
         checkoutUrl: 'https://os.imobiturbo.com.br/checkout/anual?title=Plano+Anual+Imobiturbo+OS&cartao_parcelas=12&cartao_valor=99.70&avista=997'
       },
       semestral: {
         title: 'Plano Semestral',
-        sub: '6 meses de acesso completo à infraestrutura + Comunidade',
-        price: '6x R$ 147',
-        summary: 'plano semestral · 6x de R$ 147 (ou R$ 747 à vista no Pix)',
+        label: 'Semestral · 6x de R$ 147 (ou R$ 747 à vista no Pix)',
+        pixDisplay: 'R$ 747,00',
+        summary: 'plano semestral · 6x de R$ 147 (ou R$ 747 à vista)',
         checkoutUrl: 'https://os.imobiturbo.com.br/checkout/semestral?title=Plano+Semestral+Imobiturbo+OS&cartao_parcelas=6&cartao_valor=147&avista=747'
       },
       mensal: {
         title: 'Plano Mensal',
-        sub: 'Assinatura sem fidelidade · Cancela quando quiser',
-        price: 'R$ 97/mês',
+        label: 'Mensal · R$ 97/mês recorrente no cartão',
+        pixDisplay: 'R$ 97,00',
         summary: 'plano mensal · R$ 97/mês recorrente no cartão',
         checkoutUrl: 'https://os.imobiturbo.com.br/checkout/mensal?title=Plano+Mensal+Imobiturbo+OS&valor_parcela=97&recorrente=true'
       }
     };
-
-    function toggleOrderBump(id) {
-      if (id === 1) {
-        bump1 = !bump1;
-        const box = document.getElementById('obumpBox1');
-        if (box) box.classList.toggle('selected', bump1);
-      } else if (id === 2) {
-        bump2 = !bump2;
-        const box = document.getElementById('obumpBox2');
-        if (box) box.classList.toggle('selected', bump2);
-      }
-      updateSummaryWithBumps();
-    }
-
-    function updateSummaryWithBumps() {
-      const data = planData[currentPlan];
-      if (!data) return;
-      let text = data.summary;
-      const bumps = [];
-      if (bump1) bumps.push('+ Pack Criativos (R$ 47)');
-      if (bump2) bumps.push('+ Scripts WhatsApp (R$ 67)');
-      if (bumps.length > 0) {
-        text += ' · ' + bumps.join(' ');
-      }
-      document.getElementById('pselSummary').textContent = text;
-    }
 
     function updateSelectedPlan(plan) {
       currentPlan = plan;
       const data = planData[plan];
       if (!data) return;
 
-      updateSummaryWithBumps();
-      document.getElementById('modalPlanTitle').textContent = data.title;
-      document.getElementById('modalPlanSub').textContent = data.sub;
-      document.getElementById('modalPlanPrice').textContent = data.price;
+      const summaryEl = document.getElementById('pselSummary');
+      if (summaryEl) summaryEl.textContent = data.summary;
+
+      const badgeLabel = document.getElementById('lmPlanLabel');
+      if (badgeLabel) badgeLabel.textContent = data.label;
+
+      const priceDisplay = document.getElementById('lmPixPriceDisplay');
+      if (priceDisplay) priceDisplay.textContent = data.pixDisplay;
     }
 
     function scrollToPlans() {
@@ -828,53 +826,116 @@
     }
 
     function openCheckoutWithCurrentPlan() {
-      const data = planData[currentPlan];
-      if (data && data.checkoutUrl) {
-        let url = data.checkoutUrl + '&utm_source=vagas&utm_medium=direct&utm_campaign=perpetuo_2026';
-        if (bump1) url += '&order_bump_1=true&order_bump_1_val=47';
-        if (bump2) url += '&order_bump_2=true&order_bump_2_val=67';
-        window.location.href = url;
-      } else {
-        const modal = document.getElementById('checkoutModal');
-        if (modal) modal.showModal();
-      }
+      const modal = document.getElementById('leadCaptureModal');
+      updateSelectedPlan(currentPlan);
+      if (modal) modal.showModal();
     }
 
     function closeCheckoutModal() {
-      const modal = document.getElementById('checkoutModal');
+      const modal = document.getElementById('leadCaptureModal');
       if (modal) modal.close();
     }
 
-    function setCheckoutMethod(method) {
-      currentMethod = method;
-      const tabPix = document.getElementById('tabBtnPix');
-      const tabCard = document.getElementById('tabBtnCard');
-      const cardContainer = document.getElementById('cardFieldsContainer');
-
-      if (method === 'PIX') {
-        tabPix.classList.add('active');
-        tabCard.classList.remove('active');
-        cardContainer.style.display = 'none';
-      } else {
-        tabCard.classList.add('active');
-        tabPix.classList.remove('active');
-        cardContainer.style.display = 'block';
+    function handleModalBackdropClick(e) {
+      if (e.target.id === 'leadCaptureModal') {
+        closeCheckoutModal();
       }
     }
 
-    function handleCheckoutSubmit(e) {
+    function maskPhone(input) {
+      let v = input.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.slice(0, 11);
+      if (v.length > 10) {
+        input.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+      } else if (v.length > 6) {
+        input.value = `(${v.slice(0, 2)}) ${v.slice(2, 6)}-${v.slice(6)}`;
+      } else if (v.length > 2) {
+        input.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+      } else {
+        input.value = v;
+      }
+    }
+
+    async function handleLeadSubmit(e) {
       e.preventDefault();
-      const btn = document.getElementById('submitOrderBtn');
-      btn.textContent = 'Processando com segurança...';
+      const btn = document.getElementById('lmSubmitBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span>Gerando Pix seguro...</span>';
       btn.disabled = true;
 
-      // Redireciona para o checkout oficial com os parâmetros
-      const name = encodeURIComponent(document.getElementById('chkName').value);
-      const email = encodeURIComponent(document.getElementById('chkEmail').value);
-      const phone = encodeURIComponent(document.getElementById('chkPhone').value);
-      const data = planData[currentPlan];
+      const name = document.getElementById('leadFullname').value.trim();
+      const email = document.getElementById('leadEmail').value.trim();
+      const phone = document.getElementById('leadPhone').value.trim();
 
-      window.location.href = `${data.checkoutUrl}&name=${name}&email=${email}&phone=${phone}&utm_source=vagas&utm_medium=form&utm_campaign=perpetuo_2026`;
+      // Dispara evento de Lead no Pixel
+      if (window.fbq) {
+        fbq('track', 'Lead', { content_name: currentPlan, email, phone });
+      }
+
+      try {
+        const resp = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            plan: currentPlan,
+            paymentMethod: 'PIX',
+            name,
+            email,
+            phone
+          })
+        });
+
+        const data = await resp.json();
+
+        if (resp.ok && data.success && data.pix) {
+          // Sucesso direto AbacatePay: Renderiza o Pix no modal
+          document.getElementById('leadModalForm').style.display = 'none';
+          document.getElementById('lmPixResult').style.display = 'block';
+
+          if (data.pix.qrCodeBase64) {
+            const qrImg = document.getElementById('lmQrCodeImg');
+            qrImg.src = data.pix.qrCodeBase64.startsWith('data:') 
+              ? data.pix.qrCodeBase64 
+              : `data:image/png;base64,${data.pix.qrCodeBase64}`;
+          } else if (data.pix.copyPaste) {
+            // Fallback para renderizar via QRServer se não vier base64
+            document.getElementById('lmQrCodeImg').src = 
+              `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(data.pix.copyPaste)}`;
+          }
+
+          document.getElementById('lmPixCodeInput').value = data.pix.copyPaste || '';
+        } else {
+          // Fallback gracioso: redireciona para o checkout Asaas parametrizado
+          const pData = planData[currentPlan];
+          const encName = encodeURIComponent(name);
+          const encEmail = encodeURIComponent(email);
+          const encPhone = encodeURIComponent(phone);
+          window.location.href = `${pData.checkoutUrl}&name=${encName}&email=${encEmail}&phone=${encPhone}&utm_source=vagas&utm_medium=modal_fallback`;
+        }
+      } catch (err) {
+        console.error('Erro na chamada de checkout:', err);
+        const pData = planData[currentPlan];
+        window.location.href = `${pData.checkoutUrl}&utm_source=vagas&utm_medium=modal_error`;
+      } finally {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+
+    function copyPixCode() {
+      const input = document.getElementById('lmPixCodeInput');
+      input.select();
+      input.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(input.value);
+
+      const btn = document.getElementById('lmCopyBtn');
+      const original = btn.textContent;
+      btn.textContent = 'Copiado! ✓';
+      btn.style.background = '#2FB31C';
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.style.background = '#14A69B';
+      }, 2500);
     }
 
     // Controle da Sticky CTA bar no scroll
@@ -884,8 +945,7 @@
       if (!sticky || !planos) return;
 
       const planosRect = planos.getBoundingClientRect();
-      // Mostra a barra quando passar de 500px e esconde quando chegar na seção de planos
-      if (window.scrollY > 500 && (planosRect.top > window.innerHeight || planosRect.bottom < 0)) {
+      if (window.scrollY > 600 && (planosRect.top > window.innerHeight || planosRect.bottom < 0)) {
         sticky.classList.add('visible');
       } else {
         sticky.classList.remove('visible');
