@@ -23,8 +23,8 @@
   --accent-rgb: 212, 255, 83;
   --lime-soft: rgba(var(--accent-rgb), 0.1);
   --lime-glow: rgba(var(--accent-rgb), 0.25);
-  (--mint-bg: rgba(212, 255, 83, 0.08);
-  (--mint-border: rgba(212, 255, 83, 0.25);
+  --mint-bg: rgba(212, 255, 83, 0.08);
+  --mint-border: rgba(212, 255, 83, 0.25);
   --border: #262922;
   --line: #262922;
   --line-2: #383c31;
