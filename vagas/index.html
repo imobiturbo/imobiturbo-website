@@ -583,7 +583,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260918-v9">
+  <link rel="stylesheet" href="./vagas.css?v=20260918-v10">
 </head>
 <body>
 
@@ -611,13 +611,17 @@
           Entre na Comunidade Imobiturbo: receba o CRM Imobiturbo OS com IA no WhatsApp, suporte técnico 24h e o Club com aulas práticas, exercícios e Mentor IA.
         </p>
 
-        <!-- Mockup VSL Facade Player -->
+        <!-- Mockup VSL Player -->
         <div class="hero-mock">
-          <div class="hero-vsl" id="vslFacade" onclick="scrollToPlans()">
+          <div class="hero-vsl" id="vslFacade" onclick="playVslVideo()">
             <img src="./assets/hero-vsl-poster.webp" alt="Apresentação da Comunidade Imobiturbo com Natan Pimentel" width="1010" height="568" fetchpriority="high">
             <button class="play" type="button" aria-label="Assistir apresentação prática">
               <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
+            <video id="vslVideo" preload="none" playsinline controls style="display:none; width:100%; height:100%; object-fit:cover; border-radius:16px;">
+              <source src="./assets/comunidade-tour.mp4" type="video/mp4">
+              Seu navegador não suporta vídeos em HTML5.
+            </video>
           </div>
         </div>
 
@@ -2349,6 +2353,20 @@
       if (btnTxt && p) {
         btnTxt.textContent = p.btnText;
       }
+    }
+
+    function playVslVideo() {
+      const facade = document.getElementById('vslFacade');
+      const video = document.getElementById('vslVideo');
+      if (!facade || !video) return;
+      const poster = facade.querySelector('img');
+      const playBtn = facade.querySelector('button.play');
+      if (poster) poster.style.display = 'none';
+      if (playBtn) playBtn.style.display = 'none';
+      video.style.display = 'block';
+      video.play().catch(function(err) {
+        console.warn('Video playback notice:', err);
+      });
     }
 
     function scrollToPlans() {
