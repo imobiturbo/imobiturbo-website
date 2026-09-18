@@ -230,7 +230,7 @@ button, input, textarea {
    HERO SECTION (COMPACTO - PRIMEIRA DOBRA EM 1080P)
    ========================================================================== */
 .hero {
-  padding: 32px 0 20px;
+  padding: 10px 0 16px;
   text-align: center;
   position: relative;
 }
@@ -244,26 +244,27 @@ button, input, textarea {
 }
 
 .h-hero {
-  font-size: clamp(30px, 3.8vw, 48px);
+  font-size: clamp(28px, 3.4vw, 42px);
   font-weight: 900;
-  line-height: 1.15;
+  line-height: 1.12;
   letter-spacing: -0.035em;
   color: var(--white);
-  margin-bottom: 12px;
+  margin-top: 0;
+  margin-bottom: 8px;
 }
 
 .hero-inner .sub {
-  max-width: 680px;
-  font-size: clamp(14px, 1.35vw, 16px);
-  line-height: 1.45;
+  max-width: 660px;
+  font-size: clamp(13.5px, 1.25vw, 15px);
+  line-height: 1.4;
   color: var(--muted);
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .hero-mock {
   width: 100%;
-  max-width: 720px;
-  margin: 0 auto 18px;
+  max-width: 660px;
+  margin: 0 auto 14px;
   position: relative;
 }
 
