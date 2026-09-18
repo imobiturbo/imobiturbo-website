@@ -20,9 +20,11 @@ const HOME_ASSETS = {
 const HOME_NAV_LINKS = [
   ['O que faz', '#o-que-faz'],
   ['Para quem', '#publicos'],
-  ['Como faz', '#como-faz'],
+  ['Ecossistema', '#como-faz'],
   ['Método', '#metodo'],
   ['Depoimentos', '#depoimentos'],
+  ['Diagnóstico', '#diagnostico'],
+  ['FAQ', '#faq'],
 ];
 
 const HOME_AUDIENCES = [
@@ -107,6 +109,37 @@ const HOME_DIAGNOSTIC_QUESTIONS = [
       ['CRM sem rotina definida', 'building'],
       ['Processo claro e acompanhado', 'check'],
     ],
+  },
+];
+
+const ECOSYSTEM_PRODUCTS = [
+  { name: 'Imobiturbo OS', desc: 'CRM multitenant com IA invisível no WhatsApp, áudio humano e qualificação socrática.', logo: 'assets/brand/dark/imobiturbo-os.webp', href: '/vagas/' },
+  { name: 'Imobiturbo Club', desc: 'Comunidade fechada, encontros ao vivo e cofre de inteligência comercial para corretores.', logo: 'assets/brand/dark/imobiturbo-club.webp', href: 'https://club.imobiturbo.com.br' },
+  { name: 'Imobiturbo Sites', desc: 'Landing pages e plataformas de alta velocidade e conversão para lançamentos imobiliários.', logo: 'assets/brand/dark/imobiturbo-sites.webp', href: '#diagnostico' },
+  { name: 'Imobiturbo Ads', desc: 'Inteligência de tráfego, criativos validados e captação previsível de compradores qualificados.', logo: 'assets/brand/dark/imobiturbo-ads.webp', href: '#diagnostico' },
+  { name: 'Imobiturbo Radar', desc: 'Monitoramento contínuo de concorrência, precificação e oportunidades em tempo real.', logo: 'assets/brand/dark/imobiturbo-radar.webp', href: '#diagnostico' },
+];
+
+const HOME_FAQ_ITEMS = [
+  {
+    question: 'O que é a Imobiturbo?',
+    answer: 'A Imobiturbo é um ecossistema comercial e operacional para o mercado imobiliário fundado por Natan Pimentel. Une mentoria prática, consultoria comercial, tecnologia própria (hub operacional e CRM com IA invisível) e comunidade fechada para corretores autônomos, imobiliárias e incorporadoras venderem com processo, margem e previsibilidade.',
+  },
+  {
+    question: 'Como a Imobiturbo ajuda corretores autônomos?',
+    answer: 'Ajuda o corretor solo a estruturar sua rotina de captação, organizar conversas de WhatsApp sem perder leads, criar réguas de follow-up contextuais, automatizar pré-atendimento com IA e conduzir negociações protegendo sua comissão integral de 6%.',
+  },
+  {
+    question: 'Como funciona para imobiliárias e incorporadoras?',
+    answer: 'Para imobiliárias, padroniza o atendimento da equipe, estabelece SLA de resposta a leads em segundos, implanta indicadores de conversão em tempo real e define rituais de gestão comercial. Para incorporadoras, alinha a velocidade de lançamento, a rede de corretores parceiros e a esteira de fechamento para absorção rápida do estoque.',
+  },
+  {
+    question: 'Qual é o método da Imobiturbo para acelerar vendas imobiliárias?',
+    answer: 'O método é dividido em 5 etapas fundamentais: 1. Captação (origem, nicho e rotina previsível de entrada); 2. Atendimento (contexto e critério de avanço); 3. Follow-up (cadência contextual sem sumir e sem ser chato); 4. Negociação (proteção de margem e comissão); 5. Fechamento (condução documental e assinatura com processo).',
+  },
+  {
+    question: 'Como agendar um diagnóstico da minha operação comercial?',
+    answer: 'Você pode realizar o diagnóstico interativo diretamente nesta página ou entrar em contato pelo WhatsApp oficial (+55 21 96951-6183) para mapear seu volume, perfil, gargalos e os próximos passos.',
   },
 ];
 
@@ -210,12 +243,60 @@ function HeroSection() {
       <img className="home-hero-image" src={HOME_ASSETS.hero} alt="Mesa de uma operação imobiliária com plantas, celular e a cidade à noite." />
       <div className="home-hero-shade" aria-hidden="true" />
       <div className="home-container home-hero-content">
-        <p className="hero-kicker">Ecossistema para crescimento imobiliário</p>
+        <p className="hero-kicker">
+          <span className="hero-pulse-dot" aria-hidden="true" />
+          Ecossistema para crescimento imobiliário
+        </p>
         <h1>Onde vendas, operação e tecnologia imobiliária ganham direção<span className="lime-dot">.</span></h1>
-        <p className="hero-lead">Mentoria, hub, comunidade e consultoria para transformar esforço comercial em processo, margem e previsibilidade.</p>
+        <p className="hero-lead">Mentoria prática, hub operacional e consultoria comercial para transformar esforço comercial em processo, margem e previsibilidade.</p>
         <div className="hero-actions">
           <HomeButton href="#diagnostico" icon="target" iconRight={false}>Mapear minha operação</HomeButton>
           <a className="hero-text-link" href="#como-faz">Ver como funciona <Icon name="arrowDown" size={16} /></a>
+        </div>
+
+        <div className="hero-cockpit" aria-label="Operação ativa Imobiturbo">
+          <div className="hero-cockpit-chip">
+            <span className="chip-emoji">⚡</span>
+            <div>
+              <strong>IA no WhatsApp</strong>
+              <span>Áudio humano em &lt;30s</span>
+            </div>
+          </div>
+          <div className="hero-cockpit-chip">
+            <span className="chip-emoji">📅</span>
+            <div>
+              <strong>Visita Agendada</strong>
+              <span>Renda R$ 25k+ qualificada</span>
+            </div>
+          </div>
+          <div className="hero-cockpit-chip">
+            <span className="chip-emoji">💼</span>
+            <div>
+              <strong>Comissão Blindada</strong>
+              <span>6% integral garantido</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="hero-telemetry-bar" aria-label="Indicadores da Imobiturbo">
+        <div className="home-container hero-telemetry-inner">
+          <div className="telemetry-item">
+            <strong>+5.000</strong>
+            <span>corretores acelerados</span>
+          </div>
+          <div className="telemetry-item">
+            <strong>+R$ 150M</strong>
+            <span>em VGV transacionado</span>
+          </div>
+          <div className="telemetry-item">
+            <strong>24 estados</strong>
+            <span>operações no Brasil</span>
+          </div>
+          <div className="telemetry-item">
+            <strong>98.4%</strong>
+            <span>aprovação do método</span>
+          </div>
         </div>
       </div>
 
@@ -406,6 +487,25 @@ function EcosystemSection() {
           </article>
         </div>
       </div>
+
+      <div className="home-container ecosystem-apps-wrap">
+        <div className="ecosystem-apps-title">Ecossistema de Soluções</div>
+        <div className="ecosystem-apps-sub">Tecnologia proprietária e metodologias validadas para cada frente da sua operação comercial.</div>
+        <div className="ecosystem-apps-grid">
+          {ECOSYSTEM_PRODUCTS.map((prod) => (
+            <a
+              key={prod.name}
+              href={prod.href}
+              className="ecosystem-app-card"
+              target={prod.href.startsWith('http') ? '_blank' : undefined}
+              rel={prod.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+            >
+              <img src={prod.logo} alt={prod.name} className="ecosystem-app-logo" />
+              <p className="ecosystem-app-desc">{prod.desc}</p>
+            </a>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
@@ -511,7 +611,7 @@ function DiagnosticQuiz() {
   };
 
   const resultWhatsappUrl = result
-    ? `https://wa.me/5521983747796?text=${encodeURIComponent(`Olá Natan! Fiz o diagnóstico no site da Imobiturbo.\n\nPerfil: ${result.profile}\nPrincipal gargalo: ${result.bottleneck}\nAcompanhamento atual: ${result.structure}\n\nRecomendação inicial: ${result.recommendation}\n\nQuero mapear os próximos passos.`)}`
+    ? `https://wa.me/5521969516183?text=${encodeURIComponent(`Olá Natan! Fiz o diagnóstico no site da Imobiturbo.\n\nPerfil: ${result.profile}\nPrincipal gargalo: ${result.bottleneck}\nAcompanhamento atual: ${result.structure}\n\nRecomendação inicial: ${result.recommendation}\n\nQuero mapear os próximos passos.`)}`
     : HOME_WHATSAPP_URL;
 
   return (
@@ -600,6 +700,52 @@ function DiagnosticSection() {
   );
 }
 
+function FaqSection() {
+  const [openIndex, setOpenIndex] = React.useState(0);
+
+  const toggleFaq = (idx) => {
+    setOpenIndex((current) => (current === idx ? -1 : idx));
+  };
+
+  return (
+    <section className="home-faq-section" id="faq">
+      <div className="home-container">
+        <div className="faq-heading">
+          <p className="hero-kicker">Tire suas dúvidas</p>
+          <h2>Perguntas frequentes sobre a Imobiturbo<span className="lime-dot">.</span></h2>
+          <p className="faq-lead">Respostas diretas sobre como o ecossistema, o método e a tecnologia funcionam na prática.</p>
+        </div>
+
+        <div className="faq-list">
+          {HOME_FAQ_ITEMS.map((item, idx) => {
+            const isOpen = openIndex === idx;
+            return (
+              <div className={`faq-item ${isOpen ? 'is-open' : ''}`} key={item.question}>
+                <button
+                  type="button"
+                  className="faq-question-btn"
+                  onClick={() => toggleFaq(idx)}
+                  aria-expanded={isOpen}
+                >
+                  <span>{item.question}</span>
+                  <span className="faq-toggle-icon" aria-hidden="true">
+                    {isOpen ? '−' : '+'}
+                  </span>
+                </button>
+                {isOpen && (
+                  <div className="faq-answer">
+                    <p>{item.answer}</p>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function FinalCtaSection() {
   return (
     <section className="final-cta">
@@ -632,18 +778,20 @@ function HomeFooter() {
         <div className="footer-column">
           <strong>Ecossistema</strong>
           <a href="#como-faz">Mentoria</a>
-          <a href="#como-faz">Software / hub</a>
-          <a href="#como-faz">Comunidade</a>
+          <a href="#como-faz">Software / OS</a>
+          <a href="#como-faz">Comunidade / Club</a>
           <a href="#como-faz">Consultoria</a>
         </div>
         <div className="footer-column">
-          <strong>Contato</strong>
-          <a href={HOME_WHATSAPP_URL} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-          <a href={HOME_INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">Instagram</a>
+          <strong>Legal & Suporte</strong>
+          <a href="/politica-de-privacidade/">Privacidade</a>
+          <a href="/termos-de-servico/">Termos de Serviço</a>
+          <a href="/exclusao-de-dados/">Exclusão de Dados</a>
           <a href={HOME_TESTIMONIALS_URL}>Depoimentos</a>
+          <a href={HOME_WHATSAPP_URL} target="_blank" rel="noopener noreferrer">WhatsApp</a>
         </div>
       </div>
-      <div className="home-container footer-bottom">© 2026 Imobiturbo. Todos os direitos reservados.</div>
+      <div className="home-container footer-bottom">© 2026 Imobiturbo. CNPJ 47.746.249/0001-04 • Rio de Janeiro/RJ • Todos os direitos reservados.</div>
     </footer>
   );
 }
@@ -951,7 +1099,25 @@ function EcosystemPortal() {
 }
 
 function HomePrototypes() {
-  return <EcosystemPortal />;
+  return (
+    <div className="home-page it-root">
+      <a className="skip-link" href="#conteudo">Pular para o conteúdo</a>
+      <HomeHeader />
+      <main id="conteudo">
+        <HeroSection />
+        <ProblemSection />
+        <AudiencesSection />
+        <EcosystemSection />
+        <MethodSection />
+        <ProofSection />
+        <DiagnosticSection />
+        <FaqSection />
+        <FinalCtaSection />
+      </main>
+      <HomeFooter />
+    </div>
+  );
 }
 
 window.HomePrototypes = HomePrototypes;
+window.EcosystemPortal = EcosystemPortal;
