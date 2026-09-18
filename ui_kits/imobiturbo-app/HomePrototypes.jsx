@@ -210,26 +210,183 @@ const LeadModalContext = React.createContext({
   modalData: {},
 });
 
-function LeadCaptureForm({ initialData = {}, onSuccess, inline = false, ctaText = 'Enviar solicitação de diagnóstico' }) {
+const TYPEFORM_PERFIL_OPTIONS = [
+  {
+    id: 'Corretor autônomo',
+    key: '1',
+    icon: 'target',
+    title: 'Corretor autônomo',
+    desc: 'Atuação individual, captação direta de imóveis, anúncios próprios e negociação solo.',
+  },
+  {
+    id: 'Imobiliária',
+    key: '2',
+    icon: 'users',
+    title: 'Imobiliária',
+    desc: 'Equipe comercial, gestão de corretores, esteira de atendimento e carteira ativa.',
+  },
+  {
+    id: 'Construtora ou incorporadora',
+    key: '3',
+    icon: 'building',
+    title: 'Construtora ou incorporadora',
+    desc: 'Lançamentos imobiliários, coordenação de vendas, plantões e inteligência de estoque.',
+  },
+];
+
+const TYPEFORM_GARGALO_OPTIONS = [
+  {
+    id: 'Follow-up inconsistente',
+    key: '1',
+    icon: 'clock',
+    title: 'Follow-up inconsistente / leads esfriam',
+    desc: 'Demora no primeiro contato ou perda de timing nas conversas do WhatsApp.',
+  },
+  {
+    id: 'Atrair leads qualificados',
+    key: '2',
+    icon: 'funnel',
+    title: 'Atrair leads realmente qualificados',
+    desc: 'Muitos curiosos sem poder de compra ou custo por lead subindo nos anúncios.',
+  },
+  {
+    id: 'Atendimento sem padrão',
+    key: '3',
+    icon: 'phone',
+    title: 'Atendimento sem padrão e sem rotina',
+    desc: 'Falta de cadência comercial clara para qualificar, agendar visitas e defender margem.',
+  },
+  {
+    id: 'Gestão sem visibilidade',
+    key: '4',
+    icon: 'clipboard',
+    title: 'Gestão sem visibilidade e sem CRM',
+    desc: 'Operação espalhada em planilhas, conversas soltas e sem previsibilidade de funil.',
+  },
+  {
+    id: 'Quero IA no WhatsApp',
+    key: '5',
+    icon: 'zap',
+    title: 'Quero automação com IA no WhatsApp',
+    desc: 'Atendimento imediato 24/7 com qualificação socrática inteligente e áudio humano.',
+  },
+];
+
+const TYPEFORM_FATURAMENTO_OPTIONS = [
+  {
+    id: 'Até R$ 10 mil/mês',
+    key: '1',
+    icon: 'target',
+    title: 'Até R$ 10 mil/mês',
+    desc: 'Fase de estruturação de base, rotina de captação e busca por primeiras vendas regulares.',
+  },
+  {
+    id: 'R$ 10 mil a R$ 30 mil/mês',
+    key: '2',
+    icon: 'trending',
+    title: 'De R$ 10 mil a R$ 30 mil/mês',
+    desc: 'Aceleração de volume comercial, comissões regulares e organização da rotina.',
+  },
+  {
+    id: 'R$ 30 mil a R$ 100 mil/mês',
+    key: '3',
+    icon: 'wallet',
+    title: 'De R$ 30 mil a R$ 100 mil/mês',
+    desc: 'Escala com equipe, processos de vendas, esteira validada e tecnologia.',
+  },
+  {
+    id: 'Acima de R$ 100 mil/mês',
+    key: '4',
+    icon: 'shield',
+    title: 'Acima de R$ 100 mil/mês',
+    desc: 'Operação madura em busca de eficiência máxima, margem alta e inteligência com IA.',
+  },
+];
+
+function LeadCaptureForm({ initialData = {}, onSuccess, inline = false, ctaText = 'Enviar solicitação de diagnóstico', onClose }) {
+  // Se initialData já tiver perfil e gargalo (ex: vindo do quiz na página), avança direto para faturamento/contato
+  const initialStep = initialData.perfil && initialData.gargalo ? 3 : 1;
+  const [step, setStep] = React.useState(initialStep);
   const [nome, setNome] = React.useState('');
   const [telefone, setTelefone] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [perfil, setPerfil] = React.useState(initialData.perfil || 'Corretor autônomo');
   const [gargalo, setGargalo] = React.useState(initialData.gargalo || 'Follow-up inconsistente');
-  const [faturamento, setFaturamento] = React.useState('');
+  const [faturamento, setFaturamento] = React.useState(initialData.faturamento || 'De R$ 10 mil a R$ 30 mil/mês');
   const [status, setStatus] = React.useState('idle'); // 'idle' | 'submitting' | 'success' | 'error'
   const [errorMessage, setErrorMessage] = React.useState('');
+  const [pendingSelection, setPendingSelection] = React.useState('');
+
+  const nameInputRef = React.useRef(null);
 
   React.useEffect(() => {
     if (initialData.perfil) setPerfil(initialData.perfil);
     if (initialData.gargalo) setGargalo(initialData.gargalo);
-  }, [initialData.perfil, initialData.gargalo]);
+    if (initialData.faturamento) setFaturamento(initialData.faturamento);
+  }, [initialData.perfil, initialData.gargalo, initialData.faturamento]);
+
+  // Foco automático no input de nome ao entrar na etapa 4
+  React.useEffect(() => {
+    if (step === 4 && nameInputRef.current) {
+      setTimeout(() => nameInputRef.current?.focus(), 150);
+    }
+  }, [step]);
+
+  // Navegação por atalhos de teclado (1, 2, 3...) estilo Typeform
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      const activeTag = document.activeElement?.tagName?.toLowerCase();
+      if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select') return;
+
+      if (step === 1) {
+        const found = TYPEFORM_PERFIL_OPTIONS.find((o) => o.key === e.key);
+        if (found) advanceWithSelection('perfil', found.id, 2);
+      } else if (step === 2) {
+        const found = TYPEFORM_GARGALO_OPTIONS.find((o) => o.key === e.key);
+        if (found) advanceWithSelection('gargalo', found.id, 3);
+      } else if (step === 3) {
+        const found = TYPEFORM_FATURAMENTO_OPTIONS.find((o) => o.key === e.key);
+        if (found) advanceWithSelection('faturamento', found.id, 4);
+      } else if (step > 1 && step <= 4 && (e.key === 'Backspace' || e.key === 'ArrowLeft')) {
+        handleBack();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [step]);
+
+  const advanceWithSelection = (field, value, nextStep) => {
+    setPendingSelection(value);
+    if (field === 'perfil') setPerfil(value);
+    if (field === 'gargalo') setGargalo(value);
+    if (field === 'faturamento') setFaturamento(value);
+
+    setTimeout(() => {
+      setStep(nextStep);
+      setPendingSelection('');
+    }, 180);
+  };
+
+  const handleBack = () => {
+    setErrorMessage('');
+    setStep((s) => Math.max(1, s - 1));
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!nome.trim() || !telefone.trim() || !email.trim()) {
-      setErrorMessage('Preencha seu nome, WhatsApp e e-mail para prosseguir.');
-      setStatus('error');
+    if (e) e.preventDefault();
+    if (!nome.trim()) {
+      setErrorMessage('Por favor, informe seu nome completo.');
+      nameInputRef.current?.focus();
+      return;
+    }
+    const cleanPhone = telefone.replace(/\D/g, '');
+    if (cleanPhone.length < 10) {
+      setErrorMessage('Informe um WhatsApp válido com DDD (mínimo 10 dígitos).');
+      return;
+    }
+    if (!email.trim() || !email.includes('@') || !email.includes('.')) {
+      setErrorMessage('Informe um e-mail profissional válido.');
       return;
     }
 
@@ -244,7 +401,7 @@ function LeadCaptureForm({ initialData = {}, onSuccess, inline = false, ctaText 
         perfil,
         gargalo,
         faturamento: faturamento || undefined,
-        origem_cta: initialData.origem_cta || (inline ? 'diagnostico_inline' : 'formulario'),
+        origem_cta: initialData.origem_cta || (inline ? 'diagnostico_inline' : 'formulario_typeform'),
         produto_interesse: initialData.produto_interesse || undefined,
         estrutura: initialData.estrutura || undefined,
         recomendacao: initialData.recomendacao || undefined,
@@ -254,12 +411,13 @@ function LeadCaptureForm({ initialData = {}, onSuccess, inline = false, ctaText 
 
       trackHomeEvent('generate_lead', {
         method: 'form_os',
-        form: 'lp_oficial_imobiturbo',
+        form: 'lp_oficial_typeform',
         profile: perfil,
         origem_cta: payload.origem_cta,
       });
 
       setStatus('success');
+      setStep(5);
       if (typeof onSuccess === 'function') onSuccess();
     } catch (err) {
       console.error('Erro ao enviar lead para Imobiturbo OS:', err);
@@ -268,169 +426,358 @@ function LeadCaptureForm({ initialData = {}, onSuccess, inline = false, ctaText 
     }
   };
 
-  if (status === 'success') {
-    return (
-      <div className="lead-success-box" aria-live="polite">
-        <div className="lead-success-icon-wrap" aria-hidden="true">
-          <Icon name="check" size={32} stroke={2.5} />
-        </div>
-        <h3 className="lead-success-title">Solicitação recebida com sucesso!</h3>
-        <span className="lead-success-badge">Cadastrado no 0. Funil de Vendas — Novo Lead</span>
-        <p className="lead-success-desc">
-          Seus dados foram integrados diretamente no <strong>Imobiturbo OS</strong>. Nossa equipe entrará em contato com você via WhatsApp com o plano ideal para sua operação.
-        </p>
-        <button
-          type="button"
-          className="lead-submit-btn"
-          onClick={() => {
-            setStatus('idle');
-            setNome('');
-            setTelefone('');
-            setEmail('');
-          }}
-        >
-          Enviar nova solicitação
-        </button>
-      </div>
-    );
-  }
+  // Cálculo da barra de progresso do Typeform
+  const progressPercent =
+    step === 1 ? 25 : step === 2 ? 50 : step === 3 ? 75 : step === 4 ? 95 : 100;
 
   return (
-    <form className="lead-form" onSubmit={handleSubmit} noValidate>
-      {initialData.recomendacao && (
-        <div className="lead-modal-context-pill">
-          <div><strong>Diagnóstico:</strong> {initialData.perfil} • {initialData.gargalo}</div>
-          <div><strong>Próximo passo:</strong> {initialData.recomendacao}</div>
+    <div className={`tf-container ${inline ? 'tf-inline' : ''}`}>
+      {/* Barra de progresso Typeform no topo */}
+      <div className="tf-progress-track" aria-hidden="true">
+        <div className="tf-progress-bar" style={{ width: `${progressPercent}%` }} />
+      </div>
+
+      {/* Cabeçalho de navegação (Voltar, Contador de etapas e Contexto) */}
+      <div className="tf-header">
+        {step > 1 && step <= 4 ? (
+          <button type="button" className="tf-back-btn" onClick={handleBack} aria-label="Voltar à etapa anterior">
+            <Icon name="arrowLeft" size={14} stroke={2.4} />
+            <span>Voltar</span>
+          </button>
+        ) : (
+          <div className="tf-header-placeholder" />
+        )}
+
+        <div className="tf-step-counter">
+          {step <= 4 ? (
+            <>
+              <span className="tf-step-current">{step}</span>
+              <span className="tf-step-sep">/</span>
+              <span className="tf-step-total">4</span>
+            </>
+          ) : (
+            <span className="tf-step-done">Concluído</span>
+          )}
+        </div>
+      </div>
+
+      {/* Banner de contexto opcional (produto de interesse) */}
+      {initialData.produto_interesse && step <= 4 && (
+        <div className="tf-context-banner">
+          <span className="tf-context-dot" aria-hidden="true" />
+          <span>Interesse em <strong>{initialData.produto_interesse}</strong></span>
         </div>
       )}
 
-      {initialData.produto_interesse && (
-        <div className="lead-modal-context-pill">
-          <div><strong>Interesse:</strong> {initialData.produto_interesse}</div>
-        </div>
-      )}
-
+      {/* Mensagem de erro */}
       {status === 'error' && errorMessage && (
-        <div className="lead-error-banner" role="alert">
-          <Icon name="x" size={18} />
+        <div className="lead-error-banner" role="alert" style={{ marginBottom: '16px' }}>
+          <Icon name="x" size={16} stroke={2.5} />
           <span>{errorMessage}</span>
         </div>
       )}
 
-      <div className="lead-field">
-        <label className="lead-label" htmlFor={inline ? 'lead-name-inline' : 'lead-name-modal'}>
-          <span>Seu nome completo<span className="required-mark">*</span></span>
-        </label>
-        <input
-          id={inline ? 'lead-name-inline' : 'lead-name-modal'}
-          type="text"
-          className="lead-input"
-          placeholder="Ex: João da Silva"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-      </div>
+      {/* ========================================================================= */}
+      {/* ETAPA 1: PERFIL DA OPERAÇÃO */}
+      {/* ========================================================================= */}
+      {step === 1 && (
+        <div className="tf-step-panel" key="step-1">
+          <div className="tf-step-kicker">
+            <span>Passo 01 • Estrutura</span>
+          </div>
+          <h3 className="tf-step-title">Qual é o seu perfil de atuação no mercado?</h3>
+          <p className="tf-step-subtitle">Selecione o modelo da sua operação para calibrar o diagnóstico correto:</p>
 
-      <div className="lead-field">
-        <label className="lead-label" htmlFor={inline ? 'lead-phone-inline' : 'lead-phone-modal'}>
-          <span>WhatsApp comercial com DDD<span className="required-mark">*</span></span>
-        </label>
-        <input
-          id={inline ? 'lead-phone-inline' : 'lead-phone-modal'}
-          type="tel"
-          className="lead-input"
-          placeholder="(21) 99999-9999"
-          value={telefone}
-          onChange={(e) => setTelefone(formatPhoneBR(e.target.value))}
-          required
-        />
-      </div>
+          <div className="tf-cards-list" role="radiogroup" aria-label="Perfil da operação">
+            {TYPEFORM_PERFIL_OPTIONS.map((opt) => {
+              const isSelected = perfil === opt.id || pendingSelection === opt.id;
+              return (
+                <button
+                  type="button"
+                  key={opt.id}
+                  className={`tf-card-btn ${isSelected ? 'is-selected' : ''}`}
+                  onClick={() => advanceWithSelection('perfil', opt.id, 2)}
+                  role="radio"
+                  aria-checked={isSelected}
+                >
+                  <span className="tf-card-key" aria-hidden="true">{opt.key}</span>
+                  <div className="tf-card-body">
+                    <div className="tf-card-title">
+                      <Icon name={opt.icon} size={17} stroke={2} />
+                      <span>{opt.title}</span>
+                    </div>
+                    <p className="tf-card-desc">{opt.desc}</p>
+                  </div>
+                  <span className="tf-card-radio" aria-hidden="true">
+                    {isSelected && <Icon name="check" size={13} stroke={2.8} />}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-      <div className="lead-field">
-        <label className="lead-label" htmlFor={inline ? 'lead-email-inline' : 'lead-email-modal'}>
-          <span>E-mail profissional<span className="required-mark">*</span></span>
-        </label>
-        <input
-          id={inline ? 'lead-email-inline' : 'lead-email-modal'}
-          type="email"
-          className="lead-input"
-          placeholder="Ex: joao@imobiliaria.com.br"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-      </div>
-
-      <div className="lead-field">
-        <label className="lead-label">
-          <span>Perfil da operação</span>
-        </label>
-        <div className="lead-chips-group">
-          {['Corretor autônomo', 'Imobiliária', 'Construtora ou incorporadora'].map((opt) => (
+          <div className="tf-step-footer">
+            <span className="tf-keyboard-hint">Dica: pressione <b>1</b>, <b>2</b> ou <b>3</b> no teclado</span>
             <button
               type="button"
-              key={opt}
-              className={`lead-chip ${perfil === opt ? 'is-active' : ''}`}
-              onClick={() => setPerfil(opt)}
+              className="tf-advance-btn"
+              onClick={() => setStep(2)}
             >
-              {opt}
+              <span>Avançar</span>
+              <Icon name="arrowRight" size={16} stroke={2.2} />
             </button>
-          ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="lead-field">
-        <label className="lead-label" htmlFor={inline ? 'lead-bottleneck-inline' : 'lead-bottleneck-modal'}>
-          <span>Maior gargalo hoje</span>
-        </label>
-        <select
-          id={inline ? 'lead-bottleneck-inline' : 'lead-bottleneck-modal'}
-          className="lead-select"
-          value={gargalo}
-          onChange={(e) => setGargalo(e.target.value)}
-        >
-          <option value="Follow-up inconsistente">Follow-up inconsistente / leads esfriam</option>
-          <option value="Atendimento sem padrão">Atendimento sem padrão / demora na resposta</option>
-          <option value="Leads sem prioridade">Leads sem prioridade / tráfego fraco</option>
-          <option value="Gestão sem visibilidade">Gestão sem visibilidade / sem CRM</option>
-          <option value="Quero IA no WhatsApp">Quero automação com IA no WhatsApp</option>
-        </select>
-      </div>
+      {/* ========================================================================= */}
+      {/* ETAPA 2: PRINCIPAL GARGALO */}
+      {/* ========================================================================= */}
+      {step === 2 && (
+        <div className="tf-step-panel" key="step-2">
+          <div className="tf-step-kicker">
+            <span>Passo 02 • Gargalo</span>
+          </div>
+          <h3 className="tf-step-title">Qual é o maior gargalo que trava suas vendas hoje?</h3>
+          <p className="tf-step-subtitle">Mapeamos exatamente onde sua esteira comercial está perdendo receita:</p>
 
-      <div className="lead-field">
-        <label className="lead-label" htmlFor={inline ? 'lead-volume-inline' : 'lead-volume-modal'}>
-          <span>Faixa de faturamento mensal</span>
-          <span className="optional-tag">opcional</span>
-        </label>
-        <select
-          id={inline ? 'lead-volume-inline' : 'lead-volume-modal'}
-          className="lead-select"
-          value={faturamento}
-          onChange={(e) => setFaturamento(e.target.value)}
-        >
-          <option value="">Selecione a faixa aproximada</option>
-          <option value="Até R$ 10 mil/mês">Até R$ 10 mil/mês</option>
-          <option value="R$ 10 mil a R$ 30 mil/mês">R$ 10 mil a R$ 30 mil/mês</option>
-          <option value="R$ 30 mil a R$ 100 mil/mês">R$ 30 mil a R$ 100 mil/mês</option>
-          <option value="Acima de R$ 100 mil/mês">Acima de R$ 100 mil/mês</option>
-        </select>
-      </div>
+          <div className="tf-cards-list" role="radiogroup" aria-label="Maior gargalo hoje">
+            {TYPEFORM_GARGALO_OPTIONS.map((opt) => {
+              const isSelected = gargalo === opt.id || pendingSelection === opt.id;
+              return (
+                <button
+                  type="button"
+                  key={opt.id}
+                  className={`tf-card-btn ${isSelected ? 'is-selected' : ''}`}
+                  onClick={() => advanceWithSelection('gargalo', opt.id, 3)}
+                  role="radio"
+                  aria-checked={isSelected}
+                >
+                  <span className="tf-card-key" aria-hidden="true">{opt.key}</span>
+                  <div className="tf-card-body">
+                    <div className="tf-card-title">
+                      <Icon name={opt.icon} size={17} stroke={2} />
+                      <span>{opt.title}</span>
+                    </div>
+                    <p className="tf-card-desc">{opt.desc}</p>
+                  </div>
+                  <span className="tf-card-radio" aria-hidden="true">
+                    {isSelected && <Icon name="check" size={13} stroke={2.8} />}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
 
-      <button type="submit" className="lead-submit-btn" disabled={status === 'submitting'}>
-        {status === 'submitting' ? (
-          <>Enviando dados para o Imobiturbo OS...</>
-        ) : (
-          <>
-            <span>{ctaText}</span>
-            <Icon name="arrowRight" size={18} stroke={2.2} />
-          </>
-        )}
-      </button>
-      <div className="lead-form-footer-note">
-        🔒 Seus dados serão cadastrados com segurança na 1ª etapa do nosso funil comercial no Imobiturbo OS.
-      </div>
-    </form>
+          <div className="tf-step-footer">
+            <span className="tf-keyboard-hint">Dica: pressione de <b>1</b> a <b>5</b> no teclado</span>
+            <button
+              type="button"
+              className="tf-advance-btn"
+              onClick={() => setStep(3)}
+            >
+              <span>Avançar</span>
+              <Icon name="arrowRight" size={16} stroke={2.2} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* ETAPA 3: FATURAMENTO / MOMENTO */}
+      {/* ========================================================================= */}
+      {step === 3 && (
+        <div className="tf-step-panel" key="step-3">
+          <div className="tf-step-kicker">
+            <span>Passo 03 • Escala</span>
+          </div>
+          <h3 className="tf-step-title">Qual é o faturamento médio mensal da sua operação?</h3>
+          <p className="tf-step-subtitle">Para calibrarmos o nível de acompanhamento, esteira e automação ideais:</p>
+
+          <div className="tf-cards-list" role="radiogroup" aria-label="Faixa de faturamento">
+            {TYPEFORM_FATURAMENTO_OPTIONS.map((opt) => {
+              const isSelected = faturamento === opt.id || pendingSelection === opt.id;
+              return (
+                <button
+                  type="button"
+                  key={opt.id}
+                  className={`tf-card-btn ${isSelected ? 'is-selected' : ''}`}
+                  onClick={() => advanceWithSelection('faturamento', opt.id, 4)}
+                  role="radio"
+                  aria-checked={isSelected}
+                >
+                  <span className="tf-card-key" aria-hidden="true">{opt.key}</span>
+                  <div className="tf-card-body">
+                    <div className="tf-card-title">
+                      <Icon name={opt.icon} size={17} stroke={2} />
+                      <span>{opt.title}</span>
+                    </div>
+                    <p className="tf-card-desc">{opt.desc}</p>
+                  </div>
+                  <span className="tf-card-radio" aria-hidden="true">
+                    {isSelected && <Icon name="check" size={13} stroke={2.8} />}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="tf-step-footer">
+            <span className="tf-keyboard-hint">Dica: pressione de <b>1</b> a <b>4</b> no teclado</span>
+            <button
+              type="button"
+              className="tf-advance-btn"
+              onClick={() => setStep(4)}
+            >
+              <span>Avançar</span>
+              <Icon name="arrowRight" size={16} stroke={2.2} />
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* ETAPA 4: DADOS DE CONTATO & DIRECIONAMENTO */}
+      {/* ========================================================================= */}
+      {step === 4 && (
+        <form className="tf-step-panel" onSubmit={handleSubmit} noValidate key="step-4">
+          <div className="tf-step-kicker">
+            <span>Passo 04 • Direcionamento Final</span>
+          </div>
+          <h3 className="tf-step-title">Onde devemos enviar o plano da sua operação?</h3>
+          <p className="tf-step-subtitle">Preencha seus dados para receber o diagnóstico no WhatsApp e falar com nosso time:</p>
+
+          {/* Resumo das escolhas do visitante */}
+          <div className="tf-summary-pills" aria-label="Resumo do diagnóstico">
+            <button type="button" className="tf-pill" onClick={() => setStep(1)} title="Clique para alterar perfil">
+              <span>{perfil}</span>
+              <Icon name="chevron" size={11} />
+            </button>
+            <button type="button" className="tf-pill" onClick={() => setStep(2)} title="Clique para alterar gargalo">
+              <span>{gargalo}</span>
+              <Icon name="chevron" size={11} />
+            </button>
+            <button type="button" className="tf-pill" onClick={() => setStep(3)} title="Clique para alterar faturamento">
+              <span>{faturamento}</span>
+              <Icon name="chevron" size={11} />
+            </button>
+          </div>
+
+          <div className="lead-field" style={{ marginBottom: '14px' }}>
+            <label className="lead-label" htmlFor={inline ? 'tf-nome-inline' : 'tf-nome-modal'}>
+              <span>Seu nome completo<span className="required-mark">*</span></span>
+            </label>
+            <input
+              ref={nameInputRef}
+              id={inline ? 'tf-nome-inline' : 'tf-nome-modal'}
+              type="text"
+              className="lead-input"
+              placeholder="Ex: João da Silva"
+              value={nome}
+              onChange={(e) => setNome(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="lead-field" style={{ marginBottom: '14px' }}>
+            <label className="lead-label" htmlFor={inline ? 'tf-tel-inline' : 'tf-tel-modal'}>
+              <span>WhatsApp comercial com DDD<span className="required-mark">*</span></span>
+            </label>
+            <input
+              id={inline ? 'tf-tel-inline' : 'tf-tel-modal'}
+              type="tel"
+              className="lead-input"
+              placeholder="(21) 99999-9999"
+              value={telefone}
+              onChange={(e) => setTelefone(formatPhoneBR(e.target.value))}
+              required
+            />
+          </div>
+
+          <div className="lead-field" style={{ marginBottom: '20px' }}>
+            <label className="lead-label" htmlFor={inline ? 'tf-email-inline' : 'tf-email-modal'}>
+              <span>E-mail profissional<span className="required-mark">*</span></span>
+            </label>
+            <input
+              id={inline ? 'tf-email-inline' : 'tf-email-modal'}
+              type="email"
+              className="lead-input"
+              placeholder="Ex: joao@imobiliaria.com.br"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="lead-submit-btn"
+            disabled={status === 'submitting'}
+          >
+            {status === 'submitting' ? (
+              <>Cadastrando no Imobiturbo OS...</>
+            ) : (
+              <>
+                <span>Receber diagnóstico no Imobiturbo OS</span>
+                <Icon name="arrowRight" size={18} stroke={2.4} />
+              </>
+            )}
+          </button>
+
+          <div className="lead-form-footer-note" style={{ marginTop: '10px' }}>
+            🔒 Seus dados serão cadastrados com segurança na 1ª etapa do nosso funil comercial no Imobiturbo OS.
+          </div>
+        </form>
+      )}
+
+      {/* ========================================================================= */}
+      {/* ETAPA 5: SUCESSO / CONFIRMAÇÃO TYPEFORM */}
+      {/* ========================================================================= */}
+      {step === 5 && (
+        <div className="tf-success-screen" aria-live="polite" key="step-5">
+          <div className="tf-success-glow" aria-hidden="true" />
+          <div className="lead-success-icon-wrap" aria-hidden="true">
+            <Icon name="check" size={34} stroke={2.6} />
+          </div>
+          <span className="tf-success-kicker">100% Concluído • Enviado ao Imobiturbo OS</span>
+          <h3 className="lead-success-title">Diagnóstico registrado com sucesso!</h3>
+          <span className="lead-success-badge">0. Funil de Vendas — Novo Lead</span>
+
+          <p className="lead-success-desc">
+            Recebemos os dados de <strong>{nome || 'sua operação'}</strong> para o perfil de <strong>{perfil}</strong> com foco em destravar <strong>{gargalo}</strong>.
+          </p>
+          <p className="tf-success-subtext">
+            Nossa equipe já está analisando seu cenário no <strong>Imobiturbo OS</strong> e entrará em contato via WhatsApp no número <strong>{telefone}</strong> com o direcionamento recomendado.
+          </p>
+
+          <div className="tf-success-actions">
+            {typeof onClose === 'function' ? (
+              <button
+                type="button"
+                className="lead-submit-btn"
+                onClick={onClose}
+              >
+                Concluir
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="lead-submit-btn"
+                onClick={() => {
+                  setStep(1);
+                  setStatus('idle');
+                  setNome('');
+                  setTelefone('');
+                  setEmail('');
+                }}
+              >
+                Iniciar novo diagnóstico
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -456,7 +803,7 @@ function LeadModal({ isOpen, onClose, initialData = {} }) {
       aria-modal="true"
       aria-labelledby="lead-modal-title"
     >
-      <div className="lead-modal-card">
+      <div className="lead-modal-card tf-modal-card">
         <button
           type="button"
           className="lead-modal-close"
@@ -465,18 +812,8 @@ function LeadModal({ isOpen, onClose, initialData = {} }) {
         >
           ✕
         </button>
-        <div className="lead-modal-badge">
-          <span className="lead-modal-badge-dot" aria-hidden="true" />
-          <span>Imobiturbo OS • Diagnóstico de Operação</span>
-        </div>
-        <h2 className="lead-modal-title" id="lead-modal-title">
-          Mapeie sua operação comercial
-        </h2>
-        <p className="lead-modal-desc">
-          Preencha os dados da sua operação para nossa equipe mapear seu cenário e retornar com o direcionamento ideal.
-        </p>
 
-        <LeadCaptureForm initialData={initialData} onSuccess={() => {}} />
+        <LeadCaptureForm initialData={initialData} onSuccess={() => {}} onClose={onClose} />
       </div>
     </div>
   );
