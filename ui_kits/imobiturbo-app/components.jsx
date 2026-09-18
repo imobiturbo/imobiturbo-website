@@ -35,6 +35,8 @@ const ICON_PATHS = {
   more: '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
   check: '<polyline points="20 6 9 17 4 12"/>',
   x: '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/>',
+  zap: '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
 };
 
 function Icon({ name, size = 20, color = 'currentColor', stroke = 1.75, fill = 'none', style }) {

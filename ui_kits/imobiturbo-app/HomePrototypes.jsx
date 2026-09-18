@@ -256,21 +256,27 @@ function HeroSection() {
 
         <div className="hero-cockpit" aria-label="Operação ativa Imobiturbo">
           <div className="hero-cockpit-chip">
-            <span className="chip-emoji">⚡</span>
+            <span className="chip-icon-box" aria-hidden="true">
+              <Icon name="zap" size={16} stroke={2.2} />
+            </span>
             <div>
               <strong>IA no WhatsApp</strong>
               <span>Áudio humano em &lt;30s</span>
             </div>
           </div>
           <div className="hero-cockpit-chip">
-            <span className="chip-emoji">📅</span>
+            <span className="chip-icon-box" aria-hidden="true">
+              <Icon name="calendar" size={16} stroke={2.2} />
+            </span>
             <div>
               <strong>Visita Agendada</strong>
               <span>Renda R$ 25k+ qualificada</span>
             </div>
           </div>
           <div className="hero-cockpit-chip">
-            <span className="chip-emoji">💼</span>
+            <span className="chip-icon-box" aria-hidden="true">
+              <Icon name="shield" size={16} stroke={2.2} />
+            </span>
             <div>
               <strong>Comissão Blindada</strong>
               <span>6% integral garantido</span>
