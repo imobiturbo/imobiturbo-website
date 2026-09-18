@@ -2010,8 +2010,9 @@ a {
   }
 
   .home-hero h1 {
-    max-width: 690px;
-    font-size: clamp(66px, 9vw, 88px);
+    max-width: 720px;
+    font-size: clamp(44px, 5.5vw, 66px);
+    line-height: 1.1;
   }
 
   .problem-layout,
@@ -2250,8 +2251,8 @@ a {
 
   .home-hero h1 {
     max-width: 100%;
-    font-size: clamp(52px, 14.4vw, 68px);
-    line-height: 0.95;
+    font-size: clamp(36px, 10vw, 54px);
+    line-height: 1.12;
   }
 
   .hero-lead {
