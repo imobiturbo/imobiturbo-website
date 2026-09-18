@@ -323,7 +323,12 @@ function LeadCaptureForm({ initialData = {}, onSuccess, inline = false, ctaText 
     if (initialData.perfil) setPerfil(initialData.perfil);
     if (initialData.gargalo) setGargalo(initialData.gargalo);
     if (initialData.faturamento) setFaturamento(initialData.faturamento);
-  }, [initialData.perfil, initialData.gargalo, initialData.faturamento]);
+    if (initialData.perfil && initialData.gargalo) {
+      setStep(3);
+    } else {
+      setStep(1);
+    }
+  }, [initialData.perfil, initialData.gargalo, initialData.origem_cta]);
 
   // Foco automático no input de nome ao entrar na etapa 4
   React.useEffect(() => {
@@ -461,11 +466,17 @@ function LeadCaptureForm({ initialData = {}, onSuccess, inline = false, ctaText 
         </div>
       </div>
 
-      {/* Banner de contexto opcional (produto de interesse) */}
+      {/* Banner de contexto opcional (produto de interesse ou diagnóstico prévio) */}
       {initialData.produto_interesse && step <= 4 && (
         <div className="tf-context-banner">
           <span className="tf-context-dot" aria-hidden="true" />
           <span>Interesse em <strong>{initialData.produto_interesse}</strong></span>
+        </div>
+      )}
+      {initialData.origem_cta === 'diagnostico_quiz' && initialData.perfil && step <= 4 && (
+        <div className="tf-context-banner">
+          <span className="tf-context-dot" aria-hidden="true" />
+          <span>Diagnóstico mapeado: <strong>{initialData.perfil}</strong> • <strong>{initialData.gargalo}</strong></span>
         </div>
       )}
 
@@ -1298,6 +1309,7 @@ function getDiagnosticResult(answers) {
 }
 
 function DiagnosticQuiz() {
+  const { openModal } = React.useContext(LeadModalContext);
   const [step, setStep] = React.useState(0);
   const [selected, setSelected] = React.useState('');
   const [answers, setAnswers] = React.useState({});
@@ -1371,20 +1383,28 @@ function DiagnosticQuiz() {
             <div><dt>Gargalo principal</dt><dd>{result.bottleneck}</dd></div>
             <div><dt>Próximo passo</dt><dd>{result.recommendation}</dd></div>
           </dl>
-          <div style={{ marginTop: '20px', borderTop: '1px solid rgba(0,0,0,0.08)', paddingTop: '16px' }}>
-            <LeadCaptureForm
-              inline
-              initialData={{
+          <button
+            type="button"
+            className="diagnostic-result-cta"
+            onClick={() =>
+              openModal({
                 perfil: result.profile,
                 gargalo: result.bottleneck,
                 estrutura: result.structure,
                 recomendacao: result.recommendation,
                 origem_cta: 'diagnostico_quiz',
-              }}
-              ctaText="Receber plano de ação da operação"
-            />
-          </div>
-          <button className="diagnostic-reset" type="button" onClick={resetQuiz} style={{ marginTop: '14px' }}>Refazer diagnóstico</button>
+              })
+            }
+          >
+            <span>Receber plano completo da operação</span>
+            <Icon name="arrowRight" size={20} stroke={2.4} />
+          </button>
+          <p className="diagnostic-time" style={{ marginTop: '10px' }}>
+            🔒 Abre o diagnóstico conversacional integrado ao Imobiturbo OS
+          </p>
+          <button className="diagnostic-reset" type="button" onClick={resetQuiz}>
+            Refazer perguntas
+          </button>
         </div>
       )}
     </div>
