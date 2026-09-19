@@ -94,6 +94,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .desktop-nav a:hover, .mobile-menu a:hover { color: var(--label); }
 .mobile-menu { display: none; }
 .icon { width: 28px; height: 28px; flex-shrink: 0; }
+.section-emoji { width: 32px; height: 32px; object-fit: contain; flex-shrink: 0; display: block; }
 .hero { padding: 60px 0 32px; }
 .hero-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); grid-template-areas: 'copy media' 'actions media'; column-gap: 48px; }
 .hero-copy { grid-area: copy; }
@@ -185,7 +186,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .bubble-ai { margin-left: auto; background: #edf5e5; border-radius: 14px 14px 4px 14px; }
 .responsibilities { grid-area: roles; display: grid; gap: 28px; }
 .whatsapp-layout > .transition { grid-area: transition; align-self: end; margin-top: 30px; }
-.responsibilities .icon { color: var(--label); margin-bottom: 12px; }
+.responsibilities .icon, .responsibilities .section-emoji { color: var(--label); margin-bottom: 12px; }
 .responsibilities h3 { margin-bottom: 10px; }
 .club-section { border-top: 1px solid var(--border); }
 .study-panel { display: grid; grid-template-columns: minmax(0, 1.38fr) minmax(0, 1fr); padding: 0; }
@@ -195,7 +196,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .guidance { border-left: 1px solid var(--border); }
 .guidance .text-placeholder { margin: 24px 0 16px; }
 .exercise { margin-top: 28px; }
-.exercise .icon { color: var(--label); margin-bottom: 16px; }
+.exercise .icon, .exercise .section-emoji { color: var(--label); margin-bottom: 16px; }
 .exercise p { margin-top: 8px; }
 .exercise .text-placeholder { margin-top: 24px; }
 .recordings { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .72fr); grid-template-areas: 'heading note' 'copy note'; gap: 10px 40px; margin-top: 32px; border-top: 1px solid var(--border); padding-top: 28px; }
@@ -208,7 +209,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .support-example h3 { font-size: 18px; margin-bottom: 12px; }
 .support-example .text-placeholder { margin-bottom: 20px; }
 .support-guide { padding-left: 30px; border-left: 1px solid var(--border); }
-.support-guide > .icon { color: var(--label); margin-bottom: 16px; }
+.support-guide > .icon, .support-guide > .section-emoji { color: var(--label); margin-bottom: 16px; }
 .support-guide > p { margin-top: 12px; }
 .support-guide .guide-placeholder { margin-top: 22px; aspect-ratio: auto; min-height: 150px; padding: 20px; }
 .guide-placeholder > .icon { display: none; }
@@ -1728,6 +1729,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .comparison h3 { font-size: 21px; gap: 14px; }
   .comparison .icon { width: 30px; height: 30px; }
   .comparison .profile-header-emoji { width: 28px; height: 28px; }
+  .section-emoji { width: 28px; height: 28px; }
   .comparison ul { gap: 20px; }
   .offer-layout { grid-template-columns: 1fr; gap: 32px; }
   .offer-section .section-intro, .offer-section .transition { text-align: left; }
