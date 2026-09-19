@@ -639,18 +639,51 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 
 /* Plan Selector in Offer Section - Modern SaaS Design */
+.offer-anchor-box {
+  margin: 14px 0 20px;
+  padding: 0;
+  text-align: left;
+}
+
+.offer-anchor-text {
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: #9aa08f;
+  margin: 0 0 8px;
+}
+
+.offer-anchor-sub {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #c2c9b8;
+  margin: 0;
+}
+
+.prc-anchor-crossed {
+  color: #ef4444;
+  font-weight: 700;
+  text-decoration: line-through;
+  text-decoration-color: #ef4444;
+  text-decoration-thickness: 2px;
+  background: rgba(239, 68, 68, 0.12);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
 .psel-rows {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
   max-width: 620px;
-  margin: 24px auto 20px;
+  margin: 0 auto 20px;
 }
 
 .psel-row {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   position: relative;
-  padding: 18px 20px;
+  padding: 16px 20px;
   background: #131711;
   border: 1.5px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
@@ -658,6 +691,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  gap: 16px;
 }
 
 .psel-row:hover {
@@ -678,7 +712,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 
 .psel-row:has(input:checked), .psel-row.active {
-  background: #161e13;
+  background: #162013;
   border-color: var(--lime);
   box-shadow: 0 0 24px rgba(212, 255, 83, 0.15), 0 8px 20px rgba(0, 0, 0, 0.35);
 }
@@ -689,15 +723,15 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   pointer-events: none;
 }
 
-.psel-main {
+.psel-left {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
 }
 
-.psel-title-area {
+.psel-title-row {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -745,9 +779,10 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  letter-spacing: -0.01em;
 }
 
-.psel-selo {
+.psel-selo, .psel-badge {
   font-family: var(--sans);
   font-size: 11px;
   font-weight: 800;
@@ -761,22 +796,39 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   line-height: 1;
 }
 
+.psel-sub {
+  margin: 0;
+  padding-left: 30px;
+  font-size: 13px;
+  color: #9aa08f;
+  line-height: 1.35;
+}
+
+.psel-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  text-align: right;
+}
+
 .psel-prc {
   text-align: right;
   font-variant-numeric: tabular-nums;
-  margin-left: auto;
 }
 
 .psel-prc small {
   font-size: 13px;
-  color: var(--muted);
+  color: #9aa08f;
   font-weight: 500;
+  margin-left: 2px;
 }
 
 .psel-prc b {
   font-size: 22px;
   font-weight: 900;
   color: #ffffff;
+  letter-spacing: -0.02em;
 }
 
 .psel-row:has(input:checked) .psel-prc b,
@@ -784,44 +836,64 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   color: var(--lime);
 }
 
-.psel-sub {
-  margin-top: 6px;
-  padding-left: 30px;
-  font-size: 13.5px;
-  color: var(--muted);
-  line-height: 1.4;
+.psel-footer-notes {
+  margin-top: 18px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.psel-pix-line {
-  margin-top: 4px;
-  padding-left: 30px;
-  font-size: 12.5px;
-  color: #a3e635;
-  font-weight: 600;
+.psel-plan-summary-line {
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9aa08f;
+}
+
+.psel-guarantee-line {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #6e7565;
+  line-height: 1.5;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.psel-reassurance {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #9aa08f;
+}
+
+.psel-reassurance b {
+  color: #ffffff;
+  font-weight: 700;
 }
 
 @media (max-width: 480px) {
   .psel-row {
     padding: 14px 16px;
+    gap: 10px;
   }
-  .psel-main {
-    align-items: flex-start;
+  .psel-nm {
+    font-size: 15.5px;
   }
-  .psel-prc {
-    width: 100%;
-    text-align: left;
-    padding-left: 30px;
-    margin-top: 4px;
-    margin-left: 0;
-  }
-  .psel-prc b {
-    font-size: 24px;
+  .psel-selo, .psel-badge {
+    font-size: 10px;
+    padding: 2px 7px;
   }
   .psel-sub {
-    margin-top: 4px;
-    font-size: 12.5px;
+    padding-left: 28px;
+    font-size: 12px;
   }
-  .psel-pix-line {
+  .psel-prc b {
+    font-size: 19px;
+  }
+  .psel-prc small {
     font-size: 12px;
   }
 }

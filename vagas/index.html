@@ -581,58 +581,68 @@
     align-items: center !important;
     justify-content: center !important;
   }
-  /* Bulletproof Plan Selector Layout (Prevents Any Cached CSS from Breaking Mobile) */
+  /* Modern 2-Column Plan Selector */
   #planos .psel-rows {
     display: flex !important;
     flex-direction: column !important;
-    gap: 14px !important;
+    gap: 12px !important;
     width: 100% !important;
     max-width: 620px !important;
-    margin: 24px auto 20px !important;
+    margin: 0 auto 20px !important;
     box-sizing: border-box !important;
   }
   #planos .psel-row {
-    display: block !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    position: relative !important;
-    overflow: hidden !important;
-    padding: 16px 18px !important;
-  }
-  #planos .psel-main {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
     width: 100% !important;
-    gap: 8px !important;
-    flex-wrap: wrap !important;
     box-sizing: border-box !important;
+    position: relative !important;
+    padding: 16px 20px !important;
+    gap: 16px !important;
   }
-  #planos .psel-title-area {
+  #planos .psel-left {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 3px !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+  #planos .psel-title-row {
     display: flex !important;
     align-items: center !important;
     gap: 10px !important;
     flex-wrap: wrap !important;
   }
-  #planos .psel-prc {
-    margin-left: auto !important;
+  #planos .psel-right {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex-shrink: 0 !important;
     text-align: right !important;
   }
-  #planos .psel-sub, #planos .psel-pix-line {
-    display: block !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    word-break: break-word !important;
+  #planos .psel-prc {
+    text-align: right !important;
+    margin-left: auto !important;
+    width: auto !important;
+    padding-left: 0 !important;
+    margin-top: 0 !important;
+  }
+  .prc-anchor-crossed {
+    white-space: nowrap !important;
   }
   @media (max-width: 480px) {
-    #planos .psel-row { padding: 14px !important; }
-    #planos .psel-prc {
-      width: 100% !important;
-      text-align: left !important;
-      padding-left: 30px !important;
-      margin-left: 0 !important;
-      margin-top: 4px !important;
+    #planos .psel-row {
+      padding: 14px 16px !important;
+      gap: 10px !important;
+    }
+    #planos .psel-sub {
+      padding-left: 28px !important;
+      font-size: 12px !important;
+    }
+    #planos .psel-prc b {
+      font-size: 19px !important;
     }
   }
   </style>
@@ -1269,60 +1279,69 @@
 
         <div class="offer-card panel" id="planos">
           <h3>Comunidade Imobiturbo</h3>
-          <div class="psel-rows">
+          <div class="offer-anchor-box">
+            <p class="offer-anchor-text">Cada dia no palpite é oferta que o concorrente sobe primeiro, e sua verba queimada testando no escuro.</p>
+            <p class="offer-anchor-sub">Por fora, os 10 apps custariam <span class="prc-anchor-crossed">R$ 2.894/mês</span>. Seu plano:</p>
+          </div>
+          <div class="psel-rows" role="radiogroup" aria-label="Escolha seu plano">
             <label class="psel-row active" id="planRowAnual" onclick="selectPlan('anual')">
               <input type="radio" name="plano" value="anual" class="psel-radio" checked>
-              <div class="psel-main">
-                <div class="psel-title-area">
+              <div class="psel-left">
+                <div class="psel-title-row">
                   <span class="psel-indicator" aria-hidden="true"></span>
-                  <span class="psel-nm">Plano Anual</span>
-                  <span class="psel-selo">MAIS ESCOLHIDO</span>
+                  <span class="psel-nm">Anual</span>
+                  <span class="psel-badge psel-selo">ECONOMIZA R$ 807</span>
                 </div>
+                <div class="psel-sub">ou R$ 957 à vista no Pix</div>
+              </div>
+              <div class="psel-right">
                 <div class="psel-prc">
-                  <small>12x de </small><b>R$ 99,70</b>
+                  <b>R$ 97</b><small>/mês</small>
                 </div>
               </div>
-              <div class="psel-sub">12 meses de acesso completo à Comunidade + CRM IA</div>
-              <div class="psel-pix-line">ou R$ 997 à vista no Pix · Economia de R$ 199</div>
             </label>
 
-            <label class="psel-row" id="planRowSemestral" onclick="selectPlan('semestral')">
-              <input type="radio" name="plano" value="semestral" class="psel-radio">
-              <div class="psel-main">
-                <div class="psel-title-area">
+            <label class="psel-row" id="planRowTrimestral" onclick="selectPlan('trimestral')">
+              <input type="radio" name="plano" value="trimestral" class="psel-radio">
+              <div class="psel-left">
+                <div class="psel-title-row">
                   <span class="psel-indicator" aria-hidden="true"></span>
-                  <span class="psel-nm">Plano Semestral</span>
+                  <span class="psel-nm">Trimestral</span>
                 </div>
+                <div class="psel-sub">ou R$ 357 à vista no Pix</div>
+              </div>
+              <div class="psel-right">
                 <div class="psel-prc">
-                  <small>6x de </small><b>R$ 147,00</b>
+                  <b>R$ 127</b><small>/mês</small>
                 </div>
               </div>
-              <div class="psel-sub">6 meses de acesso completo à Comunidade + CRM IA</div>
-              <div class="psel-pix-line">ou R$ 747 à vista no Pix</div>
             </label>
 
             <label class="psel-row" id="planRowMensal" onclick="selectPlan('mensal')">
               <input type="radio" name="plano" value="mensal" class="psel-radio">
-              <div class="psel-main">
-                <div class="psel-title-area">
+              <div class="psel-left">
+                <div class="psel-title-row">
                   <span class="psel-indicator" aria-hidden="true"></span>
-                  <span class="psel-nm">Plano Mensal</span>
+                  <span class="psel-nm">Mensal</span>
                 </div>
+                <div class="psel-sub">cancela quando quiser</div>
+              </div>
+              <div class="psel-right">
                 <div class="psel-prc">
-                  <b>R$ 97,00</b><small>/mês</small>
+                  <b>R$ 147</b><small>/mês</small>
                 </div>
               </div>
-              <div class="psel-sub">Sem fidelidade, cancele quando quiser</div>
-              <div class="psel-pix-line">recorrência mensal no cartão de crédito</div>
             </label>
           </div>
 
-          <button type="button" class="btn full" id="checkoutBtn" onclick="openCheckoutWithCurrentPlan()" style="margin-top: 24px; width: 100%;">
+          <button type="button" class="btn full" id="checkoutBtn" style="margin-top: 20px; width: 100%;">
             Quero entrar na Comunidade Imobiturbo
           </button>
 
-          <div class="garantia-badge" style="margin-top: 16px; text-align: center; font-size: 12.5px; color: var(--muted);">
-            <span>🛡️ Garantia incondicional de 7 dias · Risco Zero</span>
+          <div class="psel-footer-notes">
+            <div class="psel-plan-summary-line" id="pselSummaryLine">PLANO ANUAL · 12X DE R$ 97</div>
+            <div class="psel-guarantee-line">PAGAMENTO SEGURO · GARANTIA INCONDICIONAL DE 7 DIAS · CANCELA QUANDO QUISER EM QUALQUER PLANO</div>
+            <div class="psel-reassurance">Ainda com o dedo no botão? <b>Deixa eu tirar o risco da sua mão.</b></div>
           </div>
         </div>
       </div>
@@ -1413,7 +1432,7 @@
         <p>© 2026 Imobiturbo. Todos os direitos reservados.</p>
       </div>
       <div class="footer-meta-badge">
-        <img src="assets/selo-meta-partner.svg" alt="Meta Technology Provider" width="105" height="59" loading="lazy">
+        <img src="assets/selo-meta-partner.svg" alt="Meta Technology Partner" width="105" height="59" loading="lazy">
       </div>
     </div>
   </div>
@@ -1948,6 +1967,7 @@
       }
       if (pollingInterval) clearInterval(pollingInterval);
       if (timerInterval) clearInterval(timerInterval);
+      checkoutBtn?.focus({ preventScroll: true });
     }
 
     // Native dialogs isolate the page, but Tab can still move to browser chrome.
@@ -2362,7 +2382,7 @@
   <!-- LEAD CAPTURE MODAL (RADIX STYLE - ABACATEPAY TRANSPARENTE) -->
   <dialog id="leadCaptureModal" class="lead-modal-overlay" onclick="handleModalBackdropClick(event)">
     <div class="lead-modal-card" role="document">
-      <button class="lm-close-btn" type="button" onclick="closeCheckoutModal()" aria-label="Fechar modal">✕</button>
+      <button class="lm-close-btn" type="button" onclick="closeLeadModal()" aria-label="Fechar modal">✕</button>
 
       <!-- Step 1: Lead Capture Form -->
       <div id="lmFormStep">
@@ -2461,26 +2481,29 @@
       anual: {
         id: 'anual',
         name: 'Plano Anual',
-        badge: 'Comunidade Imobiturbo · 12x de R$ 99,70',
-        pixPrice: 'R$ 997,00',
-        pixDisplay: 'R$ 997,00 à vista no Pix',
-        btnText: 'Quero minha vaga anual'
+        badge: 'Comunidade Imobiturbo · 12x de R$ 97,00',
+        pixPrice: 'R$ 957,00',
+        pixDisplay: 'R$ 957,00 à vista no Pix',
+        btnText: 'Testar 7 dias sem risco',
+        summaryLine: 'PLANO ANUAL · 12X DE R$ 97'
       },
-      semestral: {
-        id: 'semestral',
-        name: 'Plano Semestral',
-        badge: 'Comunidade Imobiturbo · 6x de R$ 147,00',
-        pixPrice: 'R$ 747,00',
-        pixDisplay: 'R$ 747,00 à vista no Pix',
-        btnText: 'Quero minha vaga semestral'
+      trimestral: {
+        id: 'trimestral',
+        name: 'Plano Trimestral',
+        badge: 'Comunidade Imobiturbo · 3x de R$ 127,00',
+        pixPrice: 'R$ 357,00',
+        pixDisplay: 'R$ 357,00 à vista no Pix',
+        btnText: 'Testar 7 dias sem risco',
+        summaryLine: 'PLANO TRIMESTRAL · 3X DE R$ 127'
       },
       mensal: {
         id: 'mensal',
         name: 'Plano Mensal',
-        badge: 'Comunidade Imobiturbo · R$ 97,00/mês',
-        pixPrice: 'R$ 97,00',
-        pixDisplay: 'R$ 97,00/mês no Cartão',
-        btnText: 'Quero minha vaga mensal'
+        badge: 'Comunidade Imobiturbo · R$ 147,00/mês',
+        pixPrice: 'R$ 147,00',
+        pixDisplay: 'R$ 147,00/mês no Cartão',
+        btnText: 'Testar 7 dias sem risco',
+        summaryLine: 'PLANO MENSAL · R$ 147/MÊS'
       }
     };
 
@@ -2488,18 +2511,27 @@
 
     function selectPlan(planKey) {
       currentSelectedPlan = planKey;
-      ['anual', 'semestral', 'mensal'].forEach(k => {
+      if (typeof currentPlan !== 'undefined') {
+        currentPlan = planKey;
+      }
+      ['anual', 'trimestral', 'mensal'].forEach(k => {
         const row = document.getElementById('planRow' + k.charAt(0).toUpperCase() + k.slice(1));
         if (row) {
           if (k === planKey) {
             row.classList.add('active');
-            row.querySelector('input[type="radio"]').checked = true;
+            const radio = row.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
           } else {
             row.classList.remove('active');
-            row.querySelector('input[type="radio"]').checked = false;
+            const radio = row.querySelector('input[type="radio"]');
+            if (radio) radio.checked = false;
           }
         }
       });
+      const summaryEl = document.getElementById('pselSummaryLine');
+      if (summaryEl && PLANS_CONFIG[planKey]) {
+        summaryEl.textContent = PLANS_CONFIG[planKey].summaryLine;
+      }
       updateModalPlanBadge();
     }
 
@@ -2534,16 +2566,20 @@
       if (el) el.scrollIntoView({ behavior: 'smooth' });
     }
 
-    function openCheckoutWithCurrentPlan() {
-      const modal = document.getElementById('leadCaptureModal');
-      updateModalPlanBadge();
-      if (modal) {
-        modal.showModal();
-        document.body.style.overflow = 'hidden';
+    function openCheckoutWithCurrentPlan(e) {
+      if (typeof openCheckoutModal === 'function') {
+        openCheckoutModal(e);
+      } else {
+        const modal = document.getElementById('leadCaptureModal');
+        updateModalPlanBadge();
+        if (modal) {
+          modal.showModal();
+          document.body.style.overflow = 'hidden';
+        }
       }
     }
 
-    function closeCheckoutModal() {
+    function closeLeadModal() {
       const modal = document.getElementById('leadCaptureModal');
       if (modal) {
         modal.close();
@@ -2553,7 +2589,7 @@
 
     function handleModalBackdropClick(e) {
       if (e.target.id === 'leadCaptureModal') {
-        closeCheckoutModal();
+        closeLeadModal();
       }
     }
 
