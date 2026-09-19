@@ -284,8 +284,27 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .footer-main .brand { width: 180px; margin-top: 5px; }
 .footer-main h2 { font-size: 16px; font-weight: 700; letter-spacing: 0; line-height: 1.5; margin-bottom: 12px; }
 .footer-main ul { list-style: none; padding: 0; display: grid; gap: 10px; }
-.footer-legal { padding-top: 24px; margin-top: 32px; border-top: 1px solid var(--border); }
+.footer-legal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 24px;
+  margin-top: 32px;
+  border-top: 1px solid var(--border);
+}
 .footer-legal p + p { margin-top: 7px; }
+.footer-meta-badge {
+  display: flex;
+  align-items: center;
+}
+.footer-meta-badge img {
+  height: 44px;
+  width: auto;
+  display: block;
+  border-radius: 8px;
+}
 
 /* ==========================================================================
    PRODUCTION READY MEDIA, MARQUEE, PLAN SELECTOR & CHECKOUT MODAL
@@ -1734,6 +1753,42 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   margin: 0 auto;
 }
 
+.hero-top-badges {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.meta-partner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #E1E1E1;
+  padding: 5px 12px;
+  border-radius: 999px;
+  line-height: 1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.meta-partner-badge img {
+  height: 10px;
+  width: auto;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.meta-partner-badge span {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 600;
+  color: #565656;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -1748,6 +1803,10 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   padding: 4px 12px;
   border-radius: 999px;
   margin-bottom: 12px;
+}
+
+.hero-top-badges .badge {
+  margin-bottom: 0;
 }
 
 .h-hero {
