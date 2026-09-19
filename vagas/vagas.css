@@ -1776,7 +1776,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .meta-partner-badge {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 2.5px;
   background: #E1E1E1;
   padding: 5px 12px;
   border-radius: 999px;
@@ -1798,7 +1798,8 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   font-weight: 600;
   color: #565656;
   white-space: nowrap;
-  line-height: 1.2;
+  line-height: 1;
+  transform: translateY(1.2px);
 }
 
 .badge {
