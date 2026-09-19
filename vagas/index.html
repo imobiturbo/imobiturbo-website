@@ -1061,6 +1061,13 @@
             </div>
             <p>2 vendas + 2 propostas no 1º mês pós-divórcio</p>
           </div>
+          <div class="testimonial-video-badge-wrap">
+            <button type="button" class="testimonial-video-btn" onclick="openTestimonialVideo('joyce', 'Joyce · Caso Real')" aria-label="Assistir relato de Joyce em vídeo">
+              <span class="tv-play-icon">▶</span>
+              <span>Assistir relato em vídeo</span>
+              <span class="tv-btn-duration">0:42 min</span>
+            </button>
+          </div>
         </article>
         <article class="testimonial panel">
           <h3>7 imóveis exclusivos em 3 meses e R$ 155 mil de comissão no bolso</h3>
@@ -1075,7 +1082,36 @@
             </div>
             <p>VGV &gt; R$ 5 Milhões · Média de R$ 51.000/mês</p>
           </div>
+          <div class="testimonial-video-badge-wrap">
+            <button type="button" class="testimonial-video-btn" onclick="openTestimonialVideo('joan', 'Joan · Caso Real')" aria-label="Assistir relato de Joan em vídeo">
+              <span class="tv-play-icon">▶</span>
+              <span>Assistir relato em vídeo</span>
+              <span class="tv-btn-duration">0:47 min</span>
+            </button>
+          </div>
         </article>
+      </div>
+
+      <!-- BARRA DE MAIS CASES EM VÍDEO -->
+      <div class="more-cases-bar">
+        <span class="more-cases-title">Mais relatos reais em vídeo:</span>
+        <div class="case-chips">
+          <button type="button" class="case-chip" onclick="openTestimonialVideo('kelly', 'Kelly · Case de Sucesso')">
+            <span class="chip-play">▶</span> Kelly (0:22)
+          </button>
+          <button type="button" class="case-chip" onclick="openTestimonialVideo('eder', 'Eder Lopes · Case Real')">
+            <span class="chip-play">▶</span> Eder Lopes (0:33)
+          </button>
+          <button type="button" class="case-chip" onclick="openTestimonialVideo('aline', 'Aline Corretora · Caso Real')">
+            <span class="chip-play">▶</span> Aline (0:30)
+          </button>
+          <button type="button" class="case-chip" onclick="openTestimonialVideo('filipe', 'Filipe · Caso Real')">
+            <span class="chip-play">▶</span> Filipe (0:42)
+          </button>
+          <button type="button" class="case-chip" onclick="openTestimonialVideo('mariana', 'Mariana · Caso Real')">
+            <span class="chip-play">▶</span> Mariana (0:56)
+          </button>
+        </div>
       </div>
 
       <!-- GALERIA DE COMPROVANTES DO WHATSAPP -->
@@ -1371,6 +1407,33 @@
   </div>
 </dialog>
 
+
+<!-- MODAL DE DEPOIMENTO EM VÍDEO (VERTICAL REELS & HORIZONTAL SUPPORT) -->
+<dialog id="testimonialVideoModal" class="tv-modal-dialog" aria-hidden="true">
+  <div class="tv-modal-backdrop" onclick="closeTestimonialVideo()"></div>
+  <div class="tv-modal-container" id="tvModalContainer">
+    <button type="button" class="tv-modal-close" onclick="closeTestimonialVideo()" aria-label="Fechar vídeo">&times;</button>
+    <div class="tv-modal-header">
+      <span class="tv-badge">CASO REAL COMPROVADO</span>
+      <h3 id="tvModalTitle" class="tv-title">Depoimento de Membro</h3>
+    </div>
+    <div class="tv-player-box" id="tvPlayerBox">
+      <!-- Player dinâmico -->
+    </div>
+    <div class="tv-modal-cases-nav">
+      <span class="tv-nav-label">Assista a outro relato:</span>
+      <div class="tv-nav-chips">
+        <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('joyce', 'Joyce · Caso Real')">Joyce (0:42)</button>
+        <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('joan', 'Joan · Caso Real')">Joan (0:47)</button>
+        <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('kelly', 'Kelly · Case de Sucesso')">Kelly (0:22)</button>
+        <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('eder', 'Eder Lopes · Case Real')">Eder (0:33)</button>
+        <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('aline', 'Aline Corretora · Caso Real')">Aline (0:30)</button>
+        <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('filipe', 'Filipe · Caso Real')">Filipe (0:42)</button>
+        <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('mariana', 'Mariana · Caso Real')">Mariana (0:56)</button>
+      </div>
+    </div>
+  </div>
+</dialog>
 
 <!-- MODAL DE CHECKOUT EMBEDDED (ABACATEPAY + ASAAS FALLBACK) -->
 <dialog id="checkoutModalOverlay" class="chk-modal-overlay" aria-hidden="true" aria-labelledby="checkoutModalTitle">
@@ -2555,7 +2618,76 @@
       }
     }
 
+    // Relatos Reais em Vídeo (Bunny Stream CDN Oficial)
+    const TESTIMONIAL_VIDEOS = {
+      joyce: {
+        title: 'Joyce · R$ 67 mil de comissão em janeiro',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/f2538eec-287b-468b-87e1-925bbe5a976a?autoplay=true',
+        aspectRatio: '9 / 16'
+      },
+      joan: {
+        title: 'Joan · 7 imóveis exclusivos e R$ 155 mil de comissão',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/242739f2-81f6-45d3-a215-a148a1de3f3b?autoplay=true',
+        aspectRatio: '9 / 16'
+      },
+      kelly: {
+        title: 'Kelly · Case de Sucesso no Mercado Imobiliário',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/42b51ab9-f54a-483e-921c-39b443245737?autoplay=true',
+        aspectRatio: '9 / 16'
+      },
+      eder: {
+        title: 'Eder Lopes · Resultado com Botão Impulsionar',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/4e8a19b5-541a-49a6-afb3-bd816cef2e27?autoplay=true',
+        aspectRatio: '16 / 9'
+      },
+      aline: {
+        title: 'Aline · Depoimento de Aluna e Corretora',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/66406610-5e4d-4fb5-87c7-87c80d0f41db?autoplay=true',
+        aspectRatio: '9 / 16'
+      },
+      filipe: {
+        title: 'Filipe · Depoimento de Aluno e Corretor',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/7775d55e-f884-40fa-a3d0-91acd07c7721?autoplay=true',
+        aspectRatio: '9 / 16'
+      },
+      mariana: {
+        title: 'Mariana · Depoimento de Aluna e Corretora',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/4359fede-b438-4c62-99db-bc7ca0089779?autoplay=true',
+        aspectRatio: '9 / 16'
+      }
+    };
 
+    function openTestimonialVideo(key, label) {
+      const modal = document.getElementById('testimonialVideoModal');
+      const box = document.getElementById('tvPlayerBox');
+      const container = document.getElementById('tvModalContainer');
+      const titleEl = document.getElementById('tvModalTitle');
+      const data = TESTIMONIAL_VIDEOS[key];
+      if (!modal || !box) return;
+
+      titleEl.textContent = (data && data.title) || label || 'Relato em Vídeo';
+      const url = (data && data.embedUrl) || 'https://iframe.mediadelivery.net/embed/743564/f2538eec-287b-468b-87e1-925bbe5a976a?autoplay=true';
+      const isLandscape = data && data.aspectRatio === '16 / 9';
+
+      if (container) {
+        container.style.maxWidth = isLandscape ? '680px' : '400px';
+      }
+      box.style.aspectRatio = isLandscape ? '16 / 9' : '9 / 16';
+      box.innerHTML = '<iframe src="' + url + '" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true" style="width: 100%; height: 100%; border: none; border-radius: 12px;"></iframe>';
+
+      modal.showModal();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTestimonialVideo() {
+      const modal = document.getElementById('testimonialVideoModal');
+      const box = document.getElementById('tvPlayerBox');
+      if (modal) {
+        modal.close();
+        document.body.style.overflow = '';
+      }
+      if (box) box.innerHTML = '';
+    }
   </script>
 
 </body>
