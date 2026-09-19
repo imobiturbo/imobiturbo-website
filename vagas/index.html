@@ -1056,6 +1056,13 @@
             </div>
             <p>Investimento de R$ 450 · 4x mais renda como autônomo</p>
           </div>
+          <div class="testimonial-video-badge-wrap">
+            <button type="button" class="testimonial-video-btn" onclick="openTestimonialVideo('fernando', 'Fernando Tavares · Caso Real')" aria-label="Assistir relato de Fernando Tavares em vídeo">
+              <span class="tv-play-icon">▶</span>
+              <span>Assistir relato em vídeo</span>
+              <span class="tv-btn-duration">1:10 min</span>
+            </button>
+          </div>
         </article>
         <article class="testimonial panel">
           <h3>R$ 67 mil de comissão em janeiro trabalhando da minha casa</h3>
@@ -1437,6 +1444,7 @@
     <div class="tv-modal-cases-nav">
       <span class="tv-nav-label">Assista a outro relato:</span>
       <div class="tv-nav-chips">
+        <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('fernando', 'Fernando Tavares · Caso Real')">Fernando (1:10)</button>
         <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('joyce', 'Joyce · Caso Real')">Joyce (0:42)</button>
         <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('joan', 'Joan · Caso Real')">Joan (0:47)</button>
         <button type="button" class="tv-nav-chip" onclick="openTestimonialVideo('kelly', 'Kelly · Case de Sucesso')">Kelly (0:22)</button>
@@ -2634,6 +2642,11 @@
 
     // Relatos Reais em Vídeo (Bunny Stream CDN Oficial)
     const TESTIMONIAL_VIDEOS = {
+      fernando: {
+        title: 'Fernando Tavares · 15 leads em 4 dias e apartamento vendido',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/ea203974-a859-4bb4-9942-6f43fcf78305?autoplay=true',
+        aspectRatio: '9 / 16'
+      },
       joyce: {
         title: 'Joyce · R$ 67 mil de comissão em janeiro',
         embedUrl: 'https://iframe.mediadelivery.net/embed/743564/f2538eec-287b-468b-87e1-925bbe5a976a?autoplay=true',
