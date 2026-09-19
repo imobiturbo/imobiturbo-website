@@ -64,20 +64,19 @@ test("vagas/vagas.css enforces proper styling and contrast on checkout buttons",
   assert.ok(css.includes(".chk-plan-val small {"), "Must define smaller prefix styling for 12x R$");
   assert.ok(css.includes(".chk-plan-val b {"), "Must define bold number styling for modal price");
 
-  // Light mode tokens
-  assert.ok(css.includes("--bg: #FFFFFF;"), "Must define clean white canvas --bg");
-  assert.ok(css.includes("--white: #0A0A0A;"), "Must invert --white token for high-contrast dark ink headings");
+  // Dark mode tokens
+  assert.ok(css.includes("--bg: #0e100d;"), "Must define Obsidian Dark canvas --bg");
   // Actual label contrast and manual gallery navigation are exercised in
   // vagas-design.browser.cjs instead of pinning an inaccessible color/marquee.
 });
 
-test("vagas/index.html enforces Light Mode and annual plan price formatting", () => {
+test("vagas/index.html enforces Dark Mode and annual plan price formatting", () => {
   const htmlPath = path.join(root, "vagas/index.html");
   const html = fs.readFileSync(htmlPath, "utf8");
 
-  // Light Mode
-  assert.ok(html.includes('<html lang="pt-BR" class="light">'), "Must set html class to light");
-  assert.ok(html.includes('content="light"'), "Must declare color-scheme light");
+  // Dark Mode
+  assert.ok(html.includes('<html lang="pt-BR" class="dark">'), "Must set html class to dark");
+  assert.ok(html.includes('content="dark"'), "Must declare color-scheme dark");
 
   // Mobile price formatting in markup & PLAN_CONFIG
   assert.ok(html.includes('<small>12x R$ </small><b>97</b>'), "Must render 12x R$ in small and 97 in bold");

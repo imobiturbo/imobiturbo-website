@@ -919,7 +919,11 @@
           <h3>Artigos de utilização</h3>
           <p>Consulte instruções e procedimentos de uso do CRM passo a passo.</p>
           <div class="support-guide-media">
-            <img src="assets/preview-antivacuo.webp" alt="Demonstração visual do guia de configuração e suporte do CRM Imobiturbo" width="1280" height="720" loading="lazy">
+            <video autoplay loop muted playsinline preload="auto" poster="assets/loop-help-center-poster.webp" width="1280" height="720" style="width: 100%; height: auto; display: block; border-radius: 12px;">
+              <source src="assets/loop-help-center.webm" type="video/webm">
+              <source src="assets/loop-help-center.mp4" type="video/mp4">
+              <img src="assets/loop-help-center-poster.webp" alt="Demonstração visual do guia de configuração e suporte do CRM Imobiturbo" width="1280" height="720" loading="lazy">
+            </video>
           </div>
         </div>
       </div>
@@ -939,7 +943,7 @@
           </div>
         </div>
         <div class="portrait-frame">
-          <img src="assets/natan-placa-100m.webp" alt="Natan Pimentel com a placa de +R$ 500M em VGV Turbinado" width="700" height="700" loading="lazy">
+          <img src="assets/natan-autoridade-500m.webp" alt="Natan Pimentel com a placa de +R$ 500M em VGV Gerado e certificações RE/MAX, Century 21, Cyrela e CRECI" width="800" height="800" loading="lazy">
         </div>
         <div class="authority-copy">
           <h3 class="founder-name">Natan Pimentel</h3>
@@ -949,7 +953,7 @@
         </div>
         <ul class="evidence-list authority-evidence">
           <li>
-            <strong>++R$ 500M em VGV Gerado</strong>
+            <strong>+R$ 500M em VGV Gerado</strong>
             <span>Volume geral de vendas transacionado por alunos e assessorados aplicando as estratégias e ferramentas da Imobiturbo.</span>
           </li>
           <li>
@@ -989,6 +993,13 @@
             </div>
             <p>Investimento de R$ 450 · 4x mais renda como autônomo</p>
           </div>
+          <div class="testimonial-video-badge-wrap">
+            <button type="button" class="testimonial-video-btn" onclick="openTestimonialVideo('fernando', 'Fernando Tavares · Caso Real')" aria-label="Assistir relato de Fernando Tavares em vídeo">
+              <span class="tv-play-icon">▶</span>
+              <span>Assistir relato em vídeo</span>
+              <span class="tv-btn-duration">1:45 min</span>
+            </button>
+          </div>
         </article>
         <article class="testimonial panel">
           <h3>R$ 67 mil de comissão em janeiro trabalhando da minha casa</h3>
@@ -1003,6 +1014,13 @@
             </div>
             <p>2 vendas + 2 propostas no 1º mês pós-divórcio</p>
           </div>
+          <div class="testimonial-video-badge-wrap">
+            <button type="button" class="testimonial-video-btn" onclick="openTestimonialVideo('joyce', 'Joyce · Caso Real')" aria-label="Assistir relato de Joyce em vídeo">
+              <span class="tv-play-icon">▶</span>
+              <span>Assistir relato em vídeo</span>
+              <span class="tv-btn-duration">2:10 min</span>
+            </button>
+          </div>
         </article>
         <article class="testimonial panel">
           <h3>7 imóveis exclusivos em 3 meses e R$ 155 mil de comissão no bolso</h3>
@@ -1016,6 +1034,13 @@
               </div>
             </div>
             <p>VGV &gt; R$ 5 Milhões · Média de R$ 51.000/mês</p>
+          </div>
+          <div class="testimonial-video-badge-wrap">
+            <button type="button" class="testimonial-video-btn" onclick="openTestimonialVideo('joan', 'Joan · Caso Real')" aria-label="Assistir relato de Joan em vídeo">
+              <span class="tv-play-icon">▶</span>
+              <span>Assistir relato em vídeo</span>
+              <span class="tv-btn-duration">3:05 min</span>
+            </button>
           </div>
         </article>
       </div>
@@ -1161,50 +1186,54 @@
           <h3>Comunidade Imobiturbo</h3>
           <div class="psel-rows">
             <label class="psel-row active" id="planRowAnual" onclick="selectPlan('anual')">
-              <div class="psel-left">
-                <input type="radio" name="plano" value="anual" class="psel-radio" checked>
-                <div>
-                  <span class="psel-nm">Plano Anual <i class="psel-selo">Mais Escolhido</i></span>
-                  <span class="psel-sub">12 meses de acesso completo à Comunidade + CRM IA</span>
+              <input type="radio" name="plano" value="anual" class="psel-radio" checked>
+              <div class="psel-main">
+                <div class="psel-title-area">
+                  <span class="psel-indicator" aria-hidden="true"></span>
+                  <span class="psel-nm">Plano Anual</span>
+                  <span class="psel-selo">MAIS ESCOLHIDO</span>
+                </div>
+                <div class="psel-prc">
+                  <small>12x de </small><b>R$ 99,70</b>
                 </div>
               </div>
-              <div class="psel-prc">
-                <small>12x de </small><b>R$ 99,70</b>
-                <span class="psel-sub">ou R$ 997 à vista no Pix</span>
-              </div>
+              <div class="psel-sub">12 meses de acesso completo à Comunidade + CRM IA</div>
+              <div class="psel-pix-line">ou R$ 997 à vista no Pix · Economia de R$ 199</div>
             </label>
 
             <label class="psel-row" id="planRowSemestral" onclick="selectPlan('semestral')">
-              <div class="psel-left">
-                <input type="radio" name="plano" value="semestral" class="psel-radio">
-                <div>
+              <input type="radio" name="plano" value="semestral" class="psel-radio">
+              <div class="psel-main">
+                <div class="psel-title-area">
+                  <span class="psel-indicator" aria-hidden="true"></span>
                   <span class="psel-nm">Plano Semestral</span>
-                  <span class="psel-sub">6 meses de acesso completo à Comunidade + CRM IA</span>
+                </div>
+                <div class="psel-prc">
+                  <small>6x de </small><b>R$ 147,00</b>
                 </div>
               </div>
-              <div class="psel-prc">
-                <small>6x de </small><b>R$ 147,00</b>
-                <span class="psel-sub">ou R$ 747 à vista no Pix</span>
-              </div>
+              <div class="psel-sub">6 meses de acesso completo à Comunidade + CRM IA</div>
+              <div class="psel-pix-line">ou R$ 747 à vista no Pix</div>
             </label>
 
             <label class="psel-row" id="planRowMensal" onclick="selectPlan('mensal')">
-              <div class="psel-left">
-                <input type="radio" name="plano" value="mensal" class="psel-radio">
-                <div>
+              <input type="radio" name="plano" value="mensal" class="psel-radio">
+              <div class="psel-main">
+                <div class="psel-title-area">
+                  <span class="psel-indicator" aria-hidden="true"></span>
                   <span class="psel-nm">Plano Mensal</span>
-                  <span class="psel-sub">Sem fidelidade, cancele quando quiser</span>
+                </div>
+                <div class="psel-prc">
+                  <b>R$ 97,00</b><small>/mês</small>
                 </div>
               </div>
-              <div class="psel-prc">
-                <b>R$ 97,00</b><small>/mês</small>
-                <span class="psel-sub">recorrência no cartão de crédito</span>
-              </div>
+              <div class="psel-sub">Sem fidelidade, cancele quando quiser</div>
+              <div class="psel-pix-line">recorrência mensal no cartão de crédito</div>
             </label>
           </div>
 
-          <button type="button" class="btn full" id="mainCtaBtn" onclick="openCheckoutWithCurrentPlan()" style="margin-top: 24px; width: 100%;">
-            ENTRAR NA COMUNIDADE AGORA
+          <button type="button" class="btn full" id="checkoutBtn" onclick="openCheckoutWithCurrentPlan()" style="margin-top: 24px; width: 100%;">
+            Quero entrar na Comunidade Imobiturbo
           </button>
 
           <div class="garantia-badge" style="margin-top: 16px; text-align: center; font-size: 12.5px; color: var(--muted);">
@@ -1306,6 +1335,20 @@
   <div class="proof-lightbox-content">
     <button type="button" class="proof-lightbox-close" id="proofLightboxClose" aria-label="Fechar comprovante">&times;</button>
     <img id="proofLightboxImg" class="proof-lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Comprovante de resultado ampliado" width="600" height="800">
+  </div>
+</dialog>
+
+<!-- MODAL DE DEPOIMENTO EM VÍDEO -->
+<dialog id="testimonialVideoModal" class="tv-modal-dialog" aria-hidden="true">
+  <div class="tv-modal-container">
+    <button type="button" class="tv-modal-close" onclick="closeTestimonialVideo()" aria-label="Fechar vídeo">&times;</button>
+    <div class="tv-modal-header">
+      <span class="tv-badge">CASO REAL COMPROVADO</span>
+      <h3 id="tvModalTitle" class="tv-title">Depoimento de Membro</h3>
+    </div>
+    <div class="tv-player-box" id="tvPlayerBox">
+      <!-- Player dinâmico -->
+    </div>
   </div>
 </dialog>
 
@@ -2249,7 +2292,7 @@
 
           <div class="lm-phone-row">
             <div class="lm-ddi-box">
-              <img src="https://flagcdn.com/w20/br.png" alt="Brasil" width="20" height="15">
+              <img src="assets/flag-br.png" alt="Brasil" width="20" height="14">
               <span>+55</span>
             </div>
             <input class="lm-input lm-phone-input" type="tel" id="leadPhone" name="phone" placeholder="(11) 99999-9999" required autocomplete="tel" oninput="maskPhone(this)">
@@ -2271,9 +2314,9 @@
           <p class="lm-foot-msg">Corretores e imobiliárias de alta performance acelerando:</p>
           <div class="lm-avatar-stack">
             <div class="lm-avatars">
-              <img src="./assets/student-fernando.webp" alt="Aluno">
-              <img src="./assets/student-joyce.webp" alt="Aluno">
-              <img src="./assets/student-filipe.webp" alt="Aluno">
+              <img src="assets/student-fernando.webp" alt="Aluno" width="32" height="32">
+              <img src="assets/student-joyce.webp" alt="Aluno" width="32" height="32">
+              <img src="assets/student-filipe.webp" alt="Aluno" width="32" height="32">
               <span class="lm-more-badge">+</span>
             </div>
             <p class="lm-proof-num">+4.000 corretores já aceleraram · <span>★</span> <b>4,9/5</b></p>
@@ -2290,7 +2333,7 @@
         </div>
 
         <div class="lm-qr-box">
-          <img id="lmQrCodeImg" src="" alt="QR Code Pix" width="220" height="220">
+          <img id="lmQrCodeImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="QR Code Pix" width="220" height="220">
         </div>
 
         <div class="lm-copia-cola-wrap">
@@ -2490,6 +2533,47 @@
           }, 2500);
         });
       }
+    }
+
+    // Depoimentos em Vídeo
+    const TESTIMONIAL_VIDEOS = {
+      fernando: {
+        title: 'Fernando Tavares · 15 leads em 4 dias e apartamento de 3 quartos vendido',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/f81e1559-eb28-4ad8-85b1-f5e84744209c?autoplay=true'
+      },
+      joyce: {
+        title: 'Joyce · R$ 67 mil de comissão em janeiro trabalhando da minha casa',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/68292484-d27f-4e98-89ca-8422c35409b1?autoplay=true'
+      },
+      joan: {
+        title: 'Joan · 7 imóveis exclusivos em 3 meses e R$ 155 mil de comissão no bolso',
+        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/d47ef334-8573-47b9-b17e-0701cede1dd2?autoplay=true'
+      }
+    };
+
+    function openTestimonialVideo(key, label) {
+      const modal = document.getElementById('testimonialVideoModal');
+      const box = document.getElementById('tvPlayerBox');
+      const titleEl = document.getElementById('tvModalTitle');
+      const data = TESTIMONIAL_VIDEOS[key];
+      if (!modal || !box) return;
+
+      titleEl.textContent = (data && data.title) || label || 'Depoimento em Vídeo';
+      const url = (data && data.embedUrl) || 'https://iframe.mediadelivery.net/embed/743564/f81e1559-eb28-4ad8-85b1-f5e84744209c?autoplay=true';
+      box.innerHTML = '<iframe src="' + url + '" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true" style="width: 100%; height: 100%; border: none;"></iframe>';
+
+      modal.showModal();
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeTestimonialVideo() {
+      const modal = document.getElementById('testimonialVideoModal');
+      const box = document.getElementById('tvPlayerBox');
+      if (modal) {
+        modal.close();
+        document.body.style.overflow = '';
+      }
+      if (box) box.innerHTML = '';
     }
   </script>
 
