@@ -581,9 +581,63 @@
     align-items: center !important;
     justify-content: center !important;
   }
+  /* Bulletproof Plan Selector Layout (Prevents Any Cached CSS from Breaking Mobile) */
+  #planos .psel-rows {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    width: 100% !important;
+    max-width: 620px !important;
+    margin: 24px auto 20px !important;
+    box-sizing: border-box !important;
+  }
+  #planos .psel-row {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+    overflow: hidden !important;
+    padding: 16px 18px !important;
+  }
+  #planos .psel-main {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+    box-sizing: border-box !important;
+  }
+  #planos .psel-title-area {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    flex-wrap: wrap !important;
+  }
+  #planos .psel-prc {
+    margin-left: auto !important;
+    text-align: right !important;
+  }
+  #planos .psel-sub, #planos .psel-pix-line {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    word-break: break-word !important;
+  }
+  @media (max-width: 480px) {
+    #planos .psel-row { padding: 14px !important; }
+    #planos .psel-prc {
+      width: 100% !important;
+      text-align: left !important;
+      padding-left: 30px !important;
+      margin-left: 0 !important;
+      margin-top: 4px !important;
+    }
+  }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260918-v10">
+  <link rel="stylesheet" href="./vagas.css?v=20260919-v20">
 </head>
 <body>
 
@@ -993,13 +1047,6 @@
             </div>
             <p>Investimento de R$ 450 · 4x mais renda como autônomo</p>
           </div>
-          <div class="testimonial-video-badge-wrap">
-            <button type="button" class="testimonial-video-btn" onclick="openTestimonialVideo('fernando', 'Fernando Tavares · Caso Real')" aria-label="Assistir relato de Fernando Tavares em vídeo">
-              <span class="tv-play-icon">▶</span>
-              <span>Assistir relato em vídeo</span>
-              <span class="tv-btn-duration">1:45 min</span>
-            </button>
-          </div>
         </article>
         <article class="testimonial panel">
           <h3>R$ 67 mil de comissão em janeiro trabalhando da minha casa</h3>
@@ -1014,13 +1061,6 @@
             </div>
             <p>2 vendas + 2 propostas no 1º mês pós-divórcio</p>
           </div>
-          <div class="testimonial-video-badge-wrap">
-            <button type="button" class="testimonial-video-btn" onclick="openTestimonialVideo('joyce', 'Joyce · Caso Real')" aria-label="Assistir relato de Joyce em vídeo">
-              <span class="tv-play-icon">▶</span>
-              <span>Assistir relato em vídeo</span>
-              <span class="tv-btn-duration">2:10 min</span>
-            </button>
-          </div>
         </article>
         <article class="testimonial panel">
           <h3>7 imóveis exclusivos em 3 meses e R$ 155 mil de comissão no bolso</h3>
@@ -1034,13 +1074,6 @@
               </div>
             </div>
             <p>VGV &gt; R$ 5 Milhões · Média de R$ 51.000/mês</p>
-          </div>
-          <div class="testimonial-video-badge-wrap">
-            <button type="button" class="testimonial-video-btn" onclick="openTestimonialVideo('joan', 'Joan · Caso Real')" aria-label="Assistir relato de Joan em vídeo">
-              <span class="tv-play-icon">▶</span>
-              <span>Assistir relato em vídeo</span>
-              <span class="tv-btn-duration">3:05 min</span>
-            </button>
           </div>
         </article>
       </div>
@@ -1338,19 +1371,6 @@
   </div>
 </dialog>
 
-<!-- MODAL DE DEPOIMENTO EM VÍDEO -->
-<dialog id="testimonialVideoModal" class="tv-modal-dialog" aria-hidden="true">
-  <div class="tv-modal-container">
-    <button type="button" class="tv-modal-close" onclick="closeTestimonialVideo()" aria-label="Fechar vídeo">&times;</button>
-    <div class="tv-modal-header">
-      <span class="tv-badge">CASO REAL COMPROVADO</span>
-      <h3 id="tvModalTitle" class="tv-title">Depoimento de Membro</h3>
-    </div>
-    <div class="tv-player-box" id="tvPlayerBox">
-      <!-- Player dinâmico -->
-    </div>
-  </div>
-</dialog>
 
 <!-- MODAL DE CHECKOUT EMBEDDED (ABACATEPAY + ASAAS FALLBACK) -->
 <dialog id="checkoutModalOverlay" class="chk-modal-overlay" aria-hidden="true" aria-labelledby="checkoutModalTitle">
@@ -2535,46 +2555,7 @@
       }
     }
 
-    // Depoimentos em Vídeo
-    const TESTIMONIAL_VIDEOS = {
-      fernando: {
-        title: 'Fernando Tavares · 15 leads em 4 dias e apartamento de 3 quartos vendido',
-        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/f81e1559-eb28-4ad8-85b1-f5e84744209c?autoplay=true'
-      },
-      joyce: {
-        title: 'Joyce · R$ 67 mil de comissão em janeiro trabalhando da minha casa',
-        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/68292484-d27f-4e98-89ca-8422c35409b1?autoplay=true'
-      },
-      joan: {
-        title: 'Joan · 7 imóveis exclusivos em 3 meses e R$ 155 mil de comissão no bolso',
-        embedUrl: 'https://iframe.mediadelivery.net/embed/743564/d47ef334-8573-47b9-b17e-0701cede1dd2?autoplay=true'
-      }
-    };
 
-    function openTestimonialVideo(key, label) {
-      const modal = document.getElementById('testimonialVideoModal');
-      const box = document.getElementById('tvPlayerBox');
-      const titleEl = document.getElementById('tvModalTitle');
-      const data = TESTIMONIAL_VIDEOS[key];
-      if (!modal || !box) return;
-
-      titleEl.textContent = (data && data.title) || label || 'Depoimento em Vídeo';
-      const url = (data && data.embedUrl) || 'https://iframe.mediadelivery.net/embed/743564/f81e1559-eb28-4ad8-85b1-f5e84744209c?autoplay=true';
-      box.innerHTML = '<iframe src="' + url + '" allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;" allowfullscreen="true" style="width: 100%; height: 100%; border: none;"></iframe>';
-
-      modal.showModal();
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeTestimonialVideo() {
-      const modal = document.getElementById('testimonialVideoModal');
-      const box = document.getElementById('tvPlayerBox');
-      if (modal) {
-        modal.close();
-        document.body.style.overflow = '';
-      }
-      if (box) box.innerHTML = '';
-    }
   </script>
 
 </body>
