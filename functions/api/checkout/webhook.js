@@ -1,9 +1,13 @@
 // Cloudflare Pages Function: /api/checkout/webhook
-// Processa webhooks de liquidação do AbacatePay e Asaas para Imobiturbo
+// Processa webhooks de liquidação e cancelamento/reembolso: AbacatePay, Asaas e Hotmart para Imobiturbo
 // Dispara evento Purchase server-side garantido e idempotente para Meta CAPI (Graph API v25.0)
-// Dispara Kit de Boas-Vindas 4 em 1: E-mail Resend + WhatsApp Oficial (Template status_confirmado_120626) + Sites D1
+// Dispara Kit de Boas-Vindas 4 em 1: CRM Lead (/0-funil-de-vendas) + E-mail ZeptoMail + WhatsApp Oficial + Sites D1
+// Processa cancelamento/reembolso revogando acessos e marcando lead como lost
 
-import { sendPostPurchaseNotifications } from "./_notifications.js";
+import {
+  sendPostPurchaseNotifications,
+  provisionCommunityMembership,
+} from "./_notifications.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -41,6 +45,7 @@ export async function onRequestPost(context) {
     const cookies = parseCookies(request.headers.get("Cookie") || "");
 
     let isPaid = false;
+    let isCanceled = false;
     let paymentId = "";
     let amount = 0;
     let email = "";
@@ -52,10 +57,13 @@ export async function onRequestPost(context) {
     let contentName = "Comunidade Imobiturbo";
     let plan = "anual";
 
-    // 1. AbacatePay Webhook Detection
+    // 1. AbacatePay Webhook Detection (Pago)
     if (
       payload.event === "billing.paid" ||
-      (payload.data && (payload.data.status === "PAID" || payload.data.status === "APPROVED" || payload.data.status === "COMPLETED"))
+      (payload.data &&
+        (payload.data.status === "PAID" ||
+          payload.data.status === "APPROVED" ||
+          payload.data.status === "COMPLETED"))
     ) {
       isPaid = true;
       const data = payload.data || {};
@@ -72,16 +80,33 @@ export async function onRequestPost(context) {
       if (data.metadata?.plan) plan = data.metadata.plan;
       if (data.description) contentName = data.description;
     }
-    // 2. Asaas Webhook Detection
+    // 1.1 AbacatePay Reembolso / Chargeback / Cancelamento
     else if (
-      ["PAYMENT_RECEIVED", "PAYMENT_CONFIRMED", "CHECKOUT_PAID", "PIX_CREDIT_RECEIVED"].includes(payload.event) ||
-      (payload.payment && (payload.payment.status === "RECEIVED" || payload.payment.status === "CONFIRMED"))
+      ["billing.refunded", "billing.chargeback", "billing.canceled"].includes(payload.event) ||
+      (payload.data && ["REFUNDED", "CHARGEBACK", "CANCELED"].includes(payload.data.status))
+    ) {
+      isCanceled = true;
+      const data = payload.data || {};
+      paymentId = data.id || payload.id || "";
+      const cust = data.customer || payload.customer || {};
+      email = cust.email || data.metadata?.email || "";
+      phone = cust.cellphone || cust.phone || data.metadata?.phone || "";
+      name = cust.name || data.metadata?.name || "";
+    }
+    // 2. Asaas Webhook Detection (Pago)
+    else if (
+      ["PAYMENT_RECEIVED", "PAYMENT_CONFIRMED", "CHECKOUT_PAID", "PIX_CREDIT_RECEIVED"].includes(
+        payload.event
+      ) ||
+      (payload.payment &&
+        (payload.payment.status === "RECEIVED" || payload.payment.status === "CONFIRMED"))
     ) {
       isPaid = true;
       const payment = payload.payment || {};
       paymentId = payment.id || payload.id || "";
       amount = Number(payment.value || payment.netValue || 0);
-      const cust = payload.customer || (typeof payment.customer === "object" ? payment.customer : {});
+      const cust =
+        payload.customer || (typeof payment.customer === "object" ? payment.customer : {});
       email = cust.email || "";
       phone = cust.mobilePhone || cust.phone || "";
       name = cust.name || "";
@@ -115,10 +140,115 @@ export async function onRequestPost(context) {
           }
         }
       }
+    }
+    // 2.1 Asaas Reembolso / Chargeback / Cancelamento
+    else if (
+      [
+        "PAYMENT_REFUNDED",
+        "PAYMENT_CHARGEBACK_REQUESTED",
+        "PAYMENT_CHARGEBACK_DISPUTE",
+        "PAYMENT_AWAITING_CHARGEBACK_REVERSAL",
+        "PAYMENT_DELETED",
+      ].includes(payload.event) ||
+      (payload.payment && ["REFUNDED", "CHARGEBACK_REQUESTED"].includes(payload.payment.status))
+    ) {
+      isCanceled = true;
+      const payment = payload.payment || {};
+      paymentId = payment.id || payload.id || "";
+      const cust =
+        payload.customer || (typeof payment.customer === "object" ? payment.customer : {});
+      email = cust.email || "";
+      phone = cust.mobilePhone || cust.phone || "";
+      name = cust.name || "";
+
+      if ((!email || !phone) && typeof payment.customer === "string") {
+        const asaasKey = (env && env.ASAAS_API_KEY) || "";
+        if (asaasKey) {
+          try {
+            const cusResp = await fetch(
+              `https://api.asaas.com/v3/customers/${encodeURIComponent(payment.customer)}`,
+              { headers: { access_token: asaasKey }, signal: AbortSignal.timeout(4000) }
+            );
+            if (cusResp.ok) {
+              const cusData = await cusResp.json();
+              if (!email) email = cusData.email || "";
+              if (!phone) phone = cusData.mobilePhone || cusData.phone || "";
+              if (!name) name = cusData.name || "";
+            }
+          } catch (err) {
+            console.error("Asaas customer lookup fallback error:", err);
+          }
+        }
+      }
+    }
+    // 3. Hotmart Webhook Detection (Pago)
+    else if (
+      ["PURCHASE_APPROVED", "PURCHASE_COMPLETE", "PURCHASE_COMPLETED"].includes(payload.event) ||
+      (payload.data &&
+        payload.data.purchase &&
+        payload.data.purchase.status === "APPROVED")
+    ) {
+      isPaid = true;
+      const data = payload.data || {};
+      const purchase = data.purchase || {};
+      const buyer = data.buyer || {};
+      paymentId = purchase.transaction || payload.id || "";
+      amount = Number(purchase.price?.value || 0);
+      email = buyer.email || "";
+      phone = buyer.checkout_phone || buyer.phone || "";
+      name = buyer.name || "";
+      contentName = data.product?.name || "Comunidade Imobiturbo";
+      const offerCode =
+        purchase.offer?.code ||
+        purchase.offer?.tracking_keys?.offer_code ||
+        purchase.tracking_keys?.offer_code ||
+        "";
+      if (offerCode.toLowerCase().includes("trimestral")) plan = "trimestral";
+      else if (offerCode.toLowerCase().includes("mensal")) plan = "mensal";
+      else plan = "anual";
+    }
+    // 3.1 Hotmart Reembolso / Chargeback / Cancelamento
+    else if (
+      ["PURCHASE_REFUNDED", "PURCHASE_CHARGEBACK", "PURCHASE_CANCELED", "PURCHASE_EXPIRED"].includes(
+        payload.event
+      )
+    ) {
+      isCanceled = true;
+      const data = payload.data || {};
+      const purchase = data.purchase || {};
+      const buyer = data.buyer || {};
+      paymentId = purchase.transaction || payload.id || "";
+      email = buyer.email || "";
+      phone = buyer.checkout_phone || buyer.phone || "";
+      name = buyer.name || "";
     } else {
-      // Eventos não-financeiros (ex: PAYMENT_CREATED, PAYMENT_UPDATED) retornam 200 OK sem disparar compra
+      // Eventos não-financeiros retornam 200 OK sem disparar compra
       return new Response(
         JSON.stringify({ ok: true, status: "ignored_event", event: payload.event || "unknown" }),
+        { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Processamento de CANCELAMENTO / REEMBOLSO
+    if (isCanceled && (email || phone)) {
+      const cancelResult = await provisionCommunityMembership({
+        email,
+        phone,
+        action: "cancel",
+        transactionId: paymentId,
+        source: "webhook_cancellation",
+        env,
+      });
+
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          canceled: true,
+          event: payload.event || "canceled",
+          email,
+          paymentId,
+          provision: cancelResult,
+        }),
         { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
       );
     }
@@ -185,33 +315,44 @@ export async function onRequestPost(context) {
       metaResult = await metaResp.json().catch(() => ({}));
 
       // Disparo unificado do Kit de Boas-Vindas 4 em 1:
-      // 1. E-mail Único Completo via Resend (Área de Membros Comunidade 1x/semana, Radar, Sites e CRM)
-      // 2. WhatsApp Oficial via Meta Cloud API (Template status_confirmado_120626)
-      // 3. Sincronização automática no banco D1 do Sites Imobiturbo
+      // 1. Provisionamento no CRM / Supabase OS (/0-funil-de-vendas -> 0. Novo Lead + tags + acessos 30/90/365d)
+      // 2. E-mail Único Completo via ZeptoMail ilimitado
+      // 3. WhatsApp Oficial via Meta Cloud API
+      // 4. Sincronização automática no banco D1 do Sites Imobiturbo
       let notifResult = null;
       if (email || phone) {
         try {
+          const amountCents = Math.round(amount * 100);
           notifResult = await sendPostPurchaseNotifications({
             email,
             name,
             phone,
             plan: plan || "anual",
             paymentId,
+            amountCents,
             env,
           });
         } catch (e) {
           console.error("Post-purchase notification error in webhook:", e);
         }
       }
+
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          paid: isPaid,
+          event_id: eventId,
+          meta_result: metaResult,
+          notifications: notifResult,
+        }),
+        { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+      );
     }
 
     return new Response(
       JSON.stringify({
         ok: true,
-        paid: isPaid,
-        event_id: eventId,
-        meta_result: metaResult,
-        notifications: notifResult,
+        status: "unhandled_or_incomplete",
       }),
       { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
     );

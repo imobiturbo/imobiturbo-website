@@ -6,6 +6,7 @@ const root = path.resolve(__dirname, "..");
 const {
   formatPostPurchaseEmail,
   formatPostPurchaseWhatsApp,
+  provisionCommunityMembership,
   sendPostPurchaseNotifications,
 } = require("../functions/api/checkout/_notifications.js");
 
@@ -29,6 +30,7 @@ test("formatPostPurchaseEmail generates complete 4-in-1 access kit and isolates 
   assert.ok(!html.includes("2 reuniões por semana"), "Must NOT include 2 meetings/week (exclusive to VIP Mentoria)");
 
   // 4 Accesses present
+  assert.ok(html.includes("club.imobiturbo.com.br/login"), "Must contain direct Club login link");
   assert.ok(html.includes("radar.imobiturbo.com.br/?token=IMOBICLUB2026"), "Must contain direct unlocked Radar link with token");
   assert.ok(html.includes("sites.imobiturbo.com.br"), "Must contain Sites URL");
   assert.ok(html.includes("código") && html.includes("6 dígitos"), "Must instruct OTP code for Sites without password");
@@ -75,12 +77,55 @@ test("formatPostPurchaseWhatsApp formats template status_confirmado_120626 with 
   assert.ok(p3.includes("radar.imobiturbo.com.br") || p3.includes("app.imobiturbo.com.br"), "Param 3 must link to Radar or App");
 });
 
-test("sendPostPurchaseNotifications executes Resend email, Meta WhatsApp and Sites sync", async () => {
+test("provisionCommunityMembership calls Supabase RPC with proper parameters for activation and cancellation", async () => {
   const calls = [];
   const mockFetch = async (url, options) => {
     calls.push({ url, method: options.method, headers: options.headers, body: JSON.parse(options.body || "{}") });
-    if (url.includes("api.resend.com")) {
-      return { ok: true, json: async () => ({ id: "email_mock_123" }) };
+    return {
+      ok: true,
+      status: 200,
+      json: async () => ({ success: true, email: "cliente@imobiturbo.com.br", action: options.body.includes("cancel") ? "cancel" : "activate" }),
+    };
+  };
+
+  // Test 1: Activate
+  const actResult = await provisionCommunityMembership({
+    email: "cliente@imobiturbo.com.br",
+    name: "Cliente Teste",
+    phone: "21999998888",
+    plan: "anual",
+    action: "activate",
+    source: "checkout_vagas",
+    transactionId: "pay_act_001",
+    amountCents: 99700,
+    fetchFn: mockFetch,
+  });
+  assert.equal(actResult.ok, true);
+  assert.equal(calls[0].url, "https://api.os.imobiturbo.com.br/rest/v1/rpc/provision_community_membership");
+  assert.equal(calls[0].body.p_action, "activate");
+  assert.equal(calls[0].body.p_plan, "anual");
+  assert.equal(calls[0].body.p_amount_cents, 99700);
+
+  // Test 2: Cancel (Refund)
+  const cancelResult = await provisionCommunityMembership({
+    email: "cliente@imobiturbo.com.br",
+    action: "cancel",
+    transactionId: "pay_act_001",
+    fetchFn: mockFetch,
+  });
+  assert.equal(cancelResult.ok, true);
+  assert.equal(calls[1].body.p_action, "cancel");
+});
+
+test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, Meta WhatsApp and Sites sync", async () => {
+  const calls = [];
+  const mockFetch = async (url, options) => {
+    calls.push({ url, method: options.method, headers: options.headers, body: JSON.parse(options.body || "{}") });
+    if (url.includes("/rest/v1/rpc/provision_community_membership")) {
+      return { ok: true, status: 200, json: async () => ({ success: true, lead_id: "lead_mock_123" }) };
+    }
+    if (url.includes("api.zeptomail.com")) {
+      return { ok: true, json: async () => ({ message: "OK", code: "EM_104" }) };
     }
     if (url.includes("graph.facebook.com")) {
       return { ok: true, json: async () => ({ messages: [{ id: "wam_mock_456" }] }) };
@@ -97,21 +142,30 @@ test("sendPostPurchaseNotifications executes Resend email, Meta WhatsApp and Sit
     phone: "(21) 98374-7796",
     plan: "anual",
     paymentId: "pay_test_001",
+    amountCents: 99700,
     env: {
-      RESEND_API_KEY: "re_mock_key",
+      ZEPTOMAIL_TOKEN: "zepto_mock_token",
       META_WHATSAPP_TOKEN: "meta_mock_token",
       META_PHONE_NUMBER_ID: "1066935829837217",
     },
     fetchFn: mockFetch,
   });
 
-  assert.equal(result.emailSent, true, "Email must be sent");
+  assert.equal(result.crmProvisioned, true, "CRM must be provisioned");
+  assert.equal(result.emailSent, true, "Email must be sent via ZeptoMail");
   assert.equal(result.whatsappSent, true, "WhatsApp must be sent");
   assert.equal(result.sitesSynced, true, "Sites must be synced");
 
   // Check calls
-  assert.equal(calls.length, 3, "Must trigger 3 API calls: Resend, Meta WhatsApp, Sites");
-  assert.ok(calls.some((c) => c.url.includes("api.resend.com/emails")));
+  assert.equal(calls.length, 4, "Must trigger 4 API calls: CRM RPC, ZeptoMail, Meta WhatsApp, Sites");
+  assert.ok(calls.some((c) => c.url.includes("/rest/v1/rpc/provision_community_membership")));
+  assert.ok(calls.some((c) => c.url.includes("api.zeptomail.com/v1.1/email")));
   assert.ok(calls.some((c) => c.url.includes("graph.facebook.com")));
   assert.ok(calls.some((c) => c.url.includes("sites.imobiturbo.com.br/api/webhook/checkout")));
+
+  // Verify ZeptoMail auth header
+  const zeptoCall = calls.find((c) => c.url.includes("api.zeptomail.com"));
+  assert.ok(zeptoCall.headers.Authorization.startsWith("Zoho-enczapikey "));
+  assert.equal(zeptoCall.body.bounce_address, "bounce@bounce-zem.imobiturbo.com.br");
+  assert.equal(zeptoCall.body.from.address, "noreply@imobiturbo.com.br");
 });

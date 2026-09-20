@@ -1,11 +1,20 @@
 // functions/api/checkout/_notifications.js
 // Disparo pós-compra unificado para Comunidade Imobiturbo (LP /vagas)
-// 1. E-mail Único Completo via Resend (Central de 4 Acessos)
-// 2. WhatsApp Oficial via Meta Cloud API (Template status_confirmado_120626)
-// 3. Sincronização automática no Sites Imobiturbo (Cloudflare D1)
+// 1. Provisionamento Central no CRM / Supabase OS (/0-funil-de-vendas -> 0. Novo Lead + tags + acessos 30/90/365d)
+// 2. E-mail Único Completo via ZeptoMail ilimitado (Central de 4 Acessos)
+// 3. WhatsApp Oficial via Meta Cloud API (Template status_confirmado_120626)
+// 4. Sincronização automática no Sites Imobiturbo (Cloudflare D1)
 
-const FALLBACK_RESEND_KEY_ENC = "cmVfVXRFSnBRVTFfQlBKUWVXdWNkQnM3OWl5eFVOY0FCOWUy";
-const DEFAULT_RESEND_FROM = "Imobiturbo Comunidade <noreply@imobiturbo.com.br>";
+const DEFAULT_ZEPTOMAIL_URL = "https://api.zeptomail.com/v1.1/email";
+const DEFAULT_ZEPTOMAIL_BOUNCE = "bounce@bounce-zem.imobiturbo.com.br";
+const DEFAULT_ZEPTOMAIL_FROM_NAME = "Imobiturbo Comunidade";
+const DEFAULT_ZEPTOMAIL_FROM_ADDR = "noreply@imobiturbo.com.br";
+const FALLBACK_ZEPTOMAIL_TOKEN_ENC =
+  "d1NzVlI2MGpya0ttRHYxNXlEZjdMK2hzekZoVFZnbW5IRW9zamdTbDczV3RIZm5HcGNkcGt4ZkxEUVdqSC9BYUUyUTlGVHNUb2Uwc3lrOEkxemNMM3RWN25saFJDQ2lGOW1xUmUxVTRKM3gxN3FudmhEek5XV3RWa3hTQUtJb093d3hybldka0dza2srZz09";
+
+const DEFAULT_SUPABASE_URL = "https://api.os.imobiturbo.com.br";
+const FALLBACK_SUPABASE_KEY_ENC =
+  "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnliMnhsSWpvaWMyVnlkbWxqWlY5eWIyeGxJaXdpYVhOeklqb2ljM1Z3WVdKaGMyVWlMQ0pwWVhRaU9qRTNPRFUzTWpNM01ETXNJbVY0Y0NJNk1UazBNelF3TXpjd00zMC5sVkdtMEtKaHJuVGFWNFl5dmIxM0ZSSldDZmRoQ1ctZXJSdzJxWVFwdGtn";
 
 const DEFAULT_META_PHONE_NUMBER_ID = "1066935829837217";
 const FALLBACK_META_TOKEN_ENC =
@@ -215,7 +224,7 @@ function formatPostPurchaseEmail({ name, email, plan = "anual" }) {
           Acesso completo às aulas gravadas, esteiras de vendas e comunidade exclusiva de corretores e imobiliárias.
           Nosso encontro ao vivo acontece <strong>1 vez por semana</strong> com tira-dúvidas e alinhamento de campanhas.
         </p>
-        <a href="https://hub.imobiturbo.com.br" class="btn" target="_blank">Acessar Área de Membros & Comunidade →</a>
+        <a href="https://club.imobiturbo.com.br/login?email=${encodeURIComponent(safeEmail)}" class="btn" target="_blank">Acessar Área de Membros & Comunidade →</a>
       </div>
 
       <!-- ACESSO 2: RADAR DE DEMANDA -->
@@ -298,7 +307,7 @@ Aqui estão seus 4 acessos liberados:
 
 1. COMUNIDADE & CLUBE (ÁREA DE MEMBROS)
 - Encontros ao Vivo: 1 reunião por semana da Comunidade (alinhamento e dúvidas)
-- Acesso: https://hub.imobiturbo.com.br
+- Acesso: https://club.imobiturbo.com.br/login?email=${encodeURIComponent(safeEmail)}
 
 2. RADAR DE DEMANDA IMOBILIÁRIA
 - Mineração de imóveis, proprietários e compradores liberada
@@ -325,16 +334,7 @@ function formatPostPurchaseWhatsApp({ name, email, phone, plan = "anual" }) {
 
   const param1 = "sua vaga na Comunidade Imobiturbo foi confirmada com";
 
-  const param2 = `Olá, ${firstName}! Seja muito bem-vindo(a) à Comunidade Imobiturbo.
-
-Seus 4 acessos já foram liberados:
-
-1️⃣ *Comunidade & Clube:* Área de membros liberada + 1 encontro ao vivo por semana exclusivo da Comunidade (o link e dia da nossa reunião semanal estão no seu e-mail).
-2️⃣ *Radar de Demanda:* Mineração de condomínios e clientes liberada pelo link abaixo.
-3️⃣ *Criador de Sites:* 12 templates prontos (acesse sites.imobiturbo.com.br e digite seu e-mail para receber o código de 6 dígitos).
-4️⃣ *CRM com IA:* Sistema operacional pronto para ativação.
-
-📬 *Importante:* Acabamos de enviar um e-mail completo para ${safeEmail} com todos os seus links diretos e orientações detalhadas. Confira sua caixa de entrada e spam!`;
+  const param2 = `Olá, ${firstName}! Seja muito bem-vindo(a) à Comunidade Imobiturbo. Seus 4 acessos já foram liberados: 1️⃣ Comunidade & Clube (1 encontro ao vivo por semana) · 2️⃣ Radar de Demanda (link abaixo) · 3️⃣ Criador de Sites (acesse sites.imobiturbo.com.br) · 4️⃣ CRM com IA. Enviamos e-mail completo com todos os seus acessos para ${safeEmail}.`;
 
   const param3 = "https://radar.imobiturbo.com.br/?token=IMOBICLUB2026";
 
@@ -359,17 +359,75 @@ Seus 4 acessos já foram liberados:
   };
 }
 
+async function provisionCommunityMembership({
+  email,
+  name,
+  phone,
+  plan = "anual",
+  action = "activate",
+  source = "checkout_vagas",
+  transactionId,
+  amountCents,
+  env = {},
+  fetchFn = fetch,
+}) {
+  const supabaseUrl = (env && env.SUPABASE_URL) || DEFAULT_SUPABASE_URL;
+  const serviceKey =
+    (env && env.SUPABASE_SERVICE_ROLE_KEY) || decodeSecret(FALLBACK_SUPABASE_KEY_ENC);
+  const safeEmail = (email || "").trim().toLowerCase();
+
+  if (!safeEmail) {
+    return { ok: false, error: "email_required" };
+  }
+
+  try {
+    const payload = {
+      p_email: safeEmail,
+      p_name: name || undefined,
+      p_phone: phone || undefined,
+      p_plan: plan || "anual",
+      p_action: action || "activate",
+      p_source: source || "checkout_vagas",
+      p_transaction_id: transactionId || undefined,
+      p_amount_cents: typeof amountCents === "number" ? amountCents : undefined,
+    };
+
+    const resp = await fetchFn(`${supabaseUrl}/rest/v1/rpc/provision_community_membership`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: serviceKey,
+        Authorization: `Bearer ${serviceKey}`,
+      },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(8000),
+    });
+
+    const data = await resp.json().catch(() => ({}));
+    if (resp.ok && data && data.success) {
+      return { ok: true, data };
+    }
+    return { ok: false, status: resp.status, data, error: data?.message || "provisioning_failed" };
+  } catch (err) {
+    return { ok: false, error: err.message };
+  }
+}
+
 async function sendPostPurchaseNotifications({
   email,
   name,
   phone,
   plan = "anual",
   paymentId,
+  amountCents,
   env = {},
   fetchFn = fetch,
 }) {
-  const resendApiKey = (env && env.RESEND_API_KEY) || decodeSecret(FALLBACK_RESEND_KEY_ENC);
-  const resendFrom = (env && env.RESEND_FROM_EMAIL) || DEFAULT_RESEND_FROM;
+  const zeptoUrl = (env && env.ZEPTOMAIL_API_URL) || DEFAULT_ZEPTOMAIL_URL;
+  const zeptoToken = (env && env.ZEPTOMAIL_TOKEN) || decodeSecret(FALLBACK_ZEPTOMAIL_TOKEN_ENC);
+  const zeptoBounce = (env && env.ZEPTOMAIL_BOUNCE_ADDRESS) || DEFAULT_ZEPTOMAIL_BOUNCE;
+  const zeptoFromAddr = (env && env.ZEPTOMAIL_FROM_ADDRESS) || DEFAULT_ZEPTOMAIL_FROM_ADDR;
+  const zeptoFromName = (env && env.ZEPTOMAIL_FROM_NAME) || DEFAULT_ZEPTOMAIL_FROM_NAME;
 
   const metaPhoneId = (env && env.META_PHONE_NUMBER_ID) || DEFAULT_META_PHONE_NUMBER_ID;
   const metaToken = (env && env.META_WHATSAPP_TOKEN) || decodeSecret(FALLBACK_META_TOKEN_ENC);
@@ -379,41 +437,76 @@ async function sendPostPurchaseNotifications({
   let emailSent = false;
   let whatsappSent = false;
   let sitesSynced = false;
+  let crmProvisioned = false;
 
   const safeEmail = (email || "").trim().toLowerCase();
   const safePhone = cleanPhoneNumber(phone);
 
-  // 1. Envio do E-mail Completo via Resend
-  if (safeEmail && resendApiKey) {
+  // 1. Provisionamento Central no CRM / Supabase OS (Lead etapa 0 no /0-funil-de-vendas + tags + acessos 30/90/365d)
+  if (safeEmail) {
     try {
-      const emailPayload = formatPostPurchaseEmail({ name, email: safeEmail, plan });
-      const emailResp = await fetchFn("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${resendApiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: resendFrom,
-          to: [safeEmail],
-          subject: emailPayload.subject,
-          html: emailPayload.html,
-          text: emailPayload.text,
-        }),
-        signal: AbortSignal.timeout(6000),
+      const provResult = await provisionCommunityMembership({
+        email: safeEmail,
+        name,
+        phone: safePhone,
+        plan,
+        action: "activate",
+        source: "checkout_vagas",
+        transactionId: paymentId,
+        amountCents,
+        env,
+        fetchFn,
       });
-      const emailJson = await emailResp.json().catch(() => ({}));
-      if (emailResp.ok && emailJson.id) {
-        emailSent = true;
+      if (provResult.ok) {
+        crmProvisioned = true;
       } else {
-        errors.push(`Resend error: ${JSON.stringify(emailJson)}`);
+        errors.push(`CRM provisioning error: ${provResult.error || JSON.stringify(provResult.data)}`);
       }
     } catch (err) {
-      errors.push(`Resend exception: ${err.message}`);
+      errors.push(`CRM provisioning exception: ${err.message}`);
     }
   }
 
-  // 2. Envio do WhatsApp Oficial via Meta Cloud API
+  // 2. Envio do E-mail Completo via ZeptoMail (Zoho) Ilimitado
+  if (safeEmail && zeptoToken) {
+    try {
+      const emailPayload = formatPostPurchaseEmail({ name, email: safeEmail, plan });
+      const emailResp = await fetchFn(zeptoUrl, {
+        method: "POST",
+        headers: {
+          Authorization: `Zoho-enczapikey ${zeptoToken}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          bounce_address: zeptoBounce,
+          from: { address: zeptoFromAddr, name: zeptoFromName },
+          to: [
+            {
+              email_address: {
+                address: safeEmail,
+                name: name || extractFirstName(name),
+              },
+            },
+          ],
+          subject: emailPayload.subject,
+          htmlbody: emailPayload.html,
+          textbody: emailPayload.text,
+        }),
+        signal: AbortSignal.timeout(7000),
+      });
+      const emailJson = await emailResp.json().catch(() => ({}));
+      if (emailResp.ok && (emailJson.message === "OK" || emailJson.data || emailJson.code === "EM_104")) {
+        emailSent = true;
+      } else {
+        errors.push(`ZeptoMail error: ${JSON.stringify(emailJson)}`);
+      }
+    } catch (err) {
+      errors.push(`ZeptoMail exception: ${err.message}`);
+    }
+  }
+
+  // 3. Envio do WhatsApp Oficial via Meta Cloud API
   if (safePhone && metaToken && metaPhoneId) {
     try {
       const waPayload = formatPostPurchaseWhatsApp({ name, email: safeEmail, phone: safePhone, plan });
@@ -440,7 +533,7 @@ async function sendPostPurchaseNotifications({
     }
   }
 
-  // 3. Sincronização automática no banco D1 do Sites Imobiturbo
+  // 4. Sincronização automática no banco D1 do Sites Imobiturbo
   if (safeEmail) {
     try {
       const sitesResp = await fetchFn("https://sites.imobiturbo.com.br/api/webhook/checkout", {
@@ -461,6 +554,7 @@ async function sendPostPurchaseNotifications({
   }
 
   return {
+    crmProvisioned,
     emailSent,
     whatsappSent,
     sitesSynced,
@@ -471,6 +565,7 @@ async function sendPostPurchaseNotifications({
 module.exports = {
   formatPostPurchaseEmail,
   formatPostPurchaseWhatsApp,
+  provisionCommunityMembership,
   sendPostPurchaseNotifications,
   cleanPhoneNumber,
   extractFirstName,
