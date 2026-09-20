@@ -1634,8 +1634,11 @@
         Parabéns! Sua vaga na Comunidade Imobiturbo está confirmada.<br>
         Enviamos as instruções e seu acesso para o seu e-mail e WhatsApp.
       </p>
-      <a href="https://app.imobiturbo.com.br/onboarding" class="chk-btn-submit" style="text-decoration: none;">
-        Acessar Minha Área de Membros
+      <a href="https://club.imobiturbo.com.br" class="chk-btn-submit" style="text-decoration: none; margin-bottom: 12px;" id="chkSuccessClubLink">
+        Acessar Área de Membros da Comunidade →
+      </a>
+      <a href="https://app.imobiturbo.com.br/onboarding" class="chk-btn-submit" style="text-decoration: none; background: #17250A; border: 1px solid #6CA438; color: #C5FF5E !important;">
+        Configurar CRM com IA (Imobiturbo OS) →
       </a>
     </div>
   </div>
@@ -2244,6 +2247,15 @@
       if (pixView) pixView.style.display = 'none';
       if (formView) formView.style.display = 'none';
       if (successView) successView.style.display = 'block';
+
+      try {
+        var emailInput = document.getElementById('chkEmail');
+        var userEmail = (emailInput && emailInput.value) ? emailInput.value.trim().toLowerCase() : '';
+        var clubLink = document.getElementById('chkSuccessClubLink');
+        if (clubLink && userEmail) {
+          clubLink.href = 'https://club.imobiturbo.com.br/login?email=' + encodeURIComponent(userEmail);
+        }
+      } catch (e) {}
 
       const purchaseVal = Number(val) || (currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147);
 
