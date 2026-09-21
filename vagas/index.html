@@ -647,7 +647,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260921-v41">
+  <link rel="stylesheet" href="./vagas.css?v=20260921-v42">
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -871,6 +871,32 @@
         margin-left: -8px !important;
       }
       .chk-proof-text {
+        font-size: 11.5px !important;
+      }
+    }
+    .chk-guarantee-line {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      margin-top: 24px !important;
+      margin-bottom: 2px !important;
+      line-height: 1 !important;
+      text-align: center !important;
+    }
+    .chk-guarantee-lock {
+      font-size: 14px !important;
+      line-height: 1 !important;
+    }
+    .chk-guarantee-text {
+      font-size: 13px !important;
+      font-weight: 600 !important;
+      color: #d8decf !important;
+      letter-spacing: -0.01em !important;
+      white-space: nowrap !important;
+    }
+    @media (max-width: 440px) {
+      .chk-guarantee-text {
         font-size: 11.5px !important;
       }
     }
@@ -2033,7 +2059,7 @@
               <span class="chk-tab-label">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 Pix
-                <span class="chk-tab-tag">Desconto</span>
+                <span class="chk-tab-tag" id="chkPixTabTag">Desconto</span>
               </span>
               <span class="chk-tab-desc" id="chkPixTabDesc">R$ 997 à vista</span>
             </button>
@@ -2118,8 +2144,8 @@
         <!-- Mensagem de Erro se houver -->
         <div id="chkErrorMsg" style="display: none; color: #ef4444; font-size: 13px; margin: 12px 0 0; text-align: center;"></div>
 
-        <!-- Prova Social do Checkout -->
-        <div class="chk-social-proof">
+        <!-- Prova Social do Checkout (Passos 1, 2 e 3) -->
+        <div class="chk-social-proof" id="chkSocialProofBar">
           <div class="chk-proof-avatars">
             <img src="assets/avatars/avatar-004.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
             <img src="assets/avatars/avatar-005.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo" loading="lazy">
@@ -2130,6 +2156,12 @@
             <img src="assets/avatars/avatar-010.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
           </div>
           <span class="chk-proof-text"><strong>+4 mil corretores acelerados</strong> · ⭐ 4,9/5</span>
+        </div>
+
+        <!-- Garantia do Checkout (Passo 4 e 5) -->
+        <div class="chk-guarantee-line" id="chkGuaranteeProofBar" style="display: none;">
+          <span class="chk-guarantee-lock">🔒</span>
+          <span class="chk-guarantee-text">7 dias de garantia incondicional · Zero risco</span>
         </div>
       </form>
     </div>
@@ -2401,6 +2433,18 @@
         if (p) p.style.display = (idx + 1 === step) ? 'block' : 'none';
       });
 
+      const socialProofBar = document.getElementById('chkSocialProofBar');
+      const guaranteeProofBar = document.getElementById('chkGuaranteeProofBar');
+      if (socialProofBar && guaranteeProofBar) {
+        if (step === 4 || step === 5) {
+          socialProofBar.style.display = 'none';
+          guaranteeProofBar.style.display = 'flex';
+        } else {
+          socialProofBar.style.display = 'flex';
+          guaranteeProofBar.style.display = 'none';
+        }
+      }
+
       if (step === 1) {
         if (progressBar) progressBar.style.width = '70%';
         if (progressLabel) progressLabel.textContent = 'Quase lá...';
@@ -2492,6 +2536,11 @@
         const title = info.pixDiscountTitle || 'Desconto especial à vista:';
         pixDiscText.innerHTML = '<strong>' + title + '</strong><span>' + info.pixDiscountDesc + '</span>';
       }
+      const isPixDiscount = planKey === 'anual' || planKey === 'trimestral';
+      const pixTabTag = document.getElementById('chkPixTabTag');
+      if (pixTabTag) {
+        pixTabTag.style.display = isPixDiscount ? 'inline-block' : 'none';
+      }
       updateCtaButtonText();
     }
 
@@ -2515,16 +2564,23 @@
 
     function updateCtaButtonText() {
       const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
+      const isPixDiscount = currentPlan === 'anual' || currentPlan === 'trimestral';
       if (btnText) {
         btnText.textContent = 'Confirmar Pagamento de ' + info.cardVal;
       }
       if (pixBtnText) {
-        pixBtnText.textContent = 'Gerar QR Code Pix de ' + info.pixVal;
+        pixBtnText.textContent = isPixDiscount
+          ? 'Gerar QR Code Pix de ' + info.pixVal
+          : 'Gerar QR Code Pix (' + info.pixVal + ')';
       }
       const goToPixBtn = document.getElementById('chkGoToPixCpfBtn');
       if (goToPixBtn) {
         const span = goToPixBtn.querySelector('span');
-        if (span) span.textContent = 'Pagar no Pix com Desconto (' + info.pixVal + ')';
+        if (span) {
+          span.textContent = isPixDiscount
+            ? 'Pagar no Pix com Desconto (' + info.pixVal + ')'
+            : 'Pagar no Pix (' + info.pixVal + ')';
+        }
       }
     }
 
