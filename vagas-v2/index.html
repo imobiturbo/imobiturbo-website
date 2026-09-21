@@ -647,7 +647,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260921-v40">
+  <link rel="stylesheet" href="./vagas.css?v=20260921-v41">
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -858,6 +858,21 @@
     .chk-proof-text strong {
       color: #ffffff !important;
       font-weight: 700 !important;
+    }
+    @media (max-width: 440px) {
+      .chk-social-proof {
+        gap: 7px !important;
+      }
+      .chk-avatar-img {
+        width: 22px !important;
+        height: 22px !important;
+        min-width: 22px !important;
+        min-height: 22px !important;
+        margin-left: -8px !important;
+      }
+      .chk-proof-text {
+        font-size: 11.5px !important;
+      }
     }
     .chk-plan-summary {
       display: flex !important;
@@ -1969,7 +1984,7 @@
       <form id="chkNativeForm" onsubmit="return false;">
         <!-- ETAPA 1: NOME -->
         <div class="chk-step-pane" id="chkStepPane1">
-          <h3 class="chk-modal-title" id="checkoutModalTitle">Você está a um passo de impulsionar seu VGV</h3>
+          <h3 class="chk-modal-title" id="checkoutModalTitle">Você está a um passo de impulsionar seu VGV com a metodologia Imobiturbo.</h3>
           <p class="chk-modal-subtitle">Continue, serão menos de 10 segundos.</p>
           <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
             <input type="text" id="chkName" class="chk-input chk-input-lg" placeholder="Seu nome completo" required autocomplete="name">
@@ -1997,7 +2012,7 @@
         <div class="chk-step-pane" id="chkStepPane3" style="display: none;">
           <div class="chk-geo-banner">
             <span class="chk-geo-icon">📍</span>
-            <span><strong class="chk-user-first-name">Você</strong>, já vi aqui que você é de <strong id="chkGeoRegionText">sua região</strong>.<br><span class="chk-geo-sub">Temos alguns cases legais da sua região.</span></span>
+            <span><strong class="chk-user-first-name">Você</strong>, já vi aqui que você é de <strong id="chkGeoRegionText">sua região</strong>. Você tem o mercado ao seu favor.<br><span class="chk-geo-sub" id="chkGeoSubText">Temos alguns cases de sucesso nessa região.</span></span>
           </div>
           <h3 class="chk-modal-title">Qual seu e-mail?</h3>
           <p class="chk-modal-subtitle">Enviarei seu acesso por lá também.</p>
@@ -2153,9 +2168,13 @@
         <!-- Prova Social do Checkout -->
         <div class="chk-social-proof">
           <div class="chk-proof-avatars">
-            <img src="assets/student-taina.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo">
-            <img src="assets/student-joyce.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo">
-            <img src="assets/student-sandro.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo">
+            <img src="assets/avatars/avatar-004.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
+            <img src="assets/avatars/avatar-005.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo" loading="lazy">
+            <img src="assets/avatars/avatar-006.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
+            <img src="assets/avatars/avatar-007.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo" loading="lazy">
+            <img src="assets/avatars/avatar-008.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
+            <img src="assets/avatars/avatar-009.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo" loading="lazy">
+            <img src="assets/avatars/avatar-010.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
           </div>
           <span class="chk-proof-text"><strong>+4 mil corretores acelerados</strong> · ⭐ 4,9/5</span>
         </div>

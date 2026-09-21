@@ -1698,6 +1698,21 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   color: #ffffff !important;
   font-weight: 700 !important;
 }
+@media (max-width: 440px) {
+  .chk-social-proof {
+    gap: 7px !important;
+  }
+  .chk-avatar-img {
+    width: 22px !important;
+    height: 22px !important;
+    min-width: 22px !important;
+    min-height: 22px !important;
+    margin-left: -8px !important;
+  }
+  .chk-proof-text {
+    font-size: 11.5px !important;
+  }
+}
 .chk-guarantee-note {
   text-align: center;
   font-size: 12px;
