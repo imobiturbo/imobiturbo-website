@@ -647,7 +647,411 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260919-v20">
+  <link rel="stylesheet" href="./vagas.css?v=20260921-v40">
+  <style id="chkCriticalModalCss">
+    /* Critical Checkout Modal Layout Guarantee */
+    .chk-modal-box {
+      position: relative !important;
+      width: 100% !important;
+      max-width: 480px !important;
+      max-height: calc(100dvh - 32px) !important;
+      overflow-y: auto !important;
+      overscroll-behavior: contain !important;
+      background: #161914 !important;
+      border: 1px solid #282c23 !important;
+      border-radius: 24px !important;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+      padding: 22px 24px 24px !important;
+      color: #ffffff !important;
+      font-family: var(--sans, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif) !important;
+    }
+    .chk-modal-header-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 12px !important;
+      margin-bottom: 20px !important;
+      width: 100% !important;
+    }
+    .chk-modal-badge {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 11px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      font-weight: 800 !important;
+      color: var(--lime, #d4ff53) !important;
+      background: rgba(212, 255, 83, 0.08) !important;
+      border: 1px solid rgba(212, 255, 83, 0.25) !important;
+      padding: 5px 10px !important;
+      border-radius: 999px !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+      margin: 0 !important;
+    }
+    .chk-modal-badge svg {
+      color: var(--lime, #d4ff53) !important;
+    }
+    .chk-header-progress-wrap {
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      flex: 1 !important;
+      min-width: 0 !important;
+    }
+    .chk-progress-track {
+      flex: 1 !important;
+      height: 6px !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+      border-radius: 999px !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+    }
+    .chk-progress-bar {
+      height: 100% !important;
+      background: linear-gradient(90deg, #84cc16 0%, #d4ff53 100%) !important;
+      border-radius: 999px !important;
+      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    .chk-progress-pct {
+      font-size: 12px !important;
+      font-weight: 800 !important;
+      font-family: var(--mono, monospace) !important;
+      color: var(--lime, #d4ff53) !important;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
+    }
+    .chk-modal-close {
+      position: static !important;
+      width: 32px !important;
+      height: 32px !important;
+      min-width: 32px !important;
+      border-radius: 50% !important;
+      background: rgba(255, 255, 255, 0.06) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      color: #9aa08f !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      font-size: 18px !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
+      line-height: 1 !important;
+      flex-shrink: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .chk-modal-close:hover {
+      background: rgba(255, 255, 255, 0.14) !important;
+      color: #ffffff !important;
+    }
+    .chk-modal-title {
+      font-size: 21px !important;
+      font-weight: 800 !important;
+      letter-spacing: -0.02em !important;
+      color: #ffffff !important;
+      margin: 0 0 6px 0 !important;
+      line-height: 1.25 !important;
+      text-align: left !important;
+    }
+    .chk-modal-subtitle {
+      font-size: 13.5px !important;
+      color: #9aa08f !important;
+      margin: 0 0 20px 0 !important;
+      line-height: 1.4 !important;
+      text-align: left !important;
+    }
+    .chk-field {
+      margin-bottom: 22px !important;
+      text-align: left !important;
+    }
+    .chk-input-lg {
+      font-size: 15px !important;
+      padding: 14px 16px !important;
+      min-height: 52px !important;
+      border-radius: 12px !important;
+      background: #11130f !important;
+      border: 1.5px solid #282c23 !important;
+      color: #ffffff !important;
+      width: 100% !important;
+      box-sizing: border-box !important;
+      outline: none !important;
+      transition: border-color 0.2s, box-shadow 0.2s !important;
+    }
+    .chk-input-lg:focus {
+      border-color: var(--lime, #d4ff53) !important;
+      box-shadow: 0 0 0 3px rgba(212, 255, 83, 0.15) !important;
+    }
+    .chk-btn-submit {
+      width: 100% !important;
+      min-height: 52px !important;
+      padding: 14px 20px !important;
+      border-radius: 12px !important;
+      background: var(--lime, #d4ff53) !important;
+      color: #10130C !important;
+      font-family: var(--sans, sans-serif) !important;
+      font-weight: 800 !important;
+      font-size: 15px !important;
+      letter-spacing: 0.01em !important;
+      border: none !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      box-shadow: 0 8px 24px rgba(191, 215, 48, 0.32) !important;
+      transition: transform 0.15s, background-color 0.15s, box-shadow 0.15s !important;
+      margin-top: 0 !important;
+    }
+    .chk-btn-submit:hover {
+      background: var(--lime-hover, #b5e62f) !important;
+      color: #10130C !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 12px 28px rgba(191, 215, 48, 0.42) !important;
+    }
+    .chk-social-proof {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 10px !important;
+      margin-top: 28px !important;
+      margin-bottom: 2px !important;
+      padding: 0 !important;
+      flex-wrap: nowrap !important;
+    }
+    .chk-proof-avatars {
+      display: flex !important;
+      flex-direction: row !important;
+      align-items: center !important;
+      flex-shrink: 0 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .chk-avatar-img {
+      display: block !important;
+      width: 26px !important;
+      height: 26px !important;
+      min-width: 26px !important;
+      min-height: 26px !important;
+      border-radius: 50% !important;
+      border: 2px solid #161914 !important;
+      margin-left: -8px !important;
+      object-fit: cover !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45) !important;
+      flex-shrink: 0 !important;
+    }
+    .chk-avatar-img:first-child {
+      margin-left: 0 !important;
+    }
+    .chk-proof-text {
+      font-size: 13px !important;
+      color: #a8b09d !important;
+      white-space: nowrap !important;
+      letter-spacing: -0.01em !important;
+      line-height: 1 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 4px !important;
+    }
+    .chk-proof-text strong {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+    }
+    .chk-plan-summary {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 14px !important;
+      background: #121410 !important;
+      border: 1px solid #282c23 !important;
+      border-radius: 14px !important;
+      padding: 14px 16px !important;
+      margin-bottom: 16px !important;
+    }
+    .chk-plan-info {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 3px !important;
+      min-width: 0 !important;
+      text-align: left !important;
+    }
+    .chk-plan-badge-row {
+      margin-bottom: 2px !important;
+    }
+    .chk-plan-pill-tag {
+      font-size: 9.5px !important;
+      font-weight: 800 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.06em !important;
+      color: var(--lime, #d4ff53) !important;
+      background: rgba(212, 255, 83, 0.12) !important;
+      border: 1px solid rgba(212, 255, 83, 0.25) !important;
+      padding: 2px 8px !important;
+      border-radius: 999px !important;
+      display: inline-block !important;
+    }
+    .chk-plan-name {
+      font-size: 16px !important;
+      font-weight: 800 !important;
+      color: #ffffff !important;
+      line-height: 1.2 !important;
+    }
+    .chk-plan-sub {
+      font-size: 12px !important;
+      color: #9aa08f !important;
+      line-height: 1.3 !important;
+    }
+    .chk-plan-side {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-end !important;
+      gap: 4px !important;
+      flex-shrink: 0 !important;
+    }
+    .chk-plan-val {
+      text-align: right !important;
+      font-family: var(--mono, monospace) !important;
+      font-size: 14px !important;
+      font-weight: 800 !important;
+      color: var(--lime, #d4ff53) !important;
+      white-space: nowrap !important;
+      display: inline-flex !important;
+      align-items: baseline !important;
+      justify-content: flex-end !important;
+      gap: 2px !important;
+    }
+    .chk-plan-val small {
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      color: #9aa08f !important;
+    }
+    .chk-plan-val b {
+      font-size: 16px !important;
+      font-weight: 800 !important;
+      color: var(--lime, #d4ff53) !important;
+    }
+    .chk-plan-change-btn {
+      background: none !important;
+      border: none !important;
+      color: var(--lime, #d4ff53) !important;
+      font-family: var(--sans, sans-serif) !important;
+      font-size: 12px !important;
+      font-weight: 700 !important;
+      text-decoration: underline !important;
+      text-underline-offset: 3px !important;
+      cursor: pointer !important;
+      padding: 2px 0 !important;
+      transition: opacity 0.15s ease !important;
+    }
+    .chk-plan-change-btn:hover {
+      opacity: 0.8 !important;
+    }
+    .chk-choose-method-title {
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      color: #e5e7eb !important;
+      margin: 16px 0 10px !important;
+      text-align: left !important;
+    }
+    .chk-tabs {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 10px !important;
+      margin-bottom: 14px !important;
+    }
+    .chk-tab {
+      background: #121410 !important;
+      border: 1.5px solid #282c23 !important;
+      border-radius: 12px !important;
+      padding: 12px 14px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      gap: 4px !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
+      text-align: left !important;
+      color: #ffffff !important;
+    }
+    .chk-tab.active {
+      border-color: var(--lime, #d4ff53) !important;
+      background: rgba(212, 255, 83, 0.07) !important;
+      box-shadow: 0 0 0 1px var(--lime, #d4ff53) !important;
+    }
+    .chk-tab-label {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      font-size: 14px !important;
+      font-weight: 700 !important;
+      color: #ffffff !important;
+    }
+    .chk-tab.active .chk-tab-label {
+      color: var(--lime, #d4ff53) !important;
+    }
+    .chk-tab-tag {
+      font-size: 10px !important;
+      font-weight: 800 !important;
+      background: rgba(212, 255, 83, 0.18) !important;
+      color: var(--lime, #d4ff53) !important;
+      padding: 1px 6px !important;
+      border-radius: 4px !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.02em !important;
+    }
+    .chk-tab-desc {
+      font-size: 12px !important;
+      color: #9aa08f !important;
+      margin-left: 21px !important;
+    }
+    .chk-tab.active .chk-tab-desc {
+      color: #d8decf !important;
+    }
+    .chk-pix-discount-banner {
+      background: rgba(212, 255, 83, 0.07) !important;
+      border: 1px solid rgba(212, 255, 83, 0.22) !important;
+      border-radius: 12px !important;
+      padding: 12px 14px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 12px !important;
+      margin-top: 14px !important;
+      margin-bottom: 22px !important;
+      text-align: left !important;
+    }
+    .chk-pix-badge-icon {
+      width: 32px !important;
+      height: 32px !important;
+      border-radius: 8px !important;
+      background: rgba(212, 255, 83, 0.14) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: var(--lime, #d4ff53) !important;
+      flex-shrink: 0 !important;
+    }
+    .chk-pix-badge-icon svg {
+      color: var(--lime, #d4ff53) !important;
+    }
+    .chk-pix-discount-text {
+      font-size: 13px !important;
+      color: #d8decf !important;
+      line-height: 1.45 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      gap: 2px !important;
+    }
+    .chk-pix-discount-text strong {
+      color: var(--lime, #d4ff53) !important;
+      font-weight: 700 !important;
+    }
+    .chk-pix-discount-text del {
+      color: #838a79 !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -1496,31 +1900,31 @@
 <!-- MODAL DE CHECKOUT EMBEDDED (ABACATEPAY + ASAAS FALLBACK) -->
 <dialog id="checkoutModalOverlay" class="chk-modal-overlay" aria-hidden="true" aria-labelledby="checkoutModalTitle">
   <div class="chk-modal-box">
-    <button type="button" class="chk-modal-close" id="checkoutModalClose" aria-label="Fechar">&times;</button>
+
+    <!-- TOP BAR (AMBIENTE SEGURO + PROGRESSO + BOTÃO FECHAR) -->
+    <div class="chk-modal-header-row" id="chkModalHeaderRow">
+      <div class="chk-modal-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span>Ambiente Seguro</span>
+      </div>
+      <div class="chk-header-progress-wrap" id="chkHeaderProgressWrap">
+        <div class="chk-progress-track">
+          <div class="chk-progress-bar" id="chkProgressBar" style="width: 70%;"></div>
+        </div>
+        <span class="chk-progress-pct" id="chkProgressPct">70%</span>
+        <span class="chk-progress-label" id="chkProgressLabel" style="display: none;">Quase lá...</span>
+      </div>
+      <button type="button" class="chk-modal-close" id="checkoutModalClose" aria-label="Fechar">&times;</button>
+    </div>
 
     <!-- VIEW 1: FORMULÁRIO MULTI-ETAPAS DE DADOS E PAGAMENTO -->
     <div id="chkFormView">
-      <div class="chk-modal-badge">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Ambiente Seguro · 256-bit SSL
-      </div>
-
-      <!-- Barra de Progresso Multi-Etapas -->
-      <div class="chk-progress-row">
-        <span class="chk-progress-label" id="chkProgressLabel">Quase lá...</span>
-        <span class="chk-progress-pct" id="chkProgressPct">70%</span>
-      </div>
-      <div class="chk-progress-track">
-        <div class="chk-progress-bar" id="chkProgressBar" style="width: 70%;"></div>
-      </div>
-
-      <!-- Formulário Multi-Etapas -->
       <form id="chkNativeForm" onsubmit="return false;">
         <!-- ETAPA 1: NOME -->
         <div class="chk-step-pane" id="chkStepPane1">
           <h3 class="chk-modal-title" id="checkoutModalTitle">Você está a um passo de impulsionar seu VGV</h3>
           <p class="chk-modal-subtitle">Continue, serão menos de 10 segundos.</p>
-          <div class="chk-field" style="margin-top: 18px;">
+          <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
             <input type="text" id="chkName" class="chk-input chk-input-lg" placeholder="Seu nome completo" required autocomplete="name">
           </div>
           <button type="button" class="chk-btn-submit" id="chkStep1Btn">
@@ -1533,7 +1937,7 @@
         <div class="chk-step-pane" id="chkStepPane2" style="display: none;">
           <h3 class="chk-modal-title"><span class="chk-user-first-name">Você</span>, e qual seu WhatsApp?</h3>
           <p class="chk-modal-subtitle">Enviarei seu acesso por lá</p>
-          <div class="chk-field" style="margin-top: 18px;">
+          <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
             <input type="tel" id="chkPhone" class="chk-input chk-input-lg" placeholder="(00) 00000-0000" required autocomplete="tel">
           </div>
           <button type="button" class="chk-btn-submit" id="chkStep2Btn">
@@ -1550,7 +1954,7 @@
           </div>
           <h3 class="chk-modal-title">Qual seu e-mail?</h3>
           <p class="chk-modal-subtitle">Enviarei seu acesso por lá também.</p>
-          <div class="chk-field" style="margin-top: 18px;">
+          <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
             <input type="email" id="chkEmail" class="chk-input chk-input-lg" placeholder="seuemail@exemplo.com" required autocomplete="email">
           </div>
           <button type="button" class="chk-btn-submit" id="chkStep3Btn">
@@ -1564,10 +1968,10 @@
           <!-- Resumo do Plano Selecionado com troca rápida -->
           <div class="chk-plan-summary">
             <div class="chk-plan-info">
-              <div class="chk-plan-header">
+              <div class="chk-plan-badge-row">
                 <span class="chk-plan-pill-tag">Plano Selecionado</span>
-                <strong class="chk-plan-name" id="chkModalPlanName">Plano Anual</strong>
               </div>
+              <strong class="chk-plan-name" id="chkModalPlanName">Plano Anual</strong>
               <span class="chk-plan-sub" id="chkModalPlanSub">12 meses de acesso completo + CRM IA</span>
             </div>
             <div class="chk-plan-side">
@@ -1584,7 +1988,7 @@
               <input type="radio" name="chkModalPlanRadio" value="anual" checked>
               <div class="chk-plan-opt-info">
                 <b>Plano Anual</b>
-                <span>12 meses de acesso completo</span>
+                <span>12 meses de acesso completo + CRM IA</span>
               </div>
               <span class="chk-plan-badge">12x R$ 97</span>
             </label>
@@ -1592,7 +1996,7 @@
               <input type="radio" name="chkModalPlanRadio" value="trimestral">
               <div class="chk-plan-opt-info">
                 <b>Plano Trimestral</b>
-                <span>3 meses de acesso completo</span>
+                <span>3 meses de acesso completo + CRM IA</span>
               </div>
               <span class="chk-plan-badge">3x R$ 127</span>
             </label>
@@ -1600,7 +2004,7 @@
               <input type="radio" name="chkModalPlanRadio" value="mensal">
               <div class="chk-plan-opt-info">
                 <b>Plano Mensal</b>
-                <span>Cancelamento livre</span>
+                <span>Mensalidade com cancelamento livre</span>
               </div>
               <span class="chk-plan-badge">R$ 147/mês</span>
             </label>
@@ -1612,7 +2016,7 @@
           <div class="chk-tabs" role="group" aria-label="Forma de pagamento">
             <button type="button" class="chk-tab active" id="tabPix" data-method="PIX" aria-pressed="true">
               <span class="chk-tab-label">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 Pix
                 <span class="chk-tab-tag">Desconto</span>
               </span>
@@ -1620,7 +2024,7 @@
             </button>
             <button type="button" class="chk-tab" id="tabCard" data-method="CREDIT_CARD" aria-pressed="false">
               <span class="chk-tab-label">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
                 Cartão
               </span>
               <span class="chk-tab-desc" id="chkCardTabDesc">Até 12x de R$ 97</span>
@@ -1629,33 +2033,33 @@
 
           <!-- Seção de Cartão de Crédito -->
           <div id="chkCardFields" style="display: none;">
-            <div class="chk-field">
+            <div class="chk-field" style="margin-bottom: 16px;">
               <label for="chkCardNumber">Número do Cartão</label>
               <input type="text" id="chkCardNumber" class="chk-input" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
             </div>
 
-            <div class="chk-field">
+            <div class="chk-field" style="margin-bottom: 16px;">
               <label for="chkCardHolder">Nome impresso no Cartão</label>
               <input type="text" id="chkCardHolder" class="chk-input" placeholder="NOME COMO NO CARTÃO" autocomplete="cc-name">
             </div>
 
-            <div class="chk-grid-2">
-              <div class="chk-field">
+            <div class="chk-grid-2" style="margin-bottom: 16px;">
+              <div class="chk-field" style="margin-bottom: 0;">
                 <label for="chkCardExpiry">Validade</label>
                 <input type="text" id="chkCardExpiry" class="chk-input" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp">
               </div>
-              <div class="chk-field">
+              <div class="chk-field" style="margin-bottom: 0;">
                 <label for="chkCardCvv">CVV</label>
                 <input type="text" id="chkCardCvv" class="chk-input" placeholder="123" maxlength="4" autocomplete="cc-csc">
               </div>
             </div>
 
-            <div class="chk-field">
+            <div class="chk-field" style="margin-bottom: 22px;">
               <label for="chkCardCpf">CPF do Titular do Cartão</label>
               <input type="text" id="chkCardCpf" class="chk-input" placeholder="000.000.000-00" oninput="maskCpf(this)" maxlength="14">
             </div>
 
-            <button type="submit" class="chk-btn-submit" id="chkSubmitCardBtn">
+            <button type="submit" class="chk-btn-submit" id="chkSubmitCardBtn" style="margin-top: 8px;">
               <span id="chkBtnText">Confirmar Pagamento no Cartão</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
@@ -1664,9 +2068,11 @@
           <!-- Seção de Pix (botão que avança para Step 5: CPF) -->
           <div id="chkPixChoiceWrap">
             <div class="chk-pix-discount-banner">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <div class="chk-pix-badge-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
               <div class="chk-pix-discount-text">
-                <strong>Desconto especial à vista:</strong>
+                <strong>Desconto especial à vista no Pix:</strong>
                 <span>De <del>R$ 1.164</del> por apenas <strong>R$ 997</strong> no Pix (liberação imediata).</span>
               </div>
             </div>
@@ -1681,7 +2087,7 @@
         <div class="chk-step-pane" id="chkStepPane5" style="display: none;">
           <h3 class="chk-modal-title">Perfeito, para finalizarmos:</h3>
           <p class="chk-modal-subtitle">Preencha seu CPF para gerar a chave Pix nominal:</p>
-          <div class="chk-field" style="margin-top: 18px;">
+          <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
             <input type="text" id="chkCpf" class="chk-input chk-input-lg" placeholder="000.000.000-00" required autocomplete="off" oninput="maskCpf(this)" maxlength="14">
           </div>
           <p class="chk-cpf-note">🔒 Exigência regulatória do Banco Central / Pix para emissão de cobrança nominal segura.</p>
@@ -1704,7 +2110,7 @@
             <img src="assets/student-joyce.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo">
             <img src="assets/student-sandro.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo">
           </div>
-          <span class="chk-proof-text"><strong>+4 mil corretores acelerados</strong> · <span class="chk-star">★</span> 4,9/5</span>
+          <span class="chk-proof-text"><strong>+4 mil corretores acelerados</strong> · ⭐ 4,9/5</span>
         </div>
       </form>
     </div>
@@ -2012,6 +2418,7 @@
         priceDisplay: '<small>12x R$ </small><b>97</b>',
         pixVal: 'R$ 997',
         cardVal: '12x R$ 97',
+        pixDiscountTitle: 'Desconto especial à vista no Pix:',
         pixDiscountDesc: 'De <del>R$ 1.164</del> por apenas <strong>R$ 997</strong> no Pix (liberação imediata).'
       },
       'trimestral': {
@@ -2020,7 +2427,8 @@
         priceDisplay: '<small>3x R$ </small><b>127</b>',
         pixVal: 'R$ 357',
         cardVal: '3x R$ 127',
-        pixDiscountDesc: 'Apenas <strong>R$ 357</strong> à vista no Pix (acesso trimestral).'
+        pixDiscountTitle: 'Acesso Trimestral no Pix:',
+        pixDiscountDesc: 'Apenas <strong>R$ 357</strong> à vista no Pix (liberação imediata).'
       },
       'mensal': {
         name: 'Plano Mensal',
@@ -2028,7 +2436,8 @@
         priceDisplay: '<b>R$ 147</b><small>/mês</small>',
         pixVal: 'R$ 147',
         cardVal: 'R$ 147/mês',
-        pixDiscountDesc: 'Apenas <strong>R$ 147</strong> no primeiro mês.'
+        pixDiscountTitle: 'Plano Mensal no Pix:',
+        pixDiscountDesc: 'Apenas <strong>R$ 147</strong> no primeiro mês com cancelamento livre.'
       }
     };
 
@@ -2061,7 +2470,8 @@
       if (cardTabDesc) cardTabDesc.textContent = 'Até ' + info.cardVal;
       const pixDiscText = document.querySelector('.chk-pix-discount-text');
       if (pixDiscText && info.pixDiscountDesc) {
-        pixDiscText.innerHTML = '<strong>Desconto especial à vista:</strong><span>' + info.pixDiscountDesc + '</span>';
+        const title = info.pixDiscountTitle || 'Desconto especial à vista:';
+        pixDiscText.innerHTML = '<strong>' + title + '</strong><span>' + info.pixDiscountDesc + '</span>';
       }
       updateCtaButtonText();
     }
