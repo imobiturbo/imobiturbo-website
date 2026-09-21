@@ -569,8 +569,8 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 .proof-nav-btn:hover {
   background: var(--surface);
-  border-color: var(--military);
-  color: var(--military);
+  border-color: var(--lime);
+  color: var(--lime);
 }
 .proof-nav-btn:disabled { opacity: .4; cursor: default; box-shadow: none; }
 .proof-lightbox:not([open]), .chk-modal-overlay:not([open]) { display: none; }
@@ -1203,13 +1203,16 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-weight: 700;
-  color: var(--military);
-  background: var(--mint-bg);
-  border: 1px solid var(--mint-border);
-  padding: 4px 10px;
+  font-weight: 800;
+  color: var(--lime);
+  background: rgba(212, 255, 83, 0.08);
+  border: 1px solid rgba(212, 255, 83, 0.25);
+  padding: 5px 12px;
   border-radius: 999px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+}
+.chk-modal-badge svg {
+  color: var(--lime);
 }
 .chk-modal-title {
   font-size: 22px;
@@ -1260,7 +1263,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   font-family: var(--mono);
   font-size: 14px;
   font-weight: 800;
-  color: var(--military);
+  color: var(--lime);
   white-space: nowrap;
   display: inline-flex;
   align-items: baseline;
@@ -1268,29 +1271,33 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   gap: 2px;
 }
 .chk-plan-val small {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
-  opacity: 0.85;
+  color: #9aa08f;
+  opacity: 1;
 }
 .chk-plan-val b {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
+  color: var(--lime);
 }
 .chk-plan-change-btn {
   background: none;
   border: none;
-  color: var(--military);
+  color: var(--lime);
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 700;
   text-decoration: underline;
+  text-underline-offset: 3px;
   cursor: pointer;
-  padding: 10px 0;
-  min-height: 44px;
-  transition: opacity 0.15s ease;
+  padding: 8px 0;
+  min-height: 38px;
+  transition: all 0.15s ease;
 }
 .chk-plan-change-btn:hover {
-  opacity: 0.8;
+  color: var(--lime-hover);
+  opacity: 1;
 }
 .chk-plan-dropdown {
   background: #181b16;
@@ -1319,7 +1326,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   background: #141613;
 }
 .chk-plan-opt input[type="radio"] {
-  accent-color: var(--military);
+  accent-color: var(--lime);
   width: 16px;
   height: 16px;
 }
@@ -1337,12 +1344,13 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   font-size: 11px;
 }
 .chk-plan-badge {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--military);
-  background: rgba(216, 255, 62, 0.15);
-  padding: 2px 6px;
-  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--lime);
+  background: rgba(212, 255, 83, 0.12);
+  border: 1px solid rgba(212, 255, 83, 0.25);
+  padding: 3px 8px;
+  border-radius: 6px;
   font-family: var(--mono);
 }
 .chk-tabs {
@@ -1353,7 +1361,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 .chk-tab {
   background: #141613;
-  border: 1px solid #262922;
+  border: 1px solid #282c23;
   border-radius: 12px;
   padding: 10px 12px;
   cursor: pointer;
@@ -1364,25 +1372,36 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   text-align: center;
   transition: all 0.2s ease;
 }
+.chk-tab:hover:not(.active) {
+  border-color: #3f4536;
+  background: #181c15;
+}
 .chk-tab.active {
-  background: #1d2317;
-  border-color: var(--military);
-  box-shadow: 0 0 16px rgba(22, 101, 52, 0.12);
+  background: #182013;
+  border-color: var(--lime);
+  box-shadow: 0 0 16px rgba(212, 255, 83, 0.18);
 }
 .chk-tab-label {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--white);
   display: flex;
   align-items: center;
   gap: 6px;
 }
+.chk-tab-label svg {
+  stroke: currentColor;
+  stroke-width: 2.2;
+}
 .chk-tab.active .chk-tab-label {
-  color: var(--military);
+  color: var(--lime);
 }
 .chk-tab-desc {
   font-size: 12px;
   color: var(--muted);
+}
+.chk-tab.active .chk-tab-desc {
+  color: #d1d8c5;
 }
 .chk-field {
   margin-bottom: 12px;
@@ -1397,7 +1416,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .chk-input {
   width: 100%;
   background: #131511;
-  border: 1px solid var(--border);
+  border: 1px solid #2d3227;
   border-radius: 10px;
   padding: 10px 14px;
   font-size: 16px;
@@ -1408,9 +1427,13 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   outline: none;
   box-sizing: border-box;
 }
+.chk-input::placeholder {
+  color: #7b8270;
+  opacity: 1;
+}
 .chk-input:focus {
   border-color: var(--lime);
-  box-shadow: 0 0 0 3px rgba(212, 255, 83, 0.15);
+  box-shadow: 0 0 0 3px rgba(212, 255, 83, 0.18);
   background: #181b16;
 }
 .chk-grid-2 {
@@ -1456,13 +1479,16 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 .chk-guarantee-note {
   text-align: center;
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 12px;
+  font-size: 12px;
+  color: #b0b7a4;
+  margin-top: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+}
+.chk-guarantee-note svg {
+  color: var(--lime);
 }
 .chk-pix-view {
   text-align: center;
@@ -1473,9 +1499,10 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: var(--military);
-  background: var(--mint-bg);
-  border: 1px solid var(--mint-border);
+  font-weight: 700;
+  color: var(--lime);
+  background: rgba(212, 255, 83, 0.08);
+  border: 1px solid rgba(212, 255, 83, 0.25);
   padding: 6px 14px;
   border-radius: 999px;
   margin-bottom: 16px;
@@ -1484,7 +1511,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--military);
+  background: var(--lime);
   animation: chkPulse 1.5s infinite;
 }
 @keyframes chkPulse {
@@ -1573,8 +1600,8 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   transition: all 0.2s ease;
 }
 .chk-btn-back:hover {
-  border-color: var(--military);
-  color: var(--military);
+  border-color: var(--lime);
+  color: var(--lime);
   background: #141613;
 }
 .chk-success-view {
@@ -1585,9 +1612,9 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: rgba(216, 255, 62, 0.15);
-  border: 2px solid var(--military);
-  color: var(--military);
+  background: rgba(212, 255, 83, 0.15);
+  border: 2px solid var(--lime);
+  color: var(--lime);
   display: flex;
   align-items: center;
   justify-content: center;
