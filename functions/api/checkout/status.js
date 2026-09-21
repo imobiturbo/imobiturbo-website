@@ -48,7 +48,7 @@ export async function onRequestGet(context) {
 
         if (isPaid) {
           const eventId = json.data?.metadata?.eventId || url.searchParams.get("eventId") || `purch_${paymentId}`;
-          const amount = typeof json.data.amount === "number" ? json.data.amount / 100 : 957;
+          const amount = typeof json.data.amount === "number" ? json.data.amount / 100 : 997;
           const contentName = json.data.description || "Comunidade Imobiturbo";
           const buyerEmail = json.data?.customer?.email || json.data?.metadata?.email || "";
           const buyerPhone = json.data?.customer?.cellphone || json.data?.customer?.phone || json.data?.metadata?.phone || "";
@@ -114,7 +114,7 @@ export async function onRequestGet(context) {
 
         if (isPaid) {
           const eventId = data.externalReference || url.searchParams.get("eventId") || `purch_${paymentId}`;
-          const amount = Number(data.value || 957);
+          const amount = Number(data.value || 997);
           const contentName = data.description || "Comunidade Imobiturbo";
           const promise = Promise.allSettled([
             dispatchPurchaseToMetaCapi({ env, request, paymentId, eventId, amount, contentName, email: "", phone: "", name: "" }),

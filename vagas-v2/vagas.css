@@ -68,6 +68,24 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
 .accent { color: #d4ff53 !important; }
 .surface .accent { color: #d4ff53 !important; }
 .note { font-size: 15px; line-height: 1.6; }
+.text-highlight,
+mark.text-highlight,
+mark {
+  background: var(--lime, #d4ff53) !important;
+  color: #10130c !important;
+  padding: 0.08em 0.28em !important;
+  border-radius: 3px !important;
+  box-decoration-break: clone !important;
+  -webkit-box-decoration-break: clone !important;
+  font-style: inherit !important;
+  font-weight: inherit !important;
+  display: inline !important;
+}
+.text-highlight *,
+mark.text-highlight *,
+mark * {
+  color: #10130c !important;
+}
 .transition { margin-top: 44px; padding-top: 25px; border-top: 1px solid var(--border); font-size: 17px; line-height: 1.55; }
 [data-section="03"] .transition, [data-section="04"] .transition, [data-section="05"] .transition, [data-section="06"] .transition, [data-section="10"] .transition { color: var(--heading); font-size: 24px; font-weight: 700; }
 .surface, .tinted { background: var(--surface); }
@@ -2445,89 +2463,34 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   pointer-events: none;
 }
 
-/* Notice Pill */
-.vsl-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(0, 0, 0, 0.75);
-  border: 1px solid rgba(212, 255, 83, 0.45);
-  padding: 6px 14px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #d4ff53;
-  margin-bottom: 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
-  animation: vslPillPulse 2s infinite ease-in-out;
-}
-
-.vsl-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #d4ff53;
-  box-shadow: 0 0 8px #d4ff53;
-}
-
-/* Big Glowing Play Center Card */
-.vsl-center-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.vsl-play-btn {
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  background: #d4ff53;
-  color: #10130c;
+/* VTurb Smart Autoplay Animated Element */
+.vsl-autoplay-card {
+  width: clamp(140px, 30vw, 250px);
+  max-width: 85%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 30px rgba(212, 255, 83, 0.85), 0 0 60px rgba(212, 255, 83, 0.35);
   position: relative;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.28s ease;
+  filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 20px rgba(212, 255, 83, 0.25));
+  pointer-events: none;
 }
 
-.hero-vsl:hover .vsl-play-btn {
-  transform: scale(1.08);
+.hero-vsl:hover .vsl-autoplay-card {
+  transform: scale(1.06);
+  filter: drop-shadow(0 14px 36px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 35px rgba(212, 255, 83, 0.45));
 }
 
-.vsl-play-btn::after {
-  content: '';
-  position: absolute;
-  inset: -8px;
-  border-radius: 50%;
-  border: 2px solid rgba(212, 255, 83, 0.6);
-  animation: vslRipple 1.8s infinite;
+.hero-vsl:active .vsl-autoplay-card {
+  transform: scale(0.97);
 }
 
-.vsl-play-btn svg {
-  width: 32px;
-  height: 32px;
-  margin-left: 4px;
-}
-
-.vsl-cta-text {
-  font-size: clamp(16px, 2.2vw, 21px);
-  font-weight: 800;
-  color: #ffffff;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.95);
-  letter-spacing: -0.01em;
-}
-
-.vsl-sub-text {
-  font-size: 13px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.75);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85);
+.vsl-autoplay-anim {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+  border-radius: 24px;
 }
 
 /* Smart Fast Progress Bar (VTurb Retention Curve) */
@@ -3049,6 +3012,42 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 .ps-closing-card p strong {
   color: var(--heading);
+}
+
+.ps-summary-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ps-summary-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #d1d5db;
+}
+.ps-summary-item.ps-summary-category {
+  margin-top: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--heading);
+}
+.ps-summary-item.ps-summary-category:first-child {
+  margin-top: 0;
+}
+.ps-summary-item.ps-summary-category strong {
+  color: var(--heading);
+}
+.ps-summary-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
 /* Bonus Grid (Desktop 2-Col Equilibrium) */

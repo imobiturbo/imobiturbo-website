@@ -50,8 +50,8 @@ export async function onRequestPost(context) {
   const PLAN_DETAILS = {
     anual: {
       title: "Comunidade Imobiturbo - Plano Anual",
-      pixCents: 95700,
-      pixReais: 957.0,
+      pixCents: 99700,
+      pixReais: 997.0,
       cardInstallmentCount: 12,
       cardInstallmentValue: 97.0,
       cardTotalValue: 1164.0,

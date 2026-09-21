@@ -113,9 +113,9 @@ test("checkout API PLAN_DETAILS matches landing page pricing and Hub tracking co
   const funcPath = path.join(root, "functions/api/checkout/index.js");
   const code = fs.readFileSync(funcPath, "utf8");
 
-  // Anual: 957.0 / 95700 cents / 12x 97.0
-  assert.ok(code.includes("pixCents: 95700"), "Anual must be 95700 cents");
-  assert.ok(code.includes("pixReais: 957.0"), "Anual must be 957.0 BRL");
+  // Anual: 997.0 / 99700 cents / 12x 97.0
+  assert.ok(code.includes("pixCents: 99700"), "Anual must be 99700 cents");
+  assert.ok(code.includes("pixReais: 997.0"), "Anual must be 997.0 BRL");
   assert.ok(code.includes("cardInstallmentValue: 97.0"), "Anual card installment must be 97.0");
 
   // Trimestral: 357.0 / 35700 cents / 3x 127.0
@@ -134,10 +134,10 @@ test("checkout API PLAN_DETAILS matches landing page pricing and Hub tracking co
   // Check landing pages alignment
   for (const page of ["vagas/index.html", "vagas-v2/index.html"]) {
     const html = fs.readFileSync(path.join(root, page), "utf8");
-    assert.ok(html.includes("currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147"), `${page} tracking must use 957 for anual`);
-    assert.ok(html.includes("pixVal: 'R$ 957'"), `${page} PLAN_CONFIG must set pixVal to R$ 957`);
-    assert.ok(html.includes("pixPrice: 'R$ 957,00'"), `${page} PLANS_CONFIG must set pixPrice to R$ 957,00`);
-    assert.ok(html.includes("Economize R$ 207"), `${page} must display Economize R$ 207 savings`);
+    assert.ok(html.includes("currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147"), `${page} tracking must use 997 for anual`);
+    assert.ok(html.includes("pixVal: 'R$ 997'"), `${page} PLAN_CONFIG must set pixVal to R$ 997`);
+    assert.ok(html.includes("pixPrice: 'R$ 997,00'"), `${page} PLANS_CONFIG must set pixPrice to R$ 997,00`);
+    assert.ok(html.includes("Economize R$ 167"), `${page} must display Economize R$ 167 savings`);
   }
 });
 

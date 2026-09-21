@@ -51,7 +51,7 @@
           {
             "@type": "Offer",
             "name": "Plano Anual",
-            "price": "957.00",
+            "price": "997.00",
             "priceCurrency": "BRL",
             "availability": "https://schema.org/InStock",
             "url": "https://www.imobiturbo.com.br/vagas/"
@@ -1101,6 +1101,24 @@
       background: var(--lime, #d4ff53);
       color: #10130c;
     }
+    .text-highlight,
+    mark.text-highlight,
+    mark {
+      background: var(--lime, #d4ff53) !important;
+      color: #10130c !important;
+      padding: 0.08em 0.28em !important;
+      border-radius: 3px !important;
+      box-decoration-break: clone !important;
+      -webkit-box-decoration-break: clone !important;
+      font-style: inherit !important;
+      font-weight: inherit !important;
+      display: inline !important;
+    }
+    .text-highlight *,
+    mark.text-highlight *,
+    mark * {
+      color: #10130c !important;
+    }
   </style>
 </head>
 <body>
@@ -1129,7 +1147,7 @@
           Como qualificar compradores no WhatsApp com IA 24h, organizar seus clientes e <span class="lime-txt">vender imóveis todo mês</span>.
         </h1>
         <p class="sub">
-          Sem virar refém do celular e sem entender nada de tecnologia: tenha seu CRM com inteligência artificial, scripts validados de captação e suporte contínuo para nunca mais perder lead quente.
+          Sem virar refém do celular e <mark class="text-highlight">sem entender nada de tecnologia</mark>: tenha seu CRM com inteligência artificial, scripts validados de captação e suporte contínuo para nunca mais perder lead quente.
         </p>
 
         <!-- VSL Player (VTurb Architecture + Bunny Stream CDN) -->
@@ -1140,18 +1158,13 @@
               Seu navegador não suporta vídeos em HTML5.
             </video>
 
-            <!-- VTurb-Style Preview Overlay -->
-            <div class="vsl-overlay" id="vslOverlay">
-              <div class="vsl-pill">
-                <span class="vsl-dot"></span>
-                <span>Seu vídeo já começou</span>
-              </div>
-              <div class="vsl-center-card">
-                <button class="vsl-play-btn" type="button" aria-label="Assistir apresentação com som">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-                <div class="vsl-cta-text">Clique para ouvir com som</div>
-                <div class="vsl-sub-text">O vídeo voltará para o início</div>
+            <!-- VTurb-Style Smart Autoplay Overlay -->
+            <div class="vsl-overlay" id="vslOverlay" aria-label="Clique para ouvir com som">
+              <div class="vsl-autoplay-card">
+                <video class="vsl-autoplay-anim" autoplay loop muted playsinline poster="./assets/vsl-autoplay-poster.webp" disablepictureinpicture aria-hidden="true">
+                  <source src="./assets/vsl-autoplay.webm" type="video/webm">
+                  <img src="./assets/vsl-autoplay.webp" alt="Clique para ouvir com som" class="vsl-autoplay-anim" width="250" height="245">
+                </video>
               </div>
             </div>
 
@@ -1210,7 +1223,7 @@
       <div class="section-intro">
         <p class="eyebrow">COMO FUNCIONA NA PRÁTICA</p>
         <h2>O problema nunca foi falta de leads. <span class="accent">Foi a falta de uma esteira com IA no WhatsApp.</span></h2>
-        <p class="lead">Gastar mais em anúncio só aumenta o seu cansaço se você não tiver um processo que filtra os curiosos no primeiro minuto e conduz o comprador quente até a visita.</p>
+        <p class="lead">Gastar mais em anúncio só aumenta o seu cansaço se você <mark class="text-highlight">não tiver um processo</mark> que filtra os curiosos no primeiro minuto e conduz o comprador quente até a visita.</p>
       </div>
       <ol class="process">
         <li>
@@ -1401,8 +1414,8 @@
           <p>Tire dúvidas comerciais a qualquer hora com o assistente treinado na metodologia de Natan Pimentel.</p>
           <div class="text-guidance-box">
             <strong>Exemplo de Consulta ao Mentor IA:</strong>
-            <p><em>Pergunta do Corretor:</em> "Cliente pediu desconto na comissão de 6% para 4%. Como respondo sem perder o negócio?"</p>
-            <p><em>Orientação do Mentor IA:</em> "Ancore no plano de mídia paga com exclusividade: mostre que comissão reduzida significa corte direto no orçamento de tráfego do imóvel dele. Use o roteiro do Módulo 2 Aula 3."</p>
+            <p><mark class="text-highlight"><em>Pergunta do Corretor:</em></mark> "Cliente pediu desconto na comissão de 6% para 4%. Como respondo sem perder o negócio?"</p>
+            <p><mark class="text-highlight"><em>Orientação do Mentor IA:</em></mark> "Ancore no plano de mídia paga com exclusividade: mostre que comissão reduzida significa corte direto no orçamento de tráfego do imóvel dele. Use o roteiro do Módulo 2 Aula 3."</p>
           </div>
         </div>
       </div>
@@ -1413,9 +1426,9 @@
         <div class="exercise-card-content">
           <strong>Passo a Passo: Ativação e Captação Imediata</strong>
           <ol>
-            <li>Mapeie 3 empreendimentos com alta demanda e oferta restrita na sua região.</li>
-            <li>Configure a régua de qualificação no CRM para filtrar compradores por faixa de renda e urgência.</li>
-            <li>Ative o fluxo de confirmação de visita via WhatsApp e acompanhe o comparecimento no painel.</li>
+            <li><mark class="text-highlight">Mapeie 3 empreendimentos com alta demanda e oferta restrita na sua região.</mark></li>
+            <li><mark class="text-highlight">Configure a régua de qualificação no CRM para filtrar compradores por faixa de renda e urgência.</mark></li>
+            <li><mark class="text-highlight">Ative o fluxo de confirmação de visita via WhatsApp e acompanhe o comparecimento no painel.</mark></li>
           </ol>
         </div>
       </div>
@@ -1438,10 +1451,10 @@
       <div class="support-panel panel">
         <div class="support-example">
           <div class="text-placeholder">
-            <p><strong>Dúvida comum de quem começa:</strong><br>"Como ativo as mensagens automáticas de follow-up anti-vácuo no CRM?"</p>
+            <p><mark class="text-highlight"><strong>Dúvida comum de quem começa:</strong></mark><br>"Como ativo as mensagens automáticas de follow-up anti-vácuo no CRM?"</p>
           </div>
           <div class="text-placeholder tinted" style="margin-top: 12px;">
-            <p><strong>Resposta instantânea do suporte IA:</strong><br>"Acesse Configurações &gt; Automações &gt; Régua de Follow-up. Defina o intervalo desejado (ex: 2h após envio de proposta sem resposta), escolha o modelo aprovado de mensagem e clique em Salvar Regra. O assistente passará a monitorar os cards inativos nessa etapa."</p>
+            <p><mark class="text-highlight"><strong>Resposta instantânea do suporte IA:</strong></mark><br>"Acesse Configurações &gt; Automações &gt; Régua de Follow-up. Defina o intervalo desejado (ex: 2h após envio de proposta sem resposta), escolha o modelo aprovado de mensagem e clique em Salvar Regra. O assistente passará a monitorar os cards inativos nessa etapa."</p>
           </div>
           <p class="note">Suporte técnico com inteligência artificial disponível 24 horas por dia.</p>
         </div>
@@ -1731,7 +1744,7 @@
                   <span class="psel-nm">Anual</span>
                   <span class="psel-badge psel-selo">ECONOMIZA R$ 807</span>
                 </div>
-                <div class="psel-sub">ou R$ 957 à vista no Pix</div>
+                <div class="psel-sub">ou R$ 997 à vista no Pix</div>
               </div>
               <div class="psel-right">
                 <div class="psel-prc">
@@ -1913,8 +1926,80 @@
       <div class="ps-closing-card panel">
         <h3><span class="accent">P.S.:</span> Resumo rápido do que você garante hoje</h3>
         <p class="lead">Aqui está o resumo direto de tudo o que está liberado para você:</p>
-        <p>Ao entrar na <strong>Comunidade Imobiturbo</strong> agora, você recebe acesso imediato ao <strong>CRM Imobiturbo OS com IA no WhatsApp</strong>, ao <strong>Club com todas as trilhas e métodos práticos</strong>, ao <strong>Mentor IA 24h</strong>, além de <strong>4 Bônus Exclusivos de Alto Valor</strong> (Scripts Anti-Vácuo, Roteiro de Exclusividade, Gravações das Mentorias e Comunidade VIP).</p>
-        <p>Tudo isso, um pacote completo avaliado em mais de R$ 5.000, está disponível hoje por apenas <strong>12x de R$ 97</strong> (ou R$ 957 à vista). Você conta com <strong>7 dias de garantia incondicional</strong>: teste tudo e, se não fizer sentido para a sua rotina, devolvemos 100% do seu valor em 1 clique.</p>
+        <ul class="ps-summary-list">
+          <li class="ps-summary-item ps-summary-category">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <strong>CRM Imobiturbo OS:</strong>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>IA ilimitada no WhatsApp integrada ao CRM</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Integração oficial com Meta Ads e Instagram</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Disparos de WhatsApp integrados via API Oficial</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Usuários ilimitados</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Rodízio e distribuição de leads</span>
+          </li>
+
+          <li class="ps-summary-item ps-summary-category">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <strong>Club Imobiturbo:</strong>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Oráculo Mentor IA 24h treinado com 5.000 horas de consultorias</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Trilhas de Posicionamento, Tráfego, Criativos, Conteúdo, Roteiros</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Trilhas de Captação de Imóveis com Exclusividade</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Trilhas de Negociação, Proposta &amp; Fechamento</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Trilhas de I.A. &amp; Automações Comerciais</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Gravações de Hot Seats</span>
+          </li>
+
+          <li class="ps-summary-item ps-summary-category">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <strong>Central de Ajuda Imobiturbo:</strong>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Guias passo a passo de como utilizar a plataforma</span>
+          </li>
+
+          <li class="ps-summary-item ps-summary-category">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <strong>Comunidade Imobiturbo:</strong>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Networking &amp; troca de conhecimento</span>
+          </li>
+        </ul>
+        <p>Tudo isso, um pacote completo avaliado em mais de R$ 5.000, está disponível hoje por apenas <strong>12x de R$ 97</strong> (ou R$ 997 à vista). Você conta com <strong>7 dias de garantia incondicional</strong>: teste tudo e, se não fizer sentido para a sua rotina, devolvemos 100% do seu valor em 1 clique.</p>
         <div style="margin-top: 24px;">
           <a class="btn full" href="#assinatura">Quero entrar na Comunidade Imobiturbo agora</a>
         </div>
@@ -2020,7 +2105,7 @@
       <form id="chkNativeForm" onsubmit="return false;">
         <!-- ETAPA 1: NOME -->
         <div class="chk-step-pane" id="chkStepPane1">
-          <h3 class="chk-modal-title" id="checkoutModalTitle">Você está a um passo de impulsionar seu VGV com a metodologia Imobiturbo.</h3>
+          <h3 class="chk-modal-title" id="checkoutModalTitle">Você está a um passo de <mark class="text-highlight">impulsionar seu VGV</mark> com a metodologia Imobiturbo.</h3>
           <p class="chk-modal-subtitle">Continue, serão menos de 10 segundos.</p>
           <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
             <input type="text" id="chkName" class="chk-input chk-input-lg" placeholder="Seu nome completo" required autocomplete="name">
@@ -2133,9 +2218,9 @@
               <span class="chk-tab-label">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="display:inline-block; vertical-align:middle; flex-shrink:0;"><path d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"/><path d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"/></svg>
                 Pix
-                <span class="chk-tab-tag" id="chkPixTabTag">Economize R$ 207</span>
+                <span class="chk-tab-tag" id="chkPixTabTag">Economize R$ 167</span>
               </span>
-              <span class="chk-tab-desc" id="chkPixTabDesc">R$ 957 à vista</span>
+              <span class="chk-tab-desc" id="chkPixTabDesc">R$ 997 à vista</span>
             </button>
             <button type="button" class="chk-tab" id="tabCard" data-method="CREDIT_CARD" aria-pressed="false">
               <span class="chk-tab-label">
@@ -2188,11 +2273,11 @@
               </div>
               <div class="chk-pix-discount-text">
                 <strong>Desconto especial à vista no Pix:</strong>
-                <span>De <del>R$ 1.164</del> por apenas <strong>R$ 957</strong> no Pix (liberação imediata).</span>
+                <span>De <del>R$ 1.164</del> por apenas <strong>R$ 997</strong> no Pix (liberação imediata).</span>
               </div>
             </div>
             <button type="button" class="chk-btn-submit" id="chkGoToPixCpfBtn">
-              <span>Pagar no Pix com Desconto (R$ 957)</span>
+              <span>Pagar no Pix com Desconto (R$ 997)</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </div>
@@ -2208,7 +2293,7 @@
           <p class="chk-cpf-note">🔒 Exigência regulatória do Banco Central / Pix para emissão de cobrança nominal segura.</p>
 
           <button type="submit" class="chk-btn-submit" id="chkSubmitBtn">
-            <span id="chkPixBtnText">Gerar QR Code Pix de R$ 957</span>
+            <span id="chkPixBtnText">Gerar QR Code Pix de R$ 997</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
 
@@ -2587,10 +2672,10 @@
         name: 'Plano Anual',
         sub: '12 meses de acesso completo + CRM IA',
         priceDisplay: '<small>12x </small><b>R$ 97</b>',
-        pixVal: 'R$ 957',
-        pixSavings: '207',
+        pixVal: 'R$ 997',
+        pixSavings: '167',
         pixDiscountTitle: 'Desconto especial no Pix à vista:',
-        pixDiscountDesc: 'De <del style="color: #ef4444; font-weight: 700; text-decoration: line-through;">R$ 1.164</del> por apenas <strong>R$ 957</strong> (liberação imediata)',
+        pixDiscountDesc: 'De <del style="color: #ef4444; font-weight: 700; text-decoration: line-through;">R$ 1.164</del> por apenas <strong>R$ 997</strong> (liberação imediata)',
         cardVal: '12x R$ 97',
         cardTabDesc: 'Até 12x de R$ 97'
       },
@@ -2924,7 +3009,7 @@
       const name = (inputName ? inputName.value : '').trim();
       const email = (inputEmail ? inputEmail.value : '').trim();
       const phone = (inputPhone ? inputPhone.value : '').trim();
-      const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+      const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
       trackHubConversion('lead', {
         name,
         email,
@@ -2952,7 +3037,7 @@
         modalClose?.focus({ preventScroll: true });
         document.body.style.overflow = 'hidden';
       }
-      const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+      const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
       trackHubConversion('initiateCheckout', {
         plan: currentPlan,
         productId: 'comunidade-imobiturbo-' + currentPlan,
@@ -3143,7 +3228,7 @@
         }
 
         const eventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now());
-        const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+        const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
 
         const payload = {
           plan: currentPlan,
@@ -3431,7 +3516,7 @@
       <div id="lmPixResult" style="display: none;">
         <div class="lm-pix-header">
           <span class="lm-pix-tag">PAGAMENTO INSTANTÂNEO VIA PIX</span>
-          <div class="lm-pix-price" id="lmPixPrice">R$ 957,00</div>
+          <div class="lm-pix-price" id="lmPixPrice">R$ 997,00</div>
           <p class="lm-pix-sub">Escaneie o QR Code abaixo com o app do seu banco ou use o Copia e Cola:</p>
         </div>
 
@@ -3461,8 +3546,8 @@
         id: 'anual',
         name: 'Plano Anual',
         badge: 'Comunidade Imobiturbo · 12x de R$ 97,00',
-        pixPrice: 'R$ 957,00',
-        pixDisplay: 'R$ 957,00 à vista no Pix',
+        pixPrice: 'R$ 997,00',
+        pixDisplay: 'R$ 997,00 à vista no Pix',
         btnText: 'Testar 7 dias sem risco',
         summaryLine: 'PLANO ANUAL · 12X DE R$ 97'
       },
@@ -3606,7 +3691,11 @@
         video.muted = false;
         video.volume = 1.0;
 
-        if (overlay) overlay.classList.add('vsl-hidden');
+        if (overlay) {
+          overlay.classList.add('vsl-hidden');
+          const anim = overlay.querySelector('video');
+          if (anim) anim.pause();
+        }
         if (progressBar) progressBar.classList.add('vsl-active');
         if (soundIconOn) soundIconOn.style.display = 'block';
         if (soundIconOff) soundIconOff.style.display = 'none';

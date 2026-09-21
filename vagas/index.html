@@ -51,7 +51,7 @@
           {
             "@type": "Offer",
             "name": "Plano Anual",
-            "price": "957.00",
+            "price": "997.00",
             "priceCurrency": "BRL",
             "availability": "https://schema.org/InStock",
             "url": "https://www.imobiturbo.com.br/vagas/"
@@ -1101,6 +1101,24 @@
       background: var(--lime, #d4ff53);
       color: #10130c;
     }
+    .text-highlight,
+    mark.text-highlight,
+    mark {
+      background: var(--lime, #d4ff53) !important;
+      color: #10130c !important;
+      padding: 0.08em 0.28em !important;
+      border-radius: 3px !important;
+      box-decoration-break: clone !important;
+      -webkit-box-decoration-break: clone !important;
+      font-style: inherit !important;
+      font-weight: inherit !important;
+      display: inline !important;
+    }
+    .text-highlight *,
+    mark.text-highlight *,
+    mark * {
+      color: #10130c !important;
+    }
   </style>
 </head>
 <body>
@@ -1140,18 +1158,13 @@
               Seu navegador não suporta vídeos em HTML5.
             </video>
 
-            <!-- VTurb-Style Preview Overlay -->
-            <div class="vsl-overlay" id="vslOverlay">
-              <div class="vsl-pill">
-                <span class="vsl-dot"></span>
-                <span>Seu vídeo já começou</span>
-              </div>
-              <div class="vsl-center-card">
-                <button class="vsl-play-btn" type="button" aria-label="Assistir apresentação com som">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </button>
-                <div class="vsl-cta-text">Clique para ouvir com som</div>
-                <div class="vsl-sub-text">O vídeo voltará para o início</div>
+            <!-- VTurb-Style Smart Autoplay Overlay -->
+            <div class="vsl-overlay" id="vslOverlay" aria-label="Clique para ouvir com som">
+              <div class="vsl-autoplay-card">
+                <video class="vsl-autoplay-anim" autoplay loop muted playsinline poster="./assets/vsl-autoplay-poster.webp" disablepictureinpicture aria-hidden="true">
+                  <source src="./assets/vsl-autoplay.webm" type="video/webm">
+                  <img src="./assets/vsl-autoplay.webp" alt="Clique para ouvir com som" class="vsl-autoplay-anim" width="250" height="245">
+                </video>
               </div>
             </div>
 
@@ -1755,7 +1768,7 @@
                   <span class="psel-nm">Anual</span>
                   <span class="psel-badge psel-selo">ECONOMIZA R$ 807</span>
                 </div>
-                <div class="psel-sub">ou R$ 957 à vista no Pix</div>
+                <div class="psel-sub">ou R$ 997 à vista no Pix</div>
               </div>
               <div class="psel-right">
                 <div class="psel-prc">
@@ -1964,7 +1977,7 @@
       <form id="chkNativeForm" onsubmit="return false;">
         <!-- ETAPA 1: NOME -->
         <div class="chk-step-pane" id="chkStepPane1">
-          <h3 class="chk-modal-title" id="checkoutModalTitle">Você está a um passo de impulsionar seu VGV com a metodologia Imobiturbo.</h3>
+          <h3 class="chk-modal-title" id="checkoutModalTitle">Você está a um passo de <mark class="text-highlight">impulsionar seu VGV</mark> com a metodologia Imobiturbo.</h3>
           <p class="chk-modal-subtitle">Continue, serão menos de 10 segundos.</p>
           <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
             <input type="text" id="chkName" class="chk-input chk-input-lg" placeholder="Seu nome completo" required autocomplete="name">
@@ -2077,9 +2090,9 @@
               <span class="chk-tab-label">
                 <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="display:inline-block; vertical-align:middle; flex-shrink:0;"><path d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"/><path d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"/></svg>
                 Pix
-                <span class="chk-tab-tag" id="chkPixTabTag">Economize R$ 207</span>
+                <span class="chk-tab-tag" id="chkPixTabTag">Economize R$ 167</span>
               </span>
-              <span class="chk-tab-desc" id="chkPixTabDesc">R$ 957 à vista</span>
+              <span class="chk-tab-desc" id="chkPixTabDesc">R$ 997 à vista</span>
             </button>
             <button type="button" class="chk-tab" id="tabCard" data-method="CREDIT_CARD" aria-pressed="false">
               <span class="chk-tab-label">
@@ -2132,11 +2145,11 @@
               </div>
               <div class="chk-pix-discount-text">
                 <strong>Desconto especial à vista no Pix:</strong>
-                <span>De <del>R$ 1.164</del> por apenas <strong>R$ 957</strong> no Pix (liberação imediata).</span>
+                <span>De <del>R$ 1.164</del> por apenas <strong>R$ 997</strong> no Pix (liberação imediata).</span>
               </div>
             </div>
             <button type="button" class="chk-btn-submit" id="chkGoToPixCpfBtn">
-              <span>Pagar no Pix com Desconto (R$ 957)</span>
+              <span>Pagar no Pix com Desconto (R$ 997)</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </div>
@@ -2152,7 +2165,7 @@
           <p class="chk-cpf-note">🔒 Exigência regulatória do Banco Central / Pix para emissão de cobrança nominal segura.</p>
 
           <button type="submit" class="chk-btn-submit" id="chkSubmitBtn">
-            <span id="chkPixBtnText">Gerar QR Code Pix de R$ 957</span>
+            <span id="chkPixBtnText">Gerar QR Code Pix de R$ 997</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
 
@@ -2531,10 +2544,10 @@
         name: 'Plano Anual',
         sub: '12 meses de acesso completo + CRM IA',
         priceDisplay: '<small>12x </small><b>R$ 97</b>',
-        pixVal: 'R$ 957',
-        pixSavings: '207',
+        pixVal: 'R$ 997',
+        pixSavings: '167',
         pixDiscountTitle: 'Desconto especial no Pix à vista:',
-        pixDiscountDesc: 'De <del style="color: #ef4444; font-weight: 700; text-decoration: line-through;">R$ 1.164</del> por apenas <strong>R$ 957</strong> (liberação imediata)',
+        pixDiscountDesc: 'De <del style="color: #ef4444; font-weight: 700; text-decoration: line-through;">R$ 1.164</del> por apenas <strong>R$ 997</strong> (liberação imediata)',
         cardVal: '12x R$ 97',
         cardTabDesc: 'Até 12x de R$ 97'
       },
@@ -2868,7 +2881,7 @@
       const name = (inputName ? inputName.value : '').trim();
       const email = (inputEmail ? inputEmail.value : '').trim();
       const phone = (inputPhone ? inputPhone.value : '').trim();
-      const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+      const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
       trackHubConversion('lead', {
         name,
         email,
@@ -2896,7 +2909,7 @@
         modalClose?.focus({ preventScroll: true });
         document.body.style.overflow = 'hidden';
       }
-      const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+      const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
       trackHubConversion('initiateCheckout', {
         plan: currentPlan,
         productId: 'comunidade-imobiturbo-' + currentPlan,
@@ -3087,7 +3100,7 @@
         }
 
         const eventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now());
-        const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+        const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
 
         const payload = {
           plan: currentPlan,
@@ -3375,7 +3388,7 @@
       <div id="lmPixResult" style="display: none;">
         <div class="lm-pix-header">
           <span class="lm-pix-tag">PAGAMENTO INSTANTÂNEO VIA PIX</span>
-          <div class="lm-pix-price" id="lmPixPrice">R$ 957,00</div>
+          <div class="lm-pix-price" id="lmPixPrice">R$ 997,00</div>
           <p class="lm-pix-sub">Escaneie o QR Code abaixo com o app do seu banco ou use o Copia e Cola:</p>
         </div>
 
@@ -3405,8 +3418,8 @@
         id: 'anual',
         name: 'Plano Anual',
         badge: 'Comunidade Imobiturbo · 12x de R$ 97,00',
-        pixPrice: 'R$ 957,00',
-        pixDisplay: 'R$ 957,00 à vista no Pix',
+        pixPrice: 'R$ 997,00',
+        pixDisplay: 'R$ 997,00 à vista no Pix',
         btnText: 'Testar 7 dias sem risco',
         summaryLine: 'PLANO ANUAL · 12X DE R$ 97'
       },
@@ -3550,7 +3563,11 @@
         video.muted = false;
         video.volume = 1.0;
 
-        if (overlay) overlay.classList.add('vsl-hidden');
+        if (overlay) {
+          overlay.classList.add('vsl-hidden');
+          const anim = overlay.querySelector('video');
+          if (anim) anim.pause();
+        }
         if (progressBar) progressBar.classList.add('vsl-active');
         if (soundIconOn) soundIconOn.style.display = 'block';
         if (soundIconOff) soundIconOff.style.display = 'none';
