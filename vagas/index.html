@@ -148,73 +148,10 @@
   </script>
 
   <!-- Tracking Scripts -->
-  <script defer src="https://hub.imobiturbo.com.br/api/tracking/tracker.js" data-site-key="comunidade-imobiturbo" data-default-consent="granted"></script>
+  <script id="hub-tracker" defer src="https://track.nmidigital.tech/t.js?operation=00000000-0000-0000-0000-000000000001" data-id="00000000-0000-0000-0000-000000000001" data-operation-id="00000000-0000-0000-0000-000000000001" data-endpoint="https://track.nmidigital.tech"></script>
   <script defer src="../site-tracking.js?v=20260906"></script>
 
-  <!-- Meta Pixel Code with Dual-Track Deduplication -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1025303472485246');
-
-    // Dual-Track Standard Helpers
-    window.imtGenerateUUID = function() {
-      if (window.crypto && window.crypto.randomUUID) {
-        return window.crypto.randomUUID();
-      }
-      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, function(c) {
-        return (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16);
-      });
-    };
-
-    window.imtSendCapi = function(eventName, eventId, customData, userData) {
-      var getCookie = function(name) {
-        var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
-        return m ? decodeURIComponent(m[1]) : '';
-      };
-      var payload = {
-        event_name: eventName,
-        event_id: eventId,
-        event_time: Math.floor(Date.now() / 1000),
-        event_source_url: window.location.href,
-        custom_data: customData || undefined,
-        user_data: Object.assign({
-          fbp: getCookie('_fbp'),
-          fbc: getCookie('_fbc')
-        }, userData || {})
-      };
-      var str = JSON.stringify(payload);
-      var sent = false;
-      if (navigator.sendBeacon && typeof Blob !== 'undefined') {
-        try {
-          sent = navigator.sendBeacon('/tracker', new Blob([str], { type: 'application/json' }));
-        } catch (_) {
-          sent = false;
-        }
-      }
-      if (!sent && typeof fetch === 'function') {
-        fetch('/tracker', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: str,
-          keepalive: true
-        }).catch(function() {});
-      }
-    };
-
-    // Track PageView Dual-Track
-    (function() {
-      var pvId = window.imtGenerateUUID();
-      fbq('track', 'PageView', {}, { eventID: pvId });
-      window.imtSendCapi('PageView', pvId);
-    })();
-  </script>
+  <!-- Eventos de navegação e conversão são enviados pelo Hub Tracker. -->
 
   <style id="critical-lead-modal-styles">
   /* Reset & modal bulletproof styles */
@@ -2236,45 +2173,65 @@
 <!-- JAVASCRIPT: Seletor de Planos, Checkout Nativo & Galeria -->
 <script>
   (function() {
-    function trackHubEvent(eventName, properties) {
-      if (typeof window.imtTrack === 'function') {
-        return window.imtTrack(eventName, properties);
-      }
-      if (window.__track && typeof window.__track.track === 'function') {
-        return window.__track.track(eventName, properties);
-      }
+    const hubTrackerQueue = [];
+
+    function hubTrackerReady() {
+      const tracker = window.HubTracker;
+      if (!tracker || typeof tracker.track !== 'function') return false;
       try {
-        var sid = (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('_imt_sid')) || '';
-        var vid = (typeof localStorage !== 'undefined' && localStorage.getItem('_imt_vid')) || '';
-        var sckMatch = document.cookie.match(/(?:^|; )_sck=([^;]*)/);
-        var sck = sckMatch ? decodeURIComponent(sckMatch[1]) : '';
-        var payload = {
-          site_key: 'comunidade-imobiturbo',
-          events: [{
-            event_id: (window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now())),
-            event_name: eventName,
-            occurred_at: new Date().toISOString(),
-            page_url: window.location.href,
-            referrer: document.referrer || null,
-            session_id: sid,
-            visitor_id: vid,
-            consent: { analytics: 'granted', ads: 'granted' },
-            context: {
-              sck: sck,
-              landing_page_url: window.location.href,
-              user_agent: (typeof navigator !== 'undefined' && navigator.userAgent) || ''
-            },
-            properties: properties || {}
-          }]
-        };
-        fetch('https://hub.imobiturbo.com.br/api/tracking/v1/events', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-          keepalive: true
-        }).catch(function() {});
+        return typeof tracker.config !== 'function' || tracker.config().enabled === true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function dispatchHubTrackerEvent(queued) {
+      const tracker = window.HubTracker;
+      const method = tracker && tracker[queued.method];
+      if (typeof method !== 'function') return false;
+      method.apply(tracker, queued.args);
+      return true;
+    }
+
+    function flushHubTrackerEvents() {
+      try {
+        if (!hubTrackerReady()) return;
+        while (hubTrackerQueue.length) {
+          const queued = hubTrackerQueue.shift();
+          if (!dispatchHubTrackerEvent(queued)) {
+            hubTrackerQueue.unshift(queued);
+            return;
+          }
+        }
       } catch (_) {}
     }
+
+    function queueHubTrackerEvent(method, ...args) {
+      try {
+        if (hubTrackerReady()) {
+          flushHubTrackerEvents();
+          if (dispatchHubTrackerEvent({ method, args })) return;
+        }
+        hubTrackerQueue.push({ method, args });
+      } catch (_) {}
+    }
+
+    function trackHubEvent(eventName, properties) {
+      queueHubTrackerEvent('track', eventName, properties || {});
+    }
+
+    function trackHubConversion(method, properties) {
+      queueHubTrackerEvent(method, properties || {});
+    }
+
+    (function bindHubTracker() {
+      const trackerScript = document.getElementById('hub-tracker');
+      if (trackerScript) trackerScript.addEventListener('load', flushHubTrackerEvents);
+      window.addEventListener('load', flushHubTrackerEvents);
+      [0, 250, 1000, 3000].forEach(function(delay) {
+        window.setTimeout(flushHubTrackerEvents, delay);
+      });
+    }());
 
     // 1. Seletor de Planos e Controle do Modal de Checkout Nativo
     const planRadios = document.querySelectorAll('input[name="plano"]');
@@ -2807,31 +2764,15 @@
       const name = (inputName ? inputName.value : '').trim();
       const email = (inputEmail ? inputEmail.value : '').trim();
       const phone = (inputPhone ? inputPhone.value : '').trim();
-      const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
       const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
-      const leadEventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'lead_' + Date.now());
-
-      if (window.fbq) {
-        window.fbq('track', 'Lead', {
-          content_name: currentInfo.name,
-          currency: 'BRL',
-          value: planVal
-        }, { eventID: leadEventId });
-      }
-      if (window.imtSendCapi) {
-        window.imtSendCapi('Lead', leadEventId, {
-          content_name: currentInfo.name,
-          currency: 'BRL',
-          value: planVal
-        }, { em: email, ph: phone, fn: name });
-      }
-      trackHubEvent('lead_captured', {
-        plan: currentPlan,
-        value: planVal,
-        currency: 'BRL',
+      trackHubConversion('lead', {
         name,
         email,
-        phone
+        phone,
+        plan: currentPlan,
+        productId: 'comunidade-imobiturbo-' + currentPlan,
+        valueCents: Math.round(planVal * 100),
+        currency: 'BRL'
       });
     }
 
@@ -2852,27 +2793,11 @@
         document.body.style.overflow = 'hidden';
       }
       const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
-      const initCheckoutId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'chk_' + Date.now());
-      if (window.fbq) {
-        window.fbq('track', 'InitiateCheckout', {
-          content_name: 'Comunidade Imobiturbo',
-          offer: 'Comunidade Imobiturbo',
-          currency: 'BRL',
-          value: planVal
-        }, { eventID: initCheckoutId });
-      }
-      if (window.imtSendCapi) {
-        window.imtSendCapi('InitiateCheckout', initCheckoutId, {
-          content_name: 'Comunidade Imobiturbo',
-          currency: 'BRL',
-          value: planVal
-        });
-      }
-      trackHubEvent('checkout_started', {
+      trackHubConversion('initiateCheckout', {
         plan: currentPlan,
-        value: planVal,
-        currency: 'BRL',
-        offer: 'Comunidade Imobiturbo'
+        productId: 'comunidade-imobiturbo-' + currentPlan,
+        valueCents: Math.round(planVal * 100),
+        currency: 'BRL'
       });
     }
 
@@ -2953,20 +2878,20 @@
 
     function getUtms() {
       const params = new URLSearchParams(window.location.search);
-      const trkCtx = (typeof window !== 'undefined' && window.getTrackingData) ? window.getTrackingData() : {};
       return {
-        sck: trkCtx.sck || getCookie('_sck') || undefined,
-        utm_source: params.get('utm_source') || trkCtx.utm_source || undefined,
-        utm_medium: params.get('utm_medium') || trkCtx.utm_medium || undefined,
-        utm_campaign: params.get('utm_campaign') || trkCtx.utm_campaign || undefined,
-        utm_content: params.get('utm_content') || trkCtx.utm_content || undefined,
-        utm_term: params.get('utm_term') || trkCtx.utm_term || undefined,
-        fbclid: params.get('fbclid') || trkCtx.fbclid || undefined,
-        gclid: params.get('gclid') || trkCtx.gclid || undefined,
-        fbp: getCookie('_fbp') || trkCtx.fbp || undefined,
-        fbc: getCookie('_fbc') || trkCtx.fbc || undefined,
+        sck: getCookie('_rt_sid') || undefined,
+        utm_source: params.get('utm_source') || undefined,
+        utm_medium: params.get('utm_medium') || undefined,
+        utm_campaign: params.get('utm_campaign') || undefined,
+        utm_content: params.get('utm_content') || undefined,
+        utm_term: params.get('utm_term') || undefined,
+        fbclid: params.get('fbclid') || undefined,
+        gclid: params.get('gclid') || undefined,
+        fbp: getCookie('_fbp') || undefined,
+        fbc: getCookie('_fbc') || undefined,
       };
     }
+
 
     if (nativeForm) {
       nativeForm.addEventListener('submit', async (e) => {
@@ -3082,39 +3007,6 @@
             if (pixQrImg) pixQrImg.src = res.pix.qrCodeBase64;
             if (pixPayload) pixPayload.value = res.pix.copyPaste;
 
-            const pixPendingEventId = 'pend_' + eventId;
-            if (window.fbq) {
-              window.fbq('trackCustom', 'PurchasePending', {
-                offer: 'Comunidade Imobiturbo',
-                content_name: 'Comunidade Imobiturbo',
-                payment_method: 'PIX',
-                status: 'pending',
-                currency: 'BRL',
-                value: planVal
-              }, { eventID: pixPendingEventId });
-            }
-            if (window.imtSendCapi) {
-              window.imtSendCapi('PurchasePending', pixPendingEventId, {
-                offer: 'Comunidade Imobiturbo',
-                content_name: 'Comunidade Imobiturbo',
-                payment_method: 'PIX',
-                status: 'pending',
-                currency: 'BRL',
-                value: planVal
-              }, { em: email, ph: phone, fn: name });
-            }
-            trackHubEvent('purchase', {
-              status: 'pending',
-              payment_status: 'pending',
-              is_pending: true,
-              offer: 'Comunidade Imobiturbo',
-              content_name: 'Comunidade Imobiturbo',
-              payment_method: 'PIX',
-              plan: currentPlan,
-              value: planVal,
-              currency: 'BRL'
-            });
-
             let timeLeft = 15 * 60;
             if (timerInterval) clearInterval(timerInterval);
             timerInterval = setInterval(() => {
@@ -3178,40 +3070,8 @@
         }
       } catch (e) {}
 
-      const purchaseVal = Number(val) || (currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147);
+      // Purchase é registrado pelo backend após a confirmação do pagamento.
 
-      if (window.fbq) {
-        window.fbq('track', 'Purchase', {
-          offer: 'Comunidade Imobiturbo',
-          content_name: 'Comunidade Imobiturbo (' + currentPlan + ')',
-          currency: 'BRL',
-          value: purchaseVal,
-          payment_method: currentMethod,
-          status: 'paid'
-        }, { eventID: eventId });
-      }
-      if (window.imtSendCapi) {
-        window.imtSendCapi('Purchase', eventId, {
-          offer: 'Comunidade Imobiturbo',
-          content_name: 'Comunidade Imobiturbo (' + currentPlan + ')',
-          currency: 'BRL',
-          value: purchaseVal,
-          payment_method: currentMethod,
-          status: 'paid'
-        });
-      }
-      trackHubEvent('purchase', {
-        status: 'paid',
-        payment_status: 'paid',
-        is_pending: false,
-        offer: 'Comunidade Imobiturbo',
-        content_name: 'Comunidade Imobiturbo',
-        payment_method: currentMethod,
-        plan: currentPlan,
-        value: purchaseVal,
-        currency: 'BRL',
-        event_id: eventId
-      });
 
       setTimeout(() => {
         window.location.href = 'https://app.imobiturbo.com.br/onboarding';

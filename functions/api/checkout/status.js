@@ -1,4 +1,5 @@
 // Cloudflare Pages Function: /api/checkout/status
+import { dispatchVerifiedPurchaseToHub } from "./_tracking.js";
 // Consulta status de aprovação de pagamentos no AbacatePay ou Asaas
 // Dispara evento Purchase server-side para Meta CAPI (Graph API v25.0) quando pago
 
@@ -9,9 +10,6 @@ const CORS_HEADERS = {
 };
 
 const DEFAULT_PIXEL_ID = "1025303472485246";
-const DEFAULT_CAPI_TOKEN =
-  "EABAV1IhEOAkBR1gBGluZBDvUnoGmnZC1s2EXMkQw8nX8m7jIYyf1BJ3MYW0Lg9bGEOB889r3nTrzZBowQPMCpVNfX4j9ZA7bWIegc4fNJdAIdEoIknVZB3PUmfxaz2UmI6JhyCUMU0RMknny3oqv5Ni1DNA19rVs6OAJGUS2M3kjri6nGKs9SpkcHrbO6Lm3nGQZDZD";
-
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: CORS_HEADERS });
 }
@@ -49,19 +47,27 @@ export async function onRequestGet(context) {
         const isPaid = status === "PAID" || status === "COMPLETED";
 
         if (isPaid) {
-          const promise = dispatchPurchaseToMetaCapi({
-            env,
-            request,
-            paymentId,
-            eventId: json.data?.metadata?.eventId || url.searchParams.get("eventId") || `purch_${paymentId}`,
-            amount: typeof json.data.amount === "number" ? json.data.amount / 100 : 957,
-            contentName: json.data.description || "Comunidade Imobiturbo",
-            email: json.data?.metadata?.email || "",
-            phone: json.data?.metadata?.phone || "",
-            name: json.data?.metadata?.name || "",
-            fbp: json.data?.metadata?.fbp || "",
-            fbc: json.data?.metadata?.fbc || "",
-          });
+          const eventId = json.data?.metadata?.eventId || url.searchParams.get("eventId") || `purch_${paymentId}`;
+          const amount = typeof json.data.amount === "number" ? json.data.amount / 100 : 957;
+          const contentName = json.data.description || "Comunidade Imobiturbo";
+          const promise = Promise.allSettled([
+            dispatchPurchaseToMetaCapi({
+              env, request, paymentId, eventId, amount, contentName,
+              email: json.data?.metadata?.email || "",
+              phone: json.data?.metadata?.phone || "",
+              name: json.data?.metadata?.name || "",
+              fbp: json.data?.metadata?.fbp || "",
+              fbc: json.data?.metadata?.fbc || "",
+            }),
+            dispatchVerifiedPurchaseToHub({
+              env, request, paymentId, eventId, amount, contentName,
+              email: json.data?.metadata?.email || "",
+              phone: json.data?.metadata?.phone || "",
+              name: json.data?.metadata?.name || "",
+              fbp: json.data?.metadata?.fbp || "",
+              fbc: json.data?.metadata?.fbc || "",
+            }),
+          ]);
           if (context.waitUntil) {
             context.waitUntil(promise);
           } else {
@@ -101,17 +107,13 @@ export async function onRequestGet(context) {
           data.status === "RECEIVED_IN_CASH";
 
         if (isPaid) {
-          const promise = dispatchPurchaseToMetaCapi({
-            env,
-            request,
-            paymentId,
-            eventId: data.externalReference || url.searchParams.get("eventId") || `purch_${paymentId}`,
-            amount: Number(data.value || 957),
-            contentName: data.description || "Comunidade Imobiturbo",
-            email: "",
-            phone: "",
-            name: "",
-          });
+          const eventId = data.externalReference || url.searchParams.get("eventId") || `purch_${paymentId}`;
+          const amount = Number(data.value || 957);
+          const contentName = data.description || "Comunidade Imobiturbo";
+          const promise = Promise.allSettled([
+            dispatchPurchaseToMetaCapi({ env, request, paymentId, eventId, amount, contentName, email: "", phone: "", name: "" }),
+            dispatchVerifiedPurchaseToHub({ env, request, paymentId, eventId, amount, contentName, email: "", phone: "", name: "" }),
+          ]);
           if (context.waitUntil) {
             context.waitUntil(promise);
           } else {
@@ -168,7 +170,11 @@ async function dispatchPurchaseToMetaCapi({
 }) {
   try {
     const pixelId = (env && env.META_PIXEL_ID) || DEFAULT_PIXEL_ID;
-    const token = (env && env.META_ACCESS_TOKEN) || DEFAULT_CAPI_TOKEN;
+    const token = (env && env.META_ACCESS_TOKEN) || "";
+    if (!pixelId || !token) {
+      console.error("Meta CAPI is not configured for verified Purchase");
+      return false;
+    }
 
     const cookies = parseCookies(request.headers.get("Cookie") || "");
     const clientIp =

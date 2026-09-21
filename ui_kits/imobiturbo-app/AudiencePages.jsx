@@ -4,8 +4,7 @@
 const AUDIENCE_WHATSAPP_URL = 'https://wa.me/5521983747796?text=Quero%20entender%20a%20Imobiturbo%20para%20minha%20opera%C3%A7%C3%A3o';
 
 function trackAudienceEvent(name, properties = {}) {
-  if (typeof window.imtTrack === 'function') return window.imtTrack(name, properties);
-  return window.__track?.track?.(name, properties) || null;
+  return typeof window.imtTrack === 'function' ? window.imtTrack(name, properties) : null;
 }
 const AUDIENCE_INSTAGRAM_URL = 'https://www.instagram.com/imobiturbo/';
 
