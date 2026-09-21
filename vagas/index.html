@@ -2029,7 +2029,7 @@
                 </div>
                 <div class="chk-plan-side">
                   <div class="chk-plan-val" id="chkModalPlanPrice">
-                    <small>12x R$ </small><b>97</b>
+                    <small>12x </small><b>R$ 97</b>
                   </div>
                   <button type="button" class="chk-plan-change-btn" id="chkChangePlanTrigger">alterar plano</button>
                 </div>
@@ -2526,22 +2526,24 @@
       'anual': {
         name: 'Plano Anual',
         sub: '12 meses de acesso completo + CRM IA',
-        priceDisplay: '<small>12x R$ </small><b>97</b>',
+        priceDisplay: '<small>12x </small><b>R$ 97</b>',
         pixVal: 'R$ 997',
         pixSavings: '167',
         pixDiscountTitle: 'Desconto especial no Pix à vista:',
         pixDiscountDesc: 'De <del style="color: #ef4444; font-weight: 700; text-decoration: line-through;">R$ 1.164</del> por apenas <strong>R$ 997</strong> (liberação imediata)',
-        cardVal: '12x R$ 97'
+        cardVal: '12x R$ 97',
+        cardTabDesc: 'Até 12x de R$ 97'
       },
       'trimestral': {
         name: 'Plano Trimestral',
         sub: '3 meses de acesso completo + CRM IA',
-        priceDisplay: '<small>3x R$ </small><b>127</b>',
+        priceDisplay: '<small>3x </small><b>R$ 127</b>',
         pixVal: 'R$ 357',
         pixSavings: '24',
         pixDiscountTitle: 'Desconto especial no Pix à vista:',
         pixDiscountDesc: 'De <del style="color: #ef4444; font-weight: 700; text-decoration: line-through;">R$ 381</del> por apenas <strong>R$ 357</strong> (liberação imediata)',
-        cardVal: '3x R$ 127'
+        cardVal: '3x R$ 127',
+        cardTabDesc: 'Até 3x de R$ 127'
       },
       'mensal': {
         name: 'Plano Mensal',
@@ -2551,7 +2553,8 @@
         pixSavings: null,
         pixDiscountTitle: 'Pagamento mensal no Pix:',
         pixDiscountDesc: 'Apenas R$ 147 por mês sem fidelidade mínima.',
-        cardVal: 'R$ 147/mês'
+        cardVal: 'R$ 147/mês',
+        cardTabDesc: 'R$ 147/mês'
       }
     };
 
@@ -2596,7 +2599,7 @@
       const pixTabDesc = document.getElementById('chkPixTabDesc');
       if (pixTabDesc) pixTabDesc.textContent = info.pixVal + ' à vista';
       const cardTabDesc = document.getElementById('chkCardTabDesc');
-      if (cardTabDesc) cardTabDesc.textContent = 'Até ' + info.cardVal;
+      if (cardTabDesc) cardTabDesc.textContent = info.cardTabDesc || (info.cardVal.includes('/mês') ? info.cardVal : 'Até ' + info.cardVal);
       const pixDiscText = document.querySelector('.chk-pix-discount-text');
       if (pixDiscText && info.pixDiscountDesc) {
         const title = info.pixDiscountTitle || 'Desconto especial à vista:';

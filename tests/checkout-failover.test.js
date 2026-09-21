@@ -79,8 +79,8 @@ test("vagas/index.html enforces Dark Mode and annual plan price formatting", () 
   assert.ok(html.includes('content="dark"'), "Must declare color-scheme dark");
 
   // Mobile price formatting in markup & PLAN_CONFIG
-  assert.ok(html.includes('<small>12x R$ </small><b>97</b>'), "Must render 12x R$ in small and 97 in bold");
-  assert.ok(html.includes("priceDisplay: '<small>12x R$ </small><b>97</b>'"), "PLAN_CONFIG must format anual plan with small prefix");
+  assert.ok(html.includes('<small>12x </small><b>R$ 97</b>'), "Must render 12x in small and R$ 97 in bold");
+  assert.ok(html.includes("priceDisplay: '<small>12x </small><b>R$ 97</b>'"), "PLAN_CONFIG must format anual plan with small prefix and green R$ 97");
 
 });
 
