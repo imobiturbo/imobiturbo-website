@@ -713,7 +713,7 @@
               <div class="vsl-volume-slider-box" id="vslVolumeSliderBox">
                 <input type="range" class="vsl-volume-slider" id="vslVolumeSlider" min="0" max="1" step="0.02" value="1" aria-label="Controle de volume" title="Volume">
               </div>
-              <button class="vsl-sound-btn" id="vslSoundBtn" type="button" aria-label="Alternar som" title="Alternar som" onclick="toggleVslAudio(event)">
+              <button class="vsl-sound-btn" id="vslSoundBtn" type="button" aria-label="Controle de volume" title="Ajustar som" onclick="handleVslSoundBtnClick(event)">
                 <!-- High volume icon -->
                 <svg id="vslSoundIconHigh" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                 <!-- Low volume icon -->
@@ -2779,6 +2779,52 @@
       }
     }
 
+    let volumeCloseTimer = null;
+
+    function scheduleVolumeAutoClose(delayMs = 3500) {
+      if (volumeCloseTimer) clearTimeout(volumeCloseTimer);
+      volumeCloseTimer = setTimeout(() => {
+        const wrap = document.getElementById('vslVolumeWrap');
+        if (wrap) wrap.classList.remove('is-open');
+      }, delayMs);
+    }
+
+    function cancelVolumeAutoClose() {
+      if (volumeCloseTimer) {
+        clearTimeout(volumeCloseTimer);
+        volumeCloseTimer = null;
+      }
+    }
+
+    function handleVslSoundBtnClick(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      const wrap = document.getElementById('vslVolumeWrap');
+      const video = document.getElementById('vslVideo');
+      if (!wrap || !video) return;
+
+      // Se o vídeo ainda não começou com áudio, inicia do começo unmuted
+      if (!vslStarted) {
+        playVslVideo(e);
+        wrap.classList.add('is-open');
+        scheduleVolumeAutoClose(4000);
+        return;
+      }
+
+      // Se o seletor está fechado, abre o seletor
+      if (!wrap.classList.contains('is-open')) {
+        wrap.classList.add('is-open');
+        if (video.muted || video.volume === 0) {
+          const targetVol = lastNonZeroVolume > 0 ? lastNonZeroVolume : 1.0;
+          setVslVolume(targetVol);
+        }
+        scheduleVolumeAutoClose(4000);
+      } else {
+        // Se o seletor já está aberto, clicar no botão alterna mudo / com som
+        toggleVslAudio(e);
+        scheduleVolumeAutoClose(3000);
+      }
+    }
+
     function toggleVslAudio(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       const video = document.getElementById('vslVideo');
@@ -2800,27 +2846,71 @@
 
     // Attach slider listeners
     function setupVolumeSlider() {
+      const wrap = document.getElementById('vslVolumeWrap');
       const slider = document.getElementById('vslVolumeSlider');
       const video = document.getElementById('vslVideo');
+      const facade = document.getElementById('vslFacade');
+
       if (slider) {
         slider.addEventListener('input', function(e) {
           e.stopPropagation();
           setVslVolume(this.value, false);
+          scheduleVolumeAutoClose(4500);
         });
         slider.addEventListener('change', function(e) {
           e.stopPropagation();
           setVslVolume(this.value, false);
+          scheduleVolumeAutoClose(3500);
         });
         slider.addEventListener('click', function(e) {
           e.stopPropagation();
         });
         slider.addEventListener('mousedown', function(e) {
           e.stopPropagation();
+          cancelVolumeAutoClose();
+        });
+        slider.addEventListener('mouseup', function(e) {
+          scheduleVolumeAutoClose(3500);
         });
         slider.addEventListener('touchstart', function(e) {
           e.stopPropagation();
+          cancelVolumeAutoClose();
+        }, { passive: true });
+        slider.addEventListener('touchend', function() {
+          scheduleVolumeAutoClose(3500);
+        });
+      }
+
+      if (wrap) {
+        wrap.addEventListener('mouseenter', cancelVolumeAutoClose);
+        wrap.addEventListener('mouseleave', function() {
+          if (wrap.classList.contains('is-open')) {
+            scheduleVolumeAutoClose(1200);
+          }
+        });
+      }
+
+      // Fecha o seletor expandido ao clicar fora
+      document.addEventListener('click', function(e) {
+        if (wrap && wrap.classList.contains('is-open') && !wrap.contains(e.target)) {
+          wrap.classList.remove('is-open');
+        }
+      });
+
+      // Suporte a toque no player para revelar o botão temporariamente
+      let facadeTouchTimer = null;
+      if (facade) {
+        facade.addEventListener('touchstart', function(e) {
+          if (!wrap || !wrap.contains(e.target)) {
+            facade.classList.add('has-user-active');
+            if (facadeTouchTimer) clearTimeout(facadeTouchTimer);
+            facadeTouchTimer = setTimeout(() => {
+              facade.classList.remove('has-user-active');
+            }, 4000);
+          }
         }, { passive: true });
       }
+
       if (video) {
         updateVolumeUI(video.volume, video.muted);
       }
