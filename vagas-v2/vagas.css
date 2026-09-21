@@ -2881,17 +2881,21 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   margin-right: 4px;
 }
 .stack-total-box {
-  margin-top: 28px;
-  padding: 20px;
-  background: var(--card-2);
-  border: 1px solid var(--mint-border);
-  border-radius: var(--radius-md);
+  margin-top: 36px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
   display: grid;
-  gap: 8px;
+  gap: 10px;
+  text-align: center;
+  justify-items: center;
 }
 .stack-total-box .st-line {
   font-size: 16px;
   color: var(--heading);
+  text-align: center;
 }
 .stack-total-box .st-crossed {
   text-decoration: line-through;
@@ -2899,13 +2903,15 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   font-weight: 700;
 }
 .stack-total-box .st-note {
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--muted);
+  text-align: center;
 }
 .stack-total-box .st-highlight {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--lime);
+  text-align: center;
 }
 
 /* Brunson Closing Wrap */
