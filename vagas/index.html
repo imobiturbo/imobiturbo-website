@@ -647,7 +647,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260921-v44">
+  <link rel="stylesheet" href="./vagas.css?v=20260921-v45">
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -1110,6 +1110,43 @@
       text-decoration: line-through !important;
       text-decoration-color: #ef4444 !important;
       font-weight: 600 !important;
+    }
+    .chk-copy-btn {
+      width: 100% !important;
+      background: var(--lime, #d4ff53) !important;
+      border: 1px solid var(--lime, #d4ff53) !important;
+      color: #10130C !important;
+      font-family: var(--sans, sans-serif) !important;
+      font-size: 15px !important;
+      font-weight: 800 !important;
+      padding: 13px 16px !important;
+      border-radius: 12px !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 8px !important;
+      transition: all 0.2s ease !important;
+      box-shadow: 0 4px 16px rgba(191, 215, 48, 0.25) !important;
+    }
+    .chk-copy-btn svg {
+      flex-shrink: 0 !important;
+      stroke: #10130C !important;
+    }
+    .chk-copy-btn:hover {
+      background: var(--lime-hover, #c5f842) !important;
+      border-color: var(--lime-hover, #c5f842) !important;
+      color: #10130C !important;
+      transform: translateY(-1px) !important;
+      box-shadow: 0 6px 20px rgba(191, 215, 48, 0.35) !important;
+    }
+    .chk-copy-btn:active {
+      transform: translateY(0) !important;
+    }
+    .chk-copy-btn.chk-copied {
+      background: #b6f030 !important;
+      border-color: #b6f030 !important;
+      color: #10130C !important;
     }
   </style>
 </head>
@@ -2975,17 +3012,21 @@
       copyPixBtn.addEventListener('click', () => {
         pixPayload.select();
         pixPayload.setSelectionRange(0, 99999);
+        var copied = false;
+        try {
+          copied = document.execCommand('copy');
+        } catch (_) {}
         if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(pixPayload.value).then(() => {
-            if (copyBtnText) copyBtnText.textContent = '✓ Código Pix Copiado!';
-            copyPixBtn.style.borderColor = 'var(--military)';
-            copyPixBtn.style.color = 'var(--military)';
-            setTimeout(() => {
-              if (copyBtnText) copyBtnText.textContent = 'Copiar Código Pix';
-              copyPixBtn.style.borderColor = '';
-              copyPixBtn.style.color = '';
-            }, 3000);
-          });
+          navigator.clipboard.writeText(pixPayload.value).catch(function() {});
+          copied = true;
+        }
+        if (copied) {
+          if (copyBtnText) copyBtnText.textContent = '✓ Código Pix Copiado!';
+          copyPixBtn.classList.add('chk-copied');
+          setTimeout(() => {
+            if (copyBtnText) copyBtnText.textContent = 'Copiar Código Pix';
+            copyPixBtn.classList.remove('chk-copied');
+          }, 3000);
         }
       });
     }
