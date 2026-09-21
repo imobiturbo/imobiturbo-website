@@ -678,17 +678,42 @@
           Entre na Comunidade Imobiturbo: receba o CRM Imobiturbo OS com IA no WhatsApp, suporte técnico 24h e o Club com aulas práticas, exercícios e Mentor IA.
         </p>
 
-        <!-- Mockup VSL Player -->
+        <!-- VSL Player (Bunny Stream + VTurb Retention Engine) -->
         <div class="hero-mock">
-          <div class="hero-vsl" id="vslFacade" onclick="playVslVideo()">
-            <img src="./assets/hero-vsl-poster.webp" alt="Apresentação da Comunidade Imobiturbo com Natan Pimentel" width="1010" height="568" fetchpriority="high">
-            <button class="play" type="button" aria-label="Assistir apresentação prática">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-            </button>
-            <video id="vslVideo" preload="none" playsinline controls style="display:none; width:100%; height:100%; object-fit:cover; border-radius:16px;">
-              <source src="./assets/comunidade-tour.mp4" type="video/mp4">
+          <div class="hero-vsl" id="vslFacade" onclick="playVslVideo(event)">
+            <!-- Muted Video Autoplay Preview directly from Bunny Stream CDN -->
+            <video id="vslVideo" playsinline muted autoplay loop preload="auto" poster="./assets/hero-vsl-poster.webp">
+              <source src="https://video.imobiturbo.com.br/a5a9a1fb-82cb-4375-a1d8-c11faa328e72/playlist.m3u8" type="application/x-mpegURL">
               Seu navegador não suporta vídeos em HTML5.
             </video>
+
+            <!-- VTurb-Style Preview Overlay -->
+            <div class="vsl-overlay" id="vslOverlay">
+              <div class="vsl-pill">
+                <span class="vsl-dot"></span>
+                <span>Seu vídeo já começou</span>
+              </div>
+              <div class="vsl-center-card">
+                <button class="vsl-play-btn" type="button" aria-label="Assistir apresentação com som">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+                <div class="vsl-cta-text">Clique para ouvir com som</div>
+                <div class="vsl-sub-text">O vídeo voltará para o início</div>
+              </div>
+            </div>
+
+            <!-- Smart Fast Progress Bar (VTurb Retention Acceleration) -->
+            <div class="vsl-smart-progress" id="vslSmartProgress">
+              <div class="vsl-progress-fill" id="vslProgressFill">
+                <div class="vsl-progress-pin"></div>
+              </div>
+            </div>
+
+            <!-- Corner Sound Toggle Button -->
+            <button class="vsl-sound-btn" id="vslSoundBtn" type="button" aria-label="Alternar som" title="Alternar som" onclick="toggleVslAudio(event)">
+              <svg id="vslSoundIconOn" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+              <svg id="vslSoundIconOff" style="display:none;" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+            </button>
           </div>
         </div>
 
@@ -2471,6 +2496,7 @@
   </dialog>
 
 
+  <script src="./assets/hls.min.js"></script>
   <script>
     // Plans data
     const PLANS_CONFIG = {
@@ -2543,18 +2569,161 @@
       }
     }
 
-    function playVslVideo() {
-      const facade = document.getElementById('vslFacade');
+    // ==========================================
+    // VSL Player Controller (Bunny Stream + VTurb Retention Engine)
+    // ==========================================
+    let vslStarted = false;
+    let hlsInstance = null;
+
+    function initVslPlayer() {
       const video = document.getElementById('vslVideo');
-      if (!facade || !video) return;
-      const poster = facade.querySelector('img');
-      const playBtn = facade.querySelector('button.play');
-      if (poster) poster.style.display = 'none';
-      if (playBtn) playBtn.style.display = 'none';
-      video.style.display = 'block';
-      video.play().catch(function(err) {
-        console.warn('Video playback notice:', err);
+      const hlsUrl = 'https://video.imobiturbo.com.br/a5a9a1fb-82cb-4375-a1d8-c11faa328e72/playlist.m3u8';
+      const progressBar = document.getElementById('vslSmartProgress');
+      const progressFill = document.getElementById('vslProgressFill');
+
+      if (!video) return;
+
+      // Start muted autoplay loop preview
+      video.muted = true;
+      video.loop = true;
+
+      if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = hlsUrl;
+        video.play().catch(function(err) {
+          console.log('Autoplay muted preview notice:', err);
+        });
+      } else if (window.Hls && Hls.isSupported()) {
+        hlsInstance = new Hls({
+          enableWorker: true,
+          lowLatencyMode: true,
+          backBufferLength: 60
+        });
+        hlsInstance.loadSource(hlsUrl);
+        hlsInstance.attachMedia(video);
+        hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
+          video.muted = true;
+          video.play().catch(function(err) {
+            console.log('HLS autoplay notice:', err);
+          });
+        });
+        hlsInstance.on(Hls.Events.ERROR, function(event, data) {
+          if (data && data.fatal) {
+            console.warn('HLS fatal error, falling back:', data);
+            switch (data.type) {
+              case Hls.ErrorTypes.NETWORK_ERROR:
+                hlsInstance.startLoad();
+                break;
+              case Hls.ErrorTypes.MEDIA_ERROR:
+                hlsInstance.recoverMediaError();
+                break;
+              default:
+                hlsInstance.destroy();
+                break;
+            }
+          }
+        });
+      }
+
+      // Fast Smart Progress Bar Animation Loop (VTurb Psychological Retention Curve)
+      function updateSmartProgress() {
+        if (vslStarted && video && progressFill) {
+          const d = video.duration || 114;
+          const t = video.currentTime || 0;
+          const r = Math.min(1, Math.max(0, t / d));
+          // VTurb Psychological Curve: fast start momentum (t/d)^0.42
+          const pct = Math.min(100, Math.pow(r, 0.42) * 100);
+          progressFill.style.width = pct.toFixed(2) + '%';
+        }
+        if (!video.ended) {
+          requestAnimationFrame(updateSmartProgress);
+        } else if (progressFill) {
+          progressFill.style.width = '100%';
+        }
+      }
+
+      video.addEventListener('play', function() {
+        if (vslStarted) requestAnimationFrame(updateSmartProgress);
       });
+
+      // Seeking on the smart progress bar
+      if (progressBar) {
+        progressBar.addEventListener('click', function(e) {
+          e.stopPropagation();
+          if (!video || !video.duration) return;
+          const rect = progressBar.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const visualRatio = Math.max(0, Math.min(1, clickX / rect.width));
+          // Inverse of r^0.42: r = visualRatio^(1 / 0.42)
+          const realRatio = Math.pow(visualRatio, 1 / 0.42);
+          video.currentTime = realRatio * video.duration;
+        });
+      }
+    }
+
+    function playVslVideo(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      const video = document.getElementById('vslVideo');
+      const overlay = document.getElementById('vslOverlay');
+      const progressBar = document.getElementById('vslSmartProgress');
+      const soundIconOn = document.getElementById('vslSoundIconOn');
+      const soundIconOff = document.getElementById('vslSoundIconOff');
+
+      if (!video) return;
+
+      if (!vslStarted) {
+        vslStarted = true;
+        video.pause();
+        // RESTART FROM 00:00 WITH FULL AUDIO
+        video.currentTime = 0;
+        video.loop = false;
+        video.muted = false;
+        video.volume = 1.0;
+
+        if (overlay) overlay.classList.add('vsl-hidden');
+        if (progressBar) progressBar.classList.add('vsl-active');
+        if (soundIconOn) soundIconOn.style.display = 'block';
+        if (soundIconOff) soundIconOff.style.display = 'none';
+
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(function(err) {
+            console.warn('Playback with audio error, retrying:', err);
+            video.muted = false;
+            video.play();
+          });
+        }
+      } else {
+        // Toggle play / pause during active watch
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      }
+    }
+
+    function toggleVslAudio(e) {
+      if (e && e.stopPropagation) e.stopPropagation();
+      const video = document.getElementById('vslVideo');
+      const soundIconOn = document.getElementById('vslSoundIconOn');
+      const soundIconOff = document.getElementById('vslSoundIconOff');
+      if (!video) return;
+
+      video.muted = !video.muted;
+      if (video.muted) {
+        if (soundIconOn) soundIconOn.style.display = 'none';
+        if (soundIconOff) soundIconOff.style.display = 'block';
+      } else {
+        video.volume = 1.0;
+        if (soundIconOn) soundIconOn.style.display = 'block';
+        if (soundIconOff) soundIconOff.style.display = 'none';
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initVslPlayer);
+    } else {
+      initVslPlayer();
     }
 
     function scrollToPlans() {
