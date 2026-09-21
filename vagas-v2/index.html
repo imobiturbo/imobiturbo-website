@@ -647,7 +647,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260921-v42">
+  <link rel="stylesheet" href="./vagas.css?v=20260921-v43">
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -811,7 +811,7 @@
       box-shadow: 0 12px 28px rgba(191, 215, 48, 0.42) !important;
     }
     .chk-social-proof {
-      display: flex !important;
+      display: flex;
       flex-direction: row !important;
       align-items: center !important;
       justify-content: center !important;
@@ -875,7 +875,7 @@
       }
     }
     .chk-guarantee-line {
-      display: flex !important;
+      display: flex;
       align-items: center !important;
       justify-content: center !important;
       gap: 8px !important;
@@ -899,6 +899,9 @@
       .chk-guarantee-text {
         font-size: 11.5px !important;
       }
+    }
+    .chk-hidden {
+      display: none !important;
     }
     .chk-plan-summary {
       display: flex !important;
@@ -2217,7 +2220,7 @@
         </div>
 
         <!-- Garantia do Checkout (Passo 4 e 5) -->
-        <div class="chk-guarantee-line" id="chkGuaranteeProofBar" style="display: none;">
+        <div class="chk-guarantee-line chk-hidden" id="chkGuaranteeProofBar" style="display: none !important;">
           <span class="chk-guarantee-lock">🔒</span>
           <span class="chk-guarantee-text">7 dias de garantia incondicional · Zero risco</span>
         </div>
@@ -2494,12 +2497,16 @@
       const socialProofBar = document.getElementById('chkSocialProofBar');
       const guaranteeProofBar = document.getElementById('chkGuaranteeProofBar');
       if (socialProofBar && guaranteeProofBar) {
-        if (step === 4 || step === 5) {
-          socialProofBar.style.display = 'none';
-          guaranteeProofBar.style.display = 'flex';
+        if (step >= 4) {
+          socialProofBar.style.setProperty('display', 'none', 'important');
+          socialProofBar.classList.add('chk-hidden');
+          guaranteeProofBar.style.setProperty('display', 'flex', 'important');
+          guaranteeProofBar.classList.remove('chk-hidden');
         } else {
-          socialProofBar.style.display = 'flex';
-          guaranteeProofBar.style.display = 'none';
+          socialProofBar.style.setProperty('display', 'flex', 'important');
+          socialProofBar.classList.remove('chk-hidden');
+          guaranteeProofBar.style.setProperty('display', 'none', 'important');
+          guaranteeProofBar.classList.add('chk-hidden');
         }
       }
 

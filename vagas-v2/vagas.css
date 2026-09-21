@@ -1650,7 +1650,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   color: #838a79;
 }
 .chk-social-proof {
-  display: flex !important;
+  display: flex;
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1714,7 +1714,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   }
 }
 .chk-guarantee-line {
-  display: flex !important;
+  display: flex;
   align-items: center !important;
   justify-content: center !important;
   gap: 8px !important;
@@ -1738,6 +1738,9 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .chk-guarantee-text {
     font-size: 11.5px !important;
   }
+}
+.chk-hidden {
+  display: none !important;
 }
 .chk-guarantee-note {
   text-align: center;
