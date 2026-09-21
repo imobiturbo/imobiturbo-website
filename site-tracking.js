@@ -2,7 +2,7 @@
   'use strict';
 
   function track(name, properties) {
-    var tracker = window.__track;
+    var tracker = window.HubTracker;
     if (!tracker || typeof tracker.track !== 'function') return null;
     return tracker.track(name, properties || {});
   }

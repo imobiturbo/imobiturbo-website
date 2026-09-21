@@ -5,8 +5,7 @@ const HOME_INSTAGRAM_URL = 'https://www.instagram.com/imobiturbo/';
 const HOME_TESTIMONIALS_URL = '/depoimentos/';
 
 function trackHomeEvent(name, properties = {}) {
-  if (typeof window.imtTrack === 'function') return window.imtTrack(name, properties);
-  return window.__track?.track?.(name, properties) || null;
+  return typeof window.imtTrack === 'function' ? window.imtTrack(name, properties) : null;
 }
 
 const HOME_ASSETS = {

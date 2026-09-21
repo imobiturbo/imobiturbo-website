@@ -8,6 +8,7 @@ import {
   sendPostPurchaseNotifications,
   provisionCommunityMembership,
 } from "./_notifications.js";
+import { dispatchVerifiedPurchaseToHub } from "./_tracking.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -16,9 +17,6 @@ const CORS_HEADERS = {
 };
 
 const DEFAULT_PIXEL_ID = "1025303472485246";
-const DEFAULT_CAPI_TOKEN =
-  "EABAV1IhEOAkBR1gBGluZBDvUnoGmnZC1s2EXMkQw8nX8m7jIYyf1BJ3MYW0Lg9bGEOB889r3nTrzZBowQPMCpVNfX4j9ZA7bWIegc4fNJdAIdEoIknVZB3PUmfxaz2UmI6JhyCUMU0RMknny3oqv5Ni1DNA19rVs6OAJGUS2M3kjri6nGKs9SpkcHrbO6Lm3nGQZDZD";
-
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: CORS_HEADERS });
 }
@@ -260,7 +258,7 @@ export async function onRequestPost(context) {
       // Idempotência garantida: usa externalReference (eventId do checkout) ou purch_<paymentId>
       eventId = externalRef || `purch_${paymentId}`;
       const pixelId = (env && env.META_PIXEL_ID) || DEFAULT_PIXEL_ID;
-      const token = (env && env.META_ACCESS_TOKEN) || DEFAULT_CAPI_TOKEN;
+      const token = (env && env.META_ACCESS_TOKEN) || "";
 
       const userData = {
         client_ip_address: clientIp,
@@ -303,16 +301,24 @@ export async function onRequestPost(context) {
         purchasePayload.test_event_code = env.META_TEST_EVENT_CODE;
       }
 
-      const metaResp = await fetch(
-        `https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${token}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(purchasePayload),
-          signal: AbortSignal.timeout(6000),
-        }
-      );
-      metaResult = await metaResp.json().catch(() => ({}));
+      if (pixelId && token) {
+        const metaResp = await fetch(
+          `https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${token}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(purchasePayload),
+            signal: AbortSignal.timeout(6000),
+          }
+        );
+        metaResult = await metaResp.json().catch(() => ({}));
+      } else {
+        metaResult = { ok: false, error: "meta_capi_not_configured" };
+      }
+
+      await dispatchVerifiedPurchaseToHub({
+        env, request, paymentId, eventId, amount, contentName, email, phone, name, fbp, fbc,
+      });
 
       // Disparo unificado do Kit de Boas-Vindas 4 em 1:
       // 1. Provisionamento no CRM / Supabase OS (/0-funil-de-vendas -> 0. Novo Lead + tags + acessos 30/90/365d)
