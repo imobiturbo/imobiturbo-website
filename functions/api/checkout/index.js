@@ -28,9 +28,12 @@ export async function onRequestPost(context) {
     });
   }
 
+  const rawPlan = body.plan || body.planId || "anual";
+  const plan = rawPlan.toString().toLowerCase();
+  const rawPaymentMethod = body.paymentMethod || "PIX";
+  const paymentMethod = rawPaymentMethod.toString().toUpperCase();
+
   const {
-    plan = "anual",
-    paymentMethod = "PIX",
     name = "",
     email = "",
     phone = "",
@@ -43,18 +46,26 @@ export async function onRequestPost(context) {
   const cleanPhone = (phone || "").replace(/\D/g, "");
   const cleanCpf = (cpfCnpj || "").replace(/\D/g, "");
 
-  // Tabela canônica de planos
+  // Tabela canônica de planos (Alinhada com a Landing Page Vagas e Hub Tracker)
   const PLAN_DETAILS = {
     anual: {
-      title: "Imobiturbo OS - Plano Anual",
-      pixCents: 99700,
-      pixReais: 997.0,
+      title: "Comunidade Imobiturbo - Plano Anual",
+      pixCents: 95700,
+      pixReais: 957.0,
       cardInstallmentCount: 12,
-      cardInstallmentValue: 99.70,
-      cardTotalValue: 1196.40,
+      cardInstallmentValue: 97.0,
+      cardTotalValue: 1164.0,
+    },
+    trimestral: {
+      title: "Comunidade Imobiturbo - Plano Trimestral",
+      pixCents: 35700,
+      pixReais: 357.0,
+      cardInstallmentCount: 3,
+      cardInstallmentValue: 127.0,
+      cardTotalValue: 381.0,
     },
     semestral: {
-      title: "Imobiturbo OS - Plano Semestral",
+      title: "Comunidade Imobiturbo - Plano Semestral",
       pixCents: 74700,
       pixReais: 747.0,
       cardInstallmentCount: 6,
@@ -62,12 +73,12 @@ export async function onRequestPost(context) {
       cardTotalValue: 882.0,
     },
     mensal: {
-      title: "Imobiturbo OS - Plano Mensal",
-      pixCents: 9700,
-      pixReais: 97.0,
+      title: "Comunidade Imobiturbo - Plano Mensal",
+      pixCents: 14700,
+      pixReais: 147.0,
       cardInstallmentCount: 1,
-      cardInstallmentValue: 97.0,
-      cardTotalValue: 97.0,
+      cardInstallmentValue: 147.0,
+      cardTotalValue: 147.0,
     },
   };
 

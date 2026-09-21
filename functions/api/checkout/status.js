@@ -50,22 +50,28 @@ export async function onRequestGet(context) {
           const eventId = json.data?.metadata?.eventId || url.searchParams.get("eventId") || `purch_${paymentId}`;
           const amount = typeof json.data.amount === "number" ? json.data.amount / 100 : 957;
           const contentName = json.data.description || "Comunidade Imobiturbo";
+          const buyerEmail = json.data?.customer?.email || json.data?.metadata?.email || "";
+          const buyerPhone = json.data?.customer?.cellphone || json.data?.customer?.phone || json.data?.metadata?.phone || "";
+          const buyerName = json.data?.customer?.name || json.data?.metadata?.name || "";
+          const buyerFbp = json.data?.metadata?.fbp || "";
+          const buyerFbc = json.data?.metadata?.fbc || "";
+
           const promise = Promise.allSettled([
             dispatchPurchaseToMetaCapi({
               env, request, paymentId, eventId, amount, contentName,
-              email: json.data?.metadata?.email || "",
-              phone: json.data?.metadata?.phone || "",
-              name: json.data?.metadata?.name || "",
-              fbp: json.data?.metadata?.fbp || "",
-              fbc: json.data?.metadata?.fbc || "",
+              email: buyerEmail,
+              phone: buyerPhone,
+              name: buyerName,
+              fbp: buyerFbp,
+              fbc: buyerFbc,
             }),
             dispatchVerifiedPurchaseToHub({
               env, request, paymentId, eventId, amount, contentName,
-              email: json.data?.metadata?.email || "",
-              phone: json.data?.metadata?.phone || "",
-              name: json.data?.metadata?.name || "",
-              fbp: json.data?.metadata?.fbp || "",
-              fbc: json.data?.metadata?.fbc || "",
+              email: buyerEmail,
+              phone: buyerPhone,
+              name: buyerName,
+              fbp: buyerFbp,
+              fbc: buyerFbc,
             }),
           ]);
           if (context.waitUntil) {

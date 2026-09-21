@@ -108,3 +108,36 @@ test("functions/api/checkout/status.js polls both gateways", () => {
   assert.ok(code.includes("https://api.asaas.com/v3/payments/"), "Must check Asaas payment status");
   assert.ok(code.includes("onRequestGet"), "Must export onRequestGet");
 });
+
+test("checkout API PLAN_DETAILS matches landing page pricing and Hub tracking contract exactly", () => {
+  const funcPath = path.join(root, "functions/api/checkout/index.js");
+  const code = fs.readFileSync(funcPath, "utf8");
+
+  // Anual: 957.0 / 95700 cents / 12x 97.0
+  assert.ok(code.includes("pixCents: 95700"), "Anual must be 95700 cents");
+  assert.ok(code.includes("pixReais: 957.0"), "Anual must be 957.0 BRL");
+  assert.ok(code.includes("cardInstallmentValue: 97.0"), "Anual card installment must be 97.0");
+
+  // Trimestral: 357.0 / 35700 cents / 3x 127.0
+  assert.ok(code.includes("trimestral: {"), "Must define trimestral plan");
+  assert.ok(code.includes("pixCents: 35700"), "Trimestral must be 35700 cents");
+  assert.ok(code.includes("pixReais: 357.0"), "Trimestral must be 357.0 BRL");
+  assert.ok(code.includes("cardInstallmentValue: 127.0"), "Trimestral card installment must be 127.0");
+
+  // Mensal: 147.0 / 14700 cents
+  assert.ok(code.includes("pixCents: 14700"), "Mensal must be 14700 cents");
+  assert.ok(code.includes("pixReais: 147.0"), "Mensal must be 147.0 BRL");
+
+  // Plan normalization
+  assert.ok(code.includes("body.plan || body.planId"), "Must normalize plan and planId");
+
+  // Check landing pages alignment
+  for (const page of ["vagas/index.html", "vagas-v2/index.html"]) {
+    const html = fs.readFileSync(path.join(root, page), "utf8");
+    assert.ok(html.includes("currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147"), `${page} tracking must use 957 for anual`);
+    assert.ok(html.includes("pixVal: 'R$ 957'"), `${page} PLAN_CONFIG must set pixVal to R$ 957`);
+    assert.ok(html.includes("pixPrice: 'R$ 957,00'"), `${page} PLANS_CONFIG must set pixPrice to R$ 957,00`);
+    assert.ok(html.includes("Economize R$ 207"), `${page} must display Economize R$ 207 savings`);
+  }
+});
+
