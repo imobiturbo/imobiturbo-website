@@ -1565,8 +1565,8 @@
       <form id="chkNativeForm" onsubmit="return false;">
         <!-- ETAPA 1: NOME -->
         <div class="chk-step-pane" id="chkStepPane1">
-          <h3 class="chk-modal-title" id="checkoutModalTitle">Qual o seu nome?</h3>
-          <p class="chk-modal-subtitle">Como prefere ser chamado?</p>
+          <h3 class="chk-modal-title" id="checkoutModalTitle">Você está a um passo de impulsionar seu VGV</h3>
+          <p class="chk-modal-subtitle">Continue, serão menos de 10 segundos.</p>
           <div class="chk-field" style="margin-top: 18px;">
             <input type="text" id="chkName" class="chk-input chk-input-lg" placeholder="Seu nome completo" required autocomplete="name">
           </div>
@@ -1587,7 +1587,6 @@
             <span>Continuar</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
-          <button type="button" class="chk-btn-back" id="chkBackToStep1Btn">← Voltar e alterar nome</button>
         </div>
 
         <!-- ETAPA 3: LOCALIZAÇÃO + E-MAIL -->
@@ -1605,22 +1604,24 @@
             <span>Liberar Acesso</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
-          <button type="button" class="chk-btn-back" id="chkBackToStep2Btn">← Voltar e alterar WhatsApp</button>
         </div>
 
         <!-- ETAPA 4: CONFIRMAÇÃO DO PLANO + FORMA DE PAGAMENTO -->
         <div class="chk-step-pane" id="chkStepPane4" style="display: none;">
-          <p class="chk-plan-pre-text">Agora, você marcou o <strong class="chk-plan-name" id="chkModalPlanName">Plano Anual</strong></p>
           <!-- Resumo do Plano Selecionado com troca rápida -->
           <div class="chk-plan-summary">
             <div class="chk-plan-info">
+              <div class="chk-plan-header">
+                <span class="chk-plan-pill-tag">Plano Selecionado</span>
+                <strong class="chk-plan-name" id="chkModalPlanName">Plano Anual</strong>
+              </div>
               <span class="chk-plan-sub" id="chkModalPlanSub">12 meses de acesso completo + CRM IA</span>
             </div>
             <div class="chk-plan-side">
               <div class="chk-plan-val" id="chkModalPlanPrice">
                 <small>12x R$ </small><b>97</b>
               </div>
-              <button type="button" class="chk-plan-change-btn" id="chkChangePlanTrigger">trocar plano</button>
+              <button type="button" class="chk-plan-change-btn" id="chkChangePlanTrigger">alterar plano</button>
             </div>
           </div>
 
@@ -1652,7 +1653,7 @@
             </label>
           </div>
 
-          <h4 class="chk-choose-method-title">Vai preferir pagar no Pix ou no Cartão em até 12x?</h4>
+          <h4 class="chk-choose-method-title">Escolha a forma de pagamento:</h4>
 
           <!-- Abas de Pagamento: PIX vs CARTÃO -->
           <div class="chk-tabs" role="group" aria-label="Forma de pagamento">
@@ -1660,15 +1661,16 @@
               <span class="chk-tab-label">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 Pix
+                <span class="chk-tab-tag">Desconto</span>
               </span>
-              <span class="chk-tab-desc">Aprovação imediata</span>
+              <span class="chk-tab-desc" id="chkPixTabDesc">R$ 997 à vista</span>
             </button>
             <button type="button" class="chk-tab" id="tabCard" data-method="CREDIT_CARD" aria-pressed="false">
               <span class="chk-tab-label">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
                 Cartão
               </span>
-              <span class="chk-tab-desc">Até 12x no cartão</span>
+              <span class="chk-tab-desc" id="chkCardTabDesc">Até 12x de R$ 97</span>
             </button>
           </div>
 
@@ -1708,26 +1710,31 @@
 
           <!-- Seção de Pix (botão que avança para Step 5: CPF) -->
           <div id="chkPixChoiceWrap">
+            <div class="chk-pix-discount-banner">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <div class="chk-pix-discount-text">
+                <strong>Desconto especial à vista:</strong>
+                <span>De <del>R$ 1.164</del> por apenas <strong>R$ 997</strong> no Pix (liberação imediata).</span>
+              </div>
+            </div>
             <button type="button" class="chk-btn-submit" id="chkGoToPixCpfBtn">
-              <span>Pagar no Pix com Desconto</span>
+              <span>Pagar no Pix com Desconto (R$ 997)</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </button>
           </div>
-
-          <button type="button" class="chk-btn-back" id="chkBackToStep3Btn">← Voltar e alterar e-mail</button>
         </div>
 
         <!-- ETAPA 5: CPF PARA O PIX (ABACATEPAY TRANSPARENTE) -->
         <div class="chk-step-pane" id="chkStepPane5" style="display: none;">
           <h3 class="chk-modal-title">Perfeito, para finalizarmos:</h3>
-          <p class="chk-modal-subtitle">É só preencher com o seu CPF e geramos o PIX:</p>
+          <p class="chk-modal-subtitle">Preencha seu CPF para gerar a chave Pix nominal:</p>
           <div class="chk-field" style="margin-top: 18px;">
             <input type="text" id="chkCpf" class="chk-input chk-input-lg" placeholder="000.000.000-00" required autocomplete="off" oninput="maskCpf(this)" maxlength="14">
           </div>
           <p class="chk-cpf-note">🔒 Exigência regulatória do Banco Central / Pix para emissão de cobrança nominal segura.</p>
 
           <button type="submit" class="chk-btn-submit" id="chkSubmitBtn">
-            <span id="chkPixBtnText">Gerar QR Code Pix de R$ 957</span>
+            <span id="chkPixBtnText">Gerar QR Code Pix de R$ 997</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
 
@@ -1737,9 +1744,14 @@
         <!-- Mensagem de Erro se houver -->
         <div id="chkErrorMsg" style="display: none; color: #ef4444; font-size: 13px; margin: 12px 0 0; text-align: center;"></div>
 
-        <div class="chk-guarantee-note">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Garantia incondicional de 7 dias · Risco Zero
+        <!-- Prova Social do Checkout -->
+        <div class="chk-social-proof">
+          <div class="chk-proof-avatars">
+            <img src="assets/student-taina.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo">
+            <img src="assets/student-joyce.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo">
+            <img src="assets/student-sandro.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo">
+          </div>
+          <span class="chk-proof-text"><strong>+4 mil corretores acelerados</strong> · <span class="chk-star">★</span> 4,9/5</span>
         </div>
       </form>
     </div>
@@ -2045,22 +2057,25 @@
         name: 'Plano Anual',
         sub: '12 meses de acesso completo + CRM IA',
         priceDisplay: '<small>12x R$ </small><b>97</b>',
-        pixVal: 'R$ 957',
-        cardVal: '12x R$ 97'
+        pixVal: 'R$ 997',
+        cardVal: '12x R$ 97',
+        pixDiscountDesc: 'De <del>R$ 1.164</del> por apenas <strong>R$ 997</strong> no Pix (liberação imediata).'
       },
       'trimestral': {
         name: 'Plano Trimestral',
         sub: '3 meses de acesso completo + CRM IA',
         priceDisplay: '<small>3x R$ </small><b>127</b>',
         pixVal: 'R$ 357',
-        cardVal: '3x R$ 127'
+        cardVal: '3x R$ 127',
+        pixDiscountDesc: 'Apenas <strong>R$ 357</strong> à vista no Pix (acesso trimestral).'
       },
       'mensal': {
         name: 'Plano Mensal',
         sub: 'Mensalidade com cancelamento livre',
         priceDisplay: '<b>R$ 147</b><small>/mês</small>',
         pixVal: 'R$ 147',
-        cardVal: 'R$ 147/mês'
+        cardVal: 'R$ 147/mês',
+        pixDiscountDesc: 'Apenas <strong>R$ 147</strong> no primeiro mês.'
       }
     };
 
@@ -2087,6 +2102,14 @@
       if (modalPlanPrice) modalPlanPrice.innerHTML = info.priceDisplay;
       const modalRadio = document.querySelector('input[name="chkModalPlanRadio"][value="' + planKey + '"]');
       if (modalRadio) modalRadio.checked = true;
+      const pixTabDesc = document.getElementById('chkPixTabDesc');
+      if (pixTabDesc) pixTabDesc.textContent = info.pixVal + ' à vista';
+      const cardTabDesc = document.getElementById('chkCardTabDesc');
+      if (cardTabDesc) cardTabDesc.textContent = 'Até ' + info.cardVal;
+      const pixDiscText = document.querySelector('.chk-pix-discount-text');
+      if (pixDiscText && info.pixDiscountDesc) {
+        pixDiscText.innerHTML = '<strong>Desconto especial à vista:</strong><span>' + info.pixDiscountDesc + '</span>';
+      }
       updateCtaButtonText();
     }
 
@@ -2116,6 +2139,11 @@
       if (pixBtnText) {
         pixBtnText.textContent = 'Gerar QR Code Pix de ' + info.pixVal;
       }
+      const goToPixBtn = document.getElementById('chkGoToPixCpfBtn');
+      if (goToPixBtn) {
+        const span = goToPixBtn.querySelector('span');
+        if (span) span.textContent = 'Pagar no Pix com Desconto (' + info.pixVal + ')';
+      }
     }
 
     planRadios.forEach(radio => {
@@ -2137,7 +2165,8 @@
         const newPlan = this.value;
         const pageRadio = document.querySelector('input[name="plano"][value="' + newPlan + '"]');
         if (pageRadio) pageRadio.checked = true;
-        resetToFormView(newPlan);
+        updateModalPlanUI(newPlan);
+        if (planDropdown) planDropdown.style.display = 'none';
       });
     });
 
@@ -2224,9 +2253,6 @@
     }
 
     // Voltar buttons
-    if (backToStep1Btn) backToStep1Btn.addEventListener('click', () => goToCheckoutStep(1));
-    if (backToStep2Btn) backToStep2Btn.addEventListener('click', () => goToCheckoutStep(2));
-    if (backToStep3Btn) backToStep3Btn.addEventListener('click', () => goToCheckoutStep(3));
     if (backToStep4Btn) backToStep4Btn.addEventListener('click', () => goToCheckoutStep(4));
 
     // Máscaras de entrada
@@ -2315,7 +2341,7 @@
       const email = (inputEmail ? inputEmail.value : '').trim();
       const phone = (inputPhone ? inputPhone.value : '').trim();
       const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
-      const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+      const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
       const leadEventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'lead_' + Date.now());
 
       if (window.fbq) {
@@ -2358,7 +2384,7 @@
         modalClose?.focus({ preventScroll: true });
         document.body.style.overflow = 'hidden';
       }
-      const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+      const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
       const initCheckoutId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'chk_' + Date.now());
       if (window.fbq) {
         window.fbq('track', 'InitiateCheckout', {
@@ -2555,7 +2581,7 @@
         }
 
         const eventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now());
-        const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+        const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
 
         const payload = {
           plan: currentPlan,
@@ -2685,7 +2711,7 @@
         }
       } catch (e) {}
 
-      const purchaseVal = Number(val) || (currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147);
+      const purchaseVal = Number(val) || (currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147);
 
       if (window.fbq) {
         window.fbq('track', 'Purchase', {
