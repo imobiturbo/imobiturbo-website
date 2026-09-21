@@ -2015,9 +2015,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, rgba(14, 16, 13, 0.35) 0%, rgba(10, 12, 9, 0.8) 100%);
-  backdrop-filter: blur(1.5px);
-  -webkit-backdrop-filter: blur(1.5px);
+  background: rgba(0, 0, 0, 0.22);
   z-index: 10;
   transition: opacity 0.35s ease, visibility 0.35s ease;
   padding: 20px;

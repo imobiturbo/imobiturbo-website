@@ -678,12 +678,11 @@
           Entre na Comunidade Imobiturbo: receba o CRM Imobiturbo OS com IA no WhatsApp, suporte técnico 24h e o Club com aulas práticas, exercícios e Mentor IA.
         </p>
 
-        <!-- VSL Player (Bunny Stream + VTurb Retention Engine) -->
+        <!-- VSL Player (VTurb Architecture + Bunny Stream CDN) -->
         <div class="hero-mock">
           <div class="hero-vsl" id="vslFacade" onclick="playVslVideo(event)">
-            <!-- Muted Video Autoplay Preview directly from Bunny Stream CDN -->
-            <video id="vslVideo" playsinline muted autoplay loop preload="auto" poster="./assets/hero-vsl-poster.webp">
-              <source src="https://video.imobiturbo.com.br/a5a9a1fb-82cb-4375-a1d8-c11faa328e72/playlist.m3u8" type="application/x-mpegURL">
+            <!-- Muted Video Autoplay Preview: starts instantly with zero lag -->
+            <video id="vslVideo" playsinline muted autoplay loop preload="auto" poster="./assets/hero-vsl-poster.webp" src="./assets/vsl-preview.mp4">
               Seu navegador não suporta vídeos em HTML5.
             </video>
 
@@ -2577,7 +2576,6 @@
 
     function initVslPlayer() {
       const video = document.getElementById('vslVideo');
-      const hlsUrl = 'https://video.imobiturbo.com.br/a5a9a1fb-82cb-4375-a1d8-c11faa328e72/playlist.m3u8';
       const progressBar = document.getElementById('vslSmartProgress');
       const progressFill = document.getElementById('vslProgressFill');
 
@@ -2585,42 +2583,13 @@
 
       // Start muted autoplay loop preview
       video.muted = true;
+      video.defaultMuted = true;
       video.loop = true;
 
-      if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = hlsUrl;
-        video.play().catch(function(err) {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(function(err) {
           console.log('Autoplay muted preview notice:', err);
-        });
-      } else if (window.Hls && Hls.isSupported()) {
-        hlsInstance = new Hls({
-          enableWorker: true,
-          lowLatencyMode: true,
-          backBufferLength: 60
-        });
-        hlsInstance.loadSource(hlsUrl);
-        hlsInstance.attachMedia(video);
-        hlsInstance.on(Hls.Events.MANIFEST_PARSED, function() {
-          video.muted = true;
-          video.play().catch(function(err) {
-            console.log('HLS autoplay notice:', err);
-          });
-        });
-        hlsInstance.on(Hls.Events.ERROR, function(event, data) {
-          if (data && data.fatal) {
-            console.warn('HLS fatal error, falling back:', data);
-            switch (data.type) {
-              case Hls.ErrorTypes.NETWORK_ERROR:
-                hlsInstance.startLoad();
-                break;
-              case Hls.ErrorTypes.MEDIA_ERROR:
-                hlsInstance.recoverMediaError();
-                break;
-              default:
-                hlsInstance.destroy();
-                break;
-            }
-          }
         });
       }
 
