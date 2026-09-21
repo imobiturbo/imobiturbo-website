@@ -647,7 +647,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260921-v43">
+  <link rel="stylesheet" href="./vagas.css?v=20260921-v44">
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -729,12 +729,11 @@
       min-width: 32px !important;
       border-radius: 50% !important;
       background: rgba(255, 255, 255, 0.06) !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
       color: #9aa08f !important;
-      display: flex !important;
+      display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
-      font-size: 18px !important;
       cursor: pointer !important;
       transition: all 0.2s ease !important;
       line-height: 1 !important;
@@ -742,8 +741,14 @@
       margin: 0 !important;
       padding: 0 !important;
     }
+    .chk-modal-close svg {
+      display: block !important;
+      margin: auto !important;
+      pointer-events: none !important;
+    }
     .chk-modal-close:hover {
       background: rgba(255, 255, 255, 0.14) !important;
+      border-color: rgba(255, 255, 255, 0.22) !important;
       color: #ffffff !important;
     }
     .chk-modal-title {
@@ -958,24 +963,32 @@
     .chk-plan-val {
       text-align: right !important;
       font-family: var(--mono, monospace) !important;
-      font-size: 14px !important;
-      font-weight: 800 !important;
-      color: var(--lime, #d4ff53) !important;
       white-space: nowrap !important;
       display: inline-flex !important;
       align-items: baseline !important;
       justify-content: flex-end !important;
-      gap: 2px !important;
+      gap: 3px !important;
     }
     .chk-plan-val small {
-      font-size: 12px !important;
+      font-size: 13px !important;
       font-weight: 600 !important;
       color: #9aa08f !important;
+      letter-spacing: -0.01em !important;
     }
     .chk-plan-val b {
-      font-size: 16px !important;
+      font-size: 26px !important;
       font-weight: 800 !important;
       color: var(--lime, #d4ff53) !important;
+      line-height: 1 !important;
+      letter-spacing: -0.02em !important;
+    }
+    @media (max-width: 440px) {
+      .chk-plan-val b {
+        font-size: 22px !important;
+      }
+      .chk-plan-val small {
+        font-size: 12px !important;
+      }
     }
     .chk-plan-change-btn {
       background: none !important;
@@ -1093,7 +1106,10 @@
       font-weight: 700 !important;
     }
     .chk-pix-discount-text del {
-      color: #838a79 !important;
+      color: #ef4444 !important;
+      text-decoration: line-through !important;
+      text-decoration-color: #ef4444 !important;
+      font-weight: 600 !important;
     }
   </style>
 </head>
@@ -1958,7 +1974,7 @@
         <span class="chk-progress-pct" id="chkProgressPct">70%</span>
         <span class="chk-progress-label" id="chkProgressLabel" style="display: none;">Quase lá...</span>
       </div>
-      <button type="button" class="chk-modal-close" id="checkoutModalClose" aria-label="Fechar">&times;</button>
+      <button type="button" class="chk-modal-close" id="checkoutModalClose" aria-label="Fechar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
     </div>
 
     <!-- VIEW 1: FORMULÁRIO MULTI-ETAPAS DE DADOS E PAGAMENTO -->
@@ -2060,9 +2076,9 @@
           <div class="chk-tabs" role="group" aria-label="Forma de pagamento">
             <button type="button" class="chk-tab active" id="tabPix" data-method="PIX" aria-pressed="true">
               <span class="chk-tab-label">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="display:inline-block; vertical-align:middle; flex-shrink:0;"><path d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"/><path d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"/></svg>
                 Pix
-                <span class="chk-tab-tag" id="chkPixTabTag">Desconto</span>
+                <span class="chk-tab-tag" id="chkPixTabTag">Economize R$ 167</span>
               </span>
               <span class="chk-tab-desc" id="chkPixTabDesc">R$ 997 à vista</span>
             </button>
@@ -2488,6 +2504,7 @@
         priceDisplay: '<small>12x R$ </small><b>97</b>',
         pixVal: 'R$ 997',
         cardVal: '12x R$ 97',
+        pixSavings: '167',
         pixDiscountTitle: 'Desconto especial à vista no Pix:',
         pixDiscountDesc: 'De <del>R$ 1.164</del> por apenas <strong>R$ 997</strong> no Pix (liberação imediata).'
       },
@@ -2497,15 +2514,17 @@
         priceDisplay: '<small>3x R$ </small><b>127</b>',
         pixVal: 'R$ 357',
         cardVal: '3x R$ 127',
+        pixSavings: '24',
         pixDiscountTitle: 'Acesso Trimestral no Pix:',
         pixDiscountDesc: 'Apenas <strong>R$ 357</strong> à vista no Pix (liberação imediata).'
       },
       'mensal': {
         name: 'Plano Mensal',
         sub: 'Mensalidade com cancelamento livre',
-        priceDisplay: '<b>R$ 147</b><small>/mês</small>',
+        priceDisplay: '<small>R$ </small><b>147</b><small>/mês</small>',
         pixVal: 'R$ 147',
         cardVal: 'R$ 147/mês',
+        pixSavings: null,
         pixDiscountTitle: 'Plano Mensal no Pix:',
         pixDiscountDesc: 'Apenas <strong>R$ 147</strong> no primeiro mês com cancelamento livre.'
       }
@@ -2543,10 +2562,13 @@
         const title = info.pixDiscountTitle || 'Desconto especial à vista:';
         pixDiscText.innerHTML = '<strong>' + title + '</strong><span>' + info.pixDiscountDesc + '</span>';
       }
-      const isPixDiscount = planKey === 'anual' || planKey === 'trimestral';
+      const isPixDiscount = Boolean(info.pixSavings);
       const pixTabTag = document.getElementById('chkPixTabTag');
       if (pixTabTag) {
         pixTabTag.style.display = isPixDiscount ? 'inline-block' : 'none';
+        if (info.pixSavings) {
+          pixTabTag.textContent = 'Economize R$ ' + info.pixSavings;
+        }
       }
       updateCtaButtonText();
     }

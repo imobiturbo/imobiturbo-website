@@ -1237,20 +1237,26 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   min-width: 32px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   color: #9aa08f;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
   cursor: pointer;
   transition: all 0.2s ease;
   line-height: 1;
   flex-shrink: 0;
   margin: 0;
+  padding: 0;
+}
+.chk-modal-close svg {
+  display: block;
+  margin: auto;
+  pointer-events: none;
 }
 .chk-modal-close:hover {
   background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
   color: #ffffff;
 }
 .chk-modal-title {
@@ -1385,24 +1391,32 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .chk-plan-val {
   text-align: right;
   font-family: var(--mono);
-  font-size: 14px;
-  font-weight: 800;
-  color: var(--lime);
   white-space: nowrap;
   display: inline-flex;
   align-items: baseline;
   justify-content: flex-end;
-  gap: 2px;
+  gap: 3px;
 }
 .chk-plan-val small {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: #9aa08f;
+  letter-spacing: -0.01em;
 }
 .chk-plan-val b {
-  font-size: 16px;
+  font-size: 26px;
   font-weight: 800;
   color: var(--lime);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+@media (max-width: 440px) {
+  .chk-plan-val b {
+    font-size: 22px;
+  }
+  .chk-plan-val small {
+    font-size: 12px;
+  }
 }
 .chk-plan-change-btn {
   background: none;
@@ -1647,7 +1661,10 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   font-weight: 700;
 }
 .chk-pix-discount-text del {
-  color: #838a79;
+  color: #ef4444;
+  text-decoration: line-through;
+  text-decoration-color: #ef4444;
+  font-weight: 600;
 }
 .chk-social-proof {
   display: flex;
