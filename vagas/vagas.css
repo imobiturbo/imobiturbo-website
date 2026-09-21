@@ -56,7 +56,8 @@ button, input, summary { font: inherit; }
 button { border: 0; }
 img, svg { display: block; }
 a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible { outline: 3px solid var(--label); outline-offset: 5px; }
-::selection { color: var(--heading); background: var(--action); }
+::selection { color: #10130c; background: var(--action); }
+::-moz-selection { color: #10130c; background: var(--action); }
 .container { width: min(1200px, calc(100% - 64px)); margin-inline: auto; }
 .section { padding-block: clamp(64px, 6vw, 88px); }
 .section-intro { max-width: 1000px; margin-bottom: 42px; }
@@ -1904,6 +1905,14 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   resize: none;
   outline: none;
   box-sizing: border-box;
+}
+.chk-pix-textarea::selection {
+  background: var(--lime);
+  color: #10130c;
+}
+.chk-pix-textarea::-moz-selection {
+  background: var(--lime);
+  color: #10130c;
 }
 .chk-copy-btn {
   width: 100%;

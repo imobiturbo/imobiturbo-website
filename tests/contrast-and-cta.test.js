@@ -75,3 +75,23 @@ test("Landing pages and lovable enforce strictly #10130C on CTA buttons", () => 
   assert.ok(consultoriaContent.includes("color: #10130C;"), "consultoria-express CTA must use #10130C");
   assert.ok(consultoriaContent.includes("font-weight: 800;"), "consultoria-express CTA must use font-weight 800");
 });
+
+test("vagas and vagas-v2 enforce high contrast black ink #10130c on lime ::selection", () => {
+  for (const dir of ["vagas", "vagas-v2"]) {
+    const cssPath = path.join(root, `${dir}/vagas.css`);
+    const css = fs.readFileSync(cssPath, "utf8");
+    assert.ok(
+      css.includes("::selection { color: #10130c; background: var(--action); }"),
+      `${dir}/vagas.css must define dark text #10130c for ::selection`
+    );
+    assert.ok(
+      !css.includes("::selection { color: var(--heading); background: var(--action); }"),
+      `${dir}/vagas.css must never use white/light heading text on lime selection`
+    );
+    assert.ok(
+      css.includes(".chk-pix-textarea::selection"),
+      `${dir}/vagas.css must explicitly style .chk-pix-textarea::selection`
+    );
+  }
+});
+

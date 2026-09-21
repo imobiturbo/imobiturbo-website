@@ -647,7 +647,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260921-v45">
+  <link rel="stylesheet" href="./vagas.css?v=20260921-v46">
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -1147,6 +1147,22 @@
       background: #b6f030 !important;
       border-color: #b6f030 !important;
       color: #10130C !important;
+    }
+    ::selection {
+      background: var(--lime, #d4ff53);
+      color: #10130c;
+    }
+    ::-moz-selection {
+      background: var(--lime, #d4ff53);
+      color: #10130c;
+    }
+    .chk-pix-textarea::selection {
+      background: var(--lime, #d4ff53);
+      color: #10130c;
+    }
+    .chk-pix-textarea::-moz-selection {
+      background: var(--lime, #d4ff53);
+      color: #10130c;
     }
   </style>
 </head>
@@ -3027,6 +3043,12 @@
             if (copyBtnText) copyBtnText.textContent = 'Copiar Código Pix';
             copyPixBtn.classList.remove('chk-copied');
           }, 3000);
+          setTimeout(() => {
+            if (window.getSelection) {
+              window.getSelection().removeAllRanges();
+            }
+            pixPayload.blur();
+          }, 1500);
         }
       });
     }
