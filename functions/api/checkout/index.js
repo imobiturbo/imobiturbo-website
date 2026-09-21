@@ -94,6 +94,12 @@ export async function onRequestPost(context) {
             expiresIn: 1800, // 30 minutos
             description: selectedPlan.title,
             externalId: `${plan}-${eventId}`,
+            customer: cleanCpf ? {
+              name: name.trim() || "Cliente Imobiturbo",
+              cellphone: cleanPhone ? (cleanPhone.startsWith("55") ? `+${cleanPhone}` : `+55${cleanPhone}`) : undefined,
+              email: email.trim() || undefined,
+              taxId: cleanCpf,
+            } : undefined,
             metadata: {
               plan,
               name,

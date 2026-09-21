@@ -1498,129 +1498,197 @@
   <div class="chk-modal-box">
     <button type="button" class="chk-modal-close" id="checkoutModalClose" aria-label="Fechar">&times;</button>
 
-    <!-- VIEW 1: FORMULÁRIO DE DADOS E PAGAMENTO -->
+    <!-- VIEW 1: FORMULÁRIO MULTI-ETAPAS DE DADOS E PAGAMENTO -->
     <div id="chkFormView">
       <div class="chk-modal-badge">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
         Ambiente Seguro · 256-bit SSL
       </div>
-      <h3 class="chk-modal-title" id="checkoutModalTitle">Finalizar Inscrição</h3>
-      <p class="chk-modal-subtitle">Preencha seus dados para liberar seu acesso imediatamente</p>
 
-      <!-- Resumo do Plano Selecionado com troca rápida -->
-      <div class="chk-plan-summary">
-        <div class="chk-plan-info">
-          <span class="chk-plan-name" id="chkModalPlanName">Plano Anual</span>
-          <span class="chk-plan-sub" id="chkModalPlanSub">12 meses de acesso completo + CRM IA</span>
-        </div>
-        <div class="chk-plan-side">
-          <div class="chk-plan-val" id="chkModalPlanPrice">
-            <small>12x R$ </small><b>97</b>
-          </div>
-          <button type="button" class="chk-plan-change-btn" id="chkChangePlanTrigger">trocar plano</button>
-        </div>
+      <!-- Barra de Progresso Multi-Etapas -->
+      <div class="chk-progress-row">
+        <span class="chk-progress-label" id="chkProgressLabel">Quase lá...</span>
+        <span class="chk-progress-pct" id="chkProgressPct">70%</span>
+      </div>
+      <div class="chk-progress-track">
+        <div class="chk-progress-bar" id="chkProgressBar" style="width: 70%;"></div>
       </div>
 
-      <!-- Menu Dropdown de Troca Rápida de Plano -->
-      <div class="chk-plan-dropdown" id="chkPlanDropdown" style="display: none;">
-        <label class="chk-plan-opt">
-          <input type="radio" name="chkModalPlanRadio" value="anual" checked>
-          <div class="chk-plan-opt-info">
-            <b>Plano Anual</b>
-            <span>12 meses de acesso completo</span>
-          </div>
-          <span class="chk-plan-badge">12x R$ 97</span>
-        </label>
-        <label class="chk-plan-opt">
-          <input type="radio" name="chkModalPlanRadio" value="trimestral">
-          <div class="chk-plan-opt-info">
-            <b>Plano Trimestral</b>
-            <span>3 meses de acesso completo</span>
-          </div>
-          <span class="chk-plan-badge">3x R$ 127</span>
-        </label>
-        <label class="chk-plan-opt">
-          <input type="radio" name="chkModalPlanRadio" value="mensal">
-          <div class="chk-plan-opt-info">
-            <b>Plano Mensal</b>
-            <span>Cancelamento livre</span>
-          </div>
-          <span class="chk-plan-badge">R$ 147/mês</span>
-        </label>
-      </div>
-
-      <!-- Abas de Pagamento: PIX vs CARTÃO -->
-      <div class="chk-tabs" role="group" aria-label="Forma de pagamento">
-        <button type="button" class="chk-tab active" id="tabPix" data-method="PIX" aria-pressed="true">
-          <span class="chk-tab-label">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            Pix
-          </span>
-          <span class="chk-tab-desc">Aprovação imediata</span>
-        </button>
-        <button type="button" class="chk-tab" id="tabCard" data-method="CREDIT_CARD" aria-pressed="false">
-          <span class="chk-tab-label">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-            Cartão
-          </span>
-          <span class="chk-tab-desc">Até 12x no cartão</span>
-        </button>
-      </div>
-
-      <!-- Formulário -->
+      <!-- Formulário Multi-Etapas -->
       <form id="chkNativeForm" onsubmit="return false;">
-        <div class="chk-field">
-          <label for="chkName">Nome Completo</label>
-          <input type="text" id="chkName" class="chk-input" placeholder="Seu nome completo" required autocomplete="name">
-        </div>
-
-        <div class="chk-field">
-          <label for="chkEmail">E-mail (para receber o acesso)</label>
-          <input type="email" id="chkEmail" class="chk-input" placeholder="seuemail@exemplo.com" required autocomplete="email">
-        </div>
-
-        <div class="chk-field">
-          <label for="chkPhone">WhatsApp</label>
-          <input type="tel" id="chkPhone" class="chk-input" placeholder="(00) 00000-0000" required autocomplete="tel">
-        </div>
-
-        <!-- Campos exclusivos de Cartão de Crédito -->
-        <div id="chkCardFields" style="display: none;">
-          <div class="chk-field">
-            <label for="chkCardNumber">Número do Cartão</label>
-            <input type="text" id="chkCardNumber" class="chk-input" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
+        <!-- ETAPA 1: NOME -->
+        <div class="chk-step-pane" id="chkStepPane1">
+          <h3 class="chk-modal-title" id="checkoutModalTitle">Qual o seu nome?</h3>
+          <p class="chk-modal-subtitle">Como prefere ser chamado?</p>
+          <div class="chk-field" style="margin-top: 18px;">
+            <input type="text" id="chkName" class="chk-input chk-input-lg" placeholder="Seu nome completo" required autocomplete="name">
           </div>
+          <button type="button" class="chk-btn-submit" id="chkStep1Btn">
+            <span>Continuar</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
 
-          <div class="chk-field">
-            <label for="chkCardHolder">Nome impresso no Cartão</label>
-            <input type="text" id="chkCardHolder" class="chk-input" placeholder="NOME COMO NO CARTÃO" autocomplete="cc-name">
+        <!-- ETAPA 2: WHATSAPP -->
+        <div class="chk-step-pane" id="chkStepPane2" style="display: none;">
+          <h3 class="chk-modal-title"><span class="chk-user-first-name">Você</span>, e qual seu WhatsApp?</h3>
+          <p class="chk-modal-subtitle">Enviarei seu acesso por lá</p>
+          <div class="chk-field" style="margin-top: 18px;">
+            <input type="tel" id="chkPhone" class="chk-input chk-input-lg" placeholder="(00) 00000-0000" required autocomplete="tel">
           </div>
+          <button type="button" class="chk-btn-submit" id="chkStep2Btn">
+            <span>Continuar</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button type="button" class="chk-btn-back" id="chkBackToStep1Btn">← Voltar e alterar nome</button>
+        </div>
 
-          <div class="chk-grid-2">
-            <div class="chk-field">
-              <label for="chkCardExpiry">Validade</label>
-              <input type="text" id="chkCardExpiry" class="chk-input" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp">
+        <!-- ETAPA 3: LOCALIZAÇÃO + E-MAIL -->
+        <div class="chk-step-pane" id="chkStepPane3" style="display: none;">
+          <div class="chk-geo-banner">
+            <span class="chk-geo-icon">📍</span>
+            <span><strong class="chk-user-first-name">Você</strong>, já vi aqui que você é de <strong id="chkGeoRegionText">sua região</strong>.<br><span class="chk-geo-sub">Temos alguns cases legais da sua região.</span></span>
+          </div>
+          <h3 class="chk-modal-title">Qual seu e-mail?</h3>
+          <p class="chk-modal-subtitle">Enviarei seu acesso por lá também.</p>
+          <div class="chk-field" style="margin-top: 18px;">
+            <input type="email" id="chkEmail" class="chk-input chk-input-lg" placeholder="seuemail@exemplo.com" required autocomplete="email">
+          </div>
+          <button type="button" class="chk-btn-submit" id="chkStep3Btn">
+            <span>Liberar Acesso</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <button type="button" class="chk-btn-back" id="chkBackToStep2Btn">← Voltar e alterar WhatsApp</button>
+        </div>
+
+        <!-- ETAPA 4: CONFIRMAÇÃO DO PLANO + FORMA DE PAGAMENTO -->
+        <div class="chk-step-pane" id="chkStepPane4" style="display: none;">
+          <p class="chk-plan-pre-text">Agora, você marcou o <strong class="chk-plan-name" id="chkModalPlanName">Plano Anual</strong></p>
+          <!-- Resumo do Plano Selecionado com troca rápida -->
+          <div class="chk-plan-summary">
+            <div class="chk-plan-info">
+              <span class="chk-plan-sub" id="chkModalPlanSub">12 meses de acesso completo + CRM IA</span>
             </div>
-            <div class="chk-field">
-              <label for="chkCardCvv">CVV</label>
-              <input type="text" id="chkCardCvv" class="chk-input" placeholder="123" maxlength="4" autocomplete="cc-csc">
+            <div class="chk-plan-side">
+              <div class="chk-plan-val" id="chkModalPlanPrice">
+                <small>12x R$ </small><b>97</b>
+              </div>
+              <button type="button" class="chk-plan-change-btn" id="chkChangePlanTrigger">trocar plano</button>
             </div>
           </div>
 
-          <div class="chk-field">
-            <label for="chkCpf">CPF do Titular do Cartão</label>
-            <input type="text" id="chkCpf" class="chk-input" placeholder="000.000.000-00">
+          <!-- Menu Dropdown de Troca Rápida de Plano -->
+          <div class="chk-plan-dropdown" id="chkPlanDropdown" style="display: none;">
+            <label class="chk-plan-opt">
+              <input type="radio" name="chkModalPlanRadio" value="anual" checked>
+              <div class="chk-plan-opt-info">
+                <b>Plano Anual</b>
+                <span>12 meses de acesso completo</span>
+              </div>
+              <span class="chk-plan-badge">12x R$ 97</span>
+            </label>
+            <label class="chk-plan-opt">
+              <input type="radio" name="chkModalPlanRadio" value="trimestral">
+              <div class="chk-plan-opt-info">
+                <b>Plano Trimestral</b>
+                <span>3 meses de acesso completo</span>
+              </div>
+              <span class="chk-plan-badge">3x R$ 127</span>
+            </label>
+            <label class="chk-plan-opt">
+              <input type="radio" name="chkModalPlanRadio" value="mensal">
+              <div class="chk-plan-opt-info">
+                <b>Plano Mensal</b>
+                <span>Cancelamento livre</span>
+              </div>
+              <span class="chk-plan-badge">R$ 147/mês</span>
+            </label>
           </div>
+
+          <h4 class="chk-choose-method-title">Vai preferir pagar no Pix ou no Cartão em até 12x?</h4>
+
+          <!-- Abas de Pagamento: PIX vs CARTÃO -->
+          <div class="chk-tabs" role="group" aria-label="Forma de pagamento">
+            <button type="button" class="chk-tab active" id="tabPix" data-method="PIX" aria-pressed="true">
+              <span class="chk-tab-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                Pix
+              </span>
+              <span class="chk-tab-desc">Aprovação imediata</span>
+            </button>
+            <button type="button" class="chk-tab" id="tabCard" data-method="CREDIT_CARD" aria-pressed="false">
+              <span class="chk-tab-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                Cartão
+              </span>
+              <span class="chk-tab-desc">Até 12x no cartão</span>
+            </button>
+          </div>
+
+          <!-- Seção de Cartão de Crédito -->
+          <div id="chkCardFields" style="display: none;">
+            <div class="chk-field">
+              <label for="chkCardNumber">Número do Cartão</label>
+              <input type="text" id="chkCardNumber" class="chk-input" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
+            </div>
+
+            <div class="chk-field">
+              <label for="chkCardHolder">Nome impresso no Cartão</label>
+              <input type="text" id="chkCardHolder" class="chk-input" placeholder="NOME COMO NO CARTÃO" autocomplete="cc-name">
+            </div>
+
+            <div class="chk-grid-2">
+              <div class="chk-field">
+                <label for="chkCardExpiry">Validade</label>
+                <input type="text" id="chkCardExpiry" class="chk-input" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp">
+              </div>
+              <div class="chk-field">
+                <label for="chkCardCvv">CVV</label>
+                <input type="text" id="chkCardCvv" class="chk-input" placeholder="123" maxlength="4" autocomplete="cc-csc">
+              </div>
+            </div>
+
+            <div class="chk-field">
+              <label for="chkCardCpf">CPF do Titular do Cartão</label>
+              <input type="text" id="chkCardCpf" class="chk-input" placeholder="000.000.000-00" oninput="maskCpf(this)" maxlength="14">
+            </div>
+
+            <button type="submit" class="chk-btn-submit" id="chkSubmitCardBtn">
+              <span id="chkBtnText">Confirmar Pagamento no Cartão</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <!-- Seção de Pix (botão que avança para Step 5: CPF) -->
+          <div id="chkPixChoiceWrap">
+            <button type="button" class="chk-btn-submit" id="chkGoToPixCpfBtn">
+              <span>Pagar no Pix com Desconto</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <button type="button" class="chk-btn-back" id="chkBackToStep3Btn">← Voltar e alterar e-mail</button>
+        </div>
+
+        <!-- ETAPA 5: CPF PARA O PIX (ABACATEPAY TRANSPARENTE) -->
+        <div class="chk-step-pane" id="chkStepPane5" style="display: none;">
+          <h3 class="chk-modal-title">Perfeito, para finalizarmos:</h3>
+          <p class="chk-modal-subtitle">É só preencher com o seu CPF e geramos o PIX:</p>
+          <div class="chk-field" style="margin-top: 18px;">
+            <input type="text" id="chkCpf" class="chk-input chk-input-lg" placeholder="000.000.000-00" required autocomplete="off" oninput="maskCpf(this)" maxlength="14">
+          </div>
+          <p class="chk-cpf-note">🔒 Exigência regulatória do Banco Central / Pix para emissão de cobrança nominal segura.</p>
+
+          <button type="submit" class="chk-btn-submit" id="chkSubmitBtn">
+            <span id="chkPixBtnText">Gerar QR Code Pix de R$ 957</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+
+          <button type="button" class="chk-btn-back" id="chkBackToStep4Btn">← Voltar para formas de pagamento</button>
         </div>
 
         <!-- Mensagem de Erro se houver -->
-        <div id="chkErrorMsg" style="display: none; color: #ef4444; font-size: 13px; margin: 8px 0; text-align: center;"></div>
-
-        <!-- Botão de Ação -->
-        <button type="submit" class="chk-btn-submit" id="chkSubmitBtn">
-          <span id="chkBtnText">Gerar QR Code Pix de R$ 957</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
+        <div id="chkErrorMsg" style="display: none; color: #ef4444; font-size: 13px; margin: 12px 0 0; text-align: center;"></div>
 
         <div class="chk-guarantee-note">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -1733,6 +1801,7 @@
     const tabPix = document.getElementById('tabPix');
     const tabCard = document.getElementById('tabCard');
     const cardFields = document.getElementById('chkCardFields');
+    const pixChoiceWrap = document.getElementById('chkPixChoiceWrap');
 
     const formView = document.getElementById('chkFormView');
     const pixView = document.getElementById('chkPixView');
@@ -1746,17 +1815,183 @@
 
     const nativeForm = document.getElementById('chkNativeForm');
     const submitBtn = document.getElementById('chkSubmitBtn');
+    const submitCardBtn = document.getElementById('chkSubmitCardBtn');
     const btnText = document.getElementById('chkBtnText');
+    const pixBtnText = document.getElementById('chkPixBtnText');
     const errorMsg = document.getElementById('chkErrorMsg');
 
     const inputName = document.getElementById('chkName');
     const inputEmail = document.getElementById('chkEmail');
     const inputPhone = document.getElementById('chkPhone');
     const inputCpf = document.getElementById('chkCpf');
+    const inputCardCpf = document.getElementById('chkCardCpf');
     const inputCardNumber = document.getElementById('chkCardNumber');
     const inputCardHolder = document.getElementById('chkCardHolder');
     const inputCardExpiry = document.getElementById('chkCardExpiry');
     const inputCardCvv = document.getElementById('chkCardCvv');
+
+    // Multi-Step Components
+    let currentCheckoutStep = 1;
+    const stepPane1 = document.getElementById('chkStepPane1');
+    const stepPane2 = document.getElementById('chkStepPane2');
+    const stepPane3 = document.getElementById('chkStepPane3');
+    const stepPane4 = document.getElementById('chkStepPane4');
+    const stepPane5 = document.getElementById('chkStepPane5');
+
+    const progressLabel = document.getElementById('chkProgressLabel');
+    const progressPct = document.getElementById('chkProgressPct');
+    const progressBar = document.getElementById('chkProgressBar');
+
+    const step1Btn = document.getElementById('chkStep1Btn');
+    const step2Btn = document.getElementById('chkStep2Btn');
+    const step3Btn = document.getElementById('chkStep3Btn');
+    const goToPixCpfBtn = document.getElementById('chkGoToPixCpfBtn');
+
+    const backToStep1Btn = document.getElementById('chkBackToStep1Btn');
+    const backToStep2Btn = document.getElementById('chkBackToStep2Btn');
+    const backToStep3Btn = document.getElementById('chkBackToStep3Btn');
+    const backToStep4Btn = document.getElementById('chkBackToStep4Btn');
+
+    const geoRegionText = document.getElementById('chkGeoRegionText');
+
+    function getRegionByDdd(ddd) {
+      const map = {
+        '11': 'São Paulo e Região Metropolitana',
+        '12': 'São José dos Campos e Vale do Paraíba (SP)',
+        '13': 'Santos e Baixada Santista (SP)',
+        '14': 'Bauru, Marília e Região (SP)',
+        '15': 'Sorocaba e Região (SP)',
+        '16': 'Ribeirão Preto, Franca e Região (SP)',
+        '17': 'São José do Rio Preto e Região (SP)',
+        '18': 'Presidente Prudente e Região (SP)',
+        '19': 'Campinas, Piracicaba e Região (SP)',
+        '21': 'Rio de Janeiro e Região Metropolitana',
+        '22': 'Cabo Frio, Macaé e Região dos Lagos (RJ)',
+        '24': 'Petrópolis, Volta Redonda e Região Serrana (RJ)',
+        '27': 'Vitória e Região Metropolitana (ES)',
+        '28': 'Cachoeiro de Itapemirim e Sul do ES',
+        '31': 'Belo Horizonte e Região Metropolitana (MG)',
+        '32': 'Juiz de Fora e Zona da Mata (MG)',
+        '33': 'Governador Valadares e Leste de Minas (MG)',
+        '34': 'Uberlândia, Uberaba e Triângulo Mineiro (MG)',
+        '35': 'Poços de Caldas, Pouso Alegre e Sul de Minas (MG)',
+        '37': 'Divinópolis e Centro-Oeste Mineiro (MG)',
+        '38': 'Montes Claros e Norte de Minas (MG)',
+        '41': 'Curitiba e Região Metropolitana (PR)',
+        '42': 'Ponta Grossa e Centro-Sul do PR',
+        '43': 'Londrina, Apucarana e Norte do PR',
+        '44': 'Maringá e Noroeste do PR',
+        '45': 'Cascavel, Foz do Iguaçu e Oeste do PR',
+        '46': 'Francisco Beltrão e Sudoeste do PR',
+        '47': 'Balneário Camboriú, Joinville e Blumenau (SC)',
+        '48': 'Florianópolis, Criciúma e Litoral Catarinense (SC)',
+        '49': 'Chapecó, Lages e Oeste Catarinense (SC)',
+        '51': 'Porto Alegre e Região Metropolitana (RS)',
+        '53': 'Pelotas, Rio Grande e Sul Gaúcho (RS)',
+        '54': 'Caxias do Sul e Serra Gaúcha (RS)',
+        '55': 'Santa Maria, Passo Fundo e Região (RS)',
+        '61': 'Brasília e Região Integrada (DF)',
+        '62': 'Goiânia e Região Metropolitana (GO)',
+        '63': 'Palmas e Estado do Tocantins (TO)',
+        '64': 'Rio Verde, Caldas Novas e Sul Goiano (GO)',
+        '65': 'Cuiabá e Região Metropolitana (MT)',
+        '66': 'Rondonópolis, Sinop e Interior do MT',
+        '67': 'Campo Grande e Mato Grosso do Sul (MS)',
+        '68': 'Rio Branco e Estado do Acre (AC)',
+        '69': 'Porto Velho e Estado de Rondônia (RO)',
+        '71': 'Salvador e Região Metropolitana (BA)',
+        '73': 'Porto Seguro, Ilhéus e Sul da Bahia (BA)',
+        '74': 'Juazeiro e Região Norte da Bahia (BA)',
+        '75': 'Feira de Santana e Região (BA)',
+        '77': 'Vitória da Conquista e Sudoeste Baiano (BA)',
+        '79': 'Aracaju e Estado de Sergipe (SE)',
+        '81': 'Recife e Região Metropolitana (PE)',
+        '82': 'Maceió e Estado de Alagoas (AL)',
+        '83': 'João Pessoa e Estado da Paraíba (PB)',
+        '84': 'Natal e Estado do Rio Grande do Norte (RN)',
+        '85': 'Fortaleza e Região Metropolitana (CE)',
+        '86': 'Teresina e Estado do Piauí (PI)',
+        '87': 'Petrolina, Caruaru e Interior de PE',
+        '88': 'Juazeiro do Norte, Sobral e Cariri (CE)',
+        '89': 'Picos e Sul do Piauí (PI)',
+        '91': 'Belém e Região Metropolitana (PA)',
+        '92': 'Manaus e Estado do Amazonas (AM)',
+        '93': 'Santarém e Oeste do Pará (PA)',
+        '94': 'Marabá e Sudeste do Pará (PA)',
+        '95': 'Boa Vista e Estado de Roraima (RR)',
+        '96': 'Macapá e Estado do Amapá (AP)',
+        '97': 'Interior do Amazonas (AM)',
+        '98': 'São Luís e Região Metropolitana (MA)',
+        '99': 'Imperatriz e Sul do Maranhão (MA)'
+      };
+      return map[ddd] || 'sua região';
+    }
+
+    function isValidCpf(val) {
+      if (!val) return false;
+      const clean = val.replace(/\D/g, '');
+      if (clean.length !== 11) return false;
+      if (/^(\d)\1{10}$/.test(clean)) return false;
+      let sum = 0;
+      for (let i = 0; i < 9; i++) sum += parseInt(clean.charAt(i), 10) * (10 - i);
+      let rev = 11 - (sum % 11);
+      if (rev === 10 || rev === 11) rev = 0;
+      if (rev !== parseInt(clean.charAt(9), 10)) return false;
+      sum = 0;
+      for (let i = 0; i < 10; i++) sum += parseInt(clean.charAt(i), 10) * (11 - i);
+      rev = 11 - (sum % 11);
+      if (rev === 10 || rev === 11) rev = 0;
+      if (rev !== parseInt(clean.charAt(10), 10)) return false;
+      return true;
+    }
+
+    function showCheckoutError(msg) {
+      if (errorMsg) {
+        errorMsg.textContent = msg;
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function goToCheckoutStep(step) {
+      currentCheckoutStep = step;
+      if (errorMsg) {
+        errorMsg.style.display = 'none';
+        errorMsg.textContent = '';
+      }
+
+      const panes = [stepPane1, stepPane2, stepPane3, stepPane4, stepPane5];
+      panes.forEach((p, idx) => {
+        if (p) p.style.display = (idx + 1 === step) ? 'block' : 'none';
+      });
+
+      if (step === 1) {
+        if (progressBar) progressBar.style.width = '70%';
+        if (progressLabel) progressLabel.textContent = 'Quase lá...';
+        if (progressPct) progressPct.textContent = '70%';
+        setTimeout(() => inputName && inputName.focus(), 50);
+      } else if (step === 2) {
+        if (progressBar) progressBar.style.width = '90%';
+        if (progressLabel) progressLabel.textContent = 'Quase lá...';
+        if (progressPct) progressPct.textContent = '90%';
+        setTimeout(() => inputPhone && inputPhone.focus(), 50);
+      } else if (step === 3) {
+        if (progressBar) progressBar.style.width = '95%';
+        if (progressLabel) progressLabel.textContent = 'Último dado antes de liberar...';
+        if (progressPct) progressPct.textContent = '95%';
+        setTimeout(() => inputEmail && inputEmail.focus(), 50);
+      } else if (step === 4) {
+        if (progressBar) progressBar.style.width = '98%';
+        if (progressLabel) progressLabel.textContent = 'Quase pronto!';
+        if (progressPct) progressPct.textContent = '98%';
+        updateCtaButtonText();
+      } else if (step === 5) {
+        if (progressBar) progressBar.style.width = '100%';
+        if (progressLabel) progressLabel.textContent = 'Finalizando...';
+        if (progressPct) progressPct.textContent = '100%';
+        updateCtaButtonText();
+        setTimeout(() => inputCpf && inputCpf.focus(), 50);
+      }
+    }
 
     const PLAN_CONFIG = {
       'anual': {
@@ -1815,6 +2050,7 @@
       if (successView) successView.style.display = 'none';
       if (formView) formView.style.display = 'block';
       if (submitBtn) submitBtn.disabled = false;
+      if (submitCardBtn) submitCardBtn.disabled = false;
       if (errorMsg) {
         errorMsg.style.display = 'none';
         errorMsg.textContent = '';
@@ -1822,16 +2058,16 @@
       if (planDropdown) planDropdown.style.display = 'none';
       const plan = targetPlan || getSelectedPlan();
       updateModalPlanUI(plan);
+      goToCheckoutStep(1);
     }
 
     function updateCtaButtonText() {
       const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
       if (btnText) {
-        if (currentMethod === 'PIX') {
-          btnText.textContent = 'Gerar QR Code Pix de ' + info.pixVal;
-        } else {
-          btnText.textContent = 'Confirmar Pagamento de ' + info.cardVal;
-        }
+        btnText.textContent = 'Confirmar Pagamento de ' + info.cardVal;
+      }
+      if (pixBtnText) {
+        pixBtnText.textContent = 'Gerar QR Code Pix de ' + info.pixVal;
       }
     }
 
@@ -1864,6 +2100,88 @@
       });
     }
 
+    // Step 1: Nome -> Step 2
+    if (step1Btn && inputName) {
+      step1Btn.addEventListener('click', () => {
+        const nameVal = inputName.value.trim();
+        if (!nameVal || nameVal.length < 2) {
+          showCheckoutError('Por favor, informe seu nome para continuar.');
+          inputName.focus();
+          return;
+        }
+        const firstName = nameVal.split(/\s+/)[0];
+        const formatted = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
+        document.querySelectorAll('.chk-user-first-name').forEach(el => el.textContent = formatted);
+        goToCheckoutStep(2);
+      });
+
+      inputName.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          step1Btn.click();
+        }
+      });
+    }
+
+    // Step 2: WhatsApp -> Step 3
+    if (step2Btn && inputPhone) {
+      step2Btn.addEventListener('click', () => {
+        const phoneVal = inputPhone.value.trim();
+        const clean = phoneVal.replace(/\D/g, '');
+        if (clean.length < 10) {
+          showCheckoutError('Por favor, informe um WhatsApp válido com DDD.');
+          inputPhone.focus();
+          return;
+        }
+        const ddd = clean.slice(0, 2);
+        const region = getRegionByDdd(ddd);
+        if (geoRegionText) geoRegionText.textContent = region;
+        goToCheckoutStep(3);
+      });
+
+      inputPhone.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          step2Btn.click();
+        }
+      });
+    }
+
+    // Step 3: E-mail -> Step 4
+    if (step3Btn && inputEmail) {
+      step3Btn.addEventListener('click', () => {
+        const emailVal = inputEmail.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailVal || !emailRegex.test(emailVal)) {
+          showCheckoutError('Por favor, informe um e-mail válido.');
+          inputEmail.focus();
+          return;
+        }
+        fireLeadTrackingEvent();
+        goToCheckoutStep(4);
+      });
+
+      inputEmail.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          step3Btn.click();
+        }
+      });
+    }
+
+    // Step 4: Botão avançar para Pix
+    if (goToPixCpfBtn) {
+      goToPixCpfBtn.addEventListener('click', () => {
+        goToCheckoutStep(5);
+      });
+    }
+
+    // Voltar buttons
+    if (backToStep1Btn) backToStep1Btn.addEventListener('click', () => goToCheckoutStep(1));
+    if (backToStep2Btn) backToStep2Btn.addEventListener('click', () => goToCheckoutStep(2));
+    if (backToStep3Btn) backToStep3Btn.addEventListener('click', () => goToCheckoutStep(3));
+    if (backToStep4Btn) backToStep4Btn.addEventListener('click', () => goToCheckoutStep(4));
+
     // Máscaras de entrada
     if (inputPhone) {
       inputPhone.addEventListener('input', function(e) {
@@ -1879,19 +2197,27 @@
       });
     }
 
-    if (inputCpf) {
-      inputCpf.addEventListener('input', function(e) {
-        let v = e.target.value.replace(/\D/g, '').slice(0, 11);
-        if (v.length > 9) {
-          v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
-        } else if (v.length > 6) {
-          v = v.replace(/^(\d{3})(\d{3})(\d{0,3})$/, '$1.$2.$3');
-        } else if (v.length > 3) {
-          v = v.replace(/^(\d{3})(\d{0,3})$/, '$1.$2');
-        }
-        e.target.value = v;
-      });
+    function formatCpfValue(val) {
+      let v = (val || '').replace(/\D/g, '').slice(0, 11);
+      if (v.length > 9) {
+        v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+      } else if (v.length > 6) {
+        v = v.replace(/^(\d{3})(\d{3})(\d{0,3})$/, '$1.$2.$3');
+      } else if (v.length > 3) {
+        v = v.replace(/^(\d{3})(\d{0,3})$/, '$1.$2');
+      }
+      return v;
     }
+
+    function syncCpfInputs(e) {
+      const v = formatCpfValue(e.target.value);
+      e.target.value = v;
+      if (inputCpf && inputCpf !== e.target) inputCpf.value = v;
+      if (inputCardCpf && inputCardCpf !== e.target) inputCardCpf.value = v;
+    }
+
+    if (inputCpf) inputCpf.addEventListener('input', syncCpfInputs);
+    if (inputCardCpf) inputCardCpf.addEventListener('input', syncCpfInputs);
 
     if (inputCardNumber) {
       inputCardNumber.addEventListener('input', function(e) {
@@ -1919,8 +2245,8 @@
         tabCard.setAttribute('aria-pressed', 'false');
         currentMethod = 'PIX';
         if (cardFields) cardFields.style.display = 'none';
+        if (pixChoiceWrap) pixChoiceWrap.style.display = 'block';
         if (inputCardNumber) inputCardNumber.required = false;
-        if (inputCpf) inputCpf.required = false;
         updateCtaButtonText();
       });
 
@@ -1931,9 +2257,41 @@
         tabPix.setAttribute('aria-pressed', 'false');
         currentMethod = 'CREDIT_CARD';
         if (cardFields) cardFields.style.display = 'block';
+        if (pixChoiceWrap) pixChoiceWrap.style.display = 'none';
         if (inputCardNumber) inputCardNumber.required = true;
-        if (inputCpf) inputCpf.required = true;
         updateCtaButtonText();
+      });
+    }
+
+    function fireLeadTrackingEvent() {
+      const name = (inputName ? inputName.value : '').trim();
+      const email = (inputEmail ? inputEmail.value : '').trim();
+      const phone = (inputPhone ? inputPhone.value : '').trim();
+      const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
+      const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
+      const leadEventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'lead_' + Date.now());
+
+      if (window.fbq) {
+        window.fbq('track', 'Lead', {
+          content_name: currentInfo.name,
+          currency: 'BRL',
+          value: planVal
+        }, { eventID: leadEventId });
+      }
+      if (window.imtSendCapi) {
+        window.imtSendCapi('Lead', leadEventId, {
+          content_name: currentInfo.name,
+          currency: 'BRL',
+          value: planVal
+        }, { em: email, ph: phone, fn: name });
+      }
+      trackHubEvent('lead_captured', {
+        plan: currentPlan,
+        value: planVal,
+        currency: 'BRL',
+        name,
+        email,
+        phone
       });
     }
 
@@ -1944,6 +2302,7 @@
         resetToFormView(selected);
       } else {
         updateModalPlanUI(selected);
+        goToCheckoutStep(1);
       }
       if (modalOverlay) {
         modalOverlay.classList.add('active');
@@ -1952,7 +2311,6 @@
         modalClose?.focus({ preventScroll: true });
         document.body.style.overflow = 'hidden';
       }
-      const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
       const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
       const initCheckoutId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'chk_' + Date.now());
       if (window.fbq) {
@@ -1990,8 +2348,6 @@
       checkoutBtn?.focus({ preventScroll: true });
     }
 
-    // Native dialogs isolate the page, but Tab can still move to browser chrome.
-    // Resolve visible controls on each keypress because checkout fields change.
     function keepDialogFocus(event) {
       if (event.key !== 'Tab') return;
       const dialog = event.currentTarget;
@@ -2083,22 +2439,24 @@
         const name = (inputName ? inputName.value : '').trim();
         const email = (inputEmail ? inputEmail.value : '').trim();
         const phone = (inputPhone ? inputPhone.value : '').trim();
-        const cpf = (inputCpf ? inputCpf.value : '').trim();
+        const cpf = (inputCpf && inputCpf.value ? inputCpf.value : (inputCardCpf ? inputCardCpf.value : '')).trim();
 
-        if (!name || !email || !phone) {
-          if (errorMsg) {
-            errorMsg.textContent = 'Por favor, preencha seu nome, e-mail e WhatsApp.';
-            errorMsg.style.display = 'block';
-          }
+        if (!name || name.length < 2) {
+          goToCheckoutStep(1);
+          showCheckoutError('Por favor, preencha seu nome completo.');
           return;
         }
 
         const cleanPhone = phone.replace(/\D/g, '');
         if (cleanPhone.length < 10) {
-          if (errorMsg) {
-            errorMsg.textContent = 'Por favor, informe um WhatsApp válido com DDD.';
-            errorMsg.style.display = 'block';
-          }
+          goToCheckoutStep(2);
+          showCheckoutError('Por favor, informe seu WhatsApp com DDD.');
+          return;
+        }
+
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          goToCheckoutStep(3);
+          showCheckoutError('Por favor, informe seu e-mail para receber o acesso.');
           return;
         }
 
@@ -2106,11 +2464,9 @@
 
         let cardData = null;
         if (currentMethod === 'CREDIT_CARD') {
-          if (!cleanCpf || cleanCpf.length < 11) {
-            if (errorMsg) {
-              errorMsg.textContent = 'Por favor, informe o CPF do titular do cartão.';
-              errorMsg.style.display = 'block';
-            }
+          if (!cleanCpf || cleanCpf.length < 11 || !isValidCpf(cleanCpf)) {
+            showCheckoutError('Por favor, informe um CPF válido para o titular do cartão.');
+            inputCardCpf?.focus();
             return;
           }
           const cardNum = (inputCardNumber ? inputCardNumber.value : '').replace(/\D/g, '');
@@ -2119,10 +2475,7 @@
           const cardCvv = (inputCardCvv ? inputCardCvv.value : '').trim();
 
           if (!cardNum || cardNum.length < 13 || !cardHolder || !cardExp || !cardCvv) {
-            if (errorMsg) {
-              errorMsg.textContent = 'Por favor, confira os dados do cartão de crédito.';
-              errorMsg.style.display = 'block';
-            }
+            showCheckoutError('Por favor, confira todos os dados do cartão de crédito.');
             return;
           }
 
@@ -2137,30 +2490,25 @@
             expiryYear: expYear,
             ccv: cardCvv
           };
+        } else {
+          // PIX
+          if (!cleanCpf || cleanCpf.length < 11 || !isValidCpf(cleanCpf)) {
+            showCheckoutError('Por favor, informe um CPF válido para emissão do Pix nominal.');
+            inputCpf?.focus();
+            return;
+          }
         }
 
-        if (submitBtn) submitBtn.disabled = true;
-        if (btnText) btnText.textContent = 'Gerando cobrança segura...';
+        const activeSubmitBtn = currentMethod === 'PIX' ? submitBtn : (submitCardBtn || submitBtn);
+        if (activeSubmitBtn) activeSubmitBtn.disabled = true;
+        if (currentMethod === 'PIX') {
+          if (pixBtnText) pixBtnText.textContent = 'Gerando chave Pix segura...';
+        } else {
+          if (btnText) btnText.textContent = 'Processando pagamento seguro...';
+        }
 
         const eventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now());
-        const leadEventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'lead_' + Date.now());
-        const currentInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
         const planVal = currentPlan === 'anual' ? 957 : currentPlan === 'trimestral' ? 357 : 147;
-
-        if (window.fbq) {
-          window.fbq('track', 'Lead', {
-            content_name: currentInfo.name,
-            currency: 'BRL',
-            value: planVal
-          }, { eventID: leadEventId });
-        }
-        if (window.imtSendCapi) {
-          window.imtSendCapi('Lead', leadEventId, {
-            content_name: currentInfo.name,
-            currency: 'BRL',
-            value: planVal
-          }, { em: email, ph: phone, fn: name });
-        }
 
         const payload = {
           plan: currentPlan,
@@ -2168,7 +2516,7 @@
           name,
           email,
           phone,
-          cpfCnpj: cpf,
+          cpfCnpj: cleanCpf,
           creditCard: cardData,
           tracking: getUtms(),
           eventId
@@ -2270,7 +2618,7 @@
             errorMsg.textContent = err.message || 'Erro inesperado. Tente novamente em instantes.';
             errorMsg.style.display = 'block';
           }
-          if (submitBtn) submitBtn.disabled = false;
+          if (activeSubmitBtn) activeSubmitBtn.disabled = false;
           updateCtaButtonText();
         }
       });

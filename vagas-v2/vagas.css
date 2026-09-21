@@ -1226,6 +1226,107 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   color: var(--muted);
   margin-bottom: 16px;
 }
+/* Multi-Step Checkout Modal */
+.chk-progress-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.chk-progress-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--lime);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.chk-progress-pct {
+  font-size: 12px;
+  font-weight: 800;
+  font-family: var(--mono);
+  color: var(--lime);
+}
+.chk-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.chk-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #84cc16 0%, #d4ff53 100%);
+  border-radius: 9999px;
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.chk-step-pane {
+  animation: chkStepFadeIn 0.22s ease forwards;
+}
+@keyframes chkStepFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.chk-input-lg {
+  font-size: 16px !important;
+  padding: 12px 14px !important;
+  min-height: 50px !important;
+  border-radius: 12px !important;
+}
+.chk-geo-banner {
+  background: rgba(212, 255, 83, 0.07);
+  border: 1px solid rgba(212, 255, 83, 0.25);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #d8decf;
+  text-align: left;
+}
+.chk-geo-banner strong {
+  color: var(--lime);
+}
+.chk-geo-sub {
+  font-size: 12px;
+  color: #a8b09d;
+  display: block;
+  margin-top: 2px;
+}
+.chk-geo-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+  line-height: 1.2;
+}
+.chk-cpf-note {
+  font-size: 12px;
+  color: #9aa08f;
+  margin: 6px 0 16px;
+  line-height: 1.4;
+  text-align: left;
+}
+.chk-plan-pre-text {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 8px;
+  text-align: left;
+}
+.chk-choose-method-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--heading);
+  margin: 18px 0 12px;
+  text-align: left;
+}
 .chk-plan-summary {
   display: flex;
   align-items: center;
