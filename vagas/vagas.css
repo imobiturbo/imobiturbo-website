@@ -138,17 +138,17 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .lesson-progress-label { font-size: 12px; font-weight: 700; color: var(--label); }
 
 /* Micro-UI 02: CRM Kanban */
-.kanban-concept { display: flex; gap: 8px; padding: 10px; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--label) var(--surface); }
-.kanban-col { flex: 1; min-width: 128px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 7px 6px; display: flex; flex-direction: column; gap: 6px; }
+.kanban-concept { display: flex; gap: 6px; padding: 8px 6px; overflow: hidden; width: 100%; box-sizing: border-box; }
+.kanban-col { flex: 1 1 0; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 4px; display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
 .kanban-col-header { display: flex; align-items: center; justify-content: space-between; gap: 2px; padding: 0 2px; }
-.col-name { font-size: 11px; font-weight: 700; color: var(--heading); line-height: 1.3; overflow-wrap: anywhere; }
-.col-count { font-size: 11px; font-weight: 700; background: #262922; color: var(--heading); border-radius: 10px; padding: 0 5px; }
-.kanban-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 7px 8px; display: flex; flex-direction: column; gap: 3px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); }
+.col-name { font-size: 10.5px; font-weight: 700; color: var(--heading); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.col-count { font-size: 10px; font-weight: 700; background: #262922; color: var(--heading); border-radius: 8px; padding: 0 4px; flex-shrink: 0; }
+.kanban-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 5px 6px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); overflow: hidden; }
 .kanban-card-active { border-color: var(--lime); background: #1c2317; }
-.card-name { font-size: 12px; font-weight: 700; color: var(--heading); line-height: 1.3; margin-bottom: 1px; }
-.card-info { font-size: 10px; color: #8e9484; line-height: 1.35; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-name { font-size: 11px; font-weight: 700; color: var(--heading); line-height: 1.25; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-info { font-size: 9px; color: #8e9484; line-height: 1.3; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .card-info.accent { color: var(--lime); font-weight: 600; }
-.card-tag { font-size: 11px; color: var(--body); line-height: 1.35; overflow-wrap: anywhere; }
+.card-tag { font-size: 9.5px; color: var(--body); line-height: 1.3; overflow-wrap: anywhere; }
 .card-tag-accent { color: var(--lime); font-weight: 600; }
 
 /* Micro-UI 03: Assistente IA */
@@ -244,6 +244,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .testimonial-source strong { display: block; color: var(--heading); margin-bottom: 3px; }
 .testimonial-person p { font-size: 14px; line-height: 1.45; }
 .testimonial-source > p { margin-top: 12px; font-size: 14px; line-height: 1.5; }
+.testimonial-result { color: var(--lime); font-weight: 700; }
 .comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
 .comparison h3 { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
 .comparison .icon { width: 36px; height: 36px; color: var(--label); }
@@ -511,7 +512,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   padding: 8px 6px 20px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: none;
   scrollbar-width: thin;
   scrollbar-color: var(--label) var(--surface);
 }
@@ -1336,6 +1337,77 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   margin: 16px 0 10px;
   text-align: left;
 }
+.chk-plan-retractable-wrap {
+  margin-bottom: 12px;
+}
+.chk-plan-retractable-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  text-align: left;
+  font-family: inherit;
+}
+.chk-plan-retractable-trigger:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(212, 255, 83, 0.25);
+}
+.chk-plan-compact-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.chk-plan-compact-pill {
+  font-size: 9.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(212, 255, 83, 0.12);
+  border: 1px solid rgba(212, 255, 83, 0.25);
+  color: var(--lime);
+  white-space: nowrap;
+}
+.chk-plan-compact-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+}
+.chk-plan-compact-price {
+  font-size: 13px;
+  font-weight: 600;
+  color: #9aa08f;
+  white-space: nowrap;
+}
+.chk-plan-compact-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.chk-plan-compact-action {
+  font-size: 11px;
+  color: #9aa08f;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.chk-plan-compact-arrow {
+  font-size: 12px;
+  color: var(--lime);
+  line-height: 1;
+}
+.chk-plan-collapsible-body {
+  margin-top: 8px;
+}
 .chk-plan-summary {
   display: flex;
   align-items: center;
@@ -2075,7 +2147,18 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .price { font-size: 26px; }
   .media-placeholder { padding: 15px; }
   .psel-row { padding: 12px; }
-  .chk-modal-box { padding: 20px; }
+  .chk-modal-box { padding: 14px 16px 16px; max-height: 94vh; }
+  .chk-step-pane#chkStepPane4 { padding-top: 2px; }
+  .chk-plan-retractable-wrap { margin-bottom: 8px; }
+  .chk-choose-method-title { margin: 6px 0 6px; font-size: 12px; }
+  .chk-tabs { margin-bottom: 8px; gap: 8px; }
+  .chk-tab { padding: 6px 8px; min-height: 44px; }
+  .chk-tab-label { font-size: 13px; }
+  .chk-tab-desc { font-size: 11px; }
+  #chkCardFields .chk-field { margin-bottom: 8px; }
+  #chkCardFields .chk-field label { margin-bottom: 3px; font-size: 11px; }
+  #chkCardFields .chk-input { min-height: 40px; padding: 8px 12px; font-size: 13.5px; }
+  #chkSubmitCardBtn { margin-top: 8px; min-height: 44px; padding: 10px 14px; font-size: 14px; }
   .chk-plan-summary { padding: 12px; }
   .chk-plan-val { flex-wrap: wrap; }
   .closing h2 { font-size: 30px; }
