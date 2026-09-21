@@ -34,6 +34,7 @@ const entries = [
   'lovable',
   'demo',
   'vagas',
+  'vagas-v2',
   'politica-de-privacidade',
   'exclusao-de-dados',
   'termos-de-servico',
