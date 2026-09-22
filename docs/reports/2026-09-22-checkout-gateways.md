@@ -1,6 +1,6 @@
-# Checkout: AbacatePay e Stripe Elements
+# Checkout: AbacatePay Pix e Hotmart no cartão
 
-Status: implementação parcial em branch; não publicada.
+Status: integração Hotmart em implementação na branch; não publicada. As seções sobre Stripe abaixo são o histórico da investigação, substituído pela decisão Hotmart.
 
 ## Regra comercial confirmada
 
@@ -53,6 +53,20 @@ Foi apresentada uma alternativa de checkout hospedado do AbacatePay. A recomenda
 
 Suporte documentado do AbacatePay: https://docs.abacatepay.com/pages/payment/installments
 
+## Diagnóstico: sandbox, conta ou disponibilidade regional
+
+Verificação adicional em 22/09/2026, sem cobranças reais e sem alterar configurações do painel:
+
+- API de teste da conta: `country=BR`, `charges_enabled=true`, `payouts_enabled=true`, `capabilities.card_payments=active`, sem `requirements.disabled_reason` ou erros de requisitos. Isso não prova habilitação de parcelamento.
+- Oito criações de PaymentIntent, cruzando `pm_card_br`/`pm_card_mx`, BRL 38100/MXN 100000 e versões `2025-06-30.basil`/`2026-08-26.dahlia`: todas HTTP 200, `livemode=false`, `requires_confirmation`, `available_plans=[]`. Nenhuma foi confirmada. O resultado não mudou com a versão da API; como nenhum controle retornou planos, a matriz não exclui sozinha um problema de sandbox/configuração.
+- Referências BRL/cartão BR: `pi_3UIZOWKoMeVMYJBu0ZdxbxN3`, request `req_NYefiEoJ8iyfsX` (basil); `pi_3UIZOYKoMeVMYJBu10lzr13G`, request `req_D1BGZz8bQfTQv0` (dahlia).
+- Painel autenticado de produção, configuração Default `pmc_1RArtGKoMeVMYJBuN7Ed1sma`: Cartões habilitado, zero formas de pagamento com ação necessária; detalhes de Cartões indicam pagamentos recorrentes suportados. Não apareceu opção de parcelamento na lista ou nos detalhes de Cartões inspecionados. Ausência de opção não certifica inexistência de habilitação especial.
+- A documentação do recurso testado exige conta Stripe México, cartão emitido no México e moeda MXN: https://docs.stripe.com/payments/mx-installments#requirements . O índice público de parcelamento também documenta outros produtos regionais, sem fluxo equivalente em BRL: https://docs.stripe.com/payments/installments .
+
+**Inferência:** indisponibilidade regional do parcelamento bancário é mais provável que bloqueio cadastral da conta ou erro causado pela versão da API. Ainda não há prova conclusiva de bug de sandbox nem confirmação da Stripe sobre habilitação especial para esta conta brasileira. Assinatura recorrente e parcelamento bancário continuam sendo capacidades distintas.
+
+Pergunta preparada para o suporte, **não enviada**: “A conta brasileira `acct_1QHx1pKoMeVMYJBu` pode processar uma única compra de R$ 381 em 3 parcelas bancárias de R$ 127, em BRL, usando PaymentIntent e Stripe Elements, e repetir essa compra na renovação trimestral? No teste `pi_3UIZFCKoMeVMYJBu0pREddN4`, não há planos disponíveis e `fixed_count/month/3` retorna `payment_intent_invalid_parameter`. É indisponibilidade do produto no Brasil, alguma habilitação pendente nesta conta ou divergência do ambiente de testes? Há suporte para renovação automática nesse formato?”
+
 ## Trabalho restante
 
 1. Validar o mecanismo financeiro da assinatura com renovação trimestral/anual, preservando o compromisso contratado e a forma de recebimento esperada.
@@ -66,3 +80,28 @@ Foi encontrado material de credenciais versionado no helper legado `_notificatio
 ## Navegador
 
 Chrome CDP compartilhado preservado. Nenhuma aba foi fechada. A aba de inspeção das chaves Stripe permanece aberta; Natan fecha as abas quando desejar.
+
+## Direção aprovada: Hotmart (22/09/2026)
+
+Natan autorizou usar a Hotmart e disponibilizou o painel autenticado e o MCP. Produto já existente e ativo: **Comunidade Imobiturbo, ID 8559421**, assinatura. Mimiu 8547534 não foi alterado.
+
+Configuração verificada no painel:
+
+| Plano | Oferta | Período e cobrança |
+| --- | --- | --- |
+| Anual existente | `vgygksgc` | R$ 1.164 por ano, até 12x de R$ 97 sem juros para comprador |
+| Trimestral 3x criado nesta missão | `k3sq4mg8` | R$ 381 a cada três meses, até 3x de R$ 127 sem juros para comprador |
+| Mensal existente | `4zruzp5h` | R$ 147 mensal |
+| Trimestral legado preservado | `ua8aap3x` | R$ 381 trimestral à vista; não usado na landing |
+
+O produtor absorve as taxas de parcelamento. O recuperador anual que convertia compras recusadas por falta de limite em mensalidades canceláveis foi desativado para preservar o compromisso solicitado. Metadados das ofertas: `product_id=imobiturbo-club`, `offer_code` e `plan` com a periodicidade. Nenhuma compra real foi feita.
+
+Código oficial do widget obtido no painel: `https://static.hotmart.com/checkout/widget.min.js`. O código atual abre iframe/Fancybox em desktop e navega ao checkout em mobile. O link direto permanece como fallback caso o widget não esteja disponível. Os parâmetros `split`, `hidePix`, `hideBillet`, dados pré-preenchidos e demais meios seguem a documentação oficial: https://suportehotmart.zendesk.com/hc/pt-br/articles/115003588572
+
+### Liberação de acesso: achados que precisam ser resolvidos antes da publicação
+
+O Hub em produção encaminha Hotmart `imobiturbo-club`/`8559421` para `https://www.imobiturbo.com.br/api/checkout/webhook`. O Hottok é encaminhado, mas o site legado não o validava; a validação está sendo adicionada. Eventos Hotmart não devem gerar um segundo Purchase, pois o Hub já é responsável por isso.
+
+O RPC `public.provision_community_membership` existe na VPS4. Leitura da definição confirmou: renova a partir de `now()` sem idempotência por transação, usa 30/90/365 dias e o cancelamento por e-mail revoga todos os acessos club/os/radar, independentemente da transação. Não é adequado afirmar que a renovação/reembolso está validada. Será necessário proteger duplicatas e revogações antes da ativação completa. O endpoint legado também reconhece eventos de outros gateways sem autenticação; é dívida preexistente pertinente ao pagamento.
+
+Testes novos executados na VPS3 reproduziram a ausência das novas fronteiras Hotmart. Validação após implementação ainda pendente. Nenhuma mudança de banco realizada.

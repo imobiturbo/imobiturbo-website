@@ -9,6 +9,7 @@ import {
   provisionCommunityMembership,
 } from "./_notifications.js";
 import { dispatchVerifiedPurchaseToHub } from "./_tracking.js";
+import { authenticateHotmart, parseHotmartEvent } from "./_hotmart.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -35,6 +36,16 @@ export async function onRequestPost(context) {
       });
     }
 
+    const isHotmart = Boolean(payload.data?.purchase || /^(PURCHASE_|SUBSCRIPTION_)/.test(payload.event || ''));
+    let hotmart = null;
+    if (isHotmart) {
+      const authStatus = await authenticateHotmart(request, env);
+      if (authStatus !== 200) return Response.json({ ok: false, error: 'hotmart_authentication_failed' }, { status: authStatus });
+      try { hotmart = parseHotmartEvent(payload); }
+      catch { return Response.json({ ok: false, error: 'hotmart_invalid_purchase' }, { status: 422 }); }
+      if (hotmart.action === 'ignore') return Response.json({ ok: true, status: 'ignored_event' });
+    }
+
     const clientIp =
       request.headers.get("cf-connecting-ip") ||
       request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
@@ -55,8 +66,14 @@ export async function onRequestPost(context) {
     let contentName = "Comunidade Imobiturbo";
     let plan = "anual";
 
+    // Hotmart is verified and mapped before any side effect.
+    if (hotmart) {
+      isPaid = hotmart.action === 'activate';
+      isCanceled = hotmart.action === 'cancel';
+      ({ paymentId, amount, email, phone, name, plan } = hotmart);
+    }
     // 1. AbacatePay Webhook Detection (Pago)
-    if (
+    else if (
       payload.event === "billing.paid" ||
       (payload.data &&
         (payload.data.status === "PAID" ||
@@ -179,47 +196,7 @@ export async function onRequestPost(context) {
         }
       }
     }
-    // 3. Hotmart Webhook Detection (Pago)
-    else if (
-      ["PURCHASE_APPROVED", "PURCHASE_COMPLETE", "PURCHASE_COMPLETED"].includes(payload.event) ||
-      (payload.data &&
-        payload.data.purchase &&
-        payload.data.purchase.status === "APPROVED")
-    ) {
-      isPaid = true;
-      const data = payload.data || {};
-      const purchase = data.purchase || {};
-      const buyer = data.buyer || {};
-      paymentId = purchase.transaction || payload.id || "";
-      amount = Number(purchase.price?.value || 0);
-      email = buyer.email || "";
-      phone = buyer.checkout_phone || buyer.phone || "";
-      name = buyer.name || "";
-      contentName = data.product?.name || "Comunidade Imobiturbo";
-      const offerCode =
-        purchase.offer?.code ||
-        purchase.offer?.tracking_keys?.offer_code ||
-        purchase.tracking_keys?.offer_code ||
-        "";
-      if (offerCode.toLowerCase().includes("trimestral")) plan = "trimestral";
-      else if (offerCode.toLowerCase().includes("mensal")) plan = "mensal";
-      else plan = "anual";
-    }
-    // 3.1 Hotmart Reembolso / Chargeback / Cancelamento
-    else if (
-      ["PURCHASE_REFUNDED", "PURCHASE_CHARGEBACK", "PURCHASE_CANCELED", "PURCHASE_EXPIRED"].includes(
-        payload.event
-      )
-    ) {
-      isCanceled = true;
-      const data = payload.data || {};
-      const purchase = data.purchase || {};
-      const buyer = data.buyer || {};
-      paymentId = purchase.transaction || payload.id || "";
-      email = buyer.email || "";
-      phone = buyer.checkout_phone || buyer.phone || "";
-      name = buyer.name || "";
-    } else {
+    else {
       // Eventos não-financeiros retornam 200 OK sem disparar compra
       return new Response(
         JSON.stringify({ ok: true, status: "ignored_event", event: payload.event || "unknown" }),
@@ -301,7 +278,7 @@ export async function onRequestPost(context) {
         purchasePayload.test_event_code = env.META_TEST_EVENT_CODE;
       }
 
-      if (pixelId && token) {
+      if (!isHotmart && pixelId && token) {
         const metaResp = await fetch(
           `https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${token}`,
           {
@@ -316,7 +293,7 @@ export async function onRequestPost(context) {
         metaResult = { ok: false, error: "meta_capi_not_configured" };
       }
 
-      await dispatchVerifiedPurchaseToHub({
+      if (!isHotmart) await dispatchVerifiedPurchaseToHub({
         env, request, paymentId, eventId, amount, contentName, email, phone, name, fbp, fbc,
       });
 
