@@ -1,6 +1,21 @@
 # Checkout da Comunidade: Hotmart e AbacatePay
 
-Status: integração publicada em produção em 22/09/2026; migrations aplicadas e webhook direto ativo. Não houve compra financeira real.
+Status: cartão Hotmart publicado em produção em 22/09/2026; migrations aplicadas e webhook direto ativo. Pix Automático exigido pelo usuário após a publicação está pendente da habilitação da loja AbacatePay. O Pix atualmente publicado ainda é avulso. Não houve compra financeira real.
+
+## Correção de requisito: Pix com renovação automática
+
+O usuário determinou que o Pix AbacatePay também deve renovar automaticamente conforme o período contratado: R$ 997/ano, R$ 357/trimestre ou R$ 147/mês. A decisão anterior de manter Pix avulso foi superada; a tabela abaixo registra o comportamento publicado, não o aceite final do Pix.
+
+Verificação em 22/09/2026:
+
+- O [changelog oficial de 15/05/2026](https://docs.abacatepay.com/pages/changelog) confirma `QUARTERLY` e Pix Automático para assinaturas, condicionado à habilitação na loja. Partes da referência de criação ainda dizem somente `CARD`; não usar esse trecho antigo para concluir ausência global da funcionalidade.
+- A credencial existente leu o catálogo de produção com HTTP 200. Há produtos recorrentes mensais e trimestrais nos valores corretos; o anual existente tem R$ 957 e precisa de uma oferta nova de R$ 997 para preservar contratos anteriores.
+- Uma tentativa de criar checkout de assinatura mensal, `methods: ["PIX"]`, sem cliente ou dados de pagamento, retornou HTTP 400: `PIX Automático is not available for this store`. Nenhuma cobrança foi paga e nenhuma assinatura foi ativada.
+- O painel foi aberto em uma nova aba CDP, mas está em `/login`. Foi solicitado ao usuário entrar para verificar a habilitação. Chrome e todas as abas permanecem abertos.
+- A API documentada exige checkout de assinatura e autorização do pagador; o endpoint transparente avulso atualmente usado não estabelece a recorrência. A integração e os textos só podem ser publicados como Pix Automático após validar essa jornada na loja habilitada.
+- Na retomada: validar habilitação; configurar produto anual correto; trocar o fluxo de Pix para assinatura; tratar `subscription.completed` e `subscription.renewed` com autenticação e idempotência; testar os períodos, recusa da autorização e duplicatas na VPS3 antes da publicação.
+
+Não houve alteração do código de produto, banco ou configuração de cobrança nesta verificação.
 
 ## Regra comercial implementada
 
