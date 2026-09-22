@@ -26,7 +26,7 @@ export function parseHotmartEvent(payload) {
   // Canceling the subscription stops future charges, not the already paid term.
   const action = payload.event === 'PURCHASE_APPROVED' ? 'activate'
     : ['PURCHASE_REFUNDED', 'PURCHASE_CHARGEBACK'].includes(payload.event) ? 'review' : 'ignore';
-  if (action === 'ignore') return { action };
+  if (action === 'ignore' || action === 'review') return { action };
   const purchase = data.purchase || {};
   const plan = OFFERS[purchase.offer?.code];
   if (!plan) throw new Error('hotmart_unknown_offer');
@@ -35,7 +35,10 @@ export function parseHotmartEvent(payload) {
   if (!Number.isFinite(amount) || amount < 0 || purchase.price?.currency_value !== 'BRL') {
     throw new Error('hotmart_invalid_amount');
   }
+  const approvedAt = new Date(purchase.approved_date);
+  if (!purchase.approved_date || !Number.isFinite(approvedAt.getTime())) throw new Error('hotmart_missing_approval_date');
   return {
+    approvedAt: approvedAt.toISOString(),
     action, plan, paymentId: purchase.transaction, amount,
     email: data.buyer.email, name: data.buyer.name || '',
     phone: data.buyer.checkout_phone || data.buyer.phone || '',

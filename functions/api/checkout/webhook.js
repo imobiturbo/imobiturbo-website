@@ -46,6 +46,12 @@ export async function onRequestPost(context) {
       if (hotmart.action === 'ignore') return Response.json({ ok: true, status: 'ignored_event' });
       // OS policy: refunds/chargebacks are reviewed manually; Hub records the reversal.
       if (hotmart.action === 'review') return Response.json({ ok: true, status: 'manual_review' });
+      const notifications = await sendPostPurchaseNotifications({
+        ...hotmart, amountCents: Math.round(hotmart.amount * 100),
+        purchaseProof: { approvedAt: hotmart.approvedAt }, env,
+      });
+      if (!notifications?.crmProvisioned) return Response.json({ ok: false, error: 'community_provisioning_pending' }, { status: 503 });
+      return Response.json({ ok: true, paid: true, duplicate: Boolean(notifications.duplicate) });
     }
 
     const clientIp =
@@ -68,14 +74,8 @@ export async function onRequestPost(context) {
     let contentName = "Comunidade Imobiturbo";
     let plan = "anual";
 
-    // Hotmart is verified and mapped before any side effect.
-    if (hotmart) {
-      isPaid = hotmart.action === 'activate';
-      isCanceled = hotmart.action === 'cancel';
-      ({ paymentId, amount, email, phone, name, plan } = hotmart);
-    }
     // 1. AbacatePay Webhook Detection (Pago)
-    else if (
+    if (
       payload.event === "billing.paid" ||
       (payload.data &&
         (payload.data.status === "PAID" ||
@@ -280,7 +280,7 @@ export async function onRequestPost(context) {
         purchasePayload.test_event_code = env.META_TEST_EVENT_CODE;
       }
 
-      if (!isHotmart && pixelId && token) {
+      if (pixelId && token) {
         const metaResp = await fetch(
           `https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${token}`,
           {
@@ -295,7 +295,7 @@ export async function onRequestPost(context) {
         metaResult = { ok: false, error: "meta_capi_not_configured" };
       }
 
-      if (!isHotmart) await dispatchVerifiedPurchaseToHub({
+      await dispatchVerifiedPurchaseToHub({
         env, request, paymentId, eventId, amount, contentName, email, phone, name, fbp, fbc,
       });
 
