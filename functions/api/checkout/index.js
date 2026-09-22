@@ -1,6 +1,6 @@
 // Cloudflare Pages Function: /api/checkout
-// Primary Gateway: AbacatePay (Pix transparente)
-// Fallback Gateway: Asaas (Pix e Cartão de Crédito até 12x)
+// Pix transparente exclusivamente pelo AbacatePay.
+// Cartão legado via Asaas, até a migração para Stripe Elements.
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -82,7 +82,10 @@ export async function onRequestPost(context) {
     },
   };
 
-  const selectedPlan = PLAN_DETAILS[plan] || PLAN_DETAILS.anual;
+  if (!Object.hasOwn(PLAN_DETAILS, plan)) {
+    return Response.json({ success: false, error: "Selecione um plano válido." }, { status: 400, headers: CORS_HEADERS });
+  }
+  const selectedPlan = PLAN_DETAILS[plan];
   const todayStr = new Date().toISOString().split("T")[0];
 
   // ==========================================
@@ -91,6 +94,9 @@ export async function onRequestPost(context) {
   let abacateError = null;
 
   if (paymentMethod === "PIX") {
+    if (!abacateKey) {
+      return Response.json({ success: false, error: "Pix temporariamente indisponível. Tente novamente em instantes." }, { status: 503, headers: CORS_HEADERS });
+    }
     try {
       const abacateResp = await fetch("https://api.abacatepay.com/v2/transparents/create", {
         method: "POST",
@@ -112,13 +118,13 @@ export async function onRequestPost(context) {
               taxId: cleanCpf,
             } : undefined,
             metadata: {
+              ...tracking,
               plan,
               name,
               email,
               phone: cleanPhone,
               cpfCnpj: cleanCpf,
               eventId,
-              ...tracking,
             },
             utm: {
               source: tracking.utm_source || "vagas_direct",
@@ -129,7 +135,7 @@ export async function onRequestPost(context) {
             },
           },
         }),
-        signal: AbortSignal.timeout(5000), // Timeout rígido de 5s para auto-failover
+        signal: AbortSignal.timeout(5000),
       });
 
       const abacateJson = await abacateResp.json();
@@ -163,6 +169,9 @@ export async function onRequestPost(context) {
     } catch (err) {
       abacateError = err.message || "Timeout / Falha de rede no AbacatePay";
     }
+    // Um timeout pode acontecer depois de o provedor criar o Pix.
+    // Nunca criar uma segunda cobrança em outro gateway nessa situação.
+    return Response.json({ success: false, error: "Não foi possível gerar o Pix agora. Tente novamente em instantes." }, { status: 502, headers: CORS_HEADERS });
   } else {
     // Para Cartão de Crédito, AbacatePay ainda não tem cartão liberado na loja.
     abacateError = "Cartão de Crédito roteado via Asaas";
