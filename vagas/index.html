@@ -1158,13 +1158,20 @@
               Seu navegador não suporta vídeos em HTML5.
             </video>
 
-            <!-- VTurb-Style Smart Autoplay Overlay -->
+            <!-- VTurb-Style Pure HTML/CSS Smart Autoplay Overlay -->
             <div class="vsl-overlay" id="vslOverlay" aria-label="Clique para ouvir com som">
-              <div class="vsl-autoplay-card">
-                <video class="vsl-autoplay-anim" autoplay loop muted playsinline poster="./assets/vsl-autoplay-poster.webp" disablepictureinpicture aria-hidden="true">
-                  <source src="./assets/vsl-autoplay.webm" type="video/webm">
-                  <img src="./assets/vsl-autoplay.webp" alt="Clique para ouvir com som" class="vsl-autoplay-anim" width="250" height="245">
-                </video>
+              <div class="vsl-smart-autoplay">
+                <div class="vsl-play-btn-circle">
+                  <div class="vsl-ripple-ring"></div>
+                  <div class="vsl-ripple-ring vsl-ripple-2"></div>
+                  <svg class="vsl-play-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+                <div class="vsl-mouse-anim">
+                  <img src="./assets/click-sparks.png" alt="Efeito de clique" class="vsl-click-sparks" width="56" height="44" draggable="false" aria-hidden="true">
+                  <img src="./assets/pixel-cursor.png" alt="Cursor de clique" class="vsl-cursor-pointer" width="48" height="74" draggable="false" aria-hidden="true">
+                </div>
               </div>
             </div>
 

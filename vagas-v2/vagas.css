@@ -2450,11 +2450,12 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.22);
+  background: transparent;
   z-index: 10;
   transition: opacity 0.35s ease, visibility 0.35s ease;
   padding: 20px;
   text-align: center;
+  cursor: pointer;
 }
 
 .vsl-overlay.vsl-hidden {
@@ -2463,35 +2464,161 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   pointer-events: none;
 }
 
-/* VTurb Smart Autoplay Animated Element */
-.vsl-autoplay-card {
-  width: clamp(140px, 30vw, 250px);
-  max-width: 85%;
+/* VTurb Smart Autoplay Pure HTML/CSS Component */
+.vsl-smart-autoplay {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-vsl:hover .vsl-smart-autoplay {
+  transform: scale(1.08);
+}
+
+.hero-vsl:active .vsl-smart-autoplay {
+  transform: scale(0.96);
+}
+
+.vsl-play-btn-circle {
+  position: relative;
+  width: clamp(92px, 15vw, 118px);
+  height: clamp(92px, 15vw, 118px);
+  border-radius: 50%;
+  background: rgba(212, 255, 83, 0.40);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 3px solid rgba(212, 255, 83, 0.85);
+  box-shadow: 0 0 35px rgba(212, 255, 83, 0.5), 0 10px 30px rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.28s ease;
-  filter: drop-shadow(0 10px 28px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 20px rgba(212, 255, 83, 0.25));
+  animation: vslPlayPulse 2.4s infinite ease-in-out;
+}
+
+.vsl-ripple-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2.5px solid rgba(212, 255, 83, 0.7);
+  animation: vslRippleRing 2.4s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
   pointer-events: none;
 }
 
-.hero-vsl:hover .vsl-autoplay-card {
-  transform: scale(1.06);
-  filter: drop-shadow(0 14px 36px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 35px rgba(212, 255, 83, 0.45));
+.vsl-ripple-2 {
+  animation-delay: 1.2s;
 }
 
-.hero-vsl:active .vsl-autoplay-card {
-  transform: scale(0.97);
+.vsl-play-icon {
+  width: 44%;
+  height: 44%;
+  color: #10130c;
+  margin-left: 6%;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
 }
 
-.vsl-autoplay-anim {
+.vsl-mouse-anim {
+  position: absolute;
+  bottom: -15px;
+  right: -25px;
+  width: clamp(44px, 6.5vw, 54px);
+  height: auto;
+  pointer-events: none;
+  animation: vslMouseCycle 2.8s infinite ease-in-out;
+}
+
+.vsl-cursor-pointer {
   width: 100%;
   height: auto;
   display: block;
-  pointer-events: none;
-  border-radius: 24px;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7));
 }
+
+.vsl-click-sparks {
+  position: absolute;
+  top: -22%;
+  left: -28%;
+  width: 110%;
+  height: auto;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.4);
+  animation: vslSparksBurst 2.8s infinite ease-out;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.6));
+}
+
+@keyframes vslPlayPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 25px rgba(212, 255, 83, 0.35), 0 8px 24px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 50px rgba(212, 255, 83, 0.75), 0 12px 32px rgba(0, 0, 0, 0.6);
+  }
+}
+
+@keyframes vslRippleRing {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.65);
+    opacity: 0;
+  }
+}
+
+@keyframes vslMouseCycle {
+  0% {
+    transform: translate(35px, 35px) scale(1);
+  }
+  24% {
+    transform: translate(-10px, -12px) scale(1);
+  }
+  36% {
+    transform: translate(-10px, -12px) scale(1);
+  }
+  42% {
+    transform: translate(-10px, -12px) scale(0.88);
+  }
+  52% {
+    transform: translate(-10px, -12px) scale(1);
+  }
+  70% {
+    transform: translate(-10px, -12px) scale(1);
+  }
+  86% {
+    transform: translate(22px, 22px) scale(1);
+  }
+  100% {
+    transform: translate(35px, 35px) scale(1);
+  }
+}
+
+@keyframes vslSparksBurst {
+  0%, 39% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  42% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  48% {
+    opacity: 0.95;
+    transform: scale(1.22);
+  }
+  56% {
+    opacity: 0;
+    transform: scale(1.38);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
 
 /* Smart Fast Progress Bar (VTurb Retention Curve) */
 .vsl-smart-progress {
