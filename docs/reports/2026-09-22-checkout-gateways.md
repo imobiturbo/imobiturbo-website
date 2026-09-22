@@ -22,6 +22,8 @@ O helper Stripe ainda não está conectado à rota de checkout. O formulário co
 
 Na VPS3, os testes de Pix reproduziram cinco falhas anteriores: fallback indevido, fallback após timeout, falta de credencial, metadados sobrescritos e plano inválido. Após a alteração, 16 testes direcionados passaram (Pix, fronteira Stripe e contratos existentes do checkout).
 
+Build ainda não executado: duas tentativas aguardaram o lock canônico de CI e terminaram com código 75. O lock foi preservado. Não há certificação de build nem de E2E da integração completa.
+
 Leitura autenticada do catálogo Stripe em teste: HTTP 200. As duas configurações de produção encontradas no CLI retornaram HTTP 401. A chave publicável foi localizada no painel autenticado. Nenhuma cobrança ou assinatura real foi criada.
 
 AbacatePay: leitura autenticada de loja e webhooks com HTTP 200. Há webhooks para Hub Cashflow, Mimiu e OS; não foi encontrado webhook da landing page. A liberação de acesso deverá ser rastreada pelo fluxo do OS antes de ativar a integração, evitando dois emissores de boas-vindas ou acessos duplicados.
