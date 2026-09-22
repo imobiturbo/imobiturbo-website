@@ -401,6 +401,8 @@ async function provisionCommunityMembership({
       rpc = 'provision_community_purchase';
       delete payload.p_action;
       delete payload.p_source;
+      payload.p_name = name || null;
+      payload.p_phone = phone || null;
       payload.p_organization_id = env.COMMUNITY_ORGANIZATION_ID;
       payload.p_approved_at = purchaseProof.approvedAt;
     }

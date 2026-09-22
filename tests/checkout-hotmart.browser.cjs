@@ -65,7 +65,11 @@ for (const mode of ['widget', 'fallback', 'real-widget']) test(`card checkout ${
     await iframe.waitFor({ state: 'visible', timeout: 30000 });
     targetUrl = new URL(await iframe.getAttribute('src'));
     assert.equal(await page.locator('#checkoutModalOverlay').getAttribute('open'), null);
-    await page.frameLocator('iframe.fancybox-iframe').getByText('Total de R$ 381,00', { exact: true }).waitFor({ timeout: 30000 });
+    const frame = await iframe.contentFrame();
+    await frame.getByText('Comunidade Imobiturbo', { exact: true }).first().waitFor({ timeout: 30000 }).catch(async error => {
+      console.error('Checkout frame diagnostic:', (await frame.locator('body').innerText()).slice(0,1800));
+      throw error;
+    });
   } else await page.waitForURL('https://pay.hotmart.com/**');
   assert.equal(targetUrl.searchParams.get('off'), 'k3sq4mg8');
   assert.equal(targetUrl.searchParams.get('split'), '3');

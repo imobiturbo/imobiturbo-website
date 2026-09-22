@@ -102,6 +102,8 @@ test('failed provisioning requests a retry without sending welcome messages or P
     assert.equal(body.p_transaction_id, 'HP_TEST_ONLY');
     assert.equal(body.p_approved_at, new Date(1790100000000).toISOString());
     assert.equal(body.p_amount_cents, 14700);
+    assert.equal(body.p_name, null);
+    assert.equal(body.p_phone, null);
     return Response.json({ message: 'synthetic dependency failure' }, { status: 503 });
   });
   const response = await onRequestPost({ request: authenticatedRequest(), env: testEnv });
