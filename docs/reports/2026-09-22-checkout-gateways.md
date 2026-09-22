@@ -1,6 +1,6 @@
 # Checkout da Comunidade: Hotmart e AbacatePay
 
-Status: integração validada na VPS3; publicação e confirmação em produção em andamento.
+Status: integração publicada em produção em 22/09/2026; migrations aplicadas e webhook direto ativo. Não houve compra financeira real.
 
 ## Regra comercial implementada
 
@@ -40,20 +40,41 @@ A nova RPC `provision_community_purchase` reutiliza `webhook_events_log` e a rot
 
 A RPC só pode ser executada pelo serviço e confere a organização do contato. Reembolso/chargeback permanecem sujeitos à revisão manual, conforme política do OS. Cancelar a assinatura não revoga o período pago.
 
-Foi preparado webhook direto exclusivo para este produto/aprovação, além do Hub. Isso permite que a Hotmart repita uma entrega se a concessão falhar, sem depender do encaminhamento atual do Hub, que não faz retry. Ativação após publicação do endpoint.
+Webhook direto salvo e ativo na Hotmart: `Comunidade Imobiturbo - Acesso idempotente`, versão 2.0.0, exclusivamente para Compra aprovada do produto 8559421, em `https://imobiturbo-website.pages.dev/api/checkout/webhook`. A configuração persistiu após recarregar o painel. Os webhooks anteriores foram preservados.
+
+O domínio estável de produção do Pages evita o desafio de bots observado nas chamadas da VPS3 ao domínio comercial. O endpoint continua protegido pelo Hottok. Essa entrega direta permite que a Hotmart repita uma chamada se a concessão falhar, sem depender do encaminhamento atual do Hub, que não faz retry. Entregas duplicadas dos dois caminhos são idempotentes. O Hottok do painel foi comparado por hash com a credencial existente do Hub e correspondeu.
 
 Secrets Hotmart e OS configurados no Cloudflare Pages sem imprimir valores. Acesso do serviço ao OS conferido com consulta sem linhas de clientes.
 
 ## Validação
 
-- VPS3: 18 testes de servidor/contratos (Hotmart, Pix e legado).
+- VPS3: 24 testes de servidor/contratos (Hotmart, Pix e legado) aprovados.
 - VPS3: 3 jornadas de navegador, incluindo widget oficial real, widget controlado e fallback mobile; POSTs financeiros bloqueados.
 - VPS3: PostgreSQL efêmero valida duplicatas, concorrência real entre sessões, períodos calendário, rollback e organização incorreta.
-- VPS3: baseline em install/update e 4 invariantes da fronteira service_role aprovados. O update tolera erros antigos de objetos existentes por contrato do runner.
+- VPS3: baseline em install/update e 5 invariantes aprovados, incluindo a concessão/duplicata sobre o contrato real de `webhook_events_log`. O update tolera erros antigos de objetos existentes por contrato do runner.
 - Contrato da nova RPC regenerado via Supabase CLI e integrado sem substituir tipos não relacionados.
+- Produção: prova SQL dentro de transação confirmou concessão trimestral, vencimento em três meses de calendário e duplicata sem nova concessão. `ROLLBACK` deixou zero usuários e recibos sintéticos. Execução da RPC negada a `anon` e permitida a `service_role`.
+- Produção: token inválido retorna 401; token válido com produto fora da lista retorna 200/ignorado sem conceder acesso. A VPS2 confirmou esse caminho nos dois domínios; a VPS3 confirmou autenticação no domínio Pages.
+- Produção via Chrome compartilhado/CDP: widget totalmente carregado dentro da página, com `3 x de R$ 127,00 / trimestre`, total R$ 381, renovação a cada três meses e identidade sintética pré-preenchida. O formulário nativo fecha antes do widget; campos PAN/CVV só aparecem no domínio Hotmart. Evidência visual local: `/tmp/imobiturbo-checkout-raw-cdp.png`. Nenhuma compra foi enviada. Chrome e todas as abas permanecem abertos.
+- A tentativa adicional de navegador headless da VPS3 contra o domínio comercial foi bloqueada pelo desafio Cloudflare (403); seus três testes não passaram e não são contados como evidência funcional. Os três testes de navegador aprovados usaram o candidato servido na VPS3 e o checkout real da Hotmart.
 - Compra financeira real, aprovação de cartão e renovação futura não foram executadas. A confirmação dos valores no checkout não certifica essas etapas.
 
 O endpoint legado de outros gateways aceita eventos sem a autenticação introduzida para Hotmart. É dívida preexistente; estes testes não certificam a segurança de todos os gateways. A confirmação de acesso é idempotente; notificações de boas-vindas continuam best effort e não constituem uma fila de entrega.
+
+## Publicação e rastreabilidade
+
+- Site: [PR #5](https://github.com/imobiturbo/imobiturbo-website/pull/5), commit `3e5c432db7ff1b561724f1f7f1369eb8b6eb1ff8`.
+- Build, Worker e publicação executados na VPS3 pelo entrypoint `deploy:pages`, com lock de CI. Deployment de produção `042349d1-9e7c-404a-8f7f-8ef9e77c5bd1`: https://042349d1.imobiturbo-website.pages.dev.
+- Página publicada: https://www.imobiturbo.com.br/vagas-v2/. HTML e helper de checkout conferidos em produção.
+- OS: [PR #254](https://github.com/imobiturbo/imobiturbo-os-operacao/pull/254) e [PR #255](https://github.com/imobiturbo/imobiturbo-os-operacao/pull/255), integrada até `927945741679b11168ebea9b408ee435b3baefca`.
+- Migrations aplicadas pelo Supabase CLI: `20260922202443_0202_community_purchase_idempotency.sql` e `20260922204945_0203_community_purchase_journal_contract.sql`. A segunda é correção incremental do campo obrigatório `raw_body`, detectado pela prova SQL antes de publicar o checkout; a primeira migration permaneceu imutável.
+- Sem release da aplicação OS: imagem `ghcr.io/imobiturbo/imobiturbo-deskcomm-app:sha-091906c33` preservada e saudável após a alteração de banco.
+
+Evidências na VPS3: `/tmp/community-checkout-unit.log`, `/tmp/community-checkout-browser.log`, `/tmp/community-checkout-db-gate-final.log`, `/tmp/community-checkout-deploy.log`. A tentativa bloqueada pelo WAF está em `/tmp/community-checkout-live-browser.log`.
+
+Evidências de banco na VPS4: `/opt/imobiturbo-os/releases/community-checkout-20260922/`, incluindo migrations, verificação e logs de aplicação. Segredos não estão no relatório nem no Git.
+
+Rollback identificado, não executado: desativar apenas o novo webhook direto e restaurar o deployment Pages anterior `6a807b8b-82a3-4039-88c9-94ab75461302` (fonte `6784f78`). A RPC aditiva pode permanecer sem uso; nenhuma reversão destrutiva de acessos é necessária.
 
 ## Decisão de gateway
 
