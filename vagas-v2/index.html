@@ -584,7 +584,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260921-v46">
+  <link rel="stylesheet" href="./vagas.css?v=20260922-layout-1">
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -1152,7 +1152,7 @@
 
         <!-- VSL Player (VTurb Architecture + Bunny Stream CDN) -->
         <div class="hero-mock">
-          <div class="hero-vsl" id="vslFacade" onclick="playVslVideo(event)">
+          <div class="hero-vsl" id="vslFacade" tabindex="0" role="group" aria-label="Apresentação da Comunidade Imobiturbo. Pressione Enter para reproduzir ou pausar." onclick="playVslVideo(event)">
             <!-- Muted Video Autoplay Preview: starts instantly with zero lag -->
             <video id="vslVideo" playsinline muted autoplay loop preload="auto" poster="./assets/hero-vsl-poster.webp" src="./assets/vsl-preview.mp4">
               Seu navegador não suporta vídeos em HTML5.
@@ -1187,7 +1187,7 @@
               <div class="vsl-volume-slider-box" id="vslVolumeSliderBox">
                 <input type="range" class="vsl-volume-slider" id="vslVolumeSlider" min="0" max="1" step="0.02" value="1" aria-label="Controle de volume" title="Volume">
               </div>
-              <button class="vsl-sound-btn" id="vslSoundBtn" type="button" aria-label="Controle de volume" title="Ajustar som" onclick="handleVslSoundBtnClick(event)">
+              <button class="vsl-sound-btn" id="vslSoundBtn" type="button" aria-expanded="false" aria-controls="vslVolumeSliderBox" aria-label="Controle de volume" title="Ajustar som" onclick="handleVslSoundBtnClick(event)">
                 <!-- High volume icon -->
                 <svg id="vslSoundIconHigh" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                 <!-- Low volume icon -->
@@ -1316,6 +1316,9 @@
           </div>
         </li>
       </ol>
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero entrar agora</a>
+      </div>
     </div>
   </section>
 
@@ -1361,6 +1364,9 @@
           </li>
         </ol>
       </div>
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Entrar na comunidade Imobiturbo</a>
+      </div>
     </div>
   </section>
 
@@ -1398,6 +1404,9 @@
             <p>Você entra em ação quando o cliente já está qualificado para agendar a visita presencial, apresentar o imóvel e assinar o contrato.</p>
           </div>
         </div>
+        <div class="section-cta whatsapp-cta">
+          <a class="btn" href="#assinatura">Quero aumentar meu VGV</a>
+        </div>
       </div>
     </div>
   </section>
@@ -1434,6 +1443,7 @@
           </div>
         </div>
       </div>
+      <div class="section-cta"><a class="btn" href="#assinatura">Quero aprender e aplicar o método</a></div>
       <div class="exercise panel">
         <img src="assets/emoji-apple-clipboard.png" alt="Plano de execução rápida" class="section-emoji" width="32" height="32">
         <h3>Plano de Execução Rápida</h3>
@@ -1486,6 +1496,9 @@
           </div>
         </div>
       </div>
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero entrar com suporte</a>
+      </div>
     </div>
   </section>
 
@@ -1505,22 +1518,24 @@
         <div class="authority-copy">
           <h3 class="founder-name">Natan Pimentel</h3>
           <p class="founder-role">Fundador da Imobiturbo · Engenheiro de Software</p>
-          <p class="founder-bio">Engenheiro de software e especialista em tecnologia comercial para o mercado imobiliário. Construiu a infraestrutura de dados e inteligência artificial que movimentou mais de meio bilhão de reais em vendas de imóveis. Criou a Imobiturbo para colocar a mesma tecnologia de grandes incorporadoras na mão de corretores autônomos e imobiliárias que buscam alta performance sem complicação.</p>
+          <ul class="founder-highlights">
+            <li>
+              <strong>+R$ 500M em VGV gerado</strong>
+              <span>Vendas de alunos e assessorados com a metodologia e as ferramentas da Imobiturbo.</span>
+            </li>
+            <li>
+              <strong>+1.200 corretores e imobiliárias treinados</strong>
+              <span>Método aplicado por profissionais em todos os estados do Brasil.</span>
+            </li>
+            <li>
+              <strong>Tecnologia própria e IA pronta para usar</strong>
+              <span>Software feito para a rotina do mercado imobiliário brasileiro.</span>
+            </li>
+          </ul>
         </div>
-        <ul class="evidence-list authority-evidence">
-          <li>
-            <strong>+R$ 500M em VGV Gerado</strong>
-            <span>Volume geral de vendas transacionado por alunos e assessorados aplicando a metodologia e ferramentas da Imobiturbo.</span>
-          </li>
-          <li>
-            <strong>+1.200 Corretores e Imobiliárias Treinados</strong>
-            <span>Profissionais ativos em todos os estados do Brasil utilizando a esteira comercial e a IA para fechar negócios.</span>
-          </li>
-          <li>
-            <strong>Tecnologia Proprietária e IA Pronta para Usar</strong>
-            <span>Software construído sob medida para o ciclo e as peculiaridades do mercado imobiliário brasileiro.</span>
-          </li>
-        </ul>
+      </div>
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero entrar na comunidade</a>
       </div>
     </div>
   </section>
@@ -1680,6 +1695,9 @@
       </div>
 
       
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero vender mais imóveis</a>
+      </div>
     </div>
   </section>
 
@@ -1711,6 +1729,9 @@
             <li>Não está disposto a tirar 30 minutos para colocar o sistema para rodar.</li>
           </ul>
         </div>
+      </div>
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero fazer parte da comunidade</a>
       </div>
     </div>
   </section>
@@ -1849,6 +1870,8 @@
         </div>
       </div>
 
+      <div class="section-cta"><a class="btn" href="#planos">Quero garantir meu acesso e os bônus</a></div>
+
       <!-- FECHAMENTO DE ALTA CONVERSÃO: IF ALL & TWO CHOICES -->
       <div class="brunson-closing-wrap">
         <div class="if-all-container panel tinted">
@@ -1868,6 +1891,8 @@
             </li>
           </ul>
         </div>
+
+        <div class="section-cta"><a class="btn" href="#planos">Quero entrar na comunidade</a></div>
 
         <div class="two-choices-container">
           <h3 class="two-choices-title">Você tem exatamente duas escolhas agora:</h3>
@@ -1932,6 +1957,9 @@
         </details>
       </div>
       
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero entrar agora</a>
+      </div>
     </div>
   </section>
 
@@ -3696,6 +3724,7 @@
       const soundIconOff = document.getElementById('vslSoundIconOff');
 
       if (!video) return;
+      revealVslControls();
 
       if (!vslStarted) {
         vslStarted = true;
@@ -3787,11 +3816,13 @@
 
     let volumeCloseTimer = null;
 
-    function scheduleVolumeAutoClose(delayMs = 3500) {
+    function scheduleVolumeAutoClose(delayMs = 2500) {
       if (volumeCloseTimer) clearTimeout(volumeCloseTimer);
       volumeCloseTimer = setTimeout(() => {
         const wrap = document.getElementById('vslVolumeWrap');
         if (wrap) wrap.classList.remove('is-open');
+        document.getElementById('vslFacade')?.classList.remove('has-user-active');
+        document.getElementById('vslSoundBtn')?.setAttribute('aria-expanded', 'false');
       }, delayMs);
     }
 
@@ -3802,17 +3833,24 @@
       }
     }
 
+    function revealVslControls() {
+      document.getElementById('vslFacade')?.classList.add('has-user-active');
+      scheduleVolumeAutoClose();
+    }
+
     function handleVslSoundBtnClick(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       const wrap = document.getElementById('vslVolumeWrap');
       const video = document.getElementById('vslVideo');
       if (!wrap || !video) return;
+      revealVslControls();
+      document.getElementById('vslSoundBtn').setAttribute('aria-expanded', 'true');
 
       // Se o vídeo ainda não começou com áudio, inicia do começo unmuted
       if (!vslStarted) {
         playVslVideo(e);
         wrap.classList.add('is-open');
-        scheduleVolumeAutoClose(4000);
+        scheduleVolumeAutoClose();
         return;
       }
 
@@ -3823,11 +3861,11 @@
           const targetVol = lastNonZeroVolume > 0 ? lastNonZeroVolume : 1.0;
           setVslVolume(targetVol);
         }
-        scheduleVolumeAutoClose(4000);
+        scheduleVolumeAutoClose();
       } else {
         // Se o seletor já está aberto, clicar no botão alterna mudo / com som
         toggleVslAudio(e);
-        scheduleVolumeAutoClose(3000);
+        scheduleVolumeAutoClose();
       }
     }
 
@@ -3861,12 +3899,12 @@
         slider.addEventListener('input', function(e) {
           e.stopPropagation();
           setVslVolume(this.value, false);
-          scheduleVolumeAutoClose(4500);
+          scheduleVolumeAutoClose();
         });
         slider.addEventListener('change', function(e) {
           e.stopPropagation();
           setVslVolume(this.value, false);
-          scheduleVolumeAutoClose(3500);
+          scheduleVolumeAutoClose();
         });
         slider.addEventListener('click', function(e) {
           e.stopPropagation();
@@ -3876,45 +3914,31 @@
           cancelVolumeAutoClose();
         });
         slider.addEventListener('mouseup', function(e) {
-          scheduleVolumeAutoClose(3500);
+          scheduleVolumeAutoClose();
         });
         slider.addEventListener('touchstart', function(e) {
           e.stopPropagation();
           cancelVolumeAutoClose();
         }, { passive: true });
         slider.addEventListener('touchend', function() {
-          scheduleVolumeAutoClose(3500);
+          scheduleVolumeAutoClose();
         });
       }
 
-      if (wrap) {
-        wrap.addEventListener('mouseenter', cancelVolumeAutoClose);
-        wrap.addEventListener('mouseleave', function() {
-          if (wrap.classList.contains('is-open')) {
-            scheduleVolumeAutoClose(1200);
-          }
-        });
-      }
-
-      // Fecha o seletor expandido ao clicar fora
       document.addEventListener('click', function(e) {
-        if (wrap && wrap.classList.contains('is-open') && !wrap.contains(e.target)) {
+        if (wrap && !wrap.contains(e.target)) {
           wrap.classList.remove('is-open');
+          document.getElementById('vslSoundBtn').setAttribute('aria-expanded', 'false');
         }
       });
 
-      // Suporte a toque no player para revelar o botão temporariamente
-      let facadeTouchTimer = null;
       if (facade) {
-        facade.addEventListener('touchstart', function(e) {
-          if (!wrap || !wrap.contains(e.target)) {
-            facade.classList.add('has-user-active');
-            if (facadeTouchTimer) clearTimeout(facadeTouchTimer);
-            facadeTouchTimer = setTimeout(() => {
-              facade.classList.remove('has-user-active');
-            }, 4000);
+        facade.addEventListener('keydown', function(e) {
+          if (e.target === facade && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            playVslVideo(e);
           }
-        }, { passive: true });
+        });
       }
 
       if (video) {
