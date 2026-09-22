@@ -1,6 +1,6 @@
 // Cloudflare Pages Function: /api/checkout
 // Pix transparente exclusivamente pelo AbacatePay.
-// Cartão legado via Asaas, até a migração para Stripe Elements.
+// Cartão legado via Asaas; vagas-v2 usa o checkout Hotmart diretamente.
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
