@@ -2967,7 +2967,8 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .btn { padding-inline: 20px; font-size: 15px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-cta-below .btn, .vsl-play-btn-circle, .vsl-ripple-ring, .vsl-mouse-anim, .vsl-click-sparks { animation: none; }
+  /* The VSL preview intentionally stays animated; keep the exception scoped to it. */
+  .hero-cta-below .btn { animation: none; }
 }
 
 /* ==========================================================================
