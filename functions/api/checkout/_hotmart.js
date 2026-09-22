@@ -25,7 +25,7 @@ export function parseHotmartEvent(payload) {
   // COMPLETE follows APPROVED after the guarantee period. It is not a renewal.
   // Canceling the subscription stops future charges, not the already paid term.
   const action = payload.event === 'PURCHASE_APPROVED' ? 'activate'
-    : ['PURCHASE_REFUNDED', 'PURCHASE_CHARGEBACK'].includes(payload.event) ? 'cancel' : 'ignore';
+    : ['PURCHASE_REFUNDED', 'PURCHASE_CHARGEBACK'].includes(payload.event) ? 'review' : 'ignore';
   if (action === 'ignore') return { action };
   const purchase = data.purchase || {};
   const plan = OFFERS[purchase.offer?.code];

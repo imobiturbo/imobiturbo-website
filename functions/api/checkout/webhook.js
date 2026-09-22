@@ -44,6 +44,8 @@ export async function onRequestPost(context) {
       try { hotmart = parseHotmartEvent(payload); }
       catch { return Response.json({ ok: false, error: 'hotmart_invalid_purchase' }, { status: 422 }); }
       if (hotmart.action === 'ignore') return Response.json({ ok: true, status: 'ignored_event' });
+      // OS policy: refunds/chargebacks are reviewed manually; Hub records the reversal.
+      if (hotmart.action === 'review') return Response.json({ ok: true, status: 'manual_review' });
     }
 
     const clientIp =

@@ -40,9 +40,9 @@ test('an unpaid cancellation and subscription cancellation do not revoke paid ac
   }
 });
 
-test('refunds are identified by transaction and unverified approval status is ignored', async () => {
+test('refunds require manual review and unverified approval status is ignored', async () => {
   const { parseHotmartEvent } = await helper;
-  assert.equal(parseHotmartEvent({ ...paid(), event: 'PURCHASE_REFUNDED' }).action, 'cancel');
+  assert.equal(parseHotmartEvent({ ...paid(), event: 'PURCHASE_REFUNDED' }).action, 'review');
   const event = paid(); event.event = 'PURCHASE_DELAYED'; event.data.purchase.status = 'APPROVED';
   assert.equal(parseHotmartEvent(event).action, 'ignore');
 });
