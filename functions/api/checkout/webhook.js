@@ -9,6 +9,7 @@ import {
   provisionCommunityMembership,
 } from "./_notifications.js";
 import { dispatchVerifiedPurchaseToHub } from "./_tracking.js";
+import { authenticateHotmart, parseHotmartEvent } from "./_hotmart.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -33,6 +34,24 @@ export async function onRequestPost(context) {
         status: 400,
         headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
       });
+    }
+
+    const isHotmart = Boolean(payload.data?.purchase || /^(PURCHASE_|SUBSCRIPTION_)/.test(payload.event || ''));
+    let hotmart = null;
+    if (isHotmart) {
+      const authStatus = await authenticateHotmart(request, env);
+      if (authStatus !== 200) return Response.json({ ok: false, error: 'hotmart_authentication_failed' }, { status: authStatus });
+      try { hotmart = parseHotmartEvent(payload); }
+      catch { return Response.json({ ok: false, error: 'hotmart_invalid_purchase' }, { status: 422 }); }
+      if (hotmart.action === 'ignore') return Response.json({ ok: true, status: 'ignored_event' });
+      // OS policy: refunds/chargebacks are reviewed manually; Hub records the reversal.
+      if (hotmart.action === 'review') return Response.json({ ok: true, status: 'manual_review' });
+      const notifications = await sendPostPurchaseNotifications({
+        ...hotmart, amountCents: Math.round(hotmart.amount * 100),
+        purchaseProof: { approvedAt: hotmart.approvedAt }, env,
+      });
+      if (!notifications?.crmProvisioned) return Response.json({ ok: false, error: 'community_provisioning_pending' }, { status: 503 });
+      return Response.json({ ok: true, paid: true, duplicate: Boolean(notifications.duplicate) });
     }
 
     const clientIp =
@@ -179,47 +198,7 @@ export async function onRequestPost(context) {
         }
       }
     }
-    // 3. Hotmart Webhook Detection (Pago)
-    else if (
-      ["PURCHASE_APPROVED", "PURCHASE_COMPLETE", "PURCHASE_COMPLETED"].includes(payload.event) ||
-      (payload.data &&
-        payload.data.purchase &&
-        payload.data.purchase.status === "APPROVED")
-    ) {
-      isPaid = true;
-      const data = payload.data || {};
-      const purchase = data.purchase || {};
-      const buyer = data.buyer || {};
-      paymentId = purchase.transaction || payload.id || "";
-      amount = Number(purchase.price?.value || 0);
-      email = buyer.email || "";
-      phone = buyer.checkout_phone || buyer.phone || "";
-      name = buyer.name || "";
-      contentName = data.product?.name || "Comunidade Imobiturbo";
-      const offerCode =
-        purchase.offer?.code ||
-        purchase.offer?.tracking_keys?.offer_code ||
-        purchase.tracking_keys?.offer_code ||
-        "";
-      if (offerCode.toLowerCase().includes("trimestral")) plan = "trimestral";
-      else if (offerCode.toLowerCase().includes("mensal")) plan = "mensal";
-      else plan = "anual";
-    }
-    // 3.1 Hotmart Reembolso / Chargeback / Cancelamento
-    else if (
-      ["PURCHASE_REFUNDED", "PURCHASE_CHARGEBACK", "PURCHASE_CANCELED", "PURCHASE_EXPIRED"].includes(
-        payload.event
-      )
-    ) {
-      isCanceled = true;
-      const data = payload.data || {};
-      const purchase = data.purchase || {};
-      const buyer = data.buyer || {};
-      paymentId = purchase.transaction || payload.id || "";
-      email = buyer.email || "";
-      phone = buyer.checkout_phone || buyer.phone || "";
-      name = buyer.name || "";
-    } else {
+    else {
       // Eventos não-financeiros retornam 200 OK sem disparar compra
       return new Response(
         JSON.stringify({ ok: true, status: "ignored_event", event: payload.event || "unknown" }),

@@ -84,17 +84,17 @@ test("vagas/index.html enforces Dark Mode and annual plan price formatting", () 
 
 });
 
-test("functions/api/checkout/index.js implements primary AbacatePay and fallback Asaas", () => {
+test("functions/api/checkout/index.js retains AbacatePay Pix and legacy Asaas endpoints", () => {
   const funcPath = path.join(root, "functions/api/checkout/index.js");
   const code = fs.readFileSync(funcPath, "utf8");
 
   // Core endpoints
   assert.ok(code.includes("https://api.abacatepay.com/v2/transparents/create"), "Must call AbacatePay transparents");
-  assert.ok(code.includes("https://api.asaas.com/v3/payments"), "Must call Asaas payments fallback");
+  assert.ok(code.includes("https://api.asaas.com/v3/payments"), "Must preserve legacy Asaas card payments");
   assert.ok(code.includes("https://api.asaas.com/v3/customers"), "Must manage Asaas customers");
   assert.ok(code.includes("https://api.asaas.com/v3/payments/"), "Must fetch Asaas Pix QR Code");
 
-  // Timeout and failover mechanics
+  // Endpoint contracts; Pix failure behavior is covered by checkout-pix-provider.test.cjs.
   assert.ok(code.includes("AbortSignal.timeout(5000)"), "Must enforce strict 5s timeout on AbacatePay");
   assert.ok(code.includes("onRequestPost"), "Must export onRequestPost");
   assert.ok(code.includes("onRequestOptions"), "Must export onRequestOptions");

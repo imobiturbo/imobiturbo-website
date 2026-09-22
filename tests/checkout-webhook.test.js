@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, "..");
 const webhookPath = path.join(root, "functions/api/checkout/webhook.js");
 const webhookCode = fs.readFileSync(webhookPath, "utf8");
 
-test("functions/api/checkout/webhook.js supports payment approval and refund/cancellation across gateways", () => {
+test("functions/api/checkout/webhook.js preserves legacy AbacatePay and Asaas event handling", () => {
   // Verifies AbacatePay events
   assert.ok(webhookCode.includes("billing.paid"), "Must support AbacatePay paid");
   assert.ok(webhookCode.includes("billing.refunded"), "Must support AbacatePay refunded");
@@ -19,10 +19,8 @@ test("functions/api/checkout/webhook.js supports payment approval and refund/can
   assert.ok(webhookCode.includes("PAYMENT_REFUNDED"), "Must support Asaas refunded");
   assert.ok(webhookCode.includes("PAYMENT_CHARGEBACK_REQUESTED"), "Must support Asaas chargeback");
 
-  // Verifies Hotmart events
-  assert.ok(webhookCode.includes("PURCHASE_APPROVED"), "Must support Hotmart approved");
-  assert.ok(webhookCode.includes("PURCHASE_REFUNDED"), "Must support Hotmart refunded");
-  assert.ok(webhookCode.includes("PURCHASE_CHARGEBACK"), "Must support Hotmart chargeback");
+  // Hotmart authentication, event handling and idempotent delivery are exercised
+  // behaviorally in checkout-hotmart.test.cjs.
 
   // Verifies automated actions
   assert.ok(webhookCode.includes("provisionCommunityMembership"), "Must import and invoke central provisionCommunityMembership");

@@ -368,6 +368,7 @@ async function provisionCommunityMembership({
   source = "checkout_vagas",
   transactionId,
   amountCents,
+  purchaseProof,
   env = {},
   fetchFn = fetch,
 }) {
@@ -392,7 +393,20 @@ async function provisionCommunityMembership({
       p_amount_cents: typeof amountCents === "number" ? amountCents : undefined,
     };
 
-    const resp = await fetchFn(`${supabaseUrl}/rest/v1/rpc/provision_community_membership`, {
+    let rpc = 'provision_community_membership';
+    if (purchaseProof) {
+      if (!env.COMMUNITY_ORGANIZATION_ID || !purchaseProof.approvedAt || !transactionId) {
+        return { ok: false, error: 'community_purchase_not_configured' };
+      }
+      rpc = 'provision_community_purchase';
+      delete payload.p_action;
+      delete payload.p_source;
+      payload.p_name = name || null;
+      payload.p_phone = phone || null;
+      payload.p_organization_id = env.COMMUNITY_ORGANIZATION_ID;
+      payload.p_approved_at = purchaseProof.approvedAt;
+    }
+    const resp = await fetchFn(`${supabaseUrl}/rest/v1/rpc/${rpc}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -420,6 +434,7 @@ async function sendPostPurchaseNotifications({
   plan = "anual",
   paymentId,
   amountCents,
+  purchaseProof,
   env = {},
   fetchFn = fetch,
 }) {
@@ -454,17 +469,26 @@ async function sendPostPurchaseNotifications({
         source: "checkout_vagas",
         transactionId: paymentId,
         amountCents,
+        purchaseProof,
         env,
         fetchFn,
       });
       if (provResult.ok) {
         crmProvisioned = true;
+        if (purchaseProof && provResult.data?.duplicate) {
+          return { crmProvisioned: true, duplicate: true, emailSent: false, whatsappSent: false, sitesSynced: false, errors: [] };
+        }
       } else {
+        if (purchaseProof) return { crmProvisioned: false, errors: ['community_provisioning_failed'] };
         errors.push(`CRM provisioning error: ${provResult.error || JSON.stringify(provResult.data)}`);
       }
     } catch (err) {
       errors.push(`CRM provisioning exception: ${err.message}`);
     }
+  }
+
+  if (purchaseProof && !crmProvisioned) {
+    return { crmProvisioned: false, errors: ['community_provisioning_failed'] };
   }
 
   // 2. Envio do E-mail Completo via ZeptoMail (Zoho) Ilimitado
