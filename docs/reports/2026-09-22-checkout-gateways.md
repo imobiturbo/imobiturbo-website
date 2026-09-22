@@ -41,6 +41,8 @@ Teste executado na VPS3, somente no sandbox da conta `acct_1QHx1pKoMeVMYJBu`, cu
 - Tentativas de confirmar `fixed_count`, `interval=month`, `count=12` e `count=3`: ambas HTTP 400, `payment_intent_invalid_parameter`, plano de parcelamento não suportado pelo método de pagamento.
 - Nenhuma cobrança real. Esse resultado comprova a falha nesse cenário do sandbox; não certifica capacidades de produção com outras bandeiras/configurações nem testa assinatura com renovação trimestral.
 
+Reteste específico solicitado: **R$ 381 em 3x R$ 127**, na mesma conta BR e com o PaymentMethod oficial de teste `pm_card_br`. PaymentIntent `pi_3UIZFCKoMeVMYJBu0pREddN4`, `amount=38100`, `currency=brl`, `livemode=false`. A criação retornou HTTP 200, mas `available_plans=[]`; a confirmação de `fixed_count/month/3` retornou HTTP 400, `payment_intent_invalid_parameter`, plano não suportado pelo método de pagamento. Consulta posterior: `requires_confirmation`, `amount_received=0`, `latest_charge=null`. Portanto, a compra única nesse valor com parcelamento bancário não funcionou nesse teste. Renovação trimestral não foi testada; não houve cobrança real nem teste de produção.
+
 A documentação pública do Stripe descreve parcelamento por região, incluindo México/MXN e Japão; não fornece um fluxo equivalente de parcelamento brasileiro para este cenário:
 
 - https://docs.stripe.com/payments/installments
