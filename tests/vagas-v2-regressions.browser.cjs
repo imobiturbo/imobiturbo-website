@@ -166,12 +166,27 @@ test('preview notice stays at the top right until click and the cursor visibly e
   });
   assert.ok(frames[0].x - frames[1].x >= 70, 'cursor has a visible outward/inward journey');
   assert.ok(frames[0].opacity < .1 && frames[1].opacity > .9 && frames[2].opacity < .1);
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  for (const selector of ['.vsl-play-btn-circle', '.vsl-mouse-anim']) {
-    assert.equal(await page.locator(selector).evaluate(node => getComputedStyle(node).animationName), 'none');
-  }
   await page.locator('#vslOverlay').click();
   await page.waitForFunction(() => getComputedStyle(document.querySelector('.vsl-autoplay-notice')).visibility === 'hidden');
+});
+
+test('player preview keeps animating when reduced motion is requested', async t => {
+  const page = await visit(t, 390, 'reduce');
+  assert.equal(await page.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches), true);
+  const sample = () => page.evaluate(() =>
+    ['.vsl-play-btn-circle', '.vsl-mouse-anim', '.vsl-ripple-ring', '.vsl-click-sparks'].map(selector => {
+      const animation = document.querySelector(selector).getAnimations()[0];
+      return { selector, state: animation?.playState, time: animation?.currentTime };
+    })
+  );
+  const before = await sample();
+  for (const animation of before) assert.equal(animation.state, 'running', `${animation.selector} stays animated`);
+  await page.waitForTimeout(350);
+  const after = await sample();
+  for (let i = 0; i < after.length; i++) assert.ok(after[i].time > before[i].time + 100, `${after[i].selector} actually advances`);
+  assert.equal(await page.locator('.hero-cta-below .btn').evaluate(node => getComputedStyle(node).animationName), 'none', 'the exception is limited to the player');
+  await page.locator('#vslOverlay').click();
+  await page.waitForFunction(() => getComputedStyle(document.querySelector('#vslOverlay')).visibility === 'hidden');
 });
 
 test('desktop fullscreen keeps playback, separates sound controls, and restores the inline player on exit', async t => {
