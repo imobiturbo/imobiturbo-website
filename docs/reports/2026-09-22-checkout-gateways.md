@@ -11,11 +11,19 @@ Verificação em 22/09/2026:
 - O [changelog oficial de 15/05/2026](https://docs.abacatepay.com/pages/changelog) confirma `QUARTERLY` e Pix Automático para assinaturas, condicionado à habilitação na loja. Partes da referência de criação ainda dizem somente `CARD`; não usar esse trecho antigo para concluir ausência global da funcionalidade.
 - A credencial existente leu o catálogo de produção com HTTP 200. Há produtos recorrentes mensais e trimestrais nos valores corretos; o anual existente tem R$ 957 e precisa de uma oferta nova de R$ 997 para preservar contratos anteriores.
 - Uma tentativa de criar checkout de assinatura mensal, `methods: ["PIX"]`, sem cliente ou dados de pagamento, retornou HTTP 400: `PIX Automático is not available for this store`. Nenhuma cobrança foi paga e nenhuma assinatura foi ativada.
-- O painel foi aberto em uma nova aba CDP, mas está em `/login`. Foi solicitado ao usuário entrar para verificar a habilitação. Chrome e todas as abas permanecem abertos.
+- Após o usuário entrar, a leitura autenticada de `/app/stores/get` retornou HTTP 200 para TRAMA Marketing Digital e Consultoria, em produção (`devMode: false`). Habilitações: `API`, `WITHDRAW`, `PIX_CHARGE`, `PIX_QRCODE`, `V2`, `INSTALLMENTS`, `PIX_OUT`, `BOLETO`, `NEW_REFUND`. `PIX_AUTOMATIC` está ausente.
+- O frontend oficial só disponibiliza Pix para produto recorrente quando a loja contém `PIX_AUTOMATIC`. Não foi encontrado controle de ativação no perfil/edição da loja; a rota `/subscriptions` redireciona ao dashboard. O bloqueio de disponibilidade da conta foi confirmado também pelo painel autenticado.
+- Solicitação de habilitação ao suporte preparada abaixo; envio depende de autorização explícita do usuário para contato externo em seu nome. Chrome e todas as abas permanecem abertos. Nenhuma configuração da loja foi salva.
 - A API documentada exige checkout de assinatura e autorização do pagador; o endpoint transparente avulso atualmente usado não estabelece a recorrência. A integração e os textos só podem ser publicados como Pix Automático após validar essa jornada na loja habilitada.
 - Na retomada: validar habilitação; configurar produto anual correto; trocar o fluxo de Pix para assinatura; tratar `subscription.completed` e `subscription.renewed` com autenticação e idempotência; testar os períodos, recusa da autorização e duplicatas na VPS3 antes da publicação.
 
 Não houve alteração do código de produto, banco ou configuração de cobrança nesta verificação.
+
+### Solicitação preparada para o AbacatePay
+
+Destinatário oficial: `ajuda@abacatepay.com`. Status: não enviada.
+
+> Solicito habilitar Pix Automático (PIX_AUTOMATIC) na loja TRAMA Marketing Digital e Consultoria, CNPJ 47.746.249/0001-04, para assinaturas de R$147/mês, R$357/trimestre e R$997/ano. A API POST /v2/subscriptions/create com methods: ["PIX"] retorna “PIX Automático is not available for this store”. O painel de produção não inclui PIX_AUTOMATIC nas habilitações e redireciona a área de assinaturas para o dashboard. Podem liberar o recurso ou informar os requisitos pendentes?
 
 ## Regra comercial implementada
 
