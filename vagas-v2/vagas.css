@@ -2432,6 +2432,12 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   aspect-ratio: 16 / 9;
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.vsl-stage {
+  position: absolute;
+  inset: 0;
 }
 
 .hero-vsl video {
@@ -2440,6 +2446,33 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   object-fit: cover;
   display: block;
   border-radius: 14px;
+}
+
+.hero-vsl:fullscreen {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  aspect-ratio: auto;
+  border: 0;
+  border-radius: 0;
+  background: #000;
+}
+
+.hero-vsl:fullscreen video {
+  object-fit: contain;
+  border-radius: 0;
+}
+
+/* Keep video, progress and controls together in landscape if device locking fails. */
+@media (orientation: portrait) {
+  .hero-vsl:fullscreen.is-mobile-fullscreen .vsl-stage {
+    inset: auto;
+    top: 50%;
+    left: 50%;
+    width: 100dvh;
+    height: 100dvw;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
 }
 
 /* VTurb-Style Preview Overlay */
@@ -2463,6 +2496,24 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   visibility: hidden;
   pointer-events: none;
 }
+
+.vsl-autoplay-notice {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  background: rgba(14, 16, 13, 0.9);
+  color: #fff;
+  font-size: clamp(10px, 1.1vw, 12px);
+  line-height: 1.35;
+  text-align: left;
+  pointer-events: none;
+}
+
+.vsl-autoplay-notice strong,
+.vsl-autoplay-notice span { display: block; }
+.vsl-autoplay-notice strong { color: var(--lime); }
 
 /* VTurb Smart Autoplay Pure HTML/CSS Component */
 .vsl-smart-autoplay {
@@ -2555,7 +2606,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
     box-shadow: 0 0 25px rgba(212, 255, 83, 0.35), 0 8px 24px rgba(0, 0, 0, 0.5);
   }
   50% {
-    transform: scale(1.08);
+    transform: scale(1.12);
     box-shadow: 0 0 50px rgba(212, 255, 83, 0.75), 0 12px 32px rgba(0, 0, 0, 0.6);
   }
 }
@@ -2572,11 +2623,16 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 
 @keyframes vslMouseCycle {
-  0% {
-    transform: translate(35px, 35px) scale(1);
+  0%, 100% {
+    transform: translate(80px, 65px) scale(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
   }
   24% {
     transform: translate(-10px, -12px) scale(1);
+    opacity: 1;
   }
   36% {
     transform: translate(-10px, -12px) scale(1);
@@ -2587,14 +2643,13 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   52% {
     transform: translate(-10px, -12px) scale(1);
   }
-  70% {
+  64% {
     transform: translate(-10px, -12px) scale(1);
+    opacity: 1;
   }
-  86% {
-    transform: translate(22px, 22px) scale(1);
-  }
-  100% {
-    transform: translate(35px, 35px) scale(1);
+  90% {
+    transform: translate(80px, 65px) scale(1);
+    opacity: 0;
   }
 }
 
@@ -2666,7 +2721,8 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 
 /* Corner Sound & Volume Controller */
-.vsl-volume-wrap {
+.vsl-volume-wrap,
+.vsl-fullscreen-btn {
   position: absolute;
   bottom: 14px;
   right: 14px;
@@ -2683,6 +2739,8 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   min-width: 44px;
   min-height: 44px;
   padding: 0;
+  color: #fff;
+  cursor: pointer;
   z-index: 20;
   opacity: 0;
   pointer-events: none;
@@ -2692,15 +2750,43 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   transition: opacity 0.25s ease, width 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-radius 0.25s ease, padding 0.25s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
 }
 
+.vsl-volume-wrap { right: 66px; }
+.vsl-fullscreen-btn svg { width: 20px; height: 20px; }
+.vsl-fullscreen-btn .vsl-fullscreen-exit,
+.vsl-fullscreen-btn[aria-pressed="true"] .vsl-fullscreen-enter { display: none; }
+.vsl-fullscreen-btn[aria-pressed="true"] .vsl-fullscreen-exit { display: block; }
+
+.vsl-fullscreen-status {
+  position: absolute;
+  bottom: 68px;
+  left: 14px;
+  right: 14px;
+  z-index: 20;
+  margin-inline: auto;
+  max-width: 300px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(14, 16, 13, 0.9);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+  pointer-events: none;
+}
+.vsl-fullscreen-status:empty { display: none; }
+
 /* Click reveals controls for 2.5s; keyboard focus keeps them usable. */
 .vsl-volume-wrap:has(:focus-visible),
 .hero-vsl.has-user-active .vsl-volume-wrap,
+.vsl-fullscreen-btn:focus-visible,
+.hero-vsl.has-user-active .vsl-fullscreen-btn,
 .vsl-volume-wrap.is-open {
   opacity: 1;
   pointer-events: auto;
 }
 
-.vsl-volume-wrap:hover {
+.vsl-volume-wrap:hover,
+.vsl-fullscreen-btn:hover {
   border-color: rgba(212, 255, 83, 0.7);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 16px rgba(212, 255, 83, 0.3);
 }

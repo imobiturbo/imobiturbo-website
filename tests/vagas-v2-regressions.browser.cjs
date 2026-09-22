@@ -1,4 +1,5 @@
 // Execute on VPS3 with its existing Playwright installation. Never submits checkout.
+// The candidate server must support HTTP byte ranges for real MP4 seeking.
 const { test, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -14,8 +15,8 @@ before(async () => {
 });
 after(async () => browser?.close());
 
-async function visit(t, width = 1440, reducedMotion = 'reduce') {
-  const context = await browser.newContext({ viewport: { width, height: 1000 }, reducedMotion });
+async function visit(t, width = 1440, reducedMotion = 'reduce', options = {}) {
+  const context = await browser.newContext({ viewport: { width, height: 1000 }, reducedMotion, ...options });
   t.after(() => context.close());
   const page = await context.newPage();
   page.setDefaultTimeout(15000);
@@ -143,4 +144,108 @@ test('CTA pulse respects reduced motion', async t => {
     const animation = await page.locator('.hero-cta-below .btn').evaluate(node => getComputedStyle(node).animationName);
     assert.equal(animation, reducedMotion === 'reduce' ? 'none' : 'ctaPulse');
   }
+});
+
+test('preview notice stays at the top right until click and the cursor visibly enters and leaves', async t => {
+  const page = await visit(t, 390, 'no-preference');
+  const notice = page.locator('.vsl-autoplay-notice');
+  assert.equal(await notice.innerText(), 'Seu vídeo começou\nClique para ouvir');
+  const player = await page.locator('#vslFacade').boundingBox();
+  const badge = await notice.boundingBox();
+  assert.ok(badge.x > player.x + player.width / 2 && badge.x + badge.width < player.x + player.width);
+  assert.ok(badge.y >= player.y && badge.y < player.y + 25);
+  if (artifacts) await page.locator('#vslFacade').screenshot({ path: path.join(artifacts, 'player-preview-mobile.png'), animations: 'allow' });
+  const frames = await page.locator('.vsl-mouse-anim').evaluate(node => {
+    const animation = node.getAnimations()[0];
+    animation.pause();
+    return [0, 1000, 2799].map(time => {
+      animation.currentTime = time;
+      const style = getComputedStyle(node);
+      return { x: new DOMMatrixReadOnly(style.transform).m41, opacity: +style.opacity };
+    });
+  });
+  assert.ok(frames[0].x - frames[1].x >= 70, 'cursor has a visible outward/inward journey');
+  assert.ok(frames[0].opacity < .1 && frames[1].opacity > .9 && frames[2].opacity < .1);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  for (const selector of ['.vsl-play-btn-circle', '.vsl-mouse-anim']) {
+    assert.equal(await page.locator(selector).evaluate(node => getComputedStyle(node).animationName), 'none');
+  }
+  await page.locator('#vslOverlay').click();
+  await page.waitForFunction(() => getComputedStyle(document.querySelector('.vsl-autoplay-notice')).visibility === 'hidden');
+});
+
+test('desktop fullscreen keeps playback, separates sound controls, and restores the inline player on exit', async t => {
+  const page = await visit(t);
+  await page.locator('#vslOverlay').click();
+  await page.waitForFunction(() => !document.querySelector('#vslVideo').paused);
+  const sound = await page.locator('#vslVolumeWrap').boundingBox();
+  const fullscreen = await page.locator('#vslFullscreenBtn').boundingBox();
+  assert.ok(sound.x + sound.width < fullscreen.x, 'volume is left of fullscreen');
+  assert.ok(fullscreen.width >= 44 && fullscreen.height >= 44);
+  await page.locator('#vslFullscreenBtn').click();
+  await page.waitForFunction(() => document.fullscreenElement?.id === 'vslFacade');
+  assert.equal(await page.locator('#vslFullscreenBtn').getAttribute('aria-label'), 'Sair da tela cheia');
+  assert.equal(await page.locator('#vslVideo').evaluate(video => video.paused), false);
+  assert.equal(await page.locator('.vsl-stage').evaluate(node => getComputedStyle(node).transform), 'none');
+  if (artifacts) await page.screenshot({ path: path.join(artifacts, 'player-fullscreen-desktop.png') });
+  await page.waitForTimeout(2850);
+  assert.equal(await page.locator('#vslFullscreenBtn').evaluate(node => getComputedStyle(node).opacity), '0');
+  await page.mouse.move(300, 300);
+  await page.locator('#vslFullscreenBtn').click();
+  await page.waitForFunction(() => !document.fullscreenElement);
+  assert.equal(await page.locator('#vslFullscreenBtn').getAttribute('aria-pressed'), 'false');
+  assert.ok((await page.locator('#vslFacade').boundingBox()).width <= 740);
+});
+
+test('mobile fullscreen remains landscape when orientation lock is unavailable and rotated seeking works', async t => {
+  const page = await visit(t, 390, 'reduce', { isMobile: true, hasTouch: true, viewport: { width: 390, height: 844 } });
+  await page.evaluate(() => {
+    window.orientationRequests = [];
+    Object.defineProperty(screen.orientation, 'lock', { configurable: true, value: async mode => {
+      window.orientationRequests.push(mode);
+      throw new DOMException('Lock unavailable in this browser', 'NotSupportedError');
+    } });
+  });
+  await page.locator('#vslOverlay').tap();
+  await page.waitForFunction(() => document.querySelector('#vslVideo').readyState >= 2);
+  // Reveal controls again if media loading lasted longer than the reveal window.
+  await page.locator('#vslVideo').tap();
+  await page.locator('#vslFullscreenBtn').tap();
+  await page.waitForFunction(() => document.fullscreenElement?.id === 'vslFacade');
+  assert.deepEqual(await page.evaluate(() => window.orientationRequests), ['landscape']);
+  const transform = await page.locator('.vsl-stage').evaluate(node => {
+    const matrix = new DOMMatrixReadOnly(getComputedStyle(node).transform);
+    return { a: matrix.a, b: matrix.b, width: node.clientWidth, height: node.clientHeight };
+  });
+  assert.equal(transform.a, 0);
+  assert.equal(transform.b, 1, 'portrait device rotates the stage 90 degrees');
+  assert.ok(transform.width > transform.height, 'video and controls use a landscape stage');
+  await page.locator('#vslVideo').evaluate(video => video.pause());
+  const progress = await page.locator('#vslSmartProgress').boundingBox();
+  await page.touchscreen.tap(progress.x + progress.width / 2, progress.y + progress.height * .5);
+  await page.waitForFunction(() => {
+    const video = document.querySelector('#vslVideo');
+    return Math.abs(video.currentTime / video.duration - Math.pow(.5, 1 / .42)) < .02;
+  });
+  const ratio = await page.locator('#vslVideo').evaluate(video => video.currentTime / video.duration);
+  assert.ok(Math.abs(ratio - Math.pow(.5, 1 / .42)) < .02, 'rotated seek follows the visible bar');
+  if (artifacts) await page.screenshot({ path: path.join(artifacts, 'player-fullscreen-mobile.png') });
+  // A native exit, such as the browser back button, must restore the inline layout too.
+  await page.evaluate(() => document.exitFullscreen());
+  await page.waitForFunction(() => !document.querySelector('#vslFacade').classList.contains('is-mobile-fullscreen'));
+  assert.equal(await page.locator('.vsl-stage').evaluate(node => getComputedStyle(node).transform), 'none');
+});
+
+test('rejected fullscreen leaves the player usable without an unhandled rejection', async t => {
+  const page = await visit(t);
+  await page.evaluate(() => {
+    document.querySelector('#vslFacade').requestFullscreen = () => Promise.reject(new TypeError('Fullscreen denied'));
+  });
+  await page.locator('#vslOverlay').click();
+  await page.locator('#vslFullscreenBtn').click();
+  await page.waitForFunction(() => document.querySelector('#vslFullscreenStatus').textContent.length > 0);
+  assert.equal(await page.evaluate(() => document.fullscreenElement), null);
+  assert.equal(await page.locator('#vslFullscreenBtn').getAttribute('aria-pressed'), 'false');
+  await page.locator('#vslVideo').click();
+  assert.equal(await page.locator('#vslVideo').evaluate(video => video.paused), true);
 });

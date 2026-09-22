@@ -584,7 +584,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260922-layout-1">
+  <link rel="stylesheet" href="./vagas.css?v=20260922-player-2">
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -1153,6 +1153,7 @@
         <!-- VSL Player (VTurb Architecture + Bunny Stream CDN) -->
         <div class="hero-mock">
           <div class="hero-vsl" id="vslFacade" tabindex="0" role="group" aria-label="Apresentação da Comunidade Imobiturbo. Pressione Enter para reproduzir ou pausar." onclick="playVslVideo(event)">
+            <div class="vsl-stage">
             <!-- Muted Video Autoplay Preview: starts instantly with zero lag -->
             <video id="vslVideo" playsinline muted autoplay loop preload="auto" poster="./assets/hero-vsl-poster.webp" src="./assets/vsl-preview.mp4">
               Seu navegador não suporta vídeos em HTML5.
@@ -1160,6 +1161,10 @@
 
             <!-- VTurb-Style Pure HTML/CSS Smart Autoplay Overlay -->
             <div class="vsl-overlay" id="vslOverlay" aria-label="Clique para ouvir com som">
+              <div class="vsl-autoplay-notice">
+                <strong>Seu vídeo começou</strong>
+                <span>Clique para ouvir</span>
+              </div>
               <div class="vsl-smart-autoplay">
                 <div class="vsl-play-btn-circle">
                   <div class="vsl-ripple-ring"></div>
@@ -1195,6 +1200,12 @@
                 <!-- Muted icon -->
                 <svg id="vslSoundIconMuted" style="display:none;" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
               </button>
+            </div>
+            <button class="vsl-fullscreen-btn" id="vslFullscreenBtn" type="button" aria-label="Entrar em tela cheia" aria-pressed="false" title="Entrar em tela cheia" onclick="toggleVslFullscreen(event)">
+              <svg class="vsl-fullscreen-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg>
+              <svg class="vsl-fullscreen-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h5V3m8 0v5h5M8 21v-5H3m18 0h-5v5"/></svg>
+            </button>
+            <div class="vsl-fullscreen-status" id="vslFullscreenStatus" role="status"></div>
             </div>
           </div>
         </div>
@@ -3706,8 +3717,11 @@
           e.stopPropagation();
           if (!video || !video.duration) return;
           const rect = progressBar.getBoundingClientRect();
-          const clickX = e.clientX - rect.left;
-          const visualRatio = Math.max(0, Math.min(1, clickX / rect.width));
+          const rotated = document.fullscreenElement?.id === 'vslFacade'
+            && document.fullscreenElement.classList.contains('is-mobile-fullscreen')
+            && matchMedia('(orientation: portrait)').matches;
+          const position = rotated ? (e.clientY - rect.top) / rect.height : (e.clientX - rect.left) / rect.width;
+          const visualRatio = Math.max(0, Math.min(1, position));
           // Inverse of r^0.42: r = visualRatio^(1 / 0.42)
           const realRatio = Math.pow(visualRatio, 1 / 0.42);
           video.currentTime = realRatio * video.duration;
@@ -3838,6 +3852,71 @@
       scheduleVolumeAutoClose();
     }
 
+    let vslOrientationRequested = false;
+
+    function syncVslFullscreen() {
+      const facade = document.getElementById('vslFacade');
+      const button = document.getElementById('vslFullscreenBtn');
+      const active = document.fullscreenElement === facade;
+      const label = active ? 'Sair da tela cheia' : 'Entrar em tela cheia';
+      button.setAttribute('aria-label', label);
+      button.setAttribute('aria-pressed', String(active));
+      button.title = label;
+      if (!active) {
+        facade.classList.remove('is-mobile-fullscreen');
+        if (vslOrientationRequested) {
+          screen.orientation?.unlock?.();
+          vslOrientationRequested = false;
+        }
+      }
+      revealVslControls();
+    }
+
+    async function toggleVslFullscreen(e) {
+      e.stopPropagation();
+      const facade = document.getElementById('vslFacade');
+      const video = document.getElementById('vslVideo');
+      const status = document.getElementById('vslFullscreenStatus');
+      status.textContent = '';
+      revealVslControls();
+      try {
+        if (document.fullscreenElement === facade) {
+          await document.exitFullscreen();
+        } else if (facade.requestFullscreen) {
+          const mobile = matchMedia('(pointer: coarse)').matches;
+          facade.classList.toggle('is-mobile-fullscreen', mobile);
+          await facade.requestFullscreen();
+          if (mobile && document.fullscreenElement === facade && screen.orientation?.lock) {
+            vslOrientationRequested = true;
+            try {
+              await screen.orientation.lock('landscape');
+            } catch (_) {
+              // Portrait devices still get a landscape stage when locking is unavailable.
+            }
+            // An exit can happen before the asynchronous orientation request settles.
+            if (document.fullscreenElement !== facade) screen.orientation?.unlock?.();
+          }
+        } else if (video.webkitEnterFullscreen) {
+          // iPhone versions without element fullscreen use the native video player.
+          video.webkitEnterFullscreen();
+        } else {
+          status.textContent = 'Seu navegador não permite abrir este vídeo em tela cheia.';
+        }
+      } catch (_) {
+        if (document.fullscreenElement !== facade) facade.classList.remove('is-mobile-fullscreen');
+        status.textContent = 'Não foi possível abrir a tela cheia. Tente novamente.';
+      }
+    }
+
+    function setupVslFullscreen() {
+      document.addEventListener('fullscreenchange', syncVslFullscreen);
+      const facade = document.getElementById('vslFacade');
+      facade.addEventListener('pointermove', e => {
+        if (e.pointerType === 'mouse' && document.fullscreenElement === facade) revealVslControls();
+      });
+      document.getElementById('vslVideo').addEventListener('webkitendfullscreen', revealVslControls);
+    }
+
     function handleVslSoundBtnClick(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       const wrap = document.getElementById('vslVolumeWrap');
@@ -3950,10 +4029,12 @@
       document.addEventListener('DOMContentLoaded', () => {
         initVslPlayer();
         setupVolumeSlider();
+        setupVslFullscreen();
       });
     } else {
       initVslPlayer();
       setupVolumeSlider();
+      setupVslFullscreen();
     }
 
     function scrollToPlans() {
