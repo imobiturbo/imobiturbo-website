@@ -6,7 +6,9 @@ Status: implementação parcial em branch; não publicada.
 
 Natan confirmou o item 1: maior compromisso com o período completo dá maior desconto. No cartão, anual = R$ 1.164 em 12x de R$ 97; trimestral = R$ 381 em 3x de R$ 127; mensal = R$ 147. Não substituir o anual/trimestral por mensalidade recorrente cancelável. A definição comercial não é mais uma pendência.
 
-O pedido de meios de pagamento permanece Pix pelo AbacatePay e cartão pelo Stripe Elements. Há um bloqueio técnico do parcelamento Stripe, descrito abaixo; trocar o gateway do cartão depende de decisão de Natan.
+O pedido de meios de pagamento permanece Pix pelo AbacatePay e cartão pelo Stripe Elements. Natan esclareceu que espera 3x R$ 127 com renovação a cada três meses. O teste anterior usou uma compra avulsa e não avaliou essa renovação. A conclusão de que esse teste inviabilizava o modelo de assinatura foi excessiva e está retirada. Não há autorização nem justificativa suficiente para trocar o gateway com base apenas nele.
+
+É necessário distinguir o mecanismo financeiro: três cobranças mensais de R$ 127 com compromisso trimestral podem usar Stripe Billing; uma venda de R$ 381 parcelada pelo banco, repetida a cada trimestre, continua dependendo do suporte a parcelamento bancário. A frequência da renovação do compromisso não altera essa diferença. Não transformar silenciosamente uma modalidade na outra nem prometer recebimento antecipado usando cobranças mensais.
 
 A documentação do AbacatePay restringe assinaturas automáticas a CARD. Pix transparente paga um período de acesso; renovar exige nova cobrança. Referência: https://docs.abacatepay.com/pages/subscriptions/create
 
@@ -18,7 +20,7 @@ A documentação do AbacatePay restringe assinaturas automáticas a CARD. Pix tr
 - Cliente REST Stripe com versão fixa, idempotência obrigatória em escritas, recusa de dados brutos de cartão e erros sem detalhes privados do provedor.
 - Verificador de assinatura Stripe para o corpo original, com tolerância de 5 minutos e suporte à rotação de secrets.
 
-O helper Stripe ainda não está conectado à rota de checkout. O formulário continua usando o cartão legado até a resolução do suporte a parcelamento; nenhuma mudança desta branch chegou à produção.
+O helper Stripe ainda não está conectado à rota de checkout. O formulário continua usando o cartão legado até a validação do fluxo de assinatura e renovação pedido; nenhuma mudança desta branch chegou à produção.
 
 ## Evidência
 
@@ -30,14 +32,14 @@ Leitura autenticada do catálogo Stripe em teste: HTTP 200. As duas configuraç�
 
 AbacatePay: leitura autenticada de loja e webhooks com HTTP 200. Há webhooks para Hub Cashflow, Mimiu e OS; não foi encontrado webhook da landing page. A liberação de acesso deverá ser rastreada pelo fluxo do OS antes de ativar a integração, evitando dois emissores de boas-vindas ou acessos duplicados.
 
-## Prova de parcelamento Stripe
+## Alcance do teste de parcelamento Stripe
 
 Teste executado na VPS3, somente no sandbox da conta `acct_1QHx1pKoMeVMYJBu`, cujo país retornado pela API é `BR`. Versão da API: `2025-06-30.basil`.
 
 - Criado PaymentIntent de teste `pi_3UIYnqKoMeVMYJBu1Cwx62f0`, BRL 116400, cartão, `installments.enabled=true`; `livemode=false`.
 - Associado o PaymentMethod oficial de teste `pm_card_br`. Retorno `requires_confirmation`, `available_plans=[]`.
 - Tentativas de confirmar `fixed_count`, `interval=month`, `count=12` e `count=3`: ambas HTTP 400, `payment_intent_invalid_parameter`, plano de parcelamento não suportado pelo método de pagamento.
-- Nenhuma cobrança real. Esse resultado comprova a falha nesse cenário do sandbox; não certifica capacidades de produção com outras bandeiras/configurações.
+- Nenhuma cobrança real. Esse resultado comprova a falha nesse cenário do sandbox; não certifica capacidades de produção com outras bandeiras/configurações nem testa assinatura com renovação trimestral.
 
 A documentação pública do Stripe descreve parcelamento por região, incluindo México/MXN e Japão; não fornece um fluxo equivalente de parcelamento brasileiro para este cenário:
 
@@ -45,14 +47,14 @@ A documentação pública do Stripe descreve parcelamento por região, incluindo
 - https://docs.stripe.com/payments/mx-installments
 - https://docs.stripe.com/testing
 
-Alternativa concreta apresentada a Natan: checkout de cartão hospedado no AbacatePay, `methods=["CARD"]`, compra avulsa do período, `card.maxInstallments=12` para R$ 1.164 anual e `=3` para R$ 381 trimestral. Os produtos não devem ter ciclo recorrente. O cliente escolhe as parcelas na página do provedor. Isso altera o requisito de Stripe Elements embutido, portanto aguarda decisão; não foi implementado nem publicado sem essa decisão.
+Foi apresentada uma alternativa de checkout hospedado do AbacatePay. A recomendação de troca está retirada: o teste realizado não respondeu à dúvida sobre renovação trimestral. A direção continua sendo Stripe Elements para cartão. Nenhum checkout alternativo foi implementado ou publicado.
 
 Suporte documentado do AbacatePay: https://docs.abacatepay.com/pages/payment/installments
 
 ## Trabalho restante
 
-1. Resolver gateway capaz do parcelamento confirmado, preservando os valores e a compra do período completo.
-2. Implementar a interface de cartão escolhida, confirmação/3DS, retorno e estado pendente.
+1. Validar o mecanismo financeiro da assinatura com renovação trimestral/anual, preservando o compromisso contratado e a forma de recebimento esperada.
+2. Implementar Stripe Elements, confirmação/3DS, retorno e estado pendente conforme essa validação.
 3. Verificar e integrar os eventos pagos/renovados ao provisionamento canônico do OS, com autenticação e idempotência.
 4. Configurar credencial Stripe de produção válida e endpoint de webhook; testar primeiro no sandbox.
 5. Validar jornadas de Pix/cartão na VPS3, revisar, integrar, publicar e conferir produção.
