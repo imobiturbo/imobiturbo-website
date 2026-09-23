@@ -30,7 +30,7 @@ for (const mode of ['widget', 'fallback', 'real-widget']) test(`unified checkout
     const request = route.request();
     const url = new URL(request.url());
     if (request.method() !== 'GET') { posts++; return route.abort(); }
-    if (/site-tracking|\/api\//.test(url.pathname)) return route.fulfill({ contentType: 'text/javascript', body: '' });
+    if (url.origin === origin && /site-tracking|\/api\//.test(url.pathname)) return route.fulfill({ contentType: 'text/javascript', body: '' });
     if (url.hostname === 'pay.hotmart.com' && mode !== 'real-widget') { targetUrl = url; return route.fulfill({ contentType: 'text/html', body: 'Checkout de teste interceptado' }); }
     if (url.href === 'https://static.hotmart.com/checkout/widget.min.js' && mode === 'widget') {
       return route.fulfill({ contentType: 'text/javascript', body: `window.jQuery={fancybox:{}};document.getElementById('hotmartCheckoutLink').addEventListener('click',function(e){e.preventDefault();window.widgetTarget=this.href;window.dialogStillOpen=document.getElementById('checkoutModalOverlay').open;});` });
