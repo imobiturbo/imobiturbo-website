@@ -50,12 +50,12 @@ async function visit(t, width = 390, reducedMotion = 'reduce') {
   t.after(() => assert.deepEqual(errors, [], 'no uncaught browser errors'));
   await context.route('**/*', route => {
     const url = new URL(route.request().url());
-    if (url.origin !== new URL(baseURL).origin || route.request().method() !== 'GET') return route.abort();
+    if (url.origin !== new URL(baseURL).origin || route.request().method() !== 'GET' || /\.(mp4|m3u8)$/.test(url.pathname)) return route.abort();
     // The public tracking script is not needed to validate layout or keyboard.
     if (url.pathname.endsWith('/site-tracking.js')) return route.fulfill({ contentType: 'text/javascript', body: '' });
     return route.continue();
   });
-  await page.goto(baseURL, { waitUntil: 'networkidle' });
+  await page.goto(baseURL, { waitUntil: 'load' });
   await page.evaluate(async () => {
     await document.fonts.ready;
     await Promise.all([...document.querySelectorAll('main img')].map(image => {
