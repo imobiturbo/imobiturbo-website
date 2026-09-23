@@ -2,7 +2,7 @@
 
 ## Decisão vigente — checkout único por plano
 
-O usuário autorizou substituir AbacatePay por Hotmart também no Pix. A habilitação pendente do AbacatePay não faz parte da entrega atual. Candidato implementado; validação e publicação desta atualização ainda em andamento.
+O usuário autorizou substituir AbacatePay por Hotmart também no Pix. A habilitação pendente do AbacatePay não faz parte da entrega atual. Implementação validada na VPS3; publicação desta atualização em preparação.
 
 | Plano | Oferta Hotmart | Cartão parcelado | Pix Automático | Renovação |
 | --- | --- | --- | --- | --- |
@@ -17,6 +17,17 @@ Pix Automático foi habilitado e salvo nas configurações de pagamento do produ
 A landing mantém nome, telefone e email e apresenta os termos dos dois meios antes de abrir o widget oficial. Removidos da `/vagas-v2/` os seletores de gateway, CPF local, geração de Pix avulso, polling e fallback para outro gateway. Em dispositivos móveis ou falha do widget, usa o mesmo checkout hospedado. O webhook autenticado aceita as novas ofertas e mantém a concessão por período e transação, inclusive em renovações Pix. O checkout legado de outras páginas não foi alterado.
 
 Regressão reproduzida na VPS3 antes da correção: o helper adicionava `hidePix=1`, ocultando o meio exigido no checkout. Teste direcionado falhou pela presença desse parâmetro. Os testes agora cobrem ambos os meios no mesmo link e aprovações/renovações das novas ofertas. Compra financeira, autorização bancária e renovação futura não são executadas nessa validação.
+
+### Validação da unificação
+
+- VPS3: 57 testes unitários/contratos aprovados, incluindo novas ofertas, renovações Pix, autenticação, duplicatas, períodos e preservação do checkout legado.
+- VPS3: três jornadas aprovadas: widget controlado, fallback hospedado mobile e widget oficial real com seleção de Pix Automático e valor trimestral.
+- VPS3: dois testes de teclado aprovados, incluindo abertura, foco, Escape e retorno ao botão nos três planos.
+- O teste real seleciona Brasil pela interface da Hotmart porque o IP da VPS3 é geolocalizado na França. Permite apenas a leitura de configuração `/api/next/load`, que usa POST; requisições financeiras continuam bloqueadas.
+- Chrome/CDP: anual confirmado em 12x R$ 97 ou Pix Automático R$ 997/ano; trimestral 3x R$ 127 ou R$ 357/trimestre; mensal R$ 147/mês nos dois meios. Nenhuma aba foi fechada.
+- Logs VPS3: `/tmp/community-unified-unit.log`, `/tmp/community-unified-browser.log` (widget controlado e fallback), `/tmp/community-unified-widget-final.log` (widget real aprovado), `/tmp/community-unified-keyboard.log`.
+- As primeiras tentativas de navegador falharam por geolocalização, leitura de configuração bloqueada pelo teste e espera de rede ociosa durante streaming. Não são contadas como aprovações; o teste foi corrigido com a causa identificada.
+- Rollback da página: deployment anterior `042349d1-9e7c-404a-8f7f-8ef9e77c5bd1`. Ofertas anteriores e contratos existentes permanecem intactos.
 
 ## Histórico anterior à decisão de unificar na Hotmart
 
