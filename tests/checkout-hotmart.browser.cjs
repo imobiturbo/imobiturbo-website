@@ -69,7 +69,10 @@ for (const mode of ['widget', 'fallback', 'real-widget']) test(`unified checkout
       console.error('Checkout frame diagnostic:', (await frame.locator('body').innerText()).slice(0,1800));
       throw error;
     });
-    await frame.getByRole('radio', { name: 'Selecionar Pix Automático como método de pagamento', exact: true }).click();
+    await frame.getByRole('radio', { name: 'Selecionar Pix Automático como método de pagamento', exact: true }).click().catch(async error => {
+      console.error('Payment methods diagnostic:', (await frame.locator('body').innerText()).slice(0, 2400));
+      throw error;
+    });
     await frame.getByText('Autorize uma vez a cobrança no app do seu banco e as próximas a gente cuida para você.', { exact: true }).waitFor();
     assert.match(await frame.locator('body').innerText(), /357,00\s*\/ trimestre/);
   } else await page.waitForURL('https://pay.hotmart.com/**');
