@@ -30,7 +30,7 @@ before(async () => {
       fs.createReadStream(file).pipe(response);
     });
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-    baseURL = `http://127.0.0.1:${server.address().port}/vagas/`;
+    baseURL = `http://127.0.0.1:${server.address().port}${process.env.VAGAS_PATH || '/vagas/'}`;
   }
   browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_EXECUTABLE, args: ['--no-sandbox'] });
 });
