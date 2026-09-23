@@ -29,6 +29,9 @@ for (const mode of ['widget', 'fallback', 'real-widget']) test(`unified checkout
   await context.route('**/*', route => {
     const request = route.request();
     const url = new URL(request.url());
+    // Hotmart loads localized offer data with POST after a country change.
+    // This reads checkout configuration; purchase/authorization POSTs stay blocked.
+    if (mode === 'real-widget' && request.method() === 'POST' && url.hostname === 'pay.hotmart.com' && url.pathname === '/api/next/load') return route.continue();
     if (request.method() !== 'GET') { posts++; return route.abort(); }
     if (url.origin === origin && /site-tracking|\/api\//.test(url.pathname)) return route.fulfill({ contentType: 'text/javascript', body: '' });
     if (url.hostname === 'pay.hotmart.com' && mode !== 'real-widget') { targetUrl = url; return route.fulfill({ contentType: 'text/html', body: 'Checkout de teste interceptado' }); }
