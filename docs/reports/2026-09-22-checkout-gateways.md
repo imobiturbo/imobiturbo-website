@@ -2,7 +2,7 @@
 
 ## Decisão vigente — checkout único por plano
 
-O usuário autorizou substituir AbacatePay por Hotmart também no Pix. A habilitação pendente do AbacatePay não faz parte da entrega atual. Implementação validada na VPS3; publicação desta atualização em preparação.
+O usuário autorizou substituir AbacatePay por Hotmart também no Pix. A habilitação pendente do AbacatePay não faz parte da entrega atual. Publicado em produção em 22/09/2026 e conferido pela jornada real no Chrome. Não houve compra financeira ou autorização bancária de teste.
 
 | Plano | Oferta Hotmart | Cartão parcelado | Pix Automático | Renovação |
 | --- | --- | --- | --- | --- |
@@ -28,6 +28,17 @@ Regressão reproduzida na VPS3 antes da correção: o helper adicionava `hidePix
 - Logs VPS3: `/tmp/community-unified-unit.log`, `/tmp/community-unified-browser.log` (widget controlado e fallback), `/tmp/community-unified-widget-final.log` (widget real aprovado), `/tmp/community-unified-keyboard.log`.
 - As primeiras tentativas de navegador falharam por geolocalização, leitura de configuração bloqueada pelo teste e espera de rede ociosa durante streaming. Não são contadas como aprovações; o teste foi corrigido com a causa identificada.
 - Rollback da página: deployment anterior `042349d1-9e7c-404a-8f7f-8ef9e77c5bd1`. Ofertas anteriores e contratos existentes permanecem intactos.
+
+### Publicação confirmada da unificação
+
+- [PR #8](https://github.com/imobiturbo/imobiturbo-website/pull/8), código publicado `c050232255ad558d11b40d991d21fb854cd0fd3a`.
+- Os 57 testes passaram novamente após integrar na main. Build, Worker e `deploy:pages` executados na VPS3, sob o lock compartilhado de CI e com checkout limpo.
+- Deployment de produção `a297054e-f77b-4adf-b11b-6bb782dcee49`, branch main, source `c050232`: https://a297054e.imobiturbo-website.pages.dev.
+- Página pública: https://www.imobiturbo.com.br/vagas-v2/. HTML e helper publicados contêm as três ofertas vigentes, sem seletor de gateways, Pix avulso ou parâmetro `hidePix`.
+- Webhook em produção: token inválido rejeitado com HTTP 401; token correto e produto fora do escopo ignorado com HTTP 200, sem concessão de acesso.
+- Chrome/CDP no domínio comercial: formulário real abriu o widget Hotmart com 3x R$ 127/trimestre, total R$ 381; seleção de Pix Automático exibiu R$ 357/trimestre e autorização única no aplicativo do banco. O formulário local fechou antes do widget; nenhuma compra foi enviada.
+- Evidência local da jornada: `/tmp/imt-unified-production-proof.json`; log de publicação na VPS3: `/tmp/community-unified-deploy.log`; testes após integração: `/tmp/community-unified-main-tests.log`.
+- Chrome e todas as abas foram mantidos abertos. A conferência não certifica uma liquidação financeira ou renovação futura.
 
 ## Histórico anterior à decisão de unificar na Hotmart
 
