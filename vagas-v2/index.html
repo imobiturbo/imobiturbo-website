@@ -2195,7 +2195,7 @@
             <input type="email" id="chkEmail" class="chk-input chk-input-lg" placeholder="seuemail@exemplo.com" required autocomplete="email">
           </div>
           <button type="button" class="chk-btn-submit" id="chkStep3Btn">
-            <span>Liberar Acesso</span>
+            <span>Continuar para pagamento</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
@@ -2762,19 +2762,9 @@
       });
     }
 
-    // Step 3: E-mail -> Step 4
+    // E-mail -> checkout Hotmart, sem uma confirmação intermediária.
     if (step3Btn && inputEmail) {
-      step3Btn.addEventListener('click', () => {
-        const emailVal = inputEmail.value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailVal || !emailRegex.test(emailVal)) {
-          showCheckoutError('Por favor, informe um e-mail válido.');
-          inputEmail.focus();
-          return;
-        }
-        fireLeadTrackingEvent();
-        goToCheckoutStep(4);
-      });
+      step3Btn.addEventListener('click', continueToPayment);
 
       inputEmail.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -2807,19 +2797,29 @@
     window.addEventListener('pagehide', saveCheckoutProgress);
     restoreCheckoutProgress();
 
+    let openingPayment = false;
+    let hotmartWidgetFailed = false;
+
     function prepareHotmartWidget() {
       if (document.getElementById('hotmartWidgetScript')) return;
       const script = document.createElement('script');
       script.id = 'hotmartWidgetScript';
       script.src = 'https://static.hotmart.com/checkout/widget.min.js';
       script.async = true;
+      script.addEventListener('error', () => { hotmartWidgetFailed = true; });
       document.head.appendChild(script);
     }
 
-    function openHotmartCheckout(buyer) {
+    async function openHotmartCheckout(buyer) {
       const url = window.ImobiturboHotmart.buildUrl(currentPlan, buyer, {
         ...getUtms(), visitorId: getCookie('rt_vid') || undefined,
       });
+      prepareHotmartWidget();
+      // A returning buyer may click before the widget and its dependencies load.
+      const deadline = Date.now() + 8000;
+      while (!window.jQuery?.fancybox && !hotmartWidgetFailed && Date.now() < deadline) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
       closeCheckoutModal();
       const link = document.getElementById('hotmartCheckoutLink');
       if (link && window.jQuery?.fancybox) {
@@ -2849,10 +2849,13 @@
 
     function openCheckoutModal(e) {
       if (e) e.preventDefault();
+      if (openingPayment) return;
       const selected = getSelectedPlan();
       prepareHotmartWidget();
-      showCheckoutForm(selected);
-      if (modalOverlay) {
+      updateModalPlanUI(selected);
+      const completed = getCheckoutResumeStep() === 4;
+      if (!completed) showCheckoutForm(selected);
+      if (!completed && modalOverlay) {
         modalOverlay.classList.add('active');
         modalOverlay.setAttribute('aria-hidden', 'false');
         if (!modalOverlay.open) modalOverlay.showModal();
@@ -2866,6 +2869,7 @@
         valueCents: Math.round(planVal * 100),
         currency: 'BRL'
       });
+      if (completed) continueToPayment();
     }
 
     function closeCheckoutModal() {
@@ -2940,43 +2944,66 @@
     }
 
 
+    async function continueToPayment(e) {
+      if (e) e.preventDefault();
+      if (openingPayment) return;
+      if (errorMsg) {
+        errorMsg.style.display = 'none';
+        errorMsg.textContent = '';
+      }
+
+      const name = (inputName ? inputName.value : '').trim();
+      const email = (inputEmail ? inputEmail.value : '').trim();
+      const phone = (inputPhone ? inputPhone.value : '').trim();
+
+      if (!name || name.length < 2) {
+        goToCheckoutStep(1);
+        showCheckoutError('Por favor, preencha seu nome completo.');
+        return;
+      }
+
+      const cleanPhone = phone.replace(/\D/g, '');
+      if (cleanPhone.length < 10) {
+        goToCheckoutStep(2);
+        showCheckoutError('Por favor, informe seu WhatsApp com DDD.');
+        return;
+      }
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        goToCheckoutStep(3);
+        showCheckoutError('Por favor, informe seu e-mail para receber o acesso.');
+        return;
+      }
+
+      // Keep the existing persisted completion marker, without showing step 4.
+      if (currentCheckoutStep < 4) fireLeadTrackingEvent();
+      currentCheckoutStep = 4;
+      saveCheckoutProgress();
+      openingPayment = true;
+      const emailButtonLabel = step3Btn.querySelector('span');
+      const pageButtonLabel = checkoutBtn.textContent;
+      emailButtonLabel.textContent = 'Abrindo pagamento...';
+      checkoutBtn.textContent = 'Abrindo pagamento...';
+      step3Btn.disabled = true;
+      checkoutBtn.disabled = true;
+      try {
+        await openHotmartCheckout({ name, email, phone });
+      } catch (error) {
+        goToCheckoutStep(3);
+        openingPayment = false;
+        openCheckoutModal();
+        showCheckoutError('Não foi possível abrir o pagamento. Tente novamente em instantes.');
+      } finally {
+        openingPayment = false;
+        emailButtonLabel.textContent = 'Continuar para pagamento';
+        checkoutBtn.textContent = pageButtonLabel;
+        step3Btn.disabled = false;
+        checkoutBtn.disabled = false;
+      }
+    }
+
     if (nativeForm) {
-      nativeForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (errorMsg) {
-          errorMsg.style.display = 'none';
-          errorMsg.textContent = '';
-        }
-
-        const name = (inputName ? inputName.value : '').trim();
-        const email = (inputEmail ? inputEmail.value : '').trim();
-        const phone = (inputPhone ? inputPhone.value : '').trim();
-
-        if (!name || name.length < 2) {
-          goToCheckoutStep(1);
-          showCheckoutError('Por favor, preencha seu nome completo.');
-          return;
-        }
-
-        const cleanPhone = phone.replace(/\D/g, '');
-        if (cleanPhone.length < 10) {
-          goToCheckoutStep(2);
-          showCheckoutError('Por favor, informe seu WhatsApp com DDD.');
-          return;
-        }
-
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          goToCheckoutStep(3);
-          showCheckoutError('Por favor, informe seu e-mail para receber o acesso.');
-          return;
-        }
-
-        try {
-          openHotmartCheckout({ name, email, phone });
-        } catch (error) {
-          showCheckoutError('Não foi possível abrir o pagamento. Tente novamente em instantes.');
-        }
-      });
+      nativeForm.addEventListener('submit', continueToPayment);
     }
 
     // 2. Galeria manual: rolagem nativa por toque, botões e teclado.
