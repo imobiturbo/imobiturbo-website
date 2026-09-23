@@ -30,7 +30,7 @@ before(async () => {
       fs.createReadStream(file).pipe(response);
     });
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-    baseURL = `http://127.0.0.1:${server.address().port}/vagas/`;
+    baseURL = `http://127.0.0.1:${server.address().port}${process.env.VAGAS_PATH || '/vagas/'}`;
   }
   browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_EXECUTABLE, args: ['--no-sandbox'] });
 });
@@ -50,12 +50,12 @@ async function visit(t, width = 390, reducedMotion = 'reduce') {
   t.after(() => assert.deepEqual(errors, [], 'no uncaught browser errors'));
   await context.route('**/*', route => {
     const url = new URL(route.request().url());
-    if (url.origin !== new URL(baseURL).origin || route.request().method() !== 'GET') return route.abort();
+    if (url.origin !== new URL(baseURL).origin || route.request().method() !== 'GET' || /\.(mp4|m3u8)$/.test(url.pathname)) return route.abort();
     // The public tracking script is not needed to validate layout or keyboard.
     if (url.pathname.endsWith('/site-tracking.js')) return route.fulfill({ contentType: 'text/javascript', body: '' });
     return route.continue();
   });
-  await page.goto(baseURL, { waitUntil: 'networkidle' });
+  await page.goto(baseURL, { waitUntil: 'load' });
   await page.evaluate(async () => {
     await document.fonts.ready;
     await Promise.all([...document.querySelectorAll('main img')].map(image => {
@@ -180,18 +180,14 @@ test('closed dialogs cannot receive focus', async t => {
   }
 });
 
-test('checkout traps focus, supports keyboard payment choice, and restores its trigger', async t => {
+test('checkout traps focus and restores its trigger before unified payment', async t => {
   const page = await visit(t);
   for (const [plan, name] of [['anual', 'Plano Anual'], ['trimestral', 'Plano Trimestral'], ['mensal', 'Plano Mensal']]) {
-    await page.locator(`input[name="plano"][value="${plan}"]`).check();
+    await page.locator('.psel-row').filter({ has: page.locator(`input[name="plano"][value="${plan}"]`) }).click();
+    assert.equal(await page.locator(`input[name="plano"][value="${plan}"]`).isChecked(), true);
     await page.locator('#checkoutBtn').click();
     assert.equal(await page.locator('#chkModalPlanName').textContent(), name);
     assert.ok(await page.locator('#checkoutModalOverlay').evaluate(node => node.contains(document.activeElement)), 'opening moves focus into checkout');
-    await page.locator('#tabCard').focus();
-    await page.keyboard.press('Enter');
-    assert.ok(await page.locator('#tabCard').evaluate(node => node.classList.contains('active')), 'card payment selectable by keyboard');
-    await page.locator('#tabPix').focus();
-    await page.keyboard.press('Enter');
     await page.locator('#checkoutModalClose').focus();
     await page.keyboard.press('Shift+Tab');
     const reverseFocus = await page.locator('#checkoutModalOverlay').evaluate(node => ({

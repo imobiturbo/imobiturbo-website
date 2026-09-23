@@ -4,8 +4,8 @@
   else root.ImobiturboHotmart = checkout;
 })(typeof window === 'undefined' ? globalThis : window, function () {
   const plans = Object.freeze({
-    anual: { offer: 'vgygksgc', installments: 12, terms: 'R$ 1.164 por ano, em até 12x de R$ 97 sem juros. Renovação anual automática.' },
-    trimestral: { offer: 'k3sq4mg8', installments: 3, terms: 'R$ 381 por trimestre, em até 3x de R$ 127 sem juros. Renovação automática a cada 3 meses.' },
+    anual: { offer: '6hifxtrg', installments: 12, terms: 'R$ 997 à vista no Pix Automático ou 12x de R$ 97 no cartão (total R$ 1.164). Renovação anual automática.' },
+    trimestral: { offer: '4ctjnptl', installments: 3, terms: 'R$ 357 à vista no Pix Automático ou 3x de R$ 127 no cartão (total R$ 381). Renovação automática a cada 3 meses.' },
     mensal: { offer: '4zruzp5h', installments: 1, terms: 'R$ 147 por mês. Renovação mensal automática.' },
   });
   function buildUrl(plan, buyer = {}, tracking = {}) {
@@ -16,7 +16,7 @@
     params.set('off', config.offer);
     params.set('checkoutMode', '2');
     params.set('split', String(config.installments));
-    for (const key of ['hidePix', 'hideBillet', 'hideTransf', 'hidePayPal', 'hidewallet', 'hideTrial']) params.set(key, '1');
+    for (const key of ['hideBillet', 'hideTransf', 'hidePayPal', 'hidewallet', 'hideTrial']) params.set(key, '1');
     if (buyer.name) params.set('name', buyer.name);
     if (buyer.email) params.set('email', buyer.email);
     const phone = String(buyer.phone || '').replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, '');

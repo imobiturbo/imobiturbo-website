@@ -1,5 +1,7 @@
 // Product and offer IDs verified in the Hotmart dashboard on 2026-09-22.
 const OFFERS = Object.freeze({
+  '6hifxtrg': 'anual', // Unified checkout: automatic Pix and card.
+  '4ctjnptl': 'trimestral',
   vgygksgc: 'anual',
   k3sq4mg8: 'trimestral',
   ua8aap3x: 'trimestral', // Existing quarterly offer, paid in full.

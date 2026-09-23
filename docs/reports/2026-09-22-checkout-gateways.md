@@ -1,6 +1,39 @@
-# Checkout da Comunidade: Hotmart e AbacatePay
+# Checkout da Comunidade: Hotmart para cartão e Pix Automático
 
-Status: cartão Hotmart publicado em produção em 22/09/2026; migrations aplicadas e webhook direto ativo. Pix Automático exigido pelo usuário após a publicação está pendente da habilitação da loja AbacatePay. O Pix atualmente publicado ainda é avulso. Não houve compra financeira real.
+## Decisão vigente — checkout único por plano
+
+O usuário autorizou substituir AbacatePay por Hotmart também no Pix. A habilitação pendente do AbacatePay não faz parte da entrega atual. Implementação validada na VPS3; publicação desta atualização em preparação.
+
+| Plano | Oferta Hotmart | Cartão parcelado | Pix Automático | Renovação |
+| --- | --- | --- | --- | --- |
+| Anual | `6hifxtrg` | 12x R$ 97; total R$ 1.164 | R$ 997 | anual |
+| Trimestral | `4ctjnptl` | 3x R$ 127; total R$ 381 | R$ 357 | trimestral |
+| Mensal | `4zruzp5h` | R$ 147 | R$ 147 | mensal |
+
+Há um link Hotmart por plano, com ambos os meios de pagamento. Os planos anual e trimestral usam a tabela nativa de parcelamento personalizada: preço base à vista de R$ 997/R$ 357 e parcelas de 12x R$ 97/3x R$ 127. Pagamento à vista no cartão também recebe o preço base. O recuperador de assinaturas permanece desativado; os planos não são convertidos em mensalidades canceláveis. As ofertas anteriores foram preservadas.
+
+Pix Automático foi habilitado e salvo nas configurações de pagamento do produto `8559421`; Pix manual permanece desativado. O checkout público confirmou a autorização única no aplicativo do banco e as cobranças recorrentes. Referência: [habilitação oficial de Pix Automático](https://help.hotmart.com/pt-br/article/37393925452685/como-habilitar-o-pix-automatico-para-meu-produto-).
+
+A landing mantém nome, telefone e email e apresenta os termos dos dois meios antes de abrir o widget oficial. Removidos da `/vagas-v2/` os seletores de gateway, CPF local, geração de Pix avulso, polling e fallback para outro gateway. Em dispositivos móveis ou falha do widget, usa o mesmo checkout hospedado. O webhook autenticado aceita as novas ofertas e mantém a concessão por período e transação, inclusive em renovações Pix. O checkout legado de outras páginas não foi alterado.
+
+Regressão reproduzida na VPS3 antes da correção: o helper adicionava `hidePix=1`, ocultando o meio exigido no checkout. Teste direcionado falhou pela presença desse parâmetro. Os testes agora cobrem ambos os meios no mesmo link e aprovações/renovações das novas ofertas. Compra financeira, autorização bancária e renovação futura não são executadas nessa validação.
+
+### Validação da unificação
+
+- VPS3: 57 testes unitários/contratos aprovados, incluindo novas ofertas, renovações Pix, autenticação, duplicatas, períodos e preservação do checkout legado.
+- VPS3: três jornadas aprovadas: widget controlado, fallback hospedado mobile e widget oficial real com seleção de Pix Automático e valor trimestral.
+- VPS3: dois testes de teclado aprovados, incluindo abertura, foco, Escape e retorno ao botão nos três planos.
+- O teste real seleciona Brasil pela interface da Hotmart porque o IP da VPS3 é geolocalizado na França. Permite apenas a leitura de configuração `/api/next/load`, que usa POST; requisições financeiras continuam bloqueadas.
+- Chrome/CDP: anual confirmado em 12x R$ 97 ou Pix Automático R$ 997/ano; trimestral 3x R$ 127 ou R$ 357/trimestre; mensal R$ 147/mês nos dois meios. Nenhuma aba foi fechada.
+- Logs VPS3: `/tmp/community-unified-unit.log`, `/tmp/community-unified-browser.log` (widget controlado e fallback), `/tmp/community-unified-widget-final.log` (widget real aprovado), `/tmp/community-unified-keyboard.log`.
+- As primeiras tentativas de navegador falharam por geolocalização, leitura de configuração bloqueada pelo teste e espera de rede ociosa durante streaming. Não são contadas como aprovações; o teste foi corrigido com a causa identificada.
+- Rollback da página: deployment anterior `042349d1-9e7c-404a-8f7f-8ef9e77c5bd1`. Ofertas anteriores e contratos existentes permanecem intactos.
+
+## Histórico anterior à decisão de unificar na Hotmart
+
+As seções seguintes registram a primeira publicação e a investigação anterior; suas decisões sobre AbacatePay/Pix avulso foram superadas pela tabela acima.
+
+Status histórico: cartão Hotmart publicado em produção em 22/09/2026; migrations aplicadas e webhook direto ativo. Pix Automático exigido pelo usuário após a publicação está pendente da habilitação da loja AbacatePay. O Pix atualmente publicado ainda é avulso. Não houve compra financeira real.
 
 ## Correção de requisito: Pix com renovação automática
 
@@ -13,15 +46,18 @@ Verificação em 22/09/2026:
 - Uma tentativa de criar checkout de assinatura mensal, `methods: ["PIX"]`, sem cliente ou dados de pagamento, retornou HTTP 400: `PIX Automático is not available for this store`. Nenhuma cobrança foi paga e nenhuma assinatura foi ativada.
 - Após o usuário entrar, a leitura autenticada de `/app/stores/get` retornou HTTP 200 para TRAMA Marketing Digital e Consultoria, em produção (`devMode: false`). Habilitações: `API`, `WITHDRAW`, `PIX_CHARGE`, `PIX_QRCODE`, `V2`, `INSTALLMENTS`, `PIX_OUT`, `BOLETO`, `NEW_REFUND`. `PIX_AUTOMATIC` está ausente.
 - O frontend oficial só disponibiliza Pix para produto recorrente quando a loja contém `PIX_AUTOMATIC`. Não foi encontrado controle de ativação no perfil/edição da loja; a rota `/subscriptions` redireciona ao dashboard. O bloqueio de disponibilidade da conta foi confirmado também pelo painel autenticado.
-- Solicitação de habilitação ao suporte preparada abaixo; envio depende de autorização explícita do usuário para contato externo em seu nome. Chrome e todas as abas permanecem abertos. Nenhuma configuração da loja foi salva.
+- Identidade reconferida após a dúvida do usuário: o perfil aberto corresponde à conta do print, com a mesma loja e CNPJ. A chave utilizada na integração consultou `/v2/stores/get` com HTTP 200 e retornou `store_gcpDUHDbEcEuUXteqLFTZcGp`, TRAMA Marketing Digital e Consultoria.
+- Solicitação de habilitação enviada ao suporte após autorização explícita do usuário; registro de envio abaixo. Chrome e todas as abas permanecem abertos. Nenhuma configuração da loja foi salva.
 - A API documentada exige checkout de assinatura e autorização do pagador; o endpoint transparente avulso atualmente usado não estabelece a recorrência. A integração e os textos só podem ser publicados como Pix Automático após validar essa jornada na loja habilitada.
-- Na retomada: validar habilitação; configurar produto anual correto; trocar o fluxo de Pix para assinatura; tratar `subscription.completed` e `subscription.renewed` com autenticação e idempotência; testar os períodos, recusa da autorização e duplicatas na VPS3 antes da publicação.
+- Caminho anterior, agora substituído pela Hotmart: validar habilitação; configurar produto anual correto; trocar o fluxo de Pix para assinatura; tratar `subscription.completed` e `subscription.renewed` com autenticação e idempotência; testar os períodos, recusa da autorização e duplicatas na VPS3 antes da publicação.
 
 Não houve alteração do código de produto, banco ou configuração de cobrança nesta verificação.
 
-### Solicitação preparada para o AbacatePay
+### Solicitação enviada ao AbacatePay
 
-Destinatário oficial: `ajuda@abacatepay.com`. Status: não enviada.
+Destinatário oficial: `ajuda@abacatepay.com`. Status: enviada em 22/09/2026 às 22h04 (America/Sao_Paulo), por `natanpimentel@imobiturbo.com.br`, com autorização explícita do usuário. Assunto: “Habilitação de Pix Automático — TRAMA / Comunidade Imobiturbo”. A leitura posterior pela API Gmail confirmou destinatário, remetente, assunto e marcador `SENT`. Isso confirma o envio, não a leitura ou habilitação pelo suporte.
+
+A mensagem identifica separadamente a conta cadastrada no AbacatePay, conforme o perfil confirmado pelo usuário, e o ID da loja retornado pela API. Evidência técnica local do envio: `/tmp/imt-abacate-support-send-receipt.json`. O Pix Automático continua aguardando habilitação da loja.
 
 > Solicito habilitar Pix Automático (PIX_AUTOMATIC) na loja TRAMA Marketing Digital e Consultoria, CNPJ 47.746.249/0001-04, para assinaturas de R$147/mês, R$357/trimestre e R$997/ano. A API POST /v2/subscriptions/create com methods: ["PIX"] retorna “PIX Automático is not available for this store”. O painel de produção não inclui PIX_AUTOMATIC nas habilitações e redireciona a área de assinaturas para o dashboard. Podem liberar o recurso ou informar os requisitos pendentes?
 

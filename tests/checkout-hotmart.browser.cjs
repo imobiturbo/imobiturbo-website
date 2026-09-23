@@ -22,15 +22,18 @@ before(async () => {
 });
 after(async () => { await browser?.close(); await new Promise(resolve => server.close(resolve)); });
 
-for (const mode of ['widget', 'fallback', 'real-widget']) test(`card checkout ${mode} preserves term and collects no card data`, async t => {
+for (const mode of ['widget', 'fallback', 'real-widget']) test(`unified checkout ${mode} preserves term and collects no payment data`, async t => {
   const context = await browser.newContext({ viewport: { width: mode !== 'fallback' ? 1440 : 390, height: 1000 } });
   t.after(() => context.close());
   let targetUrl, posts = 0;
   await context.route('**/*', route => {
     const request = route.request();
     const url = new URL(request.url());
+    // Hotmart loads localized offer data with POST after a country change.
+    // This reads checkout configuration; purchase/authorization POSTs stay blocked.
+    if (mode === 'real-widget' && request.method() === 'POST' && url.hostname === 'pay.hotmart.com' && url.pathname === '/api/next/load') return route.continue();
     if (request.method() !== 'GET') { posts++; return route.abort(); }
-    if (/site-tracking|\/api\//.test(url.pathname)) return route.fulfill({ contentType: 'text/javascript', body: '' });
+    if (url.origin === origin && /site-tracking|\/api\//.test(url.pathname)) return route.fulfill({ contentType: 'text/javascript', body: '' });
     if (url.hostname === 'pay.hotmart.com' && mode !== 'real-widget') { targetUrl = url; return route.fulfill({ contentType: 'text/html', body: 'Checkout de teste interceptado' }); }
     if (url.href === 'https://static.hotmart.com/checkout/widget.min.js' && mode === 'widget') {
       return route.fulfill({ contentType: 'text/javascript', body: `window.jQuery={fancybox:{}};document.getElementById('hotmartCheckoutLink').addEventListener('click',function(e){e.preventDefault();window.widgetTarget=this.href;window.dialogStillOpen=document.getElementById('checkoutModalOverlay').open;});` });
@@ -51,11 +54,10 @@ for (const mode of ['widget', 'fallback', 'real-widget']) test(`card checkout ${
   await page.locator('#chkStep2Btn').click();
   await page.locator('#chkEmail').fill('checkout@example.invalid');
   await page.locator('#chkStep3Btn').click();
-  await page.locator('#tabCard').click();
-  assert.equal(await page.locator('#chkCardNumber,#chkCardCvv,#chkCardHolder').count(), 0);
-  assert.match(await page.locator('#chkCardTerms').innerText(), /381.*3x de R\$ 127.*3 meses/);
+  assert.equal(await page.locator('#tabPix,#tabCard,#chkCpf,#chkPixView,#chkCardNumber,#chkCardCvv,#chkCardHolder').count(), 0);
+  assert.match(await page.locator('#chkPaymentTerms').innerText(), /357.*3x de R\$ 127.*3 meses/);
   if (mode !== 'fallback') await page.waitForFunction(() => Boolean(window.jQuery?.fancybox));
-  await page.locator('#chkSubmitCardBtn').click();
+  await page.locator('#chkContinuePaymentBtn').click();
   if (mode === 'widget') {
     await page.waitForFunction(() => Boolean(window.widgetTarget));
     targetUrl = new URL(await page.evaluate(() => window.widgetTarget));
@@ -65,14 +67,28 @@ for (const mode of ['widget', 'fallback', 'real-widget']) test(`card checkout ${
     await iframe.waitFor({ state: 'visible', timeout: 30000 });
     targetUrl = new URL(await iframe.getAttribute('src'));
     assert.equal(await page.locator('#checkoutModalOverlay').getAttribute('open'), null);
-    const frame = await iframe.contentFrame();
+    const frame = await (await iframe.elementHandle()).contentFrame();
     await frame.getByText('Comunidade Imobiturbo', { exact: true }).first().waitFor({ timeout: 30000 }).catch(async error => {
       console.error('Checkout frame diagnostic:', (await frame.locator('body').innerText()).slice(0,1800));
       throw error;
     });
+    // Hotmart geolocates VPS3 in France. Select the buyer's country through
+    // its real UI after hydration so Brazilian methods and prices are tested.
+    await frame.locator('#NAME[customhandlers]').waitFor();
+    if (!(await frame.locator('#country-select').innerText()).includes('🇧🇷')) {
+      await frame.locator('#country-select').click();
+      await frame.getByRole('button', { name: /Brazil.*Brasil/ }).click();
+    }
+    await frame.getByRole('radio', { name: 'Selecionar Pix Automático como método de pagamento', exact: true }).click().catch(async error => {
+      console.error('Payment methods diagnostic:', (await frame.locator('body').innerText()).slice(0, 2400));
+      throw error;
+    });
+    await frame.getByText('Autorize uma vez a cobrança no app do seu banco e as próximas a gente cuida para você.', { exact: true }).waitFor();
+    assert.match(await frame.locator('body').innerText(), /357,00\s*\/ trimestre/);
   } else await page.waitForURL('https://pay.hotmart.com/**');
-  assert.equal(targetUrl.searchParams.get('off'), 'k3sq4mg8');
+  assert.equal(targetUrl.searchParams.get('off'), '4ctjnptl');
   assert.equal(targetUrl.searchParams.get('split'), '3');
+  assert.equal(targetUrl.searchParams.has('hidePix'), false);
   assert.equal(targetUrl.searchParams.get('email'), 'checkout@example.invalid');
   if (mode !== 'real-widget') assert.equal(posts, 0, 'no buyer or card data posted to legacy checkout');
   if (mode !== 'real-widget') assert.deepEqual(errors, []);
