@@ -183,7 +183,8 @@ test('closed dialogs cannot receive focus', async t => {
 test('checkout traps focus and restores its trigger before unified payment', async t => {
   const page = await visit(t);
   for (const [plan, name] of [['anual', 'Plano Anual'], ['trimestral', 'Plano Trimestral'], ['mensal', 'Plano Mensal']]) {
-    await page.locator(`input[name="plano"][value="${plan}"]`).check();
+    await page.locator('.psel-row').filter({ has: page.locator(`input[name="plano"][value="${plan}"]`) }).click();
+    assert.equal(await page.locator(`input[name="plano"][value="${plan}"]`).isChecked(), true);
     await page.locator('#checkoutBtn').click();
     assert.equal(await page.locator('#chkModalPlanName').textContent(), name);
     assert.ok(await page.locator('#checkoutModalOverlay').evaluate(node => node.contains(document.activeElement)), 'opening moves focus into checkout');

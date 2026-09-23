@@ -64,11 +64,18 @@ for (const mode of ['widget', 'fallback', 'real-widget']) test(`unified checkout
     await iframe.waitFor({ state: 'visible', timeout: 30000 });
     targetUrl = new URL(await iframe.getAttribute('src'));
     assert.equal(await page.locator('#checkoutModalOverlay').getAttribute('open'), null);
-    const frame = await iframe.contentFrame();
+    const frame = await (await iframe.elementHandle()).contentFrame();
     await frame.getByText('Comunidade Imobiturbo', { exact: true }).first().waitFor({ timeout: 30000 }).catch(async error => {
       console.error('Checkout frame diagnostic:', (await frame.locator('body').innerText()).slice(0,1800));
       throw error;
     });
+    // Hotmart geolocates VPS3 in France. Select the buyer's country through
+    // its real UI after hydration so Brazilian methods and prices are tested.
+    await frame.waitForLoadState('networkidle');
+    if (!(await frame.locator('#country-select').innerText()).includes('🇧🇷')) {
+      await frame.locator('#country-select').click();
+      await frame.getByRole('button', { name: /Brazil.*Brasil/ }).click();
+    }
     await frame.getByRole('radio', { name: 'Selecionar Pix Automático como método de pagamento', exact: true }).click().catch(async error => {
       console.error('Payment methods diagnostic:', (await frame.locator('body').innerText()).slice(0, 2400));
       throw error;
