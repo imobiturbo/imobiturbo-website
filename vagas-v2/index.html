@@ -2409,6 +2409,55 @@
     const backToStep3Btn = document.getElementById('chkBackToStep3Btn');
 
     const geoRegionText = document.getElementById('chkGeoRegionText');
+    const checkoutStorageKey = 'imobiturbo:vagas-v2:checkout:v1';
+
+    function getCheckoutResumeStep() {
+      // Saved progress never bypasses the existing identification requirements.
+      if (inputName.value.trim().length < 2) return 1;
+      if (inputPhone.value.replace(/\D/g, '').length < 10) return Math.min(currentCheckoutStep, 2);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail.value.trim())) return Math.min(currentCheckoutStep, 3);
+      return currentCheckoutStep;
+    }
+
+    function saveCheckoutProgress() {
+      try {
+        localStorage.setItem(checkoutStorageKey, JSON.stringify({
+          name: inputName.value,
+          phone: inputPhone.value,
+          email: inputEmail.value,
+          step: currentCheckoutStep,
+          plan: currentPlan,
+        }));
+      } catch (_) {
+        // Storage may be unavailable; the current page still retains its state.
+      }
+    }
+
+    function updateCheckoutPersonalization() {
+      const firstName = inputName.value.trim().split(/\s+/)[0];
+      const formatted = firstName ? firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase() : 'Você';
+      document.querySelectorAll('.chk-user-first-name').forEach(el => el.textContent = formatted);
+      if (geoRegionText) geoRegionText.textContent = getRegionByDdd(inputPhone.value.replace(/\D/g, '').slice(0, 2));
+    }
+
+    function restoreCheckoutProgress() {
+      let saved;
+      try {
+        saved = JSON.parse(localStorage.getItem(checkoutStorageKey));
+      } catch (_) { return; }
+      if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return;
+      for (const [key, input] of [['name', inputName], ['phone', inputPhone], ['email', inputEmail]]) {
+        if (typeof saved[key] === 'string') input.value = saved[key];
+      }
+      currentCheckoutStep = Number.isInteger(saved.step) && saved.step >= 1 && saved.step <= 4 ? saved.step : 1;
+      currentCheckoutStep = getCheckoutResumeStep();
+      if (Object.hasOwn(PLAN_CONFIG, saved.plan)) {
+        const radio = document.querySelector('input[name="plano"][value="' + saved.plan + '"]');
+        if (radio) radio.checked = true;
+      }
+      updateCheckoutPersonalization();
+      updateModalPlanUI(getSelectedPlan());
+    }
 
     function getRegionByDdd(ddd) {
       const map = {
@@ -2549,6 +2598,7 @@
         }
         updateCtaButtonText();
       }
+      saveCheckoutProgress();
     }
 
     const PLAN_CONFIG = {
@@ -2610,9 +2660,10 @@
       const modalRadio = document.querySelector('input[name="chkModalPlanRadio"][value="' + planKey + '"]');
       if (modalRadio) modalRadio.checked = true;
       updateCtaButtonText();
+      saveCheckoutProgress();
     }
 
-    function resetToFormView(targetPlan) {
+    function showCheckoutForm(targetPlan) {
       if (formView) formView.style.display = 'block';
       if (submitBtn) submitBtn.disabled = false;
       if (errorMsg) {
@@ -2630,7 +2681,8 @@
       }
       const plan = targetPlan || getSelectedPlan();
       updateModalPlanUI(plan);
-      goToCheckoutStep(1);
+      updateCheckoutPersonalization();
+      goToCheckoutStep(getCheckoutResumeStep());
     }
 
     function updateCtaButtonText() {
@@ -2676,9 +2728,7 @@
           inputName.focus();
           return;
         }
-        const firstName = nameVal.split(/\s+/)[0];
-        const formatted = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
-        document.querySelectorAll('.chk-user-first-name').forEach(el => el.textContent = formatted);
+        updateCheckoutPersonalization();
         goToCheckoutStep(2);
       });
 
@@ -2700,9 +2750,7 @@
           inputPhone.focus();
           return;
         }
-        const ddd = clean.slice(0, 2);
-        const region = getRegionByDdd(ddd);
-        if (geoRegionText) geoRegionText.textContent = region;
+        updateCheckoutPersonalization();
         goToCheckoutStep(3);
       });
 
@@ -2751,6 +2799,14 @@
       });
     }
 
+    // Register after the phone mask so the persisted draft matches the field.
+    [inputName, inputPhone, inputEmail].forEach(input => {
+      input.addEventListener('input', saveCheckoutProgress);
+      input.addEventListener('change', saveCheckoutProgress);
+    });
+    window.addEventListener('pagehide', saveCheckoutProgress);
+    restoreCheckoutProgress();
+
     function prepareHotmartWidget() {
       if (document.getElementById('hotmartWidgetScript')) return;
       const script = document.createElement('script');
@@ -2795,12 +2851,7 @@
       if (e) e.preventDefault();
       const selected = getSelectedPlan();
       prepareHotmartWidget();
-      if (selected !== currentPlan) {
-        resetToFormView(selected);
-      } else {
-        updateModalPlanUI(selected);
-        goToCheckoutStep(1);
-      }
+      showCheckoutForm(selected);
       if (modalOverlay) {
         modalOverlay.classList.add('active');
         modalOverlay.setAttribute('aria-hidden', 'false');
@@ -2818,6 +2869,7 @@
     }
 
     function closeCheckoutModal() {
+      saveCheckoutProgress();
       if (modalOverlay) {
         modalOverlay.classList.remove('active');
         if (modalOverlay.open) modalOverlay.close();
