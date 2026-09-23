@@ -26,6 +26,28 @@ test('the monthly opaque offer maps to monthly access', async () => {
   assert.equal(result.paymentId, 'HP_TEST_ONLY');
 });
 
+test('automatic Pix approvals and renewals keep the purchased period and transaction identity', async () => {
+  const { parseHotmartEvent } = await helper;
+  for (const [offer, plan, amount] of [['6hifxtrg', 'anual', 997], ['4ctjnptl', 'trimestral', 357], ['4zruzp5h', 'mensal', 147]]) {
+    for (const recurrence of [1, 2]) {
+      const event = paid();
+      Object.assign(event.data.purchase, {
+        offer: { code: offer }, transaction: `HP_PIX_${plan}_${recurrence}`,
+        approved_date: 1790100000000 + recurrence * 86400000,
+        price: { value: amount, currency_value: 'BRL' },
+        payment: { type: 'PIX_AUTOMATIC' }, recurrence_number: recurrence,
+      });
+      const result = parseHotmartEvent(event);
+      assert.equal(result.action, 'activate');
+      assert.equal(result.plan, plan);
+      assert.equal(result.amount, amount);
+      assert.equal(result.paymentId, event.data.purchase.transaction);
+      assert.equal(result.approvedAt, new Date(event.data.purchase.approved_date).toISOString());
+      assert.equal(parseHotmartEvent({ ...event, event: 'PURCHASE_BILLET_PRINTED' }).action, 'ignore');
+    }
+  }
+});
+
 test('Mimiu and unknown offers cannot grant annual community access', async () => {
   const { parseHotmartEvent } = await helper;
   assert.equal(parseHotmartEvent(paid({ product: { id: 8547534 } })).action, 'ignore');
@@ -61,7 +83,7 @@ test('the webhook refuses an unauthenticated Hotmart purchase before any side ef
 
 test('checkout URLs preserve the chosen term and do not accept a tracking override', () => {
   const { buildUrl } = require(path.join(root, 'assets/js/hotmart-checkout.js'));
-  const plans = { anual: ['vgygksgc', '12'], trimestral: ['k3sq4mg8', '3'], mensal: ['4zruzp5h', '1'] };
+  const plans = { anual: ['6hifxtrg', '12'], trimestral: ['4ctjnptl', '3'], mensal: ['4zruzp5h', '1'] };
   for (const [plan, [offer, split]] of Object.entries(plans)) {
     const url = new URL(buildUrl(plan, { name: 'Teste & Checkout', email: 'checkout@example.invalid', phone: '+55 (11) 99999-9999' }, { off: 'forged', split: 99, visitorId: 'visitor-test', utm_source: 'meta' }));
     assert.equal(url.hostname, 'pay.hotmart.com');
@@ -72,7 +94,7 @@ test('checkout URLs preserve the chosen term and do not accept a tracking overri
     assert.equal(url.searchParams.get('phonenumber'), '999999999');
     assert.equal(url.searchParams.get('xcod'), 'visitor-test');
     assert.equal(url.searchParams.get('sck'), 'meta||||');
-    assert.equal(url.searchParams.get('hidePix'), '1');
+    assert.equal(url.searchParams.has('hidePix'), false, 'the same checkout must offer automatic Pix and card');
   }
   assert.throws(() => buildUrl('unknown'), /Plano inválido/);
 });

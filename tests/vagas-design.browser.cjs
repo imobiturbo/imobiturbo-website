@@ -180,18 +180,13 @@ test('closed dialogs cannot receive focus', async t => {
   }
 });
 
-test('checkout traps focus, supports keyboard payment choice, and restores its trigger', async t => {
+test('checkout traps focus and restores its trigger before unified payment', async t => {
   const page = await visit(t);
   for (const [plan, name] of [['anual', 'Plano Anual'], ['trimestral', 'Plano Trimestral'], ['mensal', 'Plano Mensal']]) {
     await page.locator(`input[name="plano"][value="${plan}"]`).check();
     await page.locator('#checkoutBtn').click();
     assert.equal(await page.locator('#chkModalPlanName').textContent(), name);
     assert.ok(await page.locator('#checkoutModalOverlay').evaluate(node => node.contains(document.activeElement)), 'opening moves focus into checkout');
-    await page.locator('#tabCard').focus();
-    await page.keyboard.press('Enter');
-    assert.ok(await page.locator('#tabCard').evaluate(node => node.classList.contains('active')), 'card payment selectable by keyboard');
-    await page.locator('#tabPix').focus();
-    await page.keyboard.press('Enter');
     await page.locator('#checkoutModalClose').focus();
     await page.keyboard.press('Shift+Tab');
     const reverseFocus = await page.locator('#checkoutModalOverlay').evaluate(node => ({

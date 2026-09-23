@@ -130,7 +130,7 @@
             "name": "Como funcionam cobrança, acesso e cancelamento?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No cartão, a Hotmart cobra o período contratado: anual em até 12x de R$ 97, trimestral em até 3x de R$ 127 ou mensal de R$ 147, com renovação automática ao fim de cada período. O Pix à vista é processado pelo AbacatePay, sem renovação automática. Após a confirmação, o acesso é liberado e as instruções são enviadas por e-mail e WhatsApp. Você pode cancelar a próxima renovação e manter o acesso até o fim do período já pago."
+              "text": "No cartão, a Hotmart cobra o período contratado: anual em até 12x de R$ 97, trimestral em até 3x de R$ 127 ou mensal de R$ 147, com renovação automática ao fim de cada período. O mesmo checkout oferece Pix Automático: R$ 997 por ano, R$ 357 por trimestre ou R$ 147 por mês. Você autoriza as cobranças no aplicativo do banco e as renovações seguem o período escolhido. Após a confirmação, o acesso é liberado e as instruções são enviadas por e-mail e WhatsApp. Você pode cancelar a próxima renovação e manter o acesso até o fim do período já pago."
             }
           },
           {
@@ -1791,7 +1791,7 @@
                   <span class="psel-nm">Anual</span>
                   <span class="psel-badge psel-selo">ECONOMIZA R$ 807</span>
                 </div>
-                <div class="psel-sub">ou R$ 997 à vista no Pix</div>
+                <div class="psel-sub">ou R$ 997/ano no Pix Automático</div>
               </div>
               <div class="psel-right">
                 <div class="psel-prc">
@@ -1807,7 +1807,7 @@
                   <span class="psel-indicator" aria-hidden="true"></span>
                   <span class="psel-nm">Trimestral</span>
                 </div>
-                <div class="psel-sub">ou R$ 357 à vista no Pix</div>
+                <div class="psel-sub">ou R$ 357/trimestre no Pix Automático</div>
               </div>
               <div class="psel-right">
                 <div class="psel-prc">
@@ -1960,7 +1960,7 @@
         </details>
         <details class="faq-item">
           <summary>Como funcionam cobrança, acesso e cancelamento?<span class="disclosure" aria-hidden="true"></span></summary>
-          <p>No cartão, a Hotmart cobra o período contratado: anual em até 12x de R$ 97, trimestral em até 3x de R$ 127 ou mensal de R$ 147, com renovação automática ao fim de cada período. O Pix à vista é processado pelo AbacatePay, sem renovação automática. Após a confirmação, o acesso é liberado e as instruções são enviadas por e-mail e WhatsApp. Você pode cancelar a próxima renovação e manter o acesso até o fim do período já pago.</p>
+          <p>No cartão, a Hotmart cobra o período contratado: anual em até 12x de R$ 97, trimestral em até 3x de R$ 127 ou mensal de R$ 147, com renovação automática ao fim de cada período. O mesmo checkout oferece Pix Automático: R$ 997 por ano, R$ 357 por trimestre ou R$ 147 por mês. Você autoriza as cobranças no aplicativo do banco e as renovações seguem o período escolhido. Após a confirmação, o acesso é liberado e as instruções são enviadas por e-mail e WhatsApp. Você pode cancelar a próxima renovação e manter o acesso até o fim do período já pago.</p>
         </details>
         <details class="faq-item">
           <summary>Existe garantia?<span class="disclosure" aria-hidden="true"></span></summary>
@@ -2134,7 +2134,7 @@
   </div>
 </dialog>
 
-<!-- MODAL DE CHECKOUT EMBEDDED (ABACATEPAY + ASAAS FALLBACK) -->
+<!-- Identificação e resumo antes do checkout Hotmart -->
 <dialog id="checkoutModalOverlay" class="chk-modal-overlay" aria-hidden="true" aria-labelledby="checkoutModalTitle">
   <div class="chk-modal-box">
 
@@ -2264,70 +2264,13 @@
             </div>
           </div>
 
-          <h4 class="chk-choose-method-title">Escolha a forma de pagamento:</h4>
-
-          <!-- Abas de Pagamento: PIX vs CARTÃO -->
-          <div class="chk-tabs" role="group" aria-label="Forma de pagamento">
-            <button type="button" class="chk-tab active" id="tabPix" data-method="PIX" aria-pressed="true">
-              <span class="chk-tab-label">
-                <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="display:inline-block; vertical-align:middle; flex-shrink:0;"><path d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"/><path d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"/></svg>
-                Pix
-                <span class="chk-tab-tag" id="chkPixTabTag">Economize R$ 167</span>
-              </span>
-              <span class="chk-tab-desc" id="chkPixTabDesc">R$ 997 à vista</span>
-            </button>
-            <button type="button" class="chk-tab" id="tabCard" data-method="CREDIT_CARD" aria-pressed="false">
-              <span class="chk-tab-label">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                Cartão
-              </span>
-              <span class="chk-tab-desc" id="chkCardTabDesc">Até 12x de R$ 97</span>
-            </button>
-          </div>
-
-          <!-- Dados do cartão são preenchidos somente na Hotmart. -->
-          <div id="chkCardFields" style="display: none;">
-            <p id="chkCardTerms" class="chk-modal-subtitle"></p>
-            <p class="chk-modal-subtitle">Finalize com segurança na Hotmart. Você poderá conferir o valor total e as parcelas antes de confirmar.</p>
-            <button type="submit" class="chk-btn-submit" id="chkSubmitCardBtn" style="margin-top: 16px;">
-              <span id="chkBtnText">Continuar para pagamento no cartão</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-          </div>
-
-          <!-- Seção de Pix (botão que avança para Step 5: CPF) -->
-          <div id="chkPixChoiceWrap">
-            <div class="chk-pix-discount-banner">
-              <div class="chk-pix-badge-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              </div>
-              <div class="chk-pix-discount-text">
-                <strong>Desconto especial à vista no Pix:</strong>
-                <span>De <del>R$ 1.164</del> por apenas <strong>R$ 997</strong> no Pix (liberação imediata).</span>
-              </div>
-            </div>
-            <button type="button" class="chk-btn-submit" id="chkGoToPixCpfBtn">
-              <span>Pagar no Pix com Desconto (R$ 997)</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- ETAPA 5: CPF PARA O PIX (ABACATEPAY TRANSPARENTE) -->
-        <div class="chk-step-pane" id="chkStepPane5" style="display: none;">
-          <h3 class="chk-modal-title">Perfeito, para finalizarmos:</h3>
-          <p class="chk-modal-subtitle">Preencha seu CPF para gerar a chave Pix nominal:</p>
-          <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
-            <input type="text" id="chkCpf" class="chk-input chk-input-lg" placeholder="000.000.000-00" required autocomplete="off" oninput="maskCpf(this)" maxlength="14">
-          </div>
-          <p class="chk-cpf-note">🔒 Exigência regulatória do Banco Central / Pix para emissão de cobrança nominal segura.</p>
-
-          <button type="submit" class="chk-btn-submit" id="chkSubmitBtn">
-            <span id="chkPixBtnText">Gerar QR Code Pix de R$ 997</span>
+          <h4 class="chk-choose-method-title">Escolha cartão ou Pix Automático na próxima etapa</h4>
+          <p id="chkPaymentTerms" class="chk-modal-subtitle"></p>
+          <p class="chk-modal-subtitle">No Pix Automático, você autoriza a primeira cobrança e as renovações no aplicativo do seu banco. Confira as condições antes de confirmar.</p>
+          <button type="submit" class="chk-btn-submit" id="chkContinuePaymentBtn" style="margin-top: 16px;">
+            <span id="chkBtnText">Continuar para pagamento</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
-
-          <button type="button" class="chk-btn-back" id="chkBackToStep4Btn">← Voltar para formas de pagamento</button>
         </div>
 
         <!-- Mensagem de Erro se houver -->
@@ -2347,7 +2290,7 @@
           <span class="chk-proof-text"><strong>+4 mil corretores acelerados</strong> · ⭐ 4,9/5</span>
         </div>
 
-        <!-- Garantia do Checkout (Passo 4 e 5) -->
+        <!-- Garantia do Checkout (Passo 4) -->
         <div class="chk-guarantee-line chk-hidden" id="chkGuaranteeProofBar" style="display: none !important;">
           <span class="chk-guarantee-lock">🔒</span>
           <span class="chk-guarantee-text">7 dias de garantia incondicional · Zero risco</span>
@@ -2355,57 +2298,12 @@
       </form>
     </div>
 
-    <!-- VIEW 2: TELA DO PIX (QR CODE + COPIA E COLA + POLLER) -->
-    <div id="chkPixView" class="chk-pix-view" style="display: none;">
-      <div class="chk-pulse-radar">
-        <span class="chk-radar-dot"></span>
-        Aguardando pagamento... Identificação automática
-      </div>
-
-      <div class="chk-qr-frame">
-        <img id="chkPixQrImg" class="chk-qr-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="QR Code Pix" width="190" height="190">
-      </div>
-
-      <div class="chk-pix-code-wrap">
-        <textarea id="chkPixPayload" class="chk-pix-textarea" readonly></textarea>
-      </div>
-
-      <button type="button" class="chk-copy-btn" id="chkCopyPixBtn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        <span id="chkCopyBtnText">Copiar Código Pix</span>
-      </button>
-
-      <div class="chk-timer-bar">
-        QR Code válido por: <b id="chkPixTimer">15:00</b>
-      </div>
-
-      <button type="button" class="chk-btn-back" id="chkBackToPlanBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Alterar plano ou dados
-      </button>
-    </div>
-
-    <!-- VIEW 3: SUCESSO / APROVADO -->
-    <div id="chkSuccessView" class="chk-success-view" style="display: none;">
-      <div class="chk-success-icon">✓</div>
-      <h3 class="chk-success-title">Pagamento Aprovado!</h3>
-      <p class="chk-success-desc">
-        Parabéns! Sua vaga na Comunidade Imobiturbo está confirmada.<br>
-        Enviamos as instruções e seu acesso para o seu e-mail e WhatsApp.
-      </p>
-      <a href="https://club.imobiturbo.com.br" class="chk-btn-submit" style="text-decoration: none; margin-bottom: 12px;" id="chkSuccessClubLink">
-        Acessar Área de Membros da Comunidade →
-      </a>
-      <a href="https://app.imobiturbo.com.br/onboarding" class="chk-btn-submit" style="text-decoration: none; background: #17250A; border: 1px solid #6CA438; color: #C5FF5E !important;">
-        Configurar CRM com IA (Imobiturbo OS) →
-      </a>
-    </div>
   </div>
 </dialog>
 
 <!-- JAVASCRIPT: Seletor de Planos, Checkout Nativo & Galeria -->
 <a id="hotmartCheckoutLink" class="hotmart-fb" hidden aria-hidden="true" tabindex="-1"></a>
-<script src="/assets/js/hotmart-checkout.js?v=20260922"></script>
+<script src="/assets/js/hotmart-checkout.js?v=20260923"></script>
 <script>
   (function() {
     const hubTrackerQueue = [];
@@ -2478,32 +2376,18 @@
     const modalPlanSub = document.getElementById('chkModalPlanSub');
     const modalPlanPrice = document.getElementById('chkModalPlanPrice');
 
-    const tabPix = document.getElementById('tabPix');
-    const tabCard = document.getElementById('tabCard');
-    const cardFields = document.getElementById('chkCardFields');
-    const pixChoiceWrap = document.getElementById('chkPixChoiceWrap');
 
     const formView = document.getElementById('chkFormView');
-    const pixView = document.getElementById('chkPixView');
-    const successView = document.getElementById('chkSuccessView');
 
-    const pixQrImg = document.getElementById('chkPixQrImg');
-    const pixPayload = document.getElementById('chkPixPayload');
-    const copyPixBtn = document.getElementById('chkCopyPixBtn');
-    const copyBtnText = document.getElementById('chkCopyBtnText');
-    const pixTimer = document.getElementById('chkPixTimer');
 
     const nativeForm = document.getElementById('chkNativeForm');
-    const submitBtn = document.getElementById('chkSubmitBtn');
-    const submitCardBtn = document.getElementById('chkSubmitCardBtn');
+    const submitBtn = document.getElementById('chkContinuePaymentBtn');
     const btnText = document.getElementById('chkBtnText');
-    const pixBtnText = document.getElementById('chkPixBtnText');
     const errorMsg = document.getElementById('chkErrorMsg');
 
     const inputName = document.getElementById('chkName');
     const inputEmail = document.getElementById('chkEmail');
     const inputPhone = document.getElementById('chkPhone');
-    const inputCpf = document.getElementById('chkCpf');
 
     // Multi-Step Components
     let currentCheckoutStep = 1;
@@ -2511,7 +2395,6 @@
     const stepPane2 = document.getElementById('chkStepPane2');
     const stepPane3 = document.getElementById('chkStepPane3');
     const stepPane4 = document.getElementById('chkStepPane4');
-    const stepPane5 = document.getElementById('chkStepPane5');
 
     const progressLabel = document.getElementById('chkProgressLabel');
     const progressPct = document.getElementById('chkProgressPct');
@@ -2520,12 +2403,10 @@
     const step1Btn = document.getElementById('chkStep1Btn');
     const step2Btn = document.getElementById('chkStep2Btn');
     const step3Btn = document.getElementById('chkStep3Btn');
-    const goToPixCpfBtn = document.getElementById('chkGoToPixCpfBtn');
 
     const backToStep1Btn = document.getElementById('chkBackToStep1Btn');
     const backToStep2Btn = document.getElementById('chkBackToStep2Btn');
     const backToStep3Btn = document.getElementById('chkBackToStep3Btn');
-    const backToStep4Btn = document.getElementById('chkBackToStep4Btn');
 
     const geoRegionText = document.getElementById('chkGeoRegionText');
 
@@ -2602,24 +2483,6 @@
       return map[ddd] || 'sua região';
     }
 
-    function isValidCpf(val) {
-      if (!val) return false;
-      const clean = val.replace(/\D/g, '');
-      if (clean.length !== 11) return false;
-      if (/^(\d)\1{10}$/.test(clean)) return false;
-      let sum = 0;
-      for (let i = 0; i < 9; i++) sum += parseInt(clean.charAt(i), 10) * (10 - i);
-      let rev = 11 - (sum % 11);
-      if (rev === 10 || rev === 11) rev = 0;
-      if (rev !== parseInt(clean.charAt(9), 10)) return false;
-      sum = 0;
-      for (let i = 0; i < 10; i++) sum += parseInt(clean.charAt(i), 10) * (11 - i);
-      rev = 11 - (sum % 11);
-      if (rev === 10 || rev === 11) rev = 0;
-      if (rev !== parseInt(clean.charAt(10), 10)) return false;
-      return true;
-    }
-
     function showCheckoutError(msg) {
       if (errorMsg) {
         errorMsg.textContent = msg;
@@ -2634,7 +2497,7 @@
         errorMsg.textContent = '';
       }
 
-      const panes = [stepPane1, stepPane2, stepPane3, stepPane4, stepPane5];
+      const panes = [stepPane1, stepPane2, stepPane3, stepPane4];
       panes.forEach((p, idx) => {
         if (p) p.style.display = (idx + 1 === step) ? 'block' : 'none';
       });
@@ -2685,12 +2548,6 @@
           if (action) action.textContent = 'Ver detalhes';
         }
         updateCtaButtonText();
-      } else if (step === 5) {
-        if (progressBar) progressBar.style.width = '100%';
-        if (progressLabel) progressLabel.textContent = 'Finalizando...';
-        if (progressPct) progressPct.textContent = '100%';
-        updateCtaButtonText();
-        setTimeout(() => inputCpf && inputCpf.focus(), 50);
       }
     }
 
@@ -2700,45 +2557,29 @@
         sub: '12 meses de acesso completo + CRM IA',
         priceDisplay: '<small>12x </small><b>R$ 97</b>',
         pixVal: 'R$ 997',
-        pixSavings: '167',
-        pixDiscountTitle: 'Desconto especial no Pix à vista:',
-        pixDiscountDesc: 'De <del style="color: #ef4444; font-weight: 700; text-decoration: line-through;">R$ 1.164</del> por apenas <strong>R$ 997</strong> (liberação imediata)',
         cardVal: '12x R$ 97',
-        cardTabDesc: 'Até 12x de R$ 97'
       },
       'trimestral': {
         name: 'Plano Trimestral',
         sub: '3 meses de acesso completo + CRM IA',
         priceDisplay: '<small>3x </small><b>R$ 127</b>',
         pixVal: 'R$ 357',
-        pixSavings: '24',
-        pixDiscountTitle: 'Desconto especial no Pix à vista:',
-        pixDiscountDesc: 'De <del style="color: #ef4444; font-weight: 700; text-decoration: line-through;">R$ 381</del> por apenas <strong>R$ 357</strong> (liberação imediata)',
         cardVal: '3x R$ 127',
-        cardTabDesc: 'Até 3x de R$ 127'
       },
       'mensal': {
         name: 'Plano Mensal',
         sub: 'Mensalidade com cancelamento livre',
         priceDisplay: '<b>R$ 147</b><small>/mês</small>',
         pixVal: 'R$ 147',
-        pixSavings: null,
-        pixDiscountTitle: 'Pagamento mensal no Pix:',
-        pixDiscountDesc: 'Apenas R$ 147 por mês sem fidelidade mínima.',
         cardVal: 'R$ 147/mês',
-        cardTabDesc: 'R$ 147/mês'
       }
     };
 
     let currentPlan = 'anual';
-    let currentMethod = 'PIX';
-    let pollingInterval = null;
-    let timerInterval = null;
 
     const changePlanTrigger = document.getElementById('chkChangePlanTrigger');
     const planDropdown = document.getElementById('chkPlanDropdown');
     const modalPlanRadios = document.querySelectorAll('input[name="chkModalPlanRadio"]');
-    const backToPlanBtn = document.getElementById('chkBackToPlanBtn');
     const retractableTrigger = document.getElementById('chkPlanRetractableTrigger');
     const collapsibleBody = document.getElementById('chkPlanCollapsibleBody');
 
@@ -2768,34 +2609,12 @@
       if (modalPlanPrice) modalPlanPrice.innerHTML = info.priceDisplay;
       const modalRadio = document.querySelector('input[name="chkModalPlanRadio"][value="' + planKey + '"]');
       if (modalRadio) modalRadio.checked = true;
-      const pixTabDesc = document.getElementById('chkPixTabDesc');
-      if (pixTabDesc) pixTabDesc.textContent = info.pixVal + ' à vista';
-      const cardTabDesc = document.getElementById('chkCardTabDesc');
-      if (cardTabDesc) cardTabDesc.textContent = info.cardTabDesc || (info.cardVal.includes('/mês') ? info.cardVal : 'Até ' + info.cardVal);
-      const pixDiscText = document.querySelector('.chk-pix-discount-text');
-      if (pixDiscText && info.pixDiscountDesc) {
-        const title = info.pixDiscountTitle || 'Desconto especial à vista:';
-        pixDiscText.innerHTML = '<strong>' + title + '</strong><span>' + info.pixDiscountDesc + '</span>';
-      }
-      const isPixDiscount = Boolean(info.pixSavings);
-      const pixTabTag = document.getElementById('chkPixTabTag');
-      if (pixTabTag) {
-        pixTabTag.style.display = isPixDiscount ? 'inline-block' : 'none';
-        if (info.pixSavings) {
-          pixTabTag.textContent = 'Economize R$ ' + info.pixSavings;
-        }
-      }
       updateCtaButtonText();
     }
 
     function resetToFormView(targetPlan) {
-      if (pollingInterval) clearInterval(pollingInterval);
-      if (timerInterval) clearInterval(timerInterval);
-      if (pixView) pixView.style.display = 'none';
-      if (successView) successView.style.display = 'none';
       if (formView) formView.style.display = 'block';
       if (submitBtn) submitBtn.disabled = false;
-      if (submitCardBtn) submitCardBtn.disabled = false;
       if (errorMsg) {
         errorMsg.style.display = 'none';
         errorMsg.textContent = '';
@@ -2816,31 +2635,12 @@
 
     function updateCtaButtonText() {
       const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
-      const isPixDiscount = currentPlan === 'anual' || currentPlan === 'trimestral';
       const compactTitle = document.getElementById('chkPlanCompactTitle');
       if (compactTitle) compactTitle.textContent = info.name;
       const compactPrice = document.getElementById('chkPlanCompactPrice');
-      if (compactPrice) {
-        compactPrice.textContent = '· ' + (currentMethod === 'PIX' ? info.pixVal : info.cardVal);
-      }
-      if (btnText) {
-        btnText.textContent = 'Continuar com ' + info.cardVal;
-        document.getElementById('chkCardTerms').textContent = window.ImobiturboHotmart.plans[currentPlan].terms;
-      }
-      if (pixBtnText) {
-        pixBtnText.textContent = isPixDiscount
-          ? 'Gerar QR Code Pix de ' + info.pixVal
-          : 'Gerar QR Code Pix (' + info.pixVal + ')';
-      }
-      const goToPixBtn = document.getElementById('chkGoToPixCpfBtn');
-      if (goToPixBtn) {
-        const span = goToPixBtn.querySelector('span');
-        if (span) {
-          span.textContent = isPixDiscount
-            ? 'Pagar no Pix com Desconto (' + info.pixVal + ')'
-            : 'Pagar no Pix (' + info.pixVal + ')';
-        }
-      }
+      if (compactPrice) compactPrice.textContent = '· ' + info.cardVal;
+      if (btnText) btnText.textContent = 'Continuar para pagamento';
+      document.getElementById('chkPaymentTerms').textContent = window.ImobiturboHotmart.plans[currentPlan].terms;
     }
 
     planRadios.forEach(radio => {
@@ -2866,12 +2666,6 @@
         if (planDropdown) planDropdown.style.display = 'none';
       });
     });
-
-    if (backToPlanBtn) {
-      backToPlanBtn.addEventListener('click', () => {
-        resetToFormView(getSelectedPlan());
-      });
-    }
 
     // Step 1: Nome -> Step 2
     if (step1Btn && inputName) {
@@ -2942,16 +2736,6 @@
       });
     }
 
-    // Step 4: Botão avançar para Pix
-    if (goToPixCpfBtn) {
-      goToPixCpfBtn.addEventListener('click', () => {
-        goToCheckoutStep(5);
-      });
-    }
-
-    // Voltar buttons
-    if (backToStep4Btn) backToStep4Btn.addEventListener('click', () => goToCheckoutStep(4));
-
     // Máscaras de entrada
     if (inputPhone) {
       inputPhone.addEventListener('input', function(e) {
@@ -2966,26 +2750,6 @@
         e.target.value = v;
       });
     }
-
-    function formatCpfValue(val) {
-      let v = (val || '').replace(/\D/g, '').slice(0, 11);
-      if (v.length > 9) {
-        v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
-      } else if (v.length > 6) {
-        v = v.replace(/^(\d{3})(\d{3})(\d{0,3})$/, '$1.$2.$3');
-      } else if (v.length > 3) {
-        v = v.replace(/^(\d{3})(\d{0,3})$/, '$1.$2');
-      }
-      return v;
-    }
-
-    function syncCpfInputs(e) {
-      const v = formatCpfValue(e.target.value);
-      e.target.value = v;
-      if (inputCpf && inputCpf !== e.target) inputCpf.value = v;
-    }
-
-    if (inputCpf) inputCpf.addEventListener('input', syncCpfInputs);
 
     function prepareHotmartWidget() {
       if (document.getElementById('hotmartWidgetScript')) return;
@@ -3011,32 +2775,6 @@
       }
     }
 
-    // Alternador de Abas (Pix / Cartão)
-    if (tabPix && tabCard) {
-      tabPix.addEventListener('click', () => {
-        tabPix.classList.add('active');
-        tabCard.classList.remove('active');
-        tabPix.setAttribute('aria-pressed', 'true');
-        tabCard.setAttribute('aria-pressed', 'false');
-        currentMethod = 'PIX';
-        if (cardFields) cardFields.style.display = 'none';
-        if (pixChoiceWrap) pixChoiceWrap.style.display = 'block';
-        updateCtaButtonText();
-      });
-
-      tabCard.addEventListener('click', () => {
-        tabCard.classList.add('active');
-        tabPix.classList.remove('active');
-        tabCard.setAttribute('aria-pressed', 'true');
-        tabPix.setAttribute('aria-pressed', 'false');
-        currentMethod = 'CREDIT_CARD';
-        prepareHotmartWidget();
-        if (cardFields) cardFields.style.display = 'block';
-        if (pixChoiceWrap) pixChoiceWrap.style.display = 'none';
-        updateCtaButtonText();
-      });
-    }
-
     function fireLeadTrackingEvent() {
       const name = (inputName ? inputName.value : '').trim();
       const email = (inputEmail ? inputEmail.value : '').trim();
@@ -3056,7 +2794,8 @@
     function openCheckoutModal(e) {
       if (e) e.preventDefault();
       const selected = getSelectedPlan();
-      if (selected !== currentPlan || (pixView && pixView.style.display !== 'none')) {
+      prepareHotmartWidget();
+      if (selected !== currentPlan) {
         resetToFormView(selected);
       } else {
         updateModalPlanUI(selected);
@@ -3085,8 +2824,6 @@
         modalOverlay.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
       }
-      if (pollingInterval) clearInterval(pollingInterval);
-      if (timerInterval) clearInterval(timerInterval);
       checkoutBtn?.focus({ preventScroll: true });
     }
 
@@ -3129,35 +2866,6 @@
       });
     }
 
-    if (copyPixBtn && pixPayload) {
-      copyPixBtn.addEventListener('click', () => {
-        pixPayload.select();
-        pixPayload.setSelectionRange(0, 99999);
-        var copied = false;
-        try {
-          copied = document.execCommand('copy');
-        } catch (_) {}
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(pixPayload.value).catch(function() {});
-          copied = true;
-        }
-        if (copied) {
-          if (copyBtnText) copyBtnText.textContent = '✓ Código Pix Copiado!';
-          copyPixBtn.classList.add('chk-copied');
-          setTimeout(() => {
-            if (copyBtnText) copyBtnText.textContent = 'Copiar Código Pix';
-            copyPixBtn.classList.remove('chk-copied');
-          }, 3000);
-          setTimeout(() => {
-            if (window.getSelection) {
-              window.getSelection().removeAllRanges();
-            }
-            pixPayload.blur();
-          }, 1500);
-        }
-      });
-    }
-
     function getCookie(name) {
       const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
       return match ? match[2] : null;
@@ -3191,7 +2899,6 @@
         const name = (inputName ? inputName.value : '').trim();
         const email = (inputEmail ? inputEmail.value : '').trim();
         const phone = (inputPhone ? inputPhone.value : '').trim();
-        const cpf = (inputCpf?.value || '').trim();
 
         if (!name || name.length < 2) {
           goToCheckoutStep(1);
@@ -3212,129 +2919,12 @@
           return;
         }
 
-        if (currentMethod === 'CREDIT_CARD') {
-          openHotmartCheckout({ name, email, phone });
-          return;
-        }
-
-        const cleanCpf = cpf.replace(/\D/g, '');
-        if (!cleanCpf || cleanCpf.length < 11 || !isValidCpf(cleanCpf)) {
-          showCheckoutError('Por favor, informe um CPF válido para emissão do Pix nominal.');
-          inputCpf?.focus();
-          return;
-        }
-
-        const activeSubmitBtn = currentMethod === 'PIX' ? submitBtn : (submitCardBtn || submitBtn);
-        if (activeSubmitBtn) activeSubmitBtn.disabled = true;
-        if (currentMethod === 'PIX') {
-          if (pixBtnText) pixBtnText.textContent = 'Gerando chave Pix segura...';
-        } else {
-          if (btnText) btnText.textContent = 'Processando pagamento seguro...';
-        }
-
-        const eventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now());
-        const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
-
-        const payload = {
-          plan: currentPlan,
-          paymentMethod: currentMethod,
-          name,
-          email,
-          phone,
-          cpfCnpj: cleanCpf,
-          tracking: getUtms(),
-          eventId
-        };
-
         try {
-          const response = await fetch('/api/checkout', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-
-          const res = await response.json();
-
-          if (!response.ok || !res.success) {
-            throw new Error(res.error || 'Falha ao processar pagamento.');
-          }
-
-          if (currentMethod === 'PIX' && res.pix) {
-            if (formView) formView.style.display = 'none';
-            if (pixView) pixView.style.display = 'block';
-
-            if (pixQrImg) pixQrImg.src = res.pix.qrCodeBase64;
-            if (pixPayload) pixPayload.value = res.pix.copyPaste;
-
-            let timeLeft = 15 * 60;
-            if (timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-              timeLeft--;
-              if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                if (pixTimer) pixTimer.textContent = 'Expirado';
-                return;
-              }
-              const m = Math.floor(timeLeft / 60);
-              const s = timeLeft % 60;
-              if (pixTimer) pixTimer.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            }, 1000);
-
-            const checkPaymentId = res.paymentId;
-            const gateway = res.gateway || 'abacatepay';
-
-            if (pollingInterval) clearInterval(pollingInterval);
-            pollingInterval = setInterval(async () => {
-              try {
-                const pollRes = await fetch(`/api/checkout/status?paymentId=${checkPaymentId}&gateway=${gateway}`);
-                const pollData = await pollRes.json();
-                if (pollData.status === 'PAID' || pollData.status === 'CONFIRMED' || pollData.status === 'RECEIVED') {
-                  clearInterval(pollingInterval);
-                  clearInterval(timerInterval);
-                  onPaymentApproved(eventId, res.amount || planVal);
-                }
-              } catch (_) {}
-            }, 3000);
-
-          } else if (currentMethod === 'CREDIT_CARD') {
-            if (res.isApproved || res.status === 'CONFIRMED' || res.status === 'RECEIVED') {
-              onPaymentApproved(eventId, res.amount || planVal);
-            } else {
-              throw new Error(res.error || 'Cartão em análise. Por favor tente novamente ou escolha Pix.');
-            }
-          }
-
-        } catch (err) {
-          if (errorMsg) {
-            errorMsg.textContent = err.message || 'Erro inesperado. Tente novamente em instantes.';
-            errorMsg.style.display = 'block';
-          }
-          if (activeSubmitBtn) activeSubmitBtn.disabled = false;
-          updateCtaButtonText();
+          openHotmartCheckout({ name, email, phone });
+        } catch (error) {
+          showCheckoutError('Não foi possível abrir o pagamento. Tente novamente em instantes.');
         }
       });
-    }
-
-    function onPaymentApproved(eventId, val) {
-      if (pixView) pixView.style.display = 'none';
-      if (formView) formView.style.display = 'none';
-      if (successView) successView.style.display = 'block';
-
-      try {
-        var emailInput = document.getElementById('chkEmail');
-        var userEmail = (emailInput && emailInput.value) ? emailInput.value.trim().toLowerCase() : '';
-        var clubLink = document.getElementById('chkSuccessClubLink');
-        if (clubLink && userEmail) {
-          clubLink.href = 'https://club.imobiturbo.com.br/login?email=' + encodeURIComponent(userEmail);
-        }
-      } catch (e) {}
-
-      // Purchase é registrado pelo backend após a confirmação do pagamento.
-
-
-      setTimeout(() => {
-        window.location.href = 'https://app.imobiturbo.com.br/onboarding';
-      }, 3500);
     }
 
     // 2. Galeria manual: rolagem nativa por toque, botões e teclado.
@@ -3446,7 +3036,7 @@
   })();
 </script>
 
-  <!-- LEAD CAPTURE MODAL (RADIX STYLE - ABACATEPAY TRANSPARENTE) -->
+  <!-- Formulário alternativo de identificação antes do checkout Hotmart -->
   <dialog id="leadCaptureModal" class="lead-modal-overlay" onclick="handleModalBackdropClick(event)">
     <div class="lead-modal-card" role="document">
       <button class="lm-close-btn" type="button" onclick="closeLeadModal()" aria-label="Fechar modal">✕</button>
@@ -3516,28 +3106,6 @@
         </div>
       </div>
 
-      <!-- Step 2: AbacatePay Transparent Pix QR Code Result -->
-      <div id="lmPixResult" style="display: none;">
-        <div class="lm-pix-header">
-          <span class="lm-pix-tag">PAGAMENTO INSTANTÂNEO VIA PIX</span>
-          <div class="lm-pix-price" id="lmPixPrice">R$ 997,00</div>
-          <p class="lm-pix-sub">Escaneie o QR Code abaixo com o app do seu banco ou use o Copia e Cola:</p>
-        </div>
-
-        <div class="lm-qr-box">
-          <img id="lmQrCodeImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="QR Code Pix" width="220" height="220">
-        </div>
-
-        <div class="lm-copia-cola-wrap">
-          <input type="text" id="lmPixCopiaCola" class="lm-pix-input" readonly>
-          <button type="button" class="lm-copy-btn" id="lmCopyBtn" onclick="copyPixCode()">Copiar Código</button>
-        </div>
-
-        <div class="lm-pix-status">
-          <span class="lm-pulse-dot"></span>
-          <span>Aguardando liquidação... O acesso é liberado no seu e-mail e WhatsApp em 2 segundos após o pagamento.</span>
-        </div>
-      </div>
     </div>
   </dialog>
 
@@ -4033,76 +3601,18 @@
       }
     }
 
-    async function handleLeadSubmit(e) {
+    function handleLeadSubmit(e) {
       e.preventDefault();
-      const submitBtn = document.getElementById('leadSubmitBtn');
-      const btnTxt = document.getElementById('lmBtnTxt');
       const fullname = document.getElementById('leadFullname').value.trim();
       const email = document.getElementById('leadEmail').value.trim();
       const phone = document.getElementById('leadPhone').value.trim();
-
       if (!fullname || !email || !phone) return;
-
-      submitBtn.disabled = true;
-      btnTxt.textContent = 'Gerando acesso seguro...';
-
-      try {
-        const res = await fetch('/api/checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            plan: currentSelectedPlan,
-            paymentMethod: 'PIX',
-            name: fullname,
-            email: email,
-            phone: phone,
-            tracking: typeof getUtms === 'function' ? getUtms() : {},
-            orderBumps: []
-          })
-        });
-
-        const data = await res.json();
-        const pix = data.pix || data.pixData;
-
-        if (data.checkoutUrl && !pix) {
-          window.location.href = data.checkoutUrl;
-          return;
-        }
-
-        if (pix && (pix.copyPaste || pix.brCode)) {
-          document.getElementById('lmFormStep').style.display = 'none';
-          document.getElementById('lmPixResult').style.display = 'block';
-          document.getElementById('lmPixPrice').textContent = pix.valueDisplay || PLANS_CONFIG[currentSelectedPlan].pixPrice;
-          document.getElementById('lmPixCopiaCola').value = pix.copyPaste || pix.brCode;
-          const qrSrc = pix.qrCodeBase64 || pix.brCodeBase64;
-          if (qrSrc) {
-            document.getElementById('lmQrCodeImg').src = qrSrc;
-          }
-        } else if (data.checkoutUrl) {
-          window.location.href = data.checkoutUrl;
-        } else {
-          window.location.href = 'https://chk.imobiturbo.com.br/checkout?plano=' + currentSelectedPlan;
-        }
-      } catch (err) {
-        console.error('Checkout error:', err);
-        window.location.href = 'https://chk.imobiturbo.com.br/checkout?plano=' + currentSelectedPlan;
-      }
-    }
-
-    function copyPixCode() {
-      const input = document.getElementById('lmPixCopiaCola');
-      const copyBtn = document.getElementById('lmCopyBtn');
-      if (input) {
-        input.select();
-        navigator.clipboard.writeText(input.value).then(() => {
-          copyBtn.textContent = 'Copiado!';
-          copyBtn.style.background = '#15803d';
-          setTimeout(() => {
-            copyBtn.textContent = 'Copiar Código';
-            copyBtn.style.background = '#14A69B';
-          }, 2500);
-        });
-      }
+      const tracking = Object.fromEntries(new URLSearchParams(window.location.search));
+      const visitor = document.cookie.match(/(?:^|; )rt_vid=([^;]+)/);
+      if (visitor) tracking.visitorId = visitor[1];
+      const url = window.ImobiturboHotmart.buildUrl(currentSelectedPlan, { name: fullname, email, phone }, tracking);
+      closeLeadModal();
+      window.location.assign(url);
     }
 
     // Relatos Reais em Vídeo (Bunny Stream CDN Oficial)
