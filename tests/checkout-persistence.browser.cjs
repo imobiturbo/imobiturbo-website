@@ -26,15 +26,16 @@ before(async () => {
 });
 after(async () => { await browser?.close(); await new Promise(resolve => server.close(resolve)); });
 
-async function visit(t, width = 1440, initialStorage) {
+async function visit(t, width = 1440, initialStorage, widgetDelay = 0) {
   const context = await browser.newContext({ viewport: { width, height: 1000 } });
   t.after(() => context.close());
-  await context.route('**/*', route => {
+  await context.route('**/*', async route => {
     const request = route.request();
     const url = new URL(request.url());
     if (request.method() !== 'GET') return route.abort();
     if (url.href === 'https://static.hotmart.com/checkout/widget.min.js') {
-      return route.fulfill({ contentType: 'text/javascript', body: `window.jQuery={fancybox:{}};document.getElementById('hotmartCheckoutLink').addEventListener('click',function(e){e.preventDefault();window.widgetTarget=this.href;});` });
+      if (widgetDelay) await new Promise(resolve => setTimeout(resolve, widgetDelay));
+      return route.fulfill({ contentType: 'text/javascript', body: `window.jQuery={fancybox:{}};document.getElementById('hotmartCheckoutLink').addEventListener('click',function(e){e.preventDefault();window.widgetTarget=this.href;window.widgetOpens=(window.widgetOpens||0)+1;});` });
     }
     if (url.origin !== origin || /\.(mp4|m3u8)$/.test(url.pathname)) return route.abort();
     if (/site-tracking|\/api\//.test(url.pathname)) return route.fulfill({ contentType: 'text/javascript', body: '' });
@@ -61,7 +62,14 @@ async function complete(page) {
   await page.locator('#chkStep2Btn').click();
   await page.locator('#chkEmail').fill(buyer.email);
   await page.locator('#chkStep3Btn').click();
-  assert.equal(await page.locator('#chkStepPane4').isVisible(), true);
+  await assertWidget(page);
+}
+
+async function assertWidget(page, opens = 1) {
+  assert.equal(await page.locator('#chkStepPane4').isVisible(), false, 'no intermediate confirmation step');
+  await page.waitForFunction(count => window.widgetOpens === count, opens, { timeout: 10000 });
+  assert.equal(await page.locator('#checkoutModalOverlay').getAttribute('open'), null, 'identification closes before the embed');
+  return new URL(await page.evaluate(() => window.widgetTarget));
 }
 
 async function assertBuyer(page) {
@@ -70,25 +78,19 @@ async function assertBuyer(page) {
   assert.equal(await page.locator('#chkEmail').inputValue(), buyer.email);
 }
 
-for (const width of [1440, 390]) test(`completed checkout reopens at payment and changes plans at ${width}px`, async t => {
+for (const width of [1440, 390]) test(`email opens payment directly and preserves all plan changes at ${width}px`, async t => {
   const page = await visit(t, width);
   await complete(page);
-  for (const plan of ['anual', 'mensal', 'trimestral']) {
-    await page.locator('#checkoutModalClose').click();
+  let opens = 1;
+  for (const [plan, offer] of [['anual', '6hifxtrg'], ['mensal', '4zruzp5h'], ['trimestral', '4ctjnptl']]) {
     await page.locator(`input[name="plano"][value="${plan}"]`).check({ force: true });
     await page.locator('#checkoutBtn').click();
-    assert.equal(await page.locator('#chkStepPane4').isVisible(), true, 'reopen directly at final step');
+    const target = await assertWidget(page, ++opens);
+    assert.equal(target.searchParams.get('off'), offer);
     await assertBuyer(page);
-    assert.match(await page.locator('#chkPlanCompactTitle').innerText(), new RegExp(plan, 'i'));
   }
-  await page.locator('#chkPlanRetractableTrigger').click();
-  await page.locator('#chkChangePlanTrigger').click();
-  await page.locator('input[name="chkModalPlanRadio"][value="mensal"]').check({ force: true });
-  assert.equal(await page.locator('#chkStepPane4').isVisible(), true);
-  assert.match(await page.locator('#chkPaymentTerms').innerText(), /147/);
-  await page.keyboard.press('Escape');
   await page.locator('#checkoutBtn').click();
-  assert.equal(await page.locator('#chkStepPane4').isVisible(), true);
+  await assertWidget(page, ++opens);
 });
 
 test('reload and a new visit restore completion, chosen plan and the buyer sent to Hotmart', async t => {
@@ -98,17 +100,14 @@ test('reload and a new visit restore completion, chosen plan and the buyer sent 
   await page.reload({ waitUntil: 'load' });
   assert.equal(await page.locator('#checkoutModalOverlay').getAttribute('open'), null);
   await page.locator('#checkoutBtn').click();
-  assert.equal(await page.locator('#chkStepPane4').isVisible(), true, 'reload preserves final step');
+  await assertWidget(page);
   // New tab shares durable storage, but not the old page's in-memory state.
   page = await page.context().newPage();
   await page.goto(pageUrl, { waitUntil: 'load' });
   await page.locator('#checkoutBtn').click();
-  assert.equal(await page.locator('#chkStepPane4').isVisible(), true, 'a new visit preserves final step');
+  const target = await assertWidget(page);
   await assertBuyer(page);
   assert.equal(await page.locator('input[name="plano"]:checked').inputValue(), 'trimestral');
-  await page.waitForFunction(() => Boolean(window.jQuery?.fancybox));
-  await page.locator('#chkContinuePaymentBtn').click();
-  const target = new URL(await page.evaluate(() => window.widgetTarget));
   assert.equal(target.searchParams.get('off'), '4ctjnptl');
   assert.equal(target.searchParams.get('split'), '3');
   assert.equal(target.searchParams.get('name'), buyer.name);
@@ -116,7 +115,7 @@ test('reload and a new visit restore completion, chosen plan and the buyer sent 
   assert.equal(target.searchParams.get('phoneac'), '11');
   assert.equal(target.searchParams.get('phonenumber'), '999999999');
   await page.locator('#checkoutBtn').click();
-  assert.equal(await page.locator('#chkStepPane4').isVisible(), true, 'returning from payment keeps completion');
+  await assertWidget(page, 2);
 });
 
 test('incomplete draft resumes its actual step with unsubmitted input after reload', async t => {
@@ -140,9 +139,8 @@ test('incomplete draft resumes its actual step with unsubmitted input after relo
 test('unavailable storage still preserves progress when reopening in the same page', async t => {
   const page = await visit(t, 390, 'blocked');
   await complete(page);
-  await page.keyboard.press('Escape');
   await page.locator('#checkoutBtn').click();
-  assert.equal(await page.locator('#chkStepPane4').isVisible(), true);
+  await assertWidget(page, 2);
   await assertBuyer(page);
 });
 
@@ -156,4 +154,14 @@ test('stored completion cannot bypass missing buyer fields', async t => {
   await page.locator('#checkoutBtn').click();
   assert.equal(await page.locator('#chkStepPane2').isVisible(), true);
   assert.equal(await page.locator('input[name="plano"]:checked').inputValue(), 'anual');
+});
+
+test('a saved completed buyer waits for a cold embed without duplicate opens or the old final step', async t => {
+  const page = await visit(t, 1440, JSON.stringify({ ...buyer, step: 4, plan: 'mensal' }), 1200);
+  await page.locator('#checkoutBtn').click();
+  // Rapid repeated intent must share the same pending opening.
+  await page.locator('#checkoutBtn').dispatchEvent('click');
+  const target = await assertWidget(page);
+  assert.equal(target.searchParams.get('off'), '4zruzp5h');
+  assert.equal(target.searchParams.get('email'), buyer.email);
 });

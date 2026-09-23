@@ -53,11 +53,8 @@ for (const mode of ['widget', 'fallback', 'real-widget']) test(`unified checkout
   await page.locator('#chkPhone').fill('11999999999');
   await page.locator('#chkStep2Btn').click();
   await page.locator('#chkEmail').fill('checkout@example.invalid');
-  await page.locator('#chkStep3Btn').click();
   assert.equal(await page.locator('#tabPix,#tabCard,#chkCpf,#chkPixView,#chkCardNumber,#chkCardCvv,#chkCardHolder').count(), 0);
-  assert.match(await page.locator('#chkPaymentTerms').innerText(), /357.*3x de R\$ 127.*3 meses/);
-  if (mode !== 'fallback') await page.waitForFunction(() => Boolean(window.jQuery?.fancybox));
-  await page.locator('#chkContinuePaymentBtn').click();
+  await page.locator('#chkStep3Btn').click();
   if (mode === 'widget') {
     await page.waitForFunction(() => Boolean(window.widgetTarget));
     targetUrl = new URL(await page.evaluate(() => window.widgetTarget));
