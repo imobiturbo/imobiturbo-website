@@ -71,7 +71,7 @@ for (const mode of ['widget', 'fallback', 'real-widget']) test(`unified checkout
     });
     // Hotmart geolocates VPS3 in France. Select the buyer's country through
     // its real UI after hydration so Brazilian methods and prices are tested.
-    await frame.waitForLoadState('networkidle');
+    await frame.locator('#NAME[customhandlers]').waitFor();
     if (!(await frame.locator('#country-select').innerText()).includes('🇧🇷')) {
       await frame.locator('#country-select').click();
       await frame.getByRole('button', { name: /Brazil.*Brasil/ }).click();
