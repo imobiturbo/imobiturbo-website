@@ -137,7 +137,11 @@ test("checkout API PLAN_DETAILS matches landing page pricing and Hub tracking co
     assert.ok(html.includes("currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147"), `${page} tracking must use 997 for anual`);
     assert.ok(html.includes("pixVal: 'R$ 997'"), `${page} PLAN_CONFIG must set pixVal to R$ 997`);
     assert.ok(html.includes("pixPrice: 'R$ 997,00'"), `${page} PLANS_CONFIG must set pixPrice to R$ 997,00`);
-    assert.ok(html.includes("Economize R$ 167"), `${page} must display Economize R$ 167 savings`);
+    if (page === "vagas/index.html") {
+      assert.ok(html.includes("Economize R$ 167"), `${page} must display Economize R$ 167 savings`);
+    } else {
+      assert.ok(html.includes("R$ 997/ano no Pix Automático"), `${page} must disclose the annual automatic Pix price and period`);
+      assert.ok(html.includes("R$ 357/trimestre no Pix Automático"), `${page} must disclose the quarterly automatic Pix price and period`);
+    }
   }
 });
-
