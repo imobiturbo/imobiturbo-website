@@ -6,6 +6,9 @@ const OFFERS = Object.freeze({
   k3sq4mg8: 'trimestral',
   ua8aap3x: 'trimestral', // Existing quarterly offer, paid in full.
   '4zruzp5h': 'mensal',
+  anual: 'anual',
+  trimestral: 'trimestral',
+  mensal: 'mensal',
 });
 
 export async function authenticateHotmart(request, env) {
@@ -30,7 +33,8 @@ export function parseHotmartEvent(payload) {
     : ['PURCHASE_REFUNDED', 'PURCHASE_CHARGEBACK'].includes(payload.event) ? 'review' : 'ignore';
   if (action === 'ignore' || action === 'review') return { action };
   const purchase = data.purchase || {};
-  const plan = OFFERS[purchase.offer?.code];
+  const offerCode = purchase.offer?.code || data.offer?.code || purchase.offer?.tracking_keys?.offer_code || purchase.offer?.tracking_keys?.plan;
+  const plan = OFFERS[offerCode];
   if (!plan) throw new Error('hotmart_unknown_offer');
   if (!purchase.transaction || !data.buyer?.email) throw new Error('hotmart_incomplete_purchase');
   const amount = Number(purchase.price?.value);

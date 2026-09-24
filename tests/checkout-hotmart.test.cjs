@@ -55,6 +55,19 @@ test('Mimiu and unknown offers cannot grant annual community access', async () =
   assert.throws(() => parseHotmartEvent(event), /unknown_offer/);
 });
 
+test('named offer codes and tracking keys map to correct plans', async () => {
+  const { parseHotmartEvent } = await helper;
+  for (const plan of ['anual', 'trimestral', 'mensal']) {
+    const event = paid();
+    event.data.purchase.offer.code = plan;
+    assert.equal(parseHotmartEvent(event).plan, plan);
+  }
+  const fallbackEvent = paid();
+  delete fallbackEvent.data.purchase.offer;
+  fallbackEvent.data.offer = { code: '6hifxtrg' };
+  assert.equal(parseHotmartEvent(fallbackEvent).plan, 'anual');
+});
+
 test('an unpaid cancellation and subscription cancellation do not revoke paid access', async () => {
   const { parseHotmartEvent } = await helper;
   for (const event of ['PURCHASE_CANCELED', 'PURCHASE_EXPIRED', 'SUBSCRIPTION_CANCELLATION', 'PURCHASE_COMPLETE', 'PURCHASE_COMPLETED']) {
