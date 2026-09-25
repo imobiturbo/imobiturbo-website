@@ -2600,17 +2600,41 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   right: 12px;
   padding: 7px 10px;
   border-radius: 8px;
-  background: rgba(14, 16, 13, 0.9);
+  background: rgba(14, 16, 13, 0.92);
   color: #fff;
   font-size: clamp(10px, 1.1vw, 12px);
   line-height: 1.35;
   text-align: left;
   pointer-events: none;
+  transform-origin: top right;
+  border: 1px solid rgba(212, 255, 83, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 10px rgba(212, 255, 83, 0.2);
+  animation: vslNoticePulse 2.4s infinite ease-in-out;
 }
 
-.vsl-autoplay-notice strong,
-.vsl-autoplay-notice span { display: block; }
-.vsl-autoplay-notice strong { color: var(--lime); }
+.vsl-autoplay-notice strong {
+  display: block;
+  color: var(--lime);
+}
+
+.vsl-autoplay-notice span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@keyframes vslNoticePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5), 0 0 0 0 rgba(212, 255, 83, 0.25);
+    border-color: rgba(212, 255, 83, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6), 0 0 16px 3px rgba(212, 255, 83, 0.55);
+    border-color: rgba(212, 255, 83, 0.7);
+  }
+}
 
 /* VTurb Smart Autoplay Pure HTML/CSS Component */
 .vsl-smart-autoplay {

@@ -149,7 +149,7 @@ test('CTA pulse respects reduced motion', async t => {
 test('preview notice stays at the top right until click and the cursor visibly enters and leaves', async t => {
   const page = await visit(t, 390, 'no-preference');
   const notice = page.locator('.vsl-autoplay-notice');
-  assert.equal(await notice.innerText(), 'Seu vídeo começou\nClique para ouvir');
+  assert.equal(await notice.innerText(), 'Seu vídeo começou\n▶️ Clique para ouvir');
   const player = await page.locator('#vslFacade').boundingBox();
   const badge = await notice.boundingBox();
   assert.ok(badge.x > player.x + player.width / 2 && badge.x + badge.width < player.x + player.width);
