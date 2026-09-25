@@ -12,35 +12,23 @@ test("vagas/index.html contains complete embedded checkout modal markup and comp
   // Modal structure
   assert.ok(html.includes('id="checkoutModalOverlay"'), "Must contain #checkoutModalOverlay");
   assert.ok(html.includes('id="chkFormView"'), "Must contain #chkFormView");
-  assert.ok(html.includes('id="chkPixView"'), "Must contain #chkPixView");
-  assert.ok(html.includes('id="chkSuccessView"'), "Must contain #chkSuccessView");
-
-  // Form elements
   assert.ok(html.includes('id="chkNativeForm"'), "Must contain #chkNativeForm");
+
+  // Form elements & steps
   assert.ok(html.includes('id="chkName"'), "Must contain #chkName");
   assert.ok(html.includes('id="chkEmail"'), "Must contain #chkEmail");
   assert.ok(html.includes('id="chkPhone"'), "Must contain #chkPhone");
-  assert.ok(html.includes('id="chkCpf"'), "Must contain #chkCpf");
-
-  // Payment methods
-  assert.ok(html.includes('id="tabPix"'), "Must contain #tabPix");
-  assert.ok(html.includes('id="tabCard"'), "Must contain #tabCard");
-  assert.ok(html.includes('id="chkCardFields"'), "Must contain #chkCardFields");
-  assert.ok(html.includes('id="chkCardNumber"'), "Must contain #chkCardNumber");
-
-  // Pix display components
-  assert.ok(html.includes('id="chkPixQrImg"'), "Must contain #chkPixQrImg");
-  assert.ok(html.includes('id="chkPixPayload"'), "Must contain #chkPixPayload");
-  assert.ok(html.includes('id="chkCopyPixBtn"'), "Must contain #chkCopyPixBtn");
-  assert.ok(html.includes('id="chkPixTimer"'), "Must contain #chkPixTimer");
+  assert.ok(html.includes('id="checkoutModalClose"'), "Must contain #checkoutModalClose");
+  assert.ok(html.includes('id="chkStep1Btn"'), "Must contain #chkStep1Btn");
+  assert.ok(html.includes('id="chkStep2Btn"'), "Must contain #chkStep2Btn");
+  assert.ok(html.includes('id="chkStep3Btn"'), "Must contain #chkStep3Btn");
+  assert.ok(html.includes('id="chkContinuePaymentBtn"'), "Must contain #chkContinuePaymentBtn");
 
   // Plan switching and navigation
-  assert.ok(html.includes('id="chkBackToPlanBtn"'), "Must contain #chkBackToPlanBtn to change plan/data from Pix");
   assert.ok(html.includes('id="chkChangePlanTrigger"'), "Must contain #chkChangePlanTrigger to switch plans");
-
-  // Success screen
-  assert.ok(html.includes("Pagamento Aprovado!"), "Must contain approved payment message");
-  assert.ok(html.includes("https://app.imobiturbo.com.br/onboarding"), "Must link to onboarding");
+  assert.ok(html.includes('id="chkModalPlanName"'), "Must contain #chkModalPlanName");
+  assert.ok(html.includes('id="chkModalPlanPrice"'), "Must contain #chkModalPlanPrice");
+  assert.ok(html.includes('id="chkPaymentTerms"'), "Must contain #chkPaymentTerms");
 });
 
 test("vagas/vagas.css enforces proper styling and contrast on checkout buttons", () => {
@@ -137,11 +125,7 @@ test("checkout API PLAN_DETAILS matches landing page pricing and Hub tracking co
     assert.ok(html.includes("currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147"), `${page} tracking must use 997 for anual`);
     assert.ok(html.includes("pixVal: 'R$ 997'"), `${page} PLAN_CONFIG must set pixVal to R$ 997`);
     assert.ok(html.includes("pixPrice: 'R$ 997,00'"), `${page} PLANS_CONFIG must set pixPrice to R$ 997,00`);
-    if (page === "vagas/index.html") {
-      assert.ok(html.includes("Economize R$ 167"), `${page} must display Economize R$ 167 savings`);
-    } else {
-      assert.ok(html.includes("R$ 997/ano no Pix Automático"), `${page} must disclose the annual automatic Pix price and period`);
-      assert.ok(html.includes("R$ 357/trimestre no Pix Automático"), `${page} must disclose the quarterly automatic Pix price and period`);
-    }
+    assert.ok(html.includes("R$ 997/ano no Pix Automático"), `${page} must disclose the annual automatic Pix price and period`);
+    assert.ok(html.includes("R$ 357/trimestre no Pix Automático"), `${page} must disclose the quarterly automatic Pix price and period`);
   }
 });

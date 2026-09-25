@@ -54,6 +54,17 @@ for (const entry of entries) {
   fs.cpSync(source, path.join(output, entry), { recursive: true });
 }
 
+// Ensure relative symlink for vagas-v2/assets within build output
+const v2Assets = path.join(output, 'vagas-v2', 'assets');
+if (fs.existsSync(v2Assets)) {
+  try {
+    if (fs.lstatSync(v2Assets).isSymbolicLink()) {
+      fs.unlinkSync(v2Assets);
+      fs.symlinkSync('../vagas/assets', v2Assets);
+    }
+  } catch (_) {}
+}
+
 execFileSync(
   process.platform === 'win32' ? 'npx.cmd' : 'npx',
   ['wrangler', 'pages', 'functions', 'build', 'functions', '--outdir', output, '--build-output-directory', output, '--minify'],

@@ -2,11 +2,11 @@
 <html lang="pt-BR" class="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Comunidade Imobiturbo | CRM com IA no WhatsApp & Mentoria</title>
-  <meta name="description" content="Organize sua operação comercial imobiliária e avance com inteligência artificial. Tenha acesso ao CRM Imobiturbo OS com IA no WhatsApp, suporte técnico 24h e ao Club.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>Comunidade Imobiturbo | CRM com IA no WhatsApp & Mentoria Prática</title>
+  <meta name="description" content="Qualifique compradores no WhatsApp 24/7 com IA, organize seus clientes no CRM e feche vendas exclusivas sem virar refém da tecnologia.">
   <meta name="keywords" content="CRM imobiliário, IA para corretores, WhatsApp imobiliário, comunidade imobiturbo, Natan Pimentel, VGV turbinado">
-  <meta name="author" content="Natan Pimentel — Imobiturbo">
+  <meta name="author" content="Natan Pimentel, Imobiturbo">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#0e100d">
   <meta name="color-scheme" content="dark">
@@ -16,7 +16,7 @@
   <meta property="og:locale" content="pt_BR">
   <meta property="og:site_name" content="Imobiturbo">
   <meta property="og:title" content="Comunidade Imobiturbo | CRM com IA no WhatsApp & Mentoria">
-  <meta property="og:description" content="Organize sua operação comercial imobiliária e avance com inteligência artificial. Tenha acesso ao CRM Imobiturbo OS com IA no WhatsApp, suporte técnico 24h e ao Club.">
+  <meta property="og:description" content="Qualifique compradores no WhatsApp 24/7 com IA, organize seus clientes no CRM e feche vendas exclusivas sem virar refém da tecnologia.">
   <meta property="og:image" content="https://www.imobiturbo.com.br/vagas/assets/hero-vsl-poster.webp">
   <meta property="og:url" content="https://www.imobiturbo.com.br/vagas/">
 
@@ -130,7 +130,7 @@
             "name": "Como funcionam cobrança, acesso e cancelamento?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "O pagamento é processado com segurança via AbacatePay (Pix à vista) ou Asaas (cartão em até 12x). Você recebe o acesso imediatamente por e-mail e WhatsApp logo após a confirmação. O cancelamento pode ser feito a qualquer momento com apenas 1 clique."
+              "text": "No cartão, a Hotmart cobra o período contratado: anual em até 12x de R$ 97, trimestral em até 3x de R$ 127 ou mensal de R$ 147, com renovação automática ao fim de cada período. O mesmo checkout oferece Pix Automático: R$ 997 por ano, R$ 357 por trimestre ou R$ 147 por mês. Você autoriza as cobranças no aplicativo do banco e as renovações seguem o período escolhido. Após a confirmação, o acesso é liberado e as instruções são enviadas por e-mail e WhatsApp. Você pode cancelar a próxima renovação e manter o acesso até o fim do período já pago."
             }
           },
           {
@@ -584,7 +584,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260921-v46">
+  <link rel="stylesheet" href="./vagas.css?v=20260925-mobile-modal">
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -1119,13 +1119,99 @@
     mark * {
       color: #10130c !important;
     }
+
+    /* Mobile Checkout Modal (Top-aligned & Keyboard-resilient) */
+    @media (max-width: 768px) {
+      .chk-modal-overlay {
+        align-items: flex-start !important;
+        padding: max(8px, env(safe-area-inset-top, 8px)) 12px max(16px, env(safe-area-inset-bottom, 16px)) !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+      }
+      .chk-modal-box {
+        margin: 0 auto !important;
+        padding: 16px 16px 18px !important;
+        border-radius: 20px !important;
+        max-height: calc(100dvh - 16px) !important;
+        max-height: calc(100svh - 16px) !important;
+      }
+      .chk-modal-header-row {
+        margin-bottom: 12px !important;
+        gap: 8px !important;
+      }
+      .chk-modal-badge {
+        font-size: 10.5px !important;
+        padding: 4px 8px !important;
+      }
+      .chk-modal-close {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+      }
+      .chk-geo-banner {
+        padding: 9px 12px !important;
+        margin-bottom: 12px !important;
+        font-size: 13px !important;
+        line-height: 1.35 !important;
+        border-radius: 12px !important;
+        gap: 8px !important;
+      }
+      .chk-geo-icon {
+        font-size: 15px !important;
+      }
+      .chk-geo-sub {
+        font-size: 11.5px !important;
+        margin-top: 2px !important;
+      }
+      .chk-modal-title {
+        font-size: 17.5px !important;
+        line-height: 1.25 !important;
+        margin-bottom: 3px !important;
+      }
+      .chk-modal-subtitle {
+        font-size: 12.5px !important;
+        line-height: 1.35 !important;
+        margin-bottom: 10px !important;
+      }
+      .chk-modal-box .chk-field {
+        margin-top: 8px !important;
+        margin-bottom: 12px !important;
+      }
+      .chk-input-lg {
+        min-height: 46px !important;
+        padding: 10px 12px !important;
+        font-size: 15px !important;
+        border-radius: 10px !important;
+      }
+      .chk-btn-submit {
+        min-height: 48px !important;
+        padding: 12px 16px !important;
+        font-size: 14.5px !important;
+        border-radius: 10px !important;
+        margin-top: 2px !important;
+      }
+      .chk-social-proof {
+        margin-top: 12px !important;
+      }
+      .chk-choose-method-title {
+        font-size: 13px !important;
+        margin: 8px 0 4px !important;
+      }
+      #chkPaymentTerms {
+        font-size: 11.5px !important;
+        margin-bottom: 6px !important;
+      }
+      .chk-guarantee-line {
+        margin-top: 12px !important;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- 1. LIVE BAR STICKY TOP (ESTILO JEFF ECOM) -->
+  <!-- 1. LIVE BAR STICKY TOP -->
   <div class="livebar" role="note">
-    <span class="lb-dot"></span> MENTORIAS EXCLUSIVAS TODA SEMANA
+    <span class="lb-dot"></span> ACERVO DE MENTORIAS ATUALIZADO TODA SEMANA
   </div>
 
 
@@ -1152,7 +1238,8 @@
 
         <!-- VSL Player (VTurb Architecture + Bunny Stream CDN) -->
         <div class="hero-mock">
-          <div class="hero-vsl" id="vslFacade" onclick="playVslVideo(event)">
+          <div class="hero-vsl" id="vslFacade" tabindex="0" role="group" aria-label="Apresentação da Comunidade Imobiturbo. Pressione Enter para reproduzir ou pausar." onclick="playVslVideo(event)">
+            <div class="vsl-stage">
             <!-- Muted Video Autoplay Preview: starts instantly with zero lag -->
             <video id="vslVideo" playsinline muted autoplay loop preload="auto" poster="./assets/hero-vsl-poster.webp" src="./assets/vsl-preview.mp4">
               Seu navegador não suporta vídeos em HTML5.
@@ -1160,6 +1247,10 @@
 
             <!-- VTurb-Style Pure HTML/CSS Smart Autoplay Overlay -->
             <div class="vsl-overlay" id="vslOverlay" aria-label="Clique para ouvir com som">
+              <div class="vsl-autoplay-notice">
+                <strong>Seu vídeo começou</strong>
+                <span>Clique para ouvir</span>
+              </div>
               <div class="vsl-smart-autoplay">
                 <div class="vsl-play-btn-circle">
                   <div class="vsl-ripple-ring"></div>
@@ -1187,7 +1278,7 @@
               <div class="vsl-volume-slider-box" id="vslVolumeSliderBox">
                 <input type="range" class="vsl-volume-slider" id="vslVolumeSlider" min="0" max="1" step="0.02" value="1" aria-label="Controle de volume" title="Volume">
               </div>
-              <button class="vsl-sound-btn" id="vslSoundBtn" type="button" aria-label="Controle de volume" title="Ajustar som" onclick="handleVslSoundBtnClick(event)">
+              <button class="vsl-sound-btn" id="vslSoundBtn" type="button" aria-expanded="false" aria-controls="vslVolumeSliderBox" aria-label="Controle de volume" title="Ajustar som" onclick="handleVslSoundBtnClick(event)">
                 <!-- High volume icon -->
                 <svg id="vslSoundIconHigh" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
                 <!-- Low volume icon -->
@@ -1195,6 +1286,12 @@
                 <!-- Muted icon -->
                 <svg id="vslSoundIconMuted" style="display:none;" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
               </button>
+            </div>
+            <button class="vsl-fullscreen-btn" id="vslFullscreenBtn" type="button" aria-label="Entrar em tela cheia" aria-pressed="false" title="Entrar em tela cheia" onclick="toggleVslFullscreen(event)">
+              <svg class="vsl-fullscreen-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></svg>
+              <svg class="vsl-fullscreen-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 8h5V3m8 0v5h5M8 21v-5H3m18 0h-5v5"/></svg>
+            </button>
+            <div class="vsl-fullscreen-status" id="vslFullscreenStatus" role="status"></div>
             </div>
           </div>
         </div>
@@ -1228,15 +1325,15 @@
   <section id="como-funciona" class="section" data-section="02">
     <div class="container">
       <div class="section-intro">
-        <p class="eyebrow">COMO FUNCIONA</p>
-        <h2>Aprenda o processo. Execute no CRM. <span class="accent">Recorra à IA.</span></h2>
-        <p class="lead">A comunidade combina aprendizado, ferramenta de trabalho e orientação por IA para apoiar sua rotina imobiliária.</p>
+        <p class="eyebrow">COMO FUNCIONA NA PRÁTICA</p>
+        <h2>O problema nunca foi falta de leads. <span class="accent">Foi a falta de uma esteira com IA no WhatsApp.</span></h2>
+        <p class="lead">Gastar mais em anúncio só aumenta o seu cansaço se você <mark class="text-highlight">não tiver um processo</mark> que filtra os curiosos no primeiro minuto e conduz o comprador quente até a visita.</p>
       </div>
       <ol class="process">
         <li>
           <span class="step-number">01</span>
-          <h3>Aprender o processo</h3>
-          <p>Estude aulas e trilhas, pratique com exercícios e entenda o que aplicar.</p>
+          <h3>Dominar o método de captação</h3>
+          <p>Aprenda os roteiros exatos para captar imóveis com exclusividade e fechar vendas com comissão cheia sem disputa predatória.</p>
           <div class="concept lesson-concept" aria-label="Demonstração do formato das aulas e trilhas">
             <div class="lesson-head">
               <span class="micro-tag">Trilha Prática · Módulo 2</span>
@@ -1259,8 +1356,8 @@
         </li>
         <li>
           <span class="step-number">02</span>
-          <h3>Executar no CRM</h3>
-          <p>Use o Imobiturbo OS para organizar o trabalho e acompanhar suas oportunidades.</p>
+          <h3>Operar na esteira do CRM</h3>
+          <p>Organize cada negócio em colunas visuais no Imobiturbo OS e nunca mais esqueça de fazer um follow-up decisivo.</p>
           <div class="concept kanban-concept" aria-label="Demonstração do fluxo de leads no CRM">
             <div class="kanban-col">
               <div class="kanban-col-header">
@@ -1302,23 +1399,22 @@
         </li>
         <li>
           <span class="step-number">03</span>
-          <h3>Recorrer à orientação</h3>
-          <p>Busque ajuda por IA para aplicar o conteúdo ou esclarecer dúvidas de utilização.</p>
-          <div class="concept chat-concept" aria-label="Demonstração de diálogo com o assistente de IA">
+          <h3>Escalar com IA no WhatsApp</h3>
+          <p>Deixe a inteligência artificial qualificar compradores 24h por dia e filtrar quem tem perfil real de compra.</p>
+          <div class="concept chat-concept" aria-label="Demonstração de qualificação de comprador com IA no WhatsApp">
             <div class="chat-bubble chat-bubble-user">
-              <div class="chat-sender">Você (Corretor)</div>
-              <p class="chat-text">"Cliente pediu desconto na comissão. Como respondo?"</p>
+              <div class="chat-sender">Comprador (WhatsApp)</div>
+              <p class="chat-text">"Vi o anúncio da cobertura. Aceita proposta à vista?"</p>
             </div>
             <div class="chat-bubble chat-bubble-ai">
               <div class="chat-sender"><span class="ai-badge">IA</span> Assistente Imobiturbo</div>
-              <p class="chat-text">"Ancore no plano de mídia paga e exclusividade que acelera a venda."</p>
+              <p class="chat-text">"Sim! Já levantei as condições. Qual o melhor horário para o corretor responsável falar com você?"</p>
             </div>
           </div>
         </li>
       </ol>
-      <div class="process-tail">
-        <p class="note process-note">Este fluxo representa seu percurso de uso, não uma integração automática entre os assistentes.</p>
-        <p class="transition">Começando pelo lugar onde você trabalha suas oportunidades.</p>
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero entrar agora</a>
       </div>
     </div>
   </section>
@@ -1330,8 +1426,8 @@
         <span class="brand brand-os">
           <img src="assets/brand/current/imobiturbo-os.webp" alt="Imobiturbo OS" width="3259" height="875">
         </span>
-        <h2>Sua operação comercial, <span class="accent">mais organizada.</span></h2>
-        <p class="lead">Use o CRM para organizar o trabalho e acompanhar suas oportunidades de venda com mais clareza.</p>
+        <h2>Um CRM feito para fechar negócios, <span class="accent">não para preencher relatório chato.</span></h2>
+        <p class="lead">Chega de perder vendas porque o contato sumiu no WhatsApp ou porque você esqueceu de dar retorno. Tenha o controle visual de cada proposta em segundos.</p>
       </div>
       <div class="os-layout">
         <div class="os-demo-frame">
@@ -1345,26 +1441,28 @@
           <li>
             <span class="annotation-number">01</span>
             <div>
-              <h3>Organização em Kanban</h3>
-              <p>Visualize suas oportunidades em colunas claras: Novos Leads, Qualificados, Visitas Agendadas e Propostas em Negociação.</p>
+              <h3>Kanban Visual de Oportunidades</h3>
+              <p>Acompanhe seus leads por etapas lógicas: Novos, Qualificados, Visitas Agendadas e Propostas. Arraste e avance sem complicação.</p>
             </div>
           </li>
           <li>
             <span class="annotation-number">02</span>
             <div>
-              <h3>Acompanhamento Centralizado</h3>
-              <p>Histórico completo de cada conversa, lembretes automáticos e status de atendimento em tempo real na mesma tela.</p>
+              <h3>Alertas e Follow-up Anti-Vácuo</h3>
+              <p>Histórico completo da conversa e alertas automáticos para você nunca mais deixar um cliente qualificado esfriar.</p>
             </div>
           </li>
           <li>
             <span class="annotation-number">03</span>
             <div>
-              <h3>Dados e Contexto Imediato</h3>
-              <p>Consulte preferências de imóveis, faixa de orçamento, perfil familiar e notas técnicas em um clique antes de responder.</p>
+              <h3>Contexto Imediato antes de Abordar</h3>
+              <p>Consulte orçamento, bairro desejado, urgência e notas da família antes de enviar um áudio. Quem aborda com contexto fecha muito mais rápido.</p>
             </div>
           </li>
         </ol>
-        <p class="transition">Organizar é uma parte. E o atendimento no WhatsApp?</p>
+      </div>
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Entrar na comunidade Imobiturbo</a>
       </div>
     </div>
   </section>
@@ -1375,9 +1473,9 @@
       <div class="whatsapp-layout">
         <div class="whatsapp-intro">
           <div class="section-intro">
-            <p class="eyebrow">IA NO WHATSAPP</p>
-            <h2>IA para <span class="accent">apoiar o atendimento</span> no seu WhatsApp.</h2>
-            <p class="lead">Conte com apoio de IA na rotina de atendimento, dentro das tarefas disponíveis no CRM.</p>
+            <p class="eyebrow">INTELIGÊNCIA ARTIFICIAL NO WHATSAPP</p>
+            <h2>Qualifique Compradores no 1º Minuto, <span class="accent">24 Horas por Dia no WhatsApp.</span></h2>
+            <p class="lead">A IA não substitui você: ela atende no minuto zero, filtra quem tem perfil real de compra e coloca o lead pronto na sua agenda.</p>
           </div>
         </div>
         <div class="conversation panel">
@@ -1394,16 +1492,18 @@
         <div class="responsibilities">
           <div>
             <img src="assets/emoji-apple-robot.png" alt="O apoio da IA" class="section-emoji" width="32" height="32">
-            <h3>O apoio da IA</h3>
-            <p>Apoiar o atendimento nas tarefas e condições disponibilizadas pelo sistema.</p>
+            <h3>Atendimento Imediato & Qualificação</h3>
+            <p>Responde instantaneamente a qualquer hora, levanta orçamento, filtra curiosos e confirma o interesse antes de passar para você.</p>
           </div>
           <div>
             <img src="assets/emoji-apple-corretor.png" alt="A atuação do corretor" class="section-emoji" width="32" height="32">
-            <h3>A atuação do corretor</h3>
-            <p>Conduzir a relação comercial e tomar as decisões da negociação.</p>
+            <h3>Condução Comercial & Fechamento</h3>
+            <p>Você entra em ação quando o cliente já está qualificado para agendar a visita presencial, apresentar o imóvel e assinar o contrato.</p>
           </div>
         </div>
-        <p class="transition">Mas ter a ferramenta não resolve a dúvida sobre o que fazer.</p>
+        <div class="section-cta whatsapp-cta">
+          <a class="btn" href="#assinatura">Quero aumentar meu VGV</a>
+        </div>
       </div>
     </div>
   </section>
@@ -1415,8 +1515,8 @@
         <span class="brand brand-club">
           <img src="assets/brand/current/imobiturbo-club.webp" alt="Imobiturbo Club" width="3596" height="875">
         </span>
-        <h2>Aprenda no seu ritmo, com <span class="accent">orientação para aplicar.</span></h2>
-        <p class="lead">Aulas, trilhas, exercícios e assistentes de IA para ajudar você a transformar o conteúdo em um próximo passo mais claro.</p>
+        <h2>Aprenda a Fechar Vendas Exclusivas com <span class="accent">Roteiros Prontos e Mentor IA 24h.</span></h2>
+        <p class="lead">Ferramenta sem método é só custo. No Club você tem acesso aos passos exatos de captação, contorno de objeções e negociação validados no campo de batalha.</p>
       </div>
       <div class="study-panel panel">
         <div class="lesson">
@@ -1431,36 +1531,34 @@
           </div>
         </div>
         <div class="guidance">
-          <h3>Orientação contextualizada</h3>
-          <p>Tire dúvidas com o mentor IA baseado no conhecimento de Natan e com os assistentes das aulas e trilhas.</p>
+          <h3>Orientação em Tempo Real com Mentor IA</h3>
+          <p>Tire dúvidas comerciais a qualquer hora com o assistente treinado na metodologia de Natan Pimentel.</p>
           <div class="text-guidance-box">
             <strong>Exemplo de Consulta ao Mentor IA:</strong>
-            <p><em>Pergunta do Corretor:</em> "Tenho 20 contatos parados na fase de visita há mais de 10 dias. Como reativo sem parecer chato?"</p>
-            <p><em>Orientação do Mentor IA:</em> "Use o gatilho de novidade de acervo: não pergunte se ele 'ainda tem interesse'. Envie um áudio curto ou mensagem citando uma nova condição ou imóvel similar que acabou de entrar no mesmo condomínio. Aplique o roteiro do Módulo 3 Aula 4."</p>
+            <p><mark class="text-highlight"><em>Pergunta do Corretor:</em></mark> "Cliente pediu desconto na comissão de 6% para 4%. Como respondo sem perder o negócio?"</p>
+            <p><mark class="text-highlight"><em>Orientação do Mentor IA:</em></mark> "Ancore no plano de mídia paga com exclusividade: mostre que comissão reduzida significa corte direto no orçamento de tráfego do imóvel dele. Use o roteiro do Módulo 2 Aula 3."</p>
           </div>
-          <p class="note">Orientação por IA não é atendimento pessoal de Natan.</p>
         </div>
       </div>
+      <div class="section-cta"><a class="btn" href="#assinatura">Quero aprender e aplicar o método</a></div>
       <div class="exercise panel">
-        <img src="assets/emoji-apple-clipboard.png" alt="Exercício e próximo passo" class="section-emoji" width="32" height="32">
-        <h3>Exercício e próximo passo</h3>
-        <p>Pratique o conteúdo estudado e organize o que aplicar na sua rotina.</p>
+        <img src="assets/emoji-apple-clipboard.png" alt="Plano de execução rápida" class="section-emoji" width="32" height="32">
+        <h3>Plano de Execução Rápida</h3>
+        <p>O que você coloca para rodar já no seu primeiro dia:</p>
         <div class="exercise-card-content">
-          <strong>Exercício Prático — Módulo de Captação Exclusiva:</strong>
+          <strong>Passo a Passo: Ativação e Captação Imediata</strong>
           <ol>
-            <li>Mapeie 3 empreendimentos-chave da sua região com alta demanda e oferta restrita.</li>
-            <li>Configure a régua de qualificação no CRM para filtrar compradores por faixa de renda e urgência de mudança.</li>
-            <li>Ative o fluxo de confirmação de visita via WhatsApp e acompanhe a taxa de comparecimento no painel.</li>
+            <li><mark class="text-highlight">Mapeie 3 empreendimentos com alta demanda e oferta restrita na sua região.</mark></li>
+            <li><mark class="text-highlight">Configure a régua de qualificação no CRM para filtrar compradores por faixa de renda e urgência.</mark></li>
+            <li><mark class="text-highlight">Ative o fluxo de confirmação de visita via WhatsApp e acompanhe o comparecimento no painel.</mark></li>
           </ol>
         </div>
       </div>
       <div class="recordings">
-        <h3>Acesso às mentorias gravadas</h3>
-        <p>Assista às gravações disponibilizadas no Club e acompanhe as orientações e discussões dos encontros.</p>
-        <p class="note">Acesso às gravações disponibilizadas.<br>Participação nas mentorias ao vivo não incluída.</p>
+        <h3>Acervo de Mentorias Semanais</h3>
+        <p>Assista às gravações completas dos encontros semanais com análises ao vivo de campanhas, criativos e estratégias comerciais.</p>
       </div>
-      <a class="button" href="#assinatura">Ver a assinatura</a>
-      <p class="transition">E quando a dúvida for sobre como usar o próprio sistema?</p>
+      <a class="button" href="#assinatura">Ver a assinatura completa</a>
     </div>
   </section>
 
@@ -1468,26 +1566,24 @@
   <section id="apoio" class="section support-section" data-section="06">
     <div class="container">
       <div class="section-intro">
-        <p class="eyebrow">APOIO NO USO</p>
-        <h2>Use o CRM com mais apoio e <span class="accent">menos travas.</span></h2>
-        <p class="lead">Consulte o suporte técnico por IA e os artigos de utilização para esclarecer dúvidas sobre o sistema.</p>
+        <p class="eyebrow">ACOMPANHAMENTO & SUPORTE CONTÍNUO</p>
+        <h2>Nunca fique parado: Suporte Técnico com IA <span class="accent">disponível a qualquer hora.</span></h2>
+        <p class="lead">Subindo proposta domingo à noite? Teve dúvida para ativar uma automação? Nosso suporte por IA responde em segundos e nossa equipe técnica apoia em horário comercial.</p>
       </div>
       <div class="support-panel panel">
         <div class="support-example">
-          <h3>Sua dúvida</h3>
           <div class="text-placeholder">
-            <p><strong>Dúvida do Corretor:</strong> "Como ativo as mensagens automáticas de follow-up anti-vácuo no CRM?"</p>
+            <p><mark class="text-highlight"><strong>Dúvida comum de quem começa:</strong></mark><br>"Como ativo as mensagens automáticas de follow-up anti-vácuo no CRM?"</p>
           </div>
-          <h3>Orientação por IA</h3>
-          <div class="text-placeholder tinted">
-            <p><strong>Resposta do Suporte IA:</strong> "Acesse Configurações &gt; Automações &gt; Régua de Follow-up. Defina o intervalo desejado (ex: 2h após envio de proposta sem resposta), escolha o modelo aprovado de mensagem e clique em Salvar Regra. O assistente passará a monitorar os cards inativos nessa etapa."</p>
+          <div class="text-placeholder tinted" style="margin-top: 12px;">
+            <p><mark class="text-highlight"><strong>Resposta instantânea do suporte IA:</strong></mark><br>"Acesse Configurações &gt; Automações &gt; Régua de Follow-up. Defina o intervalo desejado (ex: 2h após envio de proposta sem resposta), escolha o modelo aprovado de mensagem e clique em Salvar Regra. O assistente passará a monitorar os cards inativos nessa etapa."</p>
           </div>
-          <p class="note">Suporte técnico por IA, disponível 24 horas.</p>
+          <p class="note">Suporte técnico com inteligência artificial disponível 24 horas por dia.</p>
         </div>
         <div class="support-guide">
           <img src="assets/emoji-apple-open-book.png" alt="Artigos de utilização" class="section-emoji" width="32" height="32">
-          <h3>Artigos de utilização</h3>
-          <p>Consulte instruções e procedimentos de uso do CRM passo a passo.</p>
+          <h3>Tutoriais e Guias Passo a Passo</h3>
+          <p>Consulte instruções visuais e procedimentos para configurar cada recurso em minutos.</p>
           <div class="support-guide-media">
             <video autoplay loop muted playsinline preload="auto" poster="assets/loop-help-center-poster.webp" width="1280" height="720" style="width: 100%; height: auto; display: block; border-radius: 12px;">
               <source src="assets/loop-help-center.webm" type="video/webm">
@@ -1497,8 +1593,9 @@
           </div>
         </div>
       </div>
-      <p class="note support-note">A disponibilidade de 24 horas se refere ao assistente de IA.</p>
-      <p class="transition">Quem está por trás dessa estrutura e do conteúdo?</p>
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero entrar com suporte</a>
+      </div>
     </div>
   </section>
 
@@ -1509,7 +1606,7 @@
         <div class="authority-heading">
           <div class="section-intro">
             <p class="eyebrow">QUEM ESTÁ POR TRÁS</p>
-            <h2>Conheça quem construiu a Imobiturbo.</h2>
+            <h2>Desenvolvido por quem vive a tecnologia e o mercado imobiliário na prática.</h2>
           </div>
         </div>
         <div class="portrait-frame">
@@ -1517,37 +1614,36 @@
         </div>
         <div class="authority-copy">
           <h3 class="founder-name">Natan Pimentel</h3>
-          <p class="founder-role">Fundador e Engenheiro da Imobiturbo</p>
-          <p>O mentor IA do Club é baseado no conhecimento de Natan e oferece orientação para a aplicação dos conteúdos.</p>
-          <p class="founder-bio">Engenheiro de software e especialista em tecnologia comercial para o mercado imobiliário. Desenvolveu os métodos e a infraestrutura que colocaram a captação e o fechamento de centenas de corretores e imobiliárias em alto rendimento.</p>
+          <p class="founder-role">Fundador da Imobiturbo · Engenheiro de Software</p>
+          <ul class="founder-highlights">
+            <li>
+              <strong>+R$ 500M em VGV gerado</strong>
+              <span>Vendas de alunos e assessorados com a metodologia e as ferramentas da Imobiturbo.</span>
+            </li>
+            <li>
+              <strong>+1.200 corretores e imobiliárias treinados</strong>
+              <span>Método aplicado por profissionais em todos os estados do Brasil.</span>
+            </li>
+            <li>
+              <strong>Tecnologia própria e IA pronta para usar</strong>
+              <span>Software feito para a rotina do mercado imobiliário brasileiro.</span>
+            </li>
+          </ul>
         </div>
-        <ul class="evidence-list authority-evidence">
-          <li>
-            <strong>+R$ 500M em VGV Gerado</strong>
-            <span>Volume geral de vendas transacionado por alunos e assessorados aplicando as estratégias e ferramentas da Imobiturbo.</span>
-          </li>
-          <li>
-            <strong>+1.200 Corretores e Imobiliárias Treinados</strong>
-            <span>Profissionais ativos em todos os estados do Brasil utilizando a esteira comercial e a IA para fechar negócios.</span>
-          </li>
-          <li>
-            <strong>Tecnologia Própria e IA Especializada</strong>
-            <span>Sistemas proprietários construídos especificamente para as particularidades e o ciclo comercial do mercado imobiliário.</span>
-          </li>
-        </ul>
-        <p class="note authority-note">Orientação por IA não é atendimento pessoal de Natan.</p>
       </div>
-      <p class="transition">Além de conhecer quem criou, veja a experiência de quem usa.</p>
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero entrar na comunidade</a>
+      </div>
     </div>
   </section>
 
-  <!-- SEÇÃO 08: EXPERIÊNCIAS DE CLIENTES & MARQUEE SLIDER -->
+  <!-- SEÇÃO 08: RESULTADOS REAIS & MARQUEE SLIDER -->
   <section id="experiencias" class="section" data-section="08">
     <div class="container">
       <div class="section-intro">
-        <p class="eyebrow">EXPERIÊNCIAS DE CLIENTES</p>
-        <h2>Veja a experiência de quem usa.</h2>
-        <p class="lead">Relatos sobre organização comercial, atendimento, aprendizado e utilização do sistema.</p>
+        <p class="eyebrow">RESULTADOS REAIS COMPROVADOS</p>
+        <h2>De R$ 450 investidos a mais de R$ 150 mil em comissões no bolso.</h2>
+        <p class="lead">Veja os resultados de corretores comuns em todo o Brasil que aplicaram a metodologia e a tecnologia da Imobiturbo.</p>
       </div>
       <div class="testimonials">
         <article class="testimonial panel">
@@ -1573,7 +1669,7 @@
         </article>
         <article class="testimonial panel">
           <h3><span class="testimonial-result">R$ 67 mil de comissão</span> em janeiro trabalhando da minha casa</h3>
-          <p class="testimonial-quote">"No meu primeiro dia veio um lead, um único lead. Já chamei a cliente, fui lá, apliquei tudo que o Natan ensinou e ela fechou. Esse mês <span class="testimonial-result">fechei duas vendas</span> e estou com mais duas propostas. Se continuar desse jeito vai dar <span class="testimonial-result">R$ 67 mil só no mês de janeiro</span>. Já paguei quem eu devia, paguei o banco. Trabalho da minha casa, tenho tempo para viver."</p>
+          <p class="testimonial-quote">"No meu primeiro dia veio um lead, um único lead. Já chamei a cliente, fui lá, apliquei tudo que o Natan ensinou e ela fechou. Esse mês <span class="testimonial-result">fechei duas vendas e estou com mais duas propostas</span>. Se continuar desse jeito vai dar <span class="testimonial-result">R$ 67 mil só no mês de janeiro</span>. Já paguei quem eu devia, paguei o banco. Trabalho da minha casa, tenho tempo para viver."</p>
           <div class="testimonial-source">
             <div class="testimonial-person">
               <img src="assets/student-joyce.webp" alt="Joyce" width="256" height="256" loading="lazy">
@@ -1695,7 +1791,10 @@
         <button type="button" class="proof-nav-btn" id="proofNextBtn" aria-label="Próximo depoimento">›</button>
       </div>
 
-      <p class="transition">Agora, veja se essa proposta corresponde ao que você procura.</p>
+      
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero vender mais imóveis</a>
+      </div>
     </div>
   </section>
 
@@ -1703,32 +1802,34 @@
   <section id="perfil" class="section profile-section" data-section="09">
     <div class="container">
       <div class="section-intro">
-        <p class="eyebrow">PARA QUEM FAZ SENTIDO</p>
-        <h2>Veja se esta proposta combina com o que você procura.</h2>
+        <p class="eyebrow">ESTA OPORTUNIDADE É PARA VOCÊ?</p>
+        <h2>Para quem é (e principalmente: para quem NÃO é) a Comunidade.</h2>
       </div>
       <div class="comparison">
         <div class="panel tinted">
           <h3>
-            <img src="assets/emoji-apple-check.png" alt="Sim" class="profile-header-emoji" width="32" height="32">Faz sentido para quem…
+            <img src="assets/emoji-apple-check.png" alt="Sim" class="profile-header-emoji" width="32" height="32">Faz sentido para você se:
           </h3>
           <ul>
-            <li>Quer organizar contatos e acompanhar oportunidades no CRM.</li>
-            <li>Busca estudar processos e aplicá-los na própria rotina.</li>
-            <li>Quer apoio de IA no atendimento, no aprendizado e no uso do sistema.</li>
+            <li>Quer profissionalizar sua operação comercial e acompanhar cada cliente no CRM sem complicação.</li>
+            <li>Entende que ter IA no WhatsApp para qualificar no primeiro minuto gera muito mais visitas e fechamentos.</li>
+            <li>Quer aplicar roteiros validados de captação e scripts anti-vácuo na sua rotina diária.</li>
           </ul>
         </div>
         <div class="panel">
           <h3>
-            <img src="assets/emoji-apple-cross.png" alt="Não" class="profile-header-emoji" width="32" height="32">Não é uma proposta de…
+            <img src="assets/emoji-apple-cross.png" alt="Não" class="profile-header-emoji" width="32" height="32">NÃO é para você se:
           </h3>
           <ul>
-            <li>Ter toda a operação comercial executada por terceiros.</li>
-            <li>Receber uma promessa de vendas ou comissões garantidas.</li>
-            <li>Participar das mentorias humanas ao vivo pela assinatura da comunidade.</li>
+            <li>Procura "botão mágico" para ganhar comissão na praia sem trabalhar.</li>
+            <li>Espera que a inteligência artificial faça reuniões presenciais e assine escrituras sozinha no cartório.</li>
+            <li>Não está disposto a tirar 30 minutos para colocar o sistema para rodar.</li>
           </ul>
         </div>
       </div>
-      <p class="transition">Veja exatamente o que entra na assinatura.</p>
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero fazer parte da comunidade</a>
+      </div>
     </div>
   </section>
 
@@ -1738,41 +1839,34 @@
   <section id="assinatura" class="section surface offer-section" data-section="10">
     <div class="container">
       <div class="section-intro">
-        <p class="eyebrow">SUA ASSINATURA</p>
-        <h2>O que você recebe na Comunidade Imobiturbo.</h2>
-        <p class="lead">Ferramenta para trabalhar, aprendizado para aplicar e ajuda por IA na rotina.</p>
+        <p class="eyebrow">A OFERTA COMPLETA</p>
+        <h2>Tudo o que Você Recebe ao Entrar na Comunidade Imobiturbo Hoje.</h2>
+        <p class="lead">Uma esteira comercial completa: software proprietário, inteligência artificial, acervo prático e bônus de alto valor.</p>
       </div>
       <div class="offer-layout">
         <div class="offer-includes">
-          <div>
-            <h3>Trabalhar</h3>
-            <ul>
-              <li><strong>Imobiturbo OS:</strong> CRM completo para organizar sua operação comercial.</li>
-              <li><strong>IA no WhatsApp:</strong> Atendimento ágil em áudio humano e qualificação 24/7.</li>
-            </ul>
+          <div class="stack-block">
+            <h3><span class="stack-badge-cat">PILAR 01 · CRM &amp; IA</span> CRM Imobiturbo OS com IA no WhatsApp</h3>
+            <p>Organize contatos em colunas Kanban, automatize follow-up anti-vácuo e qualifique compradores 24/7 com áudio humano no seu próprio número.</p>
+            <div class="stack-val-tag">Valor individual de tabela: <strong>R$ 1.997/ano</strong></div>
           </div>
-          <div>
-            <h3>Aprender e aplicar</h3>
-            <ul>
-              <li><strong>Imobiturbo Club:</strong> Aulas práticas e trilhas de captação e conversão.</li>
-              <li><strong>Mentor IA:</strong> Assistente treinado na metodologia do Natan Pimentel.</li>
-              <li><strong>Mentorias Semanais:</strong> Acesso a todas as gravações dos encontros.</li>
-            </ul>
+          <div class="stack-block">
+            <h3><span class="stack-badge-cat">PILAR 02 · MÉTODO</span> Imobiturbo Club + Trilhas de Captação</h3>
+            <p>Aulas práticas e métodos validados para captar imóveis exclusivos, negociar comissão cheia e fechar propostas sem depender de portal.</p>
+            <div class="stack-val-tag">Valor individual de tabela: <strong>R$ 997</strong></div>
           </div>
-          <div>
-            <h3>Conseguir usar</h3>
-            <ul>
-              <li><strong>Suporte por IA 24h:</strong> Esclarecimento imediato de dúvidas sem travas.</li>
-              <li><strong>Comunidade VIP:</strong> Troca de experiências com +4.000 corretores no Brasil.</li>
-            </ul>
+          <div class="stack-block">
+            <h3><span class="stack-badge-cat">PILAR 03 · MENTOR IA 24H</span> Mentor IA 24h Especializado no Método</h3>
+            <p>Seu assistente comercial de bolso no WhatsApp para tirar dúvidas de negociação, contornar objeções na hora e analisar propostas.</p>
+            <div class="stack-val-tag">Valor individual de tabela: <strong>R$ 497</strong></div>
           </div>
         </div>
 
         <div class="offer-card panel" id="planos">
           <h3>Comunidade Imobiturbo</h3>
           <div class="offer-anchor-box">
-            <p class="offer-anchor-text">Cada dia no palpite é oferta que o concorrente sobe primeiro, e sua verba queimada testando no escuro.</p>
-            <p class="offer-anchor-sub">Por fora, os 10 apps custariam <span class="prc-anchor-crossed">R$ 2.894/mês</span>. Seu plano:</p>
+            <p class="offer-anchor-text">Cada dia no improviso é dinheiro deixado na mesa e cliente quente que fechou com outro corretor.</p>
+            <p class="offer-anchor-sub">Contratando CRM, automações e treinamentos avulsos, você gastaria muito mais. Seu plano completo:</p>
           </div>
           <div class="psel-rows" role="radiogroup" aria-label="Escolha seu plano">
             <label class="psel-row active" id="planRowAnual" onclick="selectPlan('anual')">
@@ -1783,7 +1877,7 @@
                   <span class="psel-nm">Anual</span>
                   <span class="psel-badge psel-selo">ECONOMIZA R$ 807</span>
                 </div>
-                <div class="psel-sub">ou R$ 997 à vista no Pix</div>
+                <div class="psel-sub">ou R$ 997/ano no Pix Automático</div>
               </div>
               <div class="psel-right">
                 <div class="psel-prc">
@@ -1799,7 +1893,7 @@
                   <span class="psel-indicator" aria-hidden="true"></span>
                   <span class="psel-nm">Trimestral</span>
                 </div>
-                <div class="psel-sub">ou R$ 357 à vista no Pix</div>
+                <div class="psel-sub">ou R$ 357/trimestre no Pix Automático</div>
               </div>
               <div class="psel-right">
                 <div class="psel-prc">
@@ -1832,7 +1926,85 @@
           <div class="psel-footer-notes">
             <div class="psel-plan-summary-line" id="pselSummaryLine">PLANO ANUAL · 12X DE R$ 97</div>
             <div class="psel-guarantee-line">PAGAMENTO SEGURO · GARANTIA INCONDICIONAL DE 7 DIAS · CANCELA QUANDO QUISER EM QUALQUER PLANO</div>
-            <div class="psel-reassurance">Ainda com o dedo no botão? <b>Deixa eu tirar o risco da sua mão.</b></div>
+            <div class="psel-reassurance">Dúvida se vale a pena? <b>O risco é 100% nosso pelos próximos 7 dias.</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BÔNUS EXCLUSIVOS (LADO A LADO EM 2 COLUNAS NO DESKTOP) -->
+      <div class="offer-bonus-wrap">
+        <div class="offer-bonus-header">
+          <span class="stack-badge-bonus">BÔNUS EXCLUSIVOS INCLUSOS HOJE</span>
+          <h3>4 Bônus Práticos de Aceleração Comercial</h3>
+          <p>Liberados imediatamente na sua área de membros assim que você entrar hoje:</p>
+        </div>
+        <div class="offer-bonus-grid">
+          <div class="stack-block stack-bonus">
+            <h3><span class="stack-badge-bonus">BÔNUS EXCLUSIVO #1</span> Acervo de Scripts Anti-Vácuo no WhatsApp</h3>
+            <p>Roteiros copiáveis testados em centenas de operações para reativar leads parados há semanas e transformá-los em visitas agendadas.</p>
+            <div class="stack-val-tag">Valor real: <del>R$ 297</del> <strong>(GRÁTIS hoje)</strong></div>
+          </div>
+          <div class="stack-block stack-bonus">
+            <h3><span class="stack-badge-bonus">BÔNUS EXCLUSIVO #2</span> Roteiro Passo a Passo de Captação Exclusiva</h3>
+            <p>O passo a passo exato para o proprietário assinar a exclusividade e defender seus honorários de 6% sem pestanejar.</p>
+            <div class="stack-val-tag">Valor real: <del>R$ 197</del> <strong>(GRÁTIS hoje)</strong></div>
+          </div>
+          <div class="stack-block stack-bonus">
+            <h3><span class="stack-badge-bonus">BÔNUS EXCLUSIVO #3</span> Gravações de Todas as Mentorias Semanais</h3>
+            <p>Acesso completo ao acervo de encontros com análises práticas de campanhas, criativos e estratégias comerciais ao vivo.</p>
+            <div class="stack-val-tag">Valor real: <del>R$ 597</del> <strong>(GRÁTIS hoje)</strong></div>
+          </div>
+          <div class="stack-block stack-bonus">
+            <h3><span class="stack-badge-bonus">BÔNUS EXCLUSIVO #4</span> Comunidade VIP de Corretores e Imobiliárias</h3>
+            <p>Networking direto, indicações e parcerias em rede com mais de 4.000 profissionais ativos em todo o Brasil.</p>
+            <div class="stack-val-tag">Valor real: <del>R$ 497</del> <strong>(GRÁTIS hoje)</strong></div>
+          </div>
+        </div>
+        <div class="stack-total-box">
+          <div class="st-line">Valor Total Real de Tudo Somado: <span class="st-crossed">R$ 5.079,00</span></div>
+          <div class="st-note">Contratando ferramentas e cursos separadamente: <strong>mais de R$ 3.000/ano</strong></div>
+          <div class="st-highlight">Seu investimento hoje: <strong>Apenas 12x de R$ 97</strong></div>
+        </div>
+      </div>
+
+      <div class="section-cta"><a class="btn" href="#planos">Quero garantir meu acesso e os bônus</a></div>
+
+      <!-- FECHAMENTO DE ALTA CONVERSÃO: IF ALL & TWO CHOICES -->
+      <div class="brunson-closing-wrap">
+        <div class="if-all-container panel tinted">
+          <h3 class="if-all-title">Faça esta conta rápida:</h3>
+          <ul class="if-all-list">
+            <li>
+              <span class="if-all-check">✓</span>
+              <div>Se tudo o que a Comunidade Imobiturbo fizesse por você fosse <strong>destravar 1 única venda de imóvel exclusivo no ano</strong> (com comissão média de R$ 15.000 a R$ 30.000)... <em>já teria pago este investimento mais de 15 vezes?</em></div>
+            </li>
+            <li>
+              <span class="if-all-check">✓</span>
+              <div>Se tudo o que ela fizesse fosse <strong>filtrar os curiosos no WhatsApp e poupar 2 horas do seu dia</strong> para você focar apenas em quem tem dinheiro e interesse real... <em>já teria valido a pena?</em></div>
+            </li>
+            <li>
+              <span class="if-all-check">✓</span>
+              <div>Se tudo o que ela fizesse fosse <strong>garantir que nenhum lead quente caia no esquecimento</strong> enquanto você está em visita ou descansando com sua família... <em>quanto vale essa paz mental?</em></div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="section-cta"><a class="btn" href="#planos">Quero entrar na comunidade</a></div>
+
+        <div class="two-choices-container">
+          <h3 class="two-choices-title">Você tem exatamente duas escolhas agora:</h3>
+          <div class="two-choices-grid">
+            <div class="choice-card choice-1 panel">
+              <div class="choice-tag tag-muted">ESCOLHA 01</div>
+              <h4>Continuar no improviso</h4>
+              <p>Fechar esta página, continuar respondendo lead frio na mão, perder o timing de resposta no WhatsApp, queimar verba em anúncio e ver os melhores clientes da sua região fechando com quem tem esteira profissional.</p>
+            </div>
+            <div class="choice-card choice-2 panel tinted active-choice">
+              <div class="choice-tag tag-accent">ESCOLHA 02 (RECOMENDADA)</div>
+              <h4>Entrar na Comunidade com Risco Zero</h4>
+              <p>Garantir sua vaga por 12x de R$ 97, colocar a IA para qualificar seus clientes hoje mesmo, acessar os scripts validados e ter 7 dias de garantia incondicional para comprovar o resultado na prática.</p>
+              <a href="#planos" class="btn full" style="margin-top: 16px;">Garantir meu acesso agora</a>
+            </div>
           </div>
         </div>
       </div>
@@ -1850,7 +2022,7 @@
       <div class="faq-list">
         <details class="faq-item" open>
           <summary>O que está incluído na comunidade?<span class="disclosure" aria-hidden="true"></span></summary>
-          <p>A assinatura combina o Imobiturbo OS, IA no WhatsApp, conteúdos disponibilizados no Club, exercícios, orientação por IA, acesso às mentorias gravadas disponibilizadas e apoio de uso com suporte técnico por IA e artigos do CRM.</p>
+          <p>A assinatura inclui acesso completo ao CRM Imobiturbo OS com IA no WhatsApp, todas as trilhas práticas do Imobiturbo Club, orientações comerciais com o Mentor IA 24h, acervo gravado de mentorias semanais e suporte técnico contínuo.</p>
         </details>
         <details class="faq-item">
           <summary>Posso participar das mentorias ao vivo?<span class="disclosure" aria-hidden="true"></span></summary>
@@ -1874,23 +2046,100 @@
         </details>
         <details class="faq-item">
           <summary>Como funcionam cobrança, acesso e cancelamento?<span class="disclosure" aria-hidden="true"></span></summary>
-          <p>O pagamento é processado com segurança via AbacatePay (Pix à vista) ou Asaas (cartão em até 12x). Você recebe o acesso imediatamente por e-mail e WhatsApp logo após a confirmação. O cancelamento pode ser feito a qualquer momento com apenas 1 clique.</p>
+          <p>No cartão, a Hotmart cobra o período contratado: anual em até 12x de R$ 97, trimestral em até 3x de R$ 127 ou mensal de R$ 147, com renovação automática ao fim de cada período. O mesmo checkout oferece Pix Automático: R$ 997 por ano, R$ 357 por trimestre ou R$ 147 por mês. Você autoriza as cobranças no aplicativo do banco e as renovações seguem o período escolhido. Após a confirmação, o acesso é liberado e as instruções são enviadas por e-mail e WhatsApp. Você pode cancelar a próxima renovação e manter o acesso até o fim do período já pago.</p>
         </details>
         <details class="faq-item">
           <summary>Existe garantia?<span class="disclosure" aria-hidden="true"></span></summary>
           <p>Sim, você conta com 7 dias de garantia incondicional conforme o Código de Defesa do Consumidor. Se por qualquer motivo você decidir que a comunidade não é para você, basta solicitar o reembolso na área de membros e devolvemos 100% do valor pago.</p>
         </details>
       </div>
-      <p class="transition">Ferramenta para trabalhar, aprendizado para aplicar e IA para apoiar sua rotina.</p>
+      
+      <div class="section-cta">
+        <a class="btn" href="#assinatura">Quero entrar agora</a>
+      </div>
     </div>
   </section>
 
   <!-- SEÇÃO 12: FECHAMENTO -->
   <section class="section closing grid-ground" data-section="12">
-    <div class="container">
-      <h2>Ferramenta para trabalhar.<br>Aprendizado para aplicar.<br><span class="accent">IA para apoiar.</span></h2>
-      <p class="lead">Conheça as entregas e as condições da Comunidade Imobiturbo.</p>
-      <a class="button" href="#assinatura">Ver a assinatura</a>
+    <div class="container narrow">
+      <div class="ps-closing-card panel">
+        <h3><span class="accent">P.S.:</span> Resumo rápido do que você garante hoje</h3>
+        <p class="lead">Aqui está o resumo direto de tudo o que está liberado para você:</p>
+        <ul class="ps-summary-list">
+          <li class="ps-summary-item ps-summary-category">
+            <strong>CRM Imobiturbo OS:</strong>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>IA ilimitada no WhatsApp integrada ao CRM</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Integração oficial com Meta Ads e Instagram</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Disparos de WhatsApp integrados via API Oficial</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Usuários ilimitados</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Rodízio e distribuição de leads</span>
+          </li>
+
+          <li class="ps-summary-item ps-summary-category">
+            <strong>Club Imobiturbo:</strong>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Oráculo Mentor IA 24h treinado com 5.000 horas de consultorias</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Trilhas de Posicionamento, Tráfego, Criativos, Conteúdo, Roteiros</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Trilhas de Captação de Imóveis com Exclusividade</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Trilhas de Negociação, Proposta &amp; Fechamento</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Trilhas de I.A. &amp; Automações Comerciais</span>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Gravações de Hot Seats</span>
+          </li>
+
+          <li class="ps-summary-item ps-summary-category">
+            <strong>Central de Ajuda Imobiturbo:</strong>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Guias passo a passo de como utilizar a plataforma</span>
+          </li>
+
+          <li class="ps-summary-item ps-summary-category">
+            <strong>Comunidade Imobiturbo:</strong>
+          </li>
+          <li class="ps-summary-item">
+            <img src="assets/emoji-apple-check.png" alt="✅" class="ps-summary-icon" width="20" height="20" loading="lazy" aria-hidden="true">
+            <span>Networking &amp; troca de conhecimento</span>
+          </li>
+        </ul>
+        <p>Tudo isso, um pacote completo avaliado em mais de R$ 5.000, está disponível hoje por apenas <strong>12x de R$ 97</strong> (ou R$ 997 à vista). Você conta com <strong>7 dias de garantia incondicional</strong>: teste tudo e, se não fizer sentido para a sua rotina, devolvemos 100% do seu valor em 1 clique.</p>
+        <div style="margin-top: 24px;">
+          <a class="btn full" href="#assinatura">Quero entrar na Comunidade Imobiturbo agora</a>
+        </div>
+      </div>
     </div>
   </section>
 </main>
@@ -1967,7 +2216,7 @@
   </div>
 </dialog>
 
-<!-- MODAL DE CHECKOUT EMBEDDED (ABACATEPAY + ASAAS FALLBACK) -->
+<!-- Identificação e resumo antes do checkout Hotmart -->
 <dialog id="checkoutModalOverlay" class="chk-modal-overlay" aria-hidden="true" aria-labelledby="checkoutModalTitle">
   <div class="chk-modal-box">
 
@@ -1989,7 +2238,7 @@
 
     <!-- VIEW 1: FORMULÁRIO MULTI-ETAPAS DE DADOS E PAGAMENTO -->
     <div id="chkFormView">
-      <form id="chkNativeForm" onsubmit="return false;">
+      <form id="chkNativeForm" novalidate onsubmit="return false;">
         <!-- ETAPA 1: NOME -->
         <div class="chk-step-pane" id="chkStepPane1">
           <h3 class="chk-modal-title" id="checkoutModalTitle">Você está a um passo de <mark class="text-highlight">impulsionar seu VGV</mark> com a metodologia Imobiturbo.</h3>
@@ -2005,8 +2254,8 @@
 
         <!-- ETAPA 2: WHATSAPP -->
         <div class="chk-step-pane" id="chkStepPane2" style="display: none;">
-          <h3 class="chk-modal-title"><span class="chk-user-first-name">Você</span>, e qual seu WhatsApp?</h3>
-          <p class="chk-modal-subtitle">Enviarei seu acesso por lá</p>
+          <h3 class="chk-modal-title"><span class="chk-user-first-name">Você</span>, qual é o seu WhatsApp?</h3>
+          <p class="chk-modal-subtitle">Enviaremos seu acesso por lá</p>
           <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
             <input type="tel" id="chkPhone" class="chk-input chk-input-lg" placeholder="(00) 00000-0000" required autocomplete="tel">
           </div>
@@ -2023,12 +2272,12 @@
             <span><strong class="chk-user-first-name">Você</strong>, já vi aqui que você é de <strong id="chkGeoRegionText">sua região</strong>. Você tem o mercado ao seu favor.<br><span class="chk-geo-sub" id="chkGeoSubText">Temos alguns cases de sucesso nessa região.</span></span>
           </div>
           <h3 class="chk-modal-title">Qual seu e-mail?</h3>
-          <p class="chk-modal-subtitle">Enviarei seu acesso por lá também.</p>
+          <p class="chk-modal-subtitle">Enviaremos seu acesso por lá também.</p>
           <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
             <input type="email" id="chkEmail" class="chk-input chk-input-lg" placeholder="seuemail@exemplo.com" required autocomplete="email">
           </div>
           <button type="button" class="chk-btn-submit" id="chkStep3Btn">
-            <span>Liberar Acesso</span>
+            <span>Continuar para pagamento</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
         </div>
@@ -2097,94 +2346,13 @@
             </div>
           </div>
 
-          <h4 class="chk-choose-method-title">Escolha a forma de pagamento:</h4>
-
-          <!-- Abas de Pagamento: PIX vs CARTÃO -->
-          <div class="chk-tabs" role="group" aria-label="Forma de pagamento">
-            <button type="button" class="chk-tab active" id="tabPix" data-method="PIX" aria-pressed="true">
-              <span class="chk-tab-label">
-                <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="display:inline-block; vertical-align:middle; flex-shrink:0;"><path d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"/><path d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"/></svg>
-                Pix
-                <span class="chk-tab-tag" id="chkPixTabTag">Economize R$ 167</span>
-              </span>
-              <span class="chk-tab-desc" id="chkPixTabDesc">R$ 997 à vista</span>
-            </button>
-            <button type="button" class="chk-tab" id="tabCard" data-method="CREDIT_CARD" aria-pressed="false">
-              <span class="chk-tab-label">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                Cartão
-              </span>
-              <span class="chk-tab-desc" id="chkCardTabDesc">Até 12x de R$ 97</span>
-            </button>
-          </div>
-
-          <!-- Seção de Cartão de Crédito -->
-          <div id="chkCardFields" style="display: none;">
-            <div class="chk-field" style="margin-bottom: 16px;">
-              <label for="chkCardNumber">Número do Cartão</label>
-              <input type="text" id="chkCardNumber" class="chk-input" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
-            </div>
-
-            <div class="chk-field" style="margin-bottom: 16px;">
-              <label for="chkCardHolder">Nome impresso no Cartão</label>
-              <input type="text" id="chkCardHolder" class="chk-input" placeholder="NOME COMO NO CARTÃO" autocomplete="cc-name">
-            </div>
-
-            <div class="chk-grid-2" style="margin-bottom: 16px;">
-              <div class="chk-field" style="margin-bottom: 0;">
-                <label for="chkCardExpiry">Validade</label>
-                <input type="text" id="chkCardExpiry" class="chk-input" placeholder="MM/AA" maxlength="5" autocomplete="cc-exp">
-              </div>
-              <div class="chk-field" style="margin-bottom: 0;">
-                <label for="chkCardCvv">CVV</label>
-                <input type="text" id="chkCardCvv" class="chk-input" placeholder="123" maxlength="4" autocomplete="cc-csc">
-              </div>
-            </div>
-
-            <div class="chk-field" style="margin-bottom: 22px;">
-              <label for="chkCardCpf">CPF do Titular do Cartão</label>
-              <input type="text" id="chkCardCpf" class="chk-input" placeholder="000.000.000-00" oninput="maskCpf(this)" maxlength="14">
-            </div>
-
-            <button type="submit" class="chk-btn-submit" id="chkSubmitCardBtn" style="margin-top: 8px;">
-              <span id="chkBtnText">Confirmar Pagamento no Cartão</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-          </div>
-
-          <!-- Seção de Pix (botão que avança para Step 5: CPF) -->
-          <div id="chkPixChoiceWrap">
-            <div class="chk-pix-discount-banner">
-              <div class="chk-pix-badge-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              </div>
-              <div class="chk-pix-discount-text">
-                <strong>Desconto especial à vista no Pix:</strong>
-                <span>De <del>R$ 1.164</del> por apenas <strong>R$ 997</strong> no Pix (liberação imediata).</span>
-              </div>
-            </div>
-            <button type="button" class="chk-btn-submit" id="chkGoToPixCpfBtn">
-              <span>Pagar no Pix com Desconto (R$ 997)</span>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-          </div>
-        </div>
-
-        <!-- ETAPA 5: CPF PARA O PIX (ABACATEPAY TRANSPARENTE) -->
-        <div class="chk-step-pane" id="chkStepPane5" style="display: none;">
-          <h3 class="chk-modal-title">Perfeito, para finalizarmos:</h3>
-          <p class="chk-modal-subtitle">Preencha seu CPF para gerar a chave Pix nominal:</p>
-          <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
-            <input type="text" id="chkCpf" class="chk-input chk-input-lg" placeholder="000.000.000-00" required autocomplete="off" oninput="maskCpf(this)" maxlength="14">
-          </div>
-          <p class="chk-cpf-note">🔒 Exigência regulatória do Banco Central / Pix para emissão de cobrança nominal segura.</p>
-
-          <button type="submit" class="chk-btn-submit" id="chkSubmitBtn">
-            <span id="chkPixBtnText">Gerar QR Code Pix de R$ 997</span>
+          <h4 class="chk-choose-method-title">Escolha cartão ou Pix Automático na próxima etapa</h4>
+          <p id="chkPaymentTerms" class="chk-modal-subtitle"></p>
+          <p class="chk-modal-subtitle">No Pix Automático, você autoriza a primeira cobrança e as renovações no aplicativo do seu banco. Confira as condições antes de confirmar.</p>
+          <button type="submit" class="chk-btn-submit" id="chkContinuePaymentBtn" style="margin-top: 16px;">
+            <span id="chkBtnText">Continuar para pagamento</span>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
-
-          <button type="button" class="chk-btn-back" id="chkBackToStep4Btn">← Voltar para formas de pagamento</button>
         </div>
 
         <!-- Mensagem de Erro se houver -->
@@ -2204,7 +2372,7 @@
           <span class="chk-proof-text"><strong>+4 mil corretores acelerados</strong> · ⭐ 4,9/5</span>
         </div>
 
-        <!-- Garantia do Checkout (Passo 4 e 5) -->
+        <!-- Garantia do Checkout (Passo 4) -->
         <div class="chk-guarantee-line chk-hidden" id="chkGuaranteeProofBar" style="display: none !important;">
           <span class="chk-guarantee-lock">🔒</span>
           <span class="chk-guarantee-text">7 dias de garantia incondicional · Zero risco</span>
@@ -2212,55 +2380,12 @@
       </form>
     </div>
 
-    <!-- VIEW 2: TELA DO PIX (QR CODE + COPIA E COLA + POLLER) -->
-    <div id="chkPixView" class="chk-pix-view" style="display: none;">
-      <div class="chk-pulse-radar">
-        <span class="chk-radar-dot"></span>
-        Aguardando pagamento... Identificação automática
-      </div>
-
-      <div class="chk-qr-frame">
-        <img id="chkPixQrImg" class="chk-qr-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="QR Code Pix" width="190" height="190">
-      </div>
-
-      <div class="chk-pix-code-wrap">
-        <textarea id="chkPixPayload" class="chk-pix-textarea" readonly></textarea>
-      </div>
-
-      <button type="button" class="chk-copy-btn" id="chkCopyPixBtn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        <span id="chkCopyBtnText">Copiar Código Pix</span>
-      </button>
-
-      <div class="chk-timer-bar">
-        QR Code válido por: <b id="chkPixTimer">15:00</b>
-      </div>
-
-      <button type="button" class="chk-btn-back" id="chkBackToPlanBtn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        Alterar plano ou dados
-      </button>
-    </div>
-
-    <!-- VIEW 3: SUCESSO / APROVADO -->
-    <div id="chkSuccessView" class="chk-success-view" style="display: none;">
-      <div class="chk-success-icon">✓</div>
-      <h3 class="chk-success-title">Pagamento Aprovado!</h3>
-      <p class="chk-success-desc">
-        Parabéns! Sua vaga na Comunidade Imobiturbo está confirmada.<br>
-        Enviamos as instruções e seu acesso para o seu e-mail e WhatsApp.
-      </p>
-      <a href="https://club.imobiturbo.com.br" class="chk-btn-submit" style="text-decoration: none; margin-bottom: 12px;" id="chkSuccessClubLink">
-        Acessar Área de Membros da Comunidade →
-      </a>
-      <a href="https://app.imobiturbo.com.br/onboarding" class="chk-btn-submit" style="text-decoration: none; background: #17250A; border: 1px solid #6CA438; color: #C5FF5E !important;">
-        Configurar CRM com IA (Imobiturbo OS) →
-      </a>
-    </div>
   </div>
 </dialog>
 
 <!-- JAVASCRIPT: Seletor de Planos, Checkout Nativo & Galeria -->
+<a id="hotmartCheckoutLink" class="hotmart-fb" hidden aria-hidden="true" tabindex="-1"></a>
+<script src="/assets/js/hotmart-checkout.js?v=20260923"></script>
 <script>
   (function() {
     const hubTrackerQueue = [];
@@ -2333,37 +2458,18 @@
     const modalPlanSub = document.getElementById('chkModalPlanSub');
     const modalPlanPrice = document.getElementById('chkModalPlanPrice');
 
-    const tabPix = document.getElementById('tabPix');
-    const tabCard = document.getElementById('tabCard');
-    const cardFields = document.getElementById('chkCardFields');
-    const pixChoiceWrap = document.getElementById('chkPixChoiceWrap');
 
     const formView = document.getElementById('chkFormView');
-    const pixView = document.getElementById('chkPixView');
-    const successView = document.getElementById('chkSuccessView');
 
-    const pixQrImg = document.getElementById('chkPixQrImg');
-    const pixPayload = document.getElementById('chkPixPayload');
-    const copyPixBtn = document.getElementById('chkCopyPixBtn');
-    const copyBtnText = document.getElementById('chkCopyBtnText');
-    const pixTimer = document.getElementById('chkPixTimer');
 
     const nativeForm = document.getElementById('chkNativeForm');
-    const submitBtn = document.getElementById('chkSubmitBtn');
-    const submitCardBtn = document.getElementById('chkSubmitCardBtn');
+    const submitBtn = document.getElementById('chkContinuePaymentBtn');
     const btnText = document.getElementById('chkBtnText');
-    const pixBtnText = document.getElementById('chkPixBtnText');
     const errorMsg = document.getElementById('chkErrorMsg');
 
     const inputName = document.getElementById('chkName');
     const inputEmail = document.getElementById('chkEmail');
     const inputPhone = document.getElementById('chkPhone');
-    const inputCpf = document.getElementById('chkCpf');
-    const inputCardCpf = document.getElementById('chkCardCpf');
-    const inputCardNumber = document.getElementById('chkCardNumber');
-    const inputCardHolder = document.getElementById('chkCardHolder');
-    const inputCardExpiry = document.getElementById('chkCardExpiry');
-    const inputCardCvv = document.getElementById('chkCardCvv');
 
     // Multi-Step Components
     let currentCheckoutStep = 1;
@@ -2371,7 +2477,6 @@
     const stepPane2 = document.getElementById('chkStepPane2');
     const stepPane3 = document.getElementById('chkStepPane3');
     const stepPane4 = document.getElementById('chkStepPane4');
-    const stepPane5 = document.getElementById('chkStepPane5');
 
     const progressLabel = document.getElementById('chkProgressLabel');
     const progressPct = document.getElementById('chkProgressPct');
@@ -2380,14 +2485,61 @@
     const step1Btn = document.getElementById('chkStep1Btn');
     const step2Btn = document.getElementById('chkStep2Btn');
     const step3Btn = document.getElementById('chkStep3Btn');
-    const goToPixCpfBtn = document.getElementById('chkGoToPixCpfBtn');
 
     const backToStep1Btn = document.getElementById('chkBackToStep1Btn');
     const backToStep2Btn = document.getElementById('chkBackToStep2Btn');
     const backToStep3Btn = document.getElementById('chkBackToStep3Btn');
-    const backToStep4Btn = document.getElementById('chkBackToStep4Btn');
 
     const geoRegionText = document.getElementById('chkGeoRegionText');
+    const checkoutStorageKey = 'imobiturbo:vagas:checkout:v1';
+
+    function getCheckoutResumeStep() {
+      // Saved progress never bypasses the existing identification requirements.
+      if (inputName.value.trim().length < 2) return 1;
+      if (inputPhone.value.replace(/\D/g, '').length < 10) return Math.min(currentCheckoutStep, 2);
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail.value.trim())) return Math.min(currentCheckoutStep, 3);
+      return currentCheckoutStep;
+    }
+
+    function saveCheckoutProgress() {
+      try {
+        localStorage.setItem(checkoutStorageKey, JSON.stringify({
+          name: inputName.value,
+          phone: inputPhone.value,
+          email: inputEmail.value,
+          step: currentCheckoutStep,
+          plan: currentPlan,
+        }));
+      } catch (_) {
+        // Storage may be unavailable; the current page still retains its state.
+      }
+    }
+
+    function updateCheckoutPersonalization() {
+      const firstName = inputName.value.trim().split(/\s+/)[0];
+      const formatted = firstName ? firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase() : 'Você';
+      document.querySelectorAll('.chk-user-first-name').forEach(el => el.textContent = formatted);
+      if (geoRegionText) geoRegionText.textContent = getRegionByDdd(inputPhone.value.replace(/\D/g, '').slice(0, 2));
+    }
+
+    function restoreCheckoutProgress() {
+      let saved;
+      try {
+        saved = JSON.parse(localStorage.getItem(checkoutStorageKey)) || JSON.parse(localStorage.getItem('imobiturbo:vagas-v2:checkout:v1'));
+      } catch (_) { return; }
+      if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return;
+      for (const [key, input] of [['name', inputName], ['phone', inputPhone], ['email', inputEmail]]) {
+        if (typeof saved[key] === 'string') input.value = saved[key];
+      }
+      currentCheckoutStep = Number.isInteger(saved.step) && saved.step >= 1 && saved.step <= 4 ? saved.step : 1;
+      currentCheckoutStep = getCheckoutResumeStep();
+      if (Object.hasOwn(PLAN_CONFIG, saved.plan)) {
+        const radio = document.querySelector('input[name="plano"][value="' + saved.plan + '"]');
+        if (radio) radio.checked = true;
+      }
+      updateCheckoutPersonalization();
+      updateModalPlanUI(getSelectedPlan());
+    }
 
     function getRegionByDdd(ddd) {
       const map = {
@@ -2462,24 +2614,6 @@
       return map[ddd] || 'sua região';
     }
 
-    function isValidCpf(val) {
-      if (!val) return false;
-      const clean = val.replace(/\D/g, '');
-      if (clean.length !== 11) return false;
-      if (/^(\d)\1{10}$/.test(clean)) return false;
-      let sum = 0;
-      for (let i = 0; i < 9; i++) sum += parseInt(clean.charAt(i), 10) * (10 - i);
-      let rev = 11 - (sum % 11);
-      if (rev === 10 || rev === 11) rev = 0;
-      if (rev !== parseInt(clean.charAt(9), 10)) return false;
-      sum = 0;
-      for (let i = 0; i < 10; i++) sum += parseInt(clean.charAt(i), 10) * (11 - i);
-      rev = 11 - (sum % 11);
-      if (rev === 10 || rev === 11) rev = 0;
-      if (rev !== parseInt(clean.charAt(10), 10)) return false;
-      return true;
-    }
-
     function showCheckoutError(msg) {
       if (errorMsg) {
         errorMsg.textContent = msg;
@@ -2494,7 +2628,7 @@
         errorMsg.textContent = '';
       }
 
-      const panes = [stepPane1, stepPane2, stepPane3, stepPane4, stepPane5];
+      const panes = [stepPane1, stepPane2, stepPane3, stepPane4];
       panes.forEach((p, idx) => {
         if (p) p.style.display = (idx + 1 === step) ? 'block' : 'none';
       });
@@ -2545,13 +2679,8 @@
           if (action) action.textContent = 'Ver detalhes';
         }
         updateCtaButtonText();
-      } else if (step === 5) {
-        if (progressBar) progressBar.style.width = '100%';
-        if (progressLabel) progressLabel.textContent = 'Finalizando...';
-        if (progressPct) progressPct.textContent = '100%';
-        updateCtaButtonText();
-        setTimeout(() => inputCpf && inputCpf.focus(), 50);
       }
+      saveCheckoutProgress();
     }
 
     const PLAN_CONFIG = {
@@ -2560,45 +2689,29 @@
         sub: '12 meses de acesso completo + CRM IA',
         priceDisplay: '<small>12x </small><b>R$ 97</b>',
         pixVal: 'R$ 997',
-        pixSavings: '167',
-        pixDiscountTitle: 'Desconto especial no Pix à vista:',
-        pixDiscountDesc: 'De <del style="color: #ef4444; font-weight: 700; text-decoration: line-through;">R$ 1.164</del> por apenas <strong>R$ 997</strong> (liberação imediata)',
         cardVal: '12x R$ 97',
-        cardTabDesc: 'Até 12x de R$ 97'
       },
       'trimestral': {
         name: 'Plano Trimestral',
         sub: '3 meses de acesso completo + CRM IA',
         priceDisplay: '<small>3x </small><b>R$ 127</b>',
         pixVal: 'R$ 357',
-        pixSavings: '24',
-        pixDiscountTitle: 'Desconto especial no Pix à vista:',
-        pixDiscountDesc: 'De <del style="color: #ef4444; font-weight: 700; text-decoration: line-through;">R$ 381</del> por apenas <strong>R$ 357</strong> (liberação imediata)',
         cardVal: '3x R$ 127',
-        cardTabDesc: 'Até 3x de R$ 127'
       },
       'mensal': {
         name: 'Plano Mensal',
         sub: 'Mensalidade com cancelamento livre',
         priceDisplay: '<b>R$ 147</b><small>/mês</small>',
         pixVal: 'R$ 147',
-        pixSavings: null,
-        pixDiscountTitle: 'Pagamento mensal no Pix:',
-        pixDiscountDesc: 'Apenas R$ 147 por mês sem fidelidade mínima.',
         cardVal: 'R$ 147/mês',
-        cardTabDesc: 'R$ 147/mês'
       }
     };
 
     let currentPlan = 'anual';
-    let currentMethod = 'PIX';
-    let pollingInterval = null;
-    let timerInterval = null;
 
     const changePlanTrigger = document.getElementById('chkChangePlanTrigger');
     const planDropdown = document.getElementById('chkPlanDropdown');
     const modalPlanRadios = document.querySelectorAll('input[name="chkModalPlanRadio"]');
-    const backToPlanBtn = document.getElementById('chkBackToPlanBtn');
     const retractableTrigger = document.getElementById('chkPlanRetractableTrigger');
     const collapsibleBody = document.getElementById('chkPlanCollapsibleBody');
 
@@ -2628,34 +2741,13 @@
       if (modalPlanPrice) modalPlanPrice.innerHTML = info.priceDisplay;
       const modalRadio = document.querySelector('input[name="chkModalPlanRadio"][value="' + planKey + '"]');
       if (modalRadio) modalRadio.checked = true;
-      const pixTabDesc = document.getElementById('chkPixTabDesc');
-      if (pixTabDesc) pixTabDesc.textContent = info.pixVal + ' à vista';
-      const cardTabDesc = document.getElementById('chkCardTabDesc');
-      if (cardTabDesc) cardTabDesc.textContent = info.cardTabDesc || (info.cardVal.includes('/mês') ? info.cardVal : 'Até ' + info.cardVal);
-      const pixDiscText = document.querySelector('.chk-pix-discount-text');
-      if (pixDiscText && info.pixDiscountDesc) {
-        const title = info.pixDiscountTitle || 'Desconto especial à vista:';
-        pixDiscText.innerHTML = '<strong>' + title + '</strong><span>' + info.pixDiscountDesc + '</span>';
-      }
-      const isPixDiscount = Boolean(info.pixSavings);
-      const pixTabTag = document.getElementById('chkPixTabTag');
-      if (pixTabTag) {
-        pixTabTag.style.display = isPixDiscount ? 'inline-block' : 'none';
-        if (info.pixSavings) {
-          pixTabTag.textContent = 'Economize R$ ' + info.pixSavings;
-        }
-      }
       updateCtaButtonText();
+      saveCheckoutProgress();
     }
 
-    function resetToFormView(targetPlan) {
-      if (pollingInterval) clearInterval(pollingInterval);
-      if (timerInterval) clearInterval(timerInterval);
-      if (pixView) pixView.style.display = 'none';
-      if (successView) successView.style.display = 'none';
+    function showCheckoutForm(targetPlan) {
       if (formView) formView.style.display = 'block';
       if (submitBtn) submitBtn.disabled = false;
-      if (submitCardBtn) submitCardBtn.disabled = false;
       if (errorMsg) {
         errorMsg.style.display = 'none';
         errorMsg.textContent = '';
@@ -2671,35 +2763,18 @@
       }
       const plan = targetPlan || getSelectedPlan();
       updateModalPlanUI(plan);
-      goToCheckoutStep(1);
+      updateCheckoutPersonalization();
+      goToCheckoutStep(getCheckoutResumeStep());
     }
 
     function updateCtaButtonText() {
       const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
-      const isPixDiscount = currentPlan === 'anual' || currentPlan === 'trimestral';
       const compactTitle = document.getElementById('chkPlanCompactTitle');
       if (compactTitle) compactTitle.textContent = info.name;
       const compactPrice = document.getElementById('chkPlanCompactPrice');
-      if (compactPrice) {
-        compactPrice.textContent = '· ' + (currentMethod === 'PIX' ? info.pixVal : info.cardVal);
-      }
-      if (btnText) {
-        btnText.textContent = 'Confirmar Pagamento de ' + info.cardVal;
-      }
-      if (pixBtnText) {
-        pixBtnText.textContent = isPixDiscount
-          ? 'Gerar QR Code Pix de ' + info.pixVal
-          : 'Gerar QR Code Pix (' + info.pixVal + ')';
-      }
-      const goToPixBtn = document.getElementById('chkGoToPixCpfBtn');
-      if (goToPixBtn) {
-        const span = goToPixBtn.querySelector('span');
-        if (span) {
-          span.textContent = isPixDiscount
-            ? 'Pagar no Pix com Desconto (' + info.pixVal + ')'
-            : 'Pagar no Pix (' + info.pixVal + ')';
-        }
-      }
+      if (compactPrice) compactPrice.textContent = '· ' + info.cardVal;
+      if (btnText) btnText.textContent = 'Continuar para pagamento';
+      document.getElementById('chkPaymentTerms').textContent = window.ImobiturboHotmart.plans[currentPlan].terms;
     }
 
     planRadios.forEach(radio => {
@@ -2726,12 +2801,6 @@
       });
     });
 
-    if (backToPlanBtn) {
-      backToPlanBtn.addEventListener('click', () => {
-        resetToFormView(getSelectedPlan());
-      });
-    }
-
     // Step 1: Nome -> Step 2
     if (step1Btn && inputName) {
       step1Btn.addEventListener('click', () => {
@@ -2741,9 +2810,7 @@
           inputName.focus();
           return;
         }
-        const firstName = nameVal.split(/\s+/)[0];
-        const formatted = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase();
-        document.querySelectorAll('.chk-user-first-name').forEach(el => el.textContent = formatted);
+        updateCheckoutPersonalization();
         goToCheckoutStep(2);
       });
 
@@ -2765,9 +2832,7 @@
           inputPhone.focus();
           return;
         }
-        const ddd = clean.slice(0, 2);
-        const region = getRegionByDdd(ddd);
-        if (geoRegionText) geoRegionText.textContent = region;
+        updateCheckoutPersonalization();
         goToCheckoutStep(3);
       });
 
@@ -2779,19 +2844,9 @@
       });
     }
 
-    // Step 3: E-mail -> Step 4
+    // E-mail -> checkout Hotmart, sem uma confirmação intermediária.
     if (step3Btn && inputEmail) {
-      step3Btn.addEventListener('click', () => {
-        const emailVal = inputEmail.value.trim();
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailVal || !emailRegex.test(emailVal)) {
-          showCheckoutError('Por favor, informe um e-mail válido.');
-          inputEmail.focus();
-          return;
-        }
-        fireLeadTrackingEvent();
-        goToCheckoutStep(4);
-      });
+      step3Btn.addEventListener('click', continueToPayment);
 
       inputEmail.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
@@ -2800,16 +2855,6 @@
         }
       });
     }
-
-    // Step 4: Botão avançar para Pix
-    if (goToPixCpfBtn) {
-      goToPixCpfBtn.addEventListener('click', () => {
-        goToCheckoutStep(5);
-      });
-    }
-
-    // Voltar buttons
-    if (backToStep4Btn) backToStep4Btn.addEventListener('click', () => goToCheckoutStep(4));
 
     // Máscaras de entrada
     if (inputPhone) {
@@ -2826,70 +2871,53 @@
       });
     }
 
-    function formatCpfValue(val) {
-      let v = (val || '').replace(/\D/g, '').slice(0, 11);
-      if (v.length > 9) {
-        v = v.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
-      } else if (v.length > 6) {
-        v = v.replace(/^(\d{3})(\d{3})(\d{0,3})$/, '$1.$2.$3');
-      } else if (v.length > 3) {
-        v = v.replace(/^(\d{3})(\d{0,3})$/, '$1.$2');
-      }
-      return v;
-    }
-
-    function syncCpfInputs(e) {
-      const v = formatCpfValue(e.target.value);
-      e.target.value = v;
-      if (inputCpf && inputCpf !== e.target) inputCpf.value = v;
-      if (inputCardCpf && inputCardCpf !== e.target) inputCardCpf.value = v;
-    }
-
-    if (inputCpf) inputCpf.addEventListener('input', syncCpfInputs);
-    if (inputCardCpf) inputCardCpf.addEventListener('input', syncCpfInputs);
-
-    if (inputCardNumber) {
-      inputCardNumber.addEventListener('input', function(e) {
-        let v = e.target.value.replace(/\D/g, '').slice(0, 16);
-        e.target.value = v.replace(/(\d{4})(?=\d)/g, '$1 ');
-      });
-    }
-
-    if (inputCardExpiry) {
-      inputCardExpiry.addEventListener('input', function(e) {
-        let v = e.target.value.replace(/\D/g, '').slice(0, 4);
-        if (v.length > 2) {
-          v = v.replace(/^(\d{2})(\d{0,2})$/, '$1/$2');
+    // Register after the phone mask so the persisted draft matches the field.
+    [inputName, inputPhone, inputEmail].forEach(input => {
+      input.addEventListener('input', saveCheckoutProgress);
+      input.addEventListener('change', saveCheckoutProgress);
+      input.addEventListener('focus', () => {
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            input.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }, 100);
         }
-        e.target.value = v;
       });
+    });
+    window.addEventListener('pagehide', saveCheckoutProgress);
+    restoreCheckoutProgress();
+
+    let openingPayment = false;
+    let hotmartWidgetFailed = false;
+
+    function prepareHotmartWidget() {
+      if (document.getElementById('hotmartWidgetScript')) return;
+      const script = document.createElement('script');
+      script.id = 'hotmartWidgetScript';
+      script.src = 'https://static.hotmart.com/checkout/widget.min.js';
+      script.async = true;
+      script.addEventListener('error', () => { hotmartWidgetFailed = true; });
+      document.head.appendChild(script);
     }
 
-    // Alternador de Abas (Pix / Cartão)
-    if (tabPix && tabCard) {
-      tabPix.addEventListener('click', () => {
-        tabPix.classList.add('active');
-        tabCard.classList.remove('active');
-        tabPix.setAttribute('aria-pressed', 'true');
-        tabCard.setAttribute('aria-pressed', 'false');
-        currentMethod = 'PIX';
-        if (cardFields) cardFields.style.display = 'none';
-        if (pixChoiceWrap) pixChoiceWrap.style.display = 'block';
-        if (inputCardNumber) inputCardNumber.required = false;
-        updateCtaButtonText();
+    async function openHotmartCheckout(buyer) {
+      const url = window.ImobiturboHotmart.buildUrl(currentPlan, buyer, {
+        ...getUtms(), visitorId: getVisitorId(),
       });
-
-      tabCard.addEventListener('click', () => {
-        tabCard.classList.add('active');
-        tabPix.classList.remove('active');
-        tabCard.setAttribute('aria-pressed', 'true');
-        tabPix.setAttribute('aria-pressed', 'false');
-        currentMethod = 'CREDIT_CARD';
-        if (cardFields) cardFields.style.display = 'block';
-        if (pixChoiceWrap) pixChoiceWrap.style.display = 'none';
-        if (inputCardNumber) inputCardNumber.required = true;
-        updateCtaButtonText();
-      });
+      prepareHotmartWidget();
+      // A returning buyer may click before the widget and its dependencies load.
+      const deadline = Date.now() + 8000;
+      while (!window.jQuery?.fancybox && !hotmartWidgetFailed && Date.now() < deadline) {
+        await new Promise(resolve => setTimeout(resolve, 50));
+      }
+      closeCheckoutModal();
+      const link = document.getElementById('hotmartCheckoutLink');
+      if (link && window.jQuery?.fancybox) {
+        link.href = url;
+        link.click();
+      } else {
+        // Falha/carregamento do widget mantém o checkout hospedado disponível.
+        window.location.assign(url);
+      }
     }
 
     function fireLeadTrackingEvent() {
@@ -2910,14 +2938,13 @@
 
     function openCheckoutModal(e) {
       if (e) e.preventDefault();
+      if (openingPayment) return;
       const selected = getSelectedPlan();
-      if (selected !== currentPlan || (pixView && pixView.style.display !== 'none')) {
-        resetToFormView(selected);
-      } else {
-        updateModalPlanUI(selected);
-        goToCheckoutStep(1);
-      }
-      if (modalOverlay) {
+      prepareHotmartWidget();
+      updateModalPlanUI(selected);
+      const completed = getCheckoutResumeStep() === 4;
+      if (!completed) showCheckoutForm(selected);
+      if (!completed && modalOverlay) {
         modalOverlay.classList.add('active');
         modalOverlay.setAttribute('aria-hidden', 'false');
         if (!modalOverlay.open) modalOverlay.showModal();
@@ -2931,17 +2958,17 @@
         valueCents: Math.round(planVal * 100),
         currency: 'BRL'
       });
+      if (completed) continueToPayment();
     }
 
     function closeCheckoutModal() {
+      saveCheckoutProgress();
       if (modalOverlay) {
         modalOverlay.classList.remove('active');
         if (modalOverlay.open) modalOverlay.close();
         modalOverlay.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = '';
       }
-      if (pollingInterval) clearInterval(pollingInterval);
-      if (timerInterval) clearInterval(timerInterval);
       checkoutBtn?.focus({ preventScroll: true });
     }
 
@@ -2984,49 +3011,32 @@
       });
     }
 
-    if (copyPixBtn && pixPayload) {
-      copyPixBtn.addEventListener('click', () => {
-        pixPayload.select();
-        pixPayload.setSelectionRange(0, 99999);
-        var copied = false;
-        try {
-          copied = document.execCommand('copy');
-        } catch (_) {}
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(pixPayload.value).catch(function() {});
-          copied = true;
-        }
-        if (copied) {
-          if (copyBtnText) copyBtnText.textContent = '✓ Código Pix Copiado!';
-          copyPixBtn.classList.add('chk-copied');
-          setTimeout(() => {
-            if (copyBtnText) copyBtnText.textContent = 'Copiar Código Pix';
-            copyPixBtn.classList.remove('chk-copied');
-          }, 3000);
-          setTimeout(() => {
-            if (window.getSelection) {
-              window.getSelection().removeAllRanges();
-            }
-            pixPayload.blur();
-          }, 1500);
-        }
-      });
+    function getCookie(name) {
+      const match = document.cookie.match(new RegExp('(?:^|;\\s*)' + name + '=([^;]+)'));
+      return match ? match[1] : null;
     }
 
-    function getCookie(name) {
-      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-      return match ? match[2] : null;
+    function getVisitorId() {
+      try {
+        return getCookie('_rt_vid') || getCookie('rt_vid') || localStorage.getItem('_rt_vid') || localStorage.getItem('rt_vid') || undefined;
+      } catch (_) {
+        return getCookie('_rt_vid') || getCookie('rt_vid') || undefined;
+      }
     }
 
     function getUtms() {
       const params = new URLSearchParams(window.location.search);
+      let attrUtms = {};
+      try {
+        const stored = JSON.parse(localStorage.getItem('_rt_attr') || '{}');
+        if (stored && typeof stored.utms === 'object') attrUtms = stored.utms;
+      } catch (_) {}
       return {
-        sck: getCookie('_rt_sid') || undefined,
-        utm_source: params.get('utm_source') || undefined,
-        utm_medium: params.get('utm_medium') || undefined,
-        utm_campaign: params.get('utm_campaign') || undefined,
-        utm_content: params.get('utm_content') || undefined,
-        utm_term: params.get('utm_term') || undefined,
+        utm_source: params.get('utm_source') || attrUtms.utm_source || undefined,
+        utm_medium: params.get('utm_medium') || attrUtms.utm_medium || undefined,
+        utm_campaign: params.get('utm_campaign') || attrUtms.utm_campaign || undefined,
+        utm_content: params.get('utm_content') || attrUtms.utm_content || undefined,
+        utm_term: params.get('utm_term') || attrUtms.utm_term || undefined,
         fbclid: params.get('fbclid') || undefined,
         gclid: params.get('gclid') || undefined,
         fbp: getCookie('_fbp') || undefined,
@@ -3035,189 +3045,66 @@
     }
 
 
-    if (nativeForm) {
-      nativeForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        if (errorMsg) {
-          errorMsg.style.display = 'none';
-          errorMsg.textContent = '';
-        }
+    async function continueToPayment(e) {
+      if (e) e.preventDefault();
+      if (openingPayment) return;
+      if (errorMsg) {
+        errorMsg.style.display = 'none';
+        errorMsg.textContent = '';
+      }
 
-        const name = (inputName ? inputName.value : '').trim();
-        const email = (inputEmail ? inputEmail.value : '').trim();
-        const phone = (inputPhone ? inputPhone.value : '').trim();
-        const cpf = (inputCpf && inputCpf.value ? inputCpf.value : (inputCardCpf ? inputCardCpf.value : '')).trim();
+      const name = (inputName ? inputName.value : '').trim();
+      const email = (inputEmail ? inputEmail.value : '').trim();
+      const phone = (inputPhone ? inputPhone.value : '').trim();
 
-        if (!name || name.length < 2) {
-          goToCheckoutStep(1);
-          showCheckoutError('Por favor, preencha seu nome completo.');
-          return;
-        }
+      if (!name || name.length < 2) {
+        goToCheckoutStep(1);
+        showCheckoutError('Por favor, preencha seu nome completo.');
+        return;
+      }
 
-        const cleanPhone = phone.replace(/\D/g, '');
-        if (cleanPhone.length < 10) {
-          goToCheckoutStep(2);
-          showCheckoutError('Por favor, informe seu WhatsApp com DDD.');
-          return;
-        }
+      const cleanPhone = phone.replace(/\D/g, '');
+      if (cleanPhone.length < 10) {
+        goToCheckoutStep(2);
+        showCheckoutError('Por favor, informe seu WhatsApp com DDD.');
+        return;
+      }
 
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          goToCheckoutStep(3);
-          showCheckoutError('Por favor, informe seu e-mail para receber o acesso.');
-          return;
-        }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        goToCheckoutStep(3);
+        showCheckoutError('Por favor, informe seu e-mail para receber o acesso.');
+        return;
+      }
 
-        const cleanCpf = cpf.replace(/\D/g, '');
-
-        let cardData = null;
-        if (currentMethod === 'CREDIT_CARD') {
-          if (!cleanCpf || cleanCpf.length < 11 || !isValidCpf(cleanCpf)) {
-            showCheckoutError('Por favor, informe um CPF válido para o titular do cartão.');
-            inputCardCpf?.focus();
-            return;
-          }
-          const cardNum = (inputCardNumber ? inputCardNumber.value : '').replace(/\D/g, '');
-          const cardHolder = (inputCardHolder ? inputCardHolder.value : '').trim();
-          const cardExp = (inputCardExpiry ? inputCardExpiry.value : '').trim();
-          const cardCvv = (inputCardCvv ? inputCardCvv.value : '').trim();
-
-          if (!cardNum || cardNum.length < 13 || !cardHolder || !cardExp || !cardCvv) {
-            showCheckoutError('Por favor, confira todos os dados do cartão de crédito.');
-            return;
-          }
-
-          const expParts = cardExp.split('/');
-          const expMonth = expParts[0];
-          const expYear = expParts[1] ? (expParts[1].length === 2 ? '20' + expParts[1] : expParts[1]) : '';
-
-          cardData = {
-            holderName: cardHolder,
-            number: cardNum,
-            expiryMonth: expMonth,
-            expiryYear: expYear,
-            ccv: cardCvv
-          };
-        } else {
-          // PIX
-          if (!cleanCpf || cleanCpf.length < 11 || !isValidCpf(cleanCpf)) {
-            showCheckoutError('Por favor, informe um CPF válido para emissão do Pix nominal.');
-            inputCpf?.focus();
-            return;
-          }
-        }
-
-        const activeSubmitBtn = currentMethod === 'PIX' ? submitBtn : (submitCardBtn || submitBtn);
-        if (activeSubmitBtn) activeSubmitBtn.disabled = true;
-        if (currentMethod === 'PIX') {
-          if (pixBtnText) pixBtnText.textContent = 'Gerando chave Pix segura...';
-        } else {
-          if (btnText) btnText.textContent = 'Processando pagamento seguro...';
-        }
-
-        const eventId = window.imtGenerateUUID ? window.imtGenerateUUID() : (window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'evt_' + Date.now());
-        const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
-
-        const payload = {
-          plan: currentPlan,
-          paymentMethod: currentMethod,
-          name,
-          email,
-          phone,
-          cpfCnpj: cleanCpf,
-          creditCard: cardData,
-          tracking: getUtms(),
-          eventId
-        };
-
-        try {
-          const response = await fetch('/api/checkout', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-
-          const res = await response.json();
-
-          if (!response.ok || !res.success) {
-            throw new Error(res.error || 'Falha ao processar pagamento.');
-          }
-
-          if (currentMethod === 'PIX' && res.pix) {
-            if (formView) formView.style.display = 'none';
-            if (pixView) pixView.style.display = 'block';
-
-            if (pixQrImg) pixQrImg.src = res.pix.qrCodeBase64;
-            if (pixPayload) pixPayload.value = res.pix.copyPaste;
-
-            let timeLeft = 15 * 60;
-            if (timerInterval) clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-              timeLeft--;
-              if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-                if (pixTimer) pixTimer.textContent = 'Expirado';
-                return;
-              }
-              const m = Math.floor(timeLeft / 60);
-              const s = timeLeft % 60;
-              if (pixTimer) pixTimer.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-            }, 1000);
-
-            const checkPaymentId = res.paymentId;
-            const gateway = res.gateway || 'abacatepay';
-
-            if (pollingInterval) clearInterval(pollingInterval);
-            pollingInterval = setInterval(async () => {
-              try {
-                const pollRes = await fetch(`/api/checkout/status?paymentId=${checkPaymentId}&gateway=${gateway}`);
-                const pollData = await pollRes.json();
-                if (pollData.status === 'PAID' || pollData.status === 'CONFIRMED' || pollData.status === 'RECEIVED') {
-                  clearInterval(pollingInterval);
-                  clearInterval(timerInterval);
-                  onPaymentApproved(eventId, res.amount || planVal);
-                }
-              } catch (_) {}
-            }, 3000);
-
-          } else if (currentMethod === 'CREDIT_CARD') {
-            if (res.isApproved || res.status === 'CONFIRMED' || res.status === 'RECEIVED') {
-              onPaymentApproved(eventId, res.amount || planVal);
-            } else {
-              throw new Error(res.error || 'Cartão em análise. Por favor tente novamente ou escolha Pix.');
-            }
-          }
-
-        } catch (err) {
-          if (errorMsg) {
-            errorMsg.textContent = err.message || 'Erro inesperado. Tente novamente em instantes.';
-            errorMsg.style.display = 'block';
-          }
-          if (activeSubmitBtn) activeSubmitBtn.disabled = false;
-          updateCtaButtonText();
-        }
-      });
+      // Keep the existing persisted completion marker, without showing step 4.
+      if (currentCheckoutStep < 4) fireLeadTrackingEvent();
+      currentCheckoutStep = 4;
+      saveCheckoutProgress();
+      openingPayment = true;
+      const emailButtonLabel = step3Btn.querySelector('span');
+      const pageButtonLabel = checkoutBtn.textContent;
+      emailButtonLabel.textContent = 'Abrindo pagamento...';
+      checkoutBtn.textContent = 'Abrindo pagamento...';
+      step3Btn.disabled = true;
+      checkoutBtn.disabled = true;
+      try {
+        await openHotmartCheckout({ name, email, phone });
+      } catch (error) {
+        goToCheckoutStep(3);
+        openingPayment = false;
+        openCheckoutModal();
+        showCheckoutError('Não foi possível abrir o pagamento. Tente novamente em instantes.');
+      } finally {
+        openingPayment = false;
+        emailButtonLabel.textContent = 'Continuar para pagamento';
+        checkoutBtn.textContent = pageButtonLabel;
+        step3Btn.disabled = false;
+        checkoutBtn.disabled = false;
+      }
     }
 
-    function onPaymentApproved(eventId, val) {
-      if (pixView) pixView.style.display = 'none';
-      if (formView) formView.style.display = 'none';
-      if (successView) successView.style.display = 'block';
-
-      try {
-        var emailInput = document.getElementById('chkEmail');
-        var userEmail = (emailInput && emailInput.value) ? emailInput.value.trim().toLowerCase() : '';
-        var clubLink = document.getElementById('chkSuccessClubLink');
-        if (clubLink && userEmail) {
-          clubLink.href = 'https://club.imobiturbo.com.br/login?email=' + encodeURIComponent(userEmail);
-        }
-      } catch (e) {}
-
-      // Purchase é registrado pelo backend após a confirmação do pagamento.
-
-
-      setTimeout(() => {
-        window.location.href = 'https://app.imobiturbo.com.br/onboarding';
-      }, 3500);
+    if (nativeForm) {
+      nativeForm.addEventListener('submit', continueToPayment);
     }
 
     // 2. Galeria manual: rolagem nativa por toque, botões e teclado.
@@ -3329,7 +3216,7 @@
   })();
 </script>
 
-  <!-- LEAD CAPTURE MODAL (RADIX STYLE - ABACATEPAY TRANSPARENTE) -->
+  <!-- Formulário alternativo de identificação antes do checkout Hotmart -->
   <dialog id="leadCaptureModal" class="lead-modal-overlay" onclick="handleModalBackdropClick(event)">
     <div class="lead-modal-card" role="document">
       <button class="lm-close-btn" type="button" onclick="closeLeadModal()" aria-label="Fechar modal">✕</button>
@@ -3374,7 +3261,7 @@
           </div>
 
           <div class="lm-plan-badge" id="lmPlanBadge">
-            Plano Selecionado: <b>Comunidade Imobiturbo · 12x de R$ 99,70</b>
+            Plano Selecionado: <b>Comunidade Imobiturbo · 12x de R$ 97,00</b>
           </div>
 
           <button class="lm-submit-btn" type="submit" id="leadSubmitBtn">
@@ -3399,28 +3286,6 @@
         </div>
       </div>
 
-      <!-- Step 2: AbacatePay Transparent Pix QR Code Result -->
-      <div id="lmPixResult" style="display: none;">
-        <div class="lm-pix-header">
-          <span class="lm-pix-tag">PAGAMENTO INSTANTÂNEO VIA PIX</span>
-          <div class="lm-pix-price" id="lmPixPrice">R$ 997,00</div>
-          <p class="lm-pix-sub">Escaneie o QR Code abaixo com o app do seu banco ou use o Copia e Cola:</p>
-        </div>
-
-        <div class="lm-qr-box">
-          <img id="lmQrCodeImg" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="QR Code Pix" width="220" height="220">
-        </div>
-
-        <div class="lm-copia-cola-wrap">
-          <input type="text" id="lmPixCopiaCola" class="lm-pix-input" readonly>
-          <button type="button" class="lm-copy-btn" id="lmCopyBtn" onclick="copyPixCode()">Copiar Código</button>
-        </div>
-
-        <div class="lm-pix-status">
-          <span class="lm-pulse-dot"></span>
-          <span>Aguardando liquidação... O acesso é liberado no seu e-mail e WhatsApp em 2 segundos após o pagamento.</span>
-        </div>
-      </div>
     </div>
   </dialog>
 
@@ -3550,8 +3415,11 @@
           e.stopPropagation();
           if (!video || !video.duration) return;
           const rect = progressBar.getBoundingClientRect();
-          const clickX = e.clientX - rect.left;
-          const visualRatio = Math.max(0, Math.min(1, clickX / rect.width));
+          const rotated = document.fullscreenElement?.id === 'vslFacade'
+            && document.fullscreenElement.classList.contains('is-mobile-fullscreen')
+            && matchMedia('(orientation: portrait)').matches;
+          const position = rotated ? (e.clientY - rect.top) / rect.height : (e.clientX - rect.left) / rect.width;
+          const visualRatio = Math.max(0, Math.min(1, position));
           // Inverse of r^0.42: r = visualRatio^(1 / 0.42)
           const realRatio = Math.pow(visualRatio, 1 / 0.42);
           video.currentTime = realRatio * video.duration;
@@ -3568,6 +3436,7 @@
       const soundIconOff = document.getElementById('vslSoundIconOff');
 
       if (!video) return;
+      revealVslControls();
 
       if (!vslStarted) {
         vslStarted = true;
@@ -3659,11 +3528,13 @@
 
     let volumeCloseTimer = null;
 
-    function scheduleVolumeAutoClose(delayMs = 3500) {
+    function scheduleVolumeAutoClose(delayMs = 2500) {
       if (volumeCloseTimer) clearTimeout(volumeCloseTimer);
       volumeCloseTimer = setTimeout(() => {
         const wrap = document.getElementById('vslVolumeWrap');
         if (wrap) wrap.classList.remove('is-open');
+        document.getElementById('vslFacade')?.classList.remove('has-user-active');
+        document.getElementById('vslSoundBtn')?.setAttribute('aria-expanded', 'false');
       }, delayMs);
     }
 
@@ -3674,17 +3545,89 @@
       }
     }
 
+    function revealVslControls() {
+      document.getElementById('vslFacade')?.classList.add('has-user-active');
+      scheduleVolumeAutoClose();
+    }
+
+    let vslOrientationRequested = false;
+
+    function syncVslFullscreen() {
+      const facade = document.getElementById('vslFacade');
+      const button = document.getElementById('vslFullscreenBtn');
+      const active = document.fullscreenElement === facade;
+      const label = active ? 'Sair da tela cheia' : 'Entrar em tela cheia';
+      button.setAttribute('aria-label', label);
+      button.setAttribute('aria-pressed', String(active));
+      button.title = label;
+      if (!active) {
+        facade.classList.remove('is-mobile-fullscreen');
+        if (vslOrientationRequested) {
+          screen.orientation?.unlock?.();
+          vslOrientationRequested = false;
+        }
+      }
+      revealVslControls();
+    }
+
+    async function toggleVslFullscreen(e) {
+      e.stopPropagation();
+      const facade = document.getElementById('vslFacade');
+      const video = document.getElementById('vslVideo');
+      const status = document.getElementById('vslFullscreenStatus');
+      status.textContent = '';
+      revealVslControls();
+      try {
+        if (document.fullscreenElement === facade) {
+          await document.exitFullscreen();
+        } else if (facade.requestFullscreen) {
+          const mobile = matchMedia('(pointer: coarse)').matches;
+          facade.classList.toggle('is-mobile-fullscreen', mobile);
+          await facade.requestFullscreen();
+          if (mobile && document.fullscreenElement === facade && screen.orientation?.lock) {
+            vslOrientationRequested = true;
+            try {
+              await screen.orientation.lock('landscape');
+            } catch (_) {
+              // Portrait devices still get a landscape stage when locking is unavailable.
+            }
+            // An exit can happen before the asynchronous orientation request settles.
+            if (document.fullscreenElement !== facade) screen.orientation?.unlock?.();
+          }
+        } else if (video.webkitEnterFullscreen) {
+          // iPhone versions without element fullscreen use the native video player.
+          video.webkitEnterFullscreen();
+        } else {
+          status.textContent = 'Seu navegador não permite abrir este vídeo em tela cheia.';
+        }
+      } catch (_) {
+        if (document.fullscreenElement !== facade) facade.classList.remove('is-mobile-fullscreen');
+        status.textContent = 'Não foi possível abrir a tela cheia. Tente novamente.';
+      }
+    }
+
+    function setupVslFullscreen() {
+      document.addEventListener('fullscreenchange', syncVslFullscreen);
+      const facade = document.getElementById('vslFacade');
+      facade.addEventListener('pointermove', e => {
+        if (e.pointerType === 'mouse' && document.fullscreenElement === facade) revealVslControls();
+      });
+      document.getElementById('vslVideo').addEventListener('webkitendfullscreen', revealVslControls);
+    }
+
     function handleVslSoundBtnClick(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       const wrap = document.getElementById('vslVolumeWrap');
       const video = document.getElementById('vslVideo');
       if (!wrap || !video) return;
+      revealVslControls();
+      document.getElementById('vslSoundBtn').setAttribute('aria-expanded', 'true');
 
       // Se o vídeo ainda não começou com áudio, inicia do começo unmuted
       if (!vslStarted) {
         playVslVideo(e);
         wrap.classList.add('is-open');
-        scheduleVolumeAutoClose(4000);
+        scheduleVolumeAutoClose();
         return;
       }
 
@@ -3695,11 +3638,11 @@
           const targetVol = lastNonZeroVolume > 0 ? lastNonZeroVolume : 1.0;
           setVslVolume(targetVol);
         }
-        scheduleVolumeAutoClose(4000);
+        scheduleVolumeAutoClose();
       } else {
         // Se o seletor já está aberto, clicar no botão alterna mudo / com som
         toggleVslAudio(e);
-        scheduleVolumeAutoClose(3000);
+        scheduleVolumeAutoClose();
       }
     }
 
@@ -3733,12 +3676,12 @@
         slider.addEventListener('input', function(e) {
           e.stopPropagation();
           setVslVolume(this.value, false);
-          scheduleVolumeAutoClose(4500);
+          scheduleVolumeAutoClose();
         });
         slider.addEventListener('change', function(e) {
           e.stopPropagation();
           setVslVolume(this.value, false);
-          scheduleVolumeAutoClose(3500);
+          scheduleVolumeAutoClose();
         });
         slider.addEventListener('click', function(e) {
           e.stopPropagation();
@@ -3748,45 +3691,31 @@
           cancelVolumeAutoClose();
         });
         slider.addEventListener('mouseup', function(e) {
-          scheduleVolumeAutoClose(3500);
+          scheduleVolumeAutoClose();
         });
         slider.addEventListener('touchstart', function(e) {
           e.stopPropagation();
           cancelVolumeAutoClose();
         }, { passive: true });
         slider.addEventListener('touchend', function() {
-          scheduleVolumeAutoClose(3500);
+          scheduleVolumeAutoClose();
         });
       }
 
-      if (wrap) {
-        wrap.addEventListener('mouseenter', cancelVolumeAutoClose);
-        wrap.addEventListener('mouseleave', function() {
-          if (wrap.classList.contains('is-open')) {
-            scheduleVolumeAutoClose(1200);
-          }
-        });
-      }
-
-      // Fecha o seletor expandido ao clicar fora
       document.addEventListener('click', function(e) {
-        if (wrap && wrap.classList.contains('is-open') && !wrap.contains(e.target)) {
+        if (wrap && !wrap.contains(e.target)) {
           wrap.classList.remove('is-open');
+          document.getElementById('vslSoundBtn').setAttribute('aria-expanded', 'false');
         }
       });
 
-      // Suporte a toque no player para revelar o botão temporariamente
-      let facadeTouchTimer = null;
       if (facade) {
-        facade.addEventListener('touchstart', function(e) {
-          if (!wrap || !wrap.contains(e.target)) {
-            facade.classList.add('has-user-active');
-            if (facadeTouchTimer) clearTimeout(facadeTouchTimer);
-            facadeTouchTimer = setTimeout(() => {
-              facade.classList.remove('has-user-active');
-            }, 4000);
+        facade.addEventListener('keydown', function(e) {
+          if (e.target === facade && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            playVslVideo(e);
           }
-        }, { passive: true });
+        });
       }
 
       if (video) {
@@ -3798,10 +3727,12 @@
       document.addEventListener('DOMContentLoaded', () => {
         initVslPlayer();
         setupVolumeSlider();
+        setupVslFullscreen();
       });
     } else {
       initVslPlayer();
       setupVolumeSlider();
+      setupVslFullscreen();
     }
 
     function scrollToPlans() {
@@ -3850,76 +3781,16 @@
       }
     }
 
-    async function handleLeadSubmit(e) {
+    function handleLeadSubmit(e) {
       e.preventDefault();
-      const submitBtn = document.getElementById('leadSubmitBtn');
-      const btnTxt = document.getElementById('lmBtnTxt');
       const fullname = document.getElementById('leadFullname').value.trim();
       const email = document.getElementById('leadEmail').value.trim();
       const phone = document.getElementById('leadPhone').value.trim();
-
       if (!fullname || !email || !phone) return;
-
-      submitBtn.disabled = true;
-      btnTxt.textContent = 'Gerando acesso seguro...';
-
-      try {
-        const res = await fetch('/api/checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            plan: currentSelectedPlan,
-            paymentMethod: 'PIX',
-            name: fullname,
-            email: email,
-            phone: phone,
-            tracking: typeof getUtms === 'function' ? getUtms() : {},
-            orderBumps: []
-          })
-        });
-
-        const data = await res.json();
-        const pix = data.pix || data.pixData;
-
-        if (data.checkoutUrl && !pix) {
-          window.location.href = data.checkoutUrl;
-          return;
-        }
-
-        if (pix && (pix.copyPaste || pix.brCode)) {
-          document.getElementById('lmFormStep').style.display = 'none';
-          document.getElementById('lmPixResult').style.display = 'block';
-          document.getElementById('lmPixPrice').textContent = pix.valueDisplay || PLANS_CONFIG[currentSelectedPlan].pixPrice;
-          document.getElementById('lmPixCopiaCola').value = pix.copyPaste || pix.brCode;
-          const qrSrc = pix.qrCodeBase64 || pix.brCodeBase64;
-          if (qrSrc) {
-            document.getElementById('lmQrCodeImg').src = qrSrc;
-          }
-        } else if (data.checkoutUrl) {
-          window.location.href = data.checkoutUrl;
-        } else {
-          window.location.href = 'https://chk.imobiturbo.com.br/checkout?plano=' + currentSelectedPlan;
-        }
-      } catch (err) {
-        console.error('Checkout error:', err);
-        window.location.href = 'https://chk.imobiturbo.com.br/checkout?plano=' + currentSelectedPlan;
-      }
-    }
-
-    function copyPixCode() {
-      const input = document.getElementById('lmPixCopiaCola');
-      const copyBtn = document.getElementById('lmCopyBtn');
-      if (input) {
-        input.select();
-        navigator.clipboard.writeText(input.value).then(() => {
-          copyBtn.textContent = 'Copiado!';
-          copyBtn.style.background = '#15803d';
-          setTimeout(() => {
-            copyBtn.textContent = 'Copiar Código';
-            copyBtn.style.background = '#14A69B';
-          }, 2500);
-        });
-      }
+      const tracking = { ...getUtms(), visitorId: getVisitorId() };
+      const url = window.ImobiturboHotmart.buildUrl(currentSelectedPlan, { name: fullname, email, phone }, tracking);
+      closeLeadModal();
+      window.location.assign(url);
     }
 
     // Relatos Reais em Vídeo (Bunny Stream CDN Oficial)

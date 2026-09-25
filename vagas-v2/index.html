@@ -2,7 +2,7 @@
 <html lang="pt-BR" class="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <title>Comunidade Imobiturbo | CRM com IA no WhatsApp & Mentoria Prática</title>
   <meta name="description" content="Qualifique compradores no WhatsApp 24/7 com IA, organize seus clientes no CRM e feche vendas exclusivas sem virar refém da tecnologia.">
   <meta name="keywords" content="CRM imobiliário, IA para corretores, WhatsApp imobiliário, comunidade imobiturbo, Natan Pimentel, VGV turbinado">
@@ -18,7 +18,7 @@
   <meta property="og:title" content="Comunidade Imobiturbo | CRM com IA no WhatsApp & Mentoria">
   <meta property="og:description" content="Qualifique compradores no WhatsApp 24/7 com IA, organize seus clientes no CRM e feche vendas exclusivas sem virar refém da tecnologia.">
   <meta property="og:image" content="https://www.imobiturbo.com.br/vagas/assets/hero-vsl-poster.webp">
-  <meta property="og:url" content="https://www.imobiturbo.com.br/vagas-v2/">
+  <meta property="og:url" content="https://www.imobiturbo.com.br/vagas/">
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
@@ -26,7 +26,7 @@
   <meta name="twitter:description" content="Organize sua operação comercial imobiliária e avance com inteligência artificial.">
   <meta name="twitter:image" content="https://www.imobiturbo.com.br/vagas/assets/hero-vsl-poster.webp">
 
-  <link rel="canonical" href="https://www.imobiturbo.com.br/vagas-v2/">
+  <link rel="canonical" href="https://www.imobiturbo.com.br/vagas/">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon.png">
 
@@ -584,7 +584,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260922-player-3">
+  <link rel="stylesheet" href="./vagas.css?v=20260925-mobile-modal">
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -1119,6 +1119,92 @@
     mark * {
       color: #10130c !important;
     }
+
+    /* Mobile Checkout Modal (Top-aligned & Keyboard-resilient) */
+    @media (max-width: 768px) {
+      .chk-modal-overlay {
+        align-items: flex-start !important;
+        padding: max(8px, env(safe-area-inset-top, 8px)) 12px max(16px, env(safe-area-inset-bottom, 16px)) !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+      }
+      .chk-modal-box {
+        margin: 0 auto !important;
+        padding: 16px 16px 18px !important;
+        border-radius: 20px !important;
+        max-height: calc(100dvh - 16px) !important;
+        max-height: calc(100svh - 16px) !important;
+      }
+      .chk-modal-header-row {
+        margin-bottom: 12px !important;
+        gap: 8px !important;
+      }
+      .chk-modal-badge {
+        font-size: 10.5px !important;
+        padding: 4px 8px !important;
+      }
+      .chk-modal-close {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+      }
+      .chk-geo-banner {
+        padding: 9px 12px !important;
+        margin-bottom: 12px !important;
+        font-size: 13px !important;
+        line-height: 1.35 !important;
+        border-radius: 12px !important;
+        gap: 8px !important;
+      }
+      .chk-geo-icon {
+        font-size: 15px !important;
+      }
+      .chk-geo-sub {
+        font-size: 11.5px !important;
+        margin-top: 2px !important;
+      }
+      .chk-modal-title {
+        font-size: 17.5px !important;
+        line-height: 1.25 !important;
+        margin-bottom: 3px !important;
+      }
+      .chk-modal-subtitle {
+        font-size: 12.5px !important;
+        line-height: 1.35 !important;
+        margin-bottom: 10px !important;
+      }
+      .chk-modal-box .chk-field {
+        margin-top: 8px !important;
+        margin-bottom: 12px !important;
+      }
+      .chk-input-lg {
+        min-height: 46px !important;
+        padding: 10px 12px !important;
+        font-size: 15px !important;
+        border-radius: 10px !important;
+      }
+      .chk-btn-submit {
+        min-height: 48px !important;
+        padding: 12px 16px !important;
+        font-size: 14.5px !important;
+        border-radius: 10px !important;
+        margin-top: 2px !important;
+      }
+      .chk-social-proof {
+        margin-top: 12px !important;
+      }
+      .chk-choose-method-title {
+        font-size: 13px !important;
+        margin: 8px 0 4px !important;
+      }
+      #chkPaymentTerms {
+        font-size: 11.5px !important;
+        margin-bottom: 6px !important;
+      }
+      .chk-guarantee-line {
+        margin-top: 12px !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1321,7 +1407,7 @@
               <p class="chat-text">"Vi o anúncio da cobertura. Aceita proposta à vista?"</p>
             </div>
             <div class="chat-bubble chat-bubble-ai">
-              <div class="chat-sender"><span class="ai-badge">IA</span> Imobiturbo OS</div>
+              <div class="chat-sender"><span class="ai-badge">IA</span> Assistente Imobiturbo</div>
               <p class="chat-text">"Sim! Já levantei as condições. Qual o melhor horário para o corretor responsável falar com você?"</p>
             </div>
           </div>
@@ -2789,6 +2875,13 @@
     [inputName, inputPhone, inputEmail].forEach(input => {
       input.addEventListener('input', saveCheckoutProgress);
       input.addEventListener('change', saveCheckoutProgress);
+      input.addEventListener('focus', () => {
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            input.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+          }, 100);
+        }
+      });
     });
     window.addEventListener('pagehide', saveCheckoutProgress);
     restoreCheckoutProgress();

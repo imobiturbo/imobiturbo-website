@@ -2035,6 +2035,93 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   line-height: 1.6;
   margin-bottom: 24px;
 }
+
+/* Mobile Checkout Modal (Top-aligned & Keyboard-resilient) */
+@media (max-width: 768px) {
+  .chk-modal-overlay {
+    align-items: flex-start !important;
+    padding: max(8px, env(safe-area-inset-top, 8px)) 12px max(16px, env(safe-area-inset-bottom, 16px)) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .chk-modal-box {
+    margin: 0 auto !important;
+    padding: 16px 16px 18px !important;
+    border-radius: 20px !important;
+    max-height: calc(100dvh - 16px) !important;
+    max-height: calc(100svh - 16px) !important;
+  }
+  .chk-modal-header-row {
+    margin-bottom: 12px !important;
+    gap: 8px !important;
+  }
+  .chk-modal-badge {
+    font-size: 10.5px !important;
+    padding: 4px 8px !important;
+  }
+  .chk-modal-close {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+  }
+  .chk-geo-banner {
+    padding: 9px 12px !important;
+    margin-bottom: 12px !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    border-radius: 12px !important;
+    gap: 8px !important;
+  }
+  .chk-geo-icon {
+    font-size: 15px !important;
+  }
+  .chk-geo-sub {
+    font-size: 11.5px !important;
+    margin-top: 2px !important;
+  }
+  .chk-modal-title {
+    font-size: 17.5px !important;
+    line-height: 1.25 !important;
+    margin-bottom: 3px !important;
+  }
+  .chk-modal-subtitle {
+    font-size: 12.5px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 10px !important;
+  }
+  .chk-modal-box .chk-field {
+    margin-top: 8px !important;
+    margin-bottom: 12px !important;
+  }
+  .chk-input-lg {
+    min-height: 46px !important;
+    padding: 10px 12px !important;
+    font-size: 15px !important;
+    border-radius: 10px !important;
+  }
+  .chk-btn-submit {
+    min-height: 48px !important;
+    padding: 12px 16px !important;
+    font-size: 14.5px !important;
+    border-radius: 10px !important;
+    margin-top: 2px !important;
+  }
+  .chk-social-proof {
+    margin-top: 12px !important;
+  }
+  .chk-choose-method-title {
+    font-size: 13px !important;
+    margin: 8px 0 4px !important;
+  }
+  #chkPaymentTerms {
+    font-size: 11.5px !important;
+    margin-bottom: 6px !important;
+  }
+  .chk-guarantee-line {
+    margin-top: 12px !important;
+  }
+}
+
 @media (max-width: 1000px) {
   .hero-layout { column-gap: 30px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .hero h1 { font-size: 44px; }
@@ -2190,7 +2277,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   .price { font-size: 26px; }
   .media-placeholder { padding: 15px; }
   .psel-row { padding: 12px; }
-  .chk-modal-box { padding: 14px 16px 16px; max-height: 94vh; }
+  .chk-modal-box { padding: 14px 14px 16px; max-height: calc(100dvh - 14px); }
   .chk-step-pane#chkStepPane4 { padding-top: 2px; }
   .chk-plan-retractable-wrap { margin-bottom: 8px; }
   .chk-choose-method-title { margin: 6px 0 6px; font-size: 12px; }
