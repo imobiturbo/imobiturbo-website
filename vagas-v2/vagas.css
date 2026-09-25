@@ -2148,7 +2148,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   body { font-size: 17px; line-height: 1.6; }
   .container { width: calc(100% - 48px); }
   .section { padding-block: 58px; }
-  h1, .hero h1 { font-size: 34px; line-height: 1.12; letter-spacing: -.04em; }
+  h1:not(.h-hero) { font-size: 34px; line-height: 1.12; letter-spacing: -.04em; }
   h2 { font-size: 30px; line-height: 1.2; letter-spacing: -.035em; text-wrap: pretty; }
   h3 { font-size: 22px; }
   .section-intro { margin-bottom: 30px; }
@@ -2268,7 +2268,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 @media (max-width: 360px) {
   .container { width: calc(100% - 40px); }
-  h1, .hero h1 { font-size: 32px; }
+  h1:not(.h-hero) { font-size: 32px; }
   h2 { font-size: 28px; }
   .panel { padding: 18px; }
   .study-panel { padding: 0; }
@@ -2490,6 +2490,16 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   color: var(--white);
   margin-top: 0;
   margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .hero h1,
+  .hero .h-hero,
+  .h-hero {
+    font-size: clamp(16px, 4.8vw, 36px) !important;
+    line-height: 1.24 !important;
+    letter-spacing: -0.035em !important;
+  }
 }
 
 .hero-inner .sub {
