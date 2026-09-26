@@ -8,7 +8,7 @@ import {
   sendPostPurchaseNotifications,
   provisionCommunityMembership,
 } from "./_notifications.js";
-import { dispatchVerifiedPurchaseToHub } from "./_tracking.js";
+import { dispatchVerifiedPurchaseToHub, dispatchPendingPurchaseToHub } from "./_tracking.js";
 import { authenticateHotmart, parseHotmartEvent } from "./_hotmart.js";
 
 const CORS_HEADERS = {
@@ -62,6 +62,7 @@ export async function onRequestPost(context) {
     const cookies = parseCookies(request.headers.get("Cookie") || "");
 
     let isPaid = false;
+    let isPending = false;
     let isCanceled = false;
     let paymentId = "";
     let amount = 0;
@@ -74,6 +75,7 @@ export async function onRequestPost(context) {
     let visitorId = "";
     let contentName = "Comunidade Imobiturbo";
     let plan = "anual";
+    let paymentMethod = "";
 
     // 0. Hubla Webhook Detection
     const isHubla = Boolean(
@@ -122,13 +124,63 @@ export async function onRequestPost(context) {
         email = (payer.email || "").trim();
         phone = (payer.phone || "").trim();
         name = [payer.firstName, payer.lastName].filter(Boolean).join(" ").trim() || payer.name || "";
-        fbp = sessionCookies.fbp || cookies["_fbp"] || "";
-        fbc = sessionCookies.fbc || (sessionCookies.fbclid ? `fb.1.${Date.now()}.${sessionCookies.fbclid}` : "") || cookies["_fbc"] || "";
+        fbp = sessionCookies.fbp || sessionParams.fbp || cookies["_fbp"] || "";
+        fbc = sessionCookies.fbc || sessionParams.fbc || (sessionCookies.fbclid ? `fb.1.${Date.now()}.${sessionCookies.fbclid}` : "") || cookies["_fbc"] || "";
         if (session.ip) clientIp = session.ip;
         if (session.userAgent) userAgent = session.userAgent;
         externalRef = request.headers.get("x-hubla-idempotency") || sessionParams.visitorId || "";
-        visitorId = sessionParams.visitorId || "";
+        visitorId = sessionParams.visitorId || sessionParams.rt_vid || "";
         contentName = payload.event?.product?.name || "Comunidade Imobiturbo";
+        paymentMethod = inv.paymentMethod || inv.method || payload.event?.paymentMethod || "";
+
+        const urlPlan = (sessionParams.plan || "").toLowerCase();
+        if (urlPlan === "annually" || urlPlan === "anual") {
+          plan = "anual";
+        } else if (urlPlan === "quarterly" || urlPlan === "trimestral") {
+          plan = "trimestral";
+        } else if (urlPlan === "monthly" || urlPlan === "mensal") {
+          plan = "mensal";
+        } else if (subscriptions[0]?.billingCycleMonths === 12) {
+          plan = "anual";
+        } else if (subscriptions[0]?.billingCycleMonths === 3) {
+          plan = "trimestral";
+        } else if (subscriptions[0]?.billingCycleMonths === 1) {
+          plan = "mensal";
+        } else if (amount >= 800) {
+          plan = "anual";
+        } else if (amount >= 300) {
+          plan = "trimestral";
+        } else {
+          plan = "mensal";
+        }
+      } else if (
+        eventType === "invoice.created" ||
+        (eventType === "invoice.status_updated" && (invoiceStatus === "pending" || invoiceStatus === "waiting_payment")) ||
+        invoiceStatus === "pending" ||
+        invoiceStatus === "waiting_payment"
+      ) {
+        isPending = true;
+        paymentId = inv.id || inv.orderId || payload.id || "";
+        if (typeof inv.amount?.total === "number") {
+          amount = inv.amount.total;
+        } else if (typeof inv.amount?.totalCents === "number") {
+          amount = inv.amount.totalCents / 100;
+        } else if (typeof inv.amount?.subtotal === "number") {
+          amount = inv.amount.subtotal;
+        } else {
+          amount = 0;
+        }
+        email = (payer.email || "").trim();
+        phone = (payer.phone || "").trim();
+        name = [payer.firstName, payer.lastName].filter(Boolean).join(" ").trim() || payer.name || "";
+        fbp = sessionCookies.fbp || sessionParams.fbp || cookies["_fbp"] || "";
+        fbc = sessionCookies.fbc || sessionParams.fbc || (sessionCookies.fbclid ? `fb.1.${Date.now()}.${sessionCookies.fbclid}` : "") || cookies["_fbc"] || "";
+        if (session.ip) clientIp = session.ip;
+        if (session.userAgent) userAgent = session.userAgent;
+        externalRef = request.headers.get("x-hubla-idempotency") || sessionParams.visitorId || "";
+        visitorId = sessionParams.visitorId || sessionParams.rt_vid || "";
+        contentName = payload.event?.product?.name || "Comunidade Imobiturbo";
+        paymentMethod = inv.paymentMethod || inv.method || payload.event?.paymentMethod || "";
 
         const urlPlan = (sessionParams.plan || "").toLowerCase();
         if (urlPlan === "annually" || urlPlan === "anual") {
@@ -188,6 +240,27 @@ export async function onRequestPost(context) {
       externalRef = data.metadata?.eventId || "";
       if (data.metadata?.plan) plan = data.metadata.plan;
       if (data.description) contentName = data.description;
+      paymentMethod = data.methods ? data.methods.join(",") : "pix";
+    }
+    // 1.05 AbacatePay Webhook Detection (Pendente)
+    else if (
+      payload.event === "billing.created" ||
+      (payload.data && payload.data.status === "PENDING")
+    ) {
+      isPending = true;
+      const data = payload.data || {};
+      paymentId = data.id || payload.id || "";
+      amount = typeof data.amount === "number" ? data.amount / 100 : 0;
+      const cust = data.customer || payload.customer || {};
+      email = cust.email || data.metadata?.email || "";
+      phone = cust.cellphone || cust.phone || data.metadata?.phone || "";
+      name = cust.name || data.metadata?.name || "";
+      fbp = data.metadata?.fbp || cookies["_fbp"] || "";
+      fbc = data.metadata?.fbc || cookies["_fbc"] || "";
+      externalRef = data.metadata?.eventId || "";
+      if (data.metadata?.plan) plan = data.metadata.plan;
+      if (data.description) contentName = data.description;
+      paymentMethod = data.methods ? data.methods.join(",") : "pix";
     }
     // 1.1 AbacatePay Reembolso / Chargeback / Cancelamento
     else if (
@@ -248,6 +321,31 @@ export async function onRequestPost(context) {
             console.error("Asaas customer lookup fallback error:", err);
           }
         }
+      }
+    }
+    // 2.05 Asaas Webhook Detection (Pendente)
+    else if (
+      ["PAYMENT_CREATED", "PAYMENT_AWAITING_PAYMENT"].includes(payload.event) ||
+      (payload.payment && (payload.payment.status === "PENDING" || payload.payment.status === "AWAITING_PAYMENT"))
+    ) {
+      isPending = true;
+      const payment = payload.payment || {};
+      paymentId = payment.id || payload.id || "";
+      amount = Number(payment.value || payment.netValue || 0);
+      const cust =
+        payload.customer || (typeof payment.customer === "object" ? payment.customer : {});
+      email = cust.email || "";
+      phone = cust.mobilePhone || cust.phone || "";
+      name = cust.name || "";
+      fbp = cookies["_fbp"] || "";
+      fbc = cookies["_fbc"] || "";
+      externalRef = payment.externalReference || "";
+      paymentMethod = payment.billingType || "";
+      if (payment.description) {
+        contentName = payment.description;
+        const descLower = payment.description.toLowerCase();
+        if (descLower.includes("trimestral")) plan = "trimestral";
+        else if (descLower.includes("mensal")) plan = "mensal";
       }
     }
     // 2.1 Asaas Reembolso / Chargeback / Cancelamento
@@ -324,6 +422,38 @@ export async function onRequestPost(context) {
 
     let metaResult = null;
     let eventId = null;
+
+    if (isPending && paymentId) {
+      eventId = externalRef || `pending_${paymentId}`;
+      await dispatchPendingPurchaseToHub({
+        env,
+        request,
+        paymentId,
+        eventId,
+        amount,
+        contentName,
+        email,
+        phone,
+        name,
+        fbp,
+        fbc,
+        visitorId,
+        paymentMethod,
+      });
+
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          pending: true,
+          paymentId,
+          amount,
+          plan,
+          event_id: eventId,
+          provider: isHubla ? "hubla" : isHotmart ? "hotmart" : "gateway",
+        }),
+        { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+      );
+    }
 
     if (isPaid && paymentId) {
       // Idempotência garantida: usa externalReference (eventId do checkout) ou purch_<paymentId>

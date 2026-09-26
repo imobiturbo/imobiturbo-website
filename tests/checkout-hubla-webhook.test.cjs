@@ -176,10 +176,62 @@ test('Hubla webhook: refunds and chargebacks trigger cancellation', async () => 
   }
 });
 
-test('Hubla webhook: non-financial and open invoice events are acknowledged as ignored_event', async () => {
+test('Hubla webhook: invoice.created / pending records pending sale and dispatches to Hub', async () => {
   const { onRequestPost } = await webhookModulePromise;
 
-  const payload = createHublaPayload({ type: 'invoice.created', status: 'unpaid' });
+  const payload = createHublaPayload({
+    type: 'invoice.created',
+    status: 'pending',
+    invoiceId: 'hubla_pending_123',
+    amount: 997,
+    plan: 'annually',
+  });
+
+  let dispatchedHubEvent = null;
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async (url, options) => {
+    if (typeof url === 'string' && url.includes('track.nmidigital.tech/api/collect')) {
+      dispatchedHubEvent = JSON.parse(options.body);
+      return new Response(JSON.stringify({ ok: true }), { status: 200 });
+    }
+    return new Response(JSON.stringify({ ok: true }), { status: 200 });
+  };
+
+  try {
+    const request = new Request('https://www.imobiturbo.com.br/api/checkout/webhook', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    const env = {
+      HUB_TRACKING_COLLECT_URL: 'https://track.nmidigital.tech/api/collect',
+      HUB_TRACKING_OPERATION_ID: '00000000-0000-0000-0000-000000000001',
+    };
+
+    const response = await onRequestPost({ request, env });
+    assert.equal(response.status, 200);
+    const data = await response.json();
+    assert.equal(data.ok, true);
+    assert.equal(data.pending, true);
+    assert.equal(data.paymentId, 'hubla_pending_123');
+    assert.equal(data.amount, 997);
+    assert.equal(data.plan, 'anual');
+
+    assert.ok(dispatchedHubEvent, 'Must dispatch pending purchase to Hub');
+    assert.equal(dispatchedHubEvent.type, 'InitiateCheckout');
+    assert.equal(dispatchedHubEvent.status, 'pending');
+    assert.equal(dispatchedHubEvent.orderId, 'hubla_pending_123');
+    assert.equal(dispatchedHubEvent.valueCents, 99700);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('Hubla webhook: non-financial events are acknowledged as ignored_event', async () => {
+  const { onRequestPost } = await webhookModulePromise;
+
+  const payload = createHublaPayload({ type: 'member.module_completed', status: 'completed' });
   const request = new Request('https://www.imobiturbo.com.br/api/checkout/webhook', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

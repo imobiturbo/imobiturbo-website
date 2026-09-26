@@ -3069,6 +3069,9 @@
         utm_campaign: params.get('utm_campaign') || attrUtms.utm_campaign || undefined,
         utm_content: params.get('utm_content') || attrUtms.utm_content || undefined,
         utm_term: params.get('utm_term') || attrUtms.utm_term || undefined,
+        src: params.get('src') || attrUtms.src || undefined,
+        sck: params.get('sck') || attrUtms.sck || undefined,
+        xcod: params.get('xcod') || attrUtms.xcod || undefined,
         fbclid: params.get('fbclid') || undefined,
         gclid: params.get('gclid') || undefined,
         fbp: getCookie('_fbp') || undefined,
@@ -3845,6 +3848,22 @@
         return;
       }
       const tracking = { ...getUtms(), visitorId: getVisitorId() };
+      const planVal = currentSelectedPlan === 'anual' ? 997 : currentSelectedPlan === 'trimestral' ? 357 : 147;
+      trackHubConversion('lead', {
+        name: fullname,
+        email,
+        phone,
+        plan: currentSelectedPlan,
+        productId: 'comunidade-imobiturbo-' + currentSelectedPlan,
+        valueCents: Math.round(planVal * 100),
+        currency: 'BRL'
+      });
+      trackHubConversion('initiateCheckout', {
+        plan: currentSelectedPlan,
+        productId: 'comunidade-imobiturbo-' + currentSelectedPlan,
+        valueCents: Math.round(planVal * 100),
+        currency: 'BRL'
+      });
       const checkoutHelper = window.ImobiturboHubla || window.ImobiturboHotmart;
       const url = checkoutHelper.buildUrl(currentSelectedPlan, { name: fullname, email, phone }, tracking);
       closeLeadModal();

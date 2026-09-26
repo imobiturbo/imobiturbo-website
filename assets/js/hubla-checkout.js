@@ -33,13 +33,16 @@
       params.set('phone', '+' + fullPhone);
     }
 
-    if (tracking.visitorId) params.set('visitorId', tracking.visitorId);
+    if (tracking.visitorId) {
+      params.set('visitorId', tracking.visitorId);
+      params.set('rt_vid', tracking.visitorId);
+    }
 
-    const utms = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+    const utms = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'src', 'sck', 'xcod'];
     for (const key of utms) {
       if (tracking[key]) params.set(key, tracking[key]);
     }
-    for (const key of ['gbraid', 'ttclid', 'fbclid', 'gclid']) {
+    for (const key of ['gbraid', 'ttclid', 'fbclid', 'gclid', 'fbp', 'fbc']) {
       if (tracking[key]) params.set(key, tracking[key]);
     }
 

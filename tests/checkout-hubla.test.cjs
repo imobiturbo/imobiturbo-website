@@ -15,7 +15,11 @@ test('Hubla checkout URLs preserve the chosen plan, installments, buyer prefill 
   }, {
     visitorId: 'visitor-123',
     utm_source: 'meta',
-    utm_campaign: 'turbo-vagas'
+    utm_campaign: 'turbo-vagas',
+    src: 'hub_test_src',
+    sck: 'hub_test_sck',
+    fbp: 'fb.1.123456789.987654321',
+    fbc: 'fb.1.123456789.abcdef'
   }));
   assert.equal(anualUrl.origin, 'https://pay.hub.la');
   assert.equal(anualUrl.pathname, '/EKQIIAiTsXkEUez8uQaM');
@@ -25,8 +29,13 @@ test('Hubla checkout URLs preserve the chosen plan, installments, buyer prefill 
   assert.equal(anualUrl.searchParams.get('email'), 'carlos@imobiturbo.com.br');
   assert.equal(anualUrl.searchParams.get('phone'), '+5521999998888');
   assert.equal(anualUrl.searchParams.get('visitorId'), 'visitor-123');
+  assert.equal(anualUrl.searchParams.get('rt_vid'), 'visitor-123');
   assert.equal(anualUrl.searchParams.get('utm_source'), 'meta');
   assert.equal(anualUrl.searchParams.get('utm_campaign'), 'turbo-vagas');
+  assert.equal(anualUrl.searchParams.get('src'), 'hub_test_src');
+  assert.equal(anualUrl.searchParams.get('sck'), 'hub_test_sck');
+  assert.equal(anualUrl.searchParams.get('fbp'), 'fb.1.123456789.987654321');
+  assert.equal(anualUrl.searchParams.get('fbc'), 'fb.1.123456789.abcdef');
 
   // 2. Trimestral
   const triUrl = new URL(buildUrl('trimestral', {
