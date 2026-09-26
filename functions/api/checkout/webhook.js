@@ -10,6 +10,8 @@ import {
 } from "./_notifications.js";
 import { dispatchVerifiedPurchaseToHub, dispatchPendingPurchaseToHub } from "./_tracking.js";
 import { authenticateHotmart, parseHotmartEvent } from "./_hotmart.js";
+import { checkoutDetails, CONSULTING_PRODUCT_ID } from "./_products.js";
+import { handleConsultingWebhook } from "./_consulting.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -34,6 +36,36 @@ export async function onRequestPost(context) {
         status: 400,
         headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
       });
+    }
+
+    // Resolve the product before any membership side effects, including partial
+    // metadata, deletion, refund and out-of-order Asaas notifications.
+    if (payload.payment?.id) {
+      if (env?.ASAAS_WEBHOOK_TOKEN && request.headers.get("asaas-access-token") !== env.ASAAS_WEBHOOK_TOKEN) {
+        return Response.json({ ok: false, error: "asaas_unauthorized" }, { status: 401 });
+      }
+      if (!env?.ASAAS_API_KEY) return Response.json({ ok: false, error: "asaas_verification_unavailable" }, { status: 503 });
+      const providerResponse = await fetch(`https://api.asaas.com/v3/payments/${encodeURIComponent(payload.payment.id)}`, {
+        headers: { access_token: env.ASAAS_API_KEY, "User-Agent": "Imobiturbo-Checkout/1.0" },
+        signal: AbortSignal.timeout(5000),
+      });
+      if (!providerResponse.ok) return Response.json({ ok: false, error: "asaas_verification_pending" }, { status: 503 });
+      const verifiedPayment = await providerResponse.json();
+      if (verifiedPayment.id !== payload.payment.id) return Response.json({ ok: false, error: "asaas_payment_mismatch" }, { status: 422 });
+      if (checkoutDetails(verifiedPayment).productId === CONSULTING_PRODUCT_ID) {
+        return await handleConsultingWebhook({ request, env, paymentId: verifiedPayment.id, verifiedPayment });
+      }
+      payload.payment = verifiedPayment;
+      delete payload.customer;
+      // Status from the provider wins over an old notification event.
+      payload.event = verifiedPayment.deleted ? "PAYMENT_DELETED" : ({
+        RECEIVED: "PAYMENT_RECEIVED", CONFIRMED: "PAYMENT_CONFIRMED",
+        RECEIVED_IN_CASH: "PAYMENT_RECEIVED", PENDING: "PAYMENT_CREATED",
+        AWAITING_PAYMENT: "PAYMENT_AWAITING_PAYMENT", REFUNDED: "PAYMENT_REFUNDED",
+        CHARGEBACK_REQUESTED: "PAYMENT_CHARGEBACK_REQUESTED",
+        CHARGEBACK_DISPUTE: "PAYMENT_CHARGEBACK_DISPUTE",
+        AWAITING_CHARGEBACK_REVERSAL: "PAYMENT_AWAITING_CHARGEBACK_REVERSAL",
+      }[verifiedPayment.status] || "ASAAS_STATUS_IGNORED");
     }
 
     const isHotmart = Boolean(payload.data?.purchase || /^(PURCHASE_|SUBSCRIPTION_)/.test(payload.event || ''));
@@ -394,6 +426,12 @@ export async function onRequestPost(context) {
         JSON.stringify({ ok: true, status: "ignored_event", event: payload.event || "unknown" }),
         { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
       );
+    }
+
+    if (payload.payment) {
+      const details = checkoutDetails(payload.payment);
+      externalRef = details.eventId;
+      plan = details.plan;
     }
 
     // Processamento de CANCELAMENTO / REEMBOLSO

@@ -1,9 +1,11 @@
 // Cloudflare Pages Function: /api/checkout/status
 import { dispatchVerifiedPurchaseToHub } from "./_tracking.js";
+import { checkoutDetails, isAsaasPaymentPaid, CONSULTING_PRODUCT_ID } from "./_products.js";
 // Consulta status de aprovação de pagamentos no AbacatePay ou Asaas
 // Dispara evento Purchase server-side para Meta CAPI (Graph API v25.0) quando pago
 
 const CORS_HEADERS = {
+  "Cache-Control": "no-store",
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
@@ -109,21 +111,50 @@ export async function onRequestGet(context) {
         }
       );
       const rawData = await resp.json();
-      const data = (rawData.data && rawData.data[0]) || rawData;
+      let data = (rawData.data && rawData.data[0]) || rawData;
+      let subscriptionOnly = false;
+      if (resp.ok && paymentId.startsWith('sub_') && Array.isArray(rawData.data) && rawData.data.length === 0) {
+        const subscriptionResponse = await fetch(`https://api.asaas.com/v3/subscriptions/${encodeURIComponent(paymentId)}`, {
+          headers: { access_token: asaasKey }, signal: AbortSignal.timeout(5000),
+        });
+        if (!subscriptionResponse.ok) throw new Error('Não foi possível consultar a assinatura.');
+        data = await subscriptionResponse.json();
+        subscriptionOnly = true;
+      }
 
       if (resp.ok && data.id) {
-        const isPaid =
-          data.status === "CONFIRMED" ||
-          data.status === "RECEIVED" ||
-          data.status === "RECEIVED_IN_CASH";
+        const details = checkoutDetails(data);
+        if ((!paymentId.startsWith('sub_') && data.id !== paymentId) || (subscriptionOnly && data.id !== paymentId)) {
+          return Response.json({ success: false, error: 'Pagamento divergente.' }, { status: 422, headers: CORS_HEADERS });
+        }
+        const isPaid = !subscriptionOnly && isAsaasPaymentPaid(data) &&
+          (details.productId !== CONSULTING_PRODUCT_ID || Number(data.value) === 497);
+        let pix = null;
+        // Recover the QR for this payment, never POST another payment.
+        if (!isPaid && data.billingType === "PIX" && !data.deleted &&
+            url.searchParams.get("includePix") === "1" &&
+            (!details.expiresAt || Date.parse(details.expiresAt) > Date.now())) {
+          try {
+            const qrResponse = await fetch(`https://api.asaas.com/v3/payments/${encodeURIComponent(data.id)}/pixQrCode`, {
+              headers: { access_token: asaasKey }, signal: AbortSignal.timeout(4000),
+            });
+            if (qrResponse.ok) {
+              const qr = await qrResponse.json();
+              if (qr.payload && qr.encodedImage) pix = {
+                copyPaste: qr.payload, qrCodeBase64: `data:image/png;base64,${qr.encodedImage}`,
+                expiresAt: details.expiresAt,
+              };
+            }
+          } catch (_) { /* Keep the payment recoverable during a QR outage. */ }
+        }
 
         if (isPaid) {
-          const eventId = data.externalReference || url.searchParams.get("eventId") || `purch_${paymentId}`;
+          const eventId = details.eventId;
           const amount = Number(data.value || 997);
           const contentName = data.description || "Comunidade Imobiturbo";
           const promise = Promise.allSettled([
-            dispatchPurchaseToMetaCapi({ env, request, paymentId: data.id, eventId, amount, contentName, email: "", phone: "", name: "" }),
-            dispatchVerifiedPurchaseToHub({ env, request, paymentId: data.id, eventId, amount, contentName, email: "", phone: "", name: "" }),
+            dispatchPurchaseToMetaCapi({ env, request, paymentId: data.id, eventId, amount, contentName, productId: details.productId, email: "", phone: "", name: "" }),
+            dispatchVerifiedPurchaseToHub({ env, request, paymentId: data.id, eventId, amount, contentName, productId: details.productId, email: "", phone: "", name: "" }),
           ]);
           if (context.waitUntil) {
             context.waitUntil(promise);
@@ -139,6 +170,11 @@ export async function onRequestGet(context) {
             paymentId: data.id,
             status: data.status,
             paid: isPaid,
+            ...details,
+            amount: Number(data.value || 0),
+            billingType: data.billingType,
+            deleted: Boolean(data.deleted),
+            ...(pix ? { pix } : {}),
             invoiceUrl: data.invoiceUrl,
           }),
           { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
@@ -178,6 +214,7 @@ async function dispatchPurchaseToMetaCapi({
   name,
   fbp,
   fbc,
+  productId = "comunidade-imobiturbo",
 }) {
   try {
     const pixelId = (env && env.META_PIXEL_ID) || DEFAULT_PIXEL_ID;
@@ -220,7 +257,7 @@ async function dispatchPurchaseToMetaCapi({
           event_name: "Purchase",
           event_time: Math.floor(Date.now() / 1000),
           event_id: eventId || `purch_${paymentId}`,
-          event_source_url: "https://www.imobiturbo.com.br/vagas/",
+          event_source_url: productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
           action_source: "website",
           user_data: userData,
           custom_data: {
@@ -228,6 +265,7 @@ async function dispatchPurchaseToMetaCapi({
             currency: "BRL",
             content_name: contentName || "Comunidade Imobiturbo",
             content_type: "product",
+            content_ids: [productId],
             num_items: 1,
           },
         },

@@ -35,6 +35,7 @@ const entries = [
   'demo',
   'vagas',
   'vagas-v2',
+  'vagas-obrigado',
   'politica-de-privacidade',
   'exclusao-de-dados',
   'termos-de-servico',
