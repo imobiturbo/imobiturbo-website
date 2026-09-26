@@ -2212,7 +2212,7 @@
             
             <div class="cio-tool-card">
               <div class="cio-tool-info">
-                <img src="assets/tools/imobiturbo-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
+                <img src="assets/tools/imobiturbo-3d.webp" alt="CRM Imobiturbo OS" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Imobiturbo OS CRM</h5>
                 <p>Kanban visual de oportunidades, funis de venda, histórico de conversas e gestão de VGV em tempo real.</p>
               </div>
@@ -2220,7 +2220,7 @@
 
             <div class="cio-tool-card">
               <div class="cio-tool-info">
-                <img src="assets/tools/whatsapp-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
+                <img src="assets/tools/whatsapp-3d.webp" alt="IA SDR WhatsApp" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Robô SDR no WhatsApp</h5>
                 <p>Atende compradores no 1º minuto, levanta orçamento, filtra curiosos e agenda a visita na sua agenda.</p>
               </div>
@@ -2228,7 +2228,7 @@
 
             <div class="cio-tool-card">
               <div class="cio-tool-info">
-                <img src="assets/tools/chatgpt-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
+                <img src="assets/tools/chatgpt-3d.webp" alt="Assistente Roteirista Viral" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Roteirista Viral de Vídeos</h5>
                 <p>Gera ganchos hipnóticos e roteiros de 30 a 60 segundos para reels e stories imobiliários em 1 clique.</p>
               </div>
@@ -2236,7 +2236,7 @@
 
             <div class="cio-tool-card">
               <div class="cio-tool-info">
-                <img src="assets/tools/capcut-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
+                <img src="assets/tools/capcut-3d.webp" alt="CapCut Templates" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Templates de Edição CapCut</h5>
                 <p>Modelos com cortes automáticos de silêncio, legendas dinâmicas coloridas e trilhas selecionadas para imóveis.</p>
               </div>
@@ -2244,7 +2244,7 @@
 
             <div class="cio-tool-card">
               <div class="cio-tool-info">
-                <img src="assets/tools/google-ads-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
+                <img src="assets/tools/google-ads-3d.webp" alt="Simulador de Financiamento" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Simulador de Financiamento</h5>
                 <p>Calcule parcelas, entrada e poder de compra na hora para fechar negócios com clareza financeira na visita.</p>
               </div>
@@ -2252,7 +2252,7 @@
 
             <div class="cio-tool-card">
               <div class="cio-tool-info">
-                <img src="assets/tools/claude-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
+                <img src="assets/tools/claude-3d.webp" alt="Modelos e Contratos Jurídicos" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Contrato de Exclusividade 180D</h5>
                 <p>Minuta jurídica pronta para uso, checklist de captação em campo e plano de mídia estruturado para o proprietário.</p>
               </div>
@@ -4517,12 +4517,6 @@
 
           const copiaCola = document.getElementById('chkPixCopiaCola');
           if (copiaCola) copiaCola.value = result.pix.copyPaste;
-
-          const amountVal = document.getElementById('chkPixAmountVal');
-          if (amountVal) {
-            const valNum = result.amount || (currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147);
-            amountVal.textContent = valNum.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-          }
 
           startPixPolling(result.paymentId, result.eventId, result);
           startPixCountdown(1800);
