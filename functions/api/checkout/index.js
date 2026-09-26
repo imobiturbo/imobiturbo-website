@@ -161,7 +161,7 @@ export async function onRequestPost(context) {
         value: selectedPlan.pixReais,
         dueDate: todayStr,
         description: selectedPlan.title,
-        externalReference: eventId,
+        externalReference: JSON.stringify({ product_id: "comunidade-imobiturbo", plan, eid: eventId }),
       };
 
       const payResp = await fetch("https://api.asaas.com/v3/payments", {
@@ -242,6 +242,8 @@ export async function onRequestPost(context) {
             } : undefined,
             metadata: {
               ...tracking,
+              product_id: "comunidade-imobiturbo",
+              offer_key: "comunidade-imobiturbo",
               plan,
               name,
               email,
@@ -374,7 +376,7 @@ export async function onRequestPost(context) {
         value: selectedPlan.pixReais,
         dueDate: todayStr,
         description: `${selectedPlan.title} (Fallback Asaas)`,
-        externalReference: eventId,
+        externalReference: JSON.stringify({ product_id: "comunidade-imobiturbo", plan, eid: eventId }),
       };
 
       const payResp = await fetch("https://api.asaas.com/v3/payments", {
@@ -457,7 +459,7 @@ export async function onRequestPost(context) {
             ccv: creditCard.ccv,
           },
           creditCardHolderInfo: holderInfo,
-          externalReference: eventId,
+          externalReference: JSON.stringify({ product_id: "comunidade-imobiturbo", plan, eid: eventId }),
         };
 
         const subResp = await fetch("https://api.asaas.com/v3/subscriptions", {
@@ -535,7 +537,7 @@ export async function onRequestPost(context) {
             ccv: creditCard.ccv,
           },
           creditCardHolderInfo: holderInfo,
-          externalReference: eventId,
+          externalReference: JSON.stringify({ product_id: "comunidade-imobiturbo", plan, eid: eventId }),
         };
 
         const reqInstallments = parseInt(body.installments, 10);

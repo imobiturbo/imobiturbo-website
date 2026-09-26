@@ -38,6 +38,10 @@ test("vagas/index.html and vagas-v2/index.html contain Option #1 transparent che
     // CPF do pagador label format
     assert.ok(html.includes('for="chkPixCpf">CPF do pagador:</label>'), `${page} must label CPF do pagador:`);
 
+    // Pix Tab Icon and Card Tab Subtitle
+    assert.ok(html.includes('class="chk-icon-pix"'), `${page} must set class chk-icon-pix on Pix SVG`);
+    assert.ok(html.includes('id="chkCardTabDesc"'), `${page} must contain #chkCardTabDesc`);
+
     // Asaas Processing Footer
     assert.ok(html.includes("Pagamento Processado via"), `${page} must display Pagamento Processado via`);
     assert.ok(html.includes("assets/thesvg/asaas.svg"), `${page} must display Asaas logo`);
@@ -90,6 +94,7 @@ test("vagas/vagas.css contains complete styles for transparent checkout, badges 
     assert.ok(css.includes(".chk-success-vip-box"), `${cssFile} must define .chk-success-vip-box`);
     assert.ok(css.includes(".chk-btn-whatsapp"), `${cssFile} must define .chk-btn-whatsapp`);
     assert.ok(css.includes(".chk-next-steps"), `${cssFile} must define .chk-next-steps`);
+    assert.ok(css.includes(".chk-tab-label svg.chk-icon-pix"), `${cssFile} must define .chk-tab-label svg.chk-icon-pix`);
   }
 });
 

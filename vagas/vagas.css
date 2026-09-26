@@ -1835,8 +1835,15 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   gap: 6px;
 }
 .chk-tab-label svg {
+  flex-shrink: 0;
+}
+.chk-tab-label svg:not(.chk-icon-pix) {
   stroke: currentColor;
   stroke-width: 2.2;
+}
+.chk-tab-label svg.chk-icon-pix {
+  stroke: none !important;
+  fill: currentColor !important;
 }
 .chk-tab.active .chk-tab-label {
   color: var(--lime);
