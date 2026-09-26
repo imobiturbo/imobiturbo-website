@@ -34,6 +34,7 @@ test("vagas/index.html and vagas-v2/index.html contain Option #1 transparent che
     assert.ok(html.includes('id="chkPixCopiaCola"'), `${page} must contain #chkPixCopiaCola`);
     assert.ok(html.includes('id="chkCopyPixBtn"'), `${page} must contain #chkCopyPixBtn`);
     assert.ok(html.includes('id="chkPixTimer"'), `${page} must contain #chkPixTimer`);
+    assert.ok(html.indexOf('id="chkCopyPixBtn"') < html.indexOf('id="chkPixQrImg"'), `${page} must place #chkCopyPixBtn above #chkPixQrImg for mobile speed`);
 
     // CPF do pagador label format
     assert.ok(html.includes('for="chkPixCpf">CPF do pagador:</label>'), `${page} must label CPF do pagador:`);

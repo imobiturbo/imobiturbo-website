@@ -2175,6 +2175,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   gap: 8px;
   transition: all 0.2s ease;
   box-shadow: 0 4px 16px rgba(191, 215, 48, 0.25);
+  margin: 10px 0 16px;
 }
 .chk-copy-btn svg {
   flex-shrink: 0;
