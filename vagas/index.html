@@ -2239,12 +2239,12 @@
     <!-- VIEW 1: FORMULÁRIO MULTI-ETAPAS DE DADOS E PAGAMENTO -->
     <div id="chkFormView">
       <form id="chkNativeForm" novalidate onsubmit="return false;">
-        <!-- ETAPA 1: NOME -->
+        <!-- ETAPA 1: NOME E SOBRENOME -->
         <div class="chk-step-pane" id="chkStepPane1">
-          <h3 class="chk-modal-title" id="checkoutModalTitle">Você está a um passo de <mark class="text-highlight">impulsionar seu VGV</mark> com a metodologia Imobiturbo.</h3>
-          <p class="chk-modal-subtitle">Continue, serão menos de 10 segundos.</p>
+          <h3 class="chk-modal-title" id="checkoutModalTitle">Qual é o seu <mark class="text-highlight">nome e sobrenome</mark>?</h3>
+          <p class="chk-modal-subtitle">Preencha seu nome completo para liberação do acesso.</p>
           <div class="chk-field" style="margin-top: 18px; margin-bottom: 22px;">
-            <input type="text" id="chkName" class="chk-input chk-input-lg" placeholder="Seu nome completo" required autocomplete="name">
+            <input type="text" id="chkName" class="chk-input chk-input-lg" placeholder="Nome e Sobrenome" required autocomplete="name">
           </div>
           <button type="button" class="chk-btn-submit" id="chkStep1Btn">
             <span>Continuar</span>
@@ -2493,9 +2493,14 @@
     const geoRegionText = document.getElementById('chkGeoRegionText');
     const checkoutStorageKey = 'imobiturbo:vagas:checkout:v1';
 
+    function isValidFullName(val) {
+      const parts = (val || '').trim().split(/\s+/).filter(Boolean);
+      return parts.length >= 2 && parts[0].length >= 2 && parts[1].length >= 2;
+    }
+
     function getCheckoutResumeStep() {
       // Saved progress never bypasses the existing identification requirements.
-      if (inputName.value.trim().length < 2) return 1;
+      if (!isValidFullName(inputName.value)) return 1;
       if (inputPhone.value.replace(/\D/g, '').length < 10) return Math.min(currentCheckoutStep, 2);
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail.value.trim())) return Math.min(currentCheckoutStep, 3);
       return Math.min(currentCheckoutStep, 3);
@@ -2805,12 +2810,12 @@
       });
     });
 
-    // Step 1: Nome -> Step 2
+    // Step 1: Nome e Sobrenome -> Step 2
     if (step1Btn && inputName) {
       step1Btn.addEventListener('click', () => {
         const nameVal = inputName.value.trim();
-        if (!nameVal || nameVal.length < 2) {
-          showCheckoutError('Por favor, informe seu nome para continuar.');
+        if (!isValidFullName(nameVal)) {
+          showCheckoutError('Por favor, informe seu nome e sobrenome para continuar.');
           inputName.focus();
           return;
         }
@@ -3036,9 +3041,9 @@
       const email = (inputEmail ? inputEmail.value : '').trim();
       const phone = (inputPhone ? inputPhone.value : '').trim();
 
-      if (!name || name.length < 2) {
+      if (!isValidFullName(name)) {
         goToCheckoutStep(1);
-        showCheckoutError('Por favor, preencha seu nome completo.');
+        showCheckoutError('Por favor, informe seu nome e sobrenome completo.');
         return;
       }
 
@@ -3227,7 +3232,7 @@
 
         <form id="leadCheckoutForm" onsubmit="handleLeadSubmit(event)">
           <div class="lm-field">
-            <input class="lm-input" type="text" id="leadFullname" name="fullname" placeholder="Nome completo" required autocomplete="name">
+            <input class="lm-input" type="text" id="leadFullname" name="fullname" placeholder="Nome e Sobrenome" required autocomplete="name">
           </div>
 
           <div class="lm-field">
@@ -3768,7 +3773,10 @@
       const fullname = document.getElementById('leadFullname').value.trim();
       const email = document.getElementById('leadEmail').value.trim();
       const phone = document.getElementById('leadPhone').value.trim();
-      if (!fullname || !email || !phone) return;
+      if (!isValidFullName(fullname) || !email || !phone) {
+        alert('Por favor, informe seu nome e sobrenome completo.');
+        return;
+      }
       const tracking = { ...getUtms(), visitorId: getVisitorId() };
       const checkoutHelper = window.ImobiturboHubla || window.ImobiturboHotmart;
       const url = checkoutHelper.buildUrl(currentSelectedPlan, { name: fullname, email, phone }, tracking);

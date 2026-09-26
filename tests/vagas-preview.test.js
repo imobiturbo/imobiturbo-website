@@ -112,6 +112,9 @@ test('vagas checkout modal always opens on mobile and desktop without bypassing 
     assert.ok(!content.includes('if (completed) continueToPayment();'), `${pagePath} must not bypass modalOverlay on completed state`);
     assert.match(content, /return Math\.min\(currentCheckoutStep, 3\);/, `${pagePath} getCheckoutResumeStep must be capped at 3`);
     assert.match(content, /<script[^>]*src="\/assets\/js\/hubla-checkout\.js/, `${pagePath} must load hubla-checkout.js`);
+    assert.match(content, /id="chkName"[^>]*placeholder="Nome e Sobrenome"/, `${pagePath} must prompt for Nome e Sobrenome`);
+    assert.match(content, /function isValidFullName/, `${pagePath} must define isValidFullName`);
+    assert.match(content, /Qual é o seu <mark class="text-highlight">nome e sobrenome<\/mark>\?/, `${pagePath} must clearly ask for nome e sobrenome in modal title`);
   }
 });
 
