@@ -2969,6 +2969,21 @@
         valueCents: Math.round(planVal * 100),
         currency: 'BRL'
       });
+      try {
+        const payload = JSON.stringify({
+          name,
+          email,
+          phone,
+          plan: currentPlan,
+          source: 'vagas_modal',
+          ...getUtms(),
+        });
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon('/api/lead', new Blob([payload], { type: 'application/json' }));
+        } else {
+          fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(function() {});
+        }
+      } catch (_) {}
     }
 
     function openCheckoutModal(e) {
@@ -3864,6 +3879,21 @@
         valueCents: Math.round(planVal * 100),
         currency: 'BRL'
       });
+      try {
+        const payload = JSON.stringify({
+          name: fullname,
+          email,
+          phone,
+          plan: currentSelectedPlan,
+          source: 'vagas_modal_vsl',
+          ...tracking,
+        });
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon('/api/lead', new Blob([payload], { type: 'application/json' }));
+        } else {
+          fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(function() {});
+        }
+      } catch (_) {}
       const checkoutHelper = window.ImobiturboHubla || window.ImobiturboHotmart;
       const url = checkoutHelper.buildUrl(currentSelectedPlan, { name: fullname, email, phone }, tracking);
       closeLeadModal();
