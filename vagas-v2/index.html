@@ -1412,6 +1412,7 @@
       }
     }
   </style>
+  <script src="/vagas/checkout-session.js?v=20260926-2"></script>
 </head>
 <body>
 
@@ -3300,7 +3301,7 @@
               </div>
 
               <div class="chk-timer-bar">
-                <span>Vencimento do código: </span><b id="chkPixTimer">30:00</b>
+                <span>Tempo para concluir neste checkout: </span><b id="chkPixTimer">30:00</b>
               </div>
             </div>
           </div>
@@ -3495,6 +3496,7 @@
 
     const geoRegionText = document.getElementById('chkGeoRegionText');
     const checkoutStorageKey = 'imobiturbo:vagas:checkout:v1';
+    let checkoutSession = null;
 
     function isValidFullName(val) {
       const parts = (val || '').trim().split(/\s+/).filter(Boolean);
@@ -3554,12 +3556,17 @@
     }
 
     function saveCheckoutProgress() {
+      if (![inputName, inputPhone, inputEmail].some(input => input.value.trim())) {
+        window.ImobiturboCheckoutSession.clearDraft();
+        return;
+      }
       try {
         localStorage.setItem(checkoutStorageKey, JSON.stringify({
           name: inputName.value,
           phone: inputPhone.value,
           email: inputEmail.value,
           step: Math.min(currentCheckoutStep, 3),
+          expiresAt: Date.now() + 30 * 60 * 1000,
           plan: currentPlan,
         }));
       } catch (_) {
@@ -3580,6 +3587,10 @@
         saved = JSON.parse(localStorage.getItem(checkoutStorageKey)) || JSON.parse(localStorage.getItem('imobiturbo:vagas-v2:checkout:v1'));
       } catch (_) { return; }
       if (!saved || typeof saved !== 'object' || Array.isArray(saved)) return;
+      if (!Number.isFinite(saved.expiresAt) || saved.expiresAt <= Date.now()) {
+        window.ImobiturboCheckoutSession.clearDraft();
+        return;
+      }
       for (const [key, input] of [['name', inputName], ['phone', inputPhone], ['email', inputEmail]]) {
         if (typeof saved[key] === 'string') input.value = saved[key];
       }
@@ -3837,6 +3848,8 @@
     };
 
     function selectPlan(planKey) {
+      const pending = checkoutSession?.read();
+      if (pending && planKey !== pending.plan) return;
       const normalizedPlan = (planKey && PLAN_CONFIG[planKey]) ? planKey : 'anual';
       currentPlan = normalizedPlan;
       window.currentSelectedPlan = normalizedPlan;
@@ -4106,7 +4119,8 @@
     function openCheckoutModal(e) {
       if (e) e.preventDefault();
       if (openingPayment) return;
-      const selected = getSelectedPlan();
+      const pending = checkoutSession?.read();
+      const selected = pending?.plan || getSelectedPlan();
       updateModalPlanUI(selected);
       showCheckoutForm(selected);
       if (modalOverlay) {
@@ -4116,6 +4130,7 @@
         modalClose?.focus({ preventScroll: true });
         document.body.style.overflow = 'hidden';
       }
+      if (pending) { checkoutSession.start(); return; }
       const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
       trackHubConversion('initiateCheckout', {
         plan: currentPlan,
@@ -4126,6 +4141,7 @@
     }
 
     function closeCheckoutModal() {
+      checkoutSession?.stop();
       if (pixPollingInterval) {
         clearInterval(pixPollingInterval);
         pixPollingInterval = null;
@@ -4306,6 +4322,7 @@
     // Controle de abas de pagamento (Cartão vs Pix)
     if (tabCard && tabPix && cardView && pixView) {
       tabCard.addEventListener('click', () => {
+        if (checkoutSession?.read()) return;
         tabCard.classList.add('active');
         tabCard.setAttribute('aria-selected', 'true');
         tabPix.classList.remove('active');
@@ -4316,6 +4333,7 @@
       });
 
       tabPix.addEventListener('click', () => {
+        if (checkoutSession?.read()) return;
         tabPix.classList.add('active');
         tabPix.setAttribute('aria-selected', 'true');
         tabCard.classList.remove('active');
@@ -4329,6 +4347,10 @@
     let isProcessingPayment = false;
     let pixPollingInterval = null;
     let pixCountdownInterval = null;
+
+    checkoutSession = window.ImobiturboCheckoutSession.bindLanding({
+      selectPlan, goToCheckoutStep, updateCheckoutPersonalization, showCheckoutError, trackHubPurchase, form: nativeForm,
+    });
 
     // Avanço da Etapa 3 (Email) para a Etapa 4 (Pagamento)
     async function continueToPayment(e) {
@@ -4372,6 +4394,7 @@
     async function handleCardPaymentSubmit(e) {
       if (e) e.preventDefault();
       if (isProcessingPayment) return;
+      if (checkoutSession.read()) { checkoutSession.start(); return; }
 
       const cardNum = (document.getElementById('chkCardNumber')?.value || '').replace(/\D/g, '');
       const cardHolder = (document.getElementById('chkCardHolder')?.value || '').trim();
@@ -4451,9 +4474,9 @@
         });
         const result = await resp.json();
 
-        if (resp.ok && result.success && (result.isApproved || result.status === 'CONFIRMED' || result.status === 'RECEIVED')) {
-          trackHubPurchase(result);
-          goToCheckoutStep(5);
+        if (resp.ok && result.success && result.paymentId) {
+          checkoutSession.capture(result, { plan: currentPlan, method: 'CREDIT_CARD' });
+          [cardNumInput, cardCvvInput, cardExpiryInput, cardCpfInput].forEach(input => { if (input) input.value = ''; });
         } else {
           const errMsg = result.error || 'Não foi possível autorizar o cartão. Verifique os dados ou tente outro cartão.';
           showCheckoutError(errMsg);
@@ -4462,7 +4485,7 @@
         showCheckoutError('Instabilidade temporária na operadora de cartão. Tente novamente em instantes.');
       } finally {
         isProcessingPayment = false;
-        if (submitBtn) submitBtn.disabled = false;
+        if (submitBtn) submitBtn.disabled = Boolean(checkoutSession.read());
         if (btnText) btnText.textContent = originalText;
       }
     }
@@ -4471,6 +4494,7 @@
     async function handleGeneratePixSubmit(e) {
       if (e) e.preventDefault();
       if (isProcessingPayment) return;
+      if (checkoutSession.read()) { checkoutSession.start(); return; }
 
       const pixCpf = (document.getElementById('chkPixCpf')?.value || '').replace(/\D/g, '');
       if (!isValidCpf(pixCpf)) {
@@ -4507,20 +4531,8 @@
         });
         const result = await resp.json();
 
-        if (resp.ok && result.success && result.pix) {
-          const pixForm = document.getElementById('chkPixFormBlock');
-          const pixResult = document.getElementById('chkPixResultBlock');
-          if (pixForm) pixForm.style.display = 'none';
-          if (pixResult) pixResult.style.display = 'block';
-
-          const qrImg = document.getElementById('chkPixQrImg');
-          if (qrImg) qrImg.src = result.pix.qrCodeBase64;
-
-          const copiaCola = document.getElementById('chkPixCopiaCola');
-          if (copiaCola) copiaCola.value = result.pix.copyPaste;
-
+        if (resp.ok && result.success && result.paymentId) {
           startPixPolling(result.paymentId, result.eventId, result);
-          startPixCountdown(1800);
         } else {
           showCheckoutError(result.error || 'Erro ao gerar o Pix. Tente novamente.');
         }
@@ -4529,46 +4541,15 @@
       } finally {
         isProcessingPayment = false;
         if (pixBtn) {
-          pixBtn.disabled = false;
+          pixBtn.disabled = Boolean(checkoutSession.read());
           pixBtn.innerHTML = originalText;
         }
       }
     }
 
-    // Polling de status do Pix no Asaas
+    // The shared session owns status polling and the absolute checkout deadline.
     function startPixPolling(paymentId, eventId, checkoutResult) {
-      if (pixPollingInterval) clearInterval(pixPollingInterval);
-      pixPollingInterval = setInterval(async () => {
-        try {
-          const resp = await fetch(`/api/checkout/status?gateway=asaas&paymentId=${encodeURIComponent(paymentId)}&eventId=${encodeURIComponent(eventId)}`);
-          const data = await resp.json();
-          if (data.success && (data.paid || data.status === 'CONFIRMED' || data.status === 'RECEIVED' || data.status === 'RECEIVED_IN_CASH')) {
-            clearInterval(pixPollingInterval);
-            pixPollingInterval = null;
-            if (pixCountdownInterval) clearInterval(pixCountdownInterval);
-            trackHubPurchase(checkoutResult);
-            goToCheckoutStep(5);
-          }
-        } catch (_) {}
-      }, 2500);
-    }
-
-    // Cronômetro regressivo de validade do Pix
-    function startPixCountdown(totalSecs) {
-      if (pixCountdownInterval) clearInterval(pixCountdownInterval);
-      let left = totalSecs;
-      const timerEl = document.getElementById('chkPixTimer');
-      pixCountdownInterval = setInterval(() => {
-        left--;
-        if (left <= 0) {
-          clearInterval(pixCountdownInterval);
-          if (timerEl) timerEl.textContent = 'Expirado';
-          return;
-        }
-        const m = Math.floor(left / 60);
-        const s = left % 60;
-        if (timerEl) timerEl.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-      }, 1000);
+      return checkoutSession.capture({ ...checkoutResult, paymentId, eventId }, { plan: currentPlan, method: 'PIX' });
     }
 
     // Copiar código Pix para a área de transferência
@@ -4593,11 +4574,12 @@
     }
 
     function trackHubPurchase(result) {
-      const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
+      const planVal = Number(result.amount) || 0;
       trackHubConversion('purchase', {
         orderId: result.paymentId || result.eventId,
-        plan: currentPlan,
-        productId: 'comunidade-imobiturbo-' + currentPlan,
+        eventId: result.eventId,
+        plan: result.plan || currentPlan,
+        productId: 'comunidade-imobiturbo-' + (result.plan || currentPlan),
         valueCents: Math.round(planVal * 100),
         currency: 'BRL',
         name: inputName.value.trim(),
@@ -4615,6 +4597,14 @@
     if (copyPixBtn) {
       copyPixBtn.addEventListener('click', handleCopyPixCode);
     }
+
+    if (checkoutSession.read()) openCheckoutModal();
+    window.addEventListener('pageshow', event => {
+      if (event.persisted && checkoutSession.read()) openCheckoutModal();
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && checkoutSession.read()) checkoutSession.start();
+    });
 
     if (nativeForm) {
       nativeForm.addEventListener('submit', (e) => {

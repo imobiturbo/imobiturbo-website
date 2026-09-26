@@ -1,8 +1,9 @@
 // Cloudflare Pages Function: /api/checkout
-// Pix transparente exclusivamente pelo AbacatePay.
-// Cartão legado via Asaas; vagas-v2 usa o checkout Hotmart diretamente.
+// Checkout transparente: Asaas quando solicitado; Pix AbacatePay legado.
+// Preços e identificação do produto são definidos exclusivamente no servidor.
 
 const CORS_HEADERS = {
+  "Cache-Control": "no-store",
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
@@ -80,6 +81,14 @@ export async function onRequestPost(context) {
       cardInstallmentValue: 147.0,
       cardTotalValue: 147.0,
     },
+    consultoria: {
+      title: "Consultoria Individual de 1h com Natan Pimentel",
+      pixCents: 49700,
+      pixReais: 497,
+      cardInstallmentCount: 1,
+      cardInstallmentValue: 497,
+      cardTotalValue: 497,
+    },
   };
 
   if (!Object.hasOwn(PLAN_DETAILS, plan)) {
@@ -87,11 +96,14 @@ export async function onRequestPost(context) {
   }
   const selectedPlan = PLAN_DETAILS[plan];
   const todayStr = new Date().toISOString().split("T")[0];
+  const productId = plan === "consultoria" ? "consultoria-individual-natan" : "comunidade-imobiturbo";
+  const checkoutExpiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
+  const externalReference = JSON.stringify({ product_id: productId, plan, eid: eventId, checkout_expires_at: checkoutExpiresAt });
 
   // ==========================================
   // ESTRATÉGIA 1: PIX VIA ASAAS (QUANDO SOLICITADO OU DEFAULT)
   // ==========================================
-  const requestedGateway = (body.gateway || "").toString().toLowerCase();
+  const requestedGateway = plan === "consultoria" ? "asaas" : (body.gateway || "").toString().toLowerCase();
 
   if (paymentMethod === "PIX" && requestedGateway === "asaas") {
     if (!asaasKey) {
@@ -161,7 +173,9 @@ export async function onRequestPost(context) {
         value: selectedPlan.pixReais,
         dueDate: todayStr,
         description: selectedPlan.title,
-        externalReference: JSON.stringify({ product_id: "comunidade-imobiturbo", plan, eid: eventId }),
+        fine: { value: 0, type: "FIXED" },
+        interest: { value: 0 },
+        externalReference,
       };
 
       const payResp = await fetch("https://api.asaas.com/v3/payments", {
@@ -177,11 +191,15 @@ export async function onRequestPost(context) {
         return Response.json({ success: false, gateway: "asaas", error: errMsg }, { status: 422, headers: CORS_HEADERS });
       }
 
-      const qrResp = await fetch(`https://api.asaas.com/v3/payments/${payment.id}/pixQrCode`, {
-        headers: asaasHeaders,
-        signal: AbortSignal.timeout(4000),
-      });
-      const qrData = await qrResp.json();
+      // A cobrança já existe: recuperar o QR nunca deve criar outra cobrança.
+      let qrData = {};
+      try {
+        const qrResp = await fetch(`https://api.asaas.com/v3/payments/${payment.id}/pixQrCode`, {
+          headers: asaasHeaders,
+          signal: AbortSignal.timeout(4000),
+        });
+        if (qrResp.ok) qrData = await qrResp.json();
+      } catch (_) { /* /status recupera o QR da mesma cobrança. */ }
 
       return new Response(
         JSON.stringify({
@@ -192,10 +210,13 @@ export async function onRequestPost(context) {
           status: payment.status || "PENDING",
           amount: payment.value,
           plan,
+          productId,
+          pixPending: !qrData.payload || !qrData.encodedImage,
           pix: {
-            copyPaste: qrData.payload,
-            qrCodeBase64: `data:image/png;base64,${qrData.encodedImage}`,
-            expiresAt: qrData.expirationDate,
+            copyPaste: qrData.payload || null,
+            qrCodeBase64: qrData.encodedImage ? `data:image/png;base64,${qrData.encodedImage}` : null,
+            // Janela de retomada do checkout; não altera o vencimento bancário.
+            expiresAt: checkoutExpiresAt,
           },
           invoiceUrl: payment.invoiceUrl,
           eventId,
@@ -376,7 +397,9 @@ export async function onRequestPost(context) {
         value: selectedPlan.pixReais,
         dueDate: todayStr,
         description: `${selectedPlan.title} (Fallback Asaas)`,
-        externalReference: JSON.stringify({ product_id: "comunidade-imobiturbo", plan, eid: eventId }),
+        fine: { value: 0, type: "FIXED" },
+        interest: { value: 0 },
+        externalReference,
       };
 
       const payResp = await fetch("https://api.asaas.com/v3/payments", {
@@ -459,7 +482,7 @@ export async function onRequestPost(context) {
             ccv: creditCard.ccv,
           },
           creditCardHolderInfo: holderInfo,
-          externalReference: JSON.stringify({ product_id: "comunidade-imobiturbo", plan, eid: eventId }),
+          externalReference,
         };
 
         const subResp = await fetch("https://api.asaas.com/v3/subscriptions", {
@@ -482,7 +505,7 @@ export async function onRequestPost(context) {
 
         let paymentId = null;
         let paymentStatus = subData.status || "ACTIVE";
-        let isApproved = true;
+        let isApproved = false;
         let invoiceUrl = subData.paymentLink || null;
 
         try {
@@ -514,6 +537,8 @@ export async function onRequestPost(context) {
             isApproved,
             amount: selectedPlan.pixReais,
             plan,
+            productId,
+            expiresAt: checkoutExpiresAt,
             invoiceUrl,
             eventId,
             clientIp: request.headers.get("cf-connecting-ip") || null,
@@ -537,13 +562,18 @@ export async function onRequestPost(context) {
             ccv: creditCard.ccv,
           },
           creditCardHolderInfo: holderInfo,
-          externalReference: JSON.stringify({ product_id: "comunidade-imobiturbo", plan, eid: eventId }),
+          externalReference,
         };
 
         const reqInstallments = parseInt(body.installments, 10);
         let installmentCount = selectedPlan.cardInstallmentCount;
-        if (Number.isInteger(reqInstallments) && reqInstallments >= 1 && reqInstallments <= 12) {
+        if (plan !== "consultoria" && Number.isInteger(reqInstallments) && reqInstallments >= 1 && reqInstallments <= 12) {
           installmentCount = reqInstallments;
+        }
+
+        if (plan === "consultoria") {
+          cardPayload.fine = { value: 0, type: "FIXED" };
+          cardPayload.interest = { value: 0 };
         }
 
         if (installmentCount > 1) {
@@ -586,6 +616,8 @@ export async function onRequestPost(context) {
             isApproved,
             amount: payment.value,
             plan,
+            productId,
+            expiresAt: checkoutExpiresAt,
             invoiceUrl: payment.invoiceUrl,
             eventId,
             clientIp: request.headers.get("cf-connecting-ip") || null,

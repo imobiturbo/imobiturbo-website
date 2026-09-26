@@ -21,6 +21,7 @@ export async function dispatchVerifiedPurchaseToHub({
   fbc,
   visitorId,
   sessionId,
+  productId = "comunidade-imobiturbo",
 }) {
   const operationId = (env && env.HUB_TRACKING_OPERATION_ID) || DEFAULT_HUB_OPERATION_ID;
   const endpointBase = (env && env.HUB_TRACKING_COLLECT_URL) || DEFAULT_HUB_COLLECT_URL;
@@ -36,10 +37,10 @@ export async function dispatchVerifiedPurchaseToHub({
     eventId: eventId || `purch_${paymentId}`,
     visitorId: resolvedVisitorId,
     sessionId: resolvedSessionId,
-    url: "https://www.imobiturbo.com.br/vagas/",
-    landing: "https://www.imobiturbo.com.br/vagas/",
+    url: productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
+    landing: productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
     referrer: null,
-    productId: "comunidade-imobiturbo",
+    productId,
     orderId: paymentId,
     valueCents: Math.round((Number(amount) || 0) * 100),
     currency: "BRL",
@@ -79,6 +80,7 @@ export async function dispatchPendingPurchaseToHub({
   visitorId,
   sessionId,
   paymentMethod,
+  productId = "comunidade-imobiturbo",
 }) {
   const operationId = (env && env.HUB_TRACKING_OPERATION_ID) || DEFAULT_HUB_OPERATION_ID;
   const endpointBase = (env && env.HUB_TRACKING_COLLECT_URL) || DEFAULT_HUB_COLLECT_URL;
@@ -94,10 +96,10 @@ export async function dispatchPendingPurchaseToHub({
     eventId: eventId || `pending_${paymentId}`,
     visitorId: resolvedVisitorId,
     sessionId: resolvedSessionId,
-    url: "https://www.imobiturbo.com.br/vagas/",
-    landing: "https://www.imobiturbo.com.br/vagas/",
+    url: productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
+    landing: productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
     referrer: null,
-    productId: "comunidade-imobiturbo",
+    productId,
     orderId: paymentId,
     valueCents: Math.round((Number(amount) || 0) * 100),
     currency: "BRL",
@@ -123,4 +125,3 @@ export async function dispatchPendingPurchaseToHub({
     return false;
   }
 }
-
