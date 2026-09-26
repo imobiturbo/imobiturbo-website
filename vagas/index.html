@@ -19,13 +19,14 @@
       // 1. Nao interfere em bots de auditoria do Meta e Google (evita reprovacao do anuncio)
       if (/facebookexternalhit|Facebot|Googlebot|bingbot|AdsBot-Google/i.test(ua)) return;
 
+      var isDebugIOS = window.location.search.indexOf('debug_iab=ios') > -1;
       // 2. Detecta se esta dentro da WebView do Instagram ou Facebook
-      var isInstagram = /Instagram/i.test(ua);
+      var isInstagram = /Instagram/i.test(ua) || isDebugIOS;
       var isFacebook = /FBAN|FBAV/i.test(ua);
       if (!isInstagram && !isFacebook) return;
 
-      var isAndroid = /Android/i.test(ua);
-      var isIOS = /iPhone|iPad|iPod/i.test(ua);
+      var isAndroid = /Android/i.test(ua) && !isDebugIOS;
+      var isIOS = /iPhone|iPad|iPod/i.test(ua) || isDebugIOS;
       var currentUrl = window.location.href;
 
       // 3. ANDROID: Dispara intent para abrir no Google Chrome com todos os parametros e UTMs preservados
@@ -656,7 +657,131 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260925-mobile-modal">
+  <link rel="stylesheet" href="./vagas.css?v=20260926-slider-v3">
+  <style id="cioCriticalSliderCss">
+    /* Critical Imobiturbo Club Slider Invariants */
+    .cio-header-top-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      flex-wrap: wrap !important;
+      gap: 16px !important;
+      width: 100% !important;
+      margin-bottom: 8px !important;
+    }
+    .cio-widget-title {
+      font-size: clamp(22px, 2.5vw, 32px) !important;
+      font-weight: 800 !important;
+      color: #ffffff !important;
+      letter-spacing: -0.03em !important;
+      line-height: 1.25 !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      flex-wrap: wrap !important;
+      gap: 10px !important;
+      margin: 0 !important;
+    }
+    .cio-title-logo {
+      display: inline-block !important;
+      vertical-align: middle !important;
+      height: 36px !important;
+      width: auto !important;
+      max-width: 200px !important;
+      object-fit: contain !important;
+      filter: drop-shadow(0 4px 16px rgba(212, 255, 83, 0.2)) !important;
+    }
+    .cio-carousel-nav-btns {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      flex-shrink: 0 !important;
+    }
+    .cio-carousel-btn {
+      width: 44px !important;
+      height: 44px !important;
+      border-radius: 50% !important;
+      background: #161914 !important;
+      border: 1px solid #282c23 !important;
+      color: #ffffff !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+      padding: 0 !important;
+    }
+    .cio-carousel-btn:hover:not(:disabled) {
+      background: #d4ff53 !important;
+      color: #10130c !important;
+      border-color: #d4ff53 !important;
+      transform: scale(1.06) !important;
+      box-shadow: 0 0 16px rgba(212, 255, 83, 0.35) !important;
+    }
+    .cio-carousel-btn:disabled {
+      opacity: 0.28 !important;
+      cursor: not-allowed !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    .cio-cards-slider {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      gap: 20px !important;
+      overflow-x: auto !important;
+      overflow-y: hidden !important;
+      scroll-snap-type: x mandatory !important;
+      scroll-behavior: smooth !important;
+      -webkit-overflow-scrolling: touch !important;
+      padding: 8px 4px 24px 4px !important;
+      margin-bottom: 32px !important;
+      scrollbar-width: thin !important;
+      scrollbar-color: #282c23 transparent !important;
+      cursor: grab !important;
+    }
+    .cio-cards-slider.is-dragging {
+      cursor: grabbing !important;
+      user-select: none !important;
+      scroll-behavior: auto !important;
+    }
+    .cio-cards-slider::-webkit-scrollbar {
+      height: 6px !important;
+    }
+    .cio-cards-slider::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.04) !important;
+      border-radius: 999px !important;
+    }
+    .cio-cards-slider::-webkit-scrollbar-thumb {
+      background: #282c23 !important;
+      border-radius: 999px !important;
+    }
+    .cio-cards-slider::-webkit-scrollbar-thumb:hover {
+      background: #d4ff53 !important;
+    }
+    .cio-cards-slider .cio-course-card {
+      flex: 0 0 calc((100% - 40px) / 3) !important;
+      min-width: 320px !important;
+      max-width: 380px !important;
+      scroll-snap-align: start !important;
+      box-sizing: border-box !important;
+      margin: 0 !important;
+    }
+    @media (max-width: 1024px) {
+      .cio-cards-slider .cio-course-card {
+        flex: 0 0 calc((100% - 20px) / 2) !important;
+        min-width: 280px !important;
+        max-width: none !important;
+      }
+    }
+    @media (max-width: 680px) {
+      .cio-cards-slider .cio-course-card {
+        flex: 0 0 85% !important;
+        min-width: 260px !important;
+        max-width: none !important;
+      }
+    }
+  </style>
   <style id="chkCriticalModalCss">
     /* Critical Checkout Modal Layout Guarantee */
     .chk-modal-box {
@@ -5689,29 +5814,91 @@
       const nextBtn = document.getElementById('cioCarouselNext');
       if (!slider || !prevBtn || !nextBtn) return;
 
-      function updateNavState() {
-        const atStart = slider.scrollLeft <= 10;
-        const atEnd = Math.ceil(slider.scrollLeft + slider.clientWidth) >= slider.scrollWidth - 10;
-        prevBtn.disabled = atStart;
-        nextBtn.disabled = atEnd;
-      }
-
       function getScrollStep() {
         const card = slider.querySelector('.cio-course-card');
         return card ? card.offsetWidth + 20 : 360;
       }
 
-      prevBtn.addEventListener('click', function() {
-        slider.scrollBy({ left: -getScrollStep(), behavior: 'smooth' });
+      function updateNavState() {
+        const atStart = slider.scrollLeft <= 10;
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
+        const atEnd = Math.ceil(slider.scrollLeft) >= maxScroll - 10;
+        prevBtn.disabled = atStart;
+        nextBtn.disabled = atEnd;
+      }
+
+      function scrollPrev() {
+        if (slider.scrollLeft <= 10) {
+          slider.scrollTo({ left: slider.scrollWidth, behavior: 'smooth' });
+        } else {
+          slider.scrollBy({ left: -getScrollStep(), behavior: 'smooth' });
+        }
+      }
+
+      function scrollNext() {
+        const maxScroll = slider.scrollWidth - slider.clientWidth;
+        if (slider.scrollLeft >= maxScroll - 10) {
+          slider.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+          slider.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
+        }
+      }
+
+      prevBtn.addEventListener('click', scrollPrev);
+      nextBtn.addEventListener('click', scrollNext);
+
+      // Desktop mouse-drag scrolling
+      let isDown = false;
+      let startX = 0;
+      let startScrollLeft = 0;
+
+      slider.addEventListener('mousedown', function(e) {
+        if (e.button !== 0 || e.target.closest('a, button, summary, input')) return;
+        isDown = true;
+        slider.classList.add('is-dragging');
+        startX = e.pageX - slider.offsetLeft;
+        startScrollLeft = slider.scrollLeft;
       });
 
-      nextBtn.addEventListener('click', function() {
-        slider.scrollBy({ left: getScrollStep(), behavior: 'smooth' });
+      window.addEventListener('mouseup', function() {
+        if (isDown) {
+          isDown = false;
+          slider.classList.remove('is-dragging');
+        }
       });
+
+      slider.addEventListener('mousemove', function(e) {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 1.4;
+        slider.scrollLeft = startScrollLeft - walk;
+      });
+
+      // Auto-slide loop every 4s, pauses on hover / interaction
+      let autoTimer = null;
+      function startAutoSlide() {
+        stopAutoSlide();
+        autoTimer = setInterval(function() {
+          scrollNext();
+        }, 4000);
+      }
+      function stopAutoSlide() {
+        if (autoTimer) {
+          clearInterval(autoTimer);
+          autoTimer = null;
+        }
+      }
+
+      slider.addEventListener('mouseenter', stopAutoSlide);
+      slider.addEventListener('mouseleave', startAutoSlide);
+      slider.addEventListener('touchstart', stopAutoSlide, { passive: true });
+      slider.addEventListener('touchend', startAutoSlide, { passive: true });
 
       slider.addEventListener('scroll', updateNavState, { passive: true });
       window.addEventListener('resize', updateNavState, { passive: true });
       updateNavState();
+      startAutoSlide();
     })();
   </script>
 
@@ -5771,21 +5958,9 @@
       darkMode: 'auto'
     };
 
-    /* ── Chatwoot: abrir direto na conversa, sem home screen ── */
-    window.addEventListener('chatwoot:ready', function () {
-      // Injeta CSS no iframe do widget para esconder o botão de voltar
-      try {
-        var iframe = document.querySelector('#chatwoot_live_chat_widget');
-        if (iframe && iframe.contentDocument) {
-          var style = iframe.contentDocument.createElement('style');
-          style.textContent =
-            '.header-branding { display: none !important; }' +
-            '.back-button { display: none !important; }' +
-            '.header--expanded .go-back-button { display: none !important; }';
-          iframe.contentDocument.head.appendChild(style);
-        }
-      } catch(e) { /* cross-origin safe */ }
-    });
+    /* ── Chatwoot: skip home screen ──
+       Handled server-side in widget template (show.html.erb on VPS2).
+       The Vue router guard redirects 'home' → 'messages' automatically. */
 
     (function(d,t) {
       var origCreate = d.createElement.bind(d);
