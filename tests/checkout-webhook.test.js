@@ -19,6 +19,12 @@ test("functions/api/checkout/webhook.js preserves legacy AbacatePay and Asaas ev
   assert.ok(webhookCode.includes("PAYMENT_REFUNDED"), "Must support Asaas refunded");
   assert.ok(webhookCode.includes("PAYMENT_CHARGEBACK_REQUESTED"), "Must support Asaas chargeback");
 
+  // Verifies Hubla events
+  assert.ok(webhookCode.includes("invoice.payment_succeeded"), "Must support Hubla payment succeeded");
+  assert.ok(webhookCode.includes("invoice.refunded"), "Must support Hubla refunded");
+  assert.ok(webhookCode.includes("invoice.chargeback"), "Must support Hubla chargeback");
+  assert.ok(webhookCode.includes("isHubla"), "Must detect Hubla webhooks");
+
   // Hotmart authentication, event handling and idempotent delivery are exercised
   // behaviorally in checkout-hotmart.test.cjs.
 

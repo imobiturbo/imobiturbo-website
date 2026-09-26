@@ -54,11 +54,11 @@ export async function onRequestPost(context) {
       return Response.json({ ok: true, paid: true, duplicate: Boolean(notifications.duplicate) });
     }
 
-    const clientIp =
+    let clientIp =
       request.headers.get("cf-connecting-ip") ||
       request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
       "";
-    const userAgent = request.headers.get("user-agent") || "";
+    let userAgent = request.headers.get("user-agent") || "";
     const cookies = parseCookies(request.headers.get("Cookie") || "");
 
     let isPaid = false;
@@ -71,11 +71,103 @@ export async function onRequestPost(context) {
     let fbp = "";
     let fbc = "";
     let externalRef = "";
+    let visitorId = "";
     let contentName = "Comunidade Imobiturbo";
     let plan = "anual";
 
+    // 0. Hubla Webhook Detection
+    const isHubla = Boolean(
+      request.headers.get("x-hubla-token") ||
+      request.headers.get("x-hubla-idempotency") ||
+      (typeof payload.type === "string" && /^(invoice\.|subscription\.|membro\.|member\.|lead\.)/.test(payload.type)) ||
+      Boolean(payload.event?.invoice || payload.event?.product)
+    );
+
+    if (isHubla) {
+      if (env?.HUBLA_WEBHOOK_TOKEN) {
+        const headerToken = request.headers.get("x-hubla-token");
+        if (headerToken && headerToken !== env.HUBLA_WEBHOOK_TOKEN) {
+          return new Response(JSON.stringify({ ok: false, error: "hubla_unauthorized" }), {
+            status: 401,
+            headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+          });
+        }
+      }
+
+      const eventType = payload.type || "";
+      const inv = payload.event?.invoice || {};
+      const payer = inv.payer || payload.event?.user || {};
+      const session = inv.paymentSession || {};
+      const sessionCookies = session.cookies || {};
+      const sessionParams = session.params || {};
+      const subscriptions = payload.event?.subscriptions || [];
+      const invoiceStatus = (inv.status || "").toLowerCase();
+
+      if (
+        eventType === "invoice.payment_succeeded" ||
+        (eventType === "invoice.status_updated" && invoiceStatus === "paid") ||
+        invoiceStatus === "paid"
+      ) {
+        isPaid = true;
+        paymentId = inv.id || inv.orderId || payload.id || "";
+        if (typeof inv.amount?.total === "number") {
+          amount = inv.amount.total;
+        } else if (typeof inv.amount?.totalCents === "number") {
+          amount = inv.amount.totalCents / 100;
+        } else if (typeof inv.amount?.subtotal === "number") {
+          amount = inv.amount.subtotal;
+        } else {
+          amount = 0;
+        }
+        email = (payer.email || "").trim();
+        phone = (payer.phone || "").trim();
+        name = [payer.firstName, payer.lastName].filter(Boolean).join(" ").trim() || payer.name || "";
+        fbp = sessionCookies.fbp || cookies["_fbp"] || "";
+        fbc = sessionCookies.fbc || (sessionCookies.fbclid ? `fb.1.${Date.now()}.${sessionCookies.fbclid}` : "") || cookies["_fbc"] || "";
+        if (session.ip) clientIp = session.ip;
+        if (session.userAgent) userAgent = session.userAgent;
+        externalRef = request.headers.get("x-hubla-idempotency") || sessionParams.visitorId || "";
+        visitorId = sessionParams.visitorId || "";
+        contentName = payload.event?.product?.name || "Comunidade Imobiturbo";
+
+        const urlPlan = (sessionParams.plan || "").toLowerCase();
+        if (urlPlan === "annually" || urlPlan === "anual") {
+          plan = "anual";
+        } else if (urlPlan === "quarterly" || urlPlan === "trimestral") {
+          plan = "trimestral";
+        } else if (urlPlan === "monthly" || urlPlan === "mensal") {
+          plan = "mensal";
+        } else if (subscriptions[0]?.billingCycleMonths === 12) {
+          plan = "anual";
+        } else if (subscriptions[0]?.billingCycleMonths === 3) {
+          plan = "trimestral";
+        } else if (subscriptions[0]?.billingCycleMonths === 1) {
+          plan = "mensal";
+        } else if (amount >= 800) {
+          plan = "anual";
+        } else if (amount >= 300) {
+          plan = "trimestral";
+        } else {
+          plan = "mensal";
+        }
+      } else if (
+        ["invoice.refunded", "invoice.disputed", "invoice.chargeback", "subscription.deactivated", "membro.acesso_removido"].includes(eventType) ||
+        ["refunded", "disputed", "chargeback", "canceled"].includes(invoiceStatus)
+      ) {
+        isCanceled = true;
+        paymentId = inv.id || inv.orderId || payload.id || "";
+        email = (payer.email || "").trim();
+        phone = (payer.phone || "").trim();
+        name = [payer.firstName, payer.lastName].filter(Boolean).join(" ").trim() || payer.name || "";
+      } else {
+        return new Response(
+          JSON.stringify({ ok: true, status: "ignored_event", provider: "hubla", event: eventType }),
+          { status: 200, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+        );
+      }
+    }
     // 1. AbacatePay Webhook Detection (Pago)
-    if (
+    else if (
       payload.event === "billing.paid" ||
       (payload.data &&
         (payload.data.status === "PAID" ||
@@ -296,7 +388,7 @@ export async function onRequestPost(context) {
       }
 
       await dispatchVerifiedPurchaseToHub({
-        env, request, paymentId, eventId, amount, contentName, email, phone, name, fbp, fbc,
+        env, request, paymentId, eventId, amount, contentName, email, phone, name, fbp, fbc, visitorId,
       });
 
       // Disparo unificado do Kit de Boas-Vindas 4 em 1:

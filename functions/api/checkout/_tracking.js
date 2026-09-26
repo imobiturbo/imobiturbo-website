@@ -19,18 +19,23 @@ export async function dispatchVerifiedPurchaseToHub({
   name,
   fbp,
   fbc,
+  visitorId,
+  sessionId,
 }) {
   const operationId = (env && env.HUB_TRACKING_OPERATION_ID) || DEFAULT_HUB_OPERATION_ID;
   const endpointBase = (env && env.HUB_TRACKING_COLLECT_URL) || DEFAULT_HUB_COLLECT_URL;
   if (!operationId || !paymentId) return false;
+
+  const resolvedVisitorId = visitorId || `checkout-${paymentId}`;
+  const resolvedSessionId = sessionId || visitorId || `checkout-${paymentId}`;
 
   const separator = endpointBase.includes("?") ? "&" : "?";
   const payload = {
     operationId,
     type: "Purchase",
     eventId: eventId || `purch_${paymentId}`,
-    visitorId: `checkout-${paymentId}`,
-    sessionId: `checkout-${paymentId}`,
+    visitorId: resolvedVisitorId,
+    sessionId: resolvedSessionId,
     url: "https://www.imobiturbo.com.br/vagas/",
     landing: "https://www.imobiturbo.com.br/vagas/",
     referrer: null,
