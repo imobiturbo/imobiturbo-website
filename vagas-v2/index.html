@@ -689,19 +689,87 @@
     .cio-title-logo {
       display: inline-block !important;
       vertical-align: middle !important;
-      height: 36px !important;
+      height: clamp(30px, 3.2vw, 40px) !important;
       width: auto !important;
-      max-width: 200px !important;
+      max-width: 340px !important;
       object-fit: contain !important;
       filter: drop-shadow(0 4px 16px rgba(212, 255, 83, 0.2)) !important;
     }
     @media (max-width: 768px) {
       .cio-title-logo {
-        height: 28px !important;
+        height: 24px !important;
+        max-width: 220px !important;
       }
       .cio-title-brand {
         gap: 8px !important;
       }
+    }
+    .cio-course-card {
+      padding: 20px 22px !important;
+      background: #161914 !important;
+      border: 1px solid #282c23 !important;
+      border-radius: 16px !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    .cio-card-top {
+      display: flex !important;
+      align-items: flex-start !important;
+      justify-content: space-between !important;
+      margin-bottom: 10px !important;
+      gap: 12px !important;
+    }
+    .cio-card-3d-icon {
+      width: 64px !important;
+      height: 64px !important;
+      object-fit: contain !important;
+      flex-shrink: 0 !important;
+    }
+    .cio-card-track-number {
+      font-family: var(--mono, monospace) !important;
+      font-size: 11px !important;
+      font-weight: 700 !important;
+      color: #889080 !important;
+      letter-spacing: 0.05em !important;
+    }
+    .cio-card-title {
+      font-size: 18px !important;
+      font-weight: 700 !important;
+      color: #ffffff !important;
+      line-height: 1.35 !important;
+      margin: 0 0 8px 0 !important;
+      min-height: 48px !important;
+      display: flex !important;
+      align-items: flex-start !important;
+    }
+    .cio-card-desc {
+      font-size: 13.5px !important;
+      color: #b0b8a4 !important;
+      line-height: 1.5 !important;
+      margin: 0 0 16px 0 !important;
+      flex: 1 !important;
+    }
+    .cio-card-meta {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      flex-wrap: wrap !important;
+      gap: 8px !important;
+      font-size: 12px !important;
+      color: #889080 !important;
+      padding: 12px 0 0 0 !important;
+      border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-bottom: none !important;
+      margin-top: auto !important;
+      margin-bottom: 0 !important;
+    }
+    .cio-card-meta-item {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 5px !important;
+    }
+    .cio-card-meta-item svg {
+      color: #d4ff53 !important;
     }
     .cio-carousel-nav-btns {
       display: inline-flex !important;
@@ -1775,7 +1843,7 @@
         <div class="cio-widget-header">
           <div class="cio-header-top-row">
             <h3 class="cio-widget-title">
-              Grade Curricular, Trilhas e Ferramentas <span class="cio-title-brand">do <img src="assets/imobiturbo-club-dark.webp" alt="Imobiturbo Club" class="cio-title-logo" width="220" height="54" loading="lazy"></span>
+              Grade Curricular, Trilhas e Ferramentas <span class="cio-title-brand">do <img src="assets/imobiturbo-club-dark.webp" alt="Imobiturbo Club" class="cio-title-logo" width="315" height="32" loading="lazy"></span>
             </h3>
             <div class="cio-carousel-nav-btns" aria-label="Navegação do carrossel de trilhas">
               <button type="button" class="cio-carousel-btn cio-carousel-prev" id="cioCarouselPrev" aria-label="Ver trilha anterior">
@@ -1798,10 +1866,7 @@
           <article class="cio-course-card" data-categories="all trafego captacao">
             <div class="cio-card-top">
               <img src="assets/trilha-01-instagram.webp" alt="Ícone 3D Instagram Glass" class="cio-card-3d-icon" width="1253" height="1253" loading="lazy">
-              <div class="cio-card-badges">
-                <span class="cio-card-track-number">TRILHA 01</span>
-                <span class="cio-card-badge">POSICIONAMENTO</span>
-              </div>
+              <span class="cio-card-track-number">TRILHA 01</span>
             </div>
             <h4 class="cio-card-title">Posicionamento &amp; Perfil que Vende</h4>
             <p class="cio-card-desc">
@@ -1815,44 +1880,13 @@
               <span class="cio-card-meta-item">3 módulos</span>
               <span class="cio-card-meta-item">Templates de Bio</span>
             </div>
-            <details class="cio-lessons-accordion">
-              <summary class="cio-lessons-trigger">
-                <span>Ver grade de aulas da trilha</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </summary>
-              <div class="cio-lessons-list">
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Enquadramento e iluminação da foto de perfil profissional</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Estrutura de bio em 4 linhas para corretores de alta conversão</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Destaques estratégicos que vendem 24/7 (Quem Sou, Imóveis, Clientes)</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 3:</strong> As primeiras fileiras de posts no feed (Grid Magnético)</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 3:</strong> Central de Agentes de IA &amp; Ferramentas Oficiais</span>
-                </div>
-              </div>
-            </details>
           </article>
 
           <!-- Trilha 2: Tráfego Pago & Anúncios para Imóveis -->
           <article class="cio-course-card" data-categories="all trafego">
             <div class="cio-card-top">
               <img src="assets/trilha-02-google-ads.webp" alt="Ícone 3D Google Ads Glass" class="cio-card-3d-icon" width="1253" height="1253" loading="lazy">
-              <div class="cio-card-badges">
-                <span class="cio-card-track-number">TRILHA 02</span>
-                <span class="cio-card-badge">MÉTODO 48H</span>
-              </div>
+              <span class="cio-card-track-number">TRILHA 02</span>
             </div>
             <h4 class="cio-card-title">Tráfego Pago &amp; Anúncios para Imóveis</h4>
             <p class="cio-card-desc">
@@ -1866,44 +1900,13 @@
               <span class="cio-card-meta-item">4 módulos</span>
               <span class="cio-card-meta-item">Públicos Prontos</span>
             </div>
-            <details class="cio-lessons-accordion">
-              <summary class="cio-lessons-trigger">
-                <span>Ver grade de aulas da trilha</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </summary>
-              <div class="cio-lessons-list">
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Ativação Rápida pelo Botão Turbinar (Método 48h sem travas)</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Campanhas no Gerenciador Meta Ads (Mensagens e Formulários)</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Segmentação e exclusão de curiosos e corretores concorrentes</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 3:</strong> Google Ads de Pesquisa para Palavras de Alta Intenção</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 4:</strong> Funis de Qualificação e Quiz Interativo para Pré-Filtrar Leads</span>
-                </div>
-              </div>
-            </details>
           </article>
 
           <!-- Trilha 3: Criação de Conteúdo & Vídeos com IA -->
           <article class="cio-course-card" data-categories="all ia">
             <div class="cio-card-top">
               <img src="assets/trilha-03-chatgpt.webp" alt="Ícone 3D ChatGPT Glass" class="cio-card-3d-icon" width="1253" height="1253" loading="lazy">
-              <div class="cio-card-badges">
-                <span class="cio-card-track-number">TRILHA 03</span>
-                <span class="cio-card-badge">CONTEÚDO &amp; IA</span>
-              </div>
+              <span class="cio-card-track-number">TRILHA 03</span>
             </div>
             <h4 class="cio-card-title">Criação de Conteúdo &amp; Vídeos com IA</h4>
             <p class="cio-card-desc">
@@ -1917,44 +1920,13 @@
               <span class="cio-card-meta-item">3 módulos</span>
               <span class="cio-card-meta-item">Prompts de Roteiro</span>
             </div>
-            <details class="cio-lessons-accordion">
-              <summary class="cio-lessons-trigger">
-                <span>Ver grade de aulas da trilha</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </summary>
-              <div class="cio-lessons-list">
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Stories Diários e Ganchos Hipnóticos que Geram Directs</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Edição Ágil no CapCut para Imóveis (takes curtos e cortes de silêncio)</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Legendas dinâmicas animadas que retêm a atenção</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 3:</strong> Criação de Renders e Fotos Hiper-Realistas com IA Gratuitamente</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 3:</strong> Tour Virtual Cinematográfico a partir de imagens estáticas</span>
-                </div>
-              </div>
-            </details>
           </article>
 
           <!-- Trilha 4: Atendimento no WhatsApp & Agendamento de Visitas -->
           <article class="cio-course-card" data-categories="all vendas">
             <div class="cio-card-top">
               <img src="assets/trilha-04-whatsapp.webp" alt="Ícone 3D WhatsApp Glass" class="cio-card-3d-icon" width="1253" height="1253" loading="lazy">
-              <div class="cio-card-badges">
-                <span class="cio-card-track-number">TRILHA 04</span>
-                <span class="cio-card-badge">CONVERSÃO WHATSAPP</span>
-              </div>
+              <span class="cio-card-track-number">TRILHA 04</span>
             </div>
             <h4 class="cio-card-title">Atendimento no WhatsApp &amp; Agendamento</h4>
             <p class="cio-card-desc">
@@ -1968,44 +1940,13 @@
               <span class="cio-card-meta-item">3 módulos</span>
               <span class="cio-card-meta-item">Scripts Anti-Vácuo</span>
             </div>
-            <details class="cio-lessons-accordion">
-              <summary class="cio-lessons-trigger">
-                <span>Ver grade de aulas da trilha</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </summary>
-              <div class="cio-lessons-list">
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Construção de Confiança Imediata no 1º Contato</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Prospecção Consultiva para Compradores Qualificados</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Gatilhos Psicológicos Ocultos nos Roteiros de Mensagens</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Como criar o cenário que faz o cliente pedir proposta e visita</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 3:</strong> Ressuscitando Leads Frios: O Plano de Guerra de Reativação</span>
-                </div>
-              </div>
-            </details>
           </article>
 
           <!-- Trilha 5: Negociação, Proposta & Fechamento -->
           <article class="cio-course-card" data-categories="all vendas">
             <div class="cio-card-top">
               <img src="assets/trilha-05-whatsapp-pics.webp" alt="Ícone 3D Visitas e Negociação Glass" class="cio-card-3d-icon" width="1253" height="1253" loading="lazy">
-              <div class="cio-card-badges">
-                <span class="cio-card-track-number">TRILHA 05</span>
-                <span class="cio-card-badge">FECHAMENTO</span>
-              </div>
+              <span class="cio-card-track-number">TRILHA 05</span>
             </div>
             <h4 class="cio-card-title">Negociação, Proposta &amp; Fechamento</h4>
             <p class="cio-card-desc">
@@ -2019,44 +1960,13 @@
               <span class="cio-card-meta-item">2 módulos</span>
               <span class="cio-card-meta-item">Roteiro de Ligação</span>
             </div>
-            <details class="cio-lessons-accordion">
-              <summary class="cio-lessons-trigger">
-                <span>Ver grade de aulas da trilha</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </summary>
-              <div class="cio-lessons-list">
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Venda por Telefone: O Roteiro da Ligação Perfeita</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Abordagem Inicial e Postura de Caçador em Stand de Vendas</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Dominando o Fechamento em Imóveis de Médio e Alto Padrão</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> As 5 Armas Psicológicas do Fechamento Imobiliário</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Três Técnicas Letais de Fechamento de Vendas</span>
-                </div>
-              </div>
-            </details>
           </article>
 
           <!-- Trilha 6: Captação de Imóveis & Exclusividade -->
           <article class="cio-course-card" data-categories="all captacao">
             <div class="cio-card-top">
               <img src="assets/trilha-06-claude.webp" alt="Ícone 3D Captação Glass" class="cio-card-3d-icon" width="1253" height="1253" loading="lazy">
-              <div class="cio-card-badges">
-                <span class="cio-card-track-number">TRILHA 06</span>
-                <span class="cio-card-badge">EXCLUSIVIDADE</span>
-              </div>
+              <span class="cio-card-track-number">TRILHA 06</span>
             </div>
             <h4 class="cio-card-title">Captação de Imóveis &amp; Exclusividade</h4>
             <p class="cio-card-desc">
@@ -2070,44 +1980,13 @@
               <span class="cio-card-meta-item">2 módulos</span>
               <span class="cio-card-meta-item">Minuta Contratual 180D</span>
             </div>
-            <details class="cio-lessons-accordion">
-              <summary class="cio-lessons-trigger">
-                <span>Ver grade de aulas da trilha</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </summary>
-              <div class="cio-lessons-list">
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Como Captar Imóveis no Campo de Batalha (Scripts de Abordagem)</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Captação com Porteiros e Zeladores: O Guia de Parceria e Comissão</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Contrato de Exclusividade de 180 Dias + Apresentação de Plano de Mídia</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Campanhas Online no Meta Ads para Captação de Proprietários</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Captação de Imóveis Ativa com Inteligência Artificial</span>
-                </div>
-              </div>
-            </details>
           </article>
 
           <!-- Trilha 7: Imobiturbo OS & Automações Comerciais -->
           <article class="cio-course-card" data-categories="all ia ferramentas">
             <div class="cio-card-top">
               <img src="assets/trilha-07-imobiturbo.webp" alt="Ícone 3D Imobiturbo OS Glass" class="cio-card-3d-icon" width="512" height="512" loading="lazy">
-              <div class="cio-card-badges">
-                <span class="cio-card-track-number">TRILHA 07</span>
-                <span class="cio-card-badge">SISTEMA &amp; IA</span>
-              </div>
+              <span class="cio-card-track-number">TRILHA 07</span>
             </div>
             <h4 class="cio-card-title">Imobiturbo OS &amp; Automações Comerciais</h4>
             <p class="cio-card-desc">
@@ -2121,44 +2000,13 @@
               <span class="cio-card-meta-item">3 módulos</span>
               <span class="cio-card-meta-item">Assistentes de IA</span>
             </div>
-            <details class="cio-lessons-accordion">
-              <summary class="cio-lessons-trigger">
-                <span>Ver grade de aulas da trilha</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </summary>
-              <div class="cio-lessons-list">
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Robô Pré-Vendedor no Instagram Direct e WhatsApp Oficial</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 1:</strong> Treinamento da IA SDR a Partir do Link/URL do Imóvel</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Assistente de Copywriting para Portais e Anúncios</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 2:</strong> Assistente Criador de Roteiros Virais e Mapeador de Público</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Módulo 3:</strong> Simulador de Financiamento e Portfólio Digital do Corretor</span>
-                </div>
-              </div>
-            </details>
           </article>
 
           <!-- Trilha 08: Hot Seats & Mentorias Semanais -->
           <article class="cio-course-card" data-categories="all mentorias">
             <div class="cio-card-top">
               <img src="assets/trilha-08-hotseats.webp" alt="Ícone 3D Google Meet Hot Seats" class="cio-card-3d-icon" width="512" height="512" loading="lazy">
-              <div class="cio-card-badges">
-                <span class="cio-card-track-number">ACERVO VIVO</span>
-                <span class="cio-card-badge">HOT SEATS</span>
-              </div>
+              <span class="cio-card-track-number">ACERVO VIVO</span>
             </div>
             <h4 class="cio-card-title">Hot Seats: Mentorias &amp; Análises ao Vivo</h4>
             <p class="cio-card-desc">
@@ -2172,34 +2020,6 @@
               <span class="cio-card-meta-item">Atualizado toda semana</span>
               <span class="cio-card-meta-item">Casos Reais</span>
             </div>
-            <details class="cio-lessons-accordion">
-              <summary class="cio-lessons-trigger">
-                <span>Ver grade de aulas da trilha</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
-              </summary>
-              <div class="cio-lessons-list">
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Cases &amp; Recortes:</strong> 25 aulas práticas compactas em alta resolução</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Análise ao Vivo:</strong> Correção de campanhas de tráfego com alto custo por lead</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Destravamento Comercial:</strong> Como reverter propostas travadas por permuta</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Acervo Histórico:</strong> Encontros semanais de 2025 e 2026 organizados por mês</span>
-                </div>
-                <div class="cio-lesson-item">
-                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-                  <span><strong>Novas Gravações:</strong> Todo novo encontro semanal é disponibilizado no portal</span>
-                </div>
-              </div>
-            </details>
           </article>
 
         </div>
