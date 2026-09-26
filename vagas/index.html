@@ -657,7 +657,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260926-cio-brand">
+  <link rel="stylesheet" href="./vagas.css?v=20260926-pix-tools">
   <style id="cioCriticalSliderCss">
     /* Critical Imobiturbo Club Slider Invariants */
     .cio-header-top-row {
@@ -2211,54 +2211,48 @@
           <div class="cio-tools-grid">
             
             <div class="cio-tool-card">
-              <img src="assets/imobiturbo-3d.png" alt="CRM Imobiturbo OS" class="cio-tool-icon" width="1024" height="1024" loading="lazy">
               <div class="cio-tool-info">
-                <span class="cio-tool-badge">CRM OFICIAL</span>
+                <img src="assets/tools/imobiturbo-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Imobiturbo OS CRM</h5>
                 <p>Kanban visual de oportunidades, funis de venda, histórico de conversas e gestão de VGV em tempo real.</p>
               </div>
             </div>
 
             <div class="cio-tool-card">
-              <img src="assets/whatsapp-3d.png" alt="IA SDR WhatsApp" class="cio-tool-icon" width="1024" height="1024" loading="lazy">
               <div class="cio-tool-info">
-                <span class="cio-tool-badge">IA PRÉ-VENDEDORA</span>
+                <img src="assets/tools/whatsapp-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Robô SDR no WhatsApp</h5>
                 <p>Atende compradores no 1º minuto, levanta orçamento, filtra curiosos e agenda a visita na sua agenda.</p>
               </div>
             </div>
 
             <div class="cio-tool-card">
-              <img src="assets/chatgpt-3d.png" alt="Assistente Roteirista Viral" class="cio-tool-icon" width="1024" height="1024" loading="lazy">
               <div class="cio-tool-info">
-                <span class="cio-tool-badge">IA ESPECIALISTA</span>
+                <img src="assets/tools/chatgpt-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Roteirista Viral de Vídeos</h5>
                 <p>Gera ganchos hipnóticos e roteiros de 30 a 60 segundos para reels e stories imobiliários em 1 clique.</p>
               </div>
             </div>
 
             <div class="cio-tool-card">
-              <img src="assets/capcut-3d.png" alt="CapCut Templates" class="cio-tool-icon" width="1024" height="1024" loading="lazy">
               <div class="cio-tool-info">
-                <span class="cio-tool-badge">EDIÇÃO ÁGIL</span>
+                <img src="assets/tools/capcut-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Templates de Edição CapCut</h5>
                 <p>Modelos com cortes automáticos de silêncio, legendas dinâmicas coloridas e trilhas selecionadas para imóveis.</p>
               </div>
             </div>
 
             <div class="cio-tool-card">
-              <img src="assets/google-ads-3d.png" alt="Simulador de Financiamento" class="cio-tool-icon" width="1024" height="1024" loading="lazy">
               <div class="cio-tool-info">
-                <span class="cio-tool-badge">SIMULADOR PRÁTICO</span>
+                <img src="assets/tools/google-ads-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Simulador de Financiamento</h5>
                 <p>Calcule parcelas, entrada e poder de compra na hora para fechar negócios com clareza financeira na visita.</p>
               </div>
             </div>
 
             <div class="cio-tool-card">
-              <img src="assets/claude-3d.png" alt="Modelos e Contratos Jurídicos" class="cio-tool-icon" width="1024" height="1024" loading="lazy">
               <div class="cio-tool-info">
-                <span class="cio-tool-badge">KIT JURÍDICO</span>
+                <img src="assets/tools/claude-3d.webp" alt="" class="cio-tool-icon" width="64" height="64" loading="lazy" decoding="async">
                 <h5>Contrato de Exclusividade 180D</h5>
                 <p>Minuta jurídica pronta para uso, checklist de captação em campo e plano de mídia estruturado para o proprietário.</p>
               </div>
@@ -3286,9 +3280,8 @@
                 <span>Aguardando pagamento...</span>
               </div>
 
-              <div style="margin-bottom: 12px;">
-                <span style="font-size: 13px; color: #a8b09d;">Valor: </span>
-                <strong id="chkPixAmountVal" style="color: var(--lime); font-size: 18px;">R$ 997,00</strong>
+              <div id="chkPixRecipient" style="margin-bottom: 12px; color: #a8b09d; font-size: 13px; line-height: 1.5;">
+                T.R.A.M.A. MARKETING DIGITAL E CONSULTORIA LTDA
               </div>
 
               <button type="button" class="chk-copy-btn" id="chkCopyPixBtn">
@@ -3939,11 +3932,6 @@
 
       updateInstallmentButtonText();
 
-      const pixAmountEl = document.getElementById('chkPixAmountVal');
-      if (pixAmountEl) {
-        pixAmountEl.textContent = currentPlan === 'anual' ? 'R$ 997,00' : currentPlan === 'trimestral' ? 'R$ 357,00' : 'R$ 147,00';
-      }
-
       const cardTabDesc = document.getElementById('chkCardTabDesc');
       if (cardTabDesc) {
         if (currentPlan === 'anual') {
@@ -4334,11 +4322,6 @@
         pixView.style.display = 'block';
         cardView.style.display = 'none';
         if (errorMsg) errorMsg.style.display = 'none';
-        const pixAmountEl = document.getElementById('chkPixAmountVal');
-        if (pixAmountEl) {
-          const val = currentPlan === 'anual' ? 'R$ 997,00' : currentPlan === 'trimestral' ? 'R$ 357,00' : 'R$ 147,00';
-          pixAmountEl.textContent = val;
-        }
       });
     }
 
