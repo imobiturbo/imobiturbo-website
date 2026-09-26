@@ -2861,12 +2861,9 @@
       }
       currentCheckoutStep = Number.isInteger(saved.step) && saved.step >= 1 && saved.step <= 3 ? saved.step : 1;
       currentCheckoutStep = getCheckoutResumeStep();
-      if (Object.hasOwn(PLAN_CONFIG, saved.plan)) {
-        const radio = document.querySelector('input[name="plano"][value="' + saved.plan + '"]');
-        if (radio) radio.checked = true;
-      }
+      const planToRestore = (saved && Object.hasOwn(PLAN_CONFIG, saved.plan)) ? saved.plan : 'anual';
+      selectPlan(planToRestore);
       updateCheckoutPersonalization();
-      updateModalPlanUI(getSelectedPlan());
     }
 
     function getRegionByDdd(ddd) {
@@ -3099,6 +3096,45 @@
       saveCheckoutProgress();
     }
 
+    const PLAN_SUMMARY_MAP = {
+      anual: 'PLANO ANUAL · 12X DE R$ 97',
+      trimestral: 'PLANO TRIMESTRAL · 3X DE R$ 127',
+      mensal: 'PLANO MENSAL · R$ 147/MÊS'
+    };
+
+    function selectPlan(planKey) {
+      const normalizedPlan = (planKey && PLAN_CONFIG[planKey]) ? planKey : 'anual';
+      currentPlan = normalizedPlan;
+      window.currentSelectedPlan = normalizedPlan;
+      if (typeof currentSelectedPlan !== 'undefined') {
+        currentSelectedPlan = normalizedPlan;
+      }
+
+      ['anual', 'trimestral', 'mensal'].forEach(k => {
+        const row = document.getElementById('planRow' + k.charAt(0).toUpperCase() + k.slice(1));
+        const radio = document.querySelector('input[name="plano"][value="' + k + '"]');
+        const isTarget = (k === normalizedPlan);
+        if (row) {
+          row.classList.toggle('active', isTarget);
+        }
+        if (radio) {
+          radio.checked = isTarget;
+        }
+      });
+
+      const summaryEl = document.getElementById('pselSummaryLine');
+      if (summaryEl && PLAN_SUMMARY_MAP[normalizedPlan]) {
+        summaryEl.textContent = PLAN_SUMMARY_MAP[normalizedPlan];
+      }
+
+      updateModalPlanUI(normalizedPlan);
+
+      if (typeof updateModalPlanBadge === 'function') {
+        updateModalPlanBadge();
+      }
+    }
+    window.selectPlan = selectPlan;
+
     function showCheckoutForm(targetPlan) {
       if (formView) formView.style.display = 'block';
       if (submitBtn) submitBtn.disabled = false;
@@ -3116,7 +3152,7 @@
         if (action) action.textContent = 'Ver detalhes';
       }
       const plan = targetPlan || getSelectedPlan();
-      updateModalPlanUI(plan);
+      selectPlan(plan);
       updateCheckoutPersonalization();
       goToCheckoutStep(getCheckoutResumeStep());
     }
@@ -3164,7 +3200,7 @@
 
     planRadios.forEach(radio => {
       radio.addEventListener('change', function() {
-        updateModalPlanUI(this.value);
+        selectPlan(this.value);
       });
     });
 
@@ -3178,10 +3214,7 @@
 
     modalPlanRadios.forEach(radio => {
       radio.addEventListener('change', function() {
-        const newPlan = this.value;
-        const pageRadio = document.querySelector('input[name="plano"][value="' + newPlan + '"]');
-        if (pageRadio) pageRadio.checked = true;
-        updateModalPlanUI(newPlan);
+        selectPlan(this.value);
         if (planDropdown) planDropdown.style.display = 'none';
       });
     });
@@ -4075,25 +4108,28 @@
       }
     };
 
-    let currentSelectedPlan = 'anual';
+    let currentSelectedPlan = window.currentSelectedPlan || 'anual';
 
     function selectPlan(planKey) {
+      if (typeof window.selectPlan === 'function' && window.selectPlan !== selectPlan) {
+        window.selectPlan(planKey);
+        currentSelectedPlan = planKey;
+        updateModalPlanBadge();
+        return;
+      }
       currentSelectedPlan = planKey;
       if (typeof currentPlan !== 'undefined') {
         currentPlan = planKey;
       }
       ['anual', 'trimestral', 'mensal'].forEach(k => {
         const row = document.getElementById('planRow' + k.charAt(0).toUpperCase() + k.slice(1));
+        const radio = document.querySelector('input[name="plano"][value="' + k + '"]');
+        const isTarget = (k === planKey);
         if (row) {
-          if (k === planKey) {
-            row.classList.add('active');
-            const radio = row.querySelector('input[type="radio"]');
-            if (radio) radio.checked = true;
-          } else {
-            row.classList.remove('active');
-            const radio = row.querySelector('input[type="radio"]');
-            if (radio) radio.checked = false;
-          }
+          row.classList.toggle('active', isTarget);
+        }
+        if (radio) {
+          radio.checked = isTarget;
         }
       });
       const summaryEl = document.getElementById('pselSummaryLine');
@@ -4114,6 +4150,7 @@
         btnTxt.textContent = p.btnText;
       }
     }
+    updateModalPlanBadge();
 
     // ==========================================
     // VSL Player Controller (Bunny Stream + VTurb Retention Engine)
@@ -4761,8 +4798,8 @@
         },
         {
           tag: 'Trilha 7 · Imobiturbo OS',
-          tagIcon: 'assets/brand/current/imobiturbo-os.webp',
-          icon3d: 'assets/trilha-07-imobiturbo.webp',
+          tagIcon: 'assets/thesvg/imobiturbo-favicon.svg',
+          icon3d: 'assets/thesvg/imobiturbo-favicon.svg',
           dur: '13 aulas',
           title: 'Imobiturbo OS & Automações Comerciais',
           sub: 'Funis, roleta inteligente e IA SDR no WhatsApp',
@@ -4771,8 +4808,8 @@
         },
         {
           tag: 'Hot Seats · Mentorias ao Vivo',
-          tagIcon: 'assets/brand/current/imobiturbo-club.webp',
-          icon3d: 'assets/trilha-08-hotseats.webp',
+          tagIcon: 'assets/thesvg/google-meet.svg',
+          icon3d: 'assets/thesvg/google-meet.svg',
           dur: '🔥 +100 aulas',
           title: 'Cases Práticos & Consultorias ao Vivo',
           sub: 'Análises de campanhas em tempo real com Natan',
