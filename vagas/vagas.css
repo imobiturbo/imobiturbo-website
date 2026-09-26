@@ -3424,10 +3424,12 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .whatsapp-cta { grid-area: action; justify-self: center; margin-top: 28px; }
 .authority-layout { grid-template-areas: 'portrait heading' 'portrait copy'; }
 .founder-highlights { list-style: none; padding: 0; margin-top: 24px; display: grid; gap: 20px; }
-.founder-highlights li { padding-left: 20px; position: relative; font-size: 16px; }
-.founder-highlights li::before { content: ''; position: absolute; left: 0; top: 10px; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
-.founder-highlights strong { display: block; color: var(--heading); margin-bottom: 4px; }
-.founder-highlights span { display: block; }
+.founder-highlights li { font-size: 16px; }
+.founder-highlight-item { display: flex; align-items: flex-start; gap: 16px; padding-left: 0 !important; font-size: 16px; }
+.founder-highlight-item::before { display: none !important; content: none !important; }
+.ios-emoji-bullet { width: 28px; height: 28px; flex-shrink: 0; object-fit: contain; margin-top: 2px; filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4)); }
+.founder-highlight-content strong { display: block; color: var(--heading); margin-bottom: 4px; font-size: 16px; font-weight: 700; }
+.founder-highlight-content span { display: block; color: var(--muted); line-height: 1.5; }
 .hero-cta-below .btn { animation: ctaPulse 2.4s ease-in-out infinite; }
 @keyframes ctaPulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(212, 255, 83, .3); }
@@ -3979,7 +3981,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 
 /* ==========================================================================
-   CLASSROOM.IO EMBEDDED WIDGET — IMOBITURBO CLUB VITRINE
+   IMOBITURBO CLUB VITRINE — GRADE DE TRILHAS, AULAS & FERRAMENTAS
    ========================================================================== */
 .cio-widget-container {
   margin-top: 40px;
@@ -3996,68 +3998,15 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-bottom: 30px;
+  margin-bottom: 28px;
 }
 
-.cio-widget-badge-row {
+.cio-header-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 14px;
-}
-
-.cio-widget-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--label);
-  background: var(--mint-bg);
-  border: 1px solid var(--mint-border);
-  padding: 6px 14px;
-  border-radius: 999px;
-}
-
-.cio-widget-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--label);
-  box-shadow: 0 0 10px var(--label);
-  animation: pulseDot 2s infinite ease-in-out;
-}
-
-@keyframes pulseDot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.35; transform: scale(0.85); }
-}
-
-.cio-widget-metrics {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.cio-metric-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  color: var(--muted);
-  background: var(--card);
-  border: 1px solid var(--line-2);
-  padding: 5px 12px;
-  border-radius: 999px;
-  font-weight: 500;
-}
-
-.cio-metric-pill strong {
-  color: var(--heading);
+  gap: 20px;
 }
 
 .cio-widget-title {
@@ -4065,11 +4014,57 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   font-weight: 800;
   color: var(--heading);
   letter-spacing: -0.03em;
-  line-height: 1.2;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.cio-widget-title .accent {
-  color: var(--label);
+.cio-title-logo {
+  display: inline-block;
+  vertical-align: middle;
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 16px rgba(212, 255, 83, 0.2));
+}
+
+.cio-carousel-nav-btns {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cio-carousel-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--heading);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cio-carousel-btn:hover:not(:disabled) {
+  background: var(--label);
+  color: #10130c;
+  border-color: var(--label);
+  transform: scale(1.06);
+  box-shadow: 0 0 16px rgba(212, 255, 83, 0.35);
+}
+
+.cio-carousel-btn:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .cio-widget-lead {
@@ -4079,65 +4074,58 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   max-width: 880px;
 }
 
-/* Category Filter Tabs */
-.cio-filter-tabs {
+/* Carrossel de Trilhas em Linha Única (Slider) */
+.cio-cards-slider {
   display: flex;
-  gap: 8px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 20px;
   overflow-x: auto;
-  padding-bottom: 12px;
-  margin-bottom: 28px;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 4px 24px 4px;
+  margin-bottom: 32px;
   scrollbar-width: thin;
   scrollbar-color: var(--line-2) transparent;
-  -webkit-overflow-scrolling: touch;
 }
 
-.cio-filter-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 18px;
-  background: var(--card);
-  border: 1px solid var(--border);
+.cio-cards-slider::-webkit-scrollbar {
+  height: 6px;
+}
+.cio-cards-slider::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
   border-radius: 999px;
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
 }
-
-.cio-filter-tab:hover {
-  background: var(--card-hover);
-  color: var(--heading);
-  border-color: var(--line-2);
+.cio-cards-slider::-webkit-scrollbar-thumb {
+  background: var(--line-2);
+  border-radius: 999px;
 }
-
-.cio-filter-tab.active {
+.cio-cards-slider::-webkit-scrollbar-thumb:hover {
   background: var(--label);
-  color: #10130c;
-  border-color: var(--label);
-  font-weight: 700;
-  box-shadow: 0 0 16px rgba(212, 255, 83, 0.35);
 }
 
-.cio-filter-tab .tab-count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  padding: 1px 7px;
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.2);
-  line-height: 1.2;
+.cio-cards-slider .cio-course-card {
+  flex: 0 0 calc((100% - 40px) / 3);
+  min-width: 320px;
+  scroll-snap-align: start;
+  box-sizing: border-box;
 }
 
-.cio-filter-tab.active .tab-count {
-  background: rgba(16, 19, 12, 0.3);
-  color: #10130c;
+@media (max-width: 1024px) {
+  .cio-cards-slider .cio-course-card {
+    flex: 0 0 calc((100% - 20px) / 2);
+    min-width: 300px;
+  }
 }
 
-/* Cards Grid */
+@media (max-width: 680px) {
+  .cio-cards-slider .cio-course-card {
+    flex: 0 0 88%;
+    min-width: 280px;
+  }
+}
+
 .cio-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));

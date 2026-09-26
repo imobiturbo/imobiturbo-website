@@ -11,6 +11,78 @@
   <meta name="theme-color" content="#0e100d">
   <meta name="color-scheme" content="dark">
 
+  <!-- In-App Browser Escaper (Instagram & Facebook WebViews) -->
+  <script>
+  (function() {
+    try {
+      var ua = navigator.userAgent || "";
+      // 1. Nao interfere em bots de auditoria do Meta e Google (evita reprovacao do anuncio)
+      if (/facebookexternalhit|Facebot|Googlebot|bingbot|AdsBot-Google/i.test(ua)) return;
+
+      // 2. Detecta se esta dentro da WebView do Instagram ou Facebook
+      var isInstagram = /Instagram/i.test(ua);
+      var isFacebook = /FBAN|FBAV/i.test(ua);
+      if (!isInstagram && !isFacebook) return;
+
+      var isAndroid = /Android/i.test(ua);
+      var isIOS = /iPhone|iPad|iPod/i.test(ua);
+      var currentUrl = window.location.href;
+
+      // 3. ANDROID: Dispara intent para abrir no Google Chrome com todos os parametros e UTMs preservados
+      if (isAndroid) {
+        if (sessionStorage.getItem('imt_iab_escaped') === '1') return;
+        sessionStorage.setItem('imt_iab_escaped', '1');
+
+        var cleanUrl = currentUrl.replace(/^https?:\/\//i, '');
+        var intentUrl = "intent://" + cleanUrl + "#Intent;scheme=https;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(currentUrl) + ";end";
+        window.location.replace(intentUrl);
+        return;
+      }
+
+      // 4. IOS: Exibe banner superior orientando a abrir no Safari para autopreencher dados
+      if (isIOS) {
+        function showIOSBanner() {
+          if (document.getElementById('imt-iab-banner')) return;
+          if (sessionStorage.getItem('imt_iab_banner_closed') === '1') return;
+
+          var banner = document.createElement('div');
+          banner.id = 'imt-iab-banner';
+          banner.setAttribute('role', 'alert');
+          banner.style.cssText = 'position:fixed;top:0;left:0;right:0;width:100%;background:rgba(14,16,13,0.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#ffffff;padding:10px 14px;z-index:9999999;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;box-shadow:0 4px 20px rgba(0,0,0,0.6);border-bottom:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:space-between;box-sizing:border-box;font-size:12.5px;line-height:1.35;';
+
+          banner.innerHTML = '<div style="display:flex;align-items:center;gap:10px;flex:1;padding-right:8px;">' +
+            '<span style="font-size:18px;flex-shrink:0;">🔒</span>' +
+            '<span>Para autopreencher cartões e salvar seus dados: toque nos <b>⋯</b> e selecione <b>Abrir no Safari</b></span>' +
+            '</div>' +
+            '<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">' +
+            '<span style="font-size:18px;display:inline-block;animation:imtBounce 1.2s infinite;">↗️</span>' +
+            '<button type="button" id="imt-iab-close" style="background:transparent;border:none;color:#94a3b8;font-size:16px;padding:4px;cursor:pointer;line-height:1;" aria-label="Fechar aviso">✕</button>' +
+            '</div>' +
+            '<style>@keyframes imtBounce{0%,100%{transform:translate(0,0)}50%{transform:translate(3px,-3px)}}</style>';
+
+          document.body.prepend(banner);
+
+          var closeBtn = document.getElementById('imt-iab-close');
+          if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+              banner.remove();
+              sessionStorage.setItem('imt_iab_banner_closed', '1');
+            });
+          }
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', showIOSBanner);
+        } else {
+          showIOSBanner();
+        }
+      }
+    } catch (e) {
+      // Falha silenciosa
+    }
+  })();
+  </script>
+
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
@@ -5693,14 +5765,28 @@
       hideMessageBubble: false,
       position: 'right',
       locale: 'pt_BR',
-      type: 'standard',
-      showPopoutButton: true,
-      welcomeTitle: 'Natan Pimentel',
-      welcomeDescription: 'Opa, tudo certo? Bora alavancar essas comissões?',
-      availableMessage: 'Estamos On-line',
-      unavailableMessage: 'Estamos On-line',
+      type: 'expanded_bubble',
+      launcherTitle: 'Fale comigo',
+      showPopoutButton: false,
       darkMode: 'auto'
     };
+
+    /* ── Chatwoot: abrir direto na conversa, sem home screen ── */
+    window.addEventListener('chatwoot:ready', function () {
+      // Injeta CSS no iframe do widget para esconder o botão de voltar
+      try {
+        var iframe = document.querySelector('#chatwoot_live_chat_widget');
+        if (iframe && iframe.contentDocument) {
+          var style = iframe.contentDocument.createElement('style');
+          style.textContent =
+            '.header-branding { display: none !important; }' +
+            '.back-button { display: none !important; }' +
+            '.header--expanded .go-back-button { display: none !important; }';
+          iframe.contentDocument.head.appendChild(style);
+        }
+      } catch(e) { /* cross-origin safe */ }
+    });
+
     (function(d,t) {
       var origCreate = d.createElement.bind(d);
       d.createElement = function(tag, opt) {
