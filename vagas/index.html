@@ -1336,21 +1336,23 @@
           <p>Aprenda os roteiros exatos para captar imóveis com exclusividade e fechar vendas com comissão cheia sem disputa predatória.</p>
           <div class="concept lesson-concept" aria-label="Demonstração do formato das aulas e trilhas">
             <div class="lesson-head">
-              <span class="micro-tag">Trilha Prática · Módulo 2</span>
-              <span class="lesson-dur">18 min</span>
+              <span class="micro-tag" id="lessonTrackTag">Trilha Prática · Módulo 1</span>
+              <span class="lesson-dur" id="lessonDurationText">12 min</span>
             </div>
             <div class="lesson-body">
-              <div class="lesson-play-btn" aria-hidden="true">
+              <div class="lesson-play-btn" id="lessonPlayBtn" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
               </div>
-              <div class="lesson-info">
-                <strong class="lesson-title">Captação Exclusiva com IA</strong>
-                <span class="lesson-sub">Método passo a passo + roteiro</span>
+              <div class="lesson-info" id="lessonTrackInfo">
+                <strong class="lesson-title" id="lessonTrackTitle">Captação Exclusiva com IA</strong>
+                <span class="lesson-sub" id="lessonTrackSub">Método passo a passo + roteiro</span>
               </div>
             </div>
             <div class="lesson-progress-wrap">
-              <div class="lesson-progress-bar"><span style="width: 100%"></span></div>
-              <span class="lesson-progress-label">Concluído</span>
+              <div class="lesson-progress-bar" id="lessonProgressBar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" aria-label="Progresso contínuo de aulas">
+                <span style="width: 25%" id="lessonProgressFill"></span>
+              </div>
+              <span class="lesson-progress-label" id="lessonProgressLabel"><span class="lesson-live-dot" aria-hidden="true"></span>Trilha 1/4 · 25%</span>
             </div>
           </div>
         </li>
@@ -1358,41 +1360,55 @@
           <span class="step-number">02</span>
           <h3>Operar na esteira do CRM</h3>
           <p>Organize cada negócio em colunas visuais no Imobiturbo OS e nunca mais esqueça de fazer um follow-up decisivo.</p>
-          <div class="concept kanban-concept" aria-label="Demonstração do fluxo de leads no CRM">
-            <div class="kanban-col">
+          <div class="concept kanban-concept" id="kanbanSimulator" aria-label="Demonstração do fluxo de leads no CRM">
+            <template id="kanbanArchivedLeads" style="display:none;" aria-hidden="true">
+              <span data-lead="Dra. Silvia">Dra. Silvia</span>
+              <span data-lead="Res. Jardins">Res. Jardins</span>
+            </template>
+            <div class="kanban-col" id="kanbanColNovos">
               <div class="kanban-col-header">
                 <span class="col-name">Novos</span>
-                <span class="col-count">4</span>
+                <span class="col-count is-active" id="kanbanCountNovos">1</span>
               </div>
-              <div class="kanban-card">
-                <strong class="card-name">Carlos M.</strong>
+              <div class="kanban-card kanban-card-full" id="kanbanCardCarlos">
+                <div class="card-head-row">
+                  <strong class="card-name">Carlos M.</strong>
+                  <span class="card-badge-status" id="kanbanCardBadge">Novo Lead</span>
+                </div>
                 <span class="card-info">+55 21 98765-4321</span>
-                <span class="card-info">Imóvel: Lote Orquídea</span>
-                <span class="card-info">Origem: Turbinar</span>
+                <span class="card-info property">Imóvel: Lote Orquídea · R$ 420k</span>
+                <div class="card-tag-row">
+                  <span class="card-origin-tag" id="kanbanCardOrigin">Origem: Turbinar</span>
+                  <span class="card-origin-tag" id="kanbanCardCampaign">Campanha Cobertura</span>
+                </div>
+                <div class="card-note-row" id="kanbanCardNote">
+                  <span class="card-note-text">Lead quente · Qualificado em 2m</span>
+                </div>
+                <div class="card-stage-detail" id="kanbanStageDetail">
+                  <span class="detail-icon" id="kanbanStageIcon">⚡</span>
+                  <span class="detail-text" id="kanbanStageText">Qualificação IA em andamento</span>
+                </div>
+              </div>
+              <div class="kanban-empty-slot" id="kanbanSlotNovos" style="display: none;">
+                <span>Aguardando avanço</span>
               </div>
             </div>
-            <div class="kanban-col">
+            <div class="kanban-col" id="kanbanColVisitas">
               <div class="kanban-col-header">
                 <span class="col-name">Visitas</span>
-                <span class="col-count">2</span>
+                <span class="col-count" id="kanbanCountVisitas">0</span>
               </div>
-              <div class="kanban-card kanban-card-active">
-                <strong class="card-name">Dra. Silvia</strong>
-                <span class="card-info">+55 11 99123-8840</span>
-                <span class="card-info">Imóvel: Alpha Casa 4</span>
-                <span class="card-info accent">Visita: Sáb 10h confirmada</span>
+              <div class="kanban-empty-slot" id="kanbanSlotVisitas">
+                <span>Aguardando avanço</span>
               </div>
             </div>
-            <div class="kanban-col">
+            <div class="kanban-col" id="kanbanColProposta">
               <div class="kanban-col-header">
                 <span class="col-name">Proposta</span>
-                <span class="col-count">1</span>
+                <span class="col-count" id="kanbanCountProposta">0</span>
               </div>
-              <div class="kanban-card">
-                <strong class="card-name">Res. Jardins</strong>
-                <span class="card-info">+55 21 98411-3090</span>
-                <span class="card-info">Imóvel: Ap. 802 Torre B</span>
-                <span class="card-info accent">Proposta: Em fechamento</span>
+              <div class="kanban-empty-slot" id="kanbanSlotProposta">
+                <span>Aguardando avanço</span>
               </div>
             </div>
           </div>
@@ -1401,14 +1417,16 @@
           <span class="step-number">03</span>
           <h3>Escalar com IA no WhatsApp</h3>
           <p>Deixe a inteligência artificial qualificar compradores 24h por dia e filtrar quem tem perfil real de compra.</p>
-          <div class="concept chat-concept" aria-label="Demonstração de qualificação de comprador com IA no WhatsApp">
-            <div class="chat-bubble chat-bubble-user">
-              <div class="chat-sender">Comprador (WhatsApp)</div>
-              <p class="chat-text">"Vi o anúncio da cobertura. Aceita proposta à vista?"</p>
-            </div>
-            <div class="chat-bubble chat-bubble-ai">
-              <div class="chat-sender"><span class="ai-badge">IA</span> Assistente Imobiturbo</div>
-              <p class="chat-text">"Sim! Já levantei as condições. Qual o melhor horário para o corretor responsável falar com você?"</p>
+          <div class="concept chat-concept" id="chatSimulator" aria-label="Demonstração de qualificação de comprador com IA no WhatsApp">
+            <div class="chat-stream-viewport" id="chatStreamViewport">
+              <div class="chat-bubble chat-bubble-user" id="chatBubbleTop">
+                <div class="chat-sender">Comprador (WhatsApp)</div>
+                <p class="chat-text">"Vi o anúncio da cobertura. Aceita proposta à vista?"</p>
+              </div>
+              <div class="chat-bubble chat-bubble-ai" id="chatBubbleBottom">
+                <div class="chat-sender"><span class="ai-badge">IA</span> Assistente Imobiturbo</div>
+                <p class="chat-text">"Sim! Já levantei as condições. Qual o melhor horário para o corretor responsável falar com você?"</p>
+              </div>
             </div>
           </div>
         </li>
@@ -2054,8 +2072,11 @@
         </details>
       </div>
       
-      <div class="section-cta">
-        <a class="btn" href="#assinatura">Quero entrar agora</a>
+      <div class="section-cta" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a class="btn" href="#planos">Quero entrar agora</a>
+        <button type="button" class="btn btn-secondary" onclick="window.$chatwoot && window.$chatwoot.toggle('open')" style="background: rgba(191, 215, 48, 0.1); border: 1px solid rgba(191, 215, 48, 0.3); color: #bfd730; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+          💬 Tirar dúvidas com a IA no Chat
+        </button>
       </div>
     </div>
   </section>
@@ -3975,6 +3996,206 @@
       }
       if (box) box.innerHTML = '';
     }
+
+    // =========================================================================
+    // OVERDRIVE: Dobra 02 - Esteira Viva em Tempo Real
+    // =========================================================================
+    (function initDobra02Overdrive() {
+      const section = document.getElementById('como-funciona');
+      if (!section) return;
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // 1. Player de Aula Interativo
+      const playBtn = document.getElementById('lessonPlayBtn');
+      const progressBar = document.getElementById('lessonProgressBar');
+      const progressFill = document.getElementById('lessonProgressFill');
+      const durText = document.getElementById('lessonDurationText');
+      let isPlaying = true;
+
+      if (playBtn && progressFill) {
+        if (!prefersReducedMotion) playBtn.classList.add('is-playing');
+        playBtn.addEventListener('click', () => {
+          isPlaying = !isPlaying;
+          playBtn.classList.toggle('is-playing', isPlaying);
+          playBtn.setAttribute('aria-label', isPlaying ? 'Pausar aula' : 'Reproduzir aula');
+        });
+      }
+
+      if (progressBar && progressFill && durText) {
+        progressBar.addEventListener('click', (e) => {
+          const rect = progressBar.getBoundingClientRect();
+          const clickX = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+          const pct = Math.round((clickX / rect.width) * 100);
+          progressFill.style.width = pct + '%';
+          const totalSec = 18 * 60;
+          const curSec = Math.round((pct / 100) * totalSec);
+          const min = Math.floor(curSec / 60);
+          const sec = String(curSec % 60).padStart(2, '0');
+          durText.textContent = `${min}:${sec} / 18 min`;
+        });
+      }
+
+      // 2. Simulador de CRM Kanban Vivo
+      const colNovos = document.getElementById('kanbanColNovos');
+      const colVisitas = document.getElementById('kanbanColVisitas');
+      const colProposta = document.getElementById('kanbanColProposta');
+      const countNovos = document.getElementById('kanbanCountNovos');
+      const countVisitas = document.getElementById('kanbanCountVisitas');
+      let kanbanTimer = null;
+      let kanbanStep = 0;
+
+      function runKanbanCycle() {
+        if (prefersReducedMotion || !colNovos || !colVisitas) return;
+
+        kanbanStep = (kanbanStep + 1) % 3;
+        const cardCarlos = document.getElementById('kanbanCardCarlos');
+        if (!cardCarlos) return;
+
+        if (kanbanStep === 1) {
+          if (cardCarlos.parentElement === colNovos) {
+            cardCarlos.classList.add('is-moving');
+            setTimeout(() => {
+              cardCarlos.classList.remove('is-moving');
+              colVisitas.appendChild(cardCarlos);
+              cardCarlos.classList.add('kanban-card-active');
+              const badge = cardCarlos.querySelector('.kanban-status-badge');
+              if (badge) {
+                badge.className = 'card-info accent';
+                badge.textContent = 'IA: Visita sugerida';
+              }
+              if (countNovos) countNovos.textContent = '3';
+              if (countVisitas) countVisitas.textContent = '3';
+            }, 300);
+          }
+        } else if (kanbanStep === 2) {
+          cardCarlos.classList.add('is-moving');
+          setTimeout(() => {
+            cardCarlos.classList.remove('is-moving');
+            const badge = cardCarlos.querySelector('.card-info.accent');
+            if (badge) badge.textContent = 'Visita: Sáb 10h confirmada';
+          }, 300);
+        } else {
+          if (cardCarlos.parentElement !== colNovos) {
+            cardCarlos.classList.add('is-moving');
+            setTimeout(() => {
+              cardCarlos.classList.remove('is-moving');
+              cardCarlos.classList.remove('kanban-card-active');
+              colNovos.appendChild(cardCarlos);
+              const badge = cardCarlos.querySelector('.card-info.accent');
+              if (badge) {
+                badge.className = 'card-info kanban-status-badge';
+                badge.textContent = 'Origem: Turbinar';
+              }
+              if (countNovos) countNovos.textContent = '4';
+              if (countVisitas) countVisitas.textContent = '2';
+            }, 300);
+          }
+        }
+      }
+
+      // 3. Simulador de Chat WhatsApp com IA
+      const chatContainer = document.getElementById('chatSimulator');
+      const typingIndicator = document.getElementById('chatTypingIndicator');
+      const aiBubble = document.getElementById('chatBubbleAi');
+      const quickReplies = document.getElementById('chatQuickReplies');
+
+      const AI_RESPONSES = {
+        'Sábado às 10h': 'Excelente! Acabei de registrar no CRM: Visita sábado às 10h. O corretor responsável já foi notificado e enviará a rota no seu WhatsApp.',
+        'Hoje 17h': 'Perfeito! Já verifiquei a disponibilidade da chave. Visita agendada para hoje às 17h. O corretor confirmará em instantes!',
+        'Aceita permuta?': 'Sim! O proprietário estuda permuta até 40% do valor em imóvel comercial ou veículo. Vou incluir essa observação na sua ficha para o corretor.'
+      };
+
+      if (quickReplies && chatContainer && typingIndicator && aiBubble) {
+        quickReplies.addEventListener('click', (e) => {
+          const btn = e.target.closest('.chat-quick-btn');
+          if (!btn) return;
+          const replyText = btn.getAttribute('data-reply') || btn.textContent.trim();
+          btn.style.opacity = '0.5';
+          btn.style.pointerEvents = 'none';
+
+          const userBubble = document.createElement('div');
+          userBubble.className = 'chat-bubble chat-bubble-user';
+          userBubble.style.opacity = '0';
+          userBubble.style.transform = 'translateY(6px)';
+          userBubble.innerHTML = `
+            <div class="chat-sender">Comprador (WhatsApp)</div>
+            <p class="chat-text">"${replyText}"</p>
+          `;
+          chatContainer.insertBefore(userBubble, typingIndicator);
+
+          requestAnimationFrame(() => {
+            userBubble.style.opacity = '1';
+            userBubble.style.transform = 'translateY(0)';
+          });
+
+          typingIndicator.style.display = 'inline-flex';
+
+          setTimeout(() => {
+            typingIndicator.style.display = 'none';
+            const responseText = AI_RESPONSES[replyText] || 'Perfeito! Já atualizei seus dados e notifiquei o corretor especialista.';
+            const newAiBubble = document.createElement('div');
+            newAiBubble.className = 'chat-bubble chat-bubble-ai';
+            newAiBubble.style.opacity = '0';
+            newAiBubble.style.transform = 'translateY(6px)';
+            newAiBubble.innerHTML = `
+              <div class="chat-sender"><span class="ai-badge">IA</span> Assistente Imobiturbo</div>
+              <p class="chat-text">"${responseText}"</p>
+            `;
+            chatContainer.insertBefore(newAiBubble, quickReplies);
+            requestAnimationFrame(() => {
+              newAiBubble.style.opacity = '1';
+              newAiBubble.style.transform = 'translateY(0)';
+            });
+          }, 800);
+        });
+      }
+
+      // IntersectionObserver para economia estrita de CPU (60fps garantidos)
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              if (!kanbanTimer && !prefersReducedMotion) {
+                kanbanTimer = setInterval(runKanbanCycle, 5000);
+              }
+            } else {
+              if (kanbanTimer) {
+                clearInterval(kanbanTimer);
+                kanbanTimer = null;
+              }
+            }
+          });
+        }, { threshold: 0.15 });
+
+        observer.observe(section);
+      }
+    })();
+  </script>
+
+  <!-- Chatwoot AI Sales Widget (DeepSeek V4 Flash) -->
+  <script>
+    window.chatwootSettings = {
+      hideMessageBubble: false,
+      position: 'right',
+      locale: 'pt_BR',
+      type: 'standard',
+      showPopoutButton: true
+    };
+    (function(d,t) {
+      var BASE_URL = "https://suporte.imobiturbo.com.br";
+      var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      g.src = BASE_URL + "/packs/js/sdk.js";
+      g.defer = true;
+      g.async = true;
+      s.parentNode.insertBefore(g, s);
+      g.onload = function() {
+        window.chatwootSDK.run({
+          websiteToken: 'rSKsvtfpfpheBBbGdTSyeZQL',
+          baseUrl: BASE_URL
+        });
+      };
+    })(document, "script");
   </script>
 
 </body>

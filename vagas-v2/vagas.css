@@ -138,47 +138,151 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 .process li:last-child::before { display: none; }
 .step-number { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; background: var(--action); color: #0b0c0a !important; font-size: 15px; font-weight: 800 !important; margin-bottom: 24px; }
 .process h3 { margin-bottom: 12px; }
-.concept { min-height: 176px; height: auto; margin-top: 28px; width: 100%; padding: 16px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); }
+.concept { min-height: 220px; height: 220px; margin-top: 28px; width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); box-sizing: border-box; position: relative; overflow: hidden; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+.concept:hover { border-color: rgba(216, 255, 62, 0.35); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 20px rgba(216, 255, 62, 0.06); }
 
-/* Micro-UI 01: Aulas e Trilhas */
-.lesson-concept { display: flex; flex-direction: column; justify-content: space-between; gap: 10px; }
+/* Micro-UI 01: Aulas e Trilhas em Loop */
+.lesson-concept { display: flex; flex-direction: column; justify-content: space-between; gap: 8px; }
 .lesson-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.micro-tag { display: inline-flex; align-items: center; gap: 4px; background: var(--surface); border: 1px solid var(--border); color: var(--label); font-size: 12px; font-weight: 700; padding: 3px 7px; border-radius: 5px; }
-.lesson-dur { color: var(--body); font-size: 12px; font-weight: 600; white-space: nowrap; }
-.lesson-body { display: flex; align-items: center; gap: 10px; }
-.lesson-play-btn { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; background: var(--action); color: #10130C; display: grid; place-items: center; }
+.micro-tag { display: inline-flex; align-items: center; gap: 4px; background: var(--surface); border: 1px solid var(--border); color: var(--label); font-size: 11px; font-weight: 700; padding: 3px 7px; border-radius: 5px; transition: opacity 0.25s ease; }
+.lesson-dur { color: var(--body); font-size: 11px; font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; transition: opacity 0.25s ease; }
+.lesson-body { display: flex; align-items: center; gap: 12px; }
+.lesson-play-btn { width: 34px; height: 34px; flex-shrink: 0; border-radius: 50%; background: var(--action); color: #10130C; display: grid; place-items: center; border: none; cursor: default; position: relative; padding: 0; }
 .lesson-play-btn svg { width: 14px; height: 14px; margin-left: 2px; }
-.lesson-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.lesson-title { color: var(--heading); font-size: 14px; font-weight: 700; line-height: 1.4; }
-.lesson-sub { color: var(--body); font-size: 12px; line-height: 1.5; }
+.lesson-play-btn::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--lime);
+  opacity: 0.8;
+  animation: lessonPulseRing 2.4s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  pointer-events: none;
+}
+@keyframes lessonPulseRing {
+  0% { transform: scale(0.92); opacity: 0.8; }
+  50% { transform: scale(1.35); opacity: 0; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+.lesson-info { display: flex; flex-direction: column; gap: 3px; min-width: 0; transition: opacity 0.25s ease, transform 0.25s ease; }
+.lesson-title { color: var(--heading); font-size: 13.5px; font-weight: 700; line-height: 1.35; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lesson-sub { color: var(--body); font-size: 11.5px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .lesson-progress-wrap { display: flex; align-items: center; gap: 8px; }
-.lesson-progress-bar { flex: 1; height: 5px; background: #262922; border-radius: 3px; overflow: hidden; }
-.lesson-progress-bar span { display: block; height: 100%; background: var(--accent); border-radius: 3px; }
-.lesson-progress-label { font-size: 12px; font-weight: 700; color: var(--label); }
+.lesson-progress-bar { flex: 1; height: 6px; background: #262922; border-radius: 3px; overflow: hidden; position: relative; }
+.lesson-progress-bar span { display: block; height: 100%; background: var(--accent); border-radius: 3px; position: relative; overflow: hidden; transition: width 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.lesson-progress-bar span::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  animation: lessonShimmer 2.5s infinite;
+}
+@keyframes lessonShimmer { 100% { left: 100%; } }
+.lesson-progress-label { font-size: 11px; font-weight: 700; color: var(--label); display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.lesson-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 6px var(--lime); display: inline-block; animation: dotBlink 1.8s ease-in-out infinite; }
+@keyframes dotBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-/* Micro-UI 02: CRM Kanban */
-.kanban-concept { display: flex; gap: 6px; padding: 8px 6px; overflow: hidden; width: 100%; box-sizing: border-box; }
-.kanban-col { flex: 1 1 0; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 4px; display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+/* Micro-UI 02: CRM Kanban Alto em Loop */
+.kanban-concept { display: flex; gap: 6px; padding: 8px 6px; overflow-x: auto; width: 100%; height: 220px; box-sizing: border-box; scrollbar-width: none; }
+.kanban-concept::-webkit-scrollbar { display: none; }
+.kanban-col { flex: 1 1 0; min-width: 108px; height: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 6px 5px; display: flex; flex-direction: column; gap: 5px; overflow: hidden; box-sizing: border-box; transition: border-color 0.3s ease, background 0.3s ease; }
 .kanban-col-header { display: flex; align-items: center; justify-content: space-between; gap: 2px; padding: 0 2px; }
 .col-name { font-size: 10.5px; font-weight: 700; color: var(--heading); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.col-count { font-size: 10px; font-weight: 700; background: #262922; color: var(--heading); border-radius: 8px; padding: 0 4px; flex-shrink: 0; }
-.kanban-card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 5px 6px; display: flex; flex-direction: column; gap: 2px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); overflow: hidden; }
-.kanban-card-active { border-color: var(--lime); background: #1c2317; }
-.card-name { font-size: 11px; font-weight: 700; color: var(--heading); line-height: 1.25; margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card-info { font-size: 9px; color: #8e9484; line-height: 1.3; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.card-info.accent { color: var(--lime); font-weight: 600; }
-.card-tag { font-size: 9.5px; color: var(--body); line-height: 1.3; overflow-wrap: anywhere; }
-.card-tag-accent { color: var(--lime); font-weight: 600; }
+.col-count { font-size: 10px; font-weight: 700; background: #262922; color: var(--heading); border-radius: 8px; padding: 0 5px; flex-shrink: 0; transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease; }
+.col-count.is-active { background: var(--lime); color: #0b0c0a; transform: scale(1.1); }
+.kanban-empty-slot { flex: 1; border: 1px dashed rgba(255, 255, 255, 0.07); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #454a3e; font-size: 9px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-/* Micro-UI 03: Assistente IA */
-.chat-concept { display: flex; flex-direction: column; justify-content: center; gap: 8px; padding: 12px 14px; }
-.chat-concept .chat-bubble { padding: 8px 10px; border-radius: 10px; font-size: 13px; line-height: 1.5; margin-top: 0; }
-.chat-concept .chat-bubble-user { background: var(--surface); border: 1px solid var(--border); color: var(--heading); border-bottom-left-radius: 3px; width: 92%; }
-.chat-concept .chat-bubble-ai { align-self: flex-end; background: #192215; border: 1px solid rgba(216, 255, 62, 0.3); color: #f4f6ef; border-bottom-right-radius: 3px; width: 94%; margin-left: auto; }
-.chat-concept .chat-sender { font-size: 12px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; color: var(--lime); }
-.chat-concept .chat-bubble-user .chat-sender { color: var(--body); }
-.chat-concept .ai-badge { background: var(--lime); color: #0e100d; font-size: 12px; padding: 1px 4px; border-radius: 3px; font-weight: 800; }
-.chat-concept .chat-text { margin: 0; font-size: 13px; line-height: 1.5; color: inherit; }
+/* Card Carlos M. Completo e Alto */
+.kanban-card-full {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+.kanban-card-full.kanban-card-active {
+  border-color: var(--lime);
+  background: #182014;
+  box-shadow: 0 0 14px rgba(216, 255, 62, 0.15);
+}
+.card-head-row { display: flex; align-items: center; justify-content: space-between; gap: 4px; }
+.card-head-row .card-name { font-size: 11.5px; font-weight: 800; color: var(--heading); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-badge-status { font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 4px; background: rgba(216, 255, 62, 0.12); color: var(--lime); border: 1px solid rgba(216, 255, 62, 0.25); white-space: nowrap; transition: all 0.25s ease; }
+.card-info { font-size: 9px; color: #8e9484; line-height: 1.3; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-info.property { color: #d0d6c4; font-weight: 600; }
+.card-tag-row { display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+.card-origin-tag { font-size: 8.5px; background: #20241b; color: #9aa18e; padding: 2px 5px; border-radius: 3px; border: 1px solid rgba(255,255,255,0.06); }
+.card-note-row { display: flex; align-items: center; gap: 4px; margin-top: 2px; }
+.card-note-text { font-size: 8.5px; color: #a4ad99; font-style: italic; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-stage-detail { margin-top: auto; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; gap: 4px; font-size: 9px; color: var(--lime); font-weight: 600; }
+.card-stage-detail .detail-icon { font-size: 10px; }
+.card-stage-detail .detail-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Micro-UI 03: Assistente IA com Altura Fixa e Janela Deslizante de 2 Balões */
+.chat-concept {
+  height: 220px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
+}
+.chat-stream-viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 8px;
+}
+.chat-concept .chat-bubble {
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  margin: 0;
+  box-sizing: border-box;
+}
+.chat-concept .chat-bubble-user {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--heading);
+  border-bottom-left-radius: 3px;
+  width: 92%;
+}
+.chat-concept .chat-bubble-ai {
+  align-self: flex-end;
+  background: #182014;
+  border: 1px solid rgba(216, 255, 62, 0.3);
+  color: #f4f6ef;
+  border-bottom-right-radius: 3px;
+  width: 94%;
+  margin-left: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+.chat-concept .chat-sender { font-size: 11px; font-weight: 700; margin-bottom: 3px; display: flex; align-items: center; gap: 5px; color: var(--lime); }
+.chat-concept .chat-bubble-user .chat-sender { color: #8e9484; }
+.chat-concept .ai-badge { background: var(--lime); color: #0e100d; font-size: 10px; padding: 1px 4px; border-radius: 3px; font-weight: 800; }
+.chat-concept .chat-text { margin: 0; font-size: 11.5px; line-height: 1.4; color: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lesson-play-btn::after,
+  .lesson-progress-bar span::after,
+  .lesson-live-dot {
+    animation: none !important;
+  }
+}
 .process-tail { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr); gap: 28px; align-items: center; margin-top: 34px; padding-top: 24px; border-top: 1px solid var(--border); }
 .process-note { max-width: none; padding: 16px 18px; border-radius: 12px; background: var(--surface); }
 .process-tail .transition { margin: 0; padding: 0; border: 0; color: var(--heading); font-size: 17px; font-weight: 700; }
