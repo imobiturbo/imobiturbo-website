@@ -130,7 +130,7 @@
             "name": "Como funcionam cobrança, acesso e cancelamento?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No cartão, a Hotmart cobra o período contratado: anual em até 12x de R$ 97, trimestral em até 3x de R$ 127 ou mensal de R$ 147, com renovação automática ao fim de cada período. O mesmo checkout oferece Pix Automático: R$ 997 por ano, R$ 357 por trimestre ou R$ 147 por mês. Você autoriza as cobranças no aplicativo do banco e as renovações seguem o período escolhido. Após a confirmação, o acesso é liberado e as instruções são enviadas por e-mail e WhatsApp. Você pode cancelar a próxima renovação e manter o acesso até o fim do período já pago."
+              "text": "No cartão, a Hubla cobra o período contratado: anual em até 12x de R$ 97, trimestral em até 3x de R$ 127 ou mensal de R$ 147, com renovação automática ao fim de cada período. O mesmo checkout oferece Pix Automático: R$ 997 por ano, R$ 357 por trimestre ou R$ 147 por mês. Você autoriza as cobranças no aplicativo do banco e as renovações seguem o período escolhido. Após a confirmação, o acesso é liberado e as instruções são enviadas por e-mail e WhatsApp. Você pode cancelar a próxima renovação e manter o acesso até o fim do período já pago."
             }
           },
           {
@@ -2046,7 +2046,7 @@
         </details>
         <details class="faq-item">
           <summary>Como funcionam cobrança, acesso e cancelamento?<span class="disclosure" aria-hidden="true"></span></summary>
-          <p>No cartão, a Hotmart cobra o período contratado: anual em até 12x de R$ 97, trimestral em até 3x de R$ 127 ou mensal de R$ 147, com renovação automática ao fim de cada período. O mesmo checkout oferece Pix Automático: R$ 997 por ano, R$ 357 por trimestre ou R$ 147 por mês. Você autoriza as cobranças no aplicativo do banco e as renovações seguem o período escolhido. Após a confirmação, o acesso é liberado e as instruções são enviadas por e-mail e WhatsApp. Você pode cancelar a próxima renovação e manter o acesso até o fim do período já pago.</p>
+          <p>No cartão, a Hubla cobra o período contratado: anual em até 12x de R$ 97, trimestral em até 3x de R$ 127 ou mensal de R$ 147, com renovação automática ao fim de cada período. O mesmo checkout oferece Pix Automático: R$ 997 por ano, R$ 357 por trimestre ou R$ 147 por mês. Você autoriza as cobranças no aplicativo do banco e as renovações seguem o período escolhido. Após a confirmação, o acesso é liberado e as instruções são enviadas por e-mail e WhatsApp. Você pode cancelar a próxima renovação e manter o acesso até o fim do período já pago.</p>
         </details>
         <details class="faq-item">
           <summary>Existe garantia?<span class="disclosure" aria-hidden="true"></span></summary>
@@ -2498,7 +2498,7 @@
       if (inputName.value.trim().length < 2) return 1;
       if (inputPhone.value.replace(/\D/g, '').length < 10) return Math.min(currentCheckoutStep, 2);
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail.value.trim())) return Math.min(currentCheckoutStep, 3);
-      return currentCheckoutStep;
+      return Math.min(currentCheckoutStep, 3);
     }
 
     function saveCheckoutProgress() {
@@ -2507,7 +2507,7 @@
           name: inputName.value,
           phone: inputPhone.value,
           email: inputEmail.value,
-          step: currentCheckoutStep,
+          step: Math.min(currentCheckoutStep, 3),
           plan: currentPlan,
         }));
       } catch (_) {
@@ -2531,7 +2531,7 @@
       for (const [key, input] of [['name', inputName], ['phone', inputPhone], ['email', inputEmail]]) {
         if (typeof saved[key] === 'string') input.value = saved[key];
       }
-      currentCheckoutStep = Number.isInteger(saved.step) && saved.step >= 1 && saved.step <= 4 ? saved.step : 1;
+      currentCheckoutStep = Number.isInteger(saved.step) && saved.step >= 1 && saved.step <= 3 ? saved.step : 1;
       currentCheckoutStep = getCheckoutResumeStep();
       if (Object.hasOwn(PLAN_CONFIG, saved.plan)) {
         const radio = document.querySelector('input[name="plano"][value="' + saved.plan + '"]');
@@ -2923,9 +2923,8 @@
       if (openingPayment) return;
       const selected = getSelectedPlan();
       updateModalPlanUI(selected);
-      const completed = getCheckoutResumeStep() === 4;
-      if (!completed) showCheckoutForm(selected);
-      if (!completed && modalOverlay) {
+      showCheckoutForm(selected);
+      if (modalOverlay) {
         modalOverlay.classList.add('active');
         modalOverlay.setAttribute('aria-hidden', 'false');
         if (!modalOverlay.open) modalOverlay.showModal();
@@ -2939,7 +2938,6 @@
         valueCents: Math.round(planVal * 100),
         currency: 'BRL'
       });
-      if (completed) continueToPayment();
     }
 
     function closeCheckoutModal() {
@@ -3062,12 +3060,12 @@
       currentCheckoutStep = 4;
       saveCheckoutProgress();
       openingPayment = true;
-      const emailButtonLabel = step3Btn.querySelector('span');
-      const pageButtonLabel = checkoutBtn.textContent;
-      emailButtonLabel.textContent = 'Abrindo pagamento...';
-      checkoutBtn.textContent = 'Abrindo pagamento...';
-      step3Btn.disabled = true;
-      checkoutBtn.disabled = true;
+      const emailButtonLabel = step3Btn ? step3Btn.querySelector('span') : null;
+      const pageButtonLabel = checkoutBtn ? checkoutBtn.textContent : '';
+      if (emailButtonLabel) emailButtonLabel.textContent = 'Abrindo pagamento...';
+      if (checkoutBtn) checkoutBtn.textContent = 'Abrindo pagamento...';
+      if (step3Btn) step3Btn.disabled = true;
+      if (checkoutBtn) checkoutBtn.disabled = true;
       try {
         await openHublaCheckout({ name, email, phone });
       } catch (error) {
@@ -3077,15 +3075,18 @@
         showCheckoutError('Não foi possível abrir o pagamento. Tente novamente em instantes.');
       } finally {
         openingPayment = false;
-        emailButtonLabel.textContent = 'Continuar para pagamento';
-        checkoutBtn.textContent = pageButtonLabel;
-        step3Btn.disabled = false;
-        checkoutBtn.disabled = false;
+        if (emailButtonLabel) emailButtonLabel.textContent = 'Continuar para pagamento';
+        if (checkoutBtn) checkoutBtn.textContent = pageButtonLabel;
+        if (step3Btn) step3Btn.disabled = false;
+        if (checkoutBtn) checkoutBtn.disabled = false;
       }
     }
 
     if (nativeForm) {
       nativeForm.addEventListener('submit', continueToPayment);
+    }
+    if (submitBtn) {
+      submitBtn.addEventListener('click', continueToPayment);
     }
 
     // 2. Galeria manual: rolagem nativa por toque, botões e teclado.

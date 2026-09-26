@@ -103,3 +103,15 @@ test('all page images are real local brand/case files with explicit dimensions',
     assert.match(attrs, /\balt="[^"]+"/);
   }
 });
+
+test('vagas checkout modal always opens on mobile and desktop without bypassing or dead widgets', () => {
+  for (const pagePath of ['vagas/index.html', 'vagas-v2/index.html']) {
+    const content = fs.readFileSync(path.join(root, pagePath), 'utf8');
+    assert.ok(!content.includes('prepareHotmartWidget'), `${pagePath} must not reference dead prepareHotmartWidget`);
+    assert.match(content, /function openCheckoutModal\(e\)\s*\{[\s\S]*?showCheckoutForm\(selected\);[\s\S]*?modalOverlay\.showModal\(\);/, `${pagePath} must unconditionally open modalOverlay`);
+    assert.ok(!content.includes('if (completed) continueToPayment();'), `${pagePath} must not bypass modalOverlay on completed state`);
+    assert.match(content, /return Math\.min\(currentCheckoutStep, 3\);/, `${pagePath} getCheckoutResumeStep must be capped at 3`);
+    assert.match(content, /<script[^>]*src="\/assets\/js\/hubla-checkout\.js/, `${pagePath} must load hubla-checkout.js`);
+  }
+});
+
