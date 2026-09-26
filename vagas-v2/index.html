@@ -2774,7 +2774,11 @@
       const compactPrice = document.getElementById('chkPlanCompactPrice');
       if (compactPrice) compactPrice.textContent = '· ' + info.cardVal;
       if (btnText) btnText.textContent = 'Continuar para pagamento';
-      document.getElementById('chkPaymentTerms').textContent = window.ImobiturboHotmart.plans[currentPlan].terms;
+      const checkoutHelper = window.ImobiturboHubla || window.ImobiturboHotmart;
+      const paymentTerms = document.getElementById('chkPaymentTerms');
+      if (paymentTerms && checkoutHelper?.plans?.[currentPlan]?.terms) {
+        paymentTerms.textContent = checkoutHelper.plans[currentPlan].terms;
+      }
     }
 
     planRadios.forEach(radio => {
@@ -2918,7 +2922,6 @@
       if (e) e.preventDefault();
       if (openingPayment) return;
       const selected = getSelectedPlan();
-      prepareHotmartWidget();
       updateModalPlanUI(selected);
       const completed = getCheckoutResumeStep() === 4;
       if (!completed) showCheckoutForm(selected);
@@ -3766,7 +3769,8 @@
       const phone = document.getElementById('leadPhone').value.trim();
       if (!fullname || !email || !phone) return;
       const tracking = { ...getUtms(), visitorId: getVisitorId() };
-      const url = window.ImobiturboHotmart.buildUrl(currentSelectedPlan, { name: fullname, email, phone }, tracking);
+      const checkoutHelper = window.ImobiturboHubla || window.ImobiturboHotmart;
+      const url = checkoutHelper.buildUrl(currentSelectedPlan, { name: fullname, email, phone }, tracking);
       closeLeadModal();
       window.location.assign(url);
     }

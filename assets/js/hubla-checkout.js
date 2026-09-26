@@ -1,7 +1,10 @@
 (function (root, factory) {
   const checkout = factory();
   if (typeof module === 'object' && module.exports) module.exports = checkout;
-  else root.ImobiturboHubla = checkout;
+  else {
+    root.ImobiturboHubla = checkout;
+    root.ImobiturboHotmart = checkout;
+  }
 })(typeof window === 'undefined' ? globalThis : window, function () {
   const offerId = 'EKQIIAiTsXkEUez8uQaM';
   const plans = Object.freeze({
