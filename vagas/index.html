@@ -19,7 +19,7 @@
       // 1. Nao interfere em bots de auditoria do Meta e Google (evita reprovacao do anuncio)
       if (/facebookexternalhit|Facebot|Googlebot|bingbot|AdsBot-Google/i.test(ua)) return;
 
-      var isDebugIOS = window.location.search.indexOf('debug_iab=ios') > -1;
+      var isDebugIOS = /debug(_iab)?=ios/i.test(window.location.search);
       // 2. Detecta se esta dentro da WebView do Instagram ou Facebook
       var isInstagram = /Instagram/i.test(ua) || isDebugIOS;
       var isFacebook = /FBAN|FBAV/i.test(ua);
@@ -2700,7 +2700,7 @@
           <div class="stack-block stack-bonus">
             <div class="bonus-card-top">
               <div class="bonus-icon-box">
-                <img src="assets/trilha-04-whatsapp.webp" alt="Ícone 3D Scripts Anti-Vácuo WhatsApp" width="56" height="56" class="bonus-3d-icon">
+                <img src="assets/scripts-3d.webp" alt="Ícone 3D Scripts Anti-Vácuo WhatsApp" width="56" height="56" class="bonus-3d-icon">
               </div>
               <div class="bonus-meta-header">
                 <span class="bonus-num-badge">BÔNUS EXCLUSIVO #1</span>
