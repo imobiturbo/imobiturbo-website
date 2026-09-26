@@ -89,7 +89,130 @@ export async function onRequestPost(context) {
   const todayStr = new Date().toISOString().split("T")[0];
 
   // ==========================================
-  // ESTRATÉGIA 1: ABACATEPAY (GATEWAY PRINCIPAL)
+  // ESTRATÉGIA 1: PIX VIA ASAAS (QUANDO SOLICITADO OU DEFAULT)
+  // ==========================================
+  const requestedGateway = (body.gateway || "").toString().toLowerCase();
+
+  if (paymentMethod === "PIX" && requestedGateway === "asaas") {
+    if (!asaasKey) {
+      return Response.json({ success: false, error: "Pix via Asaas temporariamente indisponível." }, { status: 503, headers: CORS_HEADERS });
+    }
+    try {
+      const asaasHeaders = {
+        access_token: asaasKey,
+        "Content-Type": "application/json",
+        "User-Agent": "Imobiturbo-Checkout/1.0",
+      };
+
+      // Localizar ou Criar Cliente no Asaas
+      let asaasCustomerId = null;
+      if (cleanCpf && cleanCpf.length >= 11) {
+        try {
+          const searchCpf = await fetch(
+            `https://api.asaas.com/v3/customers?cpfCnpj=${encodeURIComponent(cleanCpf)}&limit=1`,
+            { headers: asaasHeaders, signal: AbortSignal.timeout(4000) }
+          );
+          const searchData = await searchCpf.json();
+          if (searchData.data && searchData.data.length > 0) {
+            asaasCustomerId = searchData.data[0].id;
+          }
+        } catch {}
+      }
+
+      if (!asaasCustomerId && email && email.includes("@")) {
+        try {
+          const searchEmail = await fetch(
+            `https://api.asaas.com/v3/customers?email=${encodeURIComponent(email.trim().toLowerCase())}&limit=1`,
+            { headers: asaasHeaders, signal: AbortSignal.timeout(4000) }
+          );
+          const searchData = await searchEmail.json();
+          if (searchData.data && searchData.data.length > 0) {
+            asaasCustomerId = searchData.data[0].id;
+          }
+        } catch {}
+      }
+
+      if (!asaasCustomerId) {
+        const custResp = await fetch("https://api.asaas.com/v3/customers", {
+          method: "POST",
+          headers: asaasHeaders,
+          body: JSON.stringify({
+            name: name.trim() || "Lead Comunidade",
+            email: email.trim().toLowerCase(),
+            mobilePhone: cleanPhone,
+            phone: cleanPhone,
+            cpfCnpj: cleanCpf,
+            notificationDisabled: true,
+          }),
+          signal: AbortSignal.timeout(5000),
+        });
+        const custData = await custResp.json();
+        if (custData.id) {
+          asaasCustomerId = custData.id;
+        } else {
+          const msg = (custData.errors && custData.errors[0]?.description) || "Erro ao registrar cliente no Asaas";
+          return Response.json({ success: false, gateway: "asaas", error: msg }, { status: 422, headers: CORS_HEADERS });
+        }
+      }
+
+      const paymentPayload = {
+        customer: asaasCustomerId,
+        billingType: "PIX",
+        value: selectedPlan.pixReais,
+        dueDate: todayStr,
+        description: selectedPlan.title,
+        externalReference: eventId,
+      };
+
+      const payResp = await fetch("https://api.asaas.com/v3/payments", {
+        method: "POST",
+        headers: asaasHeaders,
+        body: JSON.stringify(paymentPayload),
+        signal: AbortSignal.timeout(5000),
+      });
+      const payment = await payResp.json();
+
+      if (!payment.id) {
+        const errMsg = (payment.errors && payment.errors[0]?.description) || "Falha ao gerar cobrança Asaas";
+        return Response.json({ success: false, gateway: "asaas", error: errMsg }, { status: 422, headers: CORS_HEADERS });
+      }
+
+      const qrResp = await fetch(`https://api.asaas.com/v3/payments/${payment.id}/pixQrCode`, {
+        headers: asaasHeaders,
+        signal: AbortSignal.timeout(4000),
+      });
+      const qrData = await qrResp.json();
+
+      return new Response(
+        JSON.stringify({
+          success: true,
+          gateway: "asaas",
+          paymentId: payment.id,
+          billingType: "PIX",
+          status: payment.status || "PENDING",
+          amount: payment.value,
+          plan,
+          pix: {
+            copyPaste: qrData.payload,
+            qrCodeBase64: `data:image/png;base64,${qrData.encodedImage}`,
+            expiresAt: qrData.expirationDate,
+          },
+          invoiceUrl: payment.invoiceUrl,
+          eventId,
+          clientIp: request.headers.get("cf-connecting-ip") || null,
+        }),
+        {
+          status: 200,
+          headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+        }
+      );
+    } catch (err) {
+      return Response.json({ success: false, gateway: "asaas", error: `Erro ao gerar Pix no Asaas: ${err.message}` }, { status: 502, headers: CORS_HEADERS });
+    }
+  }
+
+  // ==========================================
+  // ESTRATÉGIA 2: ABACATEPAY PIX (FALLBACK/PADRÃO)
   // ==========================================
   let abacateError = null;
 
@@ -311,77 +434,160 @@ export async function onRequestPost(context) {
         name: creditCard.holderName || name,
         email: email.trim().toLowerCase(),
         cpfCnpj: cleanCpf,
-        postalCode: "20050005",
-        addressNumber: "1",
+        postalCode: creditCard.postalCode || "20050005",
+        addressNumber: creditCard.addressNumber || "1",
         phone: cleanPhone,
         mobilePhone: cleanPhone,
       };
 
-      const cardPayload = {
-        customer: asaasCustomerId,
-        billingType: "CREDIT_CARD",
-        dueDate: todayStr,
-        description: selectedPlan.title,
-        creditCard: {
-          holderName: creditCard.holderName || name,
-          number: (creditCard.number || "").replace(/\D/g, ""),
-          expiryMonth: creditCard.expiryMonth,
-          expiryYear: creditCard.expiryYear,
-          ccv: creditCard.ccv,
-        },
-        creditCardHolderInfo: holderInfo,
-        externalReference: eventId,
-      };
+      if (plan === "mensal") {
+        // ASSINATURA RECORRENTE MENSAL VIA ASAAS (/v3/subscriptions)
+        const subPayload = {
+          customer: asaasCustomerId,
+          billingType: "CREDIT_CARD",
+          value: selectedPlan.pixReais,
+          nextDueDate: todayStr,
+          cycle: "MONTHLY",
+          description: selectedPlan.title,
+          creditCard: {
+            holderName: creditCard.holderName || name,
+            number: (creditCard.number || "").replace(/\D/g, ""),
+            expiryMonth: creditCard.expiryMonth,
+            expiryYear: creditCard.expiryYear,
+            ccv: creditCard.ccv,
+          },
+          creditCardHolderInfo: holderInfo,
+          externalReference: eventId,
+        };
 
-      if (selectedPlan.cardInstallmentCount > 1) {
-        cardPayload.installmentCount = selectedPlan.cardInstallmentCount;
-        cardPayload.installmentValue = selectedPlan.cardInstallmentValue;
-      } else {
-        cardPayload.value = selectedPlan.pixReais;
-      }
+        const subResp = await fetch("https://api.asaas.com/v3/subscriptions", {
+          method: "POST",
+          headers: asaasHeaders,
+          body: JSON.stringify(subPayload),
+          signal: AbortSignal.timeout(8000),
+        });
+        const subData = await subResp.json();
 
-      const payResp = await fetch("https://api.asaas.com/v3/payments", {
-        method: "POST",
-        headers: asaasHeaders,
-        body: JSON.stringify(cardPayload),
-        signal: AbortSignal.timeout(8000),
-      });
-      const payment = await payResp.json();
+        if (!subData.id) {
+          const errMsg =
+            (subData.errors && subData.errors.map((e) => e.description).join(" | ")) ||
+            "Erro ao processar assinatura no cartão de crédito";
+          return new Response(
+            JSON.stringify({ success: false, gateway: "asaas", error: errMsg }),
+            { status: 422, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+          );
+        }
 
-      if (!payment.id) {
-        const errMsg =
-          (payment.errors && payment.errors.map((e) => e.description).join(" | ")) ||
-          "Erro ao processar cartão de crédito";
+        let paymentId = null;
+        let paymentStatus = subData.status || "ACTIVE";
+        let isApproved = true;
+        let invoiceUrl = subData.paymentLink || null;
+
+        try {
+          const payListResp = await fetch(
+            `https://api.asaas.com/v3/subscriptions/${subData.id}/payments?limit=1`,
+            { headers: asaasHeaders, signal: AbortSignal.timeout(4000) }
+          );
+          const payListData = await payListResp.json();
+          if (payListData.data && payListData.data.length > 0) {
+            const firstPayment = payListData.data[0];
+            paymentId = firstPayment.id;
+            paymentStatus = firstPayment.status;
+            invoiceUrl = firstPayment.invoiceUrl || invoiceUrl;
+            isApproved =
+              firstPayment.status === "CONFIRMED" ||
+              firstPayment.status === "RECEIVED" ||
+              firstPayment.status === "RECEIVED_IN_CASH";
+          }
+        } catch (_) {}
+
         return new Response(
-          JSON.stringify({ success: false, gateway: "asaas", error: errMsg }),
-          { status: 422, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+          JSON.stringify({
+            success: true,
+            gateway: "asaas",
+            subscriptionId: subData.id,
+            paymentId: paymentId || subData.id,
+            billingType: "CREDIT_CARD",
+            status: paymentStatus,
+            isApproved,
+            amount: selectedPlan.pixReais,
+            plan,
+            invoiceUrl,
+            eventId,
+            clientIp: request.headers.get("cf-connecting-ip") || null,
+          }),
+          {
+            status: 200,
+            headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+          }
+        );
+      } else {
+        const cardPayload = {
+          customer: asaasCustomerId,
+          billingType: "CREDIT_CARD",
+          dueDate: todayStr,
+          description: selectedPlan.title,
+          creditCard: {
+            holderName: creditCard.holderName || name,
+            number: (creditCard.number || "").replace(/\D/g, ""),
+            expiryMonth: creditCard.expiryMonth,
+            expiryYear: creditCard.expiryYear,
+            ccv: creditCard.ccv,
+          },
+          creditCardHolderInfo: holderInfo,
+          externalReference: eventId,
+        };
+
+        if (selectedPlan.cardInstallmentCount > 1) {
+          cardPayload.installmentCount = selectedPlan.cardInstallmentCount;
+          cardPayload.installmentValue = selectedPlan.cardInstallmentValue;
+        } else {
+          cardPayload.value = selectedPlan.pixReais;
+        }
+
+        const payResp = await fetch("https://api.asaas.com/v3/payments", {
+          method: "POST",
+          headers: asaasHeaders,
+          body: JSON.stringify(cardPayload),
+          signal: AbortSignal.timeout(8000),
+        });
+        const payment = await payResp.json();
+
+        if (!payment.id) {
+          const errMsg =
+            (payment.errors && payment.errors.map((e) => e.description).join(" | ")) ||
+            "Erro ao processar cartão de crédito";
+          return new Response(
+            JSON.stringify({ success: false, gateway: "asaas", error: errMsg }),
+            { status: 422, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
+          );
+        }
+
+        const isApproved =
+          payment.status === "CONFIRMED" ||
+          payment.status === "RECEIVED" ||
+          payment.status === "RECEIVED_IN_CASH";
+
+        return new Response(
+          JSON.stringify({
+            success: true,
+            gateway: "asaas",
+            paymentId: payment.id,
+            billingType: "CREDIT_CARD",
+            status: payment.status,
+            isApproved,
+            amount: payment.value,
+            plan,
+            invoiceUrl: payment.invoiceUrl,
+            eventId,
+            clientIp: request.headers.get("cf-connecting-ip") || null,
+          }),
+          {
+            status: 200,
+            headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
+          }
         );
       }
-
-      const isApproved =
-        payment.status === "CONFIRMED" ||
-        payment.status === "RECEIVED" ||
-        payment.status === "RECEIVED_IN_CASH";
-
-      return new Response(
-        JSON.stringify({
-          success: true,
-          gateway: "asaas",
-          paymentId: payment.id,
-          billingType: "CREDIT_CARD",
-          status: payment.status,
-          isApproved,
-          amount: payment.value,
-          plan,
-          invoiceUrl: payment.invoiceUrl,
-          eventId,
-          clientIp: request.headers.get("cf-connecting-ip") || null,
-        }),
-        {
-          status: 200,
-          headers: { ...CORS_HEADERS, "Content-Type": "application/json" },
-        }
-      );
     } else {
       return new Response(
         JSON.stringify({ success: false, error: "Método de pagamento inválido" }),

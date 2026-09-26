@@ -97,14 +97,19 @@ export async function onRequestGet(context) {
         { status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
       );
     } else if (gateway === "asaas") {
+      let asaasUrl = `https://api.asaas.com/v3/payments/${encodeURIComponent(paymentId)}`;
+      if (paymentId.startsWith("sub_")) {
+        asaasUrl = `https://api.asaas.com/v3/subscriptions/${encodeURIComponent(paymentId)}/payments?limit=1`;
+      }
       const resp = await fetch(
-        `https://api.asaas.com/v3/payments/${encodeURIComponent(paymentId)}`,
+        asaasUrl,
         {
           headers: { access_token: asaasKey },
           signal: AbortSignal.timeout(5000),
         }
       );
-      const data = await resp.json();
+      const rawData = await resp.json();
+      const data = (rawData.data && rawData.data[0]) || rawData;
 
       if (resp.ok && data.id) {
         const isPaid =
@@ -117,8 +122,8 @@ export async function onRequestGet(context) {
           const amount = Number(data.value || 997);
           const contentName = data.description || "Comunidade Imobiturbo";
           const promise = Promise.allSettled([
-            dispatchPurchaseToMetaCapi({ env, request, paymentId, eventId, amount, contentName, email: "", phone: "", name: "" }),
-            dispatchVerifiedPurchaseToHub({ env, request, paymentId, eventId, amount, contentName, email: "", phone: "", name: "" }),
+            dispatchPurchaseToMetaCapi({ env, request, paymentId: data.id, eventId, amount, contentName, email: "", phone: "", name: "" }),
+            dispatchVerifiedPurchaseToHub({ env, request, paymentId: data.id, eventId, amount, contentName, email: "", phone: "", name: "" }),
           ]);
           if (context.waitUntil) {
             context.waitUntil(promise);
@@ -131,7 +136,7 @@ export async function onRequestGet(context) {
           JSON.stringify({
             success: true,
             gateway: "asaas",
-            paymentId,
+            paymentId: data.id,
             status: data.status,
             paid: isPaid,
             invoiceUrl: data.invoiceUrl,
