@@ -118,3 +118,78 @@ test('vagas checkout modal always opens on mobile and desktop without bypassing 
   }
 });
 
+test('vagas checkout strictly validates Brazilian DDDs and blocks fake/dummy WhatsApp numbers', () => {
+  const vm = require('node:vm');
+
+  for (const pagePath of ['vagas/index.html', 'vagas-v2/index.html']) {
+    const content = fs.readFileSync(path.join(root, pagePath), 'utf8');
+
+    assert.ok(content.includes('const VALID_BRAZILIAN_DDDS = new Set(['), `${pagePath} must declare VALID_BRAZILIAN_DDDS`);
+    assert.ok(content.includes('function getPhoneValidationError(val)'), `${pagePath} must define getPhoneValidationError`);
+    assert.ok(content.includes('function isValidBrazilianPhone(val)'), `${pagePath} must define isValidBrazilianPhone`);
+    assert.ok(content.includes('!isValidBrazilianPhone(inputPhone.value)'), `${pagePath} getCheckoutResumeStep must use isValidBrazilianPhone`);
+    assert.ok(content.includes('const phoneErr = getPhoneValidationError(phoneVal);'), `${pagePath} step2Btn must validate phone via getPhoneValidationError`);
+    assert.ok(content.includes('const phoneErr = getPhoneValidationError(phone);'), `${pagePath} continueToPayment must validate phone via getPhoneValidationError`);
+
+    // Extract the phone validation block and execute in sandbox
+    const match = content.match(/(const VALID_BRAZILIAN_DDDS = new Set\([\s\S]*?window\.isValidBrazilianPhone = isValidBrazilianPhone;\s*)/);
+    assert.ok(match, `${pagePath} must contain validatable phone logic block`);
+
+    const sandbox = { window: {} };
+    vm.createContext(sandbox);
+    vm.runInContext(match[1], sandbox);
+
+    const { VALID_BRAZILIAN_DDDS, getPhoneValidationError, isValidBrazilianPhone } = sandbox.window;
+    assert.equal(VALID_BRAZILIAN_DDDS.size, 67, 'Must map all 67 Anatel DDDs');
+
+    // Reject non-existent DDDs
+    const fakeDdds = ['00', '10', '20', '23', '25', '26', '29', '30', '36', '39', '50', '52', '56', '70', '72', '76', '78'];
+    for (const ddd of fakeDdds) {
+      assert.ok(!VALID_BRAZILIAN_DDDS.has(ddd), `DDD ${ddd} must not exist`);
+      const err = getPhoneValidationError(`(${ddd}) 98765-4321`);
+      assert.match(err, new RegExp(`O DDD ${ddd} não existe no Brasil`), `Fake DDD ${ddd} must be rejected with specific error`);
+      assert.equal(isValidBrazilianPhone(`(${ddd}) 98765-4321`), false);
+    }
+
+    // Reject dummy repeating numbers
+    const dummyNumbers = [
+      '(11) 99999-9999',
+      '(11) 98888-8888',
+      '(11) 90000-0000',
+      '(11) 91111-1111',
+      '(11) 11111-1111',
+      '(00) 00000-0000',
+      '(11) 91234-5678',
+      '(11) 98765-4321',
+      '(11) 90123-4567',
+      '(11) 97654-3210',
+      '(11) 3234-5678',
+      '12345',
+      ''
+    ];
+    for (const num of dummyNumbers) {
+      assert.ok(getPhoneValidationError(num) !== null, `Dummy number ${num} must be rejected`);
+      assert.equal(isValidBrazilianPhone(num), false, `Dummy number ${num} must be invalid`);
+    }
+
+    // Accept real Brazilian mobile numbers across regions
+    const realNumbers = [
+      '(11) 98765-4320', // SP
+      '(21) 98374-7796', // RJ
+      '(31) 99871-2305', // MG
+      '(47) 98412-9988', // SC
+      '(61) 99128-4455', // DF
+      '(71) 98822-3344', // BA
+      '(85) 98711-2233', // CE
+      '(92) 98123-4560', // AM
+      '+55 (11) 98765-4320', // with +55 prefix
+      '11987654320' // plain digits
+    ];
+    for (const num of realNumbers) {
+      assert.equal(getPhoneValidationError(num), null, `Real number ${num} must be accepted`);
+      assert.equal(isValidBrazilianPhone(num), true, `Real number ${num} must be valid`);
+    }
+  }
+});
+
+

@@ -2498,10 +2498,54 @@
       return parts.length >= 2 && parts[0].length >= 2 && parts[1].length >= 2;
     }
 
+    const VALID_BRAZILIAN_DDDS = new Set([
+      '11', '12', '13', '14', '15', '16', '17', '18', '19',
+      '21', '22', '24', '27', '28',
+      '31', '32', '33', '34', '35', '37', '38',
+      '41', '42', '43', '44', '45', '46', '47', '48', '49',
+      '51', '53', '54', '55',
+      '61', '62', '63', '64', '65', '66', '67', '68', '69',
+      '71', '73', '74', '75', '77', '79',
+      '81', '82', '83', '84', '85', '86', '87', '88', '89',
+      '91', '92', '93', '94', '95', '96', '97', '98', '99'
+    ]);
+
+    function getPhoneValidationError(val) {
+      let clean = (val || '').replace(/\D/g, '');
+      if (clean.length > 11 && clean.startsWith('55')) {
+        clean = clean.slice(2);
+      }
+      if (!clean) return 'Por favor, informe seu WhatsApp com DDD.';
+      if (clean.length < 11) return 'Número incompleto. O WhatsApp deve ter DDD + 9 dígitos (ex: (11) 98765-4321).';
+      if (clean.length > 11) return 'Número inválido. Digite apenas o DDD + 9 dígitos do seu celular.';
+      const ddd = clean.slice(0, 2);
+      if (!VALID_BRAZILIAN_DDDS.has(ddd)) return 'O DDD ' + ddd + ' não existe no Brasil. Por favor, confira o DDD da sua região.';
+      if (clean[2] !== '9') return 'Número inválido. No Brasil, todo WhatsApp de celular deve iniciar com o dígito 9 após o DDD.';
+      if (/^(\d)\1{10}$/.test(clean)) return 'Por favor, informe um número de WhatsApp real e válido.';
+      const sub8 = clean.slice(3);
+      const sub9 = clean.slice(2);
+      if (/^(\d)\1{7}$/.test(sub8) || /^(\d)\1{8}$/.test(sub9)) {
+        return 'Por favor, informe um número de WhatsApp real e válido.';
+      }
+      const dummySequences = ['12345678', '87654321', '01234567', '76543210'];
+      if (dummySequences.includes(sub8) || sub9 === '987654321' || sub9 === '912345678') {
+        return 'Por favor, informe um número de WhatsApp real e ativo.';
+      }
+      return null;
+    }
+
+    function isValidBrazilianPhone(val) {
+      return getPhoneValidationError(val) === null;
+    }
+
+    window.VALID_BRAZILIAN_DDDS = VALID_BRAZILIAN_DDDS;
+    window.getPhoneValidationError = getPhoneValidationError;
+    window.isValidBrazilianPhone = isValidBrazilianPhone;
+
     function getCheckoutResumeStep() {
       // Saved progress never bypasses the existing identification requirements.
       if (!isValidFullName(inputName.value)) return 1;
-      if (inputPhone.value.replace(/\D/g, '').length < 10) return Math.min(currentCheckoutStep, 2);
+      if (!isValidBrazilianPhone(inputPhone.value)) return Math.min(currentCheckoutStep, 2);
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputEmail.value.trim())) return Math.min(currentCheckoutStep, 3);
       return Math.min(currentCheckoutStep, 3);
     }
@@ -2835,9 +2879,9 @@
     if (step2Btn && inputPhone) {
       step2Btn.addEventListener('click', () => {
         const phoneVal = inputPhone.value.trim();
-        const clean = phoneVal.replace(/\D/g, '');
-        if (clean.length < 10) {
-          showCheckoutError('Por favor, informe um WhatsApp válido com DDD.');
+        const phoneErr = getPhoneValidationError(phoneVal);
+        if (phoneErr) {
+          showCheckoutError(phoneErr);
           inputPhone.focus();
           return;
         }
@@ -2868,7 +2912,11 @@
     // Máscaras de entrada
     if (inputPhone) {
       inputPhone.addEventListener('input', function(e) {
-        let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+        let v = e.target.value.replace(/\D/g, '');
+        if (v.length > 11 && v.startsWith('55')) {
+          v = v.slice(2);
+        }
+        v = v.slice(0, 11);
         if (v.length > 10) {
           v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
         } else if (v.length > 6) {
@@ -3047,10 +3095,11 @@
         return;
       }
 
-      const cleanPhone = phone.replace(/\D/g, '');
-      if (cleanPhone.length < 10) {
+      const phoneErr = getPhoneValidationError(phone);
+      if (phoneErr) {
         goToCheckoutStep(2);
-        showCheckoutError('Por favor, informe seu WhatsApp com DDD.');
+        showCheckoutError(phoneErr);
+        if (inputPhone) inputPhone.focus();
         return;
       }
 
@@ -3756,6 +3805,9 @@
 
     function maskPhone(input) {
       let v = input.value.replace(/\D/g, '');
+      if (v.length > 11 && v.startsWith('55')) {
+        v = v.slice(2);
+      }
       if (v.length > 11) v = v.slice(0, 11);
       if (v.length > 10) {
         input.value = '(' + v.slice(0, 2) + ') ' + v.slice(2, 7) + '-' + v.slice(7);
@@ -3773,8 +3825,23 @@
       const fullname = document.getElementById('leadFullname').value.trim();
       const email = document.getElementById('leadEmail').value.trim();
       const phone = document.getElementById('leadPhone').value.trim();
-      if (!isValidFullName(fullname) || !email || !phone) {
+      if (!isValidFullName(fullname)) {
         alert('Por favor, informe seu nome e sobrenome completo.');
+        const nameInput = document.getElementById('leadFullname');
+        if (nameInput) nameInput.focus();
+        return;
+      }
+      const phoneErr = typeof getPhoneValidationError === 'function' ? getPhoneValidationError(phone) : null;
+      if (phoneErr) {
+        alert(phoneErr);
+        const leadPhoneInput = document.getElementById('leadPhone');
+        if (leadPhoneInput) leadPhoneInput.focus();
+        return;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Por favor, informe seu e-mail para receber o acesso.');
+        const emailInput = document.getElementById('leadEmail');
+        if (emailInput) emailInput.focus();
         return;
       }
       const tracking = { ...getUtms(), visitorId: getVisitorId() };
