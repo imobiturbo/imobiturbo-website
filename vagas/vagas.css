@@ -4359,9 +4359,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 18px 20px;
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  display: block;
   transition: all 0.2s ease;
 }
 
@@ -4372,15 +4370,16 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 
 .cio-tool-icon {
-  width: 48px;
-  height: 48px;
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 10px;
   object-fit: contain;
-  flex-shrink: 0;
   filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.4));
 }
 
 .cio-tool-info {
-  flex: 1;
+  min-width: 0;
 }
 
 .cio-tool-badge {
@@ -4554,4 +4553,3 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
     padding: 20px 16px;
   }
 }
-
