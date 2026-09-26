@@ -2385,7 +2385,7 @@
 
 <!-- JAVASCRIPT: Seletor de Planos, Checkout Nativo & Galeria -->
 <a id="hotmartCheckoutLink" class="hotmart-fb" hidden aria-hidden="true" tabindex="-1"></a>
-<script src="/assets/js/hotmart-checkout.js?v=20260923"></script>
+<script src="/assets/js/hubla-checkout.js?v=20260925"></script>
 <script>
   (function() {
     const hubTrackerQueue = [];
@@ -2887,38 +2887,16 @@
     restoreCheckoutProgress();
 
     let openingPayment = false;
-    let hotmartWidgetFailed = false;
 
-    function prepareHotmartWidget() {
-      if (document.getElementById('hotmartWidgetScript')) return;
-      const script = document.createElement('script');
-      script.id = 'hotmartWidgetScript';
-      script.src = 'https://static.hotmart.com/checkout/widget.min.js';
-      script.async = true;
-      script.addEventListener('error', () => { hotmartWidgetFailed = true; });
-      document.head.appendChild(script);
-    }
-
-    async function openHotmartCheckout(buyer) {
-      const url = window.ImobiturboHotmart.buildUrl(currentPlan, buyer, {
+    async function openHublaCheckout(buyer) {
+      const checkoutHelper = window.ImobiturboHubla || window.ImobiturboHotmart;
+      const url = checkoutHelper.buildUrl(currentPlan, buyer, {
         ...getUtms(), visitorId: getVisitorId(),
       });
-      prepareHotmartWidget();
-      // A returning buyer may click before the widget and its dependencies load.
-      const deadline = Date.now() + 8000;
-      while (!window.jQuery?.fancybox && !hotmartWidgetFailed && Date.now() < deadline) {
-        await new Promise(resolve => setTimeout(resolve, 50));
-      }
       closeCheckoutModal();
-      const link = document.getElementById('hotmartCheckoutLink');
-      if (link && window.jQuery?.fancybox) {
-        link.href = url;
-        link.click();
-      } else {
-        // Falha/carregamento do widget mantém o checkout hospedado disponível.
-        window.location.assign(url);
-      }
+      window.location.assign(url);
     }
+    const openHotmartCheckout = openHublaCheckout;
 
     function fireLeadTrackingEvent() {
       const name = (inputName ? inputName.value : '').trim();
@@ -3088,7 +3066,7 @@
       step3Btn.disabled = true;
       checkoutBtn.disabled = true;
       try {
-        await openHotmartCheckout({ name, email, phone });
+        await openHublaCheckout({ name, email, phone });
       } catch (error) {
         goToCheckoutStep(3);
         openingPayment = false;
