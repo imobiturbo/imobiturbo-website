@@ -538,9 +538,15 @@ export async function onRequestPost(context) {
           externalReference: eventId,
         };
 
-        if (selectedPlan.cardInstallmentCount > 1) {
-          cardPayload.installmentCount = selectedPlan.cardInstallmentCount;
-          cardPayload.installmentValue = selectedPlan.cardInstallmentValue;
+        const reqInstallments = parseInt(body.installments, 10);
+        let installmentCount = selectedPlan.cardInstallmentCount;
+        if (Number.isInteger(reqInstallments) && reqInstallments >= 1 && reqInstallments <= 12) {
+          installmentCount = reqInstallments;
+        }
+
+        if (installmentCount > 1) {
+          cardPayload.installmentCount = installmentCount;
+          cardPayload.totalValue = selectedPlan.cardTotalValue;
         } else {
           cardPayload.value = selectedPlan.pixReais;
         }

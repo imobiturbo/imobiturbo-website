@@ -28,7 +28,8 @@ test("vagas/index.html contains complete embedded checkout modal markup and comp
   assert.ok(html.includes('id="chkChangePlanTrigger"'), "Must contain #chkChangePlanTrigger to switch plans");
   assert.ok(html.includes('id="chkModalPlanName"'), "Must contain #chkModalPlanName");
   assert.ok(html.includes('id="chkModalPlanPrice"'), "Must contain #chkModalPlanPrice");
-  assert.ok(html.includes('id="chkPaymentTerms"'), "Must contain #chkPaymentTerms");
+  assert.ok(!html.includes('id="chkPaymentTerms"'), "Must NOT contain #chkPaymentTerms (excess text removed)");
+  assert.ok(html.includes('id="chkModalPlanEco"'), "Must contain #chkModalPlanEco for annual plan savings");
 });
 
 test("vagas/vagas.css enforces proper styling and contrast on checkout buttons", () => {
@@ -67,9 +68,8 @@ test("vagas/index.html enforces Dark Mode and annual plan price formatting", () 
   assert.ok(html.includes('content="dark"'), "Must declare color-scheme dark");
 
   // Mobile price formatting in markup & PLAN_CONFIG
-  assert.ok(html.includes('<small>12x </small><b>R$ 97</b>'), "Must render 12x in small and R$ 97 in bold");
-  assert.ok(html.includes("priceDisplay: '<small>12x </small><b>R$ 97</b>'"), "PLAN_CONFIG must format anual plan with small prefix and green R$ 97");
-
+  assert.ok(html.includes('<b>R$ 97</b><small>/mês</small>'), "Must render R$ 97 in bold and /mês in small");
+  assert.ok(html.includes("priceDisplay: '<b>R$ 97</b><small>/mês</small>'"), "PLAN_CONFIG must format anual plan with standard R$ 97/mês");
 });
 
 test("functions/api/checkout/index.js retains AbacatePay Pix and legacy Asaas endpoints", () => {
