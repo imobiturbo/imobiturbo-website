@@ -5693,13 +5693,24 @@
       background-color: #588e2b !important;
     }
     /* Pop-up de campanha: transparência total sem caixa branca ao redor */
+    .woot-widget-holder {
+      background: transparent !important;
+      background-color: transparent !important;
+      box-shadow: none !important;
+    }
     .woot-widget-holder.has-unread-view {
       background: transparent !important;
       background-color: transparent !important;
       box-shadow: none !important;
       border: none !important;
     }
+    .woot-widget-holder iframe {
+      color-scheme: dark !important;
+      background: transparent !important;
+      background-color: transparent !important;
+    }
     .woot-widget-holder.has-unread-view iframe {
+      color-scheme: dark !important;
       background: transparent !important;
       background-color: transparent !important;
       box-shadow: none !important;
@@ -5727,9 +5738,22 @@
       welcomeTitle: 'Natan Pimentel',
       welcomeDescription: 'Opa, tudo certo? Bora alavancar essas comissões?',
       availableMessage: 'Estamos On-line',
-      unavailableMessage: 'Estamos On-line'
+      unavailableMessage: 'Estamos On-line',
+      darkMode: 'auto'
     };
     (function(d,t) {
+      var origCreate = d.createElement.bind(d);
+      d.createElement = function(tag, opt) {
+        var el = origCreate(tag, opt);
+        if (typeof tag === 'string' && tag.toLowerCase() === 'iframe') {
+          el.setAttribute('allowtransparency', 'true');
+          el.style.setProperty('color-scheme', 'dark', 'important');
+          el.style.setProperty('background', 'transparent', 'important');
+          el.style.setProperty('background-color', 'transparent', 'important');
+        }
+        return el;
+      };
+
       var BASE_URL = "https://suporte.imobiturbo.com.br";
       var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
       g.src = BASE_URL + "/packs/js/sdk.js";
