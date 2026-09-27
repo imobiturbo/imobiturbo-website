@@ -90,9 +90,9 @@ input, textarea { caret-color: var(--accent); }
 .offer-copy>.button { width: 100%; }
 .purchase-note { margin-top: 12px; text-align: center; }
 .decline { display: block; width: fit-content; margin: 9px auto 0; padding-block: 6px; color: #d3d7ce; text-align: center; font-size: 13px; text-decoration: underline; }
-.portrait { position: relative; align-self: stretch; min-height: 510px; overflow: hidden; border-radius: 14px; background: #464b40; }
-.portrait>img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; object-position: center 20%; }
-.portrait figcaption { position: absolute; inset: auto 0 0; display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; align-items: end; padding: 100px 28px 26px; background: linear-gradient(180deg, transparent, rgba(14, 16, 13, .94) 70%); color: var(--text); line-height: 1.45; }
+.portrait { position: relative; align-self: center; overflow: hidden; border-radius: 14px; background: var(--bg); }
+.portrait>img { width: 100%; height: auto; display: block; }
+.portrait figcaption { position: relative; display: grid; grid-template-columns: 1fr auto; gap: 2px 16px; align-items: end; margin-top: -60px; padding: 60px 28px 26px; background: linear-gradient(180deg, transparent, var(--bg) 60px); color: var(--text); line-height: 1.45; }
 .portrait figcaption .portrait-name { color: var(--text); font-size: 16px; font-weight: 750; }
 .portrait figcaption>span:nth-child(2) { grid-row: 2; color: #d0d5c8; font-size: 12px; }
 .portrait figcaption strong { grid-column: 2; grid-row: 1 / 3; color: var(--accent); font-size: 17px; font-weight: 750; line-height: 1.4; }
@@ -212,7 +212,6 @@ footer nav { display: flex; gap: 20px; }
 
 @media (max-width: 900px) {
   .offer { grid-template-columns: 1.04fr 1fr; gap: 34px; }
-  .portrait { min-height: 560px; }
   .portrait figcaption { grid-template-columns: 1fr; padding-inline: 22px; }
   .portrait figcaption strong { grid-column: 1; grid-row: 3; margin-top: 12px; }
   .working-session, .payment-section, .takeaway-inner, .section-heading, .final-invite, .faq-layout { gap: 40px; }
@@ -254,9 +253,8 @@ footer nav { display: flex; gap: 20px; }
   .button { min-height: 56px; padding: 15px 16px; font-size: 15px; }
   .purchase-note { font-size: 12px; }
   .decline { font-size: 12px; line-height: 1.6; }
-  .portrait { width: 100%; min-height: 0; height: 440px; border-radius: 12px; }
-  .portrait>img { object-position: center 17%; }
-  .portrait figcaption { grid-template-columns: 1fr auto; gap: 3px 12px; padding: 85px 21px 22px; }
+  .portrait { width: 100%; border-radius: 12px; }
+  .portrait figcaption { grid-template-columns: 1fr auto; gap: 3px 12px; padding: 60px 21px 22px; }
   .portrait figcaption strong { grid-column: 2; grid-row: 1 / 3; margin: 0; font-size: 14px; }
   .portrait figcaption .portrait-name { font-size: 14px; }
   .portrait figcaption>span:nth-child(2) { font-size: 11px; }
@@ -313,7 +311,6 @@ footer nav { display: flex; gap: 20px; }
   .journey-steps { width: 100%; }
   .journey-steps li { gap: 5px; padding-inline: 4px; }
   .journey-steps .step-number { width: 18px; height: 18px; flex-basis: 18px; }
-  .portrait { height: 376px; }
   .portrait figcaption { grid-template-columns: 1fr; padding-inline: 20px; }
   .portrait figcaption strong { grid-column: 1; grid-row: 3; margin-top: 9px; }
   .button { padding-inline: 12px; font-size: 14px; }
