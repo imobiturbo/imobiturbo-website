@@ -77,6 +77,8 @@ Botões têm cantos suaves. Retrato e oferta final usam cantos de 14px; o retrat
 
 **Etapas.** A etapa atual usa limão e aria-current. O estado de pagamento da comunidade é informado em uma faixa independente.
 
+**Oferta e foco da sessão.** A chamada acima do título informa que a oferta está disponível somente nesta página; fechamento, resumo do checkout e FAQ mantêm a mesma condição, sem contador, quantidade de vagas ou expiração inventada. A duração permanece em 60 minutos. Há duas alternativas explícitas: roteiro padrão (criar um criativo, turbinar o anúncio e integrar ao CRM) ou tema escolhido pelo comprador. As opções usam a seção editorial existente; a lista de temas possíveis usa duas colunas no desktop e uma até 680px. CRM, IA no WhatsApp, anúncios e follow-up são possibilidades de foco, não casos de sucesso nem promessa de concluir todos os temas em uma hora. O escopo considera o ponto de partida e os acessos disponíveis; a verba de anúncios é separada.
+
 **Retrato.** Utilizar o arquivo existente de Natan, sem substituir rosto, logotipo ou composição por material gerado. Legenda com nome, função e frase curta, adaptada à largura disponível.
 
 **Perguntas.** Usar details/summary nativos, divisórias e ícone SVG que muda quando a resposta está aberta. Links, botões e resumos têm foco visível; nas superfícies claras, o contorno é escuro.
