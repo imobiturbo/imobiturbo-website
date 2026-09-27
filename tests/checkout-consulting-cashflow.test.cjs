@@ -37,9 +37,10 @@ for (const [status, event] of [['PENDING', 'PAYMENT_CREATED'], ['RECEIVED', 'PAY
 }
 
 for (let count = 2; count <= 11; count++) {
-  test(`cashflow accepts the first charge of the ${count}x R$588 consulting offer`, async t => {
+  test(`cashflow accepts the first charge of the ${count}x consulting offer`, async t => {
     const calls = [];
-    const firstInstallment = Math.floor(58800 / count) / 100;
+    const totalCents = count <= 3 ? 49700 : 58800;
+    const firstInstallment = Math.floor(totalCents / count) / 100;
     const selectedPayment = {
       ...payment('PENDING'),
       id: `pay_consulting_${count}x`,
@@ -59,6 +60,26 @@ for (let count = 2; count <= 11; count++) {
     assert.equal(JSON.parse(calls[0].body.payment.externalReference).offer_code, `consultoria-${count}x`);
   });
 }
+
+test('cashflow still accepts temporary 2x and 3x R$588 payments created before the price correction', async t => {
+  const calls = [];
+  t.mock.method(globalThis, 'fetch', async (url, options = {}) => {
+    calls.push({ url: String(url), body: JSON.parse(options.body) });
+    return Response.json({ ok: true });
+  });
+  const dispatch = (await load('_cashflow.js')).dispatchConsultingCashflowToHub;
+  for (const count of [2, 3]) {
+    const selectedPayment = {
+      ...payment('PENDING'),
+      value: Math.floor(58800 / count) / 100,
+      externalReference: JSON.stringify({
+        product_id: 'consultoria-individual-natan', offer_code: `consultoria-${count}x`, eid: `legacy-${count}`,
+      }),
+    };
+    assert.equal(await dispatch({ env, payment: selectedPayment }), true);
+  }
+  assert.equal(calls.length, 2);
+});
 
 test('cashflow delivery refuses amount mismatches and untrusted endpoints without sending the Hub token', async t => {
   let calls = 0;
