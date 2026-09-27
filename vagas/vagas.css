@@ -3905,28 +3905,22 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
 }
 .bonus-meta-header {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  align-items: center;
+  flex: 1;
 }
 .bonus-num-badge {
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 800;
   color: var(--lime);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-.bonus-deliverable-pill {
-  font-family: var(--sans);
-  font-size: 11px;
-  font-weight: 700;
-  color: #d1d5db;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 3px 8px;
-  border-radius: 6px;
-  letter-spacing: 0.04em;
-  width: fit-content;
+  background: rgba(216, 255, 62, 0.08);
+  border: 1px solid rgba(216, 255, 62, 0.22);
+  padding: 6px 14px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
 }
 .bonus-card-body {
   margin-bottom: 20px;
