@@ -442,3 +442,28 @@ footer nav { display: flex; gap: 20px; }
 @media (prefers-reduced-motion: reduce) {
   .chk-modal-box, .chk-tab, .checkout-panel .chk-btn-submit { animation: none; transition: none; }
 }
+
+/* Cal keeps the slot, checkout and payment confirmation inside one responsive frame. */
+.cal-checkout-box { width: min(100%, 1120px); max-height: calc(100dvh - 32px); }
+.cal-checkout-box .checkout-summary { margin-bottom: 16px; }
+.cal-checkout-box .checkout-panel { min-width: 0; }
+.cal-inline-widget { width: 100%; min-width: 0; min-height: 660px; overflow: hidden; border: 1px solid #30362a; border-radius: 12px; background: #10120d; }
+.cal-inline-widget iframe { width: 100% !important; min-width: 0 !important; min-height: 660px !important; display: block; border: 0; border-radius: inherit; background: #10120d; }
+.cal-modal-step { margin-left: auto; color: #c5ff5e; font-size: 12px; font-weight: 700; text-align: center; }
+.cal-retry-button { min-height: 46px; margin-top: 12px; padding: 10px 18px; border: 1px solid #626c54; border-radius: 9px; background: #20251b; color: var(--text); font-weight: 700; }
+.cal-retry-button:hover { border-color: var(--accent); color: var(--accent); }
+.cal-checkout-box .chk-asaas-footer { margin-top: 14px; }
+
+@media (max-width: 768px) {
+  .chk-modal-overlay { align-items: flex-start; justify-content: center; padding: max(8px, env(safe-area-inset-top, 8px)) 8px max(12px, env(safe-area-inset-bottom, 12px)); }
+  .chk-modal-box.cal-checkout-box { width: min(100%, 1120px); max-height: calc(100dvh - 16px - env(safe-area-inset-top, 8px) - env(safe-area-inset-bottom, 12px)); max-height: calc(100svh - 16px - env(safe-area-inset-top, 8px) - env(safe-area-inset-bottom, 12px)); margin: 0 auto; padding: 14px 12px 16px; border-radius: 16px; }
+  .cal-checkout-box .checkout-summary { margin-bottom: 12px; }
+  .cal-inline-widget, .cal-inline-widget iframe { min-height: 720px !important; }
+  .cal-modal-step { font-size: 11px; }
+}
+
+@media (max-width: 360px) {
+  .chk-modal-box.cal-checkout-box { padding-inline: 9px; }
+  .chk-modal-header-row { gap: 6px; }
+  .cal-modal-step { font-size: 10px; }
+}
