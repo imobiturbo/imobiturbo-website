@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { create, TTL } = require('../vagas/checkout-session.js');
+const { create, TTL, createUpsellBuyerProfile, UPSELL_BUYER_KEY, UPSELL_BUYER_TTL } = require('../vagas/checkout-session.js');
 const storage = () => { const data = new Map(); return { getItem: k => data.get(k) ?? null, setItem: (k, v) => data.set(k, v), removeItem: k => data.delete(k) }; };
 const start = Date.parse('2026-09-26T18:00:00Z');
 const record = { paymentId: 'pay_synthetic', gateway: 'asaas', plan: 'mensal', productId: 'comunidade-imobiturbo', eventId: 'synthetic', amount: 147, expiresAt: new Date(start + TTL).toISOString(), pix: { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: 'data:image/png;base64,dGVzdA==' } };
@@ -57,6 +57,33 @@ test('corrupt storage is cleaned and blocked storage keeps an in-memory session'
 test('persisted whitelist excludes identity and card data', () => {
   const { session, options } = harness(); session.save({ ...record, cpfCnpj: 'synthetic', creditCard: { number: 'synthetic', ccv: 'synthetic' }, name: 'Synthetic Buyer' });
   const saved = JSON.parse(options.storage.getItem('test')); assert.equal(saved.cpfCnpj, undefined); assert.equal(saved.creditCard, undefined); assert.equal(saved.name, undefined);
+});
+test('upsell buyer profile is a short-lived session-only whitelist without card credentials', () => {
+  const store = storage(); let clock = start;
+  const profile = createUpsellBuyerProfile({ storage: store, now: () => clock });
+  assert.equal(profile.save({
+    name: 'Compradora Sintética', email: 'buyer@example.invalid', phone: '(21) 98765-4322',
+    cpfCnpj: '529.982.247-25', cardHolderName: 'Titular Sintético',
+    creditCard: { number: '4111111111111111', expiryMonth: '12', expiryYear: '30', ccv: '123' },
+    number: '4111111111111111', cvv: '123',
+  }), true);
+  const saved = JSON.parse(store.getItem(UPSELL_BUYER_KEY));
+  assert.deepEqual(Object.keys(saved).sort(), ['version', 'expiresAt', 'name', 'email', 'phone', 'cpfCnpj', 'cardHolderName'].sort());
+  assert.equal(saved.cpfCnpj, '52998224725');
+  assert.equal(saved.cardHolderName, 'Titular Sintético');
+  assert.equal(profile.read().email, 'buyer@example.invalid');
+  assert.equal(JSON.stringify(saved).includes('4111111111111111'), false);
+  assert.equal(JSON.stringify(saved).includes('123'), false);
+  clock += UPSELL_BUYER_TTL;
+  assert.equal(profile.read(), null);
+  assert.equal(store.getItem(UPSELL_BUYER_KEY), null);
+});
+test('blocked or invalid session storage does not block checkout or return a partial buyer profile', () => {
+  const blocked = createUpsellBuyerProfile({ storage: {
+    getItem() { throw Error('blocked'); }, setItem() { throw Error('blocked'); }, removeItem() { throw Error('blocked'); },
+  } });
+  assert.equal(blocked.save({ name: 'Buyer', email: 'buyer@example.invalid', phone: '21987654322', cpfCnpj: '123' }), false);
+  assert.equal(blocked.read(), null);
 });
 test('consulting installment metadata survives same-browser recovery without persisting card data', () => {
   const { session, options } = harness({ productId: 'consultoria-individual-natan', plans: ['consultoria'] });

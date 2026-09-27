@@ -3,6 +3,8 @@
   const TTL = 30 * 60 * 1000;
   const COMMUNITY_KEY = 'imobiturbo:checkout:community:v2';
   const CONSULTING_KEY = 'imobiturbo:checkout:consulting:v2';
+  const UPSELL_BUYER_KEY = 'imobiturbo:checkout:upsell-buyer:v1';
+  const UPSELL_BUYER_TTL = 2 * 60 * 60 * 1000;
   const DRAFT_KEYS = ['imobiturbo:vagas:checkout:v1', 'imobiturbo:vagas-v2:checkout:v1'];
 
   function create(options) {
@@ -153,6 +155,66 @@
     }
   }
 
+  function createUpsellBuyerProfile(options = {}) {
+    const now = options.now || Date.now;
+    let storage;
+    try { storage = options.storage || root.sessionStorage; } catch (_) {}
+
+    function clear() {
+      try { storage?.removeItem(UPSELL_BUYER_KEY); } catch (_) {}
+    }
+
+    function normalize(value, expiresAt) {
+      if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
+      const cleanText = (input, limit) => typeof input === 'string'
+        ? input.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, limit) : '';
+      const profile = {
+        version: 1,
+        expiresAt: new Date(expiresAt).toISOString(),
+        name: cleanText(value.name, 120),
+        email: cleanText(value.email, 180),
+        phone: cleanText(value.phone, 20),
+        cpfCnpj: typeof value.cpfCnpj === 'string' ? value.cpfCnpj.replace(/\D/g, '').slice(0, 14) : '',
+        cardHolderName: cleanText(value.cardHolderName, 120),
+      };
+      return profile.name && profile.email && profile.phone && profile.cpfCnpj.length === 11 ? profile : null;
+    }
+
+    function save(value) {
+      if (!storage) return false;
+      const profile = normalize(value, now() + UPSELL_BUYER_TTL);
+      if (!profile) return false;
+      try {
+        storage.setItem(UPSELL_BUYER_KEY, JSON.stringify(profile));
+        return true;
+      } catch (_) { return false; }
+    }
+
+    function read() {
+      if (!storage) return null;
+      try {
+        const raw = storage.getItem(UPSELL_BUYER_KEY);
+        if (!raw) return null;
+        const saved = JSON.parse(raw);
+        const expiresAt = Date.parse(saved?.expiresAt);
+        if (saved?.version !== 1 || !Number.isFinite(expiresAt) || expiresAt <= now()) {
+          clear();
+          return null;
+        }
+        const profile = normalize(saved, expiresAt);
+        if (!profile) clear();
+        return profile;
+      } catch (_) {
+        clear();
+        return null;
+      }
+    }
+
+    return { save, read, clear };
+  }
+
+  const upsellBuyerProfile = createUpsellBuyerProfile();
+
   function bindLanding(api) {
     const get = id => root.document.getElementById(id);
     const pane = get('chkStepPane4');
@@ -210,6 +272,7 @@
       onPending: render,
       onExpired: () => {
         if (timer) root.clearInterval(timer);
+        upsellBuyerProfile.clear();
         clearDraft();
         api.form?.reset();
         for (const id of ['chkName', 'chkPhone', 'chkEmail', 'chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv', 'chkCardCpf', 'chkPixCpf']) {
@@ -240,11 +303,22 @@
     });
     return {
       ...session,
-      capture(result, extra) { session.save(result, extra); return session.start(); },
+      capture(result, extra = {}) {
+        const { upsellBuyer, ...sessionExtra } = extra || {};
+        if (upsellBuyer) upsellBuyerProfile.save(upsellBuyer);
+        session.save(result, sessionExtra);
+        return session.start();
+      },
       stop() { session.stop(); if (timer) root.clearInterval(timer); },
     };
   }
 
-  root.ImobiturboCheckoutSession = { create, bindLanding, clearDraft, TTL, COMMUNITY_KEY, CONSULTING_KEY };
+  root.ImobiturboCheckoutSession = {
+    create, bindLanding, clearDraft, TTL, COMMUNITY_KEY, CONSULTING_KEY,
+    createUpsellBuyerProfile, UPSELL_BUYER_KEY, UPSELL_BUYER_TTL,
+    saveUpsellBuyer: upsellBuyerProfile.save,
+    getUpsellBuyer: upsellBuyerProfile.read,
+    clearUpsellBuyer: upsellBuyerProfile.clear,
+  };
   if (typeof module !== 'undefined' && module.exports) module.exports = root.ImobiturboCheckoutSession;
 })(typeof window !== 'undefined' ? window : globalThis);

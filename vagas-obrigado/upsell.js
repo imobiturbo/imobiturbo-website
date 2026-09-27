@@ -22,6 +22,21 @@
   function firstInstallmentCents(count) {
     return Math.floor(installmentTotalCents(count) / count);
   }
+  function formatCpf(value) {
+    return String(value || '').replace(/\D/g, '').slice(0, 11)
+      .replace(/^(\d{3})(\d)/, '$1.$2')
+      .replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3')
+      .replace(/^(\d{3})\.(\d{3})\.(\d{3})(\d)/, '$1.$2.$3-$4');
+  }
+  function applySavedBuyer() {
+    const buyer = sessions.getUpsellBuyer?.();
+    if (!buyer) return;
+    get('buyerName').value = buyer.name;
+    get('buyerEmail').value = buyer.email;
+    get('buyerPhone').value = buyer.phone;
+    get('buyerCpf').value = formatCpf(buyer.cpfCnpj);
+    if (buyer.cardHolderName) get('cardHolder').value = buyer.cardHolderName;
+  }
 
   function feedback(message, error = false) {
     const node = get('paymentFeedback');
@@ -96,6 +111,7 @@
     onExpired: () => {
       if (timer) clearInterval(timer);
       form.reset(); sessions.clearDraft(); setMethod('PIX');
+      applySavedBuyer();
       get('submitPayment').disabled = false;
       form.hidden = false; get('pendingPayment').hidden = true;
       get('pixCode').value = ''; get('pixQr').removeAttribute('src');
@@ -105,6 +121,7 @@
     onPaid: record => {
       if (timer) clearInterval(timer);
       approved = true;
+      sessions.clearUpsellBuyer?.();
       if (modal.open) modal.close();
       form.reset();
       get('offerContent').hidden = true;
@@ -144,6 +161,13 @@
     if (!validCpf(cpf)) { feedback('Confira o CPF informado.', true); get('buyerCpf').focus(); return; }
     if (phone.length < 10 || phone.length > 13) { feedback('Informe seu WhatsApp com DDD.', true); return; }
     if (get('buyerName').value.trim().split(/\s+/).length < 2) { feedback('Informe seu nome completo.', true); return; }
+    sessions.saveUpsellBuyer?.({
+      name: get('buyerName').value.trim(),
+      email: get('buyerEmail').value.trim(),
+      phone: get('buyerPhone').value.trim(),
+      cpfCnpj: cpf,
+      cardHolderName: method === 'CREDIT_CARD' ? get('cardHolder').value.trim() : '',
+    });
     let creditCard = null;
     if (method === 'CREDIT_CARD') {
       const expiry = get('cardExpiry').value.match(/^(\d{2})\/(\d{2})$/);
@@ -212,6 +236,10 @@
       }
     }
   } catch (_) {}
+  applySavedBuyer();
+  document.querySelectorAll('a[href="#acessos"]').forEach(link => {
+    link.addEventListener('click', () => sessions.clearUpsellBuyer?.());
+  });
   function resume() { if (consulting.read()) consulting.start(); if (community.read()) community.start(); }
   window.addEventListener('pageshow', event => { if (event.persisted) resume(); });
   window.addEventListener('storage', event => { if ([sessions.COMMUNITY_KEY, sessions.CONSULTING_KEY].includes(event.key)) resume(); });
