@@ -45,8 +45,21 @@ Sistema visual: `vagas-obrigado/DESIGN.md` e `.impeccable/surfaces/vagas-obrigad
 
 ## Publicação e limite da prova
 
-Baseline de produção confirmado antes desta release: SHA `dec4588`, deployment `fb642635-e747-454f-91b0-caf80413d4d8`, disponível em `https://fb642635.imobiturbo-website.pages.dev` como referência de rollback.
+PR [#21](https://github.com/imobiturbo/imobiturbo-website/pull/21) integrado em `9fccf7fa9ebdd2f81f84c433a90f7f14b6e8b948`. A release saiu de checkout limpo desse SHA, na VPS3, sob `/var/lock/imobiturbo-ci.lock`. Nesse checkout, os 151 testes, os 5 casos de navegador e o build de Pages passaram novamente após a integração.
 
-A release deve partir do SHA integrado, em checkout limpo na VPS3, sob `/var/lock/imobiturbo-ci.lock`. A evidência final deve registrar SHA, deployment, domínio público, arquivos servidos e interações no navegador. Uma resposta 403 com `cf-mitigated: challenge` no acesso direto da VPS3 é tratada como desafio do Cloudflare, sem substituir a verificação por navegador.
+Deployment de produção: `baae50c3-3964-4ed2-aed2-ff7352d2e251`, publicado em `https://baae50c3.imobiturbo-website.pages.dev`. A comprovação nesse endereço terminou em 2026-09-27 às 13:31:40, horário de Brasília. HTML, CSS e os dois arquivos JavaScript conferem byte a byte com o SHA integrado. As rotas `/vagas/` e `/vagas-v2/` também tiveram seus HTMLs públicos comparados com os respectivos arquivos da release.
+
+**Domínio público confirmado:** `https://www.imobiturbo.com.br/vagas-obrigado/`, em 2026-09-27 às 13:36:47, horário de Brasília. O navegador recebeu HTTP 200; os quatro hashes da tabela acima também conferem nesse domínio, sem alteração do WAF.
+
+- Endereço do deployment: interações aprovadas em 1440, 390, 320 e 580px.
+- Domínio próprio: 1440×1000 e 390×844, com imagens carregadas, um único título principal visível, ausência de overflow horizontal e primeira ação dentro da tela inicial.
+- Nos dois tamanhos do domínio próprio, os três botões abriram e fecharam o checkout, Escape devolveu o foco, o FAQ expandiu e a recusa levou a `#acessos`; o link do Club permaneceu presente. Nenhum erro de execução JavaScript foi observado.
+- O executor da conferência foi a VPS3, conectada por túnel local temporário ao Chrome compartilhado. Somente a aba criada para a missão foi usada. Abas existentes foram preservadas; a aba da missão permaneceu aberta e o túnel foi encerrado.
+
+Checkout da release: `/opt/builds/imobiturbo-website-release-upsell-9fccf7fa9ebd`. Evidências: `/opt/builds/imobiturbo-website-upsell-behance-20260927-evidence/release-9fccf7fa9ebd/`, incluindo `release-metadata.json`, logs, `public-pages/visual-interactions.json` e `public-domain/public-domain-verification.json`. Cópia local das capturas e metadados: `.impeccable/review/release-9fccf7fa9ebd/`.
+
+Rollback identificado antes da publicação: SHA `dec4588`, deployment `fb642635-e747-454f-91b0-caf80413d4d8`, disponível em `https://fb642635.imobiturbo-website.pages.dev`.
+
+Ocorrências resolvidas: o lock inicialmente ocupado foi aguardado sem interromper outro trabalho; o acesso SSH ao GitHub retornou `Permission denied (publickey)` e foi substituído por HTTPS com a credencial existente do `gh`, apenas no checkout da release. A edição do PR usou REST após erro de consulta a Projects classic. O primeiro teste no domínio selecionava o título oculto de confirmação; a inspeção do DOM comprovou a oferta correta e o seletor foi corrigido para `#offerTitle`, sem alteração na página. O cliente CDP utilizou o WebSocket nativo já disponível no Node da VPS3; nenhum pacote foi instalado para essa conferência.
 
 Os testes de checkout usam APIs simuladas; nenhuma transação financeira real ou recebimento de venda no Hub é certificado por este trabalho.
