@@ -2,6 +2,8 @@
 // Checkout transparente: Asaas quando solicitado; Pix AbacatePay legado.
 // Preços e identificação do produto são definidos exclusivamente no servidor.
 
+import { dispatchConsultingCashflowToHub } from "./_cashflow.js";
+
 const CORS_HEADERS = {
   "Cache-Control": "no-store",
   "Access-Control-Allow-Origin": "*",
@@ -9,14 +11,21 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-export function buildAsaasExternalReference({ productId, plan, eventId, checkoutExpiresAt }) {
+export function buildAsaasExternalReference({ productId, plan, eventId, checkoutExpiresAt, offerCode }) {
   // Asaas strictly enforces externalReference <= 100 characters.
-  // Consultoria tests/audit require product_id: 'consultoria-individual-natan'.
+  // Keep the consultant's Hub source mapping and one order id shared by every installment.
+  if (productId === "consultoria-individual-natan") {
+    const compact = JSON.stringify({
+      product_id: productId,
+      offer_code: offerCode || "consultoria-a-vista",
+      eid: String(eventId || "").slice(0, 11),
+    });
+    if (compact.length > 100) throw new Error("Consultoria externalReference exceeds Asaas limit");
+    return compact;
+  }
+
   // For other plans, productId defaults to 'comunidade-imobiturbo' in checkoutDetails().
   const ref = {};
-  if (productId === "consultoria-individual-natan") {
-    ref.product_id = productId;
-  }
   ref.plan = plan;
   if (eventId) {
     ref.eid = eventId;
@@ -122,9 +131,9 @@ export async function onRequestPost(context) {
       title: "Consultoria Individual de 1h com Natan Pimentel",
       pixCents: 49700,
       pixReais: 497,
-      cardInstallmentCount: 1,
-      cardInstallmentValue: 497,
-      cardTotalValue: 497,
+      cardInstallmentCount: 12,
+      cardInstallmentValue: 49,
+      cardTotalValue: 588,
     },
   };
 
@@ -135,7 +144,14 @@ export async function onRequestPost(context) {
   const todayStr = new Date().toISOString().split("T")[0];
   const productId = plan === "consultoria" ? "consultoria-individual-natan" : "comunidade-imobiturbo";
   const checkoutExpiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
-  const externalReference = buildAsaasExternalReference({ productId, plan, eventId, checkoutExpiresAt });
+  const requestedInstallments = body.installments == null || body.installments === "" ? 1 : Number(body.installments);
+  if (plan === "consultoria" && paymentMethod === "CREDIT_CARD" && ![1, 12].includes(requestedInstallments)) {
+    return Response.json({ success: false, error: "Escolha pagamento à vista ou em 12 parcelas." }, { status: 400, headers: CORS_HEADERS });
+  }
+  const installmentCount = plan === "consultoria" && paymentMethod === "CREDIT_CARD" ? requestedInstallments : 1;
+  const offerCode = plan === "consultoria" ? (installmentCount === 12 ? "consultoria-12x49" : "consultoria-a-vista") : undefined;
+  const checkoutEventId = plan === "consultoria" ? crypto.randomUUID().replaceAll("-", "").slice(0, 11) : eventId;
+  const externalReference = buildAsaasExternalReference({ productId, plan, eventId: checkoutEventId, checkoutExpiresAt, offerCode });
 
   // ==========================================
   // ESTRATÉGIA 1: PIX VIA ASAAS (QUANDO SOLICITADO OU DEFAULT)
@@ -228,6 +244,11 @@ export async function onRequestPost(context) {
         return Response.json({ success: false, gateway: "asaas", error: errMsg }, { status: 422, headers: CORS_HEADERS });
       }
 
+      if (plan === "consultoria") {
+        const delivery = dispatchConsultingCashflowToHub({ env, payment });
+        if (context.waitUntil) context.waitUntil(delivery); else await delivery;
+      }
+
       // A cobrança já existe: recuperar o QR nunca deve criar outra cobrança.
       let qrData = {};
       try {
@@ -245,7 +266,11 @@ export async function onRequestPost(context) {
           paymentId: payment.id,
           billingType: "PIX",
           status: payment.status || "PENDING",
-          amount: payment.value,
+          amount: plan === "consultoria" ? 497 : payment.value,
+          chargeAmount: payment.value,
+          installmentCount: 1,
+          installmentValue: 497,
+          offerCode,
           plan,
           productId,
           pixPending: !qrData.payload || !qrData.encodedImage,
@@ -256,7 +281,7 @@ export async function onRequestPost(context) {
             expiresAt: checkoutExpiresAt,
           },
           invoiceUrl: payment.invoiceUrl,
-          eventId,
+          eventId: checkoutEventId,
           clientIp: request.headers.get("cf-connecting-ip") || null,
         }),
         {
@@ -603,7 +628,7 @@ export async function onRequestPost(context) {
         };
 
         const reqInstallments = parseInt(body.installments, 10);
-        let installmentCount = selectedPlan.cardInstallmentCount;
+        let installmentCount = plan === "consultoria" ? requestedInstallments : selectedPlan.cardInstallmentCount;
         if (plan !== "consultoria" && Number.isInteger(reqInstallments) && reqInstallments >= 1 && reqInstallments <= 12) {
           installmentCount = reqInstallments;
         }
@@ -613,7 +638,10 @@ export async function onRequestPost(context) {
           cardPayload.interest = { value: 0 };
         }
 
-        if (installmentCount > 1) {
+        if (installmentCount > 1 && plan === "consultoria") {
+          cardPayload.installmentCount = installmentCount;
+          cardPayload.installmentValue = selectedPlan.cardInstallmentValue;
+        } else if (installmentCount > 1) {
           cardPayload.installmentCount = installmentCount;
           cardPayload.totalValue = selectedPlan.cardTotalValue;
         } else {
@@ -638,6 +666,11 @@ export async function onRequestPost(context) {
           );
         }
 
+        if (plan === "consultoria") {
+          const delivery = dispatchConsultingCashflowToHub({ env, payment });
+          if (context.waitUntil) context.waitUntil(delivery); else await delivery;
+        }
+
         const isApproved =
           payment.status === "CONFIRMED" ||
           payment.status === "RECEIVED" ||
@@ -651,12 +684,16 @@ export async function onRequestPost(context) {
             billingType: "CREDIT_CARD",
             status: payment.status,
             isApproved,
-            amount: payment.value,
+            amount: plan === "consultoria" ? (installmentCount === 12 ? 588 : 497) : payment.value,
+            chargeAmount: payment.value,
+            installmentCount: plan === "consultoria" ? installmentCount : payment.installmentCount || installmentCount,
+            installmentValue: plan === "consultoria" ? (installmentCount === 12 ? 49 : 497) : payment.installmentValue || undefined,
+            offerCode,
             plan,
             productId,
             expiresAt: checkoutExpiresAt,
             invoiceUrl: payment.invoiceUrl,
-            eventId,
+            eventId: checkoutEventId,
             clientIp: request.headers.get("cf-connecting-ip") || null,
           }),
           {

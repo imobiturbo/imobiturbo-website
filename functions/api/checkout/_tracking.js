@@ -1,5 +1,7 @@
 const DEFAULT_HUB_COLLECT_URL = "https://track.nmidigital.tech/api/collect";
 const DEFAULT_HUB_OPERATION_ID = "00000000-0000-0000-0000-000000000001";
+const CONSULTING_PRODUCT_ID = "consultoria-individual-natan";
+const CONSULTING_OFFER_ID = "12e90537-263d-4150-9757-52193187ffbd";
 
 function readCookie(request, name) {
   const header = request && request.headers ? request.headers.get("Cookie") || "" : "";
@@ -22,6 +24,8 @@ export async function dispatchVerifiedPurchaseToHub({
   visitorId,
   sessionId,
   productId = "comunidade-imobiturbo",
+  orderId,
+  offerId,
 }) {
   const operationId = (env && env.HUB_TRACKING_OPERATION_ID) || DEFAULT_HUB_OPERATION_ID;
   const endpointBase = (env && env.HUB_TRACKING_COLLECT_URL) || DEFAULT_HUB_COLLECT_URL;
@@ -41,7 +45,8 @@ export async function dispatchVerifiedPurchaseToHub({
     landing: productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
     referrer: null,
     productId,
-    orderId: paymentId,
+    orderId: orderId || paymentId,
+    ...(offerId || productId === CONSULTING_PRODUCT_ID ? { offerId: offerId || CONSULTING_OFFER_ID } : {}),
     valueCents: Math.round((Number(amount) || 0) * 100),
     currency: "BRL",
     ...(contentName ? { contentName } : {}),
@@ -81,6 +86,8 @@ export async function dispatchPendingPurchaseToHub({
   sessionId,
   paymentMethod,
   productId = "comunidade-imobiturbo",
+  orderId,
+  offerId,
 }) {
   const operationId = (env && env.HUB_TRACKING_OPERATION_ID) || DEFAULT_HUB_OPERATION_ID;
   const endpointBase = (env && env.HUB_TRACKING_COLLECT_URL) || DEFAULT_HUB_COLLECT_URL;
@@ -100,7 +107,8 @@ export async function dispatchPendingPurchaseToHub({
     landing: productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
     referrer: null,
     productId,
-    orderId: paymentId,
+    orderId: orderId || paymentId,
+    ...(offerId || productId === CONSULTING_PRODUCT_ID ? { offerId: offerId || CONSULTING_OFFER_ID } : {}),
     valueCents: Math.round((Number(amount) || 0) * 100),
     currency: "BRL",
     status: "pending",

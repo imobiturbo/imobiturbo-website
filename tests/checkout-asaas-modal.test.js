@@ -107,7 +107,7 @@ test("functions/api/checkout/index.js supports Asaas subscriptions for mensal an
   assert.ok(code.includes('cycle: "MONTHLY"'), "Must configure monthly cycle");
 
   // Asaas Payments for installment / single
-  assert.ok(code.includes("installmentCount = selectedPlan.cardInstallmentCount"), "Must pass installmentCount");
+  assert.ok(code.includes('installmentCount = plan === "consultoria" ? requestedInstallments : selectedPlan.cardInstallmentCount'), "Must retain plan installments and honor the consulting selection");
 
   // Asaas Pix
   assert.ok(code.includes("billingType: \"PIX\""), "Must support billingType PIX");
