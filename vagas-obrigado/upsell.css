@@ -308,6 +308,8 @@ footer nav { display: flex; gap: 20px; }
 
 @media (max-width: 360px) {
   .wrap { width: calc(100% - 32px); }
+  .hero { padding-top: 16px; }
+  .hero-heading { margin-bottom: 16px; }
   .journey-steps { width: 100%; }
   .journey-steps li { gap: 5px; padding-inline: 4px; }
   .journey-steps .step-number { width: 18px; height: 18px; flex-basis: 18px; }
