@@ -35,7 +35,9 @@ Logs: `/opt/builds/imobiturbo-website-upsell-behance-20260927-evidence/`. Captur
 
 ## Revisão visual
 
-Revisão independente em andamento com o agente Anscombe (`01a0e39d-afc2-79b1-b927-c9db18b07d55`). O veredito deve ser registrado antes da integração.
+Revisão independente concluída pelo agente Anscombe (`01a0e39d-afc2-79b1-b927-c9db18b07d55`), na função nativa reviewer (gpt-6-luna/max), substituindo a função especializada Impeccable Finish Reviewer. **Veredito: ship. Nenhuma correção material identificada.** O revisor inspecionou as capturas obrigatórias, incluindo os checkouts de 390 e 1440px, os arquivos e a documentação da rota; não repetiu os testes.
+
+Persistence: documentação e proveniência presentes e consistentes. Fidelity: composição compatível com as referências e oferta real. TYPE: fonte local oficial; MATERIAL: retrato original e SVGs; GROUND: superfícies escura, papel, branca e limão documentadas. Ceiling: não avaliável contra um card QUALITY BAR ausente; não há alegação de aprovação pixel a pixel. Manter os três CTAs, as condições completas, a recusa visível e os acessos independentes.
 
 O detector apontou somente três ocorrências de fonte frequente no mercado. Plus Jakarta Sans é uma escolha explícita de `PRODUCT.md` e foi mantida. Não existe composição gerada aprovada nem sorteio de conceito: a execução adapta diretamente as referências escolhidas pelo usuário.
 
