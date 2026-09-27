@@ -6,12 +6,13 @@ const root = process.env.CHECKOUT_TEST_ROOT || path.resolve(__dirname, '..');
 const handler = import(pathToFileURL(path.join(root, 'functions/api/checkout/index.js')));
 const buyer = { gateway: 'asaas', plan: 'mensal', paymentMethod: 'PIX', name: 'Teste Checkout', email: 'checkout@example.invalid', phone: '11987654320', cpfCnpj: '52998224725', eventId: 'synthetic-pix-test' };
 
-async function invoke(t, overrides = {}, mode = 'normal') {
+async function invoke(t, overrides = {}, mode = 'normal', envOverrides = {}) {
   const calls = [];
   t.mock.method(globalThis, 'fetch', async (url, options = {}) => {
     const address = new URL(url);
     const body = options.body ? JSON.parse(options.body) : null;
-    calls.push({ path: address.pathname, method: options.method || 'GET', body });
+    calls.push({ path: address.pathname, host: address.hostname, method: options.method || 'GET', body, token: options.headers?.['asaas-access-token'] });
+    if (address.hostname === 'hub.imobiturbo.com.br') return Response.json({ ok: true });
     assert.equal(address.origin, 'https://api.asaas.com', 'never change provider after a payment attempt');
     if (address.pathname === '/v3/customers' && !body) return Response.json({ data: [{ id: 'cus_synthetic' }] });
     if (address.pathname === '/v3/payments' && body) {
@@ -20,7 +21,7 @@ async function invoke(t, overrides = {}, mode = 'normal') {
       // Model the provider's inherited account settings, not the implementation.
       const fine = body.fine?.value ?? 147;
       if (fine >= body.value) return Response.json({ errors: [{ description: 'O valor da multa (R$147,00) deve ser menor que o valor da cobrança (R$147,00).' }] }, { status: 400 });
-      return Response.json({ id: 'pay_synthetic', value: body.value, status: 'PENDING' });
+      return Response.json({ id: 'pay_synthetic', value: body.value ?? body.installmentValue ?? body.totalValue, status: 'PENDING', billingType: body.billingType, externalReference: body.externalReference });
     }
     if (address.pathname.endsWith('/pixQrCode')) {
       if (mode === 'qr-failure') return Response.json({ errors: [{ description: 'QR temporariamente indisponível' }] }, { status: 503 });
@@ -29,7 +30,7 @@ async function invoke(t, overrides = {}, mode = 'normal') {
     throw new Error('Unexpected endpoint: ' + address.pathname);
   });
   const before = Date.now();
-  const response = await (await handler).onRequestPost({ request: new Request('https://imobiturbo.com.br/api/checkout', { method: 'POST', body: JSON.stringify({ ...buyer, ...overrides }) }), env: { ASAAS_API_KEY: 'test-only' } });
+  const response = await (await handler).onRequestPost({ request: new Request('https://imobiturbo.com.br/api/checkout', { method: 'POST', body: JSON.stringify({ ...buyer, ...overrides }) }), env: { ASAAS_API_KEY: 'test-only', ...envOverrides } });
   return { response, data: await response.json(), calls, before };
 }
 
@@ -58,6 +59,62 @@ test('consultoria is a separate, fixed R$497 product', async t => {
   assert.equal(JSON.parse(payment.externalReference).product_id, 'consultoria-individual-natan');
   assert.match(payment.description, /Consultoria Individual.*1h.*Natan Pimentel/);
   assert.equal(data.plan, 'consultoria');
+});
+
+test('new consulting Pix reaches the dedicated Hub account as a pending ledger sale', async t => {
+  const hubUrl = 'https://hub.imobiturbo.com.br/api/cashflow/webhooks/asaas/550e8400-e29b-41d4-a716-446655440000';
+  const { response, calls } = await invoke(t, { plan: 'consultoria' }, 'normal', {
+    HUB_CASHFLOW_WEBHOOK_URL: hubUrl, HUB_CASHFLOW_WEBHOOK_TOKEN: 'synthetic-hub-secret',
+  });
+  assert.equal(response.status, 200);
+  const payment = calls.find(call => call.path === '/v3/payments' && call.method === 'POST').body;
+  const delivery = calls.find(call => call.host === 'hub.imobiturbo.com.br');
+  assert.equal(delivery.path, new URL(hubUrl).pathname);
+  assert.equal(delivery.token, 'synthetic-hub-secret');
+  assert.equal(delivery.body.event, 'PAYMENT_CREATED');
+  assert.equal(delivery.body.payment.id, 'pay_synthetic');
+  assert.equal(delivery.body.payment.value, 497);
+  assert.equal(JSON.parse(payment.externalReference).offer_code, 'consultoria-a-vista');
+});
+
+const cardData = {
+  paymentMethod: 'CREDIT_CARD',
+  creditCard: { holderName: 'Teste Checkout', number: '4111111111111111', expiryMonth: '12', expiryYear: '2030', ccv: '123', postalCode: '20050005', addressNumber: '1' },
+};
+
+test('consultoria card at sight sends only value=497', async t => {
+  const { response, data, calls } = await invoke(t, { ...cardData, plan: 'consultoria', installments: 1 });
+  assert.equal(response.status, 200);
+  const payment = calls.find(call => call.path === '/v3/payments' && call.method === 'POST').body;
+  assert.equal(payment.value, 497);
+  assert.equal(payment.installmentCount, undefined);
+  assert.equal(payment.installmentValue, undefined);
+  assert.equal(payment.totalValue, undefined);
+  assert.equal(JSON.parse(payment.externalReference).offer_code, 'consultoria-a-vista');
+  assert.equal(data.amount, 497);
+  assert.equal(data.installmentCount, 1);
+});
+
+test('consultoria 12x sends installmentValue=49 and tracks R$588 total', async t => {
+  const { response, data, calls } = await invoke(t, { ...cardData, plan: 'consultoria', installments: 12 });
+  assert.equal(response.status, 200);
+  const payment = calls.find(call => call.path === '/v3/payments' && call.method === 'POST').body;
+  assert.equal(payment.value, undefined);
+  assert.equal(payment.totalValue, undefined);
+  assert.equal(payment.installmentCount, 12);
+  assert.equal(payment.installmentValue, 49);
+  assert.ok(payment.externalReference.length <= 100);
+  assert.equal(JSON.parse(payment.externalReference).offer_code, 'consultoria-12x49');
+  assert.equal(data.amount, 588);
+  assert.equal(data.chargeAmount, 49);
+  assert.equal(data.installmentCount, 12);
+  assert.equal(data.installmentValue, 49);
+});
+
+test('consultoria rejects installment counts outside the two disclosed choices before contacting Asaas', async t => {
+  const { response, calls } = await invoke(t, { ...cardData, plan: 'consultoria', installments: 2 });
+  assert.equal(response.status, 400);
+  assert.equal(calls.length, 0);
 });
 
 test('Asaas Pix externalReference never exceeds 100 characters even with long production eventId', async t => {

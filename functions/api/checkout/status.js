@@ -1,6 +1,7 @@
 // Cloudflare Pages Function: /api/checkout/status
 import { dispatchVerifiedPurchaseToHub } from "./_tracking.js";
-import { checkoutDetails, isAsaasPaymentPaid, CONSULTING_PRODUCT_ID } from "./_products.js";
+import { checkoutDetails, isAsaasPaymentPaid, isValidConsultingPayment, CONSULTING_PRODUCT_ID, CONSULTING_HUB_OFFER_ID } from "./_products.js";
+import { dispatchConsultingCashflowToHub } from "./_cashflow.js";
 // Consulta status de aprovação de pagamentos no AbacatePay ou Asaas
 // Dispara evento Purchase server-side para Meta CAPI (Graph API v25.0) quando pago
 
@@ -127,8 +128,13 @@ export async function onRequestGet(context) {
         if ((!paymentId.startsWith('sub_') && data.id !== paymentId) || (subscriptionOnly && data.id !== paymentId)) {
           return Response.json({ success: false, error: 'Pagamento divergente.' }, { status: 422, headers: CORS_HEADERS });
         }
+        const validConsultingPayment = details.productId !== CONSULTING_PRODUCT_ID || isValidConsultingPayment(data, details);
         const isPaid = !subscriptionOnly && isAsaasPaymentPaid(data) &&
-          (details.productId !== CONSULTING_PRODUCT_ID || Number(data.value) === 497);
+          validConsultingPayment;
+        if (!subscriptionOnly && details.productId === CONSULTING_PRODUCT_ID && validConsultingPayment) {
+          const delivery = dispatchConsultingCashflowToHub({ env, payment: data });
+          if (context.waitUntil) context.waitUntil(delivery); else await delivery;
+        }
         let pix = null;
         // Recover the QR for this payment, never POST another payment.
         if (!isPaid && data.billingType === "PIX" && !data.deleted &&
@@ -150,11 +156,15 @@ export async function onRequestGet(context) {
 
         if (isPaid) {
           const eventId = details.eventId;
-          const amount = Number(data.value || 997);
+          const amount = details.productId === CONSULTING_PRODUCT_ID ? details.orderAmount : Number(data.value || 997);
           const contentName = data.description || "Comunidade Imobiturbo";
           const promise = Promise.allSettled([
             dispatchPurchaseToMetaCapi({ env, request, paymentId: data.id, eventId, amount, contentName, productId: details.productId, email: "", phone: "", name: "" }),
-            dispatchVerifiedPurchaseToHub({ env, request, paymentId: data.id, eventId, amount, contentName, productId: details.productId, email: "", phone: "", name: "" }),
+            dispatchVerifiedPurchaseToHub({
+              env, request, paymentId: data.id, eventId, amount, contentName, productId: details.productId,
+              ...(details.productId === CONSULTING_PRODUCT_ID ? { orderId: details.orderId, offerId: CONSULTING_HUB_OFFER_ID } : {}),
+              email: "", phone: "", name: "",
+            }),
           ]);
           if (context.waitUntil) {
             context.waitUntil(promise);
@@ -171,7 +181,8 @@ export async function onRequestGet(context) {
             status: data.status,
             paid: isPaid,
             ...details,
-            amount: Number(data.value || 0),
+            amount: details.productId === CONSULTING_PRODUCT_ID ? details.orderAmount : Number(data.value || 0),
+            chargeAmount: Number(data.value || 0),
             billingType: data.billingType,
             deleted: Boolean(data.deleted),
             ...(pix ? { pix } : {}),

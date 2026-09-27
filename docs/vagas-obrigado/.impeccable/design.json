@@ -86,8 +86,8 @@
       "name": "Cartão de preço",
       "kind": "card",
       "refersTo": "offer-card",
-      "description": "Separação clara entre duração, pagamento único e o valor da consultoria.",
-      "html": "<article class=\"ds-offer-card\"><div class=\"ds-offer-card-heading\">Adicione ao seu começo na Imobiturbo</div><div class=\"ds-offer-card-body\"><h3>Consultoria individual com Natan Pimentel</h3><p>1 hora ao vivo · Foco na sua operação</p><div class=\"ds-price\"><span>Pagamento único de</span><strong><small>R$</small>497</strong><span>Pix ou cartão à vista</span></div></div></article>",
+      "description": "Separação clara entre duração, valor à vista e alternativa parcelada da consultoria.",
+      "html": "<article class=\"ds-offer-card\"><div class=\"ds-offer-card-heading\">Adicione ao seu começo na Imobiturbo</div><div class=\"ds-offer-card-body\"><h3>Consultoria individual com Natan Pimentel</h3><p>1 hora ao vivo · Foco na sua operação</p><div class=\"ds-price\"><span>À vista no Pix ou cartão</span><strong><small>R$</small>497</strong><span>ou 12× R$49 no cartão · R$588 no total</span></div></div></article>",
       "css": ".ds-offer-card{overflow:hidden;border:1px solid #697d43;border-radius:14px;background:var(--panel);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;text-align:center}.ds-offer-card-heading{padding:11px 14px;background:#2c381f;color:#e0edcc;font-size:11px;font-weight:650}.ds-offer-card-body{padding:30px 24px 18px}.ds-offer-card h3{margin:0;font-size:25px;line-height:1.2}.ds-offer-card p{margin:12px 0 0;color:var(--muted);font-size:12px}.ds-price{display:grid;justify-items:center;gap:9px;margin:26px 0 24px;padding-top:24px;border-top:1px solid var(--line)}.ds-price>span{color:var(--muted);font-size:12px}.ds-price strong{display:flex;align-items:baseline;gap:5px;color:var(--accent);font-size:74px;font-weight:800;line-height:1;letter-spacing:-.04em;font-variant-numeric:lining-nums}.ds-price small{font-size:29px;font-weight:650;letter-spacing:-.025em}"
     },
     {
@@ -107,7 +107,7 @@
   ],
   "narrative": {
     "northStar": "Hierarquia Inside Circle dentro da identidade Imobiturbo",
-    "overview": "A rota aplica a hierarquia da referência Inside Circle à jornada pós-compra da Imobiturbo. A proposta aparece como uma escolha contextual entre a compra da comunidade e os acessos, usando a identidade escura de alto contraste já presente no CSS desta página. Esta descrição registra a direção fornecida e implementada; não declara um conceito-semente nem uma exploração aleatória.\n\nA composição começa com a etapa da jornada, um alerta e um título centralizados, a foto real de Natan e as opções de aceitar ou seguir. Depois apresenta o argumento da consultoria, três frentes de trabalho, o cartão dedicado ao preço e o checkout opcional. A seção de acessos permanece independente da consultoria.",
+    "overview": "A rota aplica a hierarquia da referência Inside Circle à jornada pós-compra da Imobiturbo. A proposta aparece como uma escolha contextual entre a compra da comunidade e os acessos, usando a identidade escura de alto contraste já presente no CSS desta página. Esta descrição registra a direção fornecida e implementada; não declara um conceito-semente nem uma exploração aleatória.\n\nA composição começa com a etapa da jornada, um alerta e um título centralizados, a foto real de Natan e as opções de aceitar ou seguir. Depois apresenta o argumento da consultoria, três frentes de trabalho, o cartão dedicado ao preço e o checkout opcional. A seção de acessos permanece independente da consultoria.\n\nO checkout integrado abre em dialog nativo: R$497 via Pix ou cartão à vista, ou 12 parcelas de R$49 no cartão (R$588 no total). Depois da aprovação, o comprador confirma o horário na agenda.",
     "keyCharacteristics": [
       "Preto absoluto como fundo da rota, com textos claros e superfícies em verde escuro.",
       "Lima reservado à ação principal, aos destaques e aos ícones SVG.",
@@ -133,7 +133,7 @@
       },
       {
         "name": "The Honest Offer Rule",
-        "body": "Exiba duração, preço e forma de pagamento com clareza; o agendamento pelo WhatsApp só aparece após a aprovação do pagamento da consultoria.",
+        "body": "Exiba duração, preço e forma de pagamento com clareza; o agendamento na agenda só aparece após a aprovação do pagamento da consultoria.",
         "section": "components"
       }
     ],

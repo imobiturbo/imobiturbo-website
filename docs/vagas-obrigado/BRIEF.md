@@ -21,7 +21,7 @@ Manter a identidade oficial Imobiturbo nesta rota: preto absoluto, acento lima, 
 
 ## STORY
 
-A pessoa vê que está na etapa de oferta, entende o convite e pode aceitar ou seguir sem a consultoria. Se aceitar, vê um checkout separado. Depois da aprovação do pagamento, combina o horário pelo WhatsApp. Os acessos da comunidade permanecem em seu fluxo próprio.
+A pessoa vê que está na etapa de oferta, entende o convite e pode aceitar ou seguir sem a consultoria. Se aceitar, abre um checkout separado em modal. Depois da aprovação do pagamento, escolhe e confirma o horário na agenda. Os acessos da comunidade permanecem em seu fluxo próprio.
 
 ## FIRST VIEWPORT
 
@@ -31,10 +31,10 @@ Manter a hierarquia nesta ordem: jornada centralizada; logo; alerta; headline ce
 
 - Depois da primeira decisão, explicar por que a sessão ajuda e apresentar três frentes: CRM organizado; IA e cadência; primeira campanha.
 - Repetir o convite em uma área final com benefícios e cartão de preço dedicado a R$497.
-- O aceite abre o checkout opcional e separado, com Pix ou cartão em uma parcela.
+- O aceite abre o checkout opcional em modal: R$497 à vista no Pix ou cartão, ou 12 parcelas de R$49 no cartão (R$588 no total).
 - A recusa leva aos acessos. Club e configuração do CRM seguem disponíveis independentemente da consultoria.
-- A aprovação do pagamento da consultoria é a condição para exibir o caminho de agendamento pelo WhatsApp. O checkout não reserva automaticamente um horário.
-- A oferta é uma consultoria individual ao vivo de uma hora com Natan Pimentel, por pagamento único de R$497.
+- A aprovação do pagamento da consultoria é a condição para exibir o caminho de agendamento na agenda. O checkout não reserva automaticamente um horário.
+- A oferta é uma consultoria individual ao vivo de uma hora com Natan Pimentel, por R$497 à vista ou 12 parcelas de R$49 no cartão (R$588 no total).
 
 ## Ativos e proveniência
 
@@ -46,6 +46,6 @@ Manter a hierarquia nesta ordem: jornada centralizada; logo; alerta; headline ce
 
 - Não inventar escassez, desconto, garantia ou promessa de resultado.
 - Não sugerir que o pagamento da consultoria controla a compra ou os acessos da comunidade.
-- Não apresentar o agendamento como confirmado antes da aprovação do pagamento e do contato pelo WhatsApp.
+- Não apresentar o agendamento como confirmado antes da aprovação do pagamento e da confirmação do horário na agenda.
 - Não transformar a foto em vídeo nem adicionar um controle de reprodução sem vídeo real.
 - Não alterar a identidade oficial ou os dois ativos existentes para criar uma direção nova.

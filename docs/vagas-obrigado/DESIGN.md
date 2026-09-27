@@ -138,13 +138,13 @@ A paleta desta rota é a versão escura da identidade Imobiturbo: base preta, te
 
 A página segue um eixo central de leitura e um funil de decisão. A primeira dobra contém uma barra de jornada com largura máxima de 640px, logo centralizado, alerta, headline, convite fotográfico e CTA acompanhado pela recusa. O conteúdo usa contêineres de até 1000px; a introdução limita a linha a 630px, o convite a 720px e a decisão inicial a 520px.
 
-A seção final combina argumento e preço em duas colunas. A grade de três benefícios também usa três colunas em telas largas. Até 900px, os intervalos entre colunas diminuem; até 680px, os benefícios e o cartão de preço passam a uma coluna e o checkout também empilha. Até 360px, os rótulos da jornada e o CTA recebem ajustes adicionais. A página não declara uma escala global de espaçamento; os valores permanecem os que o CSS usa em cada bloco.
+A seção final combina argumento e preço em duas colunas. A grade de três benefícios também usa três colunas em telas largas. Até 900px, os intervalos entre colunas diminuem; até 680px, os benefícios e o cartão de preço passam a uma coluna enquanto o checkout abre em um dialog nativo de uma coluna, com até 520px de largura e rolagem interna. Até 360px, os rótulos da jornada e o CTA recebem ajustes adicionais. A página não declara uma escala global de espaçamento; os valores permanecem os que o CSS usa em cada bloco.
 
 **The Journey Context Rule.** A proposta e as opções de aceitar ou recusar permanecem juntas no início; o caminho para os acessos continua disponível depois.
 
 ## Elevation & Depth
 
-A profundidade vem principalmente de planos tonais: fundo preto, gradiente verde discreto na abertura e seções escuras diferenciadas por bordas. O convite fotográfico é o único elemento com sombra explícita, ampla e suave. Os demais cartões usam fundo e contorno para se separar; não há uma escala geral de sombras nesta rota.
+A profundidade vem principalmente de planos tonais: fundo preto, gradiente verde discreto na abertura e seções escuras diferenciadas por bordas. O convite fotográfico usa sombra ampla e suave; o modal de checkout integrado usa sua própria sombra, fundo escurecido e desfoque do conteúdo atrás. Os demais cartões usam fundo e contorno para se separar; não há uma escala geral de sombras nesta rota.
 
 ### Shadow Vocabulary
 
@@ -152,7 +152,7 @@ A profundidade vem principalmente de planos tonais: fundo preto, gradiente verde
 
 ## Shapes
 
-A forma é arredondada e contida. Botões e campos usam `{rounded.sm}`; o convite e o painel de argumento usam `{rounded.md}`; cartão de preço e painel de checkout usam `{rounded.lg}`. Bordas finas definem os cartões. A barra de progresso é baixa e arredondada, e os números da jornada ficam em círculos pequenos.
+A forma é arredondada e contida. Botões e campos usam `{rounded.sm}`; o convite e o painel de argumento usam `{rounded.md}`; o cartão de preço usa `{rounded.lg}`. O modal de checkout usa 24px no desktop e 20px no mobile. Bordas finas definem os cartões. A barra de progresso é baixa e arredondada, e os números da jornada ficam em círculos pequenos.
 
 ## Components
 
@@ -168,13 +168,13 @@ A forma é arredondada e contida. Botões e campos usam `{rounded.sm}`; o convit
 ### Cards / Containers
 
 - **Personal invite:** cartão horizontal com a foto real de Natan, texto sobre gradiente e identificação da consultoria. A origem é `/assets/natan-studio.jpg`.
-- **Offer card:** destaca modalidade, preço e pagamento único em um bloco próprio.
+- **Offer card:** destaca modalidade, R$497 à vista e a alternativa de 12 parcelas de R$49 (R$588 no total) em um bloco próprio.
 - **Argument / checkout:** painéis escuros com contorno verde e conteúdo espaçado.
 - **Acessos:** bloco de continuidade separado por uma divisória; não depende da compra da consultoria.
 
 ### Inputs / Fields
 
-- **Style:** campo escuro, contorno neutro e forma `{rounded.sm}`.
+- **Style:** campo-base escuro, contorno neutro e forma `{rounded.sm}`. No checkout em modal, a variante usa altura mínima de 44px, raio de 9px, fonte de 14px e fundo `#11130f`.
 - **Focus:** contorno de ação visível.
 - **Error:** mensagens de falha usam `{colors.danger}`.
 
@@ -188,7 +188,7 @@ A barra de jornada mostra Comunidade, Oferta especial e Seus acessos. O segundo 
 - **Inline SVG:** ícones próprios usam preenchimento vazio, traço 1.8 e terminais arredondados, com lima como cor de destaque.
 - **Brand assets:** a logo `/assets/brand/theme-dark/logo-imobiturbo.webp` e a foto `/assets/natan-studio.jpg` são arquivos existentes, usados sem alteração.
 
-**The Honest Offer Rule.** Exiba duração, preço e forma de pagamento com clareza; o agendamento pelo WhatsApp só aparece após a aprovação do pagamento da consultoria.
+**The Honest Offer Rule.** Exiba duração, preço e forma de pagamento com clareza; o agendamento na agenda só aparece após a aprovação do pagamento da consultoria.
 
 ## Do's and Don'ts
 
@@ -200,3 +200,7 @@ A barra de jornada mostra Comunidade, Oferta especial e Seus acessos. O segundo 
 - **Don't:** sugira que comprar a consultoria seja condição para acessar a comunidade.
 - **Don't:** acrescente vídeo ou controle de reprodução sem um ativo de vídeo ligado a essa experiência.
 - **Don't:** use texto branco sobre o CTA lima nem substitua a tipografia oficial por uma fonte genérica.
+
+## Integração com o checkout
+
+O PR #17 trouxe o dialog de pagamento, o parcelamento e a agenda; estes fluxos foram preservados ao integrar a composição visual. Os dois CTAs abrem o mesmo modal. Fechar pelo botão, pela área externa ou por Escape devolve o foco ao acionador. O seletor alterna cartão à vista (R$497) ou 12 parcelas de R$49 (total R$588); Pix permanece R$497. A liberação da agenda depende do pagamento aprovado. O comprador confirma o horário disponível na agenda; pagar não reserva automaticamente.

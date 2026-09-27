@@ -58,6 +58,19 @@ test('persisted whitelist excludes identity and card data', () => {
   const { session, options } = harness(); session.save({ ...record, cpfCnpj: 'synthetic', creditCard: { number: 'synthetic', ccv: 'synthetic' }, name: 'Synthetic Buyer' });
   const saved = JSON.parse(options.storage.getItem('test')); assert.equal(saved.cpfCnpj, undefined); assert.equal(saved.creditCard, undefined); assert.equal(saved.name, undefined);
 });
+test('consulting installment metadata survives same-browser recovery without persisting card data', () => {
+  const { session, options } = harness({ productId: 'consultoria-individual-natan', plans: ['consultoria'] });
+  session.save({
+    paymentId: 'pay_consulting', gateway: 'asaas', plan: 'consultoria', productId: 'consultoria-individual-natan',
+    eventId: 'abc123def45', orderId: 'consultoria-abc123def45', amount: 588, chargeAmount: 49,
+    installmentCount: 12, installmentValue: 49, offerCode: 'consultoria-12x49',
+    expiresAt: new Date(start + TTL).toISOString(), method: 'CREDIT_CARD', creditCard: { number: 'synthetic', ccv: 'synthetic' },
+  });
+  const saved = JSON.parse(options.storage.getItem('test'));
+  assert.equal(saved.installmentCount, 12); assert.equal(saved.installmentValue, 49);
+  assert.equal(saved.offerCode, 'consultoria-12x49'); assert.equal(saved.orderId, 'consultoria-abc123def45');
+  assert.equal(saved.creditCard, undefined);
+});
 test('wrong product or plan cannot redirect to approved', async () => {
   const { session, state } = harness(); session.save(record); state.response.paid = true;
   state.response.productId = 'consultoria-individual-natan'; await session.check();

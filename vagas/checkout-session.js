@@ -27,6 +27,11 @@
         plan: value.plan, productId: options.productId,
         eventId: typeof value.eventId === 'string' ? value.eventId.slice(0, 250) : '',
         amount: Number(value.amount) || 0,
+        chargeAmount: Number(value.chargeAmount) || 0,
+        installmentCount: [1, 12].includes(Number(value.installmentCount)) ? Number(value.installmentCount) : 1,
+        installmentValue: Number(value.installmentValue) || 0,
+        offerCode: ['consultoria-a-vista', 'consultoria-12x49'].includes(value.offerCode) ? value.offerCode : '',
+        orderId: typeof value.orderId === 'string' && /^[a-zA-Z0-9_-]{1,160}$/.test(value.orderId) ? value.orderId : '',
         method: value.method === 'CREDIT_CARD' ? 'CREDIT_CARD' : 'PIX',
         expiresAt: value.expiresAt,
         pix: {
