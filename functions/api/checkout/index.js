@@ -9,6 +9,43 @@ const CORS_HEADERS = {
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
+export function buildAsaasExternalReference({ productId, plan, eventId, checkoutExpiresAt }) {
+  // Asaas strictly enforces externalReference <= 100 characters.
+  // Consultoria tests/audit require product_id: 'consultoria-individual-natan'.
+  // For other plans, productId defaults to 'comunidade-imobiturbo' in checkoutDetails().
+  const ref = {};
+  if (productId === "consultoria-individual-natan") {
+    ref.product_id = productId;
+  }
+  ref.plan = plan;
+  if (eventId) {
+    ref.eid = eventId;
+  }
+  if (checkoutExpiresAt) {
+    const expMs = typeof checkoutExpiresAt === "number" ? checkoutExpiresAt : Date.parse(checkoutExpiresAt);
+    if (Number.isFinite(expMs)) ref.exp = expMs;
+  }
+
+  let str = JSON.stringify(ref);
+  if (str.length <= 100) return str;
+
+  // Drop expiration timestamp to save ~25 chars while preserving plan and eventId
+  delete ref.exp;
+  str = JSON.stringify(ref);
+  if (str.length <= 100) return str;
+
+  // Trim eventId while keeping valid JSON structure
+  if (ref.eid) {
+    while (str.length > 100 && ref.eid.length > 1) {
+      const excess = str.length - 100;
+      ref.eid = ref.eid.slice(0, Math.max(1, ref.eid.length - excess));
+      str = JSON.stringify(ref);
+    }
+  }
+
+  return str;
+}
+
 export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: CORS_HEADERS });
 }
@@ -98,7 +135,7 @@ export async function onRequestPost(context) {
   const todayStr = new Date().toISOString().split("T")[0];
   const productId = plan === "consultoria" ? "consultoria-individual-natan" : "comunidade-imobiturbo";
   const checkoutExpiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
-  const externalReference = JSON.stringify({ product_id: productId, plan, eid: eventId, checkout_expires_at: checkoutExpiresAt });
+  const externalReference = buildAsaasExternalReference({ productId, plan, eventId, checkoutExpiresAt });
 
   // ==========================================
   // ESTRATÉGIA 1: PIX VIA ASAAS (QUANDO SOLICITADO OU DEFAULT)
