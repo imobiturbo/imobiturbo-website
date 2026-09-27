@@ -112,9 +112,10 @@ test("consulting upsell reuses the landing checkout modal language and offers ev
   for (let count = 1; count <= 12; count++) {
     assert.ok(select.includes(`value="${count}"`), `upsell must offer ${count}x`);
   }
-  assert.ok(select.includes("2x de R$248,50"));
-  assert.ok(select.includes("3x de R$165,66 · ajuste na última"));
-  assert.ok(html.includes('optgroup label="Sem juros · total R$497,00"'));
+  assert.ok(select.includes("1x de R$497,00 · sem juros"));
+  assert.ok(select.includes("2x de R$248,50 · sem juros"));
+  assert.ok(select.includes("3x de R$165,66 · sem juros"));
+  assert.ok(!select.includes('optgroup label="Sem juros'), "interest-free options must not have a redundant heading");
   assert.ok(html.includes('optgroup label="Com juros · +R$91,00 · total R$588,00"'));
   assert.ok(select.includes("9x de R$65,33 · total R$588,00"));
   assert.ok(select.includes("12x de R$49,00 · total R$588,00"));
