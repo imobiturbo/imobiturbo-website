@@ -1480,7 +1480,7 @@
       }
     }
   </style>
-  <script src="/vagas/checkout-session.js?v=20260927-1"></script>
+  <script src="/vagas/checkout-session.js?v=20260927-2"></script>
 </head>
 <body>
 
@@ -4291,7 +4291,17 @@
         const result = await resp.json();
 
         if (resp.ok && result.success && result.paymentId) {
-          checkoutSession.capture(result, { plan: currentPlan, method: 'CREDIT_CARD' });
+          checkoutSession.capture(result, {
+            plan: currentPlan,
+            method: 'CREDIT_CARD',
+            upsellBuyer: {
+              name: payload.name,
+              email: payload.email,
+              phone: payload.phone,
+              cpfCnpj: cardCpf,
+              cardHolderName: cardHolder,
+            },
+          });
           [cardNumInput, cardCvvInput, cardExpiryInput, cardCpfInput].forEach(input => { if (input) input.value = ''; });
         } else {
           const errMsg = result.error || 'Não foi possível autorizar o cartão. Verifique os dados ou tente outro cartão.';
@@ -4348,7 +4358,12 @@
         const result = await resp.json();
 
         if (resp.ok && result.success && result.paymentId) {
-          startPixPolling(result.paymentId, result.eventId, result);
+          startPixPolling(result.paymentId, result.eventId, result, {
+            name: payload.name,
+            email: payload.email,
+            phone: payload.phone,
+            cpfCnpj: pixCpf,
+          });
         } else {
           showCheckoutError(result.error || 'Erro ao gerar o Pix. Tente novamente.');
         }
@@ -4364,8 +4379,12 @@
     }
 
     // The shared session owns status polling and the absolute checkout deadline.
-    function startPixPolling(paymentId, eventId, checkoutResult) {
-      return checkoutSession.capture({ ...checkoutResult, paymentId, eventId }, { plan: currentPlan, method: 'PIX' });
+    function startPixPolling(paymentId, eventId, checkoutResult, upsellBuyer) {
+      return checkoutSession.capture({ ...checkoutResult, paymentId, eventId }, {
+        plan: currentPlan,
+        method: 'PIX',
+        upsellBuyer,
+      });
     }
 
     // Copiar código Pix para a área de transferência
