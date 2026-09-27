@@ -35,6 +35,24 @@ test('consulting rejects wrong amount and ignores deleted payment approval', asy
   assert.equal((await handler({ ...base, verifiedPayment: { ...payment, value: 1, status: 'RECEIVED' } })).status, 422);
   assert.equal((await (await handler({ ...base, verifiedPayment: { ...payment, deleted: true, status: 'RECEIVED' } })).json()).paid, false);
 });
+test('consulting card installments 2x through 12x validate the R$588 total and final-cent adjustment', async () => {
+  const { checkoutDetails, isValidConsultingPayment } = await load('_products.js');
+  for (let count = 2; count <= 12; count++) {
+    const offerCode = count === 12 ? 'consultoria-12x49' : `consultoria-${count}x`;
+    const externalReference = JSON.stringify({ product_id: productId, plan: 'consultoria', offer_code: offerCode, eid: `installment-${count}` });
+    const details = checkoutDetails({ externalReference });
+    const baseCents = Math.floor(58800 / count);
+    const remainderCents = 58800 - baseCents * count;
+    assert.equal(details.installmentCount, count);
+    assert.equal(details.installmentValue, baseCents / 100);
+    assert.equal(details.orderAmount, 588);
+    assert.equal(isValidConsultingPayment({ billingType: 'CREDIT_CARD', value: baseCents / 100, installmentNumber: 1 }, details), true);
+    assert.equal(isValidConsultingPayment({ billingType: 'CREDIT_CARD', value: (baseCents + remainderCents) / 100, installmentNumber: count }, details), true);
+    if (remainderCents) {
+      assert.equal(isValidConsultingPayment({ billingType: 'CREDIT_CARD', value: baseCents / 100, installmentNumber: count }, details), false);
+    }
+  }
+});
 test('Asaas webhook authentication fails before provider or membership calls', async t => {
   t.mock.method(globalThis, 'fetch', () => { throw Error('unexpected network'); });
   const response = await (await load('webhook.js')).onRequestPost({ request: new Request('https://example.invalid', { method: 'POST', body: JSON.stringify({ payment: { id: payment.id } }) }), env: { ASAAS_API_KEY: 'synthetic', ASAAS_WEBHOOK_TOKEN: 'required' } });

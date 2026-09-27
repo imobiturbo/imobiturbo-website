@@ -18,7 +18,9 @@ export function checkoutDetails(payment = {}) {
   const rawExp = reference.checkout_expires_at ?? reference.exp;
   const expiresAt = typeof rawExp === "number" ? rawExp : Date.parse(rawExp);
   const offerCode = consulting ? (typeof reference.offer_code === "string" ? reference.offer_code : "consultoria-a-vista") : null;
-  const installmentCount = offerCode === "consultoria-12x49" ? 12 : 1;
+  const installmentMatch = typeof offerCode === "string" ? /^consultoria-([2-9]|1[0-2])x$/.exec(offerCode) : null;
+  const installmentCount = offerCode === "consultoria-12x49" ? 12 : installmentMatch ? Number(installmentMatch[1]) : 1;
+  const installmentValueCents = installmentCount > 1 ? Math.floor(58800 / installmentCount) : 49700;
   const orderId = consulting && typeof reference.eid === "string" && reference.eid
     ? `consultoria-${reference.eid}` : `purch_${payment.id}`;
   return {
@@ -31,8 +33,8 @@ export function checkoutDetails(payment = {}) {
       offerCode,
       orderId,
       installmentCount,
-      installmentValue: installmentCount === 12 ? 49 : 497,
-      orderAmount: installmentCount === 12 ? 588 : 497,
+      installmentValue: installmentValueCents / 100,
+      orderAmount: installmentCount > 1 ? 588 : 497,
     } : {}),
   };
 }
@@ -45,9 +47,21 @@ export function isAsaasPaymentPaid(payment) {
 export function isValidConsultingPayment(payment, details = checkoutDetails(payment)) {
   if (details.productId !== CONSULTING_PRODUCT_ID) return false;
   const value = Number(payment.value);
-  if (details.offerCode === "consultoria-12x49") {
-    return payment.billingType === "CREDIT_CARD" && value === 49;
+  if (details.offerCode === "consultoria-a-vista") {
+    return ["PIX", "CREDIT_CARD"].includes(payment.billingType) && value === 497;
   }
-  return details.offerCode === "consultoria-a-vista" &&
-    ["PIX", "CREDIT_CARD"].includes(payment.billingType) && value === 497;
+  const count = Number(details.installmentCount);
+  const expectedOffer = count === 12 ? ["consultoria-12x49", "consultoria-12x"].includes(details.offerCode) :
+    details.offerCode === `consultoria-${count}x`;
+  if (!expectedOffer || payment.billingType !== "CREDIT_CARD" || !Number.isInteger(count) || count < 2 || count > 12 || !Number.isFinite(value)) return false;
+  let installmentNumber = 1;
+  if (payment.installmentNumber != null) {
+    installmentNumber = Number(payment.installmentNumber);
+    if (!Number.isInteger(installmentNumber) || installmentNumber < 1 || installmentNumber > count) return false;
+  }
+  const totalCents = 58800;
+  const baseCents = Math.floor(totalCents / count);
+  const remainderCents = totalCents - baseCents * count;
+  const expectedCents = baseCents + (installmentNumber === count ? remainderCents : 0);
+  return Math.round(value * 100) === expectedCents;
 }

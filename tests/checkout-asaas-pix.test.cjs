@@ -21,7 +21,9 @@ async function invoke(t, overrides = {}, mode = 'normal', envOverrides = {}) {
       // Model the provider's inherited account settings, not the implementation.
       const fine = body.fine?.value ?? 147;
       if (fine >= body.value) return Response.json({ errors: [{ description: 'O valor da multa (R$147,00) deve ser menor que o valor da cobrança (R$147,00).' }] }, { status: 400 });
-      return Response.json({ id: 'pay_synthetic', value: body.value ?? body.installmentValue ?? body.totalValue, status: 'PENDING', billingType: body.billingType, externalReference: body.externalReference });
+      const firstInstallment = body.totalValue != null && body.installmentCount > 1
+        ? Math.floor(Math.round(body.totalValue * 100) / body.installmentCount) / 100 : undefined;
+      return Response.json({ id: 'pay_synthetic', value: body.value ?? body.installmentValue ?? firstInstallment ?? body.totalValue, status: 'PENDING', billingType: body.billingType, externalReference: body.externalReference });
     }
     if (address.pathname.endsWith('/pixQrCode')) {
       if (mode === 'qr-failure') return Response.json({ errors: [{ description: 'QR temporariamente indisponível' }] }, { status: 503 });
@@ -111,11 +113,30 @@ test('consultoria 12x sends installmentValue=49 and tracks R$588 total', async t
   assert.equal(data.installmentValue, 49);
 });
 
-test('consultoria rejects installment counts outside the two disclosed choices before contacting Asaas', async t => {
-  const { response, calls } = await invoke(t, { ...cardData, plan: 'consultoria', installments: 2 });
-  assert.equal(response.status, 400);
-  assert.equal(calls.length, 0);
-});
+for (let count = 2; count <= 11; count++) {
+  test(`consultoria ${count}x sends totalValue=588 and reports the first Asaas installment`, async t => {
+    const { response, data, calls } = await invoke(t, { ...cardData, plan: 'consultoria', installments: count });
+    const payment = calls.find(call => call.path === '/v3/payments' && call.method === 'POST').body;
+    const firstInstallmentCents = Math.floor(58800 / count);
+    assert.equal(response.status, 200);
+    assert.equal(payment.installmentCount, count);
+    assert.equal(payment.totalValue, 588);
+    assert.equal(payment.installmentValue, undefined);
+    assert.equal(JSON.parse(payment.externalReference).offer_code, `consultoria-${count}x`);
+    assert.equal(data.amount, 588);
+    assert.equal(data.chargeAmount, firstInstallmentCents / 100);
+    assert.equal(data.installmentCount, count);
+    assert.equal(data.installmentValue, firstInstallmentCents / 100);
+  });
+}
+
+for (const count of [0, 13, 2.5]) {
+  test(`consultoria rejects invalid installment count ${count} before contacting Asaas`, async t => {
+    const { response, calls } = await invoke(t, { ...cardData, plan: 'consultoria', installments: count });
+    assert.equal(response.status, 400);
+    assert.equal(calls.length, 0);
+  });
+}
 
 test('Asaas Pix externalReference never exceeds 100 characters even with long production eventId', async t => {
   const prodEventId = 'vagas_evt_1790475130004_q3a9h1t';

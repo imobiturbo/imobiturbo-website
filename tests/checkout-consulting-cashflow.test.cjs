@@ -36,6 +36,30 @@ for (const [status, event] of [['PENDING', 'PAYMENT_CREATED'], ['RECEIVED', 'PAY
   });
 }
 
+for (let count = 2; count <= 11; count++) {
+  test(`cashflow accepts the first charge of the ${count}x R$588 consulting offer`, async t => {
+    const calls = [];
+    const firstInstallment = Math.floor(58800 / count) / 100;
+    const selectedPayment = {
+      ...payment('PENDING'),
+      id: `pay_consulting_${count}x`,
+      value: firstInstallment,
+      externalReference: JSON.stringify({
+        product_id: 'consultoria-individual-natan', offer_code: `consultoria-${count}x`, eid: `order-${count}`,
+      }),
+    };
+    t.mock.method(globalThis, 'fetch', async (url, options = {}) => {
+      calls.push({ url: String(url), body: JSON.parse(options.body) });
+      return Response.json({ ok: true });
+    });
+    const sent = await (await load('_cashflow.js')).dispatchConsultingCashflowToHub({ env, payment: selectedPayment });
+    assert.equal(sent, true);
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].body.payment.value, firstInstallment);
+    assert.equal(JSON.parse(calls[0].body.payment.externalReference).offer_code, `consultoria-${count}x`);
+  });
+}
+
 test('cashflow delivery refuses amount mismatches and untrusted endpoints without sending the Hub token', async t => {
   let calls = 0;
   t.mock.method(globalThis, 'fetch', () => { calls++; throw new Error('unexpected network'); });

@@ -145,11 +145,13 @@ export async function onRequestPost(context) {
   const productId = plan === "consultoria" ? "consultoria-individual-natan" : "comunidade-imobiturbo";
   const checkoutExpiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString();
   const requestedInstallments = body.installments == null || body.installments === "" ? 1 : Number(body.installments);
-  if (plan === "consultoria" && paymentMethod === "CREDIT_CARD" && ![1, 12].includes(requestedInstallments)) {
-    return Response.json({ success: false, error: "Escolha pagamento à vista ou em 12 parcelas." }, { status: 400, headers: CORS_HEADERS });
+  if (plan === "consultoria" && paymentMethod === "CREDIT_CARD" &&
+      (!Number.isInteger(requestedInstallments) || requestedInstallments < 1 || requestedInstallments > 12)) {
+    return Response.json({ success: false, error: "Escolha de 1 a 12 parcelas." }, { status: 400, headers: CORS_HEADERS });
   }
   const installmentCount = plan === "consultoria" && paymentMethod === "CREDIT_CARD" ? requestedInstallments : 1;
-  const offerCode = plan === "consultoria" ? (installmentCount === 12 ? "consultoria-12x49" : "consultoria-a-vista") : undefined;
+  const offerCode = plan === "consultoria" ? (installmentCount === 1 ? "consultoria-a-vista" :
+    installmentCount === 12 ? "consultoria-12x49" : `consultoria-${installmentCount}x`) : undefined;
   const checkoutEventId = plan === "consultoria" ? crypto.randomUUID().replaceAll("-", "").slice(0, 11) : eventId;
   const externalReference = buildAsaasExternalReference({ productId, plan, eventId: checkoutEventId, checkoutExpiresAt, offerCode });
 
@@ -640,7 +642,8 @@ export async function onRequestPost(context) {
 
         if (installmentCount > 1 && plan === "consultoria") {
           cardPayload.installmentCount = installmentCount;
-          cardPayload.installmentValue = selectedPlan.cardInstallmentValue;
+          if (installmentCount === 12) cardPayload.installmentValue = selectedPlan.cardInstallmentValue;
+          else cardPayload.totalValue = selectedPlan.cardTotalValue;
         } else if (installmentCount > 1) {
           cardPayload.installmentCount = installmentCount;
           cardPayload.totalValue = selectedPlan.cardTotalValue;
@@ -684,10 +687,11 @@ export async function onRequestPost(context) {
             billingType: "CREDIT_CARD",
             status: payment.status,
             isApproved,
-            amount: plan === "consultoria" ? (installmentCount === 12 ? 588 : 497) : payment.value,
+            amount: plan === "consultoria" ? (installmentCount > 1 ? 588 : 497) : payment.value,
             chargeAmount: payment.value,
             installmentCount: plan === "consultoria" ? installmentCount : payment.installmentCount || installmentCount,
-            installmentValue: plan === "consultoria" ? (installmentCount === 12 ? 49 : 497) : payment.installmentValue || undefined,
+            installmentValue: plan === "consultoria" ? (installmentCount > 1
+              ? (Number(payment.value) || Math.floor(58800 / installmentCount) / 100) : 497) : payment.installmentValue || undefined,
             offerCode,
             plan,
             productId,
