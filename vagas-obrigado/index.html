@@ -10,10 +10,10 @@
   <link rel="canonical" href="https://www.imobiturbo.com.br/vagas-obrigado">
   <link rel="icon" href="/vagas/assets/imobiturbo-favicon.png">
   <link rel="preload" href="/fonts/PlusJakartaSans-Variable.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="/vagas-obrigado/upsell.css?v=20260927-reference">
+  <link rel="stylesheet" href="/vagas-obrigado/upsell.css?v=20260927-access-email">
   <script defer src="/vagas/checkout-session.js?v=20260927-2"></script>
   <script id="hub-tracker" defer src="https://track.nmidigital.tech/t.js?operation=00000000-0000-0000-0000-000000000001&offer=12e90537-263d-4150-9757-52193187ffbd" data-id="00000000-0000-0000-0000-000000000001" data-operation-id="00000000-0000-0000-0000-000000000001" data-offer-id="12e90537-263d-4150-9757-52193187ffbd" data-offer="12e90537-263d-4150-9757-52193187ffbd" data-endpoint="https://track.nmidigital.tech"></script>
-  <script defer src="/vagas-obrigado/upsell.js?v=20260927-3"></script>
+  <script defer src="/vagas-obrigado/upsell.js?v=20260927-access-email"></script>
 </head>
 <body>
   <!-- THESIS: A practical next step with the person behind Imobiturbo.
@@ -210,7 +210,18 @@
       </div></div></section>
     </div>
 
-    <section class="wrap access-section" id="acessos" aria-labelledby="accessTitle"><h2 id="accessTitle">Continue na Imobiturbo.</h2><p>Use o e-mail da sua compra para entrar. A liberação depende da confirmação do pagamento da comunidade.</p><div class="access-links"><a class="secondary-button" href="https://club.imobiturbo.com.br/login">Acessar Imobiturbo Club</a><a class="secondary-button" href="https://app.imobiturbo.com.br/onboarding">Configurar meu CRM</a></div><p class="small">Precisa de ajuda com seu acesso? <a class="text-link" href="https://wa.me/5521983747796" target="_blank" rel="noopener noreferrer">Falar com o suporte</a></p></section>
+    <section class="wrap access-section" id="acessos" aria-labelledby="accessTitle">
+      <h2 id="accessTitle">Continue na Imobiturbo.</h2>
+      <p id="accessEmailFallback">Use o e-mail da sua compra para entrar.</p>
+      <div class="access-email" id="accessEmailPanel" role="group" aria-labelledby="accessEmailLabel" hidden>
+        <p class="access-email-label" id="accessEmailLabel">Seu e-mail de acesso</p>
+        <strong class="access-email-value" id="accessEmail" dir="ltr"></strong>
+        <p class="small">Use este mesmo e-mail para acessar o Imobiturbo Club e configurar seu CRM.</p>
+      </div>
+      <p>A liberação depende da confirmação do pagamento da comunidade.</p>
+      <div class="access-links"><a class="secondary-button" href="https://club.imobiturbo.com.br/login">Acessar Imobiturbo Club</a><a class="secondary-button" href="https://app.imobiturbo.com.br/onboarding">Configurar meu CRM</a></div>
+      <p class="small">Precisa de ajuda com seu acesso? <a class="text-link" href="https://wa.me/5521983747796" target="_blank" rel="noopener noreferrer">Falar com o suporte</a></p>
+    </section>
   </main>
   <footer class="wrap"><span>Imobiturbo · Natan Pimentel</span><nav aria-label="Informações legais"><a href="/termos-de-servico/">Termos de serviço</a><a href="/politica-de-privacidade/">Privacidade</a></nav></footer>
   <noscript><p class="wrap">Ative o JavaScript para consultar seu pagamento e contratar a consultoria. Os links de acesso e suporte continuam disponíveis.</p></noscript>

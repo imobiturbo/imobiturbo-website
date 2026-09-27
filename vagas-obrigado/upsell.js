@@ -161,13 +161,8 @@
     if (!validCpf(cpf)) { feedback('Confira o CPF informado.', true); get('buyerCpf').focus(); return; }
     if (phone.length < 10 || phone.length > 13) { feedback('Informe seu WhatsApp com DDD.', true); return; }
     if (get('buyerName').value.trim().split(/\s+/).length < 2) { feedback('Informe seu nome completo.', true); return; }
-    sessions.saveUpsellBuyer?.({
-      name: get('buyerName').value.trim(),
-      email: get('buyerEmail').value.trim(),
-      phone: get('buyerPhone').value.trim(),
-      cpfCnpj: cpf,
-      cardHolderName: method === 'CREDIT_CARD' ? get('cardHolder').value.trim() : '',
-    });
+    // The transferred profile belongs to the community purchase. Consulting
+    // details go only in this request and must not replace the access email.
     let creditCard = null;
     if (method === 'CREDIT_CARD') {
       const expiry = get('cardExpiry').value.match(/^(\d{2})\/(\d{2})$/);
@@ -236,6 +231,12 @@
       }
     }
   } catch (_) {}
+  const communityBuyer = sessions.getUpsellBuyer?.();
+  if (communityBuyer?.email) {
+    get('accessEmail').textContent = communityBuyer.email;
+    get('accessEmailPanel').hidden = false;
+    get('accessEmailFallback').hidden = true;
+  }
   applySavedBuyer();
   document.querySelectorAll('a[href="#acessos"]').forEach(link => {
     link.addEventListener('click', () => sessions.clearUpsellBuyer?.());
