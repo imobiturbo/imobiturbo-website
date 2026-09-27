@@ -68,6 +68,7 @@ input, textarea { caret-color: var(--accent); }
 .hero { padding-block: 32px 64px; }
 .hero-heading { max-width: 1100px; margin: 0 auto 28px; text-align: center; }
 .hero-heading>p { margin-top: 16px; font-size: 17px; line-height: 1.65; }
+.hero-heading .offer-exclusive { margin: 0 0 13px; color: var(--accent); font-size: 12px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
 .offer { max-width: 1032px; display: grid; grid-template-columns: 1.06fr 1fr; align-items: center; gap: 72px; margin-inline: auto; }
 .offer-copy { min-width: 0; padding-block: 8px; }
 .offer-copy .intro { max-width: 45ch; font-size: 18px; line-height: 1.7; }
@@ -111,6 +112,19 @@ input, textarea { caret-color: var(--accent); }
 .outcomes dt { margin-bottom: 9px; font-size: 20px; font-weight: 750; line-height: 1.4; letter-spacing: -.02em; }
 .outcomes dt::before { position: absolute; left: 2px; width: 9px; height: 15px; margin-top: 4px; border: solid #53762d; border-width: 0 2px 2px 0; transform: rotate(45deg); content: ''; }
 .outcomes dd { max-width: 54ch; color: var(--paper-muted); font-size: 15px; line-height: 1.7; }
+.route-label { display: block; margin-bottom: 6px; color: #53762d; font-size: 12px; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+.standard-route { display: grid; gap: 10px; margin: 14px 0 0; padding-left: 21px; }
+.standard-route li { padding-left: 3px; }
+.standard-route li::marker { color: #53762d; font-weight: 750; }
+.standard-route strong, .topics-list strong { color: var(--ink); font-weight: 750; }
+.session-topics { padding-block: 38px 76px; border-top: 1px solid var(--paper-line); }
+.topics-heading { display: grid; grid-template-columns: 1fr 1.12fr; align-items: center; gap: 100px; }
+.topics-heading h3 { max-width: 24ch; font-size: 27px; line-height: 1.25; }
+.topics-heading p { max-width: 42ch; font-size: 15px; }
+.topics-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 70px; margin: 30px 0; padding-left: 20px; }
+.topics-list li { padding-left: 5px; color: var(--paper-muted); font-size: 15px; line-height: 1.7; }
+.topics-list li::marker { color: #53762d; }
+.session-topics .session-scope { max-width: 90ch; padding-top: 23px; border-top: 1px solid var(--paper-line); font-size: 13px; line-height: 1.7; }
 .takeaway { background: var(--accent); color: #10120d; }
 .takeaway-inner { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 80px; padding-block: 60px; }
 .takeaway h2 { font-size: clamp(32px, 3vw, 43px); }
@@ -202,6 +216,8 @@ footer nav { display: flex; gap: 20px; }
   .portrait figcaption { grid-template-columns: 1fr; padding-inline: 22px; }
   .portrait figcaption strong { grid-column: 1; grid-row: 3; margin-top: 12px; }
   .working-session, .payment-section, .takeaway-inner, .section-heading, .final-invite, .faq-layout { gap: 40px; }
+  .topics-heading { gap: 40px; }
+  .topics-list { column-gap: 35px; }
   .process-list { gap: 26px; }
   .closing-purchase { padding: 25px; }
   .journey-steps small { display: block; margin-left: 0; line-height: 1.4; }
@@ -222,6 +238,10 @@ footer nav { display: flex; gap: 20px; }
   h1 { font-size: clamp(31px, 8.5vw, 42px); line-height: 1.15; }
   h2 { font-size: 32px; line-height: 1.16; }
   .hero-heading>p { margin-top: 15px; font-size: 15px; }
+  .hero-heading .offer-exclusive { margin: 0 0 12px; font-size: 11px; }
+  .session-topics { padding-block: 30px 48px; }
+  .topics-heading, .topics-list { grid-template-columns: 1fr; gap: 18px; }
+  .topics-heading h3 { font-size: 25px; }
   .desktop-break { display: none; }
   .offer { display: flex; flex-direction: column; gap: 28px; }
   .offer-copy { width: 100%; padding: 0; }
@@ -288,6 +308,8 @@ footer nav { display: flex; gap: 20px; }
 
 @media (max-width: 360px) {
   .wrap { width: calc(100% - 32px); }
+  .hero { padding-top: 16px; }
+  .hero-heading { margin-bottom: 16px; }
   .journey-steps { width: 100%; }
   .journey-steps li { gap: 5px; padding-inline: 4px; }
   .journey-steps .step-number { width: 18px; height: 18px; flex-basis: 18px; }
