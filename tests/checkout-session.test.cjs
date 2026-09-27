@@ -74,10 +74,11 @@ test('consulting installment metadata survives same-browser recovery without per
 for (let count = 2; count <= 11; count++) {
   test(`consulting ${count}x metadata survives same-browser recovery`, () => {
     const { session } = harness({ productId: 'consultoria-individual-natan', plans: ['consultoria'] });
-    const firstInstallment = Math.floor(58800 / count) / 100;
+    const totalCents = count <= 3 ? 49700 : 58800;
+    const firstInstallment = Math.floor(totalCents / count) / 100;
     session.save({
       paymentId: `pay_consulting_${count}x`, gateway: 'asaas', plan: 'consultoria', productId: 'consultoria-individual-natan',
-      eventId: `order-${count}`, orderId: `consultoria-order-${count}`, amount: 588, chargeAmount: firstInstallment,
+      eventId: `order-${count}`, orderId: `consultoria-order-${count}`, amount: totalCents / 100, chargeAmount: firstInstallment,
       installmentCount: count, installmentValue: firstInstallment, offerCode: `consultoria-${count}x`,
       expiresAt: new Date(start + TTL).toISOString(), method: 'CREDIT_CARD',
     });

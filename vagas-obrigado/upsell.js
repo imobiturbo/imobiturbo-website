@@ -16,8 +16,11 @@
   function formatCurrency(cents) {
     return `R$${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(cents / 100)}`;
   }
+  function installmentTotalCents(count) {
+    return count >= 4 ? CARD_TOTAL_CENTS : CARD_SINGLE_CENTS;
+  }
   function firstInstallmentCents(count) {
-    return Math.floor(CARD_TOTAL_CENTS / count);
+    return Math.floor(installmentTotalCents(count) / count);
   }
 
   function feedback(message, error = false) {
@@ -39,10 +42,11 @@
     get('pendingPayment').hidden = false;
     const pix = record.method === 'PIX';
     const installmentCents = Math.round(Number(record.installmentValue) * 100) || firstInstallmentCents(record.installmentCount);
+    const totalCents = Math.round(Number(record.amount) * 100) || installmentTotalCents(record.installmentCount);
     get('pixDetails').hidden = !pix;
     get('pendingTitle').textContent = pix ? record.pix.copyPaste ? 'Seu Pix está pronto.' : 'Recuperando seu Pix…' : 'Aguardando a confirmação do cartão.';
     get('pendingDescription').textContent = pix ? 'Use o mesmo código para pagar pelo aplicativo do seu banco. A confirmação aparece aqui.' :
-      record.installmentCount > 1 ? `Cartão em análise: ${record.installmentCount} parcelas de ${formatCurrency(installmentCents)} · total de R$588, com possível ajuste de centavos na última. A confirmação aparece aqui.` :
+      record.installmentCount > 1 ? `Cartão em análise: ${record.installmentCount} parcelas de ${formatCurrency(installmentCents)} · total de ${formatCurrency(totalCents)} ${totalCents > CARD_SINGLE_CENTS ? 'com juros' : 'sem juros'}, com possível ajuste de centavos na última. A confirmação aparece aqui.` :
         'Cartão em análise: pagamento único de R$497. A confirmação aparece aqui.';
     const tick = () => {
       const left = Math.max(0, Math.ceil((Date.parse(record.expiresAt) - Date.now()) / 1000));
@@ -71,12 +75,16 @@
     get('payWithCard').setAttribute('aria-selected', String(card));
     get('payWithPix').classList.toggle('active', !card);
     get('payWithCard').classList.toggle('active', card);
+    const totalCents = installmentTotalCents(installments);
     const firstCents = installments === 1 ? CARD_SINGLE_CENTS : firstInstallmentCents(installments);
     get('checkoutPrice').textContent = card && installments > 1 ? `${installments}× ${formatCurrency(firstCents)}` : 'R$497';
-    get('checkoutPriceNote').textContent = !card ? 'À vista via Pix' : installments > 1 ? `Total de R$588 no cartão em ${installments} parcelas` : 'Pagamento único no cartão';
+    get('checkoutPriceNote').textContent = !card ? 'À vista via Pix' : installments > 1
+      ? `${totalCents > CARD_SINGLE_CENTS ? 'Com juros · +R$91,00' : 'Sem juros'} · total de ${formatCurrency(totalCents)} em ${installments} parcelas`
+      : 'Pagamento único no cartão';
+    const lastCents = totalCents - firstCents * Math.max(0, installments - 1);
     get('installmentNote').textContent = installments === 1
       ? 'Pagamento único no cartão: R$497.'
-      : 'Total de R$588. Quando necessário, a diferença de centavos é ajustada na última parcela.';
+      : `${totalCents > CARD_SINGLE_CENTS ? 'Parcelamento com juros de R$91,00' : 'Parcelamento sem juros'}: total ${formatCurrency(totalCents)}.${lastCents !== firstCents ? ` A última parcela fica ${formatCurrency(lastCents)} para ajustar os centavos.` : ''}`;
     get('submitPayment').textContent = card
       ? installments > 1 ? `Pagar ${installments}× de ${formatCurrency(firstCents)} no cartão` : 'Pagar R$497 no cartão'
       : 'Gerar Pix de R$497';
@@ -101,8 +109,9 @@
       form.reset();
       get('offerContent').hidden = true;
       get('consultingApproved').hidden = false;
+      const totalCents = Math.round(Number(record.amount) * 100) || installmentTotalCents(record.installmentCount);
       get('confirmedAmount').textContent = record.installmentCount > 1
-        ? `${record.installmentCount} parcelas no cartão · total de R$588`
+        ? `${record.installmentCount} parcelas no cartão · total de ${formatCurrency(totalCents)} ${totalCents > CARD_SINGLE_CENTS ? 'com juros' : 'sem juros'}`
         : record.method === 'CREDIT_CARD' ? 'R$497 no cartão, em parcela única' : 'R$497 à vista via Pix';
       get('scheduleLink').href = 'https://agenda.imobiturbo.com.br/natanpimentel/1-1-consultoria-individual-com-natan-pimentel';
       get('consultingApproved').focus({ preventScroll: true });

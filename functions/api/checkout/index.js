@@ -3,6 +3,7 @@
 // Preços e identificação do produto são definidos exclusivamente no servidor.
 
 import { dispatchConsultingCashflowToHub } from "./_cashflow.js";
+import { consultingInstallmentTotalCents } from "./_products.js";
 
 const CORS_HEADERS = {
   "Cache-Control": "no-store",
@@ -634,6 +635,7 @@ export async function onRequestPost(context) {
         if (plan !== "consultoria" && Number.isInteger(reqInstallments) && reqInstallments >= 1 && reqInstallments <= 12) {
           installmentCount = reqInstallments;
         }
+        const consultingTotalCents = plan === "consultoria" ? consultingInstallmentTotalCents(installmentCount) : 0;
 
         if (plan === "consultoria") {
           cardPayload.fine = { value: 0, type: "FIXED" };
@@ -643,7 +645,7 @@ export async function onRequestPost(context) {
         if (installmentCount > 1 && plan === "consultoria") {
           cardPayload.installmentCount = installmentCount;
           if (installmentCount === 12) cardPayload.installmentValue = selectedPlan.cardInstallmentValue;
-          else cardPayload.totalValue = selectedPlan.cardTotalValue;
+          else cardPayload.totalValue = consultingTotalCents / 100;
         } else if (installmentCount > 1) {
           cardPayload.installmentCount = installmentCount;
           cardPayload.totalValue = selectedPlan.cardTotalValue;
@@ -687,11 +689,11 @@ export async function onRequestPost(context) {
             billingType: "CREDIT_CARD",
             status: payment.status,
             isApproved,
-            amount: plan === "consultoria" ? (installmentCount > 1 ? 588 : 497) : payment.value,
+            amount: plan === "consultoria" ? consultingTotalCents / 100 : payment.value,
             chargeAmount: payment.value,
             installmentCount: plan === "consultoria" ? installmentCount : payment.installmentCount || installmentCount,
             installmentValue: plan === "consultoria" ? (installmentCount > 1
-              ? (Number(payment.value) || Math.floor(58800 / installmentCount) / 100) : 497) : payment.installmentValue || undefined,
+              ? (Number(payment.value) || Math.floor(consultingTotalCents / installmentCount) / 100) : 497) : payment.installmentValue || undefined,
             offerCode,
             plan,
             productId,

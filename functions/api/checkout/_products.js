@@ -2,6 +2,25 @@ export const COMMUNITY_PRODUCT_ID = "comunidade-imobiturbo";
 export const CONSULTING_PRODUCT_ID = "consultoria-individual-natan";
 export const CONSULTING_HUB_OFFER_ID = "12e90537-263d-4150-9757-52193187ffbd";
 
+export function consultingInstallmentTotalCents(count) {
+  return Number.isInteger(count) && count >= 4 && count <= 12 ? 58800 : 49700;
+}
+
+function installmentValueCents(totalCents, count, number = 1) {
+  const baseCents = Math.floor(totalCents / count);
+  const remainderCents = totalCents - baseCents * count;
+  return baseCents + (number === count ? remainderCents : 0);
+}
+
+function paymentOrderTotalCents(payment, count) {
+  if (count !== 2 && count !== 3) return consultingInstallmentTotalCents(count);
+  const parsedNumber = Number(payment.installmentNumber);
+  const number = payment.installmentNumber != null && Number.isInteger(parsedNumber) && parsedNumber >= 1 && parsedNumber <= count ? parsedNumber : 1;
+  const valueCents = Math.round(Number(payment.value) * 100);
+  return [49700, 58800].find(total => installmentValueCents(total, count, number) === valueCents) ??
+    consultingInstallmentTotalCents(count);
+}
+
 // Read provider-owned payment metadata. Never infer a paid state from a URL,
 // a browser draft or the creation of an ACTIVE subscription.
 export function checkoutDetails(payment = {}) {
@@ -20,7 +39,8 @@ export function checkoutDetails(payment = {}) {
   const offerCode = consulting ? (typeof reference.offer_code === "string" ? reference.offer_code : "consultoria-a-vista") : null;
   const installmentMatch = typeof offerCode === "string" ? /^consultoria-([2-9]|1[0-2])x$/.exec(offerCode) : null;
   const installmentCount = offerCode === "consultoria-12x49" ? 12 : installmentMatch ? Number(installmentMatch[1]) : 1;
-  const installmentValueCents = installmentCount > 1 ? Math.floor(58800 / installmentCount) : 49700;
+  const orderTotalCents = paymentOrderTotalCents(payment, installmentCount);
+  const firstInstallmentCents = installmentCount > 1 ? Math.floor(orderTotalCents / installmentCount) : orderTotalCents;
   const orderId = consulting && typeof reference.eid === "string" && reference.eid
     ? `consultoria-${reference.eid}` : `purch_${payment.id}`;
   return {
@@ -33,8 +53,8 @@ export function checkoutDetails(payment = {}) {
       offerCode,
       orderId,
       installmentCount,
-      installmentValue: installmentValueCents / 100,
-      orderAmount: installmentCount > 1 ? 588 : 497,
+      installmentValue: firstInstallmentCents / 100,
+      orderAmount: orderTotalCents / 100,
     } : {}),
   };
 }
@@ -59,9 +79,6 @@ export function isValidConsultingPayment(payment, details = checkoutDetails(paym
     installmentNumber = Number(payment.installmentNumber);
     if (!Number.isInteger(installmentNumber) || installmentNumber < 1 || installmentNumber > count) return false;
   }
-  const totalCents = 58800;
-  const baseCents = Math.floor(totalCents / count);
-  const remainderCents = totalCents - baseCents * count;
-  const expectedCents = baseCents + (installmentNumber === count ? remainderCents : 0);
-  return Math.round(value * 100) === expectedCents;
+  const supportedTotals = count <= 3 ? [49700, 58800] : [58800];
+  return supportedTotals.some(totalCents => Math.round(value * 100) === installmentValueCents(totalCents, count, installmentNumber));
 }

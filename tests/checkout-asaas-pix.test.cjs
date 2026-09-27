@@ -114,16 +114,17 @@ test('consultoria 12x sends installmentValue=49 and tracks R$588 total', async t
 });
 
 for (let count = 2; count <= 11; count++) {
-  test(`consultoria ${count}x sends totalValue=588 and reports the first Asaas installment`, async t => {
+  test(`consultoria ${count}x sends the correct total and reports the first Asaas installment`, async t => {
     const { response, data, calls } = await invoke(t, { ...cardData, plan: 'consultoria', installments: count });
     const payment = calls.find(call => call.path === '/v3/payments' && call.method === 'POST').body;
-    const firstInstallmentCents = Math.floor(58800 / count);
+    const totalCents = count <= 3 ? 49700 : 58800;
+    const firstInstallmentCents = Math.floor(totalCents / count);
     assert.equal(response.status, 200);
     assert.equal(payment.installmentCount, count);
-    assert.equal(payment.totalValue, 588);
+    assert.equal(payment.totalValue, totalCents / 100);
     assert.equal(payment.installmentValue, undefined);
     assert.equal(JSON.parse(payment.externalReference).offer_code, `consultoria-${count}x`);
-    assert.equal(data.amount, 588);
+    assert.equal(data.amount, totalCents / 100);
     assert.equal(data.chargeAmount, firstInstallmentCents / 100);
     assert.equal(data.installmentCount, count);
     assert.equal(data.installmentValue, firstInstallmentCents / 100);

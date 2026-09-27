@@ -90,7 +90,11 @@ test('upsell checkout matches the landing modal and keeps all 1x-12x choices usa
           assert.match(await page.locator('#submitPayment').textContent(), /Pagar R\$497 no cartão/);
         } else {
           assert.ok((await page.locator('#checkoutPrice').textContent()).trim().startsWith(`${count}× R$`));
-          assert.match((await page.locator('#checkoutPriceNote').textContent()).trim(), /Total de R\$588/);
+          const total = count <= 3 ? 'R$497,00' : 'R$588,00';
+          const interest = count <= 3 ? /Sem juros/ : /Com juros/;
+          assert.ok((await page.locator('#checkoutPriceNote').textContent()).includes(total));
+          assert.match((await page.locator('#checkoutPriceNote').textContent()).trim(), interest);
+          if (count === 3) assert.match(await page.locator('#installmentNote').textContent(), /última parcela fica R\$165,68/);
           assert.ok((await page.locator('#submitPayment').textContent()).includes(`${count}× de R$`));
         }
       }
