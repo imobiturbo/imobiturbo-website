@@ -83,6 +83,8 @@ Botões têm cantos suaves. Retrato e oferta final usam cantos de 14px; o retrat
 
 **Checkout.** Preservar o dialog, largura máxima de 490px, controles e mensagens existentes. Os botões de oferta acionam o mesmo fluxo Pix/cartão. A aparência da página não modifica a autorização de pagamento ou a liberação da agenda.
 
+**E-mail de acesso.** Acima dos botões do Club e CRM, um painel discreto destaca o e-mail original da compra da comunidade, quando disponível na sessão. O endereço usa texto selecionável, de 20 a 28px, e quebra de linha inclusive em telas de 320px. Um e-mail diferente informado na consultoria não substitui esse endereço. Sem o perfil válido, manter a orientação geral; a confirmação do pagamento continua independente.
+
 **Movimento.** Rolagem suave e transição de cor de 0.18s no botão. Respeitar prefers-reduced-motion.
 
 ## Do's and Don'ts

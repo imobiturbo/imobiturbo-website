@@ -181,6 +181,9 @@ form>.small { margin-top: 14px; }
 .access-section { padding-block: 57px 60px; }
 .access-section h2 { font-size: 28px; }
 .access-section>p { max-width: 68ch; margin-top: 14px; font-size: 15px; }
+.access-email { max-width: 680px; margin-top: 22px; padding: 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+.access-email-label { color: var(--accent); font-size: 13px; font-weight: 650; }
+.access-email-value { display: block; margin-block: 8px 10px; font-size: clamp(20px, 2.5vw, 28px); font-weight: 750; line-height: 1.4; overflow-wrap: anywhere; }
 .access-links { display: flex; flex-wrap: wrap; gap: 13px; margin-top: 22px; }
 .secondary-button { min-height: 49px; padding: 13px 20px; border: 1px solid #626c54; border-radius: 9px; font-size: 14px; font-weight: 650; }
 .secondary-button:hover { border-color: var(--accent); color: var(--accent); }
