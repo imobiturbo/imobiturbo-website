@@ -99,6 +99,27 @@ test("vagas/vagas.css contains complete styles for transparent checkout, badges 
   }
 });
 
+test("consulting upsell reuses the landing checkout modal language and offers every card installment", () => {
+  const html = fs.readFileSync(path.join(root, "vagas-obrigado/index.html"), "utf8");
+  const css = fs.readFileSync(path.join(root, "vagas-obrigado/upsell.css"), "utf8");
+  const script = fs.readFileSync(path.join(root, "vagas-obrigado/upsell.js"), "utf8");
+  const select = html.match(/<select class="chk-input chk-select" id="cardInstallments">([\s\S]*?)<\/select>/)?.[1] || "";
+
+  assert.ok(html.includes('id="consultingCheckoutModal"'), "upsell must use a focused checkout dialog");
+  assert.ok(html.includes('class="chk-tabs"'), "upsell must use the landing page payment tabs");
+  assert.ok(html.includes('class="chk-btn-submit"'), "upsell must use the landing page primary checkout action");
+  assert.ok(html.includes('class="chk-asaas-footer"'), "upsell must identify the Asaas processor");
+  for (let count = 1; count <= 12; count++) {
+    assert.ok(select.includes(`value="${count}"`), `upsell must offer ${count}x`);
+  }
+  assert.ok(select.includes("2x de R$294,00 · total R$588,00"));
+  assert.ok(select.includes("9x de R$65,33 · total R$588,00"));
+  assert.ok(select.includes("12x de R$49,00 · total R$588,00"));
+  assert.ok(css.includes("width: min(100%, 490px)"), "upsell modal must match the landing modal width");
+  assert.ok(css.includes("@media (max-width: 768px)"), "upsell modal must retain the landing modal mobile treatment");
+  assert.ok(script.includes("const installments = Number(get('cardInstallments').value) || 1"), "selected installment count must drive the checkout summary");
+});
+
 test("functions/api/checkout/index.js supports Asaas subscriptions for mensal and installments for other plans", () => {
   const code = fs.readFileSync(path.join(root, "functions/api/checkout/index.js"), "utf8");
 

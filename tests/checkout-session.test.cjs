@@ -71,6 +71,21 @@ test('consulting installment metadata survives same-browser recovery without per
   assert.equal(saved.offerCode, 'consultoria-12x49'); assert.equal(saved.orderId, 'consultoria-abc123def45');
   assert.equal(saved.creditCard, undefined);
 });
+for (let count = 2; count <= 11; count++) {
+  test(`consulting ${count}x metadata survives same-browser recovery`, () => {
+    const { session } = harness({ productId: 'consultoria-individual-natan', plans: ['consultoria'] });
+    const firstInstallment = Math.floor(58800 / count) / 100;
+    session.save({
+      paymentId: `pay_consulting_${count}x`, gateway: 'asaas', plan: 'consultoria', productId: 'consultoria-individual-natan',
+      eventId: `order-${count}`, orderId: `consultoria-order-${count}`, amount: 588, chargeAmount: firstInstallment,
+      installmentCount: count, installmentValue: firstInstallment, offerCode: `consultoria-${count}x`,
+      expiresAt: new Date(start + TTL).toISOString(), method: 'CREDIT_CARD',
+    });
+    assert.equal(session.read().installmentCount, count);
+    assert.equal(session.read().installmentValue, firstInstallment);
+    assert.equal(session.read().offerCode, `consultoria-${count}x`);
+  });
+}
 test('wrong product or plan cannot redirect to approved', async () => {
   const { session, state } = harness(); session.save(record); state.response.paid = true;
   state.response.productId = 'consultoria-individual-natan'; await session.check();

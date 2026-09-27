@@ -4,12 +4,21 @@
   const sessions = window.ImobiturboCheckoutSession;
   const form = get('consultingForm');
   const modal = get('consultingCheckoutModal');
+  const CARD_TOTAL_CENTS = 58800;
+  const CARD_SINGLE_CENTS = 49700;
   let method = 'PIX';
   let submitting = false;
   let timer = null;
   let approved = false;
   let lastTrigger = null;
   let userClosedPending = false;
+
+  function formatCurrency(cents) {
+    return `R$${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(cents / 100)}`;
+  }
+  function firstInstallmentCents(count) {
+    return Math.floor(CARD_TOTAL_CENTS / count);
+  }
 
   function feedback(message, error = false) {
     const node = get('paymentFeedback');
@@ -29,10 +38,11 @@
     form.hidden = true;
     get('pendingPayment').hidden = false;
     const pix = record.method === 'PIX';
+    const installmentCents = Math.round(Number(record.installmentValue) * 100) || firstInstallmentCents(record.installmentCount);
     get('pixDetails').hidden = !pix;
     get('pendingTitle').textContent = pix ? record.pix.copyPaste ? 'Seu Pix está pronto.' : 'Recuperando seu Pix…' : 'Aguardando a confirmação do cartão.';
     get('pendingDescription').textContent = pix ? 'Use o mesmo código para pagar pelo aplicativo do seu banco. A confirmação aparece aqui.' :
-      record.installmentCount === 12 ? 'Cartão em análise: 12 parcelas de R$49 (R$588 no total). A confirmação aparece aqui.' :
+      record.installmentCount > 1 ? `Cartão em análise: ${record.installmentCount} parcelas de ${formatCurrency(installmentCents)} · total de R$588, com possível ajuste de centavos na última. A confirmação aparece aqui.` :
         'Cartão em análise: pagamento único de R$497. A confirmação aparece aqui.';
     const tick = () => {
       const left = Math.max(0, Math.ceil((Date.parse(record.expiresAt) - Date.now()) / 1000));
@@ -49,15 +59,27 @@
   function setMethod(value) {
     method = value;
     const card = value === 'CREDIT_CARD';
-    const installments = Number(get('cardInstallments').value) === 12 ? 12 : 1;
+    const installments = Number(get('cardInstallments').value) || 1;
+    get('cardPaymentPanel').hidden = !card;
+    get('pixPaymentPanel').hidden = card;
     get('cardFields').hidden = !card;
     get('cardInstallmentChoice').hidden = !card;
     get('cardFields').querySelectorAll('input').forEach(input => { input.disabled = !card; input.required = card; });
     get('payWithPix').setAttribute('aria-pressed', String(!card));
     get('payWithCard').setAttribute('aria-pressed', String(card));
-    get('checkoutPrice').textContent = card && installments === 12 ? '12 × R$49' : 'R$497';
-    get('checkoutPriceNote').textContent = card && installments === 12 ? 'Total de R$588 no cartão' : card ? 'Pagamento único no cartão' : 'À vista via Pix';
-    get('submitPayment').textContent = card ? installments === 12 ? 'Pagar 12× R$49 no cartão' : 'Pagar R$497 no cartão' : 'Gerar Pix de R$497';
+    get('payWithPix').setAttribute('aria-selected', String(!card));
+    get('payWithCard').setAttribute('aria-selected', String(card));
+    get('payWithPix').classList.toggle('active', !card);
+    get('payWithCard').classList.toggle('active', card);
+    const firstCents = installments === 1 ? CARD_SINGLE_CENTS : firstInstallmentCents(installments);
+    get('checkoutPrice').textContent = card && installments > 1 ? `${installments}× ${formatCurrency(firstCents)}` : 'R$497';
+    get('checkoutPriceNote').textContent = !card ? 'À vista via Pix' : installments > 1 ? `Total de R$588 no cartão em ${installments} parcelas` : 'Pagamento único no cartão';
+    get('installmentNote').textContent = installments === 1
+      ? 'Pagamento único no cartão: R$497.'
+      : 'Total de R$588. Quando necessário, a diferença de centavos é ajustada na última parcela.';
+    get('submitPayment').textContent = card
+      ? installments > 1 ? `Pagar ${installments}× de ${formatCurrency(firstCents)} no cartão` : 'Pagar R$497 no cartão'
+      : 'Gerar Pix de R$497';
   }
   const consulting = sessions.create({
     key: sessions.CONSULTING_KEY, productId: 'consultoria-individual-natan', plans: ['consultoria'],
@@ -79,7 +101,9 @@
       form.reset();
       get('offerContent').hidden = true;
       get('consultingApproved').hidden = false;
-      get('confirmedAmount').textContent = record.installmentCount === 12 ? '12 parcelas de R$49 · total de R$588' : 'R$497 à vista';
+      get('confirmedAmount').textContent = record.installmentCount > 1
+        ? `${record.installmentCount} parcelas no cartão · total de R$588`
+        : record.method === 'CREDIT_CARD' ? 'R$497 no cartão, em parcela única' : 'R$497 à vista via Pix';
       get('scheduleLink').href = 'https://agenda.imobiturbo.com.br/natanpimentel/1-1-consultoria-individual-com-natan-pimentel';
       get('consultingApproved').focus({ preventScroll: true });
     },
