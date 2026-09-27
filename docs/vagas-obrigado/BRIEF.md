@@ -9,7 +9,7 @@ mode: Persuade
 
 **Origem:** referência Inside Circle indicada pelo usuário, aplicada à identidade da Imobiturbo. A direção é referencial e específica desta rota; não houve sorteio de conceito nem criação de seed.
 
-**Público:** pessoa que acabou de comprar a comunidade Imobiturbo, principalmente corretor ou profissional do mercado imobiliário que quer organizar CRM, IA, cadência e campanha.
+**Público:** pessoa que chegou à etapa posterior ao checkout da comunidade Imobiturbo, principalmente corretor ou profissional do mercado imobiliário que quer organizar CRM, IA, cadência e campanha. O pagamento da comunidade pode continuar pendente; esta rota não presume sua aprovação.
 
 ## THESIS
 
