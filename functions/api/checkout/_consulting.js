@@ -4,7 +4,7 @@ import { dispatchConsultingCashflowToHub } from "./_cashflow.js";
 
 // A consulting payment never grants, extends or revokes community membership.
 // Scheduling is initiated by the buyer on the confirmed thank-you screen.
-export async function handleConsultingWebhook({ request, env, paymentId, verifiedPayment }) {
+export async function handleConsultingWebhook({ request, env, paymentId, verifiedPayment, trustedDetails = null }) {
   if (!env?.ASAAS_API_KEY || !paymentId) {
     return Response.json({ ok: false, error: "consulting_verification_unavailable" }, { status: 503 });
   }
@@ -16,13 +16,13 @@ export async function handleConsultingWebhook({ request, env, paymentId, verifie
     if (!response.ok) return Response.json({ ok: false, error: "consulting_verification_pending" }, { status: 503 });
     payment = await response.json();
   }
-  const details = checkoutDetails(payment);
+  const details = trustedDetails || checkoutDetails(payment);
   if (!isValidConsultingPayment(payment, details)) {
     return Response.json({ ok: false, error: "consulting_payment_mismatch" }, { status: 422 });
   }
   const paid = isAsaasPaymentPaid(payment);
   const pending = !payment.deleted && ["PENDING", "AWAITING_PAYMENT"].includes(payment.status);
-  const cashflowDelivery = dispatchConsultingCashflowToHub({ env, payment });
+  const cashflowDelivery = dispatchConsultingCashflowToHub({ env, payment, trustedDetails: details });
   if (paid || pending) {
     const dispatch = paid ? dispatchVerifiedPurchaseToHub : dispatchPendingPurchaseToHub;
     await Promise.all([

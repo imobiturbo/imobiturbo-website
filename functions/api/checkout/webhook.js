@@ -12,6 +12,7 @@ import { dispatchVerifiedPurchaseToHub, dispatchPendingPurchaseToHub } from "./_
 import { authenticateHotmart, parseHotmartEvent } from "./_hotmart.js";
 import { checkoutDetails, CONSULTING_PRODUCT_ID } from "./_products.js";
 import { handleConsultingWebhook } from "./_consulting.js";
+import { CAL_ASAAS_REFERENCE_PREFIX, parseCalAsaasReference, resolveCalAsaasConsultingPayment } from "./_cal-asaas.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -52,6 +53,31 @@ export async function onRequestPost(context) {
       if (!providerResponse.ok) return Response.json({ ok: false, error: "asaas_verification_pending" }, { status: 503 });
       const verifiedPayment = await providerResponse.json();
       if (verifiedPayment.id !== payload.payment.id) return Response.json({ ok: false, error: "asaas_payment_mismatch" }, { status: 422 });
+      // Cal order references must be resolved before checkoutDetails() can
+      // apply the community default. The provider-owned reference stays intact.
+      if (typeof verifiedPayment.externalReference === "string" &&
+          verifiedPayment.externalReference.startsWith(CAL_ASAAS_REFERENCE_PREFIX)) {
+        const reference = parseCalAsaasReference(verifiedPayment.externalReference);
+        if (!reference?.valid) return Response.json({ ok: false, error: "cal_asaas_invalid_reference" }, { status: 422 });
+        let resolved;
+        try {
+          resolved = await resolveCalAsaasConsultingPayment({
+            env, uid: reference.uid, payment: verifiedPayment,
+          });
+        } catch {
+          return Response.json({ ok: false, error: "cal_asaas_order_lookup_unavailable" }, { status: 503 });
+        }
+        if (resolved.kind === "ignored_product") {
+          return Response.json({ ok: true, status: "ignored_product" }, { status: 200 });
+        }
+        if (resolved.kind !== "consulting") {
+          return Response.json({ ok: false, error: "cal_asaas_payment_mismatch" }, { status: 422 });
+        }
+        return await handleConsultingWebhook({
+          request, env, paymentId: verifiedPayment.id, verifiedPayment,
+          trustedDetails: resolved.details,
+        });
+      }
       if (checkoutDetails(verifiedPayment).productId === CONSULTING_PRODUCT_ID) {
         return await handleConsultingWebhook({ request, env, paymentId: verifiedPayment.id, verifiedPayment });
       }
