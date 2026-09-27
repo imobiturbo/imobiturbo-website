@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-27",
+  "title": "Imobiturbo — Consultoria individual",
+  "extensions": {
+    "scope": "/vagas-obrigado/",
+    "designDocument": "vagas-obrigado/DESIGN.md",
+    "sourceFiles": ["vagas-obrigado/index.html", "vagas-obrigado/upsell.css"],
+    "buildPath": "code-led adaptation of user-pinned references and incumbent brand",
+    "briefKey": "brief-20260927",
+    "conceptRoll": null,
+    "generatedComp": null,
+    "breakpoints": [
+      {"name": "intermediate", "value": "900px"},
+      {"name": "stacked", "value": "680px"},
+      {"name": "small-phone", "value": "360px"}
+    ],
+    "motion": [
+      {"name": "primary-hover", "value": "background-color .18s ease", "purpose": "Button feedback without layout movement."},
+      {"name": "reduced-motion", "value": "scroll-behavior: auto; transition: none", "purpose": "Respect the device preference."}
+    ],
+    "backdropFilter": "blur(12px)",
+    "assetProvenance": "docs/design/vagas-obrigado-assets.md"
+  },
+  "components": [
+    {
+      "name": "Primary action", "kind": "button", "refersTo": "button-primary",
+      "description": "Open the existing consulting checkout.",
+      "html": "<button class=\"ds-primary\">Sim, quero minha consultoria</button>",
+      "css": ".ds-primary{min-height:58px;padding:16px 22px;border:0;border-radius:10px;background:var(--accent,#c5ff5e);color:#10120d;font:750 16px/1.35 'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:background-color .18s ease}.ds-primary:hover{background:#e0ff83}.ds-primary:focus-visible{outline:3px solid var(--accent,#c5ff5e);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name": "Optional continuation", "kind": "button",
+      "description": "Visible underlined path to the user's accesses.",
+      "html": "<a class=\"ds-decline\" href=\"#acessos\">Seguir sem a consultoria</a>",
+      "css": ".ds-decline{display:block;width:fit-content;margin:9px auto 0;padding:6px 0;color:#d3d7ce;font:13px/1.65 'Plus Jakarta Sans',sans-serif;text-align:center;text-decoration:underline}.ds-decline:focus-visible{outline:3px solid var(--accent,#c5ff5e);outline-offset:4px}"
+    },
+    {
+      "name": "Journey step", "kind": "nav",
+      "description": "Current optional step, with a visible number.",
+      "html": "<nav aria-label=\"Etapas\"><span class=\"ds-step\" aria-current=\"step\"><span class=\"ds-number\">2</span>Consultoria opcional</span></nav>",
+      "css": ".ds-step{display:flex;align-items:center;justify-content:center;gap:12px;min-height:52px;background:var(--accent,#c5ff5e);color:var(--ink,#17200f);font:600 12px/1.5 'Plus Jakarta Sans',sans-serif}.ds-number{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--ink,#17200f);color:var(--accent,#c5ff5e)}"
+    },
+    {
+      "name": "Closing purchase panel", "kind": "card",
+      "description": "Single tonal panel framing the repeated offer.",
+      "html": "<section class=\"ds-panel\"><h3>Consultoria individual de 1 hora</h3></section>",
+      "css": ".ds-panel{padding:32px;border:1px solid var(--line,#394032);border-radius:14px;background:var(--panel,#171b14);color:var(--text,#f4f6ef);font-family:'Plus Jakarta Sans',sans-serif}.ds-panel h3{margin:0;font-size:18px;font-weight:650;letter-spacing:-.015em}"
+    },
+    {
+      "name": "Question and answer", "kind": "custom",
+      "description": "Native expandable answer on a light surface.",
+      "html": "<details class=\"ds-faq\"><summary>A consultoria é obrigatória?<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\"><path d=\"M12 5v14M5 12h14\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg></summary><p>Não. É um convite opcional e tem pagamento separado.</p></details>",
+      "css": ".ds-faq{background:var(--paper,#f6f7f2);color:var(--ink,#17200f);border-bottom:1px solid var(--paper-line,#d8dece);font:15px/1.75 'Plus Jakarta Sans',sans-serif}.ds-faq summary{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:74px;font-weight:700;cursor:pointer;list-style:none}.ds-faq summary::-webkit-details-marker{display:none}.ds-faq svg{width:22px;height:22px;flex:0 0 22px}.ds-faq[open] svg{transform:rotate(45deg)}.ds-faq[open] summary{color:#446224}.ds-faq summary:focus-visible{outline:3px solid var(--ink,#17200f);outline-offset:4px}.ds-faq p{padding:0 40px 23px 0;color:var(--paper-muted,#505a46)}"
+    }
+  ],
+  "narrative": {
+    "overview": "Original photography, clear type and alternating dark, light and lime surfaces within Imobiturbo's existing identity.",
+    "keyCharacteristics": ["Local brand typography", "Original portrait", "Early price and action", "Single-column phone layout"],
+    "dos": ["Preserve accessible focus and native checkout behavior", "Keep accept and decline paths visible"],
+    "donts": ["Do not invent testimonial, video or scarcity assets", "Do not fabricate comp approval or generation prompts"]
+  }
+}
