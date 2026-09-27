@@ -40,7 +40,6 @@
     <div id="offerContent">
       <section class="wrap offer" id="oferta" aria-labelledby="offerTitle">
         <div class="offer-copy">
-          <p class="offer-label">UM CONVITE OPCIONAL PARA A PRÓXIMA ETAPA</p>
           <h1 id="offerTitle">A estrutura é o começo.<br><span>Vamos acelerar a execução?</span></h1>
           <p class="intro">A Comunidade coloca ferramentas e conhecimento ao seu alcance. Em uma hora individual comigo, a gente aplica esse caminho à sua operação: CRM, IA, cadência e primeira campanha.</p>
           <div class="offer-facts" aria-label="Detalhes da consultoria">
@@ -93,7 +92,15 @@
           <div class="pending-payment" id="pendingPayment" hidden>
             <h3 id="pendingTitle">Seu Pix está pronto.</h3>
             <p id="pendingDescription">Pague pelo aplicativo do seu banco. Esta tela atualiza quando o pagamento for confirmado.</p>
-            <div id="pixDetails"><label for="pixCode">Pix copia e cola</label><textarea id="pixCode" readonly rows="3"></textarea><button class="button" id="copyPix" type="button">Copiar código Pix</button><img id="pixQr" alt="QR Code para pagar a consultoria de R$497" width="240" height="240" hidden><p class="recipient">Recebedor: T.R.A.M.A. MARKETING DIGITAL E CONSULTORIA LTDA</p><p class="small">Tempo para concluir neste checkout: <strong id="pixTimer">30:00</strong></p></div>
+            <div id="pixDetails">
+              <label for="pixCode">Pix copia e cola</label>
+              <textarea id="pixCode" readonly rows="3"></textarea>
+              <button class="button" id="copyPix" type="button">Copiar código Pix</button>
+              <!-- impeccable-disable-next-line broken-image: src is filled from the Asaas Pix response before the QR is shown. -->
+              <img id="pixQr" alt="QR Code para pagar a consultoria de R$497" width="240" height="240" hidden>
+              <p class="recipient">Recebedor: T.R.A.M.A. MARKETING DIGITAL E CONSULTORIA LTDA</p>
+              <p class="small">Tempo para concluir neste checkout: <strong id="pixTimer">30:00</strong></p>
+            </div>
             <p class="small">Pode sair e voltar neste mesmo navegador. O pagamento será recuperado durante esta janela.</p>
           </div>
         </div>
