@@ -99,29 +99,32 @@ test("vagas/vagas.css contains complete styles for transparent checkout, badges 
   }
 });
 
-test("consulting upsell reuses the landing checkout modal language and offers every card installment", () => {
+test("consulting upsell embeds Cal payment and resumes by payment UID without creating another checkout", () => {
   const html = fs.readFileSync(path.join(root, "vagas-obrigado/index.html"), "utf8");
   const css = fs.readFileSync(path.join(root, "vagas-obrigado/upsell.css"), "utf8");
   const script = fs.readFileSync(path.join(root, "vagas-obrigado/upsell.js"), "utf8");
-  const select = html.match(/<select class="chk-input chk-select" id="cardInstallments">([\s\S]*?)<\/select>/)?.[1] || "";
 
   assert.ok(html.includes('id="consultingCheckoutModal"'), "upsell must use a focused checkout dialog");
-  assert.ok(html.includes('class="chk-tabs"'), "upsell must use the landing page payment tabs");
-  assert.ok(html.includes('class="chk-btn-submit"'), "upsell must use the landing page primary checkout action");
+  assert.ok(html.includes('id="calBookingWidget"'), "slot selection and payment share one inline widget");
+  assert.ok(html.includes('id="consultingBooked"'), "new Cal bookings have a dedicated confirmation screen");
   assert.ok(html.includes('class="chk-asaas-footer"'), "upsell must identify the Asaas processor");
-  for (let count = 1; count <= 12; count++) {
-    assert.ok(select.includes(`value="${count}"`), `upsell must offer ${count}x`);
-  }
-  assert.ok(select.includes("1x de R$497,00 · sem juros"));
-  assert.ok(select.includes("2x de R$248,50 · sem juros"));
-  assert.ok(select.includes("3x de R$165,66 · sem juros"));
-  assert.ok(!select.includes('optgroup label="Sem juros'), "interest-free options must not have a redundant heading");
-  assert.ok(html.includes('optgroup label="Com juros · +R$91,00 · total R$588,00"'));
-  assert.ok(select.includes("9x de R$65,33 · total R$588,00"));
-  assert.ok(select.includes("12x de R$49,00 · total R$588,00"));
-  assert.ok(css.includes("width: min(100%, 490px)"), "upsell modal must match the landing modal width");
+  assert.ok(html.includes("Escolha seu horário e conclua o pagamento na mesma agenda."));
+  assert.ok(css.includes("width: min(100%, 1120px)"), "Cal modal gives the native checkout enough responsive space");
+  assert.ok(css.includes(".cal-inline-widget iframe"), "Cal iframe has an explicit responsive viewport");
   assert.ok(css.includes("@media (max-width: 768px)"), "upsell modal must retain the landing modal mobile treatment");
-  assert.ok(script.includes("const installments = Number(get('cardInstallments').value) || 1"), "selected installment count must drive the checkout summary");
+  assert.ok(script.includes("sessions.getUpsellBuyer?.()"), "buyer prefill reuses the existing upsell profile");
+  assert.ok(script.includes("cal.ns = {}") && script.includes("cal.q = cal.q || []"), "Cal uses its official SDK queue bootstrap");
+  assert.ok(script.includes("whatsapp: config.phone"), "the required WhatsApp field receives the saved buyer phone");
+  assert.ok(script.includes("attendeePhoneNumber: config.phone"), "Cal attendee phone receives the saved buyer phone");
+  assert.ok(script.includes("event.source !== calFrame.contentWindow"), "Cal messages must come from the owned iframe");
+  assert.ok(script.includes("event.origin !== CAL_ORIGIN"), "Cal messages must use the configured agenda origin");
+  assert.ok(script.includes("CAL_BOOKING_UID.test(data.bookingUid)"), "native Cal short booking UIDs are valid confirmation identifiers");
+  assert.ok(script.includes("?embed=${encodeURIComponent(CAL_NAMESPACE)}"), "payment recovery keeps the Cal embed namespace");
+  assert.ok(script.includes("sessionStorage.setItem(CAL_PAYMENT_KEY, JSON.stringify(record))"), "only a short-lived payment UID record is persisted for resume");
+  assert.ok(script.includes("type: 'imobiturbo:buyer'"), "CPF and cardholder details are sent to the owned iframe by message");
+  assert.ok(!script.includes("fetch('/api/checkout'"), "the new consulting flow must not create an Asaas payment on the website");
+  assert.ok(!script.includes("type: 'Purchase'"), "an iframe message must not trigger purchase tracking");
+  assert.ok(html.includes("https://wa.me/5521983747796?text="), "legacy verified buyers are sent to support instead of the new paid event");
 });
 
 test("functions/api/checkout/index.js supports Asaas subscriptions for mensal and installments for other plans", () => {

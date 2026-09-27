@@ -15,10 +15,50 @@ const buyer = {
   cpfCnpj: '52998224725',
   cardHolderName: 'Mariana Titular',
 };
+const CAL_ORIGIN = 'https://agenda.imobiturbo.com.br';
 const profileKey = 'imobiturbo:checkout:upsell-buyer:v1';
 let server;
 let browser;
 let baseURL;
+
+function calSdkFixture() {
+  return `(() => {
+    const cal = window.Cal;
+    const namespace = 'imobiturboConsultoria';
+    const globalQueue = cal?.q?.map(args => Array.from(args)) || [];
+    const api = cal?.ns?.[namespace];
+    const namespaceQueue = api?.q?.map(args => Array.from(args)) || [];
+    const inline = namespaceQueue.find(args => args[0] === 'inline')?.[1];
+    const initialized = globalQueue.some(args => args[0] === 'initNamespace' && args[1] === namespace);
+    if (typeof cal !== 'function' || !cal.loaded || !Array.isArray(cal.q) || !api || !Array.isArray(api.q) ||
+        !initialized || !namespaceQueue.some(args => args[0] === 'init') || !inline ||
+        !namespaceQueue.some(args => args[0] === 'ui')) throw new Error('Cal SDK did not receive the official snippet queues');
+    window.__calSdkQueues = { global: globalQueue, namespace: namespaceQueue };
+    window.__calConfig = inline;
+    const frame = document.createElement('iframe');
+    const url = new URL('https://agenda.imobiturbo.com.br/' + inline.calLink);
+    url.searchParams.set('embed', namespace);
+    for (const key of ['name', 'email', 'phone']) if (inline.config[key]) url.searchParams.set(key, inline.config[key]);
+    frame.src = url.href;
+    document.querySelector(inline.elementOrSelector).append(frame);
+  })();`;
+}
+
+function calPaymentFixture() {
+  return `<!doctype html><html><body><button id="ready">Ready</button><pre id="buyer"></pre><script>
+    document.querySelector('#ready').onclick = () => parent.postMessage({type:'imobiturbo:payment-ready',paymentUid:'550e8400-e29b-41d4-a716-446655440000'}, '*');
+    addEventListener('message', event => { if (event.data?.type === 'imobiturbo:buyer') document.querySelector('#buyer').textContent = JSON.stringify({origin:event.origin,buyer:event.data.buyer}); });
+  </script></body></html>`;
+}
+
+async function waitForCalFrame(page) {
+  for (let attempt = 0; attempt < 40; attempt++) {
+    const frame = page.frames().find(candidate => candidate.url().startsWith(CAL_ORIGIN));
+    if (frame) return frame;
+    await page.waitForTimeout(50);
+  }
+  return null;
+}
 
 before(async () => {
   if (artifacts) fs.mkdirSync(artifacts, { recursive: true });
@@ -58,6 +98,10 @@ for (const landing of ['/vagas/', '/vagas-v2/']) for (const method of ['PIX', 'C
     await context.route('**/*', async route => {
       const request = route.request();
       const url = new URL(request.url());
+      if (url.origin === CAL_ORIGIN) {
+        if (url.pathname === '/embed/embed.js') return route.fulfill({ status: 200, contentType: 'text/javascript', body: calSdkFixture() });
+        return route.fulfill({ status: 200, contentType: 'text/html', body: calPaymentFixture() });
+      }
       if (url.origin !== baseURL) return route.abort();
       if (url.pathname === '/api/checkout' && request.method() === 'POST') {
         const payload = JSON.parse(request.postData() || '{}');
@@ -116,19 +160,10 @@ for (const landing of ['/vagas/', '/vagas-v2/']) for (const method of ['PIX', 'C
     }
 
     await page.waitForURL('**/vagas-obrigado*', { timeout: 15000 });
-    await page.waitForFunction(() => document.querySelector('#buyerName')?.value === 'Mariana Compradora');
-    assert.equal(await page.locator('#buyerEmail').inputValue(), buyer.email);
     assert.equal(await page.locator('#accessEmailPanel').isVisible(), true, 'the community email is visible above the access buttons');
     assert.equal(await page.locator('#accessEmail').textContent(), buyer.email);
     assert.equal(await page.locator('#accessEmailFallback').isVisible(), false);
     assert.match(await page.locator('#acessos').textContent(), /A liberação depende da confirmação do pagamento da comunidade/);
-    assert.equal((await page.locator('#buyerPhone').inputValue()).replace(/\D/g, ''), buyer.phone);
-    assert.equal(await page.locator('#buyerCpf').inputValue(), '529.982.247-25');
-    assert.equal(await page.locator('#cardHolder').inputValue(), method === 'CREDIT_CARD' ? buyer.cardHolderName : '');
-    for (const id of ['cardNumber', 'cardExpiry', 'cardCvv', 'cardPostalCode', 'cardAddressNumber']) {
-      assert.equal(await page.locator(`#${id}`).inputValue(), '', `${id} must remain blank`);
-    }
-
     const persisted = await page.evaluate(key => ({
       buyer: JSON.parse(sessionStorage.getItem(key)),
       payment: JSON.parse(localStorage.getItem('imobiturbo:checkout:community:v2')),
@@ -139,6 +174,35 @@ for (const landing of ['/vagas/', '/vagas-v2/']) for (const method of ['PIX', 'C
     assert.equal(JSON.stringify(persisted.buyer).includes('4111111111111111'), false);
     assert.equal(JSON.stringify(persisted.buyer).includes('123'), false);
     assert.equal(payments.length, 1);
+
+    await page.locator('[data-open-checkout]').first().click();
+    await page.locator('#calBookingWidget iframe').waitFor({ state: 'attached' });
+    const sdkState = await page.evaluate(() => ({ config: window.__calConfig, queues: window.__calSdkQueues }));
+    assert.deepEqual(sdkState.queues.global.map(args => args[0]), ['initNamespace']);
+    assert.deepEqual(sdkState.queues.namespace.map(args => args[0]), ['init', 'inline', 'ui']);
+    const config = sdkState.config;
+    assert.deepEqual(config.config, {
+      name: persisted.buyer.name, email: persisted.buyer.email, phone: persisted.buyer.phone,
+      whatsapp: persisted.buyer.phone, attendeePhoneNumber: persisted.buyer.phone,
+      theme: 'dark', layout: 'month_view',
+    });
+    const calFrame = await waitForCalFrame(page);
+    assert.ok(calFrame);
+    const calUrl = new URL(calFrame.url());
+    assert.equal(calUrl.searchParams.get('name'), persisted.buyer.name);
+    assert.equal(calUrl.searchParams.get('email'), persisted.buyer.email);
+    assert.equal(calUrl.searchParams.get('phone'), persisted.buyer.phone);
+    assert.equal(calUrl.href.includes(buyer.cpfCnpj), false, 'CPF is excluded from the Cal iframe URL');
+    await calFrame.locator('#ready').evaluate(button => button.click());
+    await calFrame.waitForFunction(() => document.querySelector('#buyer').textContent.includes('cpfCnpj'));
+    const sent = JSON.parse(await calFrame.locator('#buyer').textContent());
+    assert.equal(sent.origin, new URL(baseURL).origin);
+    assert.deepEqual(sent.buyer, {
+      name: persisted.buyer.name, email: persisted.buyer.email, phone: persisted.buyer.phone.replace(/\D/g, ''),
+      cpfCnpj: persisted.buyer.cpfCnpj, cardHolderName: persisted.buyer.cardHolderName,
+    });
+    assert.equal(payments.length, 1, 'opening and prefilling Cal creates no second checkout');
+    await page.locator('#consultingModalClose').click();
     await page.locator('.decline').first().click();
     assert.equal(await page.evaluate(key => sessionStorage.getItem(key), profileKey), null);
     assert.equal(await page.locator('#accessEmail').textContent(), buyer.email, 'the email remains readable when declining the optional consulting offer');
@@ -146,7 +210,7 @@ for (const landing of ['/vagas/', '/vagas-v2/']) for (const method of ['PIX', 'C
   });
 }
 
-async function visitAccess(t, { profile, draft, width = 390, unavailableStorage = false, checkoutRoute } = {}) {
+async function visitAccess(t, { profile, draft, legacySession, width = 390, unavailableStorage = false, checkoutRoute } = {}) {
   const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: 'reduce' });
   t.after(() => context.close());
   const page = await context.newPage();
@@ -161,10 +225,11 @@ async function visitAccess(t, { profile, draft, width = 390, unavailableStorage 
     return route.continue();
   });
   await page.goto(`${baseURL}/vagas-obrigado/`, { waitUntil: 'load' });
-  await page.evaluate(({ key, profile, draft }) => {
+  await page.evaluate(({ key, profile, draft, legacySession }) => {
     if (profile) sessionStorage.setItem(key, typeof profile === 'string' ? profile : JSON.stringify(profile));
     if (draft) localStorage.setItem('imobiturbo:vagas:checkout:v1', JSON.stringify(draft));
-  }, { key: profileKey, profile, draft });
+    if (legacySession) localStorage.setItem('imobiturbo:checkout:consulting:v2', JSON.stringify(legacySession));
+  }, { key: profileKey, profile, draft, legacySession });
   if (unavailableStorage) await page.addInitScript(() => {
     Object.defineProperty(window, 'sessionStorage', { get() { throw new DOMException('Storage disabled', 'SecurityError'); } });
   });
@@ -185,9 +250,10 @@ test('access instructions stay available with a missing, expired, invalid or una
     { name: 'unavailable', unavailableStorage: true },
   ]) {
     const { page, errors } = await visitAccess(t, scenario);
-    assert.equal(await page.locator('#accessEmailPanel').isVisible(), false, scenario.name);
-    assert.equal(await page.locator('#accessEmailFallback').isVisible(), true, scenario.name);
-    assert.equal(await page.locator('#accessEmail').textContent(), '');
+    const hasDraftIdentity = scenario.name === 'draft-only';
+    assert.equal(await page.locator('#accessEmailPanel').isVisible(), hasDraftIdentity, scenario.name);
+    assert.equal(await page.locator('#accessEmailFallback').isVisible(), !hasDraftIdentity, scenario.name);
+    assert.equal(await page.locator('#accessEmail').textContent(), hasDraftIdentity ? scenario.draft.email : '');
     assert.match(await page.locator('#accessEmailFallback').textContent(), /Use o e-mail da sua compra/);
     assert.equal(await page.locator('.access-links a').nth(0).getAttribute('href'), 'https://club.imobiturbo.com.br/login');
     assert.equal(await page.locator('.access-links a').nth(1).getAttribute('href'), 'https://app.imobiturbo.com.br/onboarding');
@@ -197,48 +263,47 @@ test('access instructions stay available with a missing, expired, invalid or una
   }
 });
 
-test('a different consulting email never replaces the community access email, including after reload', async t => {
+test('legacy pending consulting payment resumes after reload and verified payment goes to support, not the paid event', async t => {
   const originalProfile = savedBuyer();
-  const consultingEmail = 'consultoria.diferente@example.invalid';
-  const submitted = [];
   let paid = false;
-  const payment = {
-    success: true, gateway: 'asaas', paymentId: 'pay_access_email_synthetic',
+  const legacySession = {
+    version: 2, gateway: 'asaas', paymentId: 'pay_access_email_synthetic',
     eventId: 'evt_access_email_synthetic', productId: 'consultoria-individual-natan', plan: 'consultoria',
-    amount: 497, chargeAmount: 497, expiresAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+    amount: 497, chargeAmount: 497, method: 'PIX', installmentCount: 1,
+    expiresAt: new Date(Date.now() + 20 * 60 * 1000).toISOString(),
     pix: { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: '' },
   };
   const { page, errors } = await visitAccess(t, {
     profile: originalProfile,
+    legacySession,
     checkoutRoute: (route, url) => {
-      if (url.pathname === '/api/checkout' && route.request().method() === 'POST') {
-        submitted.push(JSON.parse(route.request().postData()));
-        return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(payment) });
-      }
       if (url.pathname === '/api/checkout/status') return route.fulfill({
-        status: 200, contentType: 'application/json', body: JSON.stringify({ ...payment, paid, status: paid ? 'RECEIVED' : 'PENDING' }),
+        status: 200, contentType: 'application/json', body: JSON.stringify({
+          success: true, gateway: 'asaas', paymentId: legacySession.paymentId,
+          productId: legacySession.productId, plan: legacySession.plan, paid,
+          status: paid ? 'RECEIVED' : 'PENDING', amount: legacySession.amount,
+          expiresAt: legacySession.expiresAt, pix: legacySession.pix,
+        }),
       });
       return route.abort();
     },
   });
-  await page.locator('[data-open-checkout]').first().click();
-  await page.locator('#buyerEmail').fill(consultingEmail);
-  await page.locator('#submitPayment').click();
   await page.locator('#pendingPayment').waitFor({ state: 'visible' });
-  assert.equal(submitted.length, 1);
-  assert.equal(submitted[0].email, consultingEmail, 'the consulting checkout still receives the email entered for that purchase');
+  assert.equal(await page.locator('#pixCode').inputValue(), legacySession.pix.copyPaste);
   assert.deepEqual(await page.evaluate(key => JSON.parse(sessionStorage.getItem(key)), profileKey), originalProfile,
-    'consulting must not overwrite the original community profile or extend its expiry');
+    'resuming an old payment does not alter the community buyer profile');
   await page.reload({ waitUntil: 'load' });
   await page.locator('#pendingPayment').waitFor({ state: 'visible' });
+  assert.equal(await page.locator('#pixCode').inputValue(), legacySession.pix.copyPaste, 'reload reuses the old Pix code');
   await page.locator('#consultingModalClose').click();
   assert.equal(await page.locator('#accessEmail').textContent(), buyer.email);
   paid = true;
   await page.locator('#consultingApproved').waitFor({ state: 'visible', timeout: 10000 });
+  assert.match(await page.locator('#scheduleLink').getAttribute('href'), /^https:\/\/wa\.me\//);
+  assert.equal(await page.locator('#consultingApproved a[href*="agenda.imobiturbo.com.br"]').count(), 0);
   assert.equal(await page.evaluate(key => sessionStorage.getItem(key), profileKey), null);
   assert.equal(await page.locator('#accessEmail').textContent(), buyer.email, 'payment cleanup must not remove the email from the current access section');
   assert.equal(await page.locator('#accessEmailPanel').isVisible(), true);
-  assert.equal(submitted.length, 1, 'pending recovery does not create another payment');
   assert.deepEqual(errors, []);
 });
 
