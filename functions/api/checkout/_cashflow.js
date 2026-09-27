@@ -23,12 +23,12 @@ function eventForPayment(payment) {
 // The Hub Cashflow webhook is a separate authenticated integration from its
 // browser funnel tracker. Each Asaas installment keeps its own saleId; the
 // shared externalReference carries one order id for funnel-level deduplication.
-export async function dispatchConsultingCashflowToHub({ env, payment }) {
+export async function dispatchConsultingCashflowToHub({ env, payment, trustedDetails = null }) {
   const endpoint = (env?.HUB_CASHFLOW_WEBHOOK_URL || "").trim();
   const token = env?.HUB_CASHFLOW_WEBHOOK_TOKEN || "";
   if (!endpoint || !token || !payment?.id) return false;
 
-  const details = checkoutDetails(payment);
+  const details = trustedDetails || checkoutDetails(payment);
   if (details.productId !== CONSULTING_PRODUCT_ID || !isValidConsultingPayment(payment, details)) return false;
   const event = eventForPayment(payment);
   if (!event) return false;
