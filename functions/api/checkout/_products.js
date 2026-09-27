@@ -14,7 +14,8 @@ export function checkoutDetails(payment = {}) {
   const knownPlans = ["anual", "semestral", "trimestral", "mensal"];
   const plan = consulting ? "consultoria" : knownPlans.includes(reference.plan) ? reference.plan :
     knownPlans.find(value => (payment.description || "").toLowerCase().includes(value)) || "anual";
-  const expiresAt = Date.parse(reference.checkout_expires_at);
+  const rawExp = reference.checkout_expires_at ?? reference.exp;
+  const expiresAt = typeof rawExp === "number" ? rawExp : Date.parse(rawExp);
   return {
     productId: consulting ? CONSULTING_PRODUCT_ID : COMMUNITY_PRODUCT_ID,
     plan,

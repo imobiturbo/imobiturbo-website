@@ -41,6 +41,7 @@ for (const [plan, value] of Object.entries({ mensal: 147, trimestral: 357, semes
     assert.equal(payment.value, value);
     assert.deepEqual(payment.fine, { value: 0, type: 'FIXED' });
     assert.deepEqual(payment.interest, { value: 0 });
+    assert.ok(payment.externalReference.length <= 100, `externalReference length (${payment.externalReference.length}) exceeds Asaas 100-char limit`);
     assert.equal(data.pix.copyPaste, 'synthetic-copy-paste');
     const expiration = Date.parse(data.pix.expiresAt);
     assert.ok(expiration >= before + 1799000 && expiration <= Date.now() + 1800000);
@@ -53,9 +54,21 @@ test('consultoria is a separate, fixed R$497 product', async t => {
   assert.equal(response.status, 200);
   const payment = calls.find(call => call.method === 'POST').body;
   assert.equal(payment.value, 497);
+  assert.ok(payment.externalReference.length <= 100, `consultoria externalReference length (${payment.externalReference.length}) exceeds Asaas 100-char limit`);
   assert.equal(JSON.parse(payment.externalReference).product_id, 'consultoria-individual-natan');
   assert.match(payment.description, /Consultoria Individual.*1h.*Natan Pimentel/);
   assert.equal(data.plan, 'consultoria');
+});
+
+test('Asaas Pix externalReference never exceeds 100 characters even with long production eventId', async t => {
+  const prodEventId = 'vagas_evt_1790475130004_q3a9h1t';
+  const { response, calls } = await invoke(t, { plan: 'anual', eventId: prodEventId });
+  assert.equal(response.status, 200);
+  const payment = calls.find(call => call.method === 'POST').body;
+  assert.ok(payment.externalReference.length <= 100, `externalReference length ${payment.externalReference.length} exceeds 100`);
+  const parsed = JSON.parse(payment.externalReference);
+  assert.equal(parsed.plan, 'anual');
+  assert.equal(parsed.eid, prodEventId);
 });
 
 for (const mode of ['rejected', 'timeout']) {
