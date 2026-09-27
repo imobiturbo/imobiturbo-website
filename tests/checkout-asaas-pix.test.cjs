@@ -21,7 +21,7 @@ async function invoke(t, overrides = {}, mode = 'normal', envOverrides = {}) {
       // Model the provider's inherited account settings, not the implementation.
       const fine = body.fine?.value ?? 147;
       if (fine >= body.value) return Response.json({ errors: [{ description: 'O valor da multa (R$147,00) deve ser menor que o valor da cobrança (R$147,00).' }] }, { status: 400 });
-      return Response.json({ id: 'pay_synthetic', value: body.value ?? body.installmentValue ?? body.totalValue, status: 'PENDING', billingType: body.billingType });
+      return Response.json({ id: 'pay_synthetic', value: body.value ?? body.installmentValue ?? body.totalValue, status: 'PENDING', billingType: body.billingType, externalReference: body.externalReference });
     }
     if (address.pathname.endsWith('/pixQrCode')) {
       if (mode === 'qr-failure') return Response.json({ errors: [{ description: 'QR temporariamente indisponível' }] }, { status: 503 });
