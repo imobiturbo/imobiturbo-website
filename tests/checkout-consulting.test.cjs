@@ -20,7 +20,11 @@ for (const [status, paid] of [['PENDING', false], ['CONFIRMED', true], ['RECEIVE
     const response = await (await load('webhook.js')).onRequestPost({ request: new Request('https://example.invalid/api/checkout/webhook', { method: 'POST', headers: { 'asaas-access-token': 'synthetic-hook' }, body: JSON.stringify({ event: 'PAYMENT_RECEIVED', payment: { id: payment.id } }) }), env: { ASAAS_API_KEY: 'synthetic-key', ASAAS_WEBHOOK_TOKEN: 'synthetic-hook' } });
     assert.equal(response.status, 200); const result = await response.json();
     assert.equal(result.productId, productId); assert.equal(result.paid, paid); assert.equal(result.communityMembershipChanged, false);
-    for (const call of calls.filter(c => c.method === 'POST')) { assert.equal(call.body.productId, productId); assert.equal(call.body.valueCents, 49700); }
+    for (const call of calls.filter(c => c.method === 'POST')) {
+      assert.equal(call.body.productId, productId); assert.equal(call.body.valueCents, 49700);
+      assert.equal(call.body.offerId, '12e90537-263d-4150-9757-52193187ffbd');
+      assert.equal(call.body.eventId, paid ? 'synthetic-consulting' : 'synthetic-consulting-pending');
+    }
     if (['REFUNDED', 'CHARGEBACK_REQUESTED', 'CHARGEBACK_DISPUTE'].includes(status)) assert.equal(calls.length, 1);
   });
 }
