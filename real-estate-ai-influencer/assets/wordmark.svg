@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="96" viewBox="0 0 460 96" fill="none" role="img" aria-label="REAL ESTATE AI INFLUENCER">
+  <defs>
+    <!-- Mask for high-fashion cut -->
+    <mask id="re-cut-mask">
+      <rect width="460" height="96" fill="white"/>
+      <rect x="238" y="8" width="7" height="74" rx="2" fill="black" transform="rotate(26 242 45)"/>
+    </mask>
+  </defs>
+  
+  <!-- Main Brand Title -->
+  <text x="230" y="52" text-anchor="middle" font-family="'Bebas Neue', 'Arial Narrow', sans-serif" font-size="50" font-weight="400" letter-spacing="0.06em" fill="#F2F0ED" mask="url(#re-cut-mask)">
+    REAL ESTATE AI INFLUENCER
+  </text>
+  
+  <!-- Architectural slash accent -->
+  <rect x="238.5" y="10" width="6.5" height="52" rx="1.5" fill="#E5B366" transform="rotate(26 242 36)"/>
+
+  <!-- Subtitle Tag -->
+  <text x="230" y="76" text-anchor="middle" font-family="'IBM Plex Mono', monospace" font-size="9.5" font-weight="600" letter-spacing="0.34em" fill="#9E9890">
+    PARA CONSTRUTORAS &amp; INCORPORADORAS
+  </text>
+</svg>

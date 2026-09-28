@@ -15,7 +15,8 @@
     "deploy:lp-pages": "npx wrangler pages deploy lp-pages --project-name imobiturbo-lp-pages",
     "deploy:lp-pages-route": "npx wrangler deploy --config wrangler.lp-pages.jsonc",
     "deploy:xpertinformatica": "npx wrangler pages deploy xpertinformatica --project-name xpertinformatica-website",
-    "deploy:xpertinformatica-route": "npx wrangler deploy --config wrangler.xpertinformatica.jsonc"
+    "deploy:xpertinformatica-route": "npx wrangler deploy --config wrangler.xpertinformatica.jsonc",
+    "deploy:imobicreator": "npx wrangler pages deploy imobicreator --project-name imobicreator"
   },
   "keywords": [],
   "author": "",

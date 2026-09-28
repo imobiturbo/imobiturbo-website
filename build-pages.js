@@ -26,6 +26,8 @@ const entries = [
   'corretor-autonomo',
   'imobiliarias',
   'construtoras-incorporadoras',
+  'real-estate-ai-influencer',
+  'imobicreator',
   'prompts-para-anuncios',
   'test',
   'ui_kits',
