@@ -1143,3 +1143,4 @@ footer nav {
 .cal-checkout-box .chk-asaas-footer { display: none; }
 .checkout-accessible-title, #calendarFeedback:not(.is-error) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 @media (max-width: 768px) { .chk-modal-box.cal-checkout-box { padding: 8px; } }
+.cal-checkout-box #pendingPayment { max-height: calc(100dvh - 130px); overflow-y: auto; }
