@@ -362,21 +362,19 @@ input, textarea { caret-color: var(--accent); }
 .section-heading-centered > p:last-child { max-width: 58ch; margin: 20px auto 0; font-size: 17px; }
 .demo-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
   margin-top: 48px;
-  overflow: hidden;
-  border: 1px solid var(--paper-line);
-  border-radius: 16px;
-  background: var(--paper-line);
 }
 .demo-tabs button {
+  grid-column: span 2;
   min-height: 74px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  border: 0;
+  border: 1px solid var(--paper-line);
+  border-radius: 12px;
   padding: 15px 18px;
   background: #fbfcf9;
   color: #4a5242;
@@ -384,6 +382,8 @@ input, textarea { caret-color: var(--accent); }
   font-weight: 750;
   line-height: 1.35;
 }
+.demo-tabs button:nth-child(4) { grid-column: 2 / span 2; }
+.demo-tabs button:nth-child(5) { grid-column: 4 / span 2; }
 .demo-tabs button span { color: #7a8471; font-size: 11px; letter-spacing: .08em; }
 .demo-tabs button[aria-selected='true'] { background: var(--ink); color: #fff; }
 .demo-tabs button[aria-selected='true'] span { color: var(--accent); }
@@ -803,7 +803,8 @@ footer nav {
   .demo-section, .deliverables-section { padding-block: 72px 78px; }
   .section-heading, .materials-heading, .demo-copy-inline, .faq-layout { grid-template-columns: 1fr; gap: 20px; }
   .section-heading-centered > p:last-child { font-size: 15px; }
-  .demo-tabs { grid-template-columns: 1fr; margin-top: 34px; }
+  .demo-tabs { grid-template-columns: 1fr; gap: 7px; margin-top: 34px; }
+  .demo-tabs button:nth-child(n) { grid-column: 1 / -1; }
   .demo-tabs button { min-height: 58px; justify-content: flex-start; padding-inline: 16px; }
   .demo-panel { margin-top: 18px; padding: 20px; border-radius: 21px; }
   .demo-copy { margin-bottom: 23px; }
