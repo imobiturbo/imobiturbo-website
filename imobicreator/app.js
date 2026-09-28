@@ -158,36 +158,70 @@ function resetOtherActiveVideos(currentContainer) {
  */
 function initInfinitePreviewMotion() {
   const videos = document.querySelectorAll('[data-video-container] video');
+  if (!videos.length) return;
 
-  function startPreviews() {
-    videos.forEach((video) => {
-      const container = video.closest('[data-video-container]');
-      if (!container || !container.classList.contains('video-active')) {
-        video.muted = true;
-        video.loop = true;
-        video.playsInline = true;
-        if (video.paused) {
-          video.play().catch(() => {});
-        }
+  function playMuted(video) {
+    const container = video.closest('[data-video-container]');
+    if (!container || !container.classList.contains('video-active')) {
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      if (video.paused) {
+        video.play().catch(() => {});
       }
-    });
+    }
   }
 
-  // Inicia imediatamente
-  startPreviews();
+  function pauseMuted(video) {
+    const container = video.closest('[data-video-container]');
+    if (container && !container.classList.contains('video-active') && !video.paused) {
+      video.pause();
+    }
+  }
+
+  // Usa IntersectionObserver para economizar bateria e decodificadores de hardware
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            playMuted(video);
+          } else {
+            pauseMuted(video);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    videos.forEach((video) => observer.observe(video));
+  } else {
+    // Fallback para navegadores legados
+    videos.forEach((video) => playMuted(video));
+  }
 
   // Aciona ao primeiro toque na tela para contornar restrições severas de autoplay em mobile
   const unlockEvents = ['touchstart', 'pointerdown', 'scroll'];
   const unlockAutoplay = () => {
-    startPreviews();
+    videos.forEach((video) => {
+      const container = video.closest('[data-video-container]');
+      if (!container || !container.classList.contains('video-active')) {
+        playMuted(video);
+      }
+    });
     unlockEvents.forEach((ev) => window.removeEventListener(ev, unlockAutoplay));
   };
   unlockEvents.forEach((ev) => window.addEventListener(ev, unlockAutoplay, { passive: true, once: true }));
 
-  // Se o usuário alternar de aba e voltar, retoma as prévias
+  // Se o usuário alternar de aba e voltar, sincroniza
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) {
-      startPreviews();
+      videos.forEach((video) => {
+        const rect = video.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (inView) playMuted(video);
+      });
     }
   });
 }
@@ -207,11 +241,16 @@ function initFaqAccordion() {
 
       // Fecha os outros
       faqItems.forEach((other) => {
-        if (other !== item) other.classList.remove('active');
+        if (other !== item) {
+          other.classList.remove('active');
+          const otherBtn = other.querySelector('.faq-question');
+          if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+        }
       });
 
       // Alterna o clicado
       item.classList.toggle('active', !isActive);
+      questionBtn.setAttribute('aria-expanded', (!isActive).toString());
     });
   });
 }
@@ -295,14 +334,14 @@ function initDialogModal() {
   function goToStep(step) {
     currentStep = step;
 
-    // Atualiza barra de progresso
+    // Atualiza barra de progresso via transform scaleX (zero layout thrash)
     if (progressBar && progressPct) {
       if (step <= totalSteps) {
-        const pct = Math.round((step / totalSteps) * 100);
-        progressBar.style.width = `${pct}%`;
+        const scale = step / totalSteps;
+        progressBar.style.transform = `scaleX(${scale})`;
         progressPct.textContent = step === totalSteps ? 'Pergunta Final' : `Etapa ${step}/${totalSteps}`;
       } else {
-        progressBar.style.width = '100%';
+        progressBar.style.transform = 'scaleX(1)';
         progressPct.textContent = 'Quase lá...';
       }
     }
@@ -318,10 +357,10 @@ function initDialogModal() {
       targetPane.style.display = 'block';
       setTimeout(() => targetPane.classList.add('active'), 10);
 
-      // Auto-foco no input
-      const input = targetPane.querySelector('input');
-      if (input) {
-        setTimeout(() => input.focus(), 80);
+      // Auto-foco acessível no primeiro elemento focável (input, card de rádio ou botão)
+      const firstFocusable = targetPane.querySelector('input:not([style*="display: none"]), [role="radio"], button:not(.step-btn-back)');
+      if (firstFocusable) {
+        setTimeout(() => firstFocusable.focus(), 80);
       }
     }
   }
@@ -331,11 +370,15 @@ function initDialogModal() {
     const val = inputName.value.trim();
     if (val.length < 2) {
       inputName.classList.add('input-error');
+      inputName.setAttribute('aria-invalid', 'true');
+      inputName.setAttribute('aria-describedby', 'nameError');
       nameError?.classList.add('visible');
       inputName.focus();
       return false;
     }
     inputName.classList.remove('input-error');
+    inputName.removeAttribute('aria-invalid');
+    inputName.removeAttribute('aria-describedby');
     nameError?.classList.remove('visible');
     leadData.name = val;
 
@@ -354,11 +397,15 @@ function initDialogModal() {
     const val = inputPhone.value.trim();
     if (!isValidBrazilianPhone(val)) {
       inputPhone.classList.add('input-error');
+      inputPhone.setAttribute('aria-invalid', 'true');
+      inputPhone.setAttribute('aria-describedby', 'phoneError');
       phoneError?.classList.add('visible');
       inputPhone.focus();
       return false;
     }
     inputPhone.classList.remove('input-error');
+    inputPhone.removeAttribute('aria-invalid');
+    inputPhone.removeAttribute('aria-describedby');
     phoneError?.classList.remove('visible');
     leadData.phone = val;
 
@@ -371,11 +418,15 @@ function initDialogModal() {
     const val = inputEmail.value.trim();
     if (!isValidEmail(val)) {
       inputEmail.classList.add('input-error');
+      inputEmail.setAttribute('aria-invalid', 'true');
+      inputEmail.setAttribute('aria-describedby', 'emailError');
       emailError?.classList.add('visible');
       inputEmail.focus();
       return false;
     }
     inputEmail.classList.remove('input-error');
+    inputEmail.removeAttribute('aria-invalid');
+    inputEmail.removeAttribute('aria-describedby');
     emailError?.classList.remove('visible');
     leadData.email = val;
 
@@ -385,8 +436,14 @@ function initDialogModal() {
 
   // Step 4: Cargo
   function selectRole(roleName, cardElement) {
-    roleCards.forEach((c) => c.classList.remove('selected'));
-    cardElement?.classList.add('selected');
+    roleCards.forEach((c) => {
+      c.classList.remove('selected');
+      c.setAttribute('aria-checked', 'false');
+    });
+    if (cardElement) {
+      cardElement.classList.add('selected');
+      cardElement.setAttribute('aria-checked', 'true');
+    }
     roleError?.classList.remove('visible');
 
     if (roleName === 'custom') {
@@ -406,11 +463,15 @@ function initDialogModal() {
     const val = inputRoleCustom.value.trim();
     if (!val) {
       inputRoleCustom.classList.add('input-error');
+      inputRoleCustom.setAttribute('aria-invalid', 'true');
+      inputRoleCustom.setAttribute('aria-describedby', 'roleError');
       roleError?.classList.add('visible');
       inputRoleCustom.focus();
       return false;
     }
     inputRoleCustom.classList.remove('input-error');
+    inputRoleCustom.removeAttribute('aria-invalid');
+    inputRoleCustom.removeAttribute('aria-describedby');
     roleError?.classList.remove('visible');
     leadData.role = val;
     goToStep(5);
@@ -419,8 +480,14 @@ function initDialogModal() {
 
   // Step 5: Faturamento & Submissão
   function selectRevenueAndSubmit(revName, cardElement) {
-    revenueCards.forEach((c) => c.classList.remove('selected'));
-    cardElement?.classList.add('selected');
+    revenueCards.forEach((c) => {
+      c.classList.remove('selected');
+      c.setAttribute('aria-checked', 'false');
+    });
+    if (cardElement) {
+      cardElement.classList.add('selected');
+      cardElement.setAttribute('aria-checked', 'true');
+    }
     revenueError?.classList.remove('visible');
     leadData.revenue = revName;
 

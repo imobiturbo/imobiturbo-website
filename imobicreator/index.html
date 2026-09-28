@@ -84,7 +84,9 @@
 
       <div class="nav-actions">
         <button type="button" class="btn btn-primary nav-btn-compact" data-action="open-dialog" aria-haspopup="dialog">
-          Criar Meu AI Influencer <span aria-hidden="true">&nearr;</span>
+          <span class="desktop-only-txt">Criar Meu AI Influencer</span>
+          <span class="mobile-only-txt">Criar Influencer</span>
+          <span aria-hidden="true">&nearr;</span>
         </button>
       </div>
     </div>
@@ -152,12 +154,14 @@
 
           <div class="hero-video-wrapper">
             <video 
+              width="720" 
+              height="1280"
               poster="assets/pitch-poster.jpg" 
               autoplay 
               muted 
               playsinline 
               loop 
-              preload="auto"
+              preload="metadata"
               aria-label="Vídeo de apresentação com Real Estate AI Influencer">
               <source src="https://vz-12eb6b6d-2ac.b-cdn.net/2b9c167d-9296-4dc4-8d4b-e0fa6be6ae66/play_720p.mp4" type="video/mp4">
               <source src="assets/pitch.mp4" type="video/mp4">
@@ -241,12 +245,14 @@
           <article class="video-showcase-card" data-video-container>
             <div class="video-card-player">
               <video 
+                width="720"
+                height="1280"
                 poster="assets/destaque-1-poster.jpg" 
                 autoplay 
                 muted 
                 playsinline 
                 loop 
-                preload="auto"
+                preload="none"
                 aria-label="Real Estate AI Influencer apresentando apartamento decorado">
                 <source src="https://vz-12eb6b6d-2ac.b-cdn.net/c8288817-b043-4c7e-a216-ae8d8601afbf/play_720p.mp4" type="video/mp4">
                 <source src="assets/destaque-1.mp4" type="video/mp4">
@@ -273,12 +279,14 @@
           <article class="video-showcase-card" data-video-container>
             <div class="video-card-player">
               <video 
+                width="720"
+                height="1280"
                 poster="assets/destaque-2-poster.jpg" 
                 autoplay 
                 muted 
                 playsinline 
                 loop 
-                preload="auto"
+                preload="none"
                 aria-label="Real Estate AI Influencer em área de lazer e comodidades">
                 <source src="https://vz-12eb6b6d-2ac.b-cdn.net/aac049bc-0ff2-429b-8055-bb8f37fb92c8/play_480p.mp4" type="video/mp4">
                 <source src="assets/destaque-2.mp4" type="video/mp4">
@@ -305,12 +313,14 @@
           <article class="video-showcase-card" data-video-container>
             <div class="video-card-player">
               <video 
+                width="720"
+                height="1280"
                 poster="assets/destaque-3-poster.jpg" 
                 autoplay 
                 muted 
                 playsinline 
                 loop 
-                preload="auto"
+                preload="none"
                 aria-label="Real Estate AI Influencer em frente ao empreendimento">
                 <source src="https://vz-12eb6b6d-2ac.b-cdn.net/242eb19d-dace-4d85-88f0-da3d4ee84751/play_480p.mp4" type="video/mp4">
                 <source src="assets/destaque-3.mp4" type="video/mp4">
@@ -337,13 +347,18 @@
           <article class="video-showcase-card" data-video-container>
             <div class="video-card-player">
               <video 
+                width="720"
+                height="1280"
                 poster="assets/meme-poster.jpg" 
                 autoplay 
                 muted 
                 playsinline 
                 loop 
-                preload="auto"
+                preload="none"
                 aria-label="Real Estate AI Influencer em vídeo de humor e meme">
+                <source src="https://vz-12eb6b6d-2ac.b-cdn.net/5b7fadee-2f0a-4413-8e36-3365af5df413/play_720p.mp4" type="video/mp4">
+                <source src="assets/meme.mp4" type="video/mp4">
+              </video>
                 <source src="https://vz-12eb6b6d-2ac.b-cdn.net/5b7fadee-2f0a-4413-8e36-3365af5df413/play_720p.mp4" type="video/mp4">
                 <source src="assets/meme.mp4" type="video/mp4">
               </video>
@@ -595,56 +610,66 @@
         <div class="faq-container">
           <!-- Q1 -->
           <div class="faq-item active">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question" id="faq-btn-1" aria-expanded="true" aria-controls="faq-ans-1">
               <span>Como funciona o processo de criação do influenciador?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
-            <div class="faq-answer">
-              <p>Mapeamos a identidade da sua construtora, o perfil socioeconômico dos compradores e os tipos de lançamentos. A partir disso, desenvolvemos a modelagem fotorrealista milimétrica do rosto, calibramos o sotaque e o timbre da voz, e entregamos um acervo inicial de criativos em vídeo prontos para veiculação.</p>
+            <div class="faq-answer" id="faq-ans-1" role="region" aria-labelledby="faq-btn-1">
+              <div class="faq-answer-inner">
+                <p>Mapeamos a identidade da sua construtora, o perfil socioeconômico dos compradores e os tipos de lançamentos. A partir disso, desenvolvemos a modelagem fotorrealista milimétrica do rosto, calibramos o sotaque e o timbre da voz, e entregamos um acervo inicial de criativos em vídeo prontos para veiculação.</p>
+              </div>
             </div>
           </div>
 
           <!-- Q2 -->
           <div class="faq-item">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question" id="faq-btn-2" aria-expanded="false" aria-controls="faq-ans-2">
               <span>Nosso time interno de marketing consegue operar depois?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
-            <div class="faq-answer">
-              <p>Sim. Um dos pilares do Imobicreator é entregar a esteira e os prompts calibrados para que seu time interno ou sua agência de publicidade consiga gerar novas fotos, tours e vídeos em minutos para os próximos lançamentos.</p>
+            <div class="faq-answer" id="faq-ans-2" role="region" aria-labelledby="faq-btn-2">
+              <div class="faq-answer-inner">
+                <p>Sim. Um dos pilares do Imobicreator é entregar a esteira e os prompts calibrados para que seu time interno ou sua agência de publicidade consiga gerar novas fotos, tours e vídeos em minutos para os próximos lançamentos.</p>
+              </div>
             </div>
           </div>
 
           <!-- Q3 -->
           <div class="faq-item">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question" id="faq-btn-3" aria-expanded="false" aria-controls="faq-ans-3">
               <span>O público percebe que o influenciador é de IA?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
-            <div class="faq-answer">
-              <p>O nível de fotorrealismo é altíssimo, com textura de pele, sincronia labial e iluminação física real. Nosso posicionamento estratégico não tenta enganar o cliente, mas sim encantar: o público interage, comenta e se conecta com a marca pela simpatia e clareza das informações apresentadas.</p>
+            <div class="faq-answer" id="faq-ans-3" role="region" aria-labelledby="faq-btn-3">
+              <div class="faq-answer-inner">
+                <p>O nível de fotorrealismo é altíssimo, com textura de pele, sincronia labial e iluminação física real. Nosso posicionamento estratégico não tenta enganar o cliente, mas sim encantar: o público interage, comenta e se conecta com a marca pela simpatia e clareza das informações apresentadas.</p>
+              </div>
             </div>
           </div>
 
           <!-- Q4 -->
           <div class="faq-item">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question" id="faq-btn-4" aria-expanded="false" aria-controls="faq-ans-4">
               <span>Qual é o investimento necessário?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
-            <div class="faq-answer">
-              <p>Nossos projetos sob medida variam entre <strong>R$ 15.000 e R$ 45.000</strong>, dependendo da quantidade de ambientes modelados, complexidade da esteira de automação e pacote de vídeos entregues. Trata-se de um investimento único que se torna patrimônio perpétuo da construtora.</p>
+            <div class="faq-answer" id="faq-ans-4" role="region" aria-labelledby="faq-btn-4">
+              <div class="faq-answer-inner">
+                <p>Nossos projetos sob medida variam entre <strong>R$ 15.000 e R$ 45.000</strong>, dependendo da quantidade de ambientes modelados, complexidade da esteira de automação e pacote de vídeos entregues. Trata-se de um investimento único que se torna patrimônio perpétuo da construtora.</p>
+              </div>
             </div>
           </div>
 
           <!-- Q5 -->
           <div class="faq-item">
-            <button type="button" class="faq-question">
+            <button type="button" class="faq-question" id="faq-btn-5" aria-expanded="false" aria-controls="faq-ans-5">
               <span>Quanto tempo leva para o projeto ser entregue?</span>
               <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
             </button>
-            <div class="faq-answer">
-              <p>O ciclo completo de engenharia de personagem, calibração vocal, testes de consistência em canteiro de obras e entrega dos primeiros vídeos é concluído entre 15 e 21 dias úteis.</p>
+            <div class="faq-answer" id="faq-ans-5" role="region" aria-labelledby="faq-btn-5">
+              <div class="faq-answer-inner">
+                <p>O ciclo completo de engenharia de personagem, calibração vocal, testes de consistência em canteiro de obras e entrega dos primeiros vídeos é concluído entre 15 e 21 dias úteis.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -738,7 +763,7 @@
   <!-- ====================================================================
        STEP-BY-STEP QUALIFICATION MODAL / DIALOG
        ==================================================================== -->
-  <dialog class="qualification-dialog" id="qualification-dialog" aria-labelledby="form-step-title">
+  <dialog class="qualification-dialog" id="qualification-dialog" aria-modal="true" aria-label="Qualificação para Projeto de Real Estate AI Influencer">
     <div class="dialog-header-row">
       <div class="dialog-badge">
         <span class="pulse-dot" aria-hidden="true"></span>
@@ -747,7 +772,7 @@
 
       <div class="dialog-progress-wrap" id="dialogProgressWrap">
         <div class="dialog-progress-track">
-          <div class="dialog-progress-bar" id="dialogProgressBar" style="width: 20%;"></div>
+          <div class="dialog-progress-bar" id="dialogProgressBar" style="transform: scaleX(0.2);"></div>
         </div>
         <span class="dialog-progress-pct" id="dialogProgressPct">Etapa 1/5</span>
       </div>
@@ -820,34 +845,34 @@
         <h2 class="step-headline">Qual é o seu <mark class="text-highlight">cargo ou função</mark> na empresa?</h2>
         <p class="step-subheadline">Selecione a opção que melhor define sua atuação na construtora ou incorporadora.</p>
         
-        <div class="options-grid" id="roleOptionsGrid">
-          <button type="button" class="option-card" data-role="Diretor / Sócio / C-Level">
+        <div class="options-grid" id="roleOptionsGrid" role="radiogroup" aria-label="Selecione seu cargo">
+          <button type="button" class="option-card" role="radio" aria-checked="false" data-role="Diretor / Sócio / C-Level">
             <span class="option-card-icon">🏢</span>
             <span class="option-card-title">Diretor / Sócio / C-Level</span>
           </button>
-          <button type="button" class="option-card" data-role="Gerente de Marketing / Comunicação">
+          <button type="button" class="option-card" role="radio" aria-checked="false" data-role="Gerente de Marketing / Comunicação">
             <span class="option-card-icon">🎨</span>
             <span class="option-card-title">Gerente de Marketing / Comunicação</span>
           </button>
-          <button type="button" class="option-card" data-role="Engenheiro / Diretor de Obras">
+          <button type="button" class="option-card" role="radio" aria-checked="false" data-role="Engenheiro / Diretor de Obras">
             <span class="option-card-icon">🏗️</span>
             <span class="option-card-title">Engenheiro / Diretor de Obras</span>
           </button>
-          <button type="button" class="option-card" data-role="Gerente Comercial / Vendas">
+          <button type="button" class="option-card" role="radio" aria-checked="false" data-role="Gerente Comercial / Vendas">
             <span class="option-card-icon">💼</span>
             <span class="option-card-title">Gerente Comercial / Vendas</span>
           </button>
-          <button type="button" class="option-card" id="btnRoleCustomTrigger" data-role="custom">
+          <button type="button" class="option-card" id="btnRoleCustomTrigger" role="radio" aria-checked="false" data-role="custom">
             <span class="option-card-icon">✍️</span>
             <span class="option-card-title">Outro cargo</span>
           </button>
         </div>
 
         <div class="custom-field-wrap" id="customRoleWrap" style="display: none; margin-top: 14px;">
-          <input type="text" id="leadRoleCustom" class="form-input" placeholder="Digite seu cargo e clique em Continuar">
+          <input type="text" id="leadRoleCustom" class="form-input" placeholder="Digite seu cargo e clique em Continuar" aria-label="Digite seu cargo">
         </div>
 
-        <div class="field-error-msg" id="roleError">Por favor, selecione ou informe o seu cargo.</div>
+        <div class="field-error-msg" id="roleError" role="alert">Por favor, selecione ou informe o seu cargo.</div>
 
         <div class="step-nav-row" style="margin-top: 20px;">
           <button type="button" class="btn btn-secondary step-btn-back" data-back="3">&larr; Voltar</button>
@@ -864,20 +889,20 @@
         <h2 class="step-headline">Qual é a <mark class="text-highlight">faixa de faturamento anual</mark> da empresa?</h2>
         <p class="step-subheadline">Para dimensionarmos o escopo de entregas e a esteira ideal de vídeos.</p>
         
-        <div class="options-grid" id="revenueOptionsGrid">
-          <button type="button" class="option-card option-card-revenue" data-revenue="Até R$ 10 Milhões">
+        <div class="options-grid" id="revenueOptionsGrid" role="radiogroup" aria-label="Selecione a faixa de faturamento anual">
+          <button type="button" class="option-card option-card-revenue" role="radio" aria-checked="false" data-revenue="Até R$ 10 Milhões">
             <span class="option-card-pill">Faixa 1</span>
             <span class="option-card-title">Até R$ 10 Milhões / ano</span>
           </button>
-          <button type="button" class="option-card option-card-revenue" data-revenue="R$ 10M a R$ 50 Milhões">
+          <button type="button" class="option-card option-card-revenue" role="radio" aria-checked="false" data-revenue="R$ 10M a R$ 50 Milhões">
             <span class="option-card-pill">Faixa 2</span>
             <span class="option-card-title">R$ 10M a R$ 50 Milhões / ano</span>
           </button>
-          <button type="button" class="option-card option-card-revenue" data-revenue="R$ 50M a R$ 200 Milhões">
+          <button type="button" class="option-card option-card-revenue" role="radio" aria-checked="false" data-revenue="R$ 50M a R$ 200 Milhões">
             <span class="option-card-pill">Faixa 3</span>
             <span class="option-card-title">R$ 50M a R$ 200 Milhões / ano</span>
           </button>
-          <button type="button" class="option-card option-card-revenue" data-revenue="Acima de R$ 200 Milhões">
+          <button type="button" class="option-card option-card-revenue" role="radio" aria-checked="false" data-revenue="Acima de R$ 200 Milhões">
             <span class="option-card-pill">Corporativo</span>
             <span class="option-card-title">Acima de R$ 200 Milhões / ano</span>
           </button>
