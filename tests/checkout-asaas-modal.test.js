@@ -124,7 +124,7 @@ test("consulting upsell embeds Cal payment and resumes by payment UID without cr
   assert.ok(script.includes("type: 'imobiturbo:buyer'"), "CPF and cardholder details are sent to the owned iframe by message");
   assert.ok(!script.includes("fetch('/api/checkout'"), "the new consulting flow must not create an Asaas payment on the website");
   assert.ok(!script.includes("type: 'Purchase'"), "an iframe message must not trigger purchase tracking");
-  assert.ok(html.includes("https://wa.me/5521983747796?text="), "legacy verified buyers are sent to support instead of the new paid event");
+  assert.ok(html.includes("https://wa.me/5521969516183?text="), "legacy verified buyers are sent to support instead of the new paid event");
 });
 
 test("functions/api/checkout/index.js supports Asaas subscriptions for mensal and installments for other plans", () => {

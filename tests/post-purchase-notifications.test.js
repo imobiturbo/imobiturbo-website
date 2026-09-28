@@ -36,7 +36,7 @@ test("formatPostPurchaseEmail generates complete access kit (Club + OS + WhatsAp
   assert.ok(html.includes("chat.whatsapp.com/Iy4Uiw5t0630oK4MgZarFj"), "Must contain WhatsApp Community link");
   assert.ok(!html.includes("radar.imobiturbo.com.br"), "Must NOT contain deactivated Radar link");
   assert.ok(!html.includes("sites.imobiturbo.com.br"), "Must NOT contain deactivated Sites link");
-  assert.ok(html.includes("5521983747796") || html.includes("98374-7796"), "Must contain official WhatsApp support number");
+  assert.ok(html.includes("5521969516183") || html.includes("96951-6183"), "Must contain official WhatsApp support number");
 });
 
 test("formatPostPurchaseWhatsApp formats template status_confirmado_120626 with 3 parameters", () => {

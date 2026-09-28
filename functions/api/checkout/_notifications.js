@@ -275,8 +275,8 @@ function formatPostPurchaseEmail({ name, email, plan = "anual" }) {
         <p style="margin: 0 0 12px; font-size: 13px; color: #525252;">
           Nosso time oficial de suporte está à sua disposição no WhatsApp para tirar dúvidas.
         </p>
-        <a href="https://wa.me/5521983747796" style="color: #6CA438; font-weight: 700; text-decoration: none; font-size: 14px;">
-          Falar com Suporte Oficial: (21) 98374-7796 →
+        <a href="https://wa.me/5521969516183" style="color: #6CA438; font-weight: 700; text-decoration: none; font-size: 14px;">
+          Falar com Suporte Oficial: (21) 96951-6183 →
         </a>
       </div>
     </div>
@@ -311,7 +311,7 @@ Aqui estão seus acessos liberados:
 3. GRUPO VIP NO WHATSAPP (COMUNIDADE)
 - Entre no grupo oficial de membros: https://chat.whatsapp.com/Iy4Uiw5t0630oK4MgZarFj
 
-Suporte Oficial no WhatsApp: (21) 98374-7796 ou https://wa.me/5521983747796
+Suporte Oficial no WhatsApp: (21) 96951-6183 ou https://wa.me/5521969516183
   `.trim();
 
   return { subject, html, text };
