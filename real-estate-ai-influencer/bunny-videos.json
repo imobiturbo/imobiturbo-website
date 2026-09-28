@@ -1,0 +1,47 @@
+{
+  "pitch": {
+    "name": "pitch",
+    "guid": "2b9c167d-9296-4dc4-8d4b-e0fa6be6ae66",
+    "title": "Imobicreator - Pitch Oficial Rainha do Popular",
+    "bunnyMp4": "https://vz-12eb6b6d-2ac.b-cdn.net/2b9c167d-9296-4dc4-8d4b-e0fa6be6ae66/play_720p.mp4",
+    "bunnyPoster": "https://vz-12eb6b6d-2ac.b-cdn.net/2b9c167d-9296-4dc4-8d4b-e0fa6be6ae66/thumbnail.jpg",
+    "localMp4": "assets/pitch.mp4",
+    "localPoster": "assets/pitch-poster.jpg"
+  },
+  "destaque-1": {
+    "name": "destaque-1",
+    "guid": "c8288817-b043-4c7e-a216-ae8d8601afbf",
+    "title": "Imobicreator - Formato 01 Decorado Interno",
+    "bunnyMp4": "https://vz-12eb6b6d-2ac.b-cdn.net/c8288817-b043-4c7e-a216-ae8d8601afbf/play_720p.mp4",
+    "bunnyPoster": "https://vz-12eb6b6d-2ac.b-cdn.net/c8288817-b043-4c7e-a216-ae8d8601afbf/thumbnail.jpg",
+    "localMp4": "assets/destaque-1.mp4",
+    "localPoster": "assets/destaque-1-poster.jpg"
+  },
+  "destaque-2": {
+    "name": "destaque-2",
+    "guid": "aac049bc-0ff2-429b-8055-bb8f37fb92c8",
+    "title": "Imobicreator - Formato 02 Lazer e Pergolado",
+    "bunnyMp4": "https://vz-12eb6b6d-2ac.b-cdn.net/aac049bc-0ff2-429b-8055-bb8f37fb92c8/play_480p.mp4",
+    "bunnyPoster": "https://vz-12eb6b6d-2ac.b-cdn.net/aac049bc-0ff2-429b-8055-bb8f37fb92c8/thumbnail.jpg",
+    "localMp4": "assets/destaque-2.mp4",
+    "localPoster": "assets/destaque-2-poster.jpg"
+  },
+  "destaque-3": {
+    "name": "destaque-3",
+    "guid": "242eb19d-dace-4d85-88f0-da3d4ee84751",
+    "title": "Imobicreator - Formato 03 Fachada e Portaria",
+    "bunnyMp4": "https://vz-12eb6b6d-2ac.b-cdn.net/242eb19d-dace-4d85-88f0-da3d4ee84751/play_480p.mp4",
+    "bunnyPoster": "https://vz-12eb6b6d-2ac.b-cdn.net/242eb19d-dace-4d85-88f0-da3d4ee84751/thumbnail.jpg",
+    "localMp4": "assets/destaque-3.mp4",
+    "localPoster": "assets/destaque-3-poster.jpg"
+  },
+  "meme": {
+    "name": "meme",
+    "guid": "5b7fadee-2f0a-4413-8e36-3365af5df413",
+    "title": "Imobicreator - Formato 04 Humor e Viral",
+    "bunnyMp4": "https://vz-12eb6b6d-2ac.b-cdn.net/5b7fadee-2f0a-4413-8e36-3365af5df413/play_720p.mp4",
+    "bunnyPoster": "https://vz-12eb6b6d-2ac.b-cdn.net/5b7fadee-2f0a-4413-8e36-3365af5df413/thumbnail.jpg",
+    "localMp4": "assets/meme.mp4",
+    "localPoster": "assets/meme-poster.jpg"
+  }
+}

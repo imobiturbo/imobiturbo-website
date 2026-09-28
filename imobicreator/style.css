@@ -487,6 +487,8 @@ p:last-child {
   overflow: hidden;
   max-width: 380px;
   margin: 0 auto;
+  cursor: pointer;
+  user-select: none;
 }
 
 .hero-video-wrapper {
@@ -495,6 +497,7 @@ p:last-child {
   width: 100%;
   background: #000;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .hero-video-wrapper video {
@@ -554,10 +557,212 @@ p:last-child {
   background: rgba(196, 254, 93, 0.12);
   border-radius: var(--radius-sm);
   transition: all 0.15s ease;
+  position: relative;
+  z-index: 6;
 }
 
 .badge-link:hover {
   background: rgba(196, 254, 93, 0.22);
+}
+
+/* VTurb-Style Smart Autoplay Mask — Posicionado no Rodapé Esquerdo */
+.vsl-smart-autoplay {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.vsl-smart-autoplay.vsl-bottom-left {
+  bottom: 16px;
+  left: 16px;
+}
+
+.hero-video-wrapper .vsl-smart-autoplay.vsl-bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+.hero-video-card:hover .vsl-smart-autoplay,
+.video-showcase-card:hover .vsl-smart-autoplay {
+  transform: scale(1.08);
+}
+
+.hero-video-card:active .vsl-smart-autoplay,
+.video-showcase-card:active .vsl-smart-autoplay {
+  transform: scale(0.96);
+}
+
+.vsl-smart-autoplay.vsl-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.85);
+  pointer-events: none;
+}
+
+.hero-video-card.video-active,
+.video-showcase-card.video-active {
+  border-color: rgba(196, 254, 93, 0.6);
+  box-shadow: 0 0 30px rgba(196, 254, 93, 0.25), 0 16px 36px -8px rgba(0, 0, 0, 0.8);
+}
+
+.vsl-play-btn-circle {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: rgba(196, 254, 93, 0.40);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 2.5px solid rgba(196, 254, 93, 0.90);
+  box-shadow: 0 0 28px rgba(196, 254, 93, 0.55), 0 8px 24px rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: vslPlayPulse 2.4s infinite ease-in-out;
+}
+
+.hero-video-wrapper .vsl-play-btn-circle {
+  width: 72px;
+  height: 72px;
+  border-width: 3px;
+  box-shadow: 0 0 36px rgba(196, 254, 93, 0.6), 0 10px 28px rgba(0, 0, 0, 0.7);
+}
+
+.vsl-ripple-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(196, 254, 93, 0.75);
+  animation: vslRippleRing 2.4s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.vsl-ripple-2 {
+  animation-delay: 1.2s;
+}
+
+.vsl-play-icon {
+  width: 44%;
+  height: 44%;
+  color: #FFFFFF;
+  margin-left: 6%;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+}
+
+.vsl-mouse-anim {
+  position: absolute;
+  bottom: -10px;
+  right: -16px;
+  width: 38px;
+  height: auto;
+  pointer-events: none;
+  animation: vslMouseCycle 2.8s infinite ease-in-out;
+}
+
+.hero-video-wrapper .vsl-mouse-anim {
+  bottom: -12px;
+  right: -20px;
+  width: 46px;
+}
+
+.vsl-cursor-pointer {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.7));
+}
+
+.vsl-click-sparks {
+  position: absolute;
+  top: -22%;
+  left: -28%;
+  width: 110%;
+  height: auto;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.4);
+  animation: vslSparksBurst 2.8s infinite ease-out;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+}
+
+@keyframes vslPlayPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 20px rgba(196, 254, 93, 0.35), 0 6px 18px rgba(0, 0, 0, 0.5);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 35px rgba(196, 254, 93, 0.75), 0 10px 28px rgba(0, 0, 0, 0.65);
+  }
+}
+
+@keyframes vslRippleRing {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+@keyframes vslMouseCycle {
+  0%, 100% {
+    transform: translate(45px, 35px) scale(1);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  24% {
+    transform: translate(-4px, -6px) scale(1);
+    opacity: 1;
+  }
+  36% {
+    transform: translate(-4px, -6px) scale(1);
+  }
+  42% {
+    transform: translate(-4px, -6px) scale(0.88);
+  }
+  52% {
+    transform: translate(-4px, -6px) scale(1);
+  }
+  64% {
+    transform: translate(-4px, -6px) scale(1);
+    opacity: 1;
+  }
+  90% {
+    transform: translate(45px, 35px) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes vslSparksBurst {
+  0%, 39% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  42% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  48% {
+    opacity: 0.95;
+    transform: scale(1.22);
+  }
+  56% {
+    opacity: 0;
+    transform: scale(1.38);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
 }
 
 /* Video Player Controls Overlay */
@@ -584,6 +789,9 @@ p:last-child {
   align-items: center;
   justify-content: center;
   transition: all 0.15s ease;
+  cursor: pointer;
+  position: relative;
+  z-index: 6;
 }
 
 .video-control-btn:hover {
@@ -668,6 +876,8 @@ p:last-child {
   display: flex;
   flex-direction: column;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  user-select: none;
 }
 
 .video-showcase-card:hover {
@@ -682,6 +892,7 @@ p:last-child {
   width: 100%;
   background: #000;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .video-card-player video {

@@ -5,8 +5,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initVideoControls();
+  initInfinitePreviewMotion();
   initDialogModal();
-  initIntersectionAutoPlay();
   initFaqAccordion();
 });
 
@@ -21,72 +21,104 @@ const ICONS = {
 };
 
 /**
- * Inicializa os botões de Play/Pause e Mute/Unmute em todos os containers de vídeo
+ * Controlador dos vídeos com Smart Autoplay (Estilo /vagas/ no rodapé esquerdo)
+ * - Motion infinito de prévia muted em todos os vídeos
+ * - Toque/clique em qualquer ponto do card inicia reprodução com som do início (00:00)
+ * - Máscara VTurb com botão pulsante no rodapé esquerdo é ocultada ao dar play
+ * - Novo toque alterna play/pause
+ * - Ao término do vídeo, retorna para prévia muted em loop e reexibe a máscara
  */
 function initVideoControls() {
-  const sections = document.querySelectorAll('[data-video-container]');
+  const containers = document.querySelectorAll('[data-video-container]');
 
-  sections.forEach((container) => {
+  containers.forEach((container) => {
     const video = container.querySelector('video');
-    const playBtn = container.querySelector('[data-action="toggle-play"]');
+    const mask = container.querySelector('.vsl-smart-autoplay');
     const soundBtn = container.querySelector('[data-action="toggle-sound"]');
 
     if (!video) return;
 
-    // Sincroniza estado inicial
-    updatePlayButton(playBtn, !video.paused);
-    updateSoundButton(soundBtn, !video.muted);
+    // Helper para ativar som e tocar do início
+    function activateVideoWithAudio() {
+      // Pausa e reseta outros vídeos que estejam com som
+      resetOtherActiveVideos(container);
 
-    // Play / Pause Toggle
-    if (playBtn) {
-      playBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (video.paused) {
-          pauseOtherVideos(video);
-          video.play().then(() => {
-            updatePlayButton(playBtn, true);
-          }).catch(() => {
-            video.muted = true;
-            video.play();
-            updatePlayButton(playBtn, true);
-            updateSoundButton(soundBtn, false);
-          });
-        } else {
-          video.pause();
-          updatePlayButton(playBtn, false);
-        }
-      });
+      container.classList.add('video-active');
+      if (mask) mask.classList.add('vsl-hidden');
+
+      video.pause();
+      video.currentTime = 0;
+      video.loop = false;
+      video.muted = false;
+      video.volume = 1.0;
+
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn('Playback audio retry:', err);
+          video.muted = false;
+          video.play();
+        });
+      }
+      updateSoundButton(soundBtn, true);
     }
 
-    // Mute / Unmute Toggle
-    if (soundBtn) {
-      soundBtn.addEventListener('click', (e) => {
+    // Helper para retornar à prévia em loop mudo
+    function resetToPreviewMode() {
+      container.classList.remove('video-active');
+      if (mask) mask.classList.remove('vsl-hidden');
+
+      video.currentTime = 0;
+      video.loop = true;
+      video.muted = true;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {});
+      }
+      updateSoundButton(soundBtn, false);
+    }
+
+    // Clique/toque em qualquer lugar do container do vídeo
+    container.addEventListener('click', (e) => {
+      // Não intercepta se o clique foi em links como o badge do Instagram ou botões de diálogo
+      if (e.target.closest('a') || e.target.closest('[data-action="open-dialog"]')) {
+        return;
+      }
+
+      // Se clicou no botão de som especificamente
+      if (e.target.closest('[data-action="toggle-sound"]')) {
         e.stopPropagation();
         if (video.muted) {
-          silenceOtherVideos(video);
-          video.muted = false;
-          updateSoundButton(soundBtn, true);
-          if (video.paused) {
-            video.play();
-            updatePlayButton(playBtn, true);
-          }
+          activateVideoWithAudio();
         } else {
-          video.muted = true;
-          updateSoundButton(soundBtn, false);
+          resetToPreviewMode();
         }
-      });
-    }
+        return;
+      }
 
-    video.addEventListener('play', () => updatePlayButton(playBtn, true));
-    video.addEventListener('pause', () => updatePlayButton(playBtn, false));
-    video.addEventListener('volumechange', () => updateSoundButton(soundBtn, !video.muted));
+      // Se ainda não estava ativo com som, inicia com som do início
+      if (!container.classList.contains('video-active') || video.muted) {
+        activateVideoWithAudio();
+      } else {
+        // Já estava ativo com som: alterna play / pause
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      }
+    });
+
+    // Quando o vídeo termina
+    video.addEventListener('ended', () => {
+      resetToPreviewMode();
+    });
+
+    // Sincroniza estado do botão de som
+    video.addEventListener('volumechange', () => {
+      updateSoundButton(soundBtn, !video.muted);
+    });
   });
-}
-
-function updatePlayButton(btn, isPlaying) {
-  if (!btn) return;
-  btn.innerHTML = isPlaying ? ICONS.pause : ICONS.play;
-  btn.setAttribute('aria-label', isPlaying ? 'Pausar vídeo' : 'Reproduzir vídeo');
 }
 
 function updateSoundButton(btn, isUnmuted) {
@@ -96,50 +128,67 @@ function updateSoundButton(btn, isUnmuted) {
   btn.setAttribute('aria-pressed', isUnmuted ? 'true' : 'false');
 }
 
-function pauseOtherVideos(currentVideo) {
-  document.querySelectorAll('video').forEach((v) => {
-    if (v !== currentVideo && !v.paused) {
-      v.pause();
-    }
-  });
-}
+/**
+ * Reseta qualquer outro vídeo que esteja ativo com som de volta para prévia muted
+ */
+function resetOtherActiveVideos(currentContainer) {
+  const containers = document.querySelectorAll('[data-video-container]');
+  containers.forEach((container) => {
+    if (container !== currentContainer && container.classList.contains('video-active')) {
+      const video = container.querySelector('video');
+      const mask = container.querySelector('.vsl-smart-autoplay');
+      const soundBtn = container.querySelector('[data-action="toggle-sound"]');
 
-function silenceOtherVideos(currentVideo) {
-  document.querySelectorAll('video').forEach((v) => {
-    if (v !== currentVideo) {
-      v.muted = true;
+      container.classList.remove('video-active');
+      if (mask) mask.classList.remove('vsl-hidden');
+
+      if (video) {
+        video.currentTime = 0;
+        video.loop = true;
+        video.muted = true;
+        video.play().catch(() => {});
+      }
+      updateSoundButton(soundBtn, false);
     }
   });
 }
 
 /**
- * Autoplay inteligente com IntersectionObserver
+ * Garante que todos os vídeos rodem com motion infinito na prévia sem travar
  */
-function initIntersectionAutoPlay() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return;
-  }
+function initInfinitePreviewMotion() {
+  const videos = document.querySelectorAll('[data-video-container] video');
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      const video = entry.target.querySelector('video');
-      if (!video) return;
-
-      if (entry.isIntersecting) {
+  function startPreviews() {
+    videos.forEach((video) => {
+      const container = video.closest('[data-video-container]');
+      if (!container || !container.classList.contains('video-active')) {
+        video.muted = true;
+        video.loop = true;
+        video.playsInline = true;
         if (video.paused) {
-          video.muted = true;
           video.play().catch(() => {});
-        }
-      } else {
-        if (!video.paused) {
-          video.pause();
         }
       }
     });
-  }, { threshold: 0.35 });
+  }
 
-  document.querySelectorAll('[data-video-container]').forEach((el) => {
-    observer.observe(el);
+  // Inicia imediatamente
+  startPreviews();
+
+  // Aciona ao primeiro toque na tela para contornar restrições severas de autoplay em mobile
+  const unlockEvents = ['touchstart', 'pointerdown', 'scroll'];
+  const unlockAutoplay = () => {
+    startPreviews();
+    unlockEvents.forEach((ev) => window.removeEventListener(ev, unlockAutoplay));
+  };
+  unlockEvents.forEach((ev) => window.addEventListener(ev, unlockAutoplay, { passive: true, once: true }));
+
+  // Se o usuário alternar de aba e voltar, retoma as prévias
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      startPreviews();
+    }
   });
 }
 
