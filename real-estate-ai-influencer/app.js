@@ -217,18 +217,372 @@ function initFaqAccordion() {
 }
 
 /**
- * Controle do Dialog / Modal de Qualificação
+ * Controle do Mini Formulário por Etapas e Modal de Qualificação
  */
 function initDialogModal() {
   const dialog = document.getElementById('qualification-dialog');
   const openButtons = document.querySelectorAll('[data-action="open-dialog"]');
-  const closeButton = dialog?.querySelector('.dialog-close-btn');
+  const closeButton = dialog?.querySelector('#dialogCloseBtn, .dialog-close-btn');
 
   if (!dialog) return;
 
+  // Estado do formulário
+  let currentStep = 1;
+  const totalSteps = 5;
+  const leadData = {
+    name: '',
+    phone: '',
+    email: '',
+    role: '',
+    revenue: ''
+  };
+
+  // Elementos do DOM
+  const progressBar = document.getElementById('dialogProgressBar');
+  const progressPct = document.getElementById('dialogProgressPct');
+  const stepPanes = dialog.querySelectorAll('.form-step-pane');
+  const firstNameSpans = dialog.querySelectorAll('.user-first-name');
+
+  // Inputs
+  const inputName = document.getElementById('leadName');
+  const inputPhone = document.getElementById('leadPhone');
+  const inputEmail = document.getElementById('leadEmail');
+  const inputRoleCustom = document.getElementById('leadRoleCustom');
+  const customRoleWrap = document.getElementById('customRoleWrap');
+  const btnStep4 = document.getElementById('btnStep4');
+
+  // Error messages
+  const nameError = document.getElementById('nameError');
+  const phoneError = document.getElementById('phoneError');
+  const emailError = document.getElementById('emailError');
+  const roleError = document.getElementById('roleError');
+  const revenueError = document.getElementById('revenueError');
+
+  // Buttons next / back
+  const btnStep1 = document.getElementById('btnStep1');
+  const btnStep2 = document.getElementById('btnStep2');
+  const btnStep3 = document.getElementById('btnStep3');
+  const backButtons = dialog.querySelectorAll('.step-btn-back');
+  const roleCards = dialog.querySelectorAll('#roleOptionsGrid .option-card');
+  const revenueCards = dialog.querySelectorAll('#revenueOptionsGrid .option-card');
+
+  // Máscara e validação de telefone brasileiro
+  function formatBrazilianPhone(val) {
+    const digits = val.replace(/\D/g, '').slice(0, 11);
+    if (!digits) return '';
+    if (digits.length <= 2) return `(${digits}`;
+    if (digits.length <= 6) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+    if (digits.length <= 10) return `(${digits.slice(0, 2)}) ${digits.slice(2, 6)}-${digits.slice(6)}`;
+    return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+  }
+
+  function isValidBrazilianPhone(phone) {
+    const digits = phone.replace(/\D/g, '');
+    if (digits.length < 10 || digits.length > 11) return false;
+    const ddd = parseInt(digits.slice(0, 2), 10);
+    // DDDs válidos no Brasil (11 a 99)
+    if (ddd < 11 || ddd > 99) return false;
+    // Bloqueia dígitos repetidos óbvios
+    if (/^(\d)\1+$/.test(digits)) return false;
+    return true;
+  }
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim());
+  }
+
+  // Atualização visual do passo
+  function goToStep(step) {
+    currentStep = step;
+
+    // Atualiza barra de progresso
+    if (progressBar && progressPct) {
+      if (step <= totalSteps) {
+        const pct = Math.round((step / totalSteps) * 100);
+        progressBar.style.width = `${pct}%`;
+        progressPct.textContent = step === totalSteps ? 'Pergunta Final' : `Etapa ${step}/${totalSteps}`;
+      } else {
+        progressBar.style.width = '100%';
+        progressPct.textContent = 'Quase lá...';
+      }
+    }
+
+    // Esconde todos os panes e exibe o ativo
+    stepPanes.forEach((pane) => {
+      pane.classList.remove('active');
+      pane.style.display = 'none';
+    });
+
+    const targetPane = dialog.querySelector(`[data-step="${step}"]`) || document.getElementById('formStepLoading');
+    if (targetPane) {
+      targetPane.style.display = 'block';
+      setTimeout(() => targetPane.classList.add('active'), 10);
+
+      // Auto-foco no input
+      const input = targetPane.querySelector('input');
+      if (input) {
+        setTimeout(() => input.focus(), 80);
+      }
+    }
+  }
+
+  // Step 1: Validação do Nome
+  function handleStep1() {
+    const val = inputName.value.trim();
+    if (val.length < 2) {
+      inputName.classList.add('input-error');
+      nameError?.classList.add('visible');
+      inputName.focus();
+      return false;
+    }
+    inputName.classList.remove('input-error');
+    nameError?.classList.remove('visible');
+    leadData.name = val;
+
+    // Atualiza primeiro nome
+    const firstName = val.split(' ')[0] || 'Você';
+    firstNameSpans.forEach((span) => {
+      span.textContent = firstName;
+    });
+
+    goToStep(2);
+    return true;
+  }
+
+  // Step 2: Validação do Telefone
+  function handleStep2() {
+    const val = inputPhone.value.trim();
+    if (!isValidBrazilianPhone(val)) {
+      inputPhone.classList.add('input-error');
+      phoneError?.classList.add('visible');
+      inputPhone.focus();
+      return false;
+    }
+    inputPhone.classList.remove('input-error');
+    phoneError?.classList.remove('visible');
+    leadData.phone = val;
+
+    goToStep(3);
+    return true;
+  }
+
+  // Step 3: Validação do E-mail
+  function handleStep3() {
+    const val = inputEmail.value.trim();
+    if (!isValidEmail(val)) {
+      inputEmail.classList.add('input-error');
+      emailError?.classList.add('visible');
+      inputEmail.focus();
+      return false;
+    }
+    inputEmail.classList.remove('input-error');
+    emailError?.classList.remove('visible');
+    leadData.email = val;
+
+    goToStep(4);
+    return true;
+  }
+
+  // Step 4: Cargo
+  function selectRole(roleName, cardElement) {
+    roleCards.forEach((c) => c.classList.remove('selected'));
+    cardElement?.classList.add('selected');
+    roleError?.classList.remove('visible');
+
+    if (roleName === 'custom') {
+      if (customRoleWrap) customRoleWrap.style.display = 'block';
+      if (btnStep4) btnStep4.style.display = 'inline-flex';
+      inputRoleCustom?.focus();
+    } else {
+      if (customRoleWrap) customRoleWrap.style.display = 'none';
+      if (btnStep4) btnStep4.style.display = 'none';
+      leadData.role = roleName;
+      // Avança direto em 1 clique
+      setTimeout(() => goToStep(5), 180);
+    }
+  }
+
+  function handleStep4Custom() {
+    const val = inputRoleCustom.value.trim();
+    if (!val) {
+      inputRoleCustom.classList.add('input-error');
+      roleError?.classList.add('visible');
+      inputRoleCustom.focus();
+      return false;
+    }
+    inputRoleCustom.classList.remove('input-error');
+    roleError?.classList.remove('visible');
+    leadData.role = val;
+    goToStep(5);
+    return true;
+  }
+
+  // Step 5: Faturamento & Submissão
+  function selectRevenueAndSubmit(revName, cardElement) {
+    revenueCards.forEach((c) => c.classList.remove('selected'));
+    cardElement?.classList.add('selected');
+    revenueError?.classList.remove('visible');
+    leadData.revenue = revName;
+
+    // Inicia submissão
+    setTimeout(() => submitLeadAndRedirect(), 180);
+  }
+
+  // Envio para o Imobiturbo OS e WAHA
+  async function submitLeadAndRedirect() {
+    goToStep(6); // Loading
+
+    // Captura parâmetros de UTM da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const payload = {
+      project: 'imobicreator',
+      nome: leadData.name,
+      telefone: leadData.phone,
+      email: leadData.email,
+      cargo: leadData.role,
+      faturamento: leadData.revenue,
+      utm_source: urlParams.get('utm_source') || '',
+      utm_medium: urlParams.get('utm_medium') || '',
+      utm_campaign: urlParams.get('utm_campaign') || '',
+      utm_content: urlParams.get('utm_content') || '',
+      utm_term: urlParams.get('utm_term') || '',
+    };
+
+    // Monta fallback de URL direta caso ocorra timeout
+    const msgRedirect = encodeURIComponent(
+      `Olá Natan! Sou ${leadData.name}${leadData.role ? ` (${leadData.role})` : ''}, com faturamento anual ${leadData.revenue}. Acabei de preencher o formulário no Imobicreator e quero desenhar o influenciador de IA da nossa empresa.`
+    );
+    const fallbackWhatsappUrl = `https://wa.me/5521983747796?text=${msgRedirect}`;
+
+    let redirected = false;
+    const executeRedirect = (targetUrl) => {
+      if (!redirected) {
+        redirected = true;
+        window.location.href = targetUrl || fallbackWhatsappUrl;
+      }
+    };
+
+    // Timeout de segurança: no máximo 2.2 segundos para garantir que o usuário não fique esperando
+    const safetyTimeout = setTimeout(() => {
+      executeRedirect(fallbackWhatsappUrl);
+    }, 2200);
+
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      clearTimeout(safetyTimeout);
+
+      if (res.ok) {
+        const data = await res.json().catch(() => null);
+        const finalUrl = data?.redirect_url || fallbackWhatsappUrl;
+        setTimeout(() => executeRedirect(finalUrl), 400);
+      } else {
+        executeRedirect(fallbackWhatsappUrl);
+      }
+    } catch (err) {
+      clearTimeout(safetyTimeout);
+      console.warn('[Lead Submit Warning]:', err);
+      executeRedirect(fallbackWhatsappUrl);
+    }
+  }
+
+  // Event Listeners dos Steps
+  btnStep1?.addEventListener('click', handleStep1);
+  btnStep2?.addEventListener('click', handleStep2);
+  btnStep3?.addEventListener('click', handleStep3);
+  btnStep4?.addEventListener('click', handleStep4Custom);
+
+  // Máscara dinâmica no input de telefone
+  inputPhone?.addEventListener('input', (e) => {
+    e.target.value = formatBrazilianPhone(e.target.value);
+    inputPhone.classList.remove('input-error');
+    phoneError?.classList.remove('visible');
+  });
+
+  inputName?.addEventListener('input', () => {
+    inputName.classList.remove('input-error');
+    nameError?.classList.remove('visible');
+  });
+
+  inputEmail?.addEventListener('input', () => {
+    inputEmail.classList.remove('input-error');
+    emailError?.classList.remove('visible');
+  });
+
+  inputRoleCustom?.addEventListener('input', () => {
+    inputRoleCustom.classList.remove('input-error');
+    roleError?.classList.remove('visible');
+  });
+
+  // Enter avança automaticamente
+  inputName?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleStep1();
+    }
+  });
+
+  inputPhone?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleStep2();
+    }
+  });
+
+  inputEmail?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleStep3();
+    }
+  });
+
+  inputRoleCustom?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleStep4Custom();
+    }
+  });
+
+  // Role card selection
+  roleCards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const role = card.getAttribute('data-role');
+      selectRole(role, card);
+    });
+  });
+
+  // Revenue card selection
+  revenueCards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const revenue = card.getAttribute('data-revenue');
+      selectRevenueAndSubmit(revenue, card);
+    });
+  });
+
+  // Back buttons
+  backButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const backStep = parseInt(btn.getAttribute('data-back') || '1', 10);
+      goToStep(backStep);
+    });
+  });
+
+  // Abrir e fechar o modal
   const openDialog = () => {
     dialog.showModal();
     document.body.style.overflow = 'hidden';
+    // Se for abertura limpa, reinicia no step 1
+    if (currentStep > 5) {
+      goToStep(1);
+    } else {
+      goToStep(currentStep);
+    }
   };
 
   const closeDialog = () => {
@@ -264,3 +618,4 @@ function initDialogModal() {
     document.body.style.overflow = '';
   });
 }
+

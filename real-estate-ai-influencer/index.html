@@ -566,16 +566,8 @@
             </p>
 
             <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
-              <a 
-                href="https://wa.me/5521983747796?text=Ol%C3%A1%20Natan!%20Vi%20o%20case%20da%20Rainha%20do%20Popular%20no%20Imobicreator%20e%20quero%20um%20projeto%20de%20IA%20Influencer%20para%20minha%20construtora." 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                class="btn btn-primary" 
-                aria-label="Falar com Diretor Criativo no WhatsApp">
-                Quero um Projeto Semelhante no WhatsApp <span aria-hidden="true">&nearr;</span>
-              </a>
-              <button type="button" class="btn btn-secondary" data-action="open-dialog" aria-haspopup="dialog">
-                Conhecer Detalhes
+              <button type="button" class="btn btn-primary btn-lg" data-action="open-dialog" aria-haspopup="dialog">
+                Quero um Projeto Semelhante <span aria-hidden="true">&nearr;</span>
               </button>
             </div>
           </div>
@@ -675,13 +667,13 @@
             Chega de depender de contratos frágeis de terceiros. Tenha um influenciador próprio que grava em obra, decora o memorial descritivo e valoriza o patrimônio da sua empresa a cada lançamento.
           </p>
 
-          <a 
+          <button 
+            type="button"
             class="btn btn-primary btn-lg" 
-            href="https://wa.me/5521983747796?text=Ol%C3%A1%20Natan!%20Quero%20criar%20um%20Real%20Estate%20AI%20Influencer%20para%20minha%20construtora%2Fincorporadora%20com%20o%20Imobicreator."
-            target="_blank"
-            rel="noopener noreferrer">
+            data-action="open-dialog"
+            aria-haspopup="dialog">
             Falar com Diretor Criativo no WhatsApp <span aria-hidden="true">&nearr;</span>
-          </a>
+          </button>
 
           <div class="final-cta-pricing">
             Investimento sob medida: <strong>R$ 15.000 a R$ 45.000</strong> &bull; Vagas limitadas por trimestre.
@@ -722,44 +714,176 @@
   <!-- ====================================================================
        QUALIFICATION MODAL / DIALOG
        ==================================================================== -->
-  <dialog class="qualification-dialog" id="qualification-dialog" aria-labelledby="dialog-title">
-    <button type="button" class="dialog-close-btn" aria-label="Fechar janela">&times;</button>
-    
-    <div class="eyebrow-pill" style="margin-bottom: var(--space-3);">
-      Projeto Sob Medida
+  <!-- ====================================================================
+       STEP-BY-STEP QUALIFICATION MODAL / DIALOG
+       ==================================================================== -->
+  <dialog class="qualification-dialog" id="qualification-dialog" aria-labelledby="form-step-title">
+    <div class="dialog-header-row">
+      <div class="dialog-badge">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span>Projeto Sob Medida</span>
+      </div>
+
+      <div class="dialog-progress-wrap" id="dialogProgressWrap">
+        <div class="dialog-progress-track">
+          <div class="dialog-progress-bar" id="dialogProgressBar" style="width: 20%;"></div>
+        </div>
+        <span class="dialog-progress-pct" id="dialogProgressPct">Etapa 1/5</span>
+      </div>
+
+      <button type="button" class="dialog-close-btn" id="dialogCloseBtn" aria-label="Fechar janela">&times;</button>
     </div>
 
-    <h2 id="dialog-title" class="dialog-title">
-      Vamos Criar o Influencer de IA da Sua Construtora.
-    </h2>
-    
-    <p class="dialog-desc">
-      Desenvolvemos projetos proprietários sob medida entre <strong>R$ 15.000 e R$ 45.000</strong> para construtoras e incorporadoras que buscam ativos perpétuos de alta conversão.
-    </p>
+    <form id="imobicreatorStepForm" novalidate onsubmit="return false;">
+      
+      <!-- ETAPA 1: NOME E SOBRENOME -->
+      <div class="form-step-pane active" id="formStep1" data-step="1">
+        <span class="step-counter-tag">PERGUNTA 1 DE 5</span>
+        <h2 class="step-headline" id="form-step-title">Qual é o seu <mark class="text-highlight">nome completo</mark>?</h2>
+        <p class="step-subheadline">Para desenharmos o projeto personalizado do influenciador de IA da sua empresa.</p>
+        
+        <div class="form-field-group">
+          <input type="text" id="leadName" class="form-input" placeholder="Seu nome e sobrenome" required autocomplete="name">
+          <div class="field-error-msg" id="nameError">Por favor, informe seu nome completo para prosseguir.</div>
+        </div>
 
-    <ul class="dialog-features-list">
-      <li>
-        <img src="assets/emojis/check.png" alt="✅" class="ios-emoji-bullet" width="20" height="20" loading="lazy">
-        <span><strong>Propriedade Intelectual Vitalícia:</strong> O influenciador pertence à sua empresa, sem custos recorrentes de direitos de imagem.</span>
-      </li>
-      <li>
-        <img src="assets/emojis/check.png" alt="✅" class="ios-emoji-bullet" width="20" height="20" loading="lazy">
-        <span><strong>Versatilidade de Canteiro e Obra:</strong> Gravações sob sol, laje, apartamento decorado e maquetes 3D.</span>
-      </li>
-      <li>
-        <img src="assets/emojis/check.png" alt="✅" class="ios-emoji-bullet" width="20" height="20" loading="lazy">
-        <span><strong>Esteira Entregue para Seu Marketing:</strong> Prompts e automações prontas para seu time operar com autonomia.</span>
-      </li>
-    </ul>
+        <button type="button" class="btn btn-primary btn-lg step-btn-next" id="btnStep1">
+          <span>Continuar</span>
+          <span aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
 
-    <a 
-      class="btn btn-whatsapp btn-lg" 
-      style="width: 100%;"
-      href="https://wa.me/5521983747796?text=Ol%C3%A1%20Natan!%20Quero%20criar%20um%20Real%20Estate%20AI%20Influencer%20para%20minha%20construtora%2Fincorporadora%20com%20o%20Imobicreator."
-      target="_blank"
-      rel="noopener noreferrer">
-      Falar no WhatsApp com Diretor Criativo <span aria-hidden="true">&nearr;</span>
-    </a>
+      <!-- ETAPA 2: WHATSAPP COM DDD -->
+      <div class="form-step-pane" id="formStep2" data-step="2">
+        <span class="step-counter-tag">PERGUNTA 2 DE 5</span>
+        <h2 class="step-headline"><span class="user-first-name">Você</span>, qual é o seu <mark class="text-highlight">WhatsApp com DDD</mark>?</h2>
+        <p class="step-subheadline">Enviaremos os testes de voz, expressões faciais e o resumo da proposta por lá.</p>
+        
+        <div class="form-field-group">
+          <input type="tel" id="leadPhone" class="form-input" placeholder="(00) 00000-0000" required autocomplete="tel">
+          <div class="field-error-msg" id="phoneError">Informe um número de WhatsApp válido com DDD brasileiro.</div>
+        </div>
+
+        <div class="step-nav-row">
+          <button type="button" class="btn btn-secondary step-btn-back" data-back="1">&larr; Voltar</button>
+          <button type="button" class="btn btn-primary btn-lg step-btn-next" id="btnStep2">
+            <span>Continuar</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ETAPA 3: E-MAIL CORPORATIVO -->
+      <div class="form-step-pane" id="formStep3" data-step="3">
+        <span class="step-counter-tag">PERGUNTA 3 DE 5</span>
+        <h2 class="step-headline">Qual é o seu <mark class="text-highlight">melhor e-mail profissional</mark>?</h2>
+        <p class="step-subheadline">Para enviarmos a apresentação técnica e o memorial de viabilidade.</p>
+        
+        <div class="form-field-group">
+          <input type="email" id="leadEmail" class="form-input" placeholder="seuemail@empresa.com.br" required autocomplete="email">
+          <div class="field-error-msg" id="emailError">Informe um endereço de e-mail corporativo válido.</div>
+        </div>
+
+        <div class="step-nav-row">
+          <button type="button" class="btn btn-secondary step-btn-back" data-back="2">&larr; Voltar</button>
+          <button type="button" class="btn btn-primary btn-lg step-btn-next" id="btnStep3">
+            <span>Continuar</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ETAPA 4: CARGO NA EMPRESA -->
+      <div class="form-step-pane" id="formStep4" data-step="4">
+        <span class="step-counter-tag">PERGUNTA 4 DE 5</span>
+        <h2 class="step-headline">Qual é o seu <mark class="text-highlight">cargo ou função</mark> na empresa?</h2>
+        <p class="step-subheadline">Selecione a opção que melhor define sua atuação na construtora ou incorporadora.</p>
+        
+        <div class="options-grid" id="roleOptionsGrid">
+          <button type="button" class="option-card" data-role="Diretor / Sócio / C-Level">
+            <span class="option-card-icon">🏢</span>
+            <span class="option-card-title">Diretor / Sócio / C-Level</span>
+          </button>
+          <button type="button" class="option-card" data-role="Gerente de Marketing / Comunicação">
+            <span class="option-card-icon">🎨</span>
+            <span class="option-card-title">Gerente de Marketing / Comunicação</span>
+          </button>
+          <button type="button" class="option-card" data-role="Engenheiro / Diretor de Obras">
+            <span class="option-card-icon">🏗️</span>
+            <span class="option-card-title">Engenheiro / Diretor de Obras</span>
+          </button>
+          <button type="button" class="option-card" data-role="Gerente Comercial / Vendas">
+            <span class="option-card-icon">💼</span>
+            <span class="option-card-title">Gerente Comercial / Vendas</span>
+          </button>
+          <button type="button" class="option-card" id="btnRoleCustomTrigger" data-role="custom">
+            <span class="option-card-icon">✍️</span>
+            <span class="option-card-title">Outro cargo</span>
+          </button>
+        </div>
+
+        <div class="custom-field-wrap" id="customRoleWrap" style="display: none; margin-top: 14px;">
+          <input type="text" id="leadRoleCustom" class="form-input" placeholder="Digite seu cargo e clique em Continuar">
+        </div>
+
+        <div class="field-error-msg" id="roleError">Por favor, selecione ou informe o seu cargo.</div>
+
+        <div class="step-nav-row" style="margin-top: 20px;">
+          <button type="button" class="btn btn-secondary step-btn-back" data-back="3">&larr; Voltar</button>
+          <button type="button" class="btn btn-primary btn-lg step-btn-next" id="btnStep4" style="display: none;">
+            <span>Continuar</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ETAPA 5: FATURAMENTO ANUAL -->
+      <div class="form-step-pane" id="formStep5" data-step="5">
+        <span class="step-counter-tag">PERGUNTA FINAL</span>
+        <h2 class="step-headline">Qual é a <mark class="text-highlight">faixa de faturamento anual</mark> da empresa?</h2>
+        <p class="step-subheadline">Para dimensionarmos o escopo de entregas e a esteira ideal de vídeos.</p>
+        
+        <div class="options-grid" id="revenueOptionsGrid">
+          <button type="button" class="option-card option-card-revenue" data-revenue="Até R$ 10 Milhões">
+            <span class="option-card-pill">Faixa 1</span>
+            <span class="option-card-title">Até R$ 10 Milhões / ano</span>
+          </button>
+          <button type="button" class="option-card option-card-revenue" data-revenue="R$ 10M a R$ 50 Milhões">
+            <span class="option-card-pill">Faixa 2</span>
+            <span class="option-card-title">R$ 10M a R$ 50 Milhões / ano</span>
+          </button>
+          <button type="button" class="option-card option-card-revenue" data-revenue="R$ 50M a R$ 200 Milhões">
+            <span class="option-card-pill">Faixa 3</span>
+            <span class="option-card-title">R$ 50M a R$ 200 Milhões / ano</span>
+          </button>
+          <button type="button" class="option-card option-card-revenue" data-revenue="Acima de R$ 200 Milhões">
+            <span class="option-card-pill">Corporativo</span>
+            <span class="option-card-title">Acima de R$ 200 Milhões / ano</span>
+          </button>
+        </div>
+
+        <div class="field-error-msg" id="revenueError">Por favor, selecione uma faixa de faturamento.</div>
+
+        <div class="step-nav-row" style="margin-top: 20px;">
+          <button type="button" class="btn btn-secondary step-btn-back" data-back="4">&larr; Voltar</button>
+        </div>
+      </div>
+
+      <!-- ETAPA 6: LOADING / CONEXÃO COM WHATSAPP -->
+      <div class="form-step-pane" id="formStepLoading" style="display: none;">
+        <div class="step-loading-container">
+          <div class="step-loading-spinner" aria-hidden="true"></div>
+          <h2 class="step-headline" style="text-align: center; margin-top: 20px;">Conectando com o Diretor Criativo...</h2>
+          <p class="step-subheadline" id="loadingStatusText" style="text-align: center;">
+            Registrando seu projeto no Imobiturbo OS e disparando mensagem no seu WhatsApp...
+          </p>
+          <div class="step-loading-bar-wrap">
+            <div class="step-loading-bar-fill"></div>
+          </div>
+        </div>
+      </div>
+
+    </form>
   </dialog>
 
   <script src="app.js?v=20260928-v5"></script>
