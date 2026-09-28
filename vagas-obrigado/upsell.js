@@ -710,14 +710,18 @@
   }
 
   function setAccessIdentity(email, phone) {
-    if (email && get('accessEmail')) {
-      get('accessEmail').textContent = email;
-      get('accessEmailPanel').hidden = false;
-      get('accessEmailFallback').hidden = true;
+    const copy = get('accessIdentityCopy');
+    if (!copy) return;
+    const safeEmail = typeof email === 'string' ? email.trim() : '';
+    const safePhone = typeof phone === 'string' ? formatPhoneDisplay(phone.trim()) : '';
+    if (safeEmail) {
+      get('accessIdentityEmail').textContent = safeEmail;
+      get('accessIdentityEmailRepeat').textContent = safeEmail;
     }
-    if (phone && get('accessPhone') && get('accessPhoneRow')) {
-      get('accessPhone').textContent = formatPhoneDisplay(phone);
-      get('accessPhoneRow').hidden = false;
+    if (safePhone) get('accessIdentityPhone').textContent = safePhone;
+    if (safeEmail || safePhone) {
+      copy.hidden = false;
+      get('accessEmailFallback').hidden = true;
     }
   }
 

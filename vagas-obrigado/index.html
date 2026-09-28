@@ -110,6 +110,8 @@
             <button type="button" role="tab" aria-selected="true" aria-controls="demoInstagram" id="tabInstagram" data-demo-tab="instagram"><span>01</span>Posicionamento do Instagram</button>
             <button type="button" role="tab" aria-selected="false" aria-controls="demoPhoto" id="tabPhoto" data-demo-tab="photo" tabindex="-1"><span>02</span>Foto do imóvel</button>
             <button type="button" role="tab" aria-selected="false" aria-controls="demoCreative" id="tabCreative" data-demo-tab="creative" tabindex="-1"><span>03</span>Criativos para anunciar</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="demoCrm" id="tabCrm" data-demo-tab="crm" tabindex="-1"><span>04</span>Implementação do seu CRM Imobiturbo OS</button>
+            <button type="button" role="tab" aria-selected="false" aria-controls="demoAgent" id="tabAgent" data-demo-tab="agent" tabindex="-1"><span>05</span>Treinamento do seu Agente de IA no WhatsApp</button>
           </div>
 
           <article class="demo-panel" id="demoInstagram" role="tabpanel" aria-labelledby="tabInstagram" data-demo-panel="instagram">
@@ -182,10 +184,44 @@
             <p class="example-disclaimer">Demonstrações fictícias, criadas com a mesma imagem ilustrativa e sem dados de imóvel, cliente ou campanha real.</p>
           </article>
 
+          <article class="demo-panel" id="demoCrm" role="tabpanel" aria-labelledby="tabCrm" data-demo-panel="crm">
+            <div class="demo-copy demo-copy-inline">
+              <div>
+                <p class="demo-kicker">IMOBITURBO OS · CRM</p>
+                <h3>Organizamos juntos um ponto do seu CRM.</h3>
+              </div>
+              <p>Podemos olhar uma etapa da operação no Imobiturbo OS — como entrada de leads, pipeline ou rotina de acompanhamento — e definir o próximo ajuste para o seu cenário.</p>
+            </div>
+            <div class="creative-gallery">
+              <figure class="generated-showcase generated-showcase-wide" id="crmGalleryArt">
+                <img src="/vagas/assets/preview-crm.webp" alt="Representação visual ilustrativa da interface do CRM Imobiturbo OS" width="1280" height="720" loading="lazy">
+              </figure>
+              <button type="button" class="preview-button showcase-preview-button" data-preview-source="crmGalleryArt" data-preview-title="CRM Imobiturbo OS" data-preview-note="Imagem ilustrativa da interface. O foco e o avanço dependem da configuração e dos acessos disponíveis.">Ampliar demonstração</button>
+            </div>
+            <p class="example-disclaimer">Representação ilustrativa da interface do produto; não é registro de uma sessão com cliente.</p>
+          </article>
+
+          <article class="demo-panel" id="demoAgent" role="tabpanel" aria-labelledby="tabAgent" data-demo-panel="agent">
+            <div class="demo-copy demo-copy-inline">
+              <div>
+                <p class="demo-kicker">WHATSAPP · AGENTE DE IA</p>
+                <h3>Ajustamos a orientação do seu Agente de IA.</h3>
+              </div>
+              <p>Podemos revisar o comportamento esperado, os materiais de referência e uma conversa do atendimento para trabalhar o próximo ajuste do agente, conforme a configuração e os acessos disponíveis.</p>
+            </div>
+            <div class="creative-gallery">
+              <figure class="generated-showcase generated-showcase-wide" id="agentGalleryArt">
+                <img src="/vagas/assets/preview-whatsapp.webp" alt="Representação visual ilustrativa de atendimento no WhatsApp com apoio do CRM Imobiturbo OS" width="1280" height="720" loading="lazy">
+              </figure>
+              <button type="button" class="preview-button showcase-preview-button" data-preview-source="agentGalleryArt" data-preview-title="Agente de IA no WhatsApp" data-preview-note="Representação ilustrativa; a sessão trabalha uma prioridade conforme a configuração e os acessos disponíveis.">Ampliar demonstração</button>
+            </div>
+            <p class="example-disclaimer">Conversa ilustrativa; não é print de cliente nem promessa de resultado.</p>
+          </article>
+
           <div class="secondary-focus-strip" aria-label="Outras prioridades possíveis">
-            <p>Outra prioridade para a sessão?</p>
-            <ul><li>Campanhas</li><li>CRM</li><li>Atendimento</li><li>Follow-up</li></ul>
-            <span>Escolhemos uma delas conforme o seu momento.</span>
+            <p>Outros focos possíveis</p>
+            <ul><li>Campanhas</li><li>Atendimento</li><li>Follow-up</li></ul>
+            <span>Escolhemos uma prioridade conforme o seu momento.</span>
           </div>
         </div>
       </section>
@@ -210,12 +246,12 @@
 
           <div class="materials-layout">
             <article class="recording-preview">
+              <img class="recording-backdrop" src="/assets/natan-palestra-quadrada.webp" alt="Natan Pimentel apresentando uma estratégia de atendimento imobiliário" width="1254" height="1254" loading="lazy">
               <div class="recording-bar">
                 <div><span></span><span></span><span></span></div>
                 <p><img src="/vagas/assets/thesvg/google-meet.svg" alt="" width="20" height="20"> Google Meet</p>
               </div>
               <div class="recording-screen">
-                <img src="/assets/natan-palestra-horizontal.webp" alt="Natan Pimentel na tela demonstrativa da gravação da sessão individual" width="1448" height="1086" loading="lazy">
                 <div class="recording-copy"><span>REPRESENTAÇÃO VISUAL</span><h3>Sessão individual: posicionamento do Instagram</h3><p>Uma referência para rever as decisões e o que foi trabalhado junto.</p></div>
                 <div class="recording-duration"><b>60 min</b><span>Natan + você</span></div>
               </div>
@@ -351,19 +387,7 @@
     <section class="wrap access-section" id="acessos" aria-labelledby="accessTitle">
       <div class="access-heading"><p class="eyebrow">ACESSO CONFIRMADO</p><h2 id="accessTitle">Onde encontrar seus acessos</h2></div>
       <p id="accessEmailFallback">Use o e-mail da sua compra para entrar. As informações e links de acesso foram enviados para o WhatsApp e para o e-mail cadastrados na sua compra.</p>
-      <div class="access-email" id="accessEmailPanel" role="group" aria-labelledby="accessEmailLabel" hidden>
-        <div class="access-data-grid">
-          <div class="access-data-item">
-            <p class="access-email-label" id="accessEmailLabel">Seu e-mail de compra</p>
-            <strong class="access-email-value" id="accessEmail" dir="ltr"></strong>
-          </div>
-          <div class="access-data-item" id="accessPhoneRow" hidden>
-            <p class="access-email-label" id="accessPhoneLabel">Seu WhatsApp de cadastro</p>
-            <strong class="access-email-value" id="accessPhone" dir="ltr"></strong>
-          </div>
-        </div>
-        <p class="access-info-note">As instruções de acesso, dados de login e links de entrada foram enviados para seu número de cadastro no WhatsApp e para o seu e-mail. Para acessar o produto que você comprou (Imobiturbo Club com trilhas e gravações da mentoria, Imobiturbo OS e o grupo da comunidade), basta abrir a mensagem no seu WhatsApp e na sua caixa de entrada.</p>
-      </div>
+      <p id="accessIdentityCopy" hidden>Use o e-mail da sua compra para entrar: <span id="accessIdentityEmail">cadastrado na compra</span>. As informações e links de acesso foram enviados para o WhatsApp <span id="accessIdentityPhone">cadastrado na compra</span> e para o e-mail <span id="accessIdentityEmailRepeat">cadastrado na compra</span> cadastrados na sua compra.</p>
       <p class="small access-disclaimer">A liberação depende da confirmação do pagamento da comunidade e independe da contratação da consultoria.</p>
     </section>
   </main>
