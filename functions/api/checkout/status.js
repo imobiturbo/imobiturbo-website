@@ -2,6 +2,7 @@
 import { dispatchVerifiedPurchaseToHub } from "./_tracking.js";
 import { checkoutDetails, isAsaasPaymentPaid, isValidConsultingPayment, CONSULTING_PRODUCT_ID, CONSULTING_HUB_OFFER_ID } from "./_products.js";
 import { dispatchConsultingCashflowToHub } from "./_cashflow.js";
+import { sendPostPurchaseNotifications } from "./_notifications.js";
 // Consulta status de aprovação de pagamentos no AbacatePay ou Asaas
 // Dispara evento Purchase server-side para Meta CAPI (Graph API v25.0) quando pago
 
@@ -158,13 +159,49 @@ export async function onRequestGet(context) {
           const eventId = details.eventId;
           const amount = details.productId === CONSULTING_PRODUCT_ID ? details.orderAmount : Number(data.value || 997);
           const contentName = data.description || "Comunidade Imobiturbo";
+          let buyerEmail = "";
+          let buyerPhone = "";
+          let buyerName = "";
+
+          if (typeof data.customer === "string" && asaasKey) {
+            try {
+              const cusResp = await fetch(`https://api.asaas.com/v3/customers/${encodeURIComponent(data.customer)}`, {
+                headers: { access_token: asaasKey },
+                signal: AbortSignal.timeout(3500),
+              });
+              if (cusResp.ok) {
+                const cusData = await cusResp.json();
+                buyerEmail = cusData.email || "";
+                buyerPhone = cusData.mobilePhone || cusData.phone || "";
+                buyerName = cusData.name || "";
+              }
+            } catch (_) {}
+          } else if (typeof data.customer === "object" && data.customer) {
+            buyerEmail = data.customer.email || "";
+            buyerPhone = data.customer.mobilePhone || data.customer.phone || "";
+            buyerName = data.customer.name || "";
+          }
+
+          const notificationPromise = (details.productId !== CONSULTING_PRODUCT_ID && (buyerEmail || buyerPhone))
+            ? sendPostPurchaseNotifications({
+                email: buyerEmail,
+                name: buyerName,
+                phone: buyerPhone,
+                plan: details.plan || "anual",
+                paymentId: data.id,
+                amountCents: Math.round(amount * 100),
+                env,
+              }).catch((e) => console.error("Status notification dispatch error:", e))
+            : Promise.resolve(null);
+
           const promise = Promise.allSettled([
-            dispatchPurchaseToMetaCapi({ env, request, paymentId: data.id, eventId, amount, contentName, productId: details.productId, email: "", phone: "", name: "" }),
+            dispatchPurchaseToMetaCapi({ env, request, paymentId: data.id, eventId, amount, contentName, productId: details.productId, email: buyerEmail, phone: buyerPhone, name: buyerName }),
             dispatchVerifiedPurchaseToHub({
               env, request, paymentId: data.id, eventId, amount, contentName, productId: details.productId,
               ...(details.productId === CONSULTING_PRODUCT_ID ? { orderId: details.orderId, offerId: CONSULTING_HUB_OFFER_ID } : {}),
-              email: "", phone: "", name: "",
+              email: buyerEmail, phone: buyerPhone, name: buyerName,
             }),
+            notificationPromise,
           ]);
           if (context.waitUntil) {
             context.waitUntil(promise);

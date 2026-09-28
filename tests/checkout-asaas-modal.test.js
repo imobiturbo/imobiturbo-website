@@ -148,4 +148,13 @@ test("functions/api/checkout/status.js supports subscription polling and payment
   assert.ok(code.includes("sub_"), "Must handle subscription ID polling");
   assert.ok(code.includes("https://api.asaas.com/v3/subscriptions/"), "Must query subscription payments");
   assert.ok(code.includes("https://api.asaas.com/v3/payments/"), "Must query payment status");
+  assert.ok(code.includes("sendPostPurchaseNotifications"), "Must dispatch post purchase notifications on paid status");
 });
+
+test("functions/api/checkout/index.js syncs latest customer contact details to Asaas", () => {
+  const code = fs.readFileSync(path.join(root, "functions/api/checkout/index.js"), "utf8");
+
+  assert.ok(code.includes("method: \"PUT\""), "Must update existing Asaas customer with current contact details");
+  assert.ok(code.includes("mobilePhone: cleanPhone"), "Must update mobilePhone on Asaas customer");
+});
+

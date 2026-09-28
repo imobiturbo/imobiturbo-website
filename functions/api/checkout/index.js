@@ -200,7 +200,22 @@ export async function onRequestPost(context) {
         } catch {}
       }
 
-      if (!asaasCustomerId) {
+      if (asaasCustomerId) {
+        if (email || cleanPhone || name) {
+          try {
+            await fetch(`https://api.asaas.com/v3/customers/${asaasCustomerId}`, {
+              method: "PUT",
+              headers: asaasHeaders,
+              body: JSON.stringify({
+                ...(email && email.includes("@") ? { email: email.trim().toLowerCase() } : {}),
+                ...(cleanPhone ? { mobilePhone: cleanPhone, phone: cleanPhone } : {}),
+                ...(name && name.trim() ? { name: name.trim() } : {}),
+              }),
+              signal: AbortSignal.timeout(4000),
+            });
+          } catch {}
+        }
+      } else {
         const custResp = await fetch("https://api.asaas.com/v3/customers", {
           method: "POST",
           headers: asaasHeaders,
@@ -430,7 +445,22 @@ export async function onRequestPost(context) {
       }
     }
 
-    if (!asaasCustomerId) {
+    if (asaasCustomerId) {
+      if (email || cleanPhone || name) {
+        try {
+          await fetch(`https://api.asaas.com/v3/customers/${asaasCustomerId}`, {
+            method: "PUT",
+            headers: asaasHeaders,
+            body: JSON.stringify({
+              ...(email && email.includes("@") ? { email: email.trim().toLowerCase() } : {}),
+              ...(cleanPhone ? { mobilePhone: cleanPhone, phone: cleanPhone } : {}),
+              ...(name && name.trim() ? { name: name.trim() } : {}),
+            }),
+            signal: AbortSignal.timeout(4000),
+          });
+        } catch {}
+      }
+    } else {
       const custResp = await fetch("https://api.asaas.com/v3/customers", {
         method: "POST",
         headers: asaasHeaders,
