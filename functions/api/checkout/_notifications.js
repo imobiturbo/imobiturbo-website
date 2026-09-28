@@ -1,9 +1,9 @@
 // functions/api/checkout/_notifications.js
 // Disparo pós-compra unificado para Comunidade Imobiturbo (LP /vagas)
 // 1. Provisionamento Central no CRM / Supabase OS (/0-funil-de-vendas -> 0. Novo Lead + tags + acessos 30/90/365d)
-// 2. E-mail Único Completo via ZeptoMail ilimitado (Central de 4 Acessos)
-// 3. WhatsApp Oficial via Meta Cloud API (Template status_confirmado_120626)
-// 4. Sincronização automática no Sites Imobiturbo (Cloudflare D1)
+// 2. E-mail Completo via ZeptoMail ilimitado (Club + OS + Grupo VIP no WhatsApp)
+// 3. WhatsApp Oficial via Meta Cloud API (Template status_confirmado_120626 com link do Grupo VIP)
+// Radar e Sites desativados operacionalmente.
 
 const DEFAULT_ZEPTOMAIL_URL = "https://api.zeptomail.com/v1.1/email";
 const DEFAULT_ZEPTOMAIL_BOUNCE = "bounce@bounce-zem.imobiturbo.com.br";
@@ -57,7 +57,7 @@ function formatPostPurchaseEmail({ name, email, plan = "anual" }) {
   const planDisplay = plan === "trimestral" ? "Trimestral" : plan === "mensal" ? "Mensal" : "Anual";
   const safeEmail = (email || "").trim().toLowerCase();
 
-  const subject = `🎉 Sua vaga na Comunidade Imobiturbo está confirmada! Aqui estão seus 4 acessos`;
+  const subject = `🎉 Sua vaga na Comunidade Imobiturbo está confirmada! Aqui estão seus acessos`;
 
   const html = `
 <!DOCTYPE html>
@@ -201,14 +201,14 @@ function formatPostPurchaseEmail({ name, email, plan = "anual" }) {
     <div class="header">
       <div class="badge">Inscrição Confirmada · Plano ${planDisplay}</div>
       <h1 class="header-title">Bem-vindo(a) à Comunidade Imobiturbo!</h1>
-      <p class="header-sub">Aqui está sua central definitiva com todos os seus 4 acessos liberados.</p>
+      <p class="header-sub">Aqui está sua central definitiva com seus acessos liberados.</p>
     </div>
 
     <div class="content">
       <p class="intro">
         Olá, <strong>${firstName}</strong>! Parabéns pela decisão.<br>
         Sua vaga na Comunidade Imobiturbo está oficialmente ativa. 
-        Guarde este e-mail nos seus favoritos para consultar seus acessos e ferramentas sempre que precisar.
+        Guarde este e-mail nos seus favoritos para consultar seus acessos e comunidade sempre que precisar.
       </p>
 
       <!-- ACESSO 1: COMUNIDADE & CLUBE -->
@@ -218,60 +218,53 @@ function formatPostPurchaseEmail({ name, email, plan = "anual" }) {
           <h3 class="card-title">Comunidade & Área de Membros (Clube)</h3>
         </div>
         <div class="badge-highlight">
-          🗓️ Encontros ao Vivo: 1 reunião por semana da Comunidade
+          📚 Trilhas de Treinamento & Gravações da Mentoria
         </div>
         <p class="card-desc">
-          Acesso completo às aulas gravadas, esteiras de vendas e comunidade exclusiva de corretores e imobiliárias.
-          Nosso encontro ao vivo acontece <strong>1 vez por semana</strong> com tira-dúvidas e alinhamento de campanhas.
+          Acesso completo a todas as trilhas de treinamento, aulas práticas e a todas as <strong>gravações dos encontros da mentoria</strong>. Tudo organizado para você estudar e implementar no seu ritmo.
         </p>
-        <a href="https://club.imobiturbo.com.br/login?email=${encodeURIComponent(safeEmail)}" class="btn" target="_blank">Acessar Área de Membros & Comunidade →</a>
-      </div>
-
-      <!-- ACESSO 2: RADAR DE DEMANDA -->
-      <div class="access-card" style="border-left: 4px solid #3B82F6;">
-        <div class="card-header">
-          <span class="card-icon">2️⃣</span>
-          <h3 class="card-title">Radar de Demanda Imobiliária</h3>
+        <div style="background: #F3F4F6; border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: 13px; color: #1F2937;">
+          🔑 <strong>Seu e-mail de acesso:</strong> <span style="font-family: monospace; font-weight: 700; color: #111827;">${safeEmail}</span><br>
+          <span style="color: #6B7280; font-size: 12px;">Use exatamente este e-mail para fazer login na plataforma.</span>
         </div>
-        <p class="card-desc">
-          Ferramenta exclusiva para minerar condomínios, proprietários e buscas em tempo real em todas as capitais do Brasil.
-          Seu acesso VIP com chave de liberação já está aplicado:
-        </p>
-        <a href="https://radar.imobiturbo.com.br/?token=IMOBICLUB2026" class="btn" target="_blank" style="background: #1E3A8A; color: #FFFFFF !important;">
-          Entrar no Radar de Demanda (Acesso Liberado) →
-        </a>
+        <a href="https://club.imobiturbo.com.br/login" class="btn" target="_blank">Acessar Imobiturbo Club →</a>
       </div>
 
-      <!-- ACESSO 3: SITES IMOBITURBO -->
-      <div class="access-card" style="border-left: 4px solid #10B981;">
-        <div class="card-header">
-          <span class="card-icon">3️⃣</span>
-          <h3 class="card-title">Criador de Sites Imobiliários (12 Templates)</h3>
-        </div>
-        <p class="card-desc">
-          Plataforma para colocar landing pages de imóveis no ar em menos de 3 minutos.
-          <br><br>
-          🔑 <strong>Como acessar:</strong><br>
-          Acesse o link abaixo e digite exatamente o seu e-mail cadastrado na compra (<strong>${safeEmail}</strong>).
-          Você receberá um código de 6 dígitos instantâneo na sua caixa de entrada para entrar sem precisar criar senha.
-        </p>
-        <a href="https://sites.imobiturbo.com.br/" class="btn" target="_blank" style="background: #064E3B; color: #6EE7B7 !important;">
-          Acessar Gerador de Sites →
-        </a>
-      </div>
-
-      <!-- ACESSO 4: CRM COM IA -->
+      <!-- ACESSO 2: CRM COM IA (IMOBITURBO OS) -->
       <div class="access-card" style="border-left: 4px solid #8B5CF6;">
         <div class="card-header">
-          <span class="card-icon">4️⃣</span>
+          <span class="card-icon">2️⃣</span>
           <h3 class="card-title">CRM com IA (Imobiturbo OS)</h3>
         </div>
+        <div class="badge-highlight" style="background: #FAF5FF; border-color: #E9D5FF; color: #6B21A8;">
+          ⚡ Sistema Operacional com IA
+        </div>
         <p class="card-desc">
-          Seu sistema operacional com IA para atendimento automático e triagem de leads no WhatsApp.
-          Inicie seu setup e conexão:
+          Seu sistema operacional completo com IA para triagem automática de leads, organização de funil e follow-up no WhatsApp.
         </p>
-        <a href="https://app.imobiturbo.com.br/onboarding" class="btn" target="_blank" style="background: #4C1D95; color: #DDD6FE !important;">
-          Iniciar Configuração do CRM →
+        <div style="background: #F3F4F6; border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: 13px; color: #1F2937;">
+          🔑 <strong>Seu e-mail de acesso:</strong> <span style="font-family: monospace; font-weight: 700; color: #111827;">${safeEmail}</span><br>
+          <span style="color: #6B7280; font-size: 12px;">Use este e-mail para entrar e iniciar suas conexões.</span>
+        </div>
+        <a href="https://os.imobiturbo.com.br/login" class="btn" target="_blank" style="background: #4C1D95; color: #DDD6FE !important;">
+          Entrar no Imobiturbo OS →
+        </a>
+      </div>
+
+      <!-- ACESSO 3: GRUPO VIP NO WHATSAPP -->
+      <div class="access-card" style="border-left: 4px solid #25D366;">
+        <div class="card-header">
+          <span class="card-icon">3️⃣</span>
+          <h3 class="card-title">Comunidade de Alunos no WhatsApp</h3>
+        </div>
+        <div class="badge-highlight" style="background: #F0FDF4; border-color: #86EFAC; color: #166534;">
+          💬 Grupo VIP Oficial de Membros
+        </div>
+        <p class="card-desc">
+          Entre no grupo exclusivo de alunos no WhatsApp para networking, avisos importantes e troca de experiências diretamente com outros membros e nossa equipe.
+        </p>
+        <a href="https://chat.whatsapp.com/Iy4Uiw5t0630oK4MgZarFj" class="btn" target="_blank" style="background: #075E54; color: #FFFFFF !important;">
+          Entrar no Grupo da Comunidade no WhatsApp →
         </a>
       </div>
 
@@ -303,23 +296,20 @@ Bem-vindo(a) à Comunidade Imobiturbo!
 Olá, ${firstName}!
 Sua vaga na Comunidade Imobiturbo está oficialmente ativa (Plano ${planDisplay}).
 
-Aqui estão seus 4 acessos liberados:
+Aqui estão seus acessos liberados:
 
 1. COMUNIDADE & CLUBE (ÁREA DE MEMBROS)
-- Encontros ao Vivo: 1 reunião por semana da Comunidade (alinhamento e dúvidas)
-- Acesso: https://club.imobiturbo.com.br/login?email=${encodeURIComponent(safeEmail)}
+- Trilhas completas de treinamento e gravações de todos os encontros da mentoria
+- Seu e-mail de login: ${safeEmail}
+- Acesso: https://club.imobiturbo.com.br/login
 
-2. RADAR DE DEMANDA IMOBILIÁRIA
-- Mineração de imóveis, proprietários e compradores liberada
-- Acesso direto com token: https://radar.imobiturbo.com.br/?token=IMOBICLUB2026
+2. CRM COM IA (IMOBITURBO OS)
+- Atendimento com IA, gestão de leads e follow-up
+- Seu e-mail de login: ${safeEmail}
+- Acesso: https://os.imobiturbo.com.br/login
 
-3. CRIADOR DE SITES IMOBILIÁRIOS (12 TEMPLATES)
-- Crie landing pages em minutos
-- Acesso: https://sites.imobiturbo.com.br/
-- Como entrar: Digite seu e-mail (${safeEmail}) para receber o código OTP de 6 dígitos
-
-4. CRM COM IA (IMOBITURBO OS)
-- Configuração do sistema operacional com IA: https://app.imobiturbo.com.br/onboarding
+3. GRUPO VIP NO WHATSAPP (COMUNIDADE)
+- Entre no grupo oficial de membros: https://chat.whatsapp.com/Iy4Uiw5t0630oK4MgZarFj
 
 Suporte Oficial no WhatsApp: (21) 98374-7796 ou https://wa.me/5521983747796
   `.trim();
@@ -334,9 +324,9 @@ function formatPostPurchaseWhatsApp({ name, email, phone, plan = "anual" }) {
 
   const param1 = "sua vaga na Comunidade Imobiturbo foi confirmada com";
 
-  const param2 = `Olá, ${firstName}! Seja muito bem-vindo(a) à Comunidade Imobiturbo. Seus 4 acessos já foram liberados: 1️⃣ Comunidade & Clube (1 encontro ao vivo por semana) · 2️⃣ Radar de Demanda (link abaixo) · 3️⃣ Criador de Sites (acesse sites.imobiturbo.com.br) · 4️⃣ CRM com IA. Enviamos e-mail completo com todos os seus acessos para ${safeEmail}.`;
+  const param2 = `Olá, ${firstName}! Seja muito bem-vindo(a) à Comunidade Imobiturbo. Seus acessos já estão liberados usando seu e-mail (${safeEmail}): 1️⃣ Imobiturbo Club: trilhas e gravações da mentoria em club.imobiturbo.com.br/login · 2️⃣ CRM com IA (Imobiturbo OS): os.imobiturbo.com.br/login · 3️⃣ Grupo de Alunos no WhatsApp: toque no link abaixo para entrar. Enviamos também o e-mail completo de boas-vindas.`;
 
-  const param3 = "https://radar.imobiturbo.com.br/?token=IMOBICLUB2026";
+  const param3 = "https://chat.whatsapp.com/Iy4Uiw5t0630oK4MgZarFj";
 
   return {
     messaging_product: "whatsapp",
@@ -557,25 +547,8 @@ async function sendPostPurchaseNotifications({
     }
   }
 
-  // 4. Sincronização automática no banco D1 do Sites Imobiturbo
-  if (safeEmail) {
-    try {
-      const sitesResp = await fetchFn("https://sites.imobiturbo.com.br/api/webhook/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: safeEmail, nome: name, telefone: safePhone }),
-        signal: AbortSignal.timeout(5000),
-      });
-      const sitesJson = await sitesResp.json().catch(() => ({}));
-      if (sitesResp.ok && sitesJson.ok) {
-        sitesSynced = true;
-      } else {
-        errors.push(`Sites sync error: ${JSON.stringify(sitesJson)}`);
-      }
-    } catch (err) {
-      errors.push(`Sites sync exception: ${err.message}`);
-    }
-  }
+  // 4. Sites e Radar desativados operacionalmente — sync ignorado
+  sitesSynced = false;
 
   return {
     crmProvisioned,

@@ -2,7 +2,9 @@
 
 | Arquivo / recurso | Finalidade | Origem | Tipo | Status de uso |
 | --- | --- | --- | --- | --- |
-| `/assets/natan-studio.jpg` | Retrato principal e resumo final da oferta | Acervo existente do projeto | Foto real de Natan Pimentel | Autorizado no briefing; manter rosto, proporções e camiseta preta sem manipulação estrutural |
+| `/assets/natan-palestra-retrato.webp` | Retrato principal da hero e convite final da oferta | Foto real de Natan Pimentel em palestra (Drive oficial) | Fotografia real | Autorizado pelo usuário; dimensões 1086 × 1448px, proporção 3:4 |
+| `/assets/natan-palestra-horizontal.webp` | Representação visual da gravação da sessão (Google Meet) | Foto real de Natan Pimentel em palestra (Drive oficial) | Fotografia real | Autorizado pelo usuário; dimensões 1448 × 1086px, proporção 4:3 widescreen |
+| `/assets/natan-palestra-avatar.webp` | Avatar de Natan no identificador do fundador na hero | Foto real de Natan Pimentel em palestra (Drive oficial) | Fotografia real | Autorizado pelo usuário; recorte circular focado no rosto de 440 × 440px |
 | `/vagas/assets/thesvg/google-meet.svg` | Identificar a sessão online pelo Google Meet | Asset oficial já versionado no projeto | Marca/interface | Usar apenas como identificação do canal da sessão |
 | `/assets/home-hero-operacao-imobiliaria.webp` | Exemplo visual do comparador de foto e base dos criativos demonstrativos | Asset existente do projeto; proveniência externa não documentada no repositório | Imagem ilustrativa | Sempre rotular como exemplo ilustrativo; antes/depois usam exatamente a mesma imagem, somente com ajustes visuais de exposição, cor e alinhamento |
 | Perfil de Instagram demonstrativo | Comparação antes/depois do posicionamento | Criado nesta página | Interface HTML/CSS | Fictício e explicitamente rotulado; mesma identidade e mesmos números nos dois estados; sem CRECI, cliente ou resultado inventado |

@@ -643,15 +643,38 @@
     }
   });
 
+  function formatPhoneDisplay(raw) {
+    if (!raw || typeof raw !== 'string') return '';
+    const digits = raw.replace(/\D/g, '');
+    const clean = digits.length > 11 && digits.startsWith('55') ? digits.slice(2) : digits;
+    if (clean.length === 11) {
+      return `(${clean.slice(0, 2)}) ${clean.slice(2, 7)}-${clean.slice(7)}`;
+    }
+    if (clean.length === 10) {
+      return `(${clean.slice(0, 2)}) ${clean.slice(2, 6)}-${clean.slice(6)}`;
+    }
+    return raw;
+  }
+
+  function setAccessIdentity(email, phone) {
+    if (email && get('accessEmail')) {
+      get('accessEmail').textContent = email;
+      get('accessEmailPanel').hidden = false;
+      get('accessEmailFallback').hidden = true;
+    }
+    if (phone && get('accessPhone') && get('accessPhoneRow')) {
+      get('accessPhone').textContent = formatPhoneDisplay(phone);
+      get('accessPhoneRow').hidden = false;
+    }
+  }
+
   // Keep the existing community-access identity hint; it is never added to a URL.
   try {
     for (const key of ['imobiturbo:vagas:checkout:v1', 'imobiturbo:vagas-v2:checkout:v1']) {
       const draft = JSON.parse(localStorage.getItem(key));
       if (draft && Number.isFinite(draft.expiresAt) && draft.expiresAt > Date.now()) {
         if (typeof draft.email === 'string' && !sessions.getUpsellBuyer?.()?.email) {
-          get('accessEmail').textContent = draft.email;
-          get('accessEmailPanel').hidden = false;
-          get('accessEmailFallback').hidden = true;
+          setAccessIdentity(draft.email, draft.phone);
         }
         break;
       }
@@ -659,9 +682,7 @@
   } catch (_) {}
   const buyer = sessions.getUpsellBuyer?.();
   if (buyer?.email) {
-    get('accessEmail').textContent = buyer.email;
-    get('accessEmailPanel').hidden = false;
-    get('accessEmailFallback').hidden = true;
+    setAccessIdentity(buyer.email, buyer.phone);
   }
   document.querySelectorAll('a[href="#acessos"]').forEach(link => link.addEventListener('click', () => sessions.clearUpsellBuyer?.()));
 

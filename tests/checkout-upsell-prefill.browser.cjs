@@ -254,9 +254,7 @@ test('access instructions stay available with a missing, expired, invalid or una
     assert.equal(await page.locator('#accessEmailPanel').isVisible(), hasDraftIdentity, scenario.name);
     assert.equal(await page.locator('#accessEmailFallback').isVisible(), !hasDraftIdentity, scenario.name);
     assert.equal(await page.locator('#accessEmail').textContent(), hasDraftIdentity ? scenario.draft.email : '');
-    assert.match(await page.locator('#accessEmailFallback').textContent(), /Use o e-mail da sua compra/);
-    assert.equal(await page.locator('.access-links a').nth(0).getAttribute('href'), 'https://club.imobiturbo.com.br/login');
-    assert.equal(await page.locator('.access-links a').nth(1).getAttribute('href'), 'https://app.imobiturbo.com.br/onboarding');
+    assert.equal(await page.locator('.access-links a').count(), 0, 'no outbound access links to keep focus on upsell');
     assert.equal(await page.locator('#communityStatus').evaluate(node => node.classList.contains('is-approved')), false);
     if (artifacts && scenario.name === 'missing') await page.locator('#acessos').screenshot({ path: path.join(artifacts, 'access-fallback-390.png') });
     assert.deepEqual(errors, [], scenario.name);

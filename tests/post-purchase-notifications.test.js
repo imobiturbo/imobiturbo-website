@@ -10,7 +10,7 @@ const {
   sendPostPurchaseNotifications,
 } = require("../functions/api/checkout/_notifications.js");
 
-test("formatPostPurchaseEmail generates complete 4-in-1 access kit and isolates Comunidade from Mentoria", () => {
+test("formatPostPurchaseEmail generates complete access kit (Club + OS + WhatsApp Community) and isolates Comunidade from Mentoria", () => {
   const emailData = formatPostPurchaseEmail({
     name: "Carlos Eduardo",
     email: "carlos@imobiliariaexemplo.com.br",
@@ -18,23 +18,24 @@ test("formatPostPurchaseEmail generates complete 4-in-1 access kit and isolates 
   });
 
   assert.ok(emailData.subject.includes("Comunidade Imobiturbo"), "Subject must mention Comunidade Imobiturbo");
-  assert.ok(emailData.subject.includes("4 acessos"), "Subject must mention 4 acessos");
+  assert.ok(emailData.subject.includes("acessos"), "Subject must mention acessos");
 
   const html = emailData.html;
   // Personalization
   assert.ok(html.includes("Carlos Eduardo") || html.includes("Carlos"), "Must personalize with buyer's name");
   assert.ok(html.includes("carlos@imobiliariaexemplo.com.br"), "Must show the buyer's email for login instructions");
 
-  // Rule: Comunidade is 1x weekly meeting, distinct from Mentoria (2x/week)
-  assert.ok(html.includes("1 reunião por semana") || html.includes("1 encontro semanal") || html.includes("1 encontro por semana"), "Must specify 1 weekly meeting for Comunidade");
-  assert.ok(!html.includes("2 reuniões por semana"), "Must NOT include 2 meetings/week (exclusive to VIP Mentoria)");
+  // Rule: Comunidade has training tracks & recorded mentoria meetings, NO live meetings
+  assert.ok(html.includes("gravações") && html.includes("mentoria"), "Must mention mentoria recordings");
+  assert.ok(html.includes("trilhas de treinamento"), "Must mention training tracks");
+  assert.ok(!html.includes("1 reunião por semana") && !html.includes("encontro ao vivo"), "Must NOT promise live meetings for Comunidade");
 
-  // 4 Accesses present
+  // Active Accesses present
   assert.ok(html.includes("club.imobiturbo.com.br/login"), "Must contain direct Club login link");
-  assert.ok(html.includes("radar.imobiturbo.com.br/?token=IMOBICLUB2026"), "Must contain direct unlocked Radar link with token");
-  assert.ok(html.includes("sites.imobiturbo.com.br"), "Must contain Sites URL");
-  assert.ok(html.includes("código") && html.includes("6 dígitos"), "Must instruct OTP code for Sites without password");
-  assert.ok(html.includes("app.imobiturbo.com.br/onboarding"), "Must contain CRM Imobiturbo OS link");
+  assert.ok(html.includes("os.imobiturbo.com.br/login"), "Must contain CRM Imobiturbo OS login link");
+  assert.ok(html.includes("chat.whatsapp.com/Iy4Uiw5t0630oK4MgZarFj"), "Must contain WhatsApp Community link");
+  assert.ok(!html.includes("radar.imobiturbo.com.br"), "Must NOT contain deactivated Radar link");
+  assert.ok(!html.includes("sites.imobiturbo.com.br"), "Must NOT contain deactivated Sites link");
   assert.ok(html.includes("5521983747796") || html.includes("98374-7796"), "Must contain official WhatsApp support number");
 });
 
@@ -61,20 +62,21 @@ test("formatPostPurchaseWhatsApp formats template status_confirmado_120626 with 
   assert.ok(p1.includes("sua vaga") || p1.includes("sua inscrição") || p1.includes("sua matrícula"), "Param 1 must grammatically complete 'A [p1] sucesso!'");
   assert.ok(p1.endsWith(" com"), "Param 1 must end with 'com' to flow into 'sucesso!'");
 
-  // Param 2: content body with the 4 accesses and single weekly meeting
+  // Param 2: content body with Club (recordings) + OS + WhatsApp Community
   const p2 = bodyComponent.parameters[1].text;
   assert.ok(p2.includes("Mariana"), "Param 2 must greet user");
-  assert.ok(p2.includes("Comunidade & Clube") || p2.includes("Comunidade"), "Param 2 must mention Comunidade");
-  assert.ok(p2.includes("1 encontro") || p2.includes("1 reunião"), "Param 2 must specify 1 meeting per week");
-  assert.ok(p2.includes("Radar de Demanda"), "Param 2 must mention Radar");
-  assert.ok(p2.includes("Criador de Sites") || p2.includes("Sites"), "Param 2 must mention Sites");
-  assert.ok(p2.includes("CRM"), "Param 2 must mention CRM");
+  assert.ok(p2.includes("Imobiturbo Club") || p2.includes("Comunidade"), "Param 2 must mention Club or Comunidade");
+  assert.ok(p2.includes("gravações") || p2.includes("trilhas"), "Param 2 must mention recordings/tracks");
+  assert.ok(!p2.includes("encontro ao vivo"), "Param 2 must NOT promise live meetings");
+  assert.ok(!p2.includes("Radar de Demanda"), "Param 2 must NOT mention deactivated Radar");
+  assert.ok(!p2.includes("Criador de Sites"), "Param 2 must NOT mention deactivated Sites");
+  assert.ok(p2.includes("os.imobiturbo.com.br/login"), "Param 2 must mention OS login URL");
+  assert.ok(p2.includes("WhatsApp"), "Param 2 must mention WhatsApp");
   assert.ok(p2.includes("mariana@gmail.com"), "Param 2 must mention buyer email");
 
-  // Param 3: Central Link
+  // Param 3: Central Link -> WhatsApp Community
   const p3 = bodyComponent.parameters[2].text;
-  assert.ok(p3.startsWith("https://"), "Param 3 must be a valid URL link");
-  assert.ok(p3.includes("radar.imobiturbo.com.br") || p3.includes("app.imobiturbo.com.br"), "Param 3 must link to Radar or App");
+  assert.equal(p3, "https://chat.whatsapp.com/Iy4Uiw5t0630oK4MgZarFj", "Param 3 must be the official WhatsApp community link");
 });
 
 test("provisionCommunityMembership calls Supabase RPC with proper parameters for activation and cancellation", async () => {
@@ -117,7 +119,7 @@ test("provisionCommunityMembership calls Supabase RPC with proper parameters for
   assert.equal(calls[1].body.p_action, "cancel");
 });
 
-test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, Meta WhatsApp and Sites sync", async () => {
+test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, Meta WhatsApp (Sites deactivated)", async () => {
   const calls = [];
   const mockFetch = async (url, options) => {
     calls.push({ url, method: options.method, headers: options.headers, body: JSON.parse(options.body || "{}") });
@@ -129,9 +131,6 @@ test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, 
     }
     if (url.includes("graph.facebook.com")) {
       return { ok: true, json: async () => ({ messages: [{ id: "wam_mock_456" }] }) };
-    }
-    if (url.includes("sites.imobiturbo.com.br")) {
-      return { ok: true, json: async () => ({ ok: true, message: "Acesso liberado" }) };
     }
     return { ok: true, json: async () => ({}) };
   };
@@ -154,14 +153,14 @@ test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, 
   assert.equal(result.crmProvisioned, true, "CRM must be provisioned");
   assert.equal(result.emailSent, true, "Email must be sent via ZeptoMail");
   assert.equal(result.whatsappSent, true, "WhatsApp must be sent");
-  assert.equal(result.sitesSynced, true, "Sites must be synced");
+  assert.equal(result.sitesSynced, false, "Sites sync must be skipped when deactivated");
 
   // Check calls
-  assert.equal(calls.length, 4, "Must trigger 4 API calls: CRM RPC, ZeptoMail, Meta WhatsApp, Sites");
+  assert.equal(calls.length, 3, "Must trigger 3 API calls: CRM RPC, ZeptoMail, Meta WhatsApp");
   assert.ok(calls.some((c) => c.url.includes("/rest/v1/rpc/provision_community_membership")));
   assert.ok(calls.some((c) => c.url.includes("api.zeptomail.com/v1.1/email")));
   assert.ok(calls.some((c) => c.url.includes("graph.facebook.com")));
-  assert.ok(calls.some((c) => c.url.includes("sites.imobiturbo.com.br/api/webhook/checkout")));
+  assert.ok(!calls.some((c) => c.url.includes("sites.imobiturbo.com.br")));
 
   // Verify ZeptoMail auth header
   const zeptoCall = calls.find((c) => c.url.includes("api.zeptomail.com"));

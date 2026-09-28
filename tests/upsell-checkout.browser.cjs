@@ -204,10 +204,7 @@ test('redesigned offer stays legible at the required widths and renders the stat
       assert.equal(state.renderedProofCount, 0, 'unverified testimonials and metrics stay inside the template');
       assert.ok(state.revealCount > 0);
       assert.equal(state.enteredCount, state.revealCount, 'reduced motion keeps all content visible');
-      assert.deepEqual(state.accessLinks, [
-        'https://club.imobiturbo.com.br/login',
-        'https://app.imobiturbo.com.br/onboarding',
-      ]);
+      assert.deepEqual(state.accessLinks, [], 'no outbound access links to ensure only purchase CTA exits');
       assert.deepEqual(state.legalLinks, ['/termos-de-servico/', '/politica-de-privacidade/']);
 
       if (artifacts) {
@@ -334,10 +331,7 @@ test('the essential demonstrations and access links remain available without Jav
     assert.equal(state.stickyAriaHidden, 'true');
     assert.equal(state.stickyInert, true);
     assert.equal(state.stickyTabIndex, -1);
-    assert.deepEqual(state.accessLinks, [
-      'https://club.imobiturbo.com.br/login',
-      'https://app.imobiturbo.com.br/onboarding',
-    ]);
+    assert.deepEqual(state.accessLinks, [], 'no outbound access links to ensure only purchase CTA exits');
   } finally { await context.close(); }
 });
 
