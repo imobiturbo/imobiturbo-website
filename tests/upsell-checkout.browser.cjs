@@ -188,12 +188,12 @@ test('redesigned offer stays legible at the required widths and renders the stat
       }));
 
       assert.ok(state.documentWidth <= width, `${width}px viewport has no horizontal overflow`);
-      assert.match(state.headline, /Saia com ajustes feitos/);
-      assert.match(state.lead, /escolhemos uma prioridade/);
+      assert.match(state.headline, /Eu te pego pela mão/);
+      assert.match(state.lead, /escolhemos um problema/);
       assert.match(state.lead, /60 minutos/);
       assert.match(state.price, /R\$497/);
       assert.match(state.price, /12x de R\$49/);
-      assert.match(state.communityStatus, /opcional/);
+      assert.match(state.communityStatus, /só está disponível nesta página/);
       assert.equal(state.offerHidden, false, 'the offer is the default state');
       assert.equal(state.approvedHidden, true, 'legacy payment confirmation is not shown without proof');
       assert.equal(state.bookedHidden, true, 'booking confirmation is not shown without proof');
@@ -251,7 +251,7 @@ test('tabs, comparisons, previews and the sticky CTA work by keyboard with focus
     assert.equal(await page.locator('[data-profile-toggle="before"]').getAttribute('aria-pressed'), 'false');
     assert.equal(await page.locator('#profileAfter').evaluate(node => node.classList.contains('is-active')), true);
     assert.equal(await page.locator('#profileBefore').evaluate(node => node.classList.contains('is-active')), false);
-    assert.deepEqual(await page.locator('.ig-stats dt').allTextContents(), ['72', '2.184', '311', '72', '2.184', '311']);
+    assert.equal(await page.locator('.profile-demo-image').count(), 2);
 
     await photoTab.click();
     const range = page.locator('#photoRange');
@@ -273,7 +273,7 @@ test('tabs, comparisons, previews and the sticky CTA work by keyboard with focus
     assert.equal(await sticky.getAttribute('inert'), null);
     assert.equal(await stickyButton.getAttribute('tabindex'), '0');
 
-    const previewTrigger = page.locator('[data-preview-source="creativeFeedArt"]');
+    const previewTrigger = page.locator('[data-preview-source="creativeGalleryArt"]');
     await previewTrigger.click();
     await page.locator('#materialDialog').waitFor({ state: 'visible' });
     assert.equal(await page.locator('#materialDialog').evaluate(dialog => dialog.open), true);

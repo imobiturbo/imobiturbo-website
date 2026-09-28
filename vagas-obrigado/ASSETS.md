@@ -20,3 +20,16 @@
 - Confirmar o prazo e o canal de entrega dos materiais antes de publicar qualquer promessa temporal ou de envio.
 - Substituir a imagem ilustrativa do comparador por uma foto de imóvel autorizada quando houver fonte e permissão documentadas.
 - Ativar depoimentos ou comparação de métricas somente após validação e autorização do material correspondente.
+
+## Revisão visual de 28/09/2026
+
+As demonstrações HTML/CSS anteriores foram substituídas pelos seguintes WebPs gerados por inteligência artificial a pedido do usuário. São exemplos ilustrativos, sem clientes, casos ou resultados verificados. Os originais estão em `/home/natan/.codex/generated_images/01a0e61a-d433-7202-af59-c9360b6abeef/`.
+
+- `criativos-anuncios-exemplo-20260928.webp`: demonstração ilustrativa de criativos-anuncios-exemplo; autorizado como ilustração, nunca como prova social.
+- `foto-imovel-antes-20260928.webp`: demonstração ilustrativa de foto-imovel-antes; autorizado como ilustração, nunca como prova social.
+- `foto-imovel-depois-20260928.webp`: demonstração ilustrativa de foto-imovel-depois; autorizado como ilustração, nunca como prova social.
+- `instagram-posicionamento-antes-20260928.webp`: demonstração ilustrativa de instagram-posicionamento-antes; autorizado como ilustração, nunca como prova social.
+- `instagram-posicionamento-depois-20260928.webp`: demonstração ilustrativa de instagram-posicionamento-depois; autorizado como ilustração, nunca como prova social.
+- `mapa-mental-exemplo-20260928.webp`: demonstração ilustrativa de mapa-mental-exemplo; autorizado como ilustração, nunca como prova social.
+- `pdf-plano-exemplo-20260928.webp`: demonstração ilustrativa de pdf-plano-exemplo; autorizado como ilustração, nunca como prova social.
+- `plano-execucao-exemplo-20260928.webp`: demonstração ilustrativa de plano-execucao-exemplo; autorizado como ilustração, nunca como prova social.
