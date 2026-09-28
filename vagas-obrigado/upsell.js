@@ -439,8 +439,9 @@
   function setupPhotoComparison() {
     const comparison = get('photoComparison');
     const range = get('photoRange');
+    const handle = get('photoComparisonHandle');
     const buttons = Array.from(document.querySelectorAll('[data-photo-position]'));
-    if (!comparison || !range) return;
+    if (!comparison || !range || !handle) return;
 
     const descriptionFor = value => {
       if (value <= 0) return 'Somente a imagem antes do tratamento está visível';
@@ -452,7 +453,9 @@
       const value = Math.min(100, Math.max(0, Number(rawValue) || 0));
       comparison.style.setProperty('--comparison-position', `${value}%`);
       range.value = String(value);
+      handle.setAttribute('aria-valuenow', String(value));
       range.setAttribute('aria-valuetext', descriptionFor(value));
+      handle.setAttribute('aria-valuetext', descriptionFor(value));
       buttons.forEach(button => {
         const selected = Number(button.dataset.photoPosition) === value;
         button.classList.toggle('is-active', selected);
@@ -463,6 +466,56 @@
 
     range.addEventListener('input', () => update(range.value));
     range.addEventListener('change', () => trackHubEvent('upsell_photo_comparison_changed', { position: update(range.value) }));
+    let dragging = false;
+    let moved = false;
+    let skipClick = false;
+    let startX = 0;
+    const updateFromPointer = event => {
+      const bounds = comparison.getBoundingClientRect();
+      update(((event.clientX - bounds.left) / bounds.width) * 100);
+    };
+    handle.addEventListener('pointerdown', event => {
+      if (event.button !== undefined && event.button !== 0) return;
+      dragging = true;
+      moved = false;
+      startX = event.clientX;
+      handle.setPointerCapture(event.pointerId);
+      updateFromPointer(event);
+      event.preventDefault();
+    });
+    handle.addEventListener('pointermove', event => {
+      if (dragging) {
+        if (Math.abs(event.clientX - startX) > 4) moved = true;
+        updateFromPointer(event);
+      }
+    });
+    const finishDrag = event => {
+      if (!dragging) return;
+      dragging = false;
+      skipClick = moved;
+      trackHubEvent('upsell_photo_comparison_changed', { position: update(range.value), control: 'handle' });
+      if (handle.hasPointerCapture(event.pointerId)) handle.releasePointerCapture(event.pointerId);
+    };
+    handle.addEventListener('pointerup', finishDrag);
+    handle.addEventListener('pointercancel', finishDrag);
+    handle.addEventListener('click', () => {
+      if (skipClick) {
+        skipClick = false;
+        return;
+      }
+      const position = update(Number(range.value) <= 50 ? 75 : 25);
+      trackHubEvent('upsell_photo_comparison_changed', { position, control: 'handle_click' });
+    });
+    handle.addEventListener('keydown', event => {
+      let next = Number(range.value);
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') next -= event.shiftKey ? 10 : 1;
+      else if (event.key === 'ArrowRight' || event.key === 'ArrowUp') next += event.shiftKey ? 10 : 1;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = 100;
+      else return;
+      event.preventDefault();
+      trackHubEvent('upsell_photo_comparison_changed', { position: update(next), control: 'handle' });
+    });
     buttons.forEach(button => button.addEventListener('click', () => {
       const position = update(button.dataset.photoPosition);
       trackHubEvent('upsell_photo_comparison_changed', { position, control: 'button' });

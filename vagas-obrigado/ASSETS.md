@@ -4,7 +4,7 @@
 | --- | --- | --- | --- | --- |
 | `/assets/natan-palestra-retrato.webp` | Retrato principal da hero e convite final da oferta | Foto real de Natan Pimentel em palestra (Drive oficial) | Fotografia real | Autorizado pelo usuário; dimensões 1086 × 1448px, proporção 3:4 |
 | `/assets/natan-palestra-horizontal.webp` | Representação visual da gravação da sessão (Google Meet) | Foto real de Natan Pimentel em palestra (Drive oficial) | Fotografia real | Autorizado pelo usuário; dimensões 1448 × 1086px, proporção 4:3 widescreen |
-| `/assets/natan-palestra-avatar.webp` | Avatar de Natan no identificador do fundador na hero | Foto real de Natan Pimentel em palestra (Drive oficial) | Fotografia real | Autorizado pelo usuário; recorte circular focado no rosto de 440 × 440px |
+| `/assets/natan-palestra-avatar.webp` | Avatar de Natan no identificador do fundador na hero | Arquivo WebP enviado pelo usuário em `/mnt/g/Meu Drive/Tudo/1. LTDA/6. FOTOS/natan.webp` | Fotografia real | 250 × 250px; avatar real de Natan autorizado para a página |
 | `/vagas/assets/thesvg/google-meet.svg` | Identificar a sessão online pelo Google Meet | Asset oficial já versionado no projeto | Marca/interface | Usar apenas como identificação do canal da sessão |
 | Depoimentos e métricas | Prova social opcional | Não fornecidos | Caso verificado | Desativados na produção até haver autorização, definição da métrica, períodos, fonte e contexto documentados |
 | VSL futura | Substituir a composição estática da hero quando houver mídia válida | Pendente | Vídeo + poster | A área aceita URL configurada; hoje não renderiza player, botão de play ou espaço reservado |
@@ -22,8 +22,8 @@ As demonstrações HTML/CSS anteriores foram substituídas pelos seguintes WebPs
 - `criativos-anuncios-exemplo-20260928.webp`: demonstração ilustrativa de criativos-anuncios-exemplo; autorizado como ilustração, nunca como prova social.
 - `foto-imovel-antes-20260928.webp`: demonstração ilustrativa de foto-imovel-antes; autorizado como ilustração, nunca como prova social.
 - `foto-imovel-depois-20260928.webp`: demonstração ilustrativa de foto-imovel-depois; autorizado como ilustração, nunca como prova social.
-- `instagram-posicionamento-antes-20260928.webp`: demonstração ilustrativa de instagram-posicionamento-antes; autorizado como ilustração, nunca como prova social.
-- `instagram-posicionamento-depois-20260928.webp`: demonstração ilustrativa de instagram-posicionamento-depois; autorizado como ilustração, nunca como prova social.
+- `instagram-posicionamento-antes-20260928.webp`: perfil demonstrativo “antes”; arquivo WebP fornecido pelo usuário em `/mnt/c/Users/Natan/Downloads/antes.webp` (1122 × 1402px), classificado como ilustração, nunca como prova social.
+- `instagram-posicionamento-depois-20260928.webp`: perfil demonstrativo “depois”; arquivo WebP fornecido pelo usuário em `/mnt/c/Users/Natan/Downloads/depois.webp` (1122 × 1402px), classificado como ilustração, nunca como prova social.
 - `mapa-mental-exemplo-20260928.webp`: demonstração ilustrativa de mapa-mental-exemplo; autorizado como ilustração, nunca como prova social.
 - `pdf-plano-exemplo-20260928.webp`: demonstração ilustrativa de pdf-plano-exemplo; autorizado como ilustração, nunca como prova social.
 - `plano-execucao-exemplo-20260928.webp`: demonstração ilustrativa de plano-execucao-exemplo; autorizado como ilustração, nunca como prova social.
