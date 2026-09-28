@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="/vagas-obrigado/upsell.css?v=20260928-acessos-centro">
   <script defer src="/vagas/checkout-session.js?v=20260927-2"></script>
   <script id="hub-tracker" defer src="https://track.nmidigital.tech/t.js?operation=00000000-0000-0000-0000-000000000001&offer=12e90537-263d-4150-9757-52193187ffbd" data-id="00000000-0000-0000-0000-000000000001" data-operation-id="00000000-0000-0000-0000-000000000001" data-offer-id="12e90537-263d-4150-9757-52193187ffbd" data-offer="12e90537-263d-4150-9757-52193187ffbd" data-endpoint="https://track.nmidigital.tech"></script>
-  <script defer src="/vagas-obrigado/upsell.js?v=20260928-acelerador-v2"></script>
+  <script defer src="/vagas-obrigado/upsell.js?v=20260928-checkout-clean"></script>
 </head>
 <body>
   <a class="skip-link" href="#oferta">Ir para a consultoria</a>
@@ -76,7 +76,6 @@
             <div class="hero-media-static" data-static-media>
               <figure class="hero-portrait">
                 <img src="/assets/natan-palestra-retrato.webp" alt="Natan Pimentel palestrando no palco" width="1086" height="1448" fetchpriority="high">
-                <figcaption>Natan Pimentel · atendimento online</figcaption>
               </figure>
 
               <div class="meet-badge">
@@ -305,18 +304,11 @@
         <div class="chk-modal-box cal-checkout-box">
           <div class="chk-modal-header-row">
             <div class="chk-modal-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg><span>Agenda segura</span></div>
-            <span class="cal-modal-step">Horário + pagamento</span>
+
             <button type="button" class="chk-modal-close" id="consultingModalClose" aria-label="Fechar checkout"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"/></svg></button>
           </div>
           <section class="payment-section checkout-modal-content" id="contratar" aria-labelledby="checkoutTitle">
-            <div class="checkout-summary">
-              <p class="eyebrow">INDIVIDUAL · ONLINE · 60 MINUTOS</p>
-              <h2 id="checkoutTitle">Implementação Expressa com Natan</h2>
-              <p>Escolha uma prioridade do seu negócio para trabalhar junto durante a sessão. O que não couber entra no plano de próximos passos.</p>
-              <strong class="checkout-price">R$497</strong>
-              <p id="checkoutPriceNote">À vista via Pix · cartão até 12x de R$49</p>
-              <p class="small">Escolha um horário e conclua o Pix ou cartão aqui. A sessão fica reservada após a confirmação do pagamento.</p>
-            </div>
+            <h2 id="checkoutTitle" class="checkout-accessible-title">Agendamento e pagamento da consultoria</h2>
             <div class="checkout-panel">
               <p class="feedback" id="calendarFeedback" role="status" aria-live="polite">Carregando a agenda…</p>
               <div id="calBookingWidget" class="cal-inline-widget" aria-label="Agenda e pagamento da consultoria"></div>

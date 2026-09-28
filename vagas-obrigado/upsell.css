@@ -1132,3 +1132,14 @@ footer nav {
 .material-dialog-body { display: block; }
 .material-dialog-body .generated-showcase { width: 900px; max-width: none; margin-inline: auto; }
 .material-dialog-body .generated-showcase img { max-width: none; }
+
+.offer-price .installment-primary strong { font-size: clamp(24px, 2.4vw, 32px); letter-spacing: -.035em; }
+
+/* A single scrolling booking surface, with its close control always available. */
+.chk-modal-box.cal-checkout-box { width: min(100%, 1000px); padding: 12px; overflow: hidden; }
+.cal-checkout-box .chk-modal-header-row { margin-bottom: 8px; }
+.cal-checkout-box .chk-modal-close { margin-left: auto; }
+.cal-checkout-box .cal-inline-widget, .cal-checkout-box .cal-inline-widget iframe { height: calc(100dvh - 112px) !important; min-height: 0 !important; border: 0; border-radius: 0; }
+.cal-checkout-box .chk-asaas-footer { display: none; }
+.checkout-accessible-title, #calendarFeedback:not(.is-error) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (max-width: 768px) { .chk-modal-box.cal-checkout-box { padding: 8px; } }
