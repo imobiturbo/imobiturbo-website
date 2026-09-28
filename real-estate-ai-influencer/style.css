@@ -1468,26 +1468,55 @@ p:last-child {
 
 @media (max-width: 1024px) {
   .hero-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     text-align: center;
+    gap: 0;
   }
 
   .hero-copy {
-    align-items: center;
+    display: contents;
   }
 
-  .hero-subtitle {
+  .hero-copy .eyebrow-pill {
+    order: 1;
+    margin: 0 auto var(--space-4);
+  }
+
+  .hero-copy .hero-headline {
+    order: 2;
+    margin-bottom: var(--space-5);
+  }
+
+  .hero-video-card {
+    order: 3;
+    width: 100%;
+    max-width: 330px;
+    margin: 0 auto var(--space-6);
+  }
+
+  .hero-copy .hero-subtitle {
+    order: 4;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: var(--space-6);
+    text-align: center;
   }
 
-  .hero-benefits-list {
+  .hero-copy .hero-benefits-list {
+    order: 5;
     align-items: flex-start;
     text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 480px;
+    margin-bottom: var(--space-8);
   }
 
-  .hero-cta-group {
+  .hero-copy .hero-cta-group {
+    order: 6;
     justify-content: center;
+    margin-bottom: var(--space-8);
   }
 
   .metrics-grid {
