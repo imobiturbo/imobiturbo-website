@@ -1407,7 +1407,7 @@ p:last-child {
 }
 
 /* ==========================================================================
-   FOOTER (Imobiturbo Ecosystem Compliance)
+   FOOTER (Business Information)
    ========================================================================== */
 
 .site-footer {
@@ -1420,7 +1420,7 @@ p:last-child {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   flex-wrap: wrap;
   gap: 20px;
 }
@@ -1430,20 +1430,35 @@ p:last-child {
   width: auto;
 }
 
-.footer-links {
-  display: flex;
-  gap: 24px;
-  list-style: none;
-}
-
-.footer-links a {
-  font-size: 14px;
-  color: var(--it-text-secondary);
-  transition: color 0.15s ease;
-}
-
-.footer-links a:hover {
+.footer-badge span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   color: var(--it-lime);
+  background: var(--it-lime-subtle);
+  border: 1px solid rgba(196, 254, 93, 0.25);
+  padding: 6px 12px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+}
+
+.footer-business-details {
+  border-top: 1px solid var(--it-border-subtle);
+  padding: 24px 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer-business-details p {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--it-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
 }
 
 .footer-bottom {
@@ -1451,9 +1466,12 @@ p:last-child {
   align-items: center;
   justify-content: space-between;
   border-top: 1px solid var(--it-border-divider);
-  padding-top: 24px;
-  font-size: 13px;
+  padding-top: 20px;
+  font-size: 12px;
   color: var(--it-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-family: var(--font-mono);
   flex-wrap: wrap;
   gap: 12px;
 }
