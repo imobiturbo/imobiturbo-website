@@ -1036,3 +1036,31 @@ footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
   .chk-modal-header-row { gap: 6px; }
   .cal-modal-step { font-size: 10px; }
 }
+
+/* Generated demonstrations retain their original proportions. */
+.offer-price .installment-primary strong, .offer-price .installment-primary b { font-size: clamp(42px, 4vw, 60px); color: var(--accent); letter-spacing: -.055em; line-height: 1.12; }
+.offer-price .cash-price { margin-top: 10px; font-size: 17px; }
+.document-topline { align-items: center; }
+.document-topline img { flex: 0 0 22px; }
+.hero-portrait figcaption { top: 95px; bottom: auto; text-shadow: 0 1px 8px #000; }
+.profile-demo-image, .generated-showcase img { display: block; width: 100%; height: auto; }
+.generated-showcase { margin: 0; overflow: hidden; border-radius: 14px; }
+.creative-gallery { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.showcase-preview-button { justify-self: center; }
+.mindmap-panel .generated-showcase, .pdf-panel .generated-showcase { margin-top: 20px; }
+.photo-before, .photo-after { filter: none; }
+.photo-label-before { right: 16px; left: auto; }
+.photo-label-after { left: 16px; right: auto; }
+.material-dialog-body { align-items: start; }
+.material-dialog-body .generated-showcase { flex-shrink: 0; }
+.access-email-value { color: var(--text); }
+@media (max-width: 760px) {
+ .sticky-cta .button { flex: 1; max-width: 210px; font-size: 11px; padding: 9px; }
+ .sticky-cta strong { font-size: 15px; }
+ .profile-state { gap: 5px; padding-inline: 9px; font-size: 9px; }
+}
+
+/* Previews open at a readable size, with scrolling inside the dialog on phones. */
+.material-dialog-body { display: block; }
+.material-dialog-body .generated-showcase { width: 900px; max-width: none; margin-inline: auto; }
+.material-dialog-body .generated-showcase img { max-width: none; }
