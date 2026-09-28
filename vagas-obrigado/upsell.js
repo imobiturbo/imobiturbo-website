@@ -1,6 +1,8 @@
 (function () {
   'use strict';
 
+  document.documentElement.classList.add('js');
+
   const get = id => document.getElementById(id);
   const sessions = window.ImobiturboCheckoutSession;
   const CAL_ORIGIN = 'https://agenda.imobiturbo.com.br';
@@ -12,13 +14,72 @@
   const CAL_BOOKING_UID = /^[A-Za-z0-9_-]{8,128}$/;
   const modal = get('consultingCheckoutModal');
   const widget = get('calBookingWidget');
+  const hubTrackerQueue = [];
   let timer = null;
   let paid = false;
   let lastTrigger = null;
+  let lastPreviewTrigger = null;
   let userClosedPending = false;
   let calFrame = null;
   let embedStarted = false;
+  let refreshStickyCta = () => {};
   let restorePaymentUid = readSavedCalPayment()?.uid || '';
+
+  function hubTrackerReady() {
+    const tracker = window.HubTracker;
+    if (!tracker || typeof tracker.track !== 'function') return false;
+    try {
+      return typeof tracker.config !== 'function' || tracker.config().enabled === true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function dispatchHubTrackerEvent(queued) {
+    const tracker = window.HubTracker;
+    const method = tracker && tracker[queued.method];
+    if (typeof method !== 'function') return false;
+    method.apply(tracker, queued.args);
+    return true;
+  }
+
+  function flushHubTrackerEvents() {
+    try {
+      if (!hubTrackerReady()) return;
+      while (hubTrackerQueue.length) {
+        const queued = hubTrackerQueue.shift();
+        if (!dispatchHubTrackerEvent(queued)) {
+          hubTrackerQueue.unshift(queued);
+          return;
+        }
+      }
+    } catch (_) {}
+  }
+
+  function queueHubTrackerEvent(method, ...args) {
+    try {
+      if (hubTrackerReady()) {
+        flushHubTrackerEvents();
+        if (dispatchHubTrackerEvent({ method, args })) return;
+      }
+      hubTrackerQueue.push({ method, args });
+    } catch (_) {}
+  }
+
+  function trackHubEvent(eventName, properties = {}) {
+    queueHubTrackerEvent('track', eventName, {
+      page: 'vagas-obrigado',
+      product_id: 'consultoria-individual-natan',
+      ...properties,
+    });
+  }
+
+  (function bindHubTracker() {
+    const trackerScript = get('hub-tracker');
+    if (trackerScript) trackerScript.addEventListener('load', flushHubTrackerEvents);
+    window.addEventListener('load', flushHubTrackerEvents);
+    [0, 250, 1000, 3000].forEach(delay => window.setTimeout(flushHubTrackerEvents, delay));
+  }());
 
   function readSavedCalPayment() {
     try {
@@ -59,10 +120,19 @@
       get('consultingBooked').scrollIntoView({ behavior: 'smooth' });
       return;
     }
-    if (trigger) lastTrigger = trigger;
+    const source = trigger?.dataset.ctaLocation || (restorePaymentUid ? 'saved_payment' : consulting.read() ? 'pending_payment' : 'unknown');
+    if (trigger) {
+      lastTrigger = trigger;
+      trackHubEvent('upsell_cta_clicked', { location: source });
+    }
     userClosedPending = false;
     get('finalInvite').hidden = true;
-    if (!modal.open) modal.showModal();
+    if (!modal.open) {
+      modal.showModal();
+      trackHubEvent('upsell_checkout_opened', { location: source });
+    }
+    document.body.classList.add('checkout-open');
+    refreshStickyCta();
     if (!consulting.read()) initializeCalendar();
   }
 
@@ -109,6 +179,7 @@
       ? `${count} parcelas no cartão · total de R$${new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2 }).format(total / 100)}`
       : record.method === 'CREDIT_CARD' ? 'R$497 no cartão, em parcela única' : 'R$497 à vista via Pix';
     get('consultingApproved').focus({ preventScroll: true });
+    refreshStickyCta();
   }
 
   const consulting = sessions.create({
@@ -308,8 +379,238 @@
       get('offerContent').hidden = true;
       get('finalInvite').hidden = true;
       get('consultingBooked').hidden = false;
+      refreshStickyCta();
     }
   });
+
+  function setupDemoTabs() {
+    const tabs = Array.from(document.querySelectorAll('[data-demo-tab]'));
+    const panels = Array.from(document.querySelectorAll('[data-demo-panel]'));
+    if (!tabs.length || !panels.length) return;
+
+    const activate = (activeTab, { focus = false, track = false } = {}) => {
+      const panelId = activeTab.getAttribute('aria-controls');
+      tabs.forEach(tab => {
+        const selected = tab === activeTab;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+      panels.forEach(panel => { panel.hidden = panel.id !== panelId; });
+      if (focus) activeTab.focus();
+      if (track) trackHubEvent('upsell_demo_selected', { demo: activeTab.dataset.demoTab || 'unknown' });
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => activate(tab, { track: true }));
+      tab.addEventListener('keydown', event => {
+        let nextIndex = null;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % tabs.length;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === 'Home') nextIndex = 0;
+        if (event.key === 'End') nextIndex = tabs.length - 1;
+        if (nextIndex === null) return;
+        event.preventDefault();
+        activate(tabs[nextIndex], { focus: true, track: true });
+      });
+    });
+
+    activate(tabs.find(tab => tab.getAttribute('aria-selected') === 'true') || tabs[0]);
+  }
+
+  function setupProfileComparison() {
+    const buttons = Array.from(document.querySelectorAll('[data-profile-toggle]'));
+    const frames = Array.from(document.querySelectorAll('[data-profile-state]'));
+    if (!buttons.length || !frames.length) return;
+
+    const activate = (state, track = false) => {
+      frames.forEach(frame => frame.classList.toggle('is-active', frame.dataset.profileState === state));
+      buttons.forEach(button => {
+        const selected = button.dataset.profileToggle === state;
+        button.classList.toggle('is-active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      if (track) trackHubEvent('upsell_profile_comparison_selected', { state });
+    };
+
+    buttons.forEach(button => button.addEventListener('click', () => activate(button.dataset.profileToggle, true)));
+    activate(buttons.find(button => button.getAttribute('aria-pressed') === 'true')?.dataset.profileToggle || 'before');
+  }
+
+  function setupPhotoComparison() {
+    const comparison = get('photoComparison');
+    const range = get('photoRange');
+    const buttons = Array.from(document.querySelectorAll('[data-photo-position]'));
+    if (!comparison || !range) return;
+
+    const descriptionFor = value => {
+      if (value <= 0) return 'Somente a imagem antes do tratamento está visível';
+      if (value >= 100) return 'Somente a imagem depois do tratamento está visível';
+      if (value === 50) return 'Metade da imagem tratada está visível';
+      return `${value}% da imagem tratada está visível`;
+    };
+    const update = rawValue => {
+      const value = Math.min(100, Math.max(0, Number(rawValue) || 0));
+      comparison.style.setProperty('--comparison-position', `${value}%`);
+      range.value = String(value);
+      range.setAttribute('aria-valuetext', descriptionFor(value));
+      buttons.forEach(button => {
+        const selected = Number(button.dataset.photoPosition) === value;
+        button.classList.toggle('is-active', selected);
+        button.setAttribute('aria-pressed', String(selected));
+      });
+      return value;
+    };
+
+    range.addEventListener('input', () => update(range.value));
+    range.addEventListener('change', () => trackHubEvent('upsell_photo_comparison_changed', { position: update(range.value) }));
+    buttons.forEach(button => button.addEventListener('click', () => {
+      const position = update(button.dataset.photoPosition);
+      trackHubEvent('upsell_photo_comparison_changed', { position, control: 'button' });
+      range.focus();
+    }));
+    update(range.value);
+  }
+
+  function setupMaterialPreviews() {
+    const dialog = get('materialDialog');
+    const body = get('materialDialogBody');
+    const title = get('materialDialogTitle');
+    const note = get('materialDialogNote');
+    const close = get('materialDialogClose');
+    if (!dialog || !body || !title || !note || !close) return;
+
+    const removeDuplicateReferences = clone => {
+      [clone, ...clone.querySelectorAll('[id]')].forEach(node => node.removeAttribute('id'));
+      clone.querySelectorAll('[aria-labelledby], [aria-describedby], [aria-controls], label[for]').forEach(node => {
+        node.removeAttribute('aria-labelledby');
+        node.removeAttribute('aria-describedby');
+        node.removeAttribute('aria-controls');
+        node.removeAttribute('for');
+      });
+      return clone;
+    };
+
+    document.querySelectorAll('[data-preview-source]').forEach(button => button.addEventListener('click', () => {
+      const sourceId = button.dataset.previewSource;
+      const source = get(sourceId);
+      if (!source) return;
+      lastPreviewTrigger = button;
+      title.textContent = button.dataset.previewTitle || 'Prévia do material';
+      note.textContent = button.dataset.previewNote || 'Exemplo de material; o seu será adaptado ao que trabalharmos.';
+      body.replaceChildren(removeDuplicateReferences(source.cloneNode(true)));
+      if (!dialog.open) dialog.showModal();
+      document.body.classList.add('preview-open');
+      refreshStickyCta();
+      close.focus({ preventScroll: true });
+      trackHubEvent('upsell_material_opened', { material: sourceId });
+    }));
+
+    close.addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+    dialog.addEventListener('close', () => {
+      document.body.classList.remove('preview-open');
+      refreshStickyCta();
+      body.replaceChildren();
+      if (lastPreviewTrigger?.isConnected) lastPreviewTrigger.focus({ preventScroll: true });
+      lastPreviewTrigger = null;
+    });
+  }
+
+  function setupFutureVideo() {
+    const shell = document.querySelector('.hero-media-shell');
+    const staticMedia = shell?.querySelector('[data-static-media]');
+    const rawVideo = shell?.dataset.videoUrl?.trim();
+    if (!shell || !staticMedia || !rawVideo) return;
+
+    const validUrl = value => {
+      if (!value) return '';
+      try {
+        const parsed = new URL(value, window.location.href);
+        return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '';
+      } catch (_) {
+        return '';
+      }
+    };
+    const videoUrl = validUrl(rawVideo);
+    if (!videoUrl) return;
+
+    const video = document.createElement('video');
+    video.className = 'hero-media-video';
+    video.controls = true;
+    video.playsInline = true;
+    video.preload = 'metadata';
+    video.hidden = true;
+    video.src = videoUrl;
+    video.setAttribute('aria-label', 'Vídeo de apresentação da Implementação Expressa');
+    const poster = validUrl(shell.dataset.videoPoster?.trim());
+    if (poster) video.poster = poster;
+    video.addEventListener('loadedmetadata', () => {
+      staticMedia.hidden = true;
+      video.hidden = false;
+    }, { once: true });
+    video.addEventListener('error', () => {
+      video.remove();
+      staticMedia.hidden = false;
+    }, { once: true });
+    shell.append(video);
+  }
+
+  function setupStickyCta() {
+    const sticky = get('stickyCta');
+    const hero = get('oferta');
+    const access = get('acessos');
+    const offer = get('offerContent');
+    if (!sticky || !hero || !access || !offer) return;
+    const stickyButton = sticky.querySelector('button');
+    let animationFrame = 0;
+
+    const update = () => {
+      animationFrame = 0;
+      const mobile = window.matchMedia('(max-width: 760px)').matches;
+      const heroPassed = hero.getBoundingClientRect().bottom <= 0;
+      const accessReached = access.getBoundingClientRect().top <= window.innerHeight * .9;
+      const dialogOpen = modal.open || Boolean(get('materialDialog')?.open);
+      const visible = mobile && heroPassed && !accessReached && !offer.hidden && !paid && !dialogOpen;
+      sticky.classList.toggle('is-visible', visible);
+      sticky.toggleAttribute('inert', !visible);
+      sticky.setAttribute('aria-hidden', String(!visible));
+      if (stickyButton) stickyButton.tabIndex = visible ? 0 : -1;
+    };
+    refreshStickyCta = () => {
+      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      animationFrame = window.requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', refreshStickyCta, { passive: true });
+    window.addEventListener('resize', refreshStickyCta);
+    window.addEventListener('pageshow', refreshStickyCta);
+    refreshStickyCta();
+  }
+
+  function setupRevealEntries() {
+    const nodes = Array.from(document.querySelectorAll('.section-heading, .materials-heading, .demo-panel, .recording-preview, .plan-panel, .mindmap-panel, .pdf-panel, .process-list > li, .closing-layout, .faq-list > details'));
+    if (!nodes.length) return;
+    nodes.forEach(node => node.classList.add('reveal-item'));
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      nodes.forEach(node => node.classList.add('has-entered'));
+      return;
+    }
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('has-entered');
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+    nodes.forEach(node => observer.observe(node));
+  }
+
+  setupDemoTabs();
+  setupProfileComparison();
+  setupPhotoComparison();
+  setupMaterialPreviews();
+  setupFutureVideo();
+  setupStickyCta();
+  setupRevealEntries();
 
   get('retryCalendar').addEventListener('click', () => {
     widget.replaceChildren();
@@ -329,12 +630,17 @@
   get('consultingModalClose').addEventListener('click', () => modal.close());
   modal.addEventListener('click', event => { if (event.target === modal) modal.close(); });
   modal.addEventListener('close', () => {
+    const triggerToRestore = lastTrigger;
+    lastTrigger = null;
+    document.body.classList.remove('checkout-open');
+    refreshStickyCta();
     if (!paid) {
       userClosedPending = Boolean(consulting.read());
       get('finalInvite').hidden = false;
-      if (lastTrigger && lastTrigger.isConnected) lastTrigger.focus({ preventScroll: true });
+      window.requestAnimationFrame(() => {
+        if (triggerToRestore?.isConnected) triggerToRestore.focus({ preventScroll: true });
+      });
     }
-    lastTrigger = null;
   });
 
   // Keep the existing community-access identity hint; it is never added to a URL.

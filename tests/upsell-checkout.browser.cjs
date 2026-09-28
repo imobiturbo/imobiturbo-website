@@ -128,6 +128,27 @@ async function openWidget(width, { savedPayment = false } = {}) {
   return { context, page, pageErrors, checkoutWrites };
 }
 
+async function openLanding(width, { javaScriptEnabled = true, reducedMotion = 'reduce' } = {}) {
+  const context = await browser.newContext({
+    viewport: { width, height: 900 },
+    javaScriptEnabled,
+    reducedMotion,
+  });
+  const page = await context.newPage();
+  const pageErrors = [];
+  page.on('pageerror', error => pageErrors.push(error.message));
+  await context.route('**/*', async route => {
+    const url = new URL(route.request().url());
+    if (url.origin !== new URL(baseURL).origin) return route.abort();
+    return route.continue();
+  });
+  await page.goto(baseURL, { waitUntil: 'load' });
+  if (javaScriptEnabled) {
+    await page.waitForFunction(() => document.documentElement.classList.contains('js'));
+  }
+  return { context, page, pageErrors };
+}
+
 async function waitForCalFrame(page, predicate) {
   for (let attempt = 0; attempt < 40; attempt++) {
     const frame = page.frames().find(predicate);
@@ -140,6 +161,185 @@ async function waitForCalFrame(page, predicate) {
 async function clickFrameButton(frame, selector) {
   await frame.locator(selector).evaluate(button => button.click());
 }
+
+test('redesigned offer stays legible at the required widths and renders the static hero without unverified proof', async () => {
+  for (const width of [360, 390, 768, 1440]) {
+    const { context, page, pageErrors } = await openLanding(width);
+    try {
+      const state = await page.evaluate(() => ({
+        viewport: innerWidth,
+        documentWidth: document.documentElement.scrollWidth,
+        headline: document.querySelector('#offerTitle')?.textContent,
+        lead: document.querySelector('.hero-lead')?.textContent,
+        price: document.querySelector('.hero-purchase .offer-price')?.textContent,
+        communityStatus: document.querySelector('#communityStatus')?.textContent,
+        offerHidden: document.querySelector('#offerContent')?.hidden,
+        approvedHidden: document.querySelector('#consultingApproved')?.hidden,
+        bookedHidden: document.querySelector('#consultingBooked')?.hidden,
+        heroImagePriority: document.querySelector('.hero-portrait img')?.getAttribute('fetchpriority'),
+        heroImageLoading: document.querySelector('.hero-portrait img')?.getAttribute('loading'),
+        staticMediaHidden: document.querySelector('[data-static-media]')?.hidden,
+        videoCount: document.querySelectorAll('.hero-media-video').length,
+        renderedProofCount: document.querySelectorAll('.proof-section').length,
+        revealCount: document.querySelectorAll('.reveal-item').length,
+        enteredCount: document.querySelectorAll('.reveal-item.has-entered').length,
+        accessLinks: Array.from(document.querySelectorAll('.access-links a')).map(link => link.href),
+        legalLinks: Array.from(document.querySelectorAll('footer nav a')).map(link => link.pathname),
+      }));
+
+      assert.ok(state.documentWidth <= width, `${width}px viewport has no horizontal overflow`);
+      assert.match(state.headline, /Saia com ajustes feitos/);
+      assert.match(state.lead, /escolhemos uma prioridade/);
+      assert.match(state.lead, /60 minutos/);
+      assert.match(state.price, /R\$497/);
+      assert.match(state.price, /12x de R\$49/);
+      assert.match(state.communityStatus, /opcional/);
+      assert.equal(state.offerHidden, false, 'the offer is the default state');
+      assert.equal(state.approvedHidden, true, 'legacy payment confirmation is not shown without proof');
+      assert.equal(state.bookedHidden, true, 'booking confirmation is not shown without proof');
+      assert.equal(state.heroImagePriority, 'high');
+      assert.equal(state.heroImageLoading, null, 'the above-the-fold portrait is not lazy loaded');
+      assert.equal(state.staticMediaHidden, false);
+      assert.equal(state.videoCount, 0, 'an empty future video URL never creates a player');
+      assert.equal(state.renderedProofCount, 0, 'unverified testimonials and metrics stay inside the template');
+      assert.ok(state.revealCount > 0);
+      assert.equal(state.enteredCount, state.revealCount, 'reduced motion keeps all content visible');
+      assert.deepEqual(state.accessLinks, [
+        'https://club.imobiturbo.com.br/login',
+        'https://app.imobiturbo.com.br/onboarding',
+      ]);
+      assert.deepEqual(state.legalLinks, ['/termos-de-servico/', '/politica-de-privacidade/']);
+
+      if (artifacts) {
+        await page.evaluate(async () => {
+          const step = Math.max(500, Math.floor(innerHeight * .8));
+          for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
+            scrollTo(0, y);
+            await new Promise(resolve => setTimeout(resolve, 20));
+          }
+          scrollTo(0, 0);
+        });
+        await page.screenshot({
+          path: path.join(artifacts, `vagas-obrigado-after-${width}.png`),
+          fullPage: true,
+        });
+      }
+      assert.deepEqual(pageErrors, []);
+    } finally { await context.close(); }
+  }
+});
+
+test('tabs, comparisons, previews and the sticky CTA work by keyboard with focus restored', async () => {
+  const { context, page, pageErrors } = await openLanding(390);
+  try {
+    const instagramTab = page.locator('#tabInstagram');
+    const photoTab = page.locator('#tabPhoto');
+    const creativeTab = page.locator('#tabCreative');
+
+    await photoTab.click();
+    assert.equal(await photoTab.getAttribute('aria-selected'), 'true');
+    assert.equal(await page.locator('#demoPhoto').getAttribute('hidden'), null);
+    assert.equal(await page.locator('#demoInstagram').getAttribute('hidden'), '');
+
+    await photoTab.press('ArrowRight');
+    assert.equal(await creativeTab.getAttribute('aria-selected'), 'true');
+    assert.equal(await creativeTab.evaluate(node => document.activeElement === node), true);
+    await creativeTab.press('Home');
+    assert.equal(await instagramTab.getAttribute('aria-selected'), 'true');
+    assert.equal(await instagramTab.evaluate(node => document.activeElement === node), true);
+
+    const afterProfile = page.locator('[data-profile-toggle="after"]');
+    await afterProfile.click();
+    assert.equal(await afterProfile.getAttribute('aria-pressed'), 'true');
+    assert.equal(await page.locator('[data-profile-toggle="before"]').getAttribute('aria-pressed'), 'false');
+    assert.equal(await page.locator('#profileAfter').evaluate(node => node.classList.contains('is-active')), true);
+    assert.equal(await page.locator('#profileBefore').evaluate(node => node.classList.contains('is-active')), false);
+    assert.deepEqual(await page.locator('.ig-stats dt').allTextContents(), ['72', '2.184', '311', '72', '2.184', '311']);
+
+    await photoTab.click();
+    const range = page.locator('#photoRange');
+    await range.focus();
+    await page.keyboard.press('End');
+    assert.equal(await range.inputValue(), '100');
+    assert.match(await range.getAttribute('aria-valuetext'), /Somente a imagem depois/);
+    await page.locator('[data-photo-position="0"]').click();
+    assert.equal(await range.inputValue(), '0');
+    assert.match(await range.getAttribute('aria-valuetext'), /Somente a imagem antes/);
+    assert.equal(await page.locator('[data-photo-position="0"]').getAttribute('aria-pressed'), 'true');
+
+    await creativeTab.click();
+    await page.locator('#demonstracoes').scrollIntoViewIfNeeded();
+    const sticky = page.locator('#stickyCta');
+    const stickyButton = sticky.locator('button');
+    await page.waitForFunction(() => document.querySelector('#stickyCta')?.classList.contains('is-visible'));
+    assert.equal(await sticky.getAttribute('aria-hidden'), 'false');
+    assert.equal(await sticky.getAttribute('inert'), null);
+    assert.equal(await stickyButton.getAttribute('tabindex'), '0');
+
+    const previewTrigger = page.locator('[data-preview-source="creativeFeedArt"]');
+    await previewTrigger.click();
+    await page.locator('#materialDialog').waitFor({ state: 'visible' });
+    assert.equal(await page.locator('#materialDialog').evaluate(dialog => dialog.open), true);
+    assert.equal(await sticky.getAttribute('aria-hidden'), 'true');
+    assert.equal(await sticky.getAttribute('inert'), '');
+    assert.equal(await stickyButton.getAttribute('tabindex'), '-1');
+    assert.equal(await page.locator('#materialDialogClose').evaluate(node => document.activeElement === node), true);
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.querySelector('#materialDialog').open);
+    assert.equal(await previewTrigger.evaluate(node => document.activeElement === node), true);
+    await page.waitForFunction(() => document.querySelector('#stickyCta')?.getAttribute('aria-hidden') === 'false');
+
+    await previewTrigger.click();
+    await page.locator('#materialDialog').waitFor({ state: 'visible' });
+    await page.mouse.click(2, 2);
+    await page.waitForFunction(() => !document.querySelector('#materialDialog').open);
+    assert.equal(await previewTrigger.evaluate(node => document.activeElement === node), true);
+    await page.waitForFunction(() => document.querySelector('#stickyCta')?.getAttribute('aria-hidden') === 'false');
+
+    await stickyButton.click();
+    await page.locator('#consultingCheckoutModal').waitFor({ state: 'visible' });
+    assert.equal(await sticky.getAttribute('aria-hidden'), 'true');
+    assert.equal(await sticky.getAttribute('inert'), '');
+    assert.equal(await stickyButton.getAttribute('tabindex'), '-1');
+    await page.locator('#consultingModalClose').click();
+    await page.waitForFunction(() => !document.querySelector('#consultingCheckoutModal').open);
+    await page.waitForFunction(() => document.querySelector('#stickyCta')?.getAttribute('aria-hidden') === 'false');
+    assert.equal(await sticky.getAttribute('inert'), null);
+    assert.equal(await stickyButton.getAttribute('tabindex'), '0');
+    assert.equal(await stickyButton.evaluate(node => document.activeElement === node), true);
+    assert.deepEqual(pageErrors, []);
+  } finally { await context.close(); }
+});
+
+test('the essential demonstrations and access links remain available without JavaScript', async () => {
+  const { context, page } = await openLanding(390, { javaScriptEnabled: false });
+  try {
+    const state = await page.evaluate(() => ({
+      documentWidth: document.documentElement.scrollWidth,
+      demoVisibility: Array.from(document.querySelectorAll('[data-demo-panel]')).map(panel => ({
+        id: panel.id,
+        hidden: panel.hidden,
+        display: getComputedStyle(panel).display,
+      })),
+      noscript: document.querySelector('.noscript-note')?.textContent,
+      stickyAriaHidden: document.querySelector('#stickyCta')?.getAttribute('aria-hidden'),
+      stickyInert: document.querySelector('#stickyCta')?.hasAttribute('inert'),
+      stickyTabIndex: document.querySelector('#stickyCta button')?.tabIndex,
+      accessLinks: Array.from(document.querySelectorAll('.access-links a')).map(link => link.href),
+    }));
+    assert.ok(state.documentWidth <= 390, 'no-JS layout has no horizontal overflow');
+    assert.deepEqual(state.demoVisibility.map(panel => panel.id), ['demoInstagram', 'demoPhoto', 'demoCreative']);
+    assert.ok(state.demoVisibility.every(panel => !panel.hidden && panel.display !== 'none'));
+    assert.match(state.noscript, /exemplos permanecem visíveis sem JavaScript/);
+    assert.equal(state.stickyAriaHidden, 'true');
+    assert.equal(state.stickyInert, true);
+    assert.equal(state.stickyTabIndex, -1);
+    assert.deepEqual(state.accessLinks, [
+      'https://club.imobiturbo.com.br/login',
+      'https://app.imobiturbo.com.br/onboarding',
+    ]);
+  } finally { await context.close(); }
+});
 
 test('inline Cal is responsive and receives only supported buyer prefill fields', async () => {
   for (const width of [1440, 390, 320]) {
