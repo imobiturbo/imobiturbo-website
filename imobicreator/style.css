@@ -609,6 +609,53 @@ p:last-child {
   box-shadow: 0 0 30px rgba(196, 254, 93, 0.25), 0 16px 36px -8px rgba(0, 0, 0, 0.8);
 }
 
+/* Play Sucinto para os 4 Cards de Formato (sem animação, discreto e elegante no cantinho) */
+.video-play-badge {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(9, 9, 11, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 6;
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.video-play-badge .play-badge-icon {
+  width: 16px;
+  height: 16px;
+  color: #FFFFFF;
+  margin-left: 2px;
+  transition: color 0.15s ease;
+}
+
+.video-showcase-card:hover .video-play-badge {
+  background: var(--it-lime);
+  border-color: var(--it-lime);
+  transform: scale(1.08);
+}
+
+.video-showcase-card:hover .video-play-badge .play-badge-icon {
+  color: var(--it-lime-ink);
+}
+
+.video-play-badge.vsl-hidden,
+.video-showcase-card.video-active .video-play-badge {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+  pointer-events: none;
+}
+
 .vsl-play-btn-circle {
   position: relative;
   width: 58px;

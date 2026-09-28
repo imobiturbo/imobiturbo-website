@@ -33,7 +33,7 @@ function initVideoControls() {
 
   containers.forEach((container) => {
     const video = container.querySelector('video');
-    const mask = container.querySelector('.vsl-smart-autoplay');
+    const mask = container.querySelector('.vsl-smart-autoplay, .video-play-badge');
     const soundBtn = container.querySelector('[data-action="toggle-sound"]');
 
     if (!video) return;
@@ -136,7 +136,7 @@ function resetOtherActiveVideos(currentContainer) {
   containers.forEach((container) => {
     if (container !== currentContainer && container.classList.contains('video-active')) {
       const video = container.querySelector('video');
-      const mask = container.querySelector('.vsl-smart-autoplay');
+      const mask = container.querySelector('.vsl-smart-autoplay, .video-play-badge');
       const soundBtn = container.querySelector('[data-action="toggle-sound"]');
 
       container.classList.remove('video-active');
