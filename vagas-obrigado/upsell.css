@@ -1059,3 +1059,8 @@ footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
  .sticky-cta strong { font-size: 15px; }
  .profile-state { gap: 5px; padding-inline: 9px; font-size: 9px; }
 }
+
+/* Previews open at a readable size, with scrolling inside the dialog on phones. */
+.material-dialog-body { display: block; }
+.material-dialog-body .generated-showcase { width: 900px; max-width: none; margin-inline: auto; }
+.material-dialog-body .generated-showcase img { max-width: none; }
