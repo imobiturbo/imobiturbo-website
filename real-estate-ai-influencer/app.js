@@ -1,22 +1,23 @@
 /**
- * UNSCOUTED IMMO — Interactive Audio/Video & Dialog Controller
- * Arquitetura de reprodução resiliente e controle de modais
+ * IMOBICREATOR — Interactive Audio/Video, FAQ & Dialog Controller
+ * Imobiturbo Design System v4.0
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initVideoControls();
   initDialogModal();
   initIntersectionAutoPlay();
+  initFaqAccordion();
 });
 
 /**
  * SVGs de ícones de controle
  */
 const ICONS = {
-  play: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 10 7-10 7Z" fill="currentColor"></path></svg>`,
-  pause: `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1" fill="currentColor"></rect><rect x="14" y="5" width="4" height="14" rx="1" fill="currentColor"></rect></svg>`,
-  muted: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5 5 9H2v6h3l5 4Z"></path><path d="m16 9 6 6m0-6-6 6"></path></svg>`,
-  unmuted: `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H2v6h4l5 4V5Z"></path><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path><path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path></svg>`
+  play: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3" fill="currentColor"></polygon></svg>`,
+  pause: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="4" height="16" fill="currentColor"></rect><rect x="14" y="4" width="4" height="16" fill="currentColor"></rect></svg>`,
+  muted: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`,
+  unmuted: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`
 };
 
 /**
@@ -41,12 +42,10 @@ function initVideoControls() {
       playBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (video.paused) {
-          // Pausa outros vídeos para evitar sobreposição de áudio
           pauseOtherVideos(video);
           video.play().then(() => {
             updatePlayButton(playBtn, true);
           }).catch(() => {
-            // Em caso de restrição do navegador
             video.muted = true;
             video.play();
             updatePlayButton(playBtn, true);
@@ -64,7 +63,6 @@ function initVideoControls() {
       soundBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         if (video.muted) {
-          // Desmuta este e silencia outros
           silenceOtherVideos(video);
           video.muted = false;
           updateSoundButton(soundBtn, true);
@@ -79,7 +77,6 @@ function initVideoControls() {
       });
     }
 
-    // Atualiza botão se vídeo pausar/iniciar por eventos nativos
     video.addEventListener('play', () => updatePlayButton(playBtn, true));
     video.addEventListener('pause', () => updatePlayButton(playBtn, false));
     video.addEventListener('volumechange', () => updateSoundButton(soundBtn, !video.muted));
@@ -129,7 +126,6 @@ function initIntersectionAutoPlay() {
       if (!video) return;
 
       if (entry.isIntersecting) {
-        // Tenta dar play muted
         if (video.paused) {
           video.muted = true;
           video.play().catch(() => {});
@@ -148,12 +144,36 @@ function initIntersectionAutoPlay() {
 }
 
 /**
+ * FAQ Accordion Controller
+ */
+function initFaqAccordion() {
+  const faqItems = document.querySelectorAll('.faq-item');
+
+  faqItems.forEach((item) => {
+    const questionBtn = item.querySelector('.faq-question');
+    if (!questionBtn) return;
+
+    questionBtn.addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
+
+      // Fecha os outros
+      faqItems.forEach((other) => {
+        if (other !== item) other.classList.remove('active');
+      });
+
+      // Alterna o clicado
+      item.classList.toggle('active', !isActive);
+    });
+  });
+}
+
+/**
  * Controle do Dialog / Modal de Qualificação
  */
 function initDialogModal() {
-  const dialog = document.getElementById('creation-dialog');
+  const dialog = document.getElementById('qualification-dialog');
   const openButtons = document.querySelectorAll('[data-action="open-dialog"]');
-  const closeButton = dialog?.querySelector('.u-creation-dialog-close');
+  const closeButton = dialog?.querySelector('.dialog-close-btn');
 
   if (!dialog) return;
 
@@ -178,7 +198,6 @@ function initDialogModal() {
     closeButton.addEventListener('click', closeDialog);
   }
 
-  // Fecha clicando no backdrop
   dialog.addEventListener('click', (e) => {
     const rect = dialog.getBoundingClientRect();
     const isInDialog = (
