@@ -594,6 +594,7 @@ export async function onRequestPost(context) {
       if (email || phone) {
         try {
           const amountCents = Math.round(amount * 100);
+          const approvedAt = payload.payment?.paymentDate || payload.payment?.confirmedDate || payload.payment?.clientPaymentDate || payload.payment?.dateCreated || new Date().toISOString();
           notifResult = await sendPostPurchaseNotifications({
             email,
             name,
@@ -601,7 +602,8 @@ export async function onRequestPost(context) {
             plan: plan || "anual",
             paymentId,
             amountCents,
-            env,
+            purchaseProof: { approvedAt: new Date(approvedAt).toISOString() },
+            env: { COMMUNITY_ORGANIZATION_ID: (env && env.COMMUNITY_ORGANIZATION_ID) || "18b103e6-a006-45ac-84d5-62312f45ba77", ...env },
           });
         } catch (e) {
           console.error("Post-purchase notification error in webhook:", e);

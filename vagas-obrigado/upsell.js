@@ -745,7 +745,8 @@
 
   function resume() {
     if (consulting.read()) consulting.start();
-    if (community.read()) community.start();
+    const comm = community.read();
+    if (comm && !comm.paid) community.start();
   }
   window.addEventListener('pageshow', event => { if (event.persisted) resume(); });
   window.addEventListener('storage', event => { if ([sessions.COMMUNITY_KEY, sessions.CONSULTING_KEY].includes(event.key)) resume(); });
@@ -756,5 +757,13 @@
   } else if (restorePaymentUid) {
     showCheckout();
   }
-  if (community.read()) community.start();
+  const comm = community.read();
+  if (comm) {
+    if (comm.paid) {
+      get('communityStatus').textContent = 'Compra da comunidade aprovada. Bem-vindo à Imobiturbo!';
+      get('communityStatus').classList.add('is-approved');
+    } else {
+      community.start();
+    }
+  }
 })();
