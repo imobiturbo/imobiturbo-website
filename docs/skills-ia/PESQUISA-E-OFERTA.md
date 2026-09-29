@@ -40,3 +40,9 @@ Produto externo cadastrado como área de membros fora da Wiapy. Cobrança única
 Os checkouts estão ativos no provedor após a validação de e-mail. A landing page permanece em prévia, com `salesEnabled: false` e `fulfillmentStatus: pending`, sem encaminhar compradores. Não foi feita compra nem criada integração automática de liberação no Club. A criação do conteúdo no Club ficou com Natan.
 
 A integração “Imobiturbo Skills IA - Pixel” foi salva e relida na Wiapy com o pixel `1025303472485246`, limitada aos dois checkouts desta oferta e ao evento de pagamento aprovado. Token CAPI opcional não foi adicionado. A integração Webhook “Hub”, já existente para todos os checkouts, foi preservada. Configuração não comprova uma compra: não foi acionado pagamento nem evento Purchase de teste.
+
+## Revisão visual em 29/09/2026
+
+Solicitação posterior: reduzir o logo para um badge, substituir a hero por uma composição com resultado imobiliário na tela e fitas cassete, e mostrar dez capas de skills em um loop contínuo na segunda seção. A data da faixa é dinâmica no fuso de Brasília. O texto usado é “OFERTA ESPECIAL DE HOJE”, sem uma promessa de encerramento que se renova todos os dias.
+
+As dez capas em `cassette-covers.json` são exemplos visuais de tarefas já presentes no catálogo de 54 skills. Todas foram geradas com GPT Image 2.5 a partir da mesma capa matriz, em formato 3:4 e com transparência real. O carrossel tem pausa, teclado, toque/arraste e movimento reduzido, sem biblioteca adicional. Os preços, checkouts e bloqueio de liberação comercial permanecem iguais.
