@@ -82,7 +82,7 @@
       // exactly one InitiateCheckout to the Hub with the same eventID and amount.
       if (production && window.fbq) window.fbq('trackSingle', pixelId, 'InitiateCheckout', {
         content_ids: [productId + ':' + plan], content_name: 'Skills IA — ' + offer.name,
-        content_type: 'product', currency: 'BRL', value: offer.priceCents / 100, num_items: 1
+        content_type: 'product', product_id: productId, offer_code: plan, currency: 'BRL', value: offer.priceCents / 100, num_items: 1
       }, { eventID: eventId() });
       else track('InitiateCheckout', { offer_code: plan, value: offer.priceCents / 100, currency: 'BRL' });
       window.location.assign(checkoutUrl(offer, plan));
