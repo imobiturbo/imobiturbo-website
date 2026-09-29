@@ -52,3 +52,18 @@ test('imobicreator app.js implementa Hub Tracker e eventos do funil', () => {
     assert.match(js, /document\.activeElement\.blur\(\)/);
   }
 });
+
+test('imobicreator mobile previne overflow em botões e centraliza o case spotlight card', () => {
+  for (const dir of ['imobicreator', 'real-estate-ai-influencer']) {
+    const css = fs.readFileSync(path.join(root, dir, 'style.css'), 'utf8');
+    
+    // Botões no mobile não usam nowrap fixo com overflow
+    assert.match(css, /\.btn\s*\{[^}]*white-space:\s*normal/);
+    assert.match(css, /\.btn\s*\{[^}]*overflow-wrap:\s*break-word/);
+
+    // Case spotlight card centralizado
+    assert.match(css, /\.case-spotlight-card\s*\{[^}]*text-align:\s*center/);
+    assert.match(css, /\.case-image-box\s*\{[^}]*margin:\s*0\s+auto/);
+    assert.match(css, /\.case-author-tag\s*\{[^}]*justify-content:\s*center/);
+  }
+});
