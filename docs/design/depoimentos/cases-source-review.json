@@ -1,0 +1,58 @@
+[
+  {
+    "case_id": "CASE-0132",
+    "display_name": "Karen Krummenauer",
+    "status": "DRAFT",
+    "result_summary": "VGV R$ 365.000,00 | Comissão Imobiliária R$ 18.250,00 (5%) | Comissão Corretor R$ 6.022,50 (1,65%) | Investimento Ads R$ 1.650,00 ($325,66) | 151 Leads (CPL R$ 10,92) | PDF Relatório Oficial",
+    "limitations": null,
+    "canonical_doc_path": "docs/reports/s25-print-oficial-karen-krummenauer.png"
+  },
+  {
+    "case_id": "CASE-0133",
+    "display_name": "Leonardo Gagliasso Vilaça",
+    "status": "DRAFT",
+    "result_summary": "Contrato assinado fotografado e comprovado no WhatsApp pessoal | Vendido 2 vezes em 20 dias através do método de campanhas Imobiturbo",
+    "limitations": null,
+    "canonical_doc_path": "docs/reports/s25-print-oficial-leo-gagliasso.png"
+  },
+  {
+    "case_id": "CASE-0134",
+    "display_name": "Ricardo Martins Argôllo Galvão",
+    "status": "DRAFT",
+    "result_summary": "Imóvel vendido após campanha de anúncio e republicado com tarja de vendido | Campanha R$ 322 gerou 14 conversas qualificadas e 4 visitas",
+    "limitations": null,
+    "canonical_doc_path": "docs/reports/s25-print-oficial-ricardo-argollo.png"
+  },
+  {
+    "case_id": "CASE-0135",
+    "display_name": "Maria Aguiar",
+    "status": "DRAFT",
+    "result_summary": "Investiu R$ 710,18 em anúncios, gerou venda de R$ 420.000,00 e recebeu R$ 27.000,00 de comissão líquida (38x ROAS)",
+    "limitations": null,
+    "canonical_doc_path": "bunny:49241daf-3912-4524-b5ee-4fa7e50e077f"
+  },
+  {
+    "case_id": "CASE-0136",
+    "display_name": "Roberto Ferrari",
+    "status": "DRAFT",
+    "result_summary": "Anúncios geraram 2 lotes vendidos (R$ 10k de comissão com $273 gastos, lead $0,73) e 1 lote de R$ 160k vendido por IA de WhatsApp sem intervenção humana à meia-noite",
+    "limitations": null,
+    "canonical_doc_path": "bunny:06670312-188a-4e4c-bf66-867d17fbb966"
+  },
+  {
+    "case_id": "CASE-0137",
+    "display_name": "Leonardo Bettiol",
+    "status": "DRAFT",
+    "result_summary": "Estratégia de tráfego + disparos de convite Imobiturbo OS: 40-50 investidores no evento presencial, conversão de ~10% e 3 lotes vendidos",
+    "limitations": null,
+    "canonical_doc_path": "bunny:435f33d0-ac23-467d-a69d-9524fa87115a"
+  },
+  {
+    "case_id": "CASE-0138",
+    "display_name": "Kelly Matias",
+    "status": "DRAFT",
+    "result_summary": "Investiu R$ 5.000,00 em tráfego, vendeu 7 lotes e faturou entre R$ 35.000 e R$ 40.000 de comissão líquida (7x a 8x ROAS)",
+    "limitations": null,
+    "canonical_doc_path": "bunny:c6807620-a891-4263-853e-287a6413f50f"
+  }
+]
