@@ -101,6 +101,20 @@
     setAvailability('Pagamento único e seguro pela Wiapy. Escolha o seu kit.');
   }).catch(function () { setAvailability('As vendas ainda não estão abertas.'); });
 
+  // In-page navigation is a scroll, not a new tracked page occurrence.
+  // Keep native anchors for no-JS access without triggering the tracker/hash observer.
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      var target = document.getElementById(link.getAttribute('href').slice(1));
+      if (!target) return;
+      event.preventDefault();
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    });
+  });
+
   document.querySelectorAll('[data-placement]').forEach(function (link) {
     link.addEventListener('click', function () { track('cta_click', { placement: link.dataset.placement, cta_type: 'view_offers' }); });
   });

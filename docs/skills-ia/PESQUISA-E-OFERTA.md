@@ -38,3 +38,5 @@ Produto externo cadastrado como área de membros fora da Wiapy. Cobrança única
 | Completo | R$37,90 | https://pay.wiapy.com/ZjGp49XpjjpL | 6abb4f79e384d817b42e9f37 |
 
 Os checkouts estão ativos no provedor após a validação de e-mail. A landing page permanece em prévia, com `salesEnabled: false` e `fulfillmentStatus: pending`, sem encaminhar compradores. Não foi feita compra nem criada integração automática de liberação no Club. A criação do conteúdo no Club ficou com Natan.
+
+A integração “Imobiturbo Skills IA - Pixel” foi salva e relida na Wiapy com o pixel `1025303472485246`, limitada aos dois checkouts desta oferta e ao evento de pagamento aprovado. Token CAPI opcional não foi adicionado. A integração Webhook “Hub”, já existente para todos os checkouts, foi preservada. Configuração não comprova uma compra: não foi acionado pagamento nem evento Purchase de teste.
