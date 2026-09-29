@@ -1,0 +1,12 @@
+Edit this existing cassette-cover image using GPT Image 2.5. It is the MASTER TEMPLATE of a ten-image collection. Request transparent_background=true. Preserve the existing true alpha; output one RGBA PNG, portrait 3:4, preferably 1086x1448 or an exact larger 3:4 size.
+
+Change: replace ONLY the H1, H2 and three bullet text lines on the black printed insert, using the EXACT TEXT below. Fit the H1 across two or three lines in the same type size and geometric sans-serif style, and adjust line breaks only as necessary. Keep the headline lime #C5FF5E and the subtitle and benefits warm white. Keep readable generous line spacing, with no collision between text sections. Every letter and Portuguese accent must be correct.
+H1: "Reels imobiliários"
+H2: "Comece o vídeo pelo detalhe que merece atenção."
+Bullet 1: "Crie uma abertura clara"
+Bullet 2: "Desenvolva um só assunto"
+Bullet 3: "Feche com um convite"
+
+Preserve: the same portrait plastic cassette case silhouette and size, camera viewpoint, framing, transparent external margins, acrylic edges, black insert, scratches, lighting and physical materials. Preserve the small Imobiturbo icon in exactly its top-center position and size. Preserve the four bottom platform emblems and labels exactly as in the master: "GPT", "Claude", "Gemini", "Grok". Preserve the same three lime bullet dots and the same typography hierarchy, text alignment and colors. All covers must look like photographs from the same product collection.
+Use Case: one cassette in a landing-page gallery illustrating a digital AI skill for real-estate agents. This is a marketing cover, not a music album or an instruction document.
+Constraints: generate a SEPARATE image for this skill only. Keep all text inside the cassette. No extra text, prices, counts, stars, decorative icons, separate heading outside the case, frames or background. Do not retain any old H1/H2/bullet words. Do not flatten transparency, do not paint a checkerboard or a white background. Do not redesign the original template. Output PNG with alpha.

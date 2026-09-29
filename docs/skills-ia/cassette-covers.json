@@ -1,0 +1,112 @@
+[
+  {
+    "slug": "01-anuncio-para-portais",
+    "title": "Anúncio para portais",
+    "summary": "Transforme a ficha do imóvel em um convite para visitar.",
+    "benefits": [
+      "Destaque os diferenciais",
+      "Organize as informações",
+      "Escreva com clareza"
+    ],
+    "catalogSkill": "Descrição para portal imobiliário"
+  },
+  {
+    "slug": "02-titulo-do-imovel",
+    "title": "Título do imóvel",
+    "summary": "Faça o diferencial aparecer já na primeira linha.",
+    "benefits": [
+      "Encontre o melhor ângulo",
+      "Evite títulos genéricos",
+      "Crie opções para testar"
+    ],
+    "catalogSkill": "Título com o diferencial do imóvel"
+  },
+  {
+    "slug": "03-qualificacao-de-leads",
+    "title": "Qualificação de leads",
+    "summary": "Faça as perguntas que ajudam a entender o comprador.",
+    "benefits": [
+      "Descubra as prioridades",
+      "Entenda o prazo de compra",
+      "Filtre opções com contexto"
+    ],
+    "catalogSkill": "Perguntas de qualificação do comprador"
+  },
+  {
+    "slug": "04-follow-up",
+    "title": "Follow-up com contexto",
+    "summary": "Retome a conversa sem depender do “alguma novidade?”.",
+    "benefits": [
+      "Recupere o que foi dito",
+      "Faça uma pergunta útil",
+      "Defina o próximo passo"
+    ],
+    "catalogSkill": "Retomada após envio de informações"
+  },
+  {
+    "slug": "05-captacao-de-imoveis",
+    "title": "Captação de imóveis",
+    "summary": "Prepare uma abordagem clara para o proprietário.",
+    "benefits": [
+      "Apresente seu trabalho",
+      "Mostre o valor do serviço",
+      "Abra espaço para conversar"
+    ],
+    "catalogSkill": "Primeira abordagem ao proprietário"
+  },
+  {
+    "slug": "06-roteiro-de-tour",
+    "title": "Roteiro de tour",
+    "summary": "Transforme a visita ao imóvel em uma boa história.",
+    "benefits": [
+      "Organize os ambientes",
+      "Destaque o que importa",
+      "Convide para conhecer"
+    ],
+    "catalogSkill": "Roteiro de tour pelo imóvel"
+  },
+  {
+    "slug": "07-reels-imobiliarios",
+    "title": "Reels imobiliários",
+    "summary": "Comece o vídeo pelo detalhe que merece atenção.",
+    "benefits": [
+      "Crie uma abertura clara",
+      "Desenvolva um só assunto",
+      "Feche com um convite"
+    ],
+    "catalogSkill": "Abertura de Reel com um diferencial"
+  },
+  {
+    "slug": "08-objecoes",
+    "title": "Objeções e negociação",
+    "summary": "Prepare a conversa quando o cliente diz “está caro”.",
+    "benefits": [
+      "Investigue a objeção",
+      "Organize seus argumentos",
+      "Conduza sem pressionar"
+    ],
+    "catalogSkill": "Conversa quando o cliente diz que está caro"
+  },
+  {
+    "slug": "09-bio-do-corretor",
+    "title": "Bio do corretor",
+    "summary": "Mostre quem você atende e por que faz sentido conversar.",
+    "benefits": [
+      "Explique sua atuação",
+      "Destaque sua especialidade",
+      "Deixe o contato claro"
+    ],
+    "catalogSkill": "Bio profissional do corretor"
+  },
+  {
+    "slug": "10-rotina-organizada",
+    "title": "Rotina organizada",
+    "summary": "Organize os retornos e as prioridades da sua semana.",
+    "benefits": [
+      "Liste o que está pendente",
+      "Priorize os próximos passos",
+      "Distribua seu tempo"
+    ],
+    "catalogSkill": "Planejamento semanal de atendimento"
+  }
+]

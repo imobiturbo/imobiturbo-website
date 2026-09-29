@@ -1,0 +1,112 @@
+[
+  {
+    "asset": "01-anuncio-para-portais.png",
+    "width": 1086,
+    "height": 1448,
+    "pix_fmt": "rgba",
+    "transparentPixels": 408193,
+    "pngBytes": 1919370,
+    "webpBytes": 59202,
+    "pngSha256": "564f4afbab6c52021305b8e84e866c3ff3e38bdefce17d647559ef28c2e5adc9",
+    "webpSha256": "0dd27a80fb1dd25ce8ae864cef920758a6935e55c72bc4846de7170820818d67"
+  },
+  {
+    "asset": "02-titulo-do-imovel.png",
+    "width": 1086,
+    "height": 1448,
+    "pix_fmt": "rgba",
+    "transparentPixels": 400291,
+    "pngBytes": 1756722,
+    "webpBytes": 53844,
+    "pngSha256": "77f515c2934b846078ee5d055b41f84558574e7ca6a252b0a15c4fdfac22d033",
+    "webpSha256": "744d763b5fe4c0de58d9d7da66a75d5a54671d4ebd80470994d44b8ed4f97543"
+  },
+  {
+    "asset": "03-qualificacao-de-leads.png",
+    "width": 1086,
+    "height": 1448,
+    "pix_fmt": "rgba",
+    "transparentPixels": 397314,
+    "pngBytes": 1776021,
+    "webpBytes": 57354,
+    "pngSha256": "bb7c748a5cd2cbb6eda510f46104ec17f1a399fdfce3b0708c8fe31bd3cfdfab",
+    "webpSha256": "73f7cd1a4524ace7fe04eff2da9b48e5d791d37629e5e2d293ab6b874e709970"
+  },
+  {
+    "asset": "04-follow-up.png",
+    "width": 1086,
+    "height": 1448,
+    "pix_fmt": "rgba",
+    "transparentPixels": 329431,
+    "pngBytes": 1860190,
+    "webpBytes": 55728,
+    "pngSha256": "70410eb49b5343a7f1231719a0621f0758c861aa350b3cb1b1780affe754b092",
+    "webpSha256": "61dd05fc11a68bf21d5d6f820b388758828de7fd228d87a1f4c74483980efaf3"
+  },
+  {
+    "asset": "05-captacao-de-imoveis.png",
+    "width": 1086,
+    "height": 1448,
+    "pix_fmt": "rgba",
+    "transparentPixels": 407593,
+    "pngBytes": 1767871,
+    "webpBytes": 56418,
+    "pngSha256": "d202b832afb3c4ce2996c1cfe3a6f66f9a63842a91cc52aba6652dbf2a56cad3",
+    "webpSha256": "306ae1b05204fdceec96a207e3eb938711f9df31ae2f7223a3313a7f1b771eb5"
+  },
+  {
+    "asset": "06-roteiro-de-tour.png",
+    "width": 1086,
+    "height": 1448,
+    "pix_fmt": "rgba",
+    "transparentPixels": 408993,
+    "pngBytes": 1708250,
+    "webpBytes": 54108,
+    "pngSha256": "d57bcf054834b8132deae829a57ab163f18749abaf799e450ad656764d6d96c6",
+    "webpSha256": "fe4d0044f8142c33ed5fb531766995a732cb2be446d19db898ad6112595eaf93"
+  },
+  {
+    "asset": "07-reels-imobiliarios.png",
+    "width": 1086,
+    "height": 1448,
+    "pix_fmt": "rgba",
+    "transparentPixels": 391290,
+    "pngBytes": 1784589,
+    "webpBytes": 55064,
+    "pngSha256": "4a2e0489a6c91d8b5d69b599cec223fd182bcfcccb61a3cc3bc5a9821ff0192b",
+    "webpSha256": "b1f5f3fbdeed7b1c89d9b124c7b5b4613707a4948819cf65f954f5fa71ee989f"
+  },
+  {
+    "asset": "08-objecoes.png",
+    "width": 1086,
+    "height": 1448,
+    "pix_fmt": "rgba",
+    "transparentPixels": 395903,
+    "pngBytes": 1798265,
+    "webpBytes": 59422,
+    "pngSha256": "4bef54830345541764337c18f7c8f8de898dd13960a80f664af2e535d0d165ea",
+    "webpSha256": "a1fe63062685cd2c5c7c6c533bec3a758a5a7b7afdee7dab660851ddd0bc7fe3"
+  },
+  {
+    "asset": "09-bio-do-corretor.png",
+    "width": 1086,
+    "height": 1448,
+    "pix_fmt": "rgba",
+    "transparentPixels": 378230,
+    "pngBytes": 1820229,
+    "webpBytes": 57202,
+    "pngSha256": "e3e749f037559a3442fffa301dbdae039cb438e5436e1ab7315cca46b5da7814",
+    "webpSha256": "58f6f2730c160b7279a38091c50d03d3b3f7dc4fccf8660025bba70194d65846"
+  },
+  {
+    "asset": "10-rotina-organizada.png",
+    "width": 1086,
+    "height": 1448,
+    "pix_fmt": "rgba",
+    "transparentPixels": 377212,
+    "pngBytes": 1790384,
+    "webpBytes": 56778,
+    "pngSha256": "1e97d84314e5a03b9fc09f714711fd89b6404d23f11cd51a9d7fefed5ba03c36",
+    "webpSha256": "d9cc221e1c4115a63e729de684b5bf6a36ad61002897a38c7965f4d982568ade"
+  }
+]
