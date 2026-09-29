@@ -1005,8 +1005,8 @@ function HeroSection() {
             <span>corretores acelerados</span>
           </div>
           <div className="telemetry-item">
-            <strong>+R$ 150M</strong>
-            <span>em VGV transacionado</span>
+            <strong>+R$ 500M</strong>
+            <span>em VGV gerado</span>
           </div>
           <div className="telemetry-item">
             <strong>24 estados</strong>
