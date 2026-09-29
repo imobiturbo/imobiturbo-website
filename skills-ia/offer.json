@@ -1,0 +1,21 @@
+{
+  "productId": "skills-ia-corretor",
+  "title": "54 skills de IA para corretores de imóveis",
+  "currency": "BRL",
+  "salesEnabled": false,
+  "fulfillmentStatus": "pending",
+  "operationId": "00000000-0000-0000-0000-000000000001",
+  "pixelId": "1025303472485246",
+  "offers": {
+    "essencial": {
+      "name": "Essencial",
+      "priceCents": 2790,
+      "checkoutUrl": "https://pay.wiapy.com/f5uAVWx6kAkY"
+    },
+    "completo": {
+      "name": "Completo",
+      "priceCents": 3790,
+      "checkoutUrl": "https://pay.wiapy.com/ZjGp49XpjjpL"
+    }
+  }
+}

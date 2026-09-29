@@ -38,6 +38,7 @@ const entries = [
   'vagas',
   'vagas-v2',
   'vagas-obrigado',
+  'skills-ia',
   'politica-de-privacidade',
   'exclusao-de-dados',
   'termos-de-servico',
