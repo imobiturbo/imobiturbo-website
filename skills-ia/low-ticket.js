@@ -54,7 +54,7 @@
     if (!offer || !Number.isInteger(offer.priceCents)) return false;
     try { var url = new URL(offer.checkoutUrl); return url.protocol === 'https:' && url.hostname === 'pay.wiapy.com' && url.pathname.length > 1; } catch (_) { return false; }
   }
-  function checkoutUrl(offer, plan, checkoutEventId) {
+  function checkoutUrl(offer, plan) {
     var target = new URL(offer.checkoutUrl);
     var source = new URL(location.href);
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id', 'fbclid', 'gclid', 'ttclid', 'src', 'sck'].forEach(function (key) {
@@ -63,7 +63,6 @@
     target.searchParams.set('product_id', productId);
     target.searchParams.set('offer_code', plan);
     target.searchParams.set('plan', 'avulso');
-    target.searchParams.set('rt_checkout_event_id', checkoutEventId);
     return window.HubTracker ? window.HubTracker.decorate(target.href) : target.href;
   }
   document.querySelectorAll('[data-plan]').forEach(function (button) {
@@ -81,13 +80,12 @@
       track('offer_selected', { offer_code: plan, value: offer.priceCents / 100, currency: 'BRL' });
       // Buttons avoid the Hub automatic anchor click handler. The fbq observer sends
       // exactly one InitiateCheckout to the Hub with the same eventID and amount.
-      var checkoutEventId = eventId();
       if (production && window.fbq) window.fbq('trackSingle', pixelId, 'InitiateCheckout', {
         content_ids: [productId + ':' + plan], content_name: 'Skills IA — ' + offer.name,
         content_type: 'product', product_id: productId, offer_code: plan, currency: 'BRL', value: offer.priceCents / 100, num_items: 1
-      }, { eventID: checkoutEventId });
+      }, { eventID: eventId() });
       else track('InitiateCheckout', { offer_code: plan, value: offer.priceCents / 100, currency: 'BRL' });
-      window.location.assign(checkoutUrl(offer, plan, checkoutEventId));
+      window.location.assign(checkoutUrl(offer, plan));
     });
   });
   fetch('./offer.json', { cache: 'no-store' }).then(function (response) {
