@@ -1,7 +1,66 @@
 /**
- * IMOBICREATOR — Interactive Audio/Video, FAQ & Dialog Controller
- * Imobiturbo Design System v4.0
+ * Hub Tracker Queue & Event Dispatcher (track.nmidigital.tech)
+ * Integração oficial do Hub de Rastreamento Imobiturbo
  */
+const hubTrackerQueue = [];
+
+function hubTrackerReady() {
+  const tracker = window.HubTracker;
+  if (!tracker || typeof tracker.track !== 'function') return false;
+  try {
+    return typeof tracker.config !== 'function' || tracker.config().enabled === true;
+  } catch (_) {
+    return false;
+  }
+}
+
+function dispatchHubTrackerEvent(queued) {
+  const tracker = window.HubTracker;
+  const method = tracker && tracker[queued.method];
+  if (typeof method !== 'function') return false;
+  method.apply(tracker, queued.args);
+  return true;
+}
+
+function flushHubTrackerEvents() {
+  try {
+    if (!hubTrackerReady()) return;
+    while (hubTrackerQueue.length) {
+      const queued = hubTrackerQueue.shift();
+      if (!dispatchHubTrackerEvent(queued)) {
+        hubTrackerQueue.unshift(queued);
+        return;
+      }
+    }
+  } catch (_) {}
+}
+
+function queueHubTrackerEvent(method, ...args) {
+  try {
+    if (hubTrackerReady()) {
+      flushHubTrackerEvents();
+      if (dispatchHubTrackerEvent({ method, args })) return;
+    }
+    hubTrackerQueue.push({ method, args });
+  } catch (_) {}
+}
+
+function trackHubEvent(eventName, properties) {
+  queueHubTrackerEvent('track', eventName, properties || {});
+}
+
+function trackHubConversion(method, properties) {
+  queueHubTrackerEvent(method, properties || {});
+}
+
+(function bindHubTracker() {
+  const trackerScript = document.getElementById('hub-tracker');
+  if (trackerScript) trackerScript.addEventListener('load', flushHubTrackerEvents);
+  window.addEventListener('load', flushHubTrackerEvents);
+  [0, 250, 1000, 3000].forEach((delay) => {
+    window.setTimeout(flushHubTrackerEvents, delay);
+  });
+})();
 
 document.addEventListener('DOMContentLoaded', () => {
   initVideoControls();
@@ -61,6 +120,16 @@ function initVideoControls() {
         });
       }
       updateSoundButton(soundBtn, true);
+
+      // Rastreia reprodução de vídeo no Hub
+      try {
+        const isHero = Boolean(container.closest('.hero-section'));
+        trackHubEvent('video_play', {
+          video_src: video.currentSrc || video.querySelector('source')?.src || 'video',
+          placement: isHero ? 'hero_vsl' : 'showcase_card',
+          page_path: window.location.pathname
+        });
+      } catch (_) {}
     }
 
     // Helper para retornar à prévia em loop mudo
@@ -334,6 +403,26 @@ function initDialogModal() {
   function goToStep(step) {
     currentStep = step;
 
+    // Garante que o scroll do diálogo volte ao topo a cada avanço/recuo
+    if (dialog) dialog.scrollTop = 0;
+
+    // Desfoca qualquer input ativo para recolher o teclado virtual antes de renderizar novo passo
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      try {
+        document.activeElement.blur();
+      } catch (_) {}
+    }
+
+    // Rastreia visualização de etapa no Hub
+    if (step <= totalSteps) {
+      const stepNames = ['', 'nome', 'telefone', 'email', 'cargo', 'faturamento'];
+      trackHubEvent('quiz_step_viewed', {
+        step: step,
+        step_name: stepNames[step] || `step_${step}`,
+        page_path: window.location.pathname
+      });
+    }
+
     // Atualiza barra de progresso via transform scaleX (zero layout thrash)
     if (progressBar && progressPct) {
       if (step <= totalSteps) {
@@ -355,12 +444,20 @@ function initDialogModal() {
     const targetPane = dialog.querySelector(`[data-step="${step}"]`) || document.getElementById('formStepLoading');
     if (targetPane) {
       targetPane.style.display = 'block';
-      setTimeout(() => targetPane.classList.add('active'), 10);
+      setTimeout(() => {
+        targetPane.classList.add('active');
+        if (dialog) dialog.scrollTop = 0;
+      }, 10);
 
-      // Auto-foco acessível no primeiro elemento focável (input, card de rádio ou botão)
-      const firstFocusable = targetPane.querySelector('input:not([style*="display: none"]), [role="radio"], button:not(.step-btn-back)');
-      if (firstFocusable) {
-        setTimeout(() => firstFocusable.focus(), 80);
+      // Auto-foco somente em computadores desktop para inputs de texto (evita saltos de viewport em mobile)
+      const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+      const textInput = targetPane.querySelector('input:not([style*="display: none"])');
+      if (textInput && !isTouch) {
+        setTimeout(() => {
+          try {
+            textInput.focus({ preventScroll: true });
+          } catch (_) {}
+        }, 80);
       }
     }
   }
@@ -499,6 +596,29 @@ function initDialogModal() {
   async function submitLeadAndRedirect() {
     goToStep(6); // Loading
 
+    // Dispara conversões para o Hub Tracker
+    try {
+      trackHubConversion('lead', {
+        name: leadData.name,
+        email: leadData.email,
+        phone: leadData.phone,
+        cargo: leadData.role,
+        faturamento: leadData.revenue,
+        productId: 'imobicreator-real-estate-ai-influencer',
+        source: 'imobicreator_modal',
+        valueCents: 1500000,
+        currency: 'BRL'
+      });
+
+      trackHubConversion('initiateCheckout', {
+        productId: 'imobicreator-real-estate-ai-influencer',
+        name: leadData.name,
+        email: leadData.email,
+        phone: leadData.phone,
+        currency: 'BRL'
+      });
+    } catch (_) {}
+
     // Captura parâmetros de UTM da URL
     const urlParams = new URLSearchParams(window.location.search);
     const payload = {
@@ -525,6 +645,15 @@ function initDialogModal() {
     const executeRedirect = (targetUrl) => {
       if (!redirected) {
         redirected = true;
+        try {
+          trackHubEvent('contact_whatsapp', {
+            name: leadData.name,
+            phone: '5521983747796',
+            role: leadData.role,
+            revenue: leadData.revenue,
+            page_path: window.location.pathname
+          });
+        } catch (_) {}
         window.location.href = targetUrl || fallbackWhatsappUrl;
       }
     };
@@ -641,9 +770,22 @@ function initDialogModal() {
   });
 
   // Abrir e fechar o modal
-  const openDialog = () => {
+  const openDialog = (ctaText = 'Quero meu Influencer de IA') => {
+    try {
+      trackHubEvent('cta_click', {
+        cta_text: ctaText,
+        cta_type: 'open_qualification_modal',
+        page_path: window.location.pathname
+      });
+      trackHubEvent('quiz_start', {
+        form: 'imobicreator_qualification',
+        page_path: window.location.pathname
+      });
+    } catch (_) {}
+
     dialog.showModal();
     document.body.style.overflow = 'hidden';
+    if (dialog) dialog.scrollTop = 0;
     // Se for abertura limpa, reinicia no step 1
     if (currentStep > 5) {
       goToStep(1);
@@ -660,7 +802,8 @@ function initDialogModal() {
   openButtons.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
-      openDialog();
+      const text = btn.textContent ? btn.textContent.trim().replace(/\s+/g, ' ') : 'Quero meu Influencer de IA';
+      openDialog(text);
     });
   });
 

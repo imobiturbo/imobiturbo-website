@@ -12,6 +12,8 @@ const neutralTrackingHtmlFiles = [
   'construtoras-incorporadoras/index.html',
   'imobiliarias/index.html',
   'depoimentos/index.html',
+  'imobicreator/index.html',
+  'real-estate-ai-influencer/index.html',
 ];
 
 const reactHtmlFiles = [
