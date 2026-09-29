@@ -70,10 +70,9 @@
     button.addEventListener('click', function () {
       var plan = button.dataset.plan;
       var offer = config && config.offers && config.offers[plan];
-      if (!config || !config.salesEnabled || config.fulfillmentStatus !== 'ready' || !validOffer(offer)) {
-        setAvailability('As vendas ainda não estão abertas. Você está vendo a prévia da oferta.');
+      if (!config || !config.salesEnabled || !validOffer(offer)) {
+        setAvailability('Não foi possível carregar os dados do checkout. Recarregue a página para tentar novamente.');
         document.getElementById('availability').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        track('offer_preview_click', { offer_code: plan });
         return;
       }
       button.disabled = true;
@@ -93,13 +92,12 @@
     if (!response.ok) throw new Error('offer_unavailable'); return response.json();
   }).then(function (value) {
     config = value;
-    var ready = value.salesEnabled === true && value.fulfillmentStatus === 'ready';
-    if (!ready) return;
+    if (value.salesEnabled !== true) return;
     document.querySelectorAll('[data-plan]').forEach(function (button) {
       if (validOffer(value.offers[button.dataset.plan])) button.removeAttribute('aria-disabled');
     });
-    setAvailability('Pagamento único e seguro pela Wiapy. Escolha o seu kit.');
-  }).catch(function () { setAvailability('As vendas ainda não estão abertas.'); });
+    setAvailability('Pagamento pela Wiapy. Escolha seu kit.');
+  }).catch(function () { setAvailability('Não foi possível carregar os dados do checkout. Recarregue a página para tentar novamente.'); });
 
   // In-page navigation is a scroll, not a new tracked page occurrence.
   // Keep native anchors for no-JS access without triggering the tracker/hash observer.
