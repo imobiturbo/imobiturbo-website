@@ -2,7 +2,7 @@
   "productId": "skills-ia-corretor",
   "title": "54 skills de IA para corretores de imóveis",
   "currency": "BRL",
-  "salesEnabled": false,
+  "salesEnabled": true,
   "fulfillmentStatus": "pending",
   "operationId": "00000000-0000-0000-0000-000000000001",
   "pixelId": "1025303472485246",
