@@ -158,3 +158,22 @@ test("functions/api/checkout/index.js syncs latest customer contact details to A
   assert.ok(code.includes("mobilePhone: cleanPhone"), "Must update mobilePhone on Asaas customer");
 });
 
+test("functions/api/checkout/status.js and webhook.js enforce notification idempotency via purchaseProof", () => {
+  const statusCode = fs.readFileSync(path.join(root, "functions/api/checkout/status.js"), "utf8");
+  const webhookCode = fs.readFileSync(path.join(root, "functions/api/checkout/webhook.js"), "utf8");
+
+  assert.ok(statusCode.includes("purchaseProof: { approvedAt:"), "status.js must pass purchaseProof for idempotency");
+  assert.ok(statusCode.includes("COMMUNITY_ORGANIZATION_ID:"), "status.js must provide COMMUNITY_ORGANIZATION_ID");
+  assert.ok(webhookCode.includes("purchaseProof: { approvedAt:"), "webhook.js must pass purchaseProof for idempotency");
+});
+
+test("vagas/checkout-session.js persists paid state and short-circuits polling on approved payments", () => {
+  const sessionCode = fs.readFileSync(path.join(root, "vagas/checkout-session.js"), "utf8");
+  const upsellCode = fs.readFileSync(path.join(root, "vagas-obrigado/upsell.js"), "utf8");
+
+  assert.ok(sessionCode.includes("paid: value.paid === true"), "Session must persist paid boolean");
+  assert.ok(sessionCode.includes("if (record.paid === true) {"), "check() and start() must short-circuit if already paid");
+  assert.ok(upsellCode.includes("if (comm && !comm.paid) community.start()"), "upsell resume must not poll paid community");
+});
+
+

@@ -38,6 +38,7 @@
         orderId: typeof value.orderId === 'string' && /^[a-zA-Z0-9_-]{1,160}$/.test(value.orderId) ? value.orderId : '',
         method: value.method === 'CREDIT_CARD' ? 'CREDIT_CARD' : 'PIX',
         expiresAt: value.expiresAt,
+        paid: value.paid === true,
         pix: {
           copyPaste: typeof pix.copyPaste === 'string' ? pix.copyPaste.slice(0, 4096) : '',
           qrCodeBase64: typeof pix.qrCodeBase64 === 'string' && pix.qrCodeBase64.length < 512000 &&
@@ -90,6 +91,11 @@
       if (inFlight) return inFlight;
       const record = read();
       if (!record) return Promise.resolve(null);
+      if (record.paid === true) {
+        stop();
+        options.onPaid?.(record);
+        return Promise.resolve(record);
+      }
       inFlight = (async () => {
         const controller = new AbortController();
         const timeout = root.setTimeout(() => controller.abort(), 10000);
@@ -107,8 +113,8 @@
           }
           // Payment approval wins over the checkout deadline, including on return.
           if (data.paid === true) {
-            const approved = { ...record, ...data };
-            save(approved, { method: record.method, expiresAt: record.expiresAt });
+            const approved = { ...record, ...data, paid: true };
+            save(approved, { method: record.method, expiresAt: record.expiresAt, paid: true });
             stop();
             options.onPaid?.(approved);
             return approved;
@@ -141,6 +147,10 @@
       stop();
       const record = read();
       if (!record) return Promise.resolve(null);
+      if (record.paid === true) {
+        options.onPaid?.(record);
+        return Promise.resolve(record);
+      }
       options.onPending?.(record);
       polling = root.setInterval(check, 3000);
       return check();

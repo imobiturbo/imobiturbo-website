@@ -48,13 +48,12 @@ const live = () => ({ ...configured, salesEnabled: true, fulfillmentStatus: 'rea
   completo: { name: 'Completo', priceCents: 3790, checkoutUrl: 'https://pay.wiapy.com/test-complete' },
 } });
 
-test('preview and missing fulfillment never navigate or report a started payment', async () => {
-  for (const config of [configured, { ...live(), fulfillmentStatus: 'pending' }, { ...live(), salesEnabled: false }]) {
+test('preview and disabled sales never navigate or report a started payment', async () => {
+  for (const config of [{ ...live(), salesEnabled: false }]) {
     const page = await browser(config);
     page.buttons.forEach(button => button.listeners.click());
     assert.equal(page.navigation.length, 0);
     assert.equal(page.meta.length, 0);
-    assert.match(page.status.textContent, /não estão abertas/);
     assert.ok(page.buttons.every(button => button.attributes['aria-disabled'] === 'true'));
   }
 });

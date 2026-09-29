@@ -182,6 +182,7 @@ export async function onRequestGet(context) {
             buyerName = data.customer.name || "";
           }
 
+          const approvedAt = data.paymentDate || data.confirmedDate || data.clientPaymentDate || data.dateCreated || new Date().toISOString();
           const notificationPromise = (details.productId !== CONSULTING_PRODUCT_ID && (buyerEmail || buyerPhone))
             ? sendPostPurchaseNotifications({
                 email: buyerEmail,
@@ -190,7 +191,8 @@ export async function onRequestGet(context) {
                 plan: details.plan || "anual",
                 paymentId: data.id,
                 amountCents: Math.round(amount * 100),
-                env,
+                purchaseProof: { approvedAt: new Date(approvedAt).toISOString() },
+                env: { COMMUNITY_ORGANIZATION_ID: (env && env.COMMUNITY_ORGANIZATION_ID) || "18b103e6-a006-45ac-84d5-62312f45ba77", ...env },
               }).catch((e) => console.error("Status notification dispatch error:", e))
             : Promise.resolve(null);
 
