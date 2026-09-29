@@ -14,11 +14,13 @@ function banner(instant) {
     querySelector: () => target,
     querySelectorAll: () => [],
     addEventListener: (name, fn) => { listeners[name] = fn; },
+    createElement: () => ({ setAttribute: () => {}, appendChild: () => {}, classList: { add: () => {} } }),
+    body: { appendChild: () => {} },
   };
   class Clock extends Date { constructor(...args) { super(...(args.length ? args : [now])); } }
   vm.runInNewContext(source, {
     document, Intl, Date: Clock,
-    window: { setInterval: fn => timers.push(fn) },
+    window: { setInterval: fn => timers.push(fn), addEventListener: () => {} },
   });
   return { target, timers, listeners, document, moveTo: value => { now = new Date(value); } };
 }
