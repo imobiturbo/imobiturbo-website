@@ -1516,7 +1516,11 @@
           <div class="hero-vsl" id="vslFacade" tabindex="0" role="group" aria-label="Apresentação da Comunidade Imobiturbo. Pressione Enter para reproduzir ou pausar." onclick="playVslVideo(event)">
             <div class="vsl-stage">
             <!-- Muted Video Autoplay Preview: starts instantly with zero lag -->
-            <video id="vslVideo" playsinline muted autoplay loop preload="auto" poster="./assets/hero-vsl-poster.webp" src="./assets/vsl-preview.mp4">
+            <video id="vslVideo" playsinline muted autoplay loop preload="auto"
+              data-desktop-src="https://vsl.imobiturbo.com.br/imobiturbo-vagas-horizontal-reels-sound-v5.mp4"
+              data-mobile-src="https://vsl.imobiturbo.com.br/imobiturbo-vagas-vertical-reels-sound-v5.mp4"
+              data-desktop-poster="https://video.imobiturbo.com.br/4d28eb8e-baea-46b1-bf0c-36235ffda3ea/thumbnail.jpg"
+              data-mobile-poster="https://video.imobiturbo.com.br/a4dbfb63-7cab-4bb2-96b6-e9d330d52349/thumbnail.jpg">
               Seu navegador não suporta vídeos em HTML5.
             </video>
 
@@ -4719,10 +4723,42 @@
     updateModalPlanBadge();
 
     // ==========================================
-    // VSL Player Controller (Bunny Stream + VTurb Retention Engine)
+    // VSL Player Controller (Responsive V5 + VTurb Retention Engine)
     // ==========================================
     let vslStarted = false;
-    let hlsInstance = null;
+    const vslMobileQuery = window.matchMedia('(max-width: 760px), (pointer: coarse) and (max-width: 1024px)');
+
+    function isMobileVslDevice() {
+      return vslMobileQuery.matches;
+    }
+
+    function startMutedVslPreview(video) {
+      if (!video || vslStarted) return;
+      video.muted = true;
+      video.defaultMuted = true;
+      video.loop = true;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(function(err) {
+          console.log('Autoplay muted preview notice:', err);
+        });
+      }
+    }
+
+    function loadResponsiveVslSource(video) {
+      const mobile = isMobileVslDevice();
+      const sourceUrl = mobile ? video.dataset.mobileSrc : video.dataset.desktopSrc;
+      const posterUrl = mobile ? video.dataset.mobilePoster : video.dataset.desktopPoster;
+
+      if (!sourceUrl || video.dataset.activeSrc === sourceUrl) return;
+
+      if (posterUrl) video.poster = posterUrl;
+      video.dataset.vslVariant = mobile ? 'mobile' : 'desktop';
+      video.dataset.activeSrc = sourceUrl;
+      video.src = sourceUrl;
+      video.load();
+      startMutedVslPreview(video);
+    }
 
     function initVslPlayer() {
       const video = document.getElementById('vslVideo');
@@ -4735,12 +4771,17 @@
       video.muted = true;
       video.defaultMuted = true;
       video.loop = true;
+      loadResponsiveVslSource(video);
 
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(function(err) {
-          console.log('Autoplay muted preview notice:', err);
-        });
+      const handleResponsiveSourceChange = function() {
+        if (vslStarted) return;
+        video.pause();
+        loadResponsiveVslSource(video);
+      };
+      if (vslMobileQuery.addEventListener) {
+        vslMobileQuery.addEventListener('change', handleResponsiveSourceChange);
+      } else if (vslMobileQuery.addListener) {
+        vslMobileQuery.addListener(handleResponsiveSourceChange);
       }
 
       // Fast Smart Progress Bar Animation Loop (VTurb Psychological Retention Curve)
@@ -4770,10 +4811,7 @@
           e.stopPropagation();
           if (!video || !video.duration) return;
           const rect = progressBar.getBoundingClientRect();
-          const rotated = document.fullscreenElement?.id === 'vslFacade'
-            && document.fullscreenElement.classList.contains('is-mobile-fullscreen')
-            && matchMedia('(orientation: portrait)').matches;
-          const position = rotated ? (e.clientY - rect.top) / rect.height : (e.clientX - rect.left) / rect.width;
+          const position = (e.clientX - rect.left) / rect.width;
           const visualRatio = Math.max(0, Math.min(1, position));
           // Inverse of r^0.42: r = visualRatio^(1 / 0.42)
           const realRatio = Math.pow(visualRatio, 1 / 0.42);
@@ -4942,9 +4980,9 @@
           if (mobile && document.fullscreenElement === facade && screen.orientation?.lock) {
             vslOrientationRequested = true;
             try {
-              await screen.orientation.lock('landscape');
+              await screen.orientation.lock('portrait');
             } catch (_) {
-              // Portrait devices still get a landscape stage when locking is unavailable.
+              // Browsers may deny orientation lock; the 9:16 stage still remains usable.
             }
             // An exit can happen before the asynchronous orientation request settles.
             if (document.fullscreenElement !== facade) screen.orientation?.unlock?.();
