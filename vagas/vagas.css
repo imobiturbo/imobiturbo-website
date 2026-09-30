@@ -2912,18 +2912,6 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   border-radius: 0;
 }
 
-/* Keep video, progress and controls together in landscape if device locking fails. */
-@media (orientation: portrait) {
-  .hero-vsl:fullscreen.is-mobile-fullscreen .vsl-stage {
-    inset: auto;
-    top: 50%;
-    left: 50%;
-    width: 100dvh;
-    height: 100dvw;
-    transform: translate(-50%, -50%) rotate(90deg);
-  }
-}
-
 /* VTurb-Style Preview Overlay */
 .vsl-overlay {
   position: absolute;
@@ -3436,10 +3424,16 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   60% { box-shadow: 0 0 0 12px rgba(212, 255, 83, 0); }
 }
 @media (max-width: 760px) {
+  .hero-mock { max-width: 420px; }
+  .hero-vsl { aspect-ratio: 9 / 16; }
   .whatsapp-layout { grid-template-areas: 'intro' 'conversation' 'roles' 'action'; }
   .authority-layout { grid-template-areas: 'heading' 'portrait' 'copy'; }
   .section-cta .btn { width: 100%; padding-inline: 20px; }
   .btn { padding-inline: 20px; font-size: 15px; }
+}
+@media (pointer: coarse) and (max-width: 1024px) {
+  .hero-mock { max-width: 420px; }
+  .hero-vsl { aspect-ratio: 9 / 16; }
 }
 @media (prefers-reduced-motion: reduce) {
   /* The VSL preview intentionally stays animated; keep the exception scoped to it. */
