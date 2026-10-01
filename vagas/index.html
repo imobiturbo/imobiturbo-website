@@ -585,7 +585,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20261001-connect2">
+  <link rel="stylesheet" href="./vagas.css?v=20261001-initial-preview">
   <style id="cioCriticalSliderCss">
     /* Critical Imobiturbo Club Slider Invariants */
     .cio-header-top-row {
@@ -1442,8 +1442,8 @@
         <div class="hero-mock">
           <div class="hero-vsl" id="vslFacade" tabindex="0" role="group" aria-label="Apresentação da Comunidade Imobiturbo. Pressione Enter para reproduzir ou pausar." onclick="playVslVideo(event)">
             <div class="vsl-stage">
-            <!-- Main VSL stays paused until the visitor explicitly starts it. -->
-            <video id="vslVideo" playsinline preload="none"
+            <!-- Original muted autoplay preview until the first intentional play. -->
+            <video id="vslVideo" playsinline muted autoplay loop preload="auto"
               data-desktop-src="https://vsl.imobiturbo.com.br/imobiturbo-vagas-horizontal-reels-sound-v5.mp4"
               data-mobile-src="https://vsl.imobiturbo.com.br/imobiturbo-vagas-vertical-reels-sound-v5.mp4"
               data-desktop-poster="https://video.imobiturbo.com.br/4d28eb8e-baea-46b1-bf0c-36235ffda3ea/thumbnail.jpg"
@@ -1451,9 +1451,30 @@
               Seu navegador não suporta vídeos em HTML5.
             </video>
 
-            <!-- Imobiturbo ThumbSniper: lightweight animated pause/retention state. -->
-            <div class="vsl-overlay" id="vslOverlay" aria-label="Vídeo pausado. Clique para continuar assistindo.">
-              <video id="vslRetentionVideo" class="vsl-retention-video" playsinline muted autoplay loop preload="auto"
+            <!-- VTurb-Style Pure HTML/CSS Smart Autoplay Overlay -->
+            <div class="vsl-overlay vsl-initial-overlay" id="vslInitialOverlay" aria-label="Clique para ouvir com som">
+              <div class="vsl-autoplay-notice">
+                <strong>Seu vídeo começou</strong>
+                <span>▶️ Clique para ouvir</span>
+              </div>
+              <div class="vsl-smart-autoplay">
+                <div class="vsl-play-btn-circle">
+                  <div class="vsl-ripple-ring"></div>
+                  <div class="vsl-ripple-ring vsl-ripple-2"></div>
+                  <svg class="vsl-play-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+                <div class="vsl-mouse-anim">
+                  <img src="./assets/click-sparks.png" alt="Efeito de clique" class="vsl-click-sparks" width="56" height="44" draggable="false" aria-hidden="true">
+                  <img src="./assets/pixel-cursor.png" alt="Cursor de clique" class="vsl-cursor-pointer" width="48" height="74" draggable="false" aria-hidden="true">
+                </div>
+              </div>
+            </div>
+
+            <!-- ThumbSniper appears only after an intentional start followed by pause/end. -->
+            <div class="vsl-overlay vsl-hidden" id="vslOverlay" aria-hidden="true" aria-label="Vídeo pausado. Clique para continuar assistindo.">
+              <video id="vslRetentionVideo" class="vsl-retention-video" playsinline muted loop preload="none"
                 data-desktop-src="./assets/vsl-thumbsniper-desktop-ai-v2.webm"
                 data-mobile-src="./assets/vsl-thumbsniper-mobile-ai-v2.webm"
                 data-desktop-poster="./assets/vsl-thumbsniper-desktop-ai-v2.webp"
@@ -4678,6 +4699,19 @@
       return vslMobileQuery.matches;
     }
 
+    function startMutedVslPreview(video) {
+      if (!video || vslStarted) return;
+      video.muted = true;
+      video.defaultMuted = true;
+      video.loop = true;
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(function(err) {
+          console.log('Autoplay muted preview notice:', err);
+        });
+      }
+    }
+
     function loadResponsiveVslSource(video) {
       const mobile = isMobileVslDevice();
       const sourceUrl = mobile ? video.dataset.mobileSrc : video.dataset.desktopSrc;
@@ -4690,6 +4724,7 @@
       video.dataset.activeSrc = sourceUrl;
       video.src = sourceUrl;
       video.load();
+      startMutedVslPreview(video);
     }
 
     function loadResponsiveRetentionSource(retention) {
@@ -4712,7 +4747,14 @@
       const retention = document.getElementById('vslRetentionVideo');
       if (!overlay) return;
 
+      visible = visible && vslStarted;
       overlay.classList.toggle('vsl-hidden', !visible);
+      overlay.setAttribute('aria-hidden', String(!visible));
+      const initialOverlay = document.getElementById('vslInitialOverlay');
+      if (initialOverlay) {
+        initialOverlay.classList.toggle('vsl-hidden', vslStarted);
+        initialOverlay.setAttribute('aria-hidden', String(vslStarted));
+      }
       if (!retention) return;
 
       if (visible) {
@@ -4739,20 +4781,18 @@
 
       if (!video) return;
 
-      // Keep the real VSL stopped. Only the lightweight ThumbSniper loops before intent.
-      video.muted = false;
-      video.defaultMuted = false;
-      video.loop = false;
+      // Preserve the original silent VSL preview; retention media loads only on a later pause.
+      video.muted = true;
+      video.defaultMuted = true;
+      video.loop = true;
       loadResponsiveVslSource(video);
-      loadResponsiveRetentionSource(retention);
-      setVslRetentionVisible(true);
+      setVslRetentionVisible(false);
 
       const handleResponsiveSourceChange = function() {
         if (vslStarted) return;
         video.pause();
         loadResponsiveVslSource(video);
-        loadResponsiveRetentionSource(retention);
-        setVslRetentionVisible(true);
+        setVslRetentionVisible(false);
       };
       if (vslMobileQuery.addEventListener) {
         vslMobileQuery.addEventListener('change', handleResponsiveSourceChange);
@@ -4785,7 +4825,7 @@
       });
 
       video.addEventListener('pause', function() {
-        if (vslStarted && !video.ended) setVslRetentionVisible(true);
+        if (vslStarted && video.paused && !video.ended) setVslRetentionVisible(true);
       });
 
       video.addEventListener('ended', function() {
@@ -4818,8 +4858,8 @@
       revealVslControls();
 
       if (!vslStarted) {
-        vslStarted = true;
         video.pause();
+        vslStarted = true;
         // RESTART FROM 00:00 WITH FULL AUDIO
         video.currentTime = 0;
         video.loop = false;

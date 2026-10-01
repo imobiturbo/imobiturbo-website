@@ -2925,6 +2925,17 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   cursor: pointer;
 }
 
+/* Preserve the original transparent preview over the muted VSL. */
+.vsl-initial-overlay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  padding: 20px;
+  text-align: center;
+}
+
 .vsl-overlay.vsl-hidden {
   opacity: 0;
   visibility: hidden;
