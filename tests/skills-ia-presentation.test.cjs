@@ -47,3 +47,14 @@ test('a returning tab refreshes its date after sleeping across a month boundary'
   assert.equal(page.target.textContent, '01/10/2026');
   assert.equal(page.target.dateTime, '2026-10-01');
 });
+
+test('steps use numbered badges without absolute step-icons or dead rum scripts', () => {
+  const html = fs.readFileSync(path.join(__dirname, '../skills-ia/index.html'), 'utf8');
+  const css = fs.readFileSync(path.join(__dirname, '../skills-ia/low-ticket.css'), 'utf8');
+  assert.equal(html.includes('class="step-icon"'), false, 'index.html must not use step-icon wrapper');
+  assert.equal(html.includes('rum-v2.min.js'), false, 'index.html must not load blocked rum-v2 script');
+  assert.match(html, /<ol class="steps"><li><span>1<\/span>/, 'steps must start with numbered badge 1');
+  assert.match(html, /<li><span>4<\/span><h3>Revise e use<\/h3>/, 'step 4 must be numbered badge 4');
+  assert.equal(css.includes('.steps>li>.step-icon'), false, 'low-ticket.css must not have absolute step-icon rule');
+});
+
