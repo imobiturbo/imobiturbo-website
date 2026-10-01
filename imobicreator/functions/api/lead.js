@@ -117,16 +117,16 @@ export async function onRequestPost(context) {
       const mensagemWhatsApp = 
 `Olá, ${primeiroNome}! Aqui é o Natan Pimentel, fundador da Imobiturbo e criador do Imobicreator. 👋🏻
 
-Recebi seus dados para o projeto de Real Estate AI Influencer da sua construtora:
+Recebi seus dados para o projeto de Real Estate AI Influencer da sua imobiliária:
 
 - *Nome:* ${nome}
 - *Cargo:* ${cargo || 'Diretoria'}
 - *Faixa de Faturamento:* ${faturamento || 'Não informada'}
 - *E-mail:* ${email || 'Não informado'}
 
-> Já estou com o seu perfil aberto aqui para desenharmos o conceito sob medida do influenciador virtual de IA da sua empresa (rosto exclusivo, voz calibrada e cenas em canteiro de obras).
+> Já estou com o seu perfil aberto aqui para desenharmos o conceito sob medida do influenciador virtual de IA da sua empresa (rosto exclusivo, voz calibrada e tours pelos seus imóveis e lançamentos).
 
-Estou à sua disposição aqui nesta conversa para tirar dúvidas técnicas e alinharmos o briefing executivo. Me diz: qual é o principal lançamento ou perfil de empreendimento que vocês têm em foco agora?`;
+Estou à sua disposição aqui nesta conversa para tirar dúvidas técnicas e alinharmos o briefing executivo. Me diz: qual é o principal imóvel ou perfil de empreendimento que vocês têm em foco agora?`;
 
       try {
         const wahaRes = await fetch(WAHA_SEND_TEXT_ENDPOINT, {
@@ -157,7 +157,7 @@ Estou à sua disposição aqui nesta conversa para tirar dúvidas técnicas e al
 
     // 3. Monta a URL de redirecionamento para o WhatsApp do Natan
     const msgRedirect = encodeURIComponent(
-      `Olá Natan! Sou ${nome || 'visitante'}${cargo ? ` (${cargo})` : ''}. Acabei de preencher o formulário no Imobicreator e quero desenhar o influenciador de IA para minha construtora.`
+      `Olá Natan! Sou ${nome || 'visitante'}${cargo ? ` (${cargo})` : ''}. Acabei de preencher o formulário no Imobicreator e quero desenhar o influenciador de IA para minha imobiliária.`
     );
     const redirectUrl = `https://wa.me/5521983747796?text=${msgRedirect}`;
 
