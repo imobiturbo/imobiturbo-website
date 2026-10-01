@@ -60,6 +60,7 @@ async function visit(t, width = 390, reducedMotion = 'reduce') {
     await document.fonts.ready;
     await Promise.all([...document.querySelectorAll('main img')].map(image => {
       image.loading = 'eager';
+      if (image.dataset.lazySrc) { image.src = image.dataset.lazySrc; delete image.dataset.lazySrc; }
       return image.decode().catch(() => {});
     }));
   });
