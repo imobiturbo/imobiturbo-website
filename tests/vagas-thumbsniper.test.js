@@ -12,7 +12,7 @@ test('vagas uses a lightweight responsive ThumbSniper while the real VSL stays s
   const retentionVideo = html.match(/<video id="vslRetentionVideo"([^>]*)>/);
 
   assert.ok(mainVideo, 'Main VSL video must exist');
-  assert.match(mainVideo[1], /preload="metadata"/);
+  assert.match(mainVideo[1], /preload="none"/);
   assert.doesNotMatch(mainVideo[1], /\bautoplay\b/);
   assert.doesNotMatch(mainVideo[1], /\bloop\b/);
   assert.doesNotMatch(mainVideo[1], /\bmuted\b/);
