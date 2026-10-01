@@ -11,80 +11,7 @@
   <meta name="theme-color" content="#0e100d">
   <meta name="color-scheme" content="dark">
 
-  <!-- In-App Browser Escaper (Instagram & Facebook WebViews) -->
-  <script>
-  (function() {
-    try {
-      var ua = navigator.userAgent || "";
-      // 1. Nao interfere em bots de auditoria do Meta e Google (evita reprovacao do anuncio)
-      if (/facebookexternalhit|Facebot|Googlebot|bingbot|AdsBot-Google/i.test(ua)) return;
-
-      var isDebugIOS = /debug(_iab)?=ios/i.test(window.location.search);
-      // 2. Detecta se esta dentro da WebView do Instagram ou Facebook
-      var isInstagram = /Instagram/i.test(ua) || isDebugIOS;
-      var isFacebook = /FBAN|FBAV/i.test(ua);
-      if (!isInstagram && !isFacebook) return;
-
-      var isAndroid = /Android/i.test(ua) && !isDebugIOS;
-      var isIOS = /iPhone|iPad|iPod/i.test(ua) || isDebugIOS;
-      var currentUrl = window.location.href;
-
-      // 3. ANDROID: Dispara intent para abrir no Google Chrome com todos os parametros e UTMs preservados
-      if (isAndroid) {
-        if (sessionStorage.getItem('imt_iab_escaped') === '1') return;
-        sessionStorage.setItem('imt_iab_escaped', '1');
-
-        var cleanUrl = currentUrl.replace(/^https?:\/\//i, '');
-        var intentUrl = "intent://" + cleanUrl + "#Intent;scheme=https;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(currentUrl) + ";end";
-        window.location.replace(intentUrl);
-        return;
-      }
-
-      // 4. IOS: Exibe banner superior orientando a abrir no Safari para autopreencher dados
-      if (isIOS) {
-        function showIOSBanner() {
-          if (document.getElementById('imt-iab-banner')) return;
-          if (sessionStorage.getItem('imt_iab_banner_closed') === '1') return;
-
-          var banner = document.createElement('div');
-          banner.id = 'imt-iab-banner';
-          banner.setAttribute('role', 'alert');
-          banner.style.cssText = 'position:fixed;top:0;left:0;right:0;width:100%;background:rgba(14,16,13,0.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#ffffff;padding:10px 14px;z-index:9999999;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;box-shadow:0 4px 20px rgba(0,0,0,0.6);border-bottom:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:space-between;box-sizing:border-box;font-size:12.5px;line-height:1.35;';
-
-          var safariSvg = '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 66.165833 65.803795" width="16" height="16" style="vertical-align:-2.5px;margin-left:4px;display:inline-block;"><defs><linearGradient id="imt-safari-b"><stop offset="0" stop-color="#06c2e7"/><stop offset=".25" stop-color="#0db8ec"/><stop offset=".5" stop-color="#12aef1"/><stop offset=".75" stop-color="#1f86f9"/><stop offset="1" stop-color="#107ddd"/></linearGradient><linearGradient id="imt-safari-a"><stop offset="0" stop-color="#bdbdbd"/><stop offset="1" stop-color="#fff"/></linearGradient><linearGradient xlink:href="#imt-safari-a" id="imt-safari-d" x1="412.975" x2="412.975" y1="237.608" y2="59.392" gradientTransform="translate(206.79 159.773) scale(.35154)" gradientUnits="userSpaceOnUse"/><filter id="imt-safari-f" width="1.042" height="1.045" x="-.021" y="-.022" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation=".958"/></filter><filter id="imt-safari-c" width="1.096" height="1.096" x="-.048" y="-.048" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="3.564"/></filter><radialGradient xlink:href="#imt-safari-b" id="imt-safari-e" cx="413.061" cy="136.818" r="82.125" fx="413.061" fy="136.818" gradientTransform="translate(194.545 155.58) scale(.38143)" gradientUnits="userSpaceOnUse"/></defs><path d="M502.083 148.5a89.108 89.108 0 0 1-89.108 89.108 89.108 89.108 0 0 1-89.108-89.108 89.108 89.108 0 0 1 89.108-89.108 89.108 89.108 0 0 1 89.108 89.108Z" filter="url(#imt-safari-c)" opacity=".53" paint-order="markers stroke fill" transform="matrix(.33865 0 0 .3261 -106.77 -14.478)"/><path fill="url(#imt-safari-d)" stroke="#cdcdcd" stroke-linecap="round" stroke-linejoin="round" stroke-width=".093" d="M383.294 211.977a31.325 31.325 0 0 1-31.325 31.325 31.325 31.325 0 0 1-31.325-31.325 31.325 31.325 0 0 1 31.325-31.325 31.325 31.325 0 0 1 31.325 31.325z" paint-order="markers stroke fill" transform="translate(-318.886 -180.595)"/><path fill="url(#imt-safari-e)" d="M380.839 211.977a28.87 28.87 0 0 1-28.87 28.87 28.87 28.87 0 0 1-28.87-28.87 28.87 28.87 0 0 1 28.87-28.87 28.87 28.87 0 0 1 28.87 28.87z" paint-order="markers stroke fill" transform="translate(-318.886 -180.595)"/><path fill="#f4f2f3" d="M33.083 4.017c-.233 0-.421.187-.421.42v4.856c0 .233.188.42.42.42.234 0 .422-.187.422-.42V4.437c0-.233-.188-.42-.421-.42zm-2.754.174c-.028-.003-.056-.003-.085 0-.232.025-.4.23-.375.463l.212 2.031c.024.232.23.4.462.375.232-.024.4-.23.375-.462l-.212-2.032c-.021-.202-.182-.356-.377-.375zm5.527.002c-.196.019-.356.172-.378.375l-.213 2.031c-.025.232.143.439.375.463.232.024.438-.143.462-.375l.214-2.031c.024-.232-.143-.438-.375-.463-.029-.003-.057-.003-.085 0zm-8.356.408c-.028 0-.056.003-.085.009-.228.048-.373.27-.324.499l1.005 4.75c.049.228.271.373.499.324.229-.048.373-.27.325-.499l-1.006-4.75c-.042-.2-.218-.335-.414-.333zm11.184.004c-.196-.002-.372.134-.414.333l-1.009 4.75c-.049.228.096.45.324.5.228.048.451-.097.5-.325l1.008-4.75c.049-.228-.096-.45-.324-.5-.028-.005-.057-.008-.085-.008zM24.8 5.362c-.054-.005-.11.001-.166.02-.222.071-.342.308-.27.53l.63 1.942c.073.222.31.342.531.27.222-.071.342-.308.27-.53l-.63-1.942c-.055-.167-.201-.276-.365-.29zm16.568.001c-.163.014-.31.123-.364.29l-.632 1.942c-.072.221.049.458.27.53.222.072.459-.048.531-.27l.631-1.942c.072-.222-.048-.459-.27-.53-.055-.019-.112-.025-.166-.02zm-19.237.976c-.055 0-.11.013-.163.037-.213.095-.309.342-.214.555l1.972 4.437c.095.213.342.308.555.214.213-.095.309-.343.214-.556l-1.972-4.436c-.071-.16-.228-.254-.392-.251zm21.937.015c-.164-.003-.321.09-.393.25l-1.977 4.434c-.096.213 0 .46.212.555.213.095.461 0 .556-.212l1.978-4.434c.095-.213 0-.461-.213-.556-.053-.024-.108-.036-.163-.037zM19.654 7.65c-.081-.006-.164.012-.24.056-.202.117-.27.373-.154.575l1.021 1.769c.117.202.373.27.575.154.202-.117.27-.373.154-.575L20 7.86c-.073-.126-.2-.2-.335-.21zm26.858 0c-.134.01-.262.084-.335.21l-1.021 1.77c-.117.201-.048.457.154.574.202.117.458.048.575-.154l1.021-1.768c.117-.202.048-.459-.154-.575-.076-.044-.159-.062-.24-.056zM17.247 9.15c-.08.004-.162.03-.233.081-.188.137-.23.4-.093.588l2.85 3.93c.138.189.4.23.589.094.188-.137.23-.4.093-.588l-2.85-3.93c-.086-.118-.22-.178-.356-.174zm31.702.022c-.135-.005-.27.055-.355.173l-2.857 3.926c-.137.189-.096.45.093.588.189.138.451.096.588-.092l2.856-3.927c.138-.188.096-.45-.093-.588-.07-.051-.151-.077-.232-.08zm-33.852 1.782c-.108-.006-.217.03-.304.108-.173.156-.187.421-.031.594l1.366 1.518c.156.174.421.188.595.032.173-.156.187-.422.031-.595l-1.366-1.518c-.078-.086-.184-.133-.291-.139zm35.976.003c-.108.006-.213.053-.291.14l-1.367 1.517c-.156.173-.142.438.031.594.174.156.439.143.595-.03l1.366-1.518c.156-.174.142-.439-.031-.595-.087-.078-.196-.114-.304-.108zM11.155 33.256c-.028-.003-.056-.003-.085 0l-4.83.504c-.231.024-.4.23-.374.462.024.232.23.4.462.375l4.829-.504c.232-.024.4-.23.375-.462-.021-.203-.182-.357-.377-.376zm43.853.03c-.195.019-.356.172-.377.375-.025.232.142.438.374.463l4.828.51c.232.025.439-.142.463-.374.025-.232-.142-.438-.374-.463l-4.828-.51c-.03-.003-.058-.003-.086 0zM6.165 30.961c-.233 0-.42.188-.42.421 0 .233.187.421.42.421h2.043c.233 0 .421-.188.421-.42 0-.234-.188-.422-.421-.422zm51.793 0c-.233 0-.42.188-.42.421 0 .233.187.421.42.421h2.043c.233 0 .421-.188.421-.42 0-.234-.188-.422-.421-.422z" paint-order="markers stroke fill"/><path d="m469.096 100.607-65.51 38.061-41.42 65.207 60.594-44.882z" filter="url(#imt-safari-f)" opacity=".41" paint-order="markers stroke fill" transform="translate(-112.095 -20.822) scale(.35154)"/><path fill="#ff5150" d="m36.383 34.838-6.6-6.913 23.416-15.752z" paint-order="markers stroke fill"/><path fill="#f1f1f1" d="m36.383 34.838-6.6-6.913-16.816 22.665z" paint-order="markers stroke fill"/><path d="m12.967 50.59 23.416-15.752 16.816-22.665z" opacity=".243"/></svg>';
-
-          banner.innerHTML = '<div style="display:flex;align-items:center;flex:1;padding-right:8px;">' +
-            '<span>Para uma melhor experiência, toque nos <b>⋯</b> e selecione <b>Abrir no Safari</b>' + safariSvg + '</span>' +
-            '</div>' +
-            '<div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">' +
-            '<span style="font-size:18px;display:inline-block;animation:imtBounce 1.2s infinite;">↗️</span>' +
-            '<button type="button" id="imt-iab-close" style="background:transparent;border:none;color:#94a3b8;font-size:16px;padding:4px;cursor:pointer;line-height:1;" aria-label="Fechar aviso">✕</button>' +
-            '</div>' +
-            '<style>@keyframes imtBounce{0%,100%{transform:translate(0,0)}50%{transform:translate(3px,-3px)}}</style>';
-
-          document.body.prepend(banner);
-
-          var closeBtn = document.getElementById('imt-iab-close');
-          if (closeBtn) {
-            closeBtn.addEventListener('click', function() {
-              banner.remove();
-              sessionStorage.setItem('imt_iab_banner_closed', '1');
-            });
-          }
-        }
-
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', showIOSBanner);
-        } else {
-          showIOSBanner();
-        }
-      }
-    } catch (e) {
-      // Falha silenciosa
-    }
-  })();
-  </script>
-
+  <!-- Preserve the in-app browser and click attribution; never force an external-browser redirect. -->
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:locale" content="pt_BR">
@@ -222,7 +149,7 @@
   </script>
 
   <!-- Tracking Scripts -->
-  <script id="hub-tracker" defer src="https://track.nmidigital.tech/t.js?operation=00000000-0000-0000-0000-000000000001&offer=4242c673-131d-4fb2-b297-8e6a5f155133" data-id="00000000-0000-0000-0000-000000000001" data-operation-id="00000000-0000-0000-0000-000000000001" data-offer-id="4242c673-131d-4fb2-b297-8e6a5f155133" data-offer="4242c673-131d-4fb2-b297-8e6a5f155133" data-endpoint="https://track.nmidigital.tech"></script>
+  <script id="hub-tracker" async src="https://track.nmidigital.tech/t.js?operation=00000000-0000-0000-0000-000000000001&v=20260930-connect&offer=4242c673-131d-4fb2-b297-8e6a5f155133" data-id="00000000-0000-0000-0000-000000000001" data-operation-id="00000000-0000-0000-0000-000000000001" data-offer-id="4242c673-131d-4fb2-b297-8e6a5f155133" data-offer="4242c673-131d-4fb2-b297-8e6a5f155133" data-endpoint="https://track.nmidigital.tech"></script>
   <script defer src="../site-tracking.js?v=20260906"></script>
 
   <!-- Eventos de navegação e conversão são enviados pelo Hub Tracker. -->
@@ -658,7 +585,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260930-thumbsniper">
+  <link rel="stylesheet" href="./vagas.css?v=20260930-connect">
   <style id="cioCriticalSliderCss">
     /* Critical Imobiturbo Club Slider Invariants */
     .cio-header-top-row {
@@ -1516,7 +1443,7 @@
           <div class="hero-vsl" id="vslFacade" tabindex="0" role="group" aria-label="Apresentação da Comunidade Imobiturbo. Pressione Enter para reproduzir ou pausar." onclick="playVslVideo(event)">
             <div class="vsl-stage">
             <!-- Main VSL stays paused until the visitor explicitly starts it. -->
-            <video id="vslVideo" playsinline preload="metadata"
+            <video id="vslVideo" playsinline preload="none"
               data-desktop-src="https://vsl.imobiturbo.com.br/imobiturbo-vagas-horizontal-reels-sound-v5.mp4"
               data-mobile-src="https://vsl.imobiturbo.com.br/imobiturbo-vagas-vertical-reels-sound-v5.mp4"
               data-desktop-poster="https://video.imobiturbo.com.br/4d28eb8e-baea-46b1-bf0c-36235ffda3ea/thumbnail.jpg"
@@ -1605,14 +1532,14 @@
           <div class="concept lesson-concept" aria-label="Demonstração do formato das aulas e trilhas">
             <div class="lesson-head">
               <span class="micro-tag" id="lessonTrackTag">
-                <img src="assets/thesvg/instagram.svg" class="track-tag-icon" id="lessonTrackTagIcon" width="13" height="13" alt="Instagram">
+                <img loading="lazy" decoding="async" src="assets/thesvg/instagram.svg" class="track-tag-icon" id="lessonTrackTagIcon" width="13" height="13" alt="Instagram">
                 <span id="lessonTrackTagText">Trilha 1 · Posicionamento</span>
               </span>
               <span class="lesson-dur" id="lessonDurationText">⭐ Central de IA</span>
             </div>
             <div class="lesson-body">
               <div class="lesson-play-btn" id="lessonPlayBtn" aria-hidden="true">
-                <img src="assets/trilha-01-instagram.webp" class="lesson-3d-icon" id="lesson3dIcon" width="44" height="44" alt="Trilha 1">
+                <img loading="lazy" decoding="async" src="assets/trilha-01-instagram.webp" class="lesson-3d-icon" id="lesson3dIcon" width="44" height="44" alt="Trilha 1">
                 <div class="lesson-mini-play" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
                 </div>
@@ -1715,16 +1642,16 @@
     <div class="container">
       <div class="section-intro">
         <span class="brand brand-os">
-          <img src="assets/brand/current/imobiturbo-os.webp" alt="Imobiturbo OS" width="3259" height="875">
+          <img loading="lazy" decoding="async" src="assets/brand/current/imobiturbo-os.webp" alt="Imobiturbo OS" width="3259" height="875">
         </span>
         <h2>Um CRM feito para fechar negócios, <span class="accent">não para preencher relatório chato.</span></h2>
         <p class="lead">Chega de perder vendas porque o contato sumiu no WhatsApp ou porque você esqueceu de dar retorno. Tenha o controle visual de cada proposta em segundos.</p>
       </div>
       <div class="os-layout">
         <div class="os-demo-frame">
-          <video autoplay loop muted playsinline preload="auto" poster="assets/os-macbook-real.webp" width="1920" height="1080" aria-label="Demonstração interativa do CRM Imobiturbo OS no MacBook">
-            <source src="assets/os-macbook-real.webm" type="video/webm">
-            <source src="assets/os-macbook-real.mp4" type="video/mp4">
+          <video data-lazy-media loop muted playsinline preload="none" data-poster="assets/os-macbook-real.webp" width="1920" height="1080" aria-label="Demonstração interativa do CRM Imobiturbo OS no MacBook">
+            <source data-src="assets/os-macbook-real.webm" type="video/webm">
+            <source data-src="assets/os-macbook-real.mp4" type="video/mp4">
             <img src="assets/os-macbook-real.webp" alt="Interface real do CRM Imobiturbo OS no MacBook" width="1920" height="1080" loading="lazy">
           </video>
         </div>
@@ -1772,9 +1699,9 @@
         <div class="conversation panel">
           <h3>Demonstração de atendimento e qualificação</h3>
           <div class="whatsapp-demo-frame">
-            <video autoplay loop muted playsinline preload="auto" poster="assets/wa-agenda-real.webp" width="1920" height="1080" aria-label="Demonstração real do atendimento no WhatsApp e agendamento no Google Agenda pela IA Imobiturbo">
-              <source src="assets/wa-agenda-real.webm" type="video/webm">
-              <source src="assets/wa-agenda-real.mp4" type="video/mp4">
+            <video data-lazy-media loop muted playsinline preload="none" data-poster="assets/wa-agenda-real.webp" width="1920" height="1080" aria-label="Demonstração real do atendimento no WhatsApp e agendamento no Google Agenda pela IA Imobiturbo">
+              <source data-src="assets/wa-agenda-real.webm" type="video/webm">
+              <source data-src="assets/wa-agenda-real.mp4" type="video/mp4">
               <img src="assets/wa-agenda-real.webp" alt="Demonstração real do atendimento no WhatsApp e agendamento no Google Agenda pela IA Imobiturbo" width="1920" height="1080" loading="lazy">
             </video>
           </div>
@@ -1782,12 +1709,12 @@
         </div>
         <div class="responsibilities">
           <div>
-            <img src="assets/emoji-apple-robot.png" alt="O apoio da IA" class="section-emoji" width="32" height="32">
+            <img loading="lazy" decoding="async" src="assets/emoji-apple-robot.png" alt="O apoio da IA" class="section-emoji" width="32" height="32">
             <h3>Atendimento Imediato & Qualificação</h3>
             <p>Responde instantaneamente a qualquer hora, levanta orçamento, filtra curiosos e confirma o interesse antes de passar para você.</p>
           </div>
           <div>
-            <img src="assets/emoji-apple-corretor.png" alt="A atuação do corretor" class="section-emoji" width="32" height="32">
+            <img loading="lazy" decoding="async" src="assets/emoji-apple-corretor.png" alt="A atuação do corretor" class="section-emoji" width="32" height="32">
             <h3>Condução Comercial & Fechamento</h3>
             <p>Você entra em ação quando o cliente já está qualificado para agendar a visita presencial, apresentar o imóvel e assinar o contrato.</p>
           </div>
@@ -1804,7 +1731,7 @@
     <div class="container">
       <div class="section-intro">
         <span class="brand brand-club">
-          <img src="assets/brand/current/imobiturbo-club.webp" alt="Imobiturbo Club" width="3596" height="875">
+          <img loading="lazy" decoding="async" src="assets/brand/current/imobiturbo-club.webp" alt="Imobiturbo Club" width="3596" height="875">
         </span>
         <h2>Aprenda a Fechar Vendas Exclusivas com <span class="accent">Roteiros Prontos e Mentor IA 24h.</span></h2>
         <p class="lead">Ferramenta sem método é só custo. No Club você tem acesso aos passos exatos de captação, contorno de objeções e negociação validados no campo de batalha.</p>
@@ -1814,9 +1741,9 @@
           <h3>Aulas e Trilhas Práticas</h3>
           <p>Treinamentos objetivos para assistir no seu tempo e aplicar na mesma semana.</p>
           <div class="club-demo-frame">
-            <video autoplay loop muted playsinline preload="auto" poster="assets/loop-club-courses-poster.webp" width="1280" height="720" aria-label="Demonstração interativa das aulas e trilhas oficiais do Imobiturbo Club">
-              <source src="assets/loop-club-courses.webm" type="video/webm">
-              <source src="assets/loop-club-courses.mp4" type="video/mp4">
+            <video data-lazy-media loop muted playsinline preload="none" data-poster="assets/loop-club-courses-poster.webp" width="1280" height="720" aria-label="Demonstração interativa das aulas e trilhas oficiais do Imobiturbo Club">
+              <source data-src="assets/loop-club-courses.webm" type="video/webm">
+              <source data-src="assets/loop-club-courses.mp4" type="video/mp4">
               <img src="assets/loop-club-courses-poster.webp" alt="Demonstração visual da plataforma de aulas e trilhas do Imobiturbo Club" width="1280" height="720" loading="lazy">
             </video>
           </div>
@@ -1836,7 +1763,7 @@
         <div class="cio-widget-header">
           <div class="cio-header-top-row">
             <h3 class="cio-widget-title">
-              Grade Curricular, Trilhas e Ferramentas <span class="cio-title-brand">do <img src="assets/imobiturbo-club-dark.webp" alt="Imobiturbo Club" class="cio-title-logo" width="315" height="32" decoding="async"></span>
+              Grade Curricular, Trilhas e Ferramentas <span class="cio-title-brand">do <img loading="lazy" decoding="async" src="assets/imobiturbo-club-dark.webp" alt="Imobiturbo Club" class="cio-title-logo" width="315" height="32" decoding="async"></span>
             </h3>
             <div class="cio-carousel-nav-btns" aria-label="Navegação do carrossel de trilhas">
               <button type="button" class="cio-carousel-btn cio-carousel-prev" id="cioCarouselPrev" aria-label="Ver trilha anterior">
@@ -2151,13 +2078,13 @@
           <p class="note">Suporte técnico com inteligência artificial disponível 24 horas por dia.</p>
         </div>
         <div class="support-guide">
-          <img src="assets/emoji-apple-open-book.png" alt="Artigos de utilização" class="section-emoji" width="32" height="32">
+          <img loading="lazy" decoding="async" src="assets/emoji-apple-open-book.png" alt="Artigos de utilização" class="section-emoji" width="32" height="32">
           <h3>Tutoriais e Guias Passo a Passo</h3>
           <p>Consulte instruções visuais e procedimentos para configurar cada recurso em minutos.</p>
           <div class="support-guide-media">
-            <video autoplay loop muted playsinline preload="auto" poster="assets/loop-help-center-poster.webp" width="1280" height="720" style="width: 100%; height: auto; display: block; border-radius: 12px;">
-              <source src="assets/loop-help-center.webm" type="video/webm">
-              <source src="assets/loop-help-center.mp4" type="video/mp4">
+            <video data-lazy-media loop muted playsinline preload="none" data-poster="assets/loop-help-center-poster.webp" width="1280" height="720" style="width: 100%; height: auto; display: block; border-radius: 12px;">
+              <source data-src="assets/loop-help-center.webm" type="video/webm">
+              <source data-src="assets/loop-help-center.mp4" type="video/mp4">
               <img src="assets/loop-help-center-poster.webp" alt="Demonstração visual do guia de configuração e suporte do CRM Imobiturbo" width="1280" height="720" loading="lazy">
             </video>
           </div>
@@ -2380,7 +2307,7 @@
       <div class="comparison">
         <div class="panel tinted">
           <h3>
-            <img src="assets/emoji-apple-check.png" alt="Sim" class="profile-header-emoji" width="32" height="32">Faz sentido para você se:
+            <img loading="lazy" decoding="async" src="assets/emoji-apple-check.png" alt="Sim" class="profile-header-emoji" width="32" height="32">Faz sentido para você se:
           </h3>
           <ul>
             <li>Quer profissionalizar sua operação comercial e acompanhar cada cliente no CRM sem complicação.</li>
@@ -2390,7 +2317,7 @@
         </div>
         <div class="panel">
           <h3>
-            <img src="assets/emoji-apple-cross.png" alt="Não" class="profile-header-emoji" width="32" height="32">NÃO é para você se:
+            <img loading="lazy" decoding="async" src="assets/emoji-apple-cross.png" alt="Não" class="profile-header-emoji" width="32" height="32">NÃO é para você se:
           </h3>
           <ul>
             <li>Procura "botão mágico" para ganhar comissão na praia sem trabalhar.</li>
@@ -2514,7 +2441,7 @@
           <div class="stack-block stack-bonus">
             <div class="bonus-card-top">
               <div class="bonus-icon-box">
-                <img src="assets/scripts-3d.webp" alt="Ícone 3D Scripts Anti-Vácuo WhatsApp" width="56" height="56" class="bonus-3d-icon">
+                <img loading="lazy" decoding="async" src="assets/scripts-3d.webp" alt="Ícone 3D Scripts Anti-Vácuo WhatsApp" width="56" height="56" class="bonus-3d-icon">
               </div>
               <div class="bonus-meta-header">
                 <span class="bonus-num-badge">BÔNUS EXCLUSIVO #1</span>
@@ -2535,7 +2462,7 @@
           <div class="stack-block stack-bonus">
             <div class="bonus-card-top">
               <div class="bonus-icon-box">
-                <img src="assets/trilha-06-claude.webp" alt="Ícone 3D Roteiro de Captação Exclusiva" width="56" height="56" class="bonus-3d-icon">
+                <img loading="lazy" decoding="async" src="assets/trilha-06-claude.webp" alt="Ícone 3D Roteiro de Captação Exclusiva" width="56" height="56" class="bonus-3d-icon">
               </div>
               <div class="bonus-meta-header">
                 <span class="bonus-num-badge">BÔNUS EXCLUSIVO #2</span>
@@ -2556,7 +2483,7 @@
           <div class="stack-block stack-bonus">
             <div class="bonus-card-top">
               <div class="bonus-icon-box">
-                <img src="assets/trilha-08-hotseats.webp" alt="Ícone 3D Gravações de Mentorias" width="56" height="56" class="bonus-3d-icon">
+                <img loading="lazy" decoding="async" src="assets/trilha-08-hotseats.webp" alt="Ícone 3D Gravações de Mentorias" width="56" height="56" class="bonus-3d-icon">
               </div>
               <div class="bonus-meta-header">
                 <span class="bonus-num-badge">BÔNUS EXCLUSIVO #3</span>
@@ -2577,7 +2504,7 @@
           <div class="stack-block stack-bonus">
             <div class="bonus-card-top">
               <div class="bonus-icon-box">
-                <img src="assets/tools/whatsapp-3d.webp" alt="Ícone 3D Comunidade VIP de Corretores" width="56" height="56" class="bonus-3d-icon">
+                <img loading="lazy" decoding="async" src="assets/tools/whatsapp-3d.webp" alt="Ícone 3D Comunidade VIP de Corretores" width="56" height="56" class="bonus-3d-icon">
               </div>
               <div class="bonus-meta-header">
                 <span class="bonus-num-badge">BÔNUS EXCLUSIVO #4</span>
@@ -2691,7 +2618,7 @@
       
       <div class="section-cta" style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
         <a class="btn" href="#planos">Quero entrar agora</a>
-        <button type="button" class="btn btn-secondary" onclick="window.$chatwoot && window.$chatwoot.toggle('open')" style="background: rgba(103, 165, 51, 0.2); border: 1px solid rgba(103, 165, 51, 0.5); color: #d4f0b8; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
+        <button type="button" class="btn btn-secondary" onclick="window.openLpSupport()" style="background: rgba(103, 165, 51, 0.2); border: 1px solid rgba(103, 165, 51, 0.5); color: #d4f0b8; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;">
           💬 Tirar dúvidas no Chat com Natan Pimentel
         </button>
       </div>
@@ -2787,7 +2714,7 @@
   <div class="container">
     <div class="footer-main">
       <span class="brand">
-        <img src="assets/brand/current/imobiturbo.webp" alt="Imobiturbo" width="2456" height="875">
+        <img loading="lazy" decoding="async" src="assets/brand/current/imobiturbo.webp" alt="Imobiturbo" width="2456" height="875">
       </span>
       <div>
         <h2>Contato</h2>
@@ -2821,7 +2748,7 @@
   <div class="proof-lightbox-backdrop" id="proofLightboxBackdrop"></div>
   <div class="proof-lightbox-content">
     <button type="button" class="proof-lightbox-close" id="proofLightboxClose" aria-label="Fechar comprovante">&times;</button>
-    <img id="proofLightboxImg" class="proof-lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Comprovante de resultado ampliado" width="600" height="800">
+    <img loading="lazy" decoding="async" id="proofLightboxImg" class="proof-lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Comprovante de resultado ampliado" width="600" height="800">
   </div>
 </dialog>
 
@@ -3101,7 +3028,7 @@
               </button>
 
               <div class="chk-qr-frame">
-                <img id="chkPixQrImg" class="chk-qr-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='190' height='190' viewBox='0 0 190 190'%3E%3Crect width='190' height='190' fill='%23181b16'/%3E%3C/svg%3E" alt="QR Code Pix" width="190" height="190">
+                <img loading="lazy" decoding="async" id="chkPixQrImg" class="chk-qr-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='190' height='190' viewBox='0 0 190 190'%3E%3Crect width='190' height='190' fill='%23181b16'/%3E%3C/svg%3E" alt="QR Code Pix" width="190" height="190">
               </div>
 
               <div class="chk-pix-code-wrap">
@@ -3250,6 +3177,33 @@
       [0, 250, 1000, 3000].forEach(function(delay) {
         window.setTimeout(flushHubTrackerEvents, delay);
       });
+    }());
+
+
+    (function measureLandingPerformance() {
+      let lcp = null, cls = 0, sent = false;
+      try {
+        new PerformanceObserver(list => { for (const entry of list.getEntries()) lcp = entry.startTime; }).observe({type:'largest-contentful-paint', buffered:true});
+        new PerformanceObserver(list => { for (const entry of list.getEntries()) if (!entry.hadRecentInput) cls += entry.value; }).observe({type:'layout-shift', buffered:true});
+      } catch (_) {}
+      function report(reason) {
+        if (sent || !hubTrackerReady()) return;
+        sent = true;
+        const nav = performance.getEntriesByType('navigation')[0];
+        const fcp = performance.getEntriesByName('first-contentful-paint')[0];
+        const params = new URL(location.href).searchParams;
+        const audit = params.has('imt_audit') || params.get('utm_source') === 'audit' || navigator.webdriver === true;
+        trackHubEvent('LandingPerformance', {
+          measurementVersion:'connect-v1', reportReason:reason, elapsedMs:Math.round(performance.now()),
+          ttfbMs:nav ? Math.round(nav.responseStart) : null,
+          fcpMs:fcp ? Math.round(fcp.startTime) : null, lcpMs:lcp == null ? null : Math.round(lcp), cls:Math.round(cls*1000)/1000,
+          viewportWidth:innerWidth, inAppBrowser:/Instagram|FBAN|FBAV/.test(navigator.userAgent),
+          traffic_classification:audit ? 'confirmed_bot' : 'unclassified'
+        });
+      }
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') report('hidden'); });
+      window.addEventListener('pagehide', () => report('pagehide'));
+      window.setTimeout(() => report('20s-snapshot'), 20000);
     }());
 
     // 1. Seletor de Planos e Controle do Modal de Checkout Nativo
@@ -4083,11 +4037,11 @@
 
         const brand = detectCardBrand(v);
         if (brand === 'visa') {
-          cardBrandBadge.innerHTML = '<img src="assets/thesvg/visa.svg" alt="Visa" width="32" height="18">';
+          cardBrandBadge.innerHTML = '<img loading="lazy" decoding="async" src="assets/thesvg/visa.svg" alt="Visa" width="32" height="18">';
         } else if (brand === 'mastercard') {
-          cardBrandBadge.innerHTML = '<img src="assets/thesvg/mastercard.svg" alt="Mastercard" width="32" height="18">';
+          cardBrandBadge.innerHTML = '<img loading="lazy" decoding="async" src="assets/thesvg/mastercard.svg" alt="Mastercard" width="32" height="18">';
         } else if (brand === 'amex') {
-          cardBrandBadge.innerHTML = '<img src="assets/thesvg/american-express.svg" alt="American Express" width="32" height="18">';
+          cardBrandBadge.innerHTML = '<img loading="lazy" decoding="async" src="assets/thesvg/american-express.svg" alt="American Express" width="32" height="18">';
         } else if (brand === 'elo') {
           cardBrandBadge.innerHTML = '<span style="font-size:10px;font-weight:800;color:#00a4e4;background:#fff;padding:2px 4px;border-radius:3px;">ELO</span>';
         } else if (brand === 'hipercard') {
@@ -4513,7 +4467,10 @@
 
       const nudge = direction => {
         pauseAutoScroll(3000);
-        track.scrollBy({ left: direction * 320, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+        const positions = [...track.querySelectorAll('.proof-card')].map(card => card.offsetLeft - track.offsetLeft);
+        const current = positions.reduce((nearest, left, index) => Math.abs(left - track.scrollLeft) < Math.abs(positions[nearest] - track.scrollLeft) ? index : nearest, 0);
+        const target = positions[Math.max(0, Math.min(positions.length - 1, current + direction))];
+        if (target != null) track.scrollTo({ left: target, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
       };
       prevBtn?.addEventListener('click', () => nudge(-1));
       nextBtn?.addEventListener('click', () => nudge(1));
@@ -4601,7 +4558,7 @@
 
           <div class="lm-phone-row">
             <div class="lm-ddi-box">
-              <img src="assets/flag-br.png" alt="Brasil" width="20" height="14">
+              <img loading="lazy" decoding="async" src="assets/flag-br.png" alt="Brasil" width="20" height="14">
               <span>+55</span>
             </div>
             <input class="lm-input lm-phone-input" type="tel" id="leadPhone" name="phone" placeholder="(11) 99999-9999" required autocomplete="tel" oninput="maskPhone(this)">
@@ -4623,9 +4580,9 @@
           <p class="lm-foot-msg">Corretores e imobiliárias de alta performance acelerando:</p>
           <div class="lm-avatar-stack">
             <div class="lm-avatars">
-              <img src="assets/student-fernando.webp" alt="Aluno" width="32" height="32">
-              <img src="assets/student-joyce.webp" alt="Aluno" width="32" height="32">
-              <img src="assets/student-filipe.webp" alt="Aluno" width="32" height="32">
+              <img loading="lazy" decoding="async" src="assets/student-fernando.webp" alt="Aluno" width="32" height="32">
+              <img loading="lazy" decoding="async" src="assets/student-joyce.webp" alt="Aluno" width="32" height="32">
+              <img loading="lazy" decoding="async" src="assets/student-filipe.webp" alt="Aluno" width="32" height="32">
               <span class="lm-more-badge">+</span>
             </div>
             <p class="lm-proof-num">+4.000 corretores já aceleraram · <span>★</span> <b>4,9/5</b></p>
@@ -4637,7 +4594,7 @@
   </dialog>
 
 
-  <script src="./assets/hls.min.js"></script>
+
   <script>
     // Plans data
     const PLANS_CONFIG = {
@@ -4728,7 +4685,7 @@
 
       if (!sourceUrl || video.dataset.activeSrc === sourceUrl) return;
 
-      if (posterUrl) video.poster = posterUrl;
+      if (posterUrl) video.poster = './assets/hero-vsl-poster.webp';
       video.dataset.vslVariant = mobile ? 'mobile' : 'desktop';
       video.dataset.activeSrc = sourceUrl;
       video.src = sourceUrl;
@@ -5840,7 +5797,10 @@
        Handled server-side in widget template (show.html.erb on VPS2).
        The Vue router guard redirects 'home' → 'messages' automatically. */
 
-    (function(d,t) {
+    function loadLpSupport() {
+      if (window.__lpSupportLoading) return;
+      window.__lpSupportLoading = true;
+      var d = document, t = "script";
       var origCreate = d.createElement.bind(d);
       d.createElement = function(tag, opt) {
         var el = origCreate(tag, opt);
@@ -5865,8 +5825,36 @@
           baseUrl: BASE_URL
         });
       };
-    })(document, "script");
+    }
+    window.openLpSupport = function () {
+      loadLpSupport();
+      if (window.$chatwoot) window.$chatwoot.toggle('open');
+      else window.addEventListener('chatwoot:ready', function () { window.$chatwoot.toggle('open'); }, { once: true });
+    };
+    // The support widget must not compete with the first fold for bandwidth.
+    window.setTimeout(loadLpSupport, 15000);
+
   </script>
 
+<script>
+(function () {
+  function hydrate(video) {
+    if (video.dataset.loaded) return;
+    video.dataset.loaded = '1';
+    if (video.dataset.poster) video.poster = video.dataset.poster;
+    video.querySelectorAll('source[data-src]').forEach(function (source) { source.src = source.dataset.src; });
+    video.load();
+  }
+  var videos = document.querySelectorAll('video[data-lazy-media]');
+  if (!('IntersectionObserver' in window)) { videos.forEach(hydrate); return; }
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) { hydrate(entry.target); entry.target.play().catch(function () {}); }
+      else entry.target.pause();
+    });
+  }, { rootMargin: '100px' });
+  videos.forEach(function (video) { observer.observe(video); });
+})();
+</script>
 </body>
 </html>
