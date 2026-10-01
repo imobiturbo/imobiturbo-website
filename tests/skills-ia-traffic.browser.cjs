@@ -26,8 +26,10 @@ for (const width of [393,1440]) test(`loading, lazy gallery, offer navigation an
  assert.ok(initial.scroll<=initial.width+1,'no horizontal overflow');assert.ok(initial.hero>0,'hero decoded');
  assert.equal(await page.evaluate(()=>window.__rafRequests),0,"reduced motion must not schedule carousel frames");
  assert.deepEqual(initial.meta.map(x=>x[2]),['ViewContent'],'local code never initializes or duplicates PageView');
+ if(width<=600){assert.equal(await page.locator('.mobile-offer').getAttribute('hidden'),'','sticky offer must be hidden on the hero');}
  await page.locator('.tape-viewport').scrollIntoViewIfNeeded();
  await page.waitForFunction(()=>document.querySelector('.tape-group img').naturalWidth>0);
+ if(width<=600){assert.equal(await page.locator('.mobile-offer').getAttribute('hidden'),null,'sticky offer must appear after hero is scrolled past');}
  assert.ok(requested.filter(u=>u.includes('/cassettes/')).length<10,'horizontal gallery should hydrate only nearby cards');
  const steps = await page.locator('.tape-group').first().evaluate(el=>Math.ceil(el.getBoundingClientRect().width / 264));
  await page.locator('.tape-viewport').focus();
@@ -35,6 +37,7 @@ for (const width of [393,1440]) test(`loading, lazy gallery, offer navigation an
  await page.waitForFunction(()=>document.querySelector('.tape-group[aria-hidden="true"] img').naturalWidth>0);
  await page.locator('[data-placement="hero"]').click();
  await page.waitForTimeout(400);assert.equal(new URL(page.url()).hash,'','in-page scroll must not fabricate another PageView');
+ if(width<=600){assert.notEqual(await page.locator('.mobile-offer').getAttribute('hidden'),null,'sticky offer must hide when viewing plans');}
  assert.equal(await page.locator('[data-plan="essencial"]').getAttribute('aria-disabled'),null);
  await page.waitForFunction(()=>document.querySelector('#planos').classList.contains('price-font-ready'));
  assert.ok(requested.some(u=>u.includes('JetBrainsMono')),'price font loads when offers approach');
