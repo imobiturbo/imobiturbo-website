@@ -1,0 +1,21 @@
+Primeiro fluxo imobiliário no n8n
+
+Entenda o fluxo antes de conectar contas ou clientes.
+
+Repo oficial
+https://github.com/n8n-io/n8n
+
+Documentação oficial
+https://docs.n8n.io/try-it-out/
+
+Comece com dados fictícios
+Use um gatilho manual e um campo de exemplo: nome=Cliente Exemplo, região=Centro, próxima_ação=Enviar ficha.
+
+Desenhe a sequência
+Gatilho → organizar campos → registrar tarefa. Só depois avalie a integração com seu CRM.
+
+Limite da demonstração
+A demo deste Reel navega pelo repo e sua documentação. Não comprova integração com WhatsApp nem automação em produção.
+
+Antes de conectar
+Confira licença, hospedagem, acessos e compatibilidade de cada integração. Não cole tokens em conteúdo público.

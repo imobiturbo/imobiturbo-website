@@ -1,0 +1,18 @@
+Mapa do atendimento imobiliário no Excalidraw
+
+Desenhe o caminho de uma oportunidade antes de automatizar.
+
+Abra a ferramenta oficial
+https://excalidraw.com
+
+Repo oficial
+https://github.com/excalidraw/excalidraw
+
+Desenhe cinco caixas
+Entrada → Atendimento → Qualificação → Retorno → Próxima decisão.
+
+Defina quem faz o quê
+Em cada etapa, escreva responsável e condição de saída. Exemplo fictício: qualificação termina quando região, orçamento e prazo foram entendidos.
+
+Encontre uma pendência
+Marque a etapa em que não há responsável ou próxima ação. O desenho é um diagnóstico; não integra nem automatiza o CRM.

@@ -8,19 +8,46 @@
   <link rel="canonical" href="https://www.imobiturbo.com.br/guias/guia-do-comprador-antes-da-visita/">
   <link rel="icon" href="/favicon.svg">
   <link rel="stylesheet" href="brand/tokens.css">
+  <link rel="stylesheet" href="brand/recipes.css">
   <script id="hub-tracker" defer src="https://track.nmidigital.tech/t.js?operation=00000000-0000-0000-0000-000000000001" data-id="00000000-0000-0000-0000-000000000001" data-operation-id="00000000-0000-0000-0000-000000000001" data-endpoint="https://track.nmidigital.tech"></script>
   <style>
-    @font-face{font-family:Jakarta;src:url('/fonts/PlusJakartaSans-Variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
-    :root{--ink:#0a0a0a;--paper:#f4f4f1;--lime:#c4fe5d}
-    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Jakarta,Arial,sans-serif;line-height:1.65}a{color:inherit}header{border-bottom:1px solid #ddd;padding:20px 24px}header a{text-decoration:none;font-weight:800;letter-spacing:-.04em}main{max-width:860px;margin:auto;padding:40px 24px 64px}.label{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}h1{font-size:clamp(32px,6vw,54px);line-height:1.12;letter-spacing:-.05em;margin:16px 0 22px}h2{font-size:24px;line-height:1.3;letter-spacing:-.03em;margin:0 0 18px}.intro{font-size:18px;max-width:700px}.button,button{font:inherit;font-size:15px;font-weight:800;background:var(--lime);color:var(--ink);border:1px solid var(--ink);border-radius:8px;padding:12px 18px;display:inline-block;cursor:pointer;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #356000;outline-offset:4px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0 38px}.card{background:#fff;padding:26px;border:1px solid #ddd;border-radius:14px;margin:18px 0}.checks{display:grid;gap:14px}.checks label{display:flex;align-items:flex-start;gap:12px;cursor:pointer}.checks input{flex-shrink:0;width:20px;height:20px;margin-top:4px;accent-color:#356000}.template{background:var(--paper);border-radius:8px;padding:18px;white-space:pre-wrap;margin-bottom:16px}.note{font-size:14px;color:#484848}.feedback{display:block;min-height:24px;font-size:14px;margin-top:8px}footer{border-top:1px solid #ddd;padding-top:24px;margin-top:32px;font-size:14px}@media(max-width:480px){main{padding:30px 18px 48px}.card{padding:20px}h2{font-size:22px}.intro{font-size:17px}.button{width:100%;text-align:center}}@media print{header,.actions,button,.feedback{display:none}main{padding:0}.card{break-inside:avoid}body{background:white}}
-
-    header{background:var(--it-canvas);border-color:var(--it-border);padding:20px 24px}header a{display:block;max-width:812px;margin:auto}header img{display:block;width:180px;height:auto}
-    .community{background:var(--it-canvas);color:var(--it-text-primary);border:1px solid var(--it-border);border-radius:16px;padding:32px;margin:40px 0 0;font-family:"Plus Jakarta Sans",Jakarta,sans-serif}
-    .community .badge{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border:1px solid var(--it-accent);border-radius:999px;background:var(--it-accent-soft);color:var(--it-accent);font:700 12px/1.5 "JetBrains Mono",monospace;letter-spacing:.06em}.badge::before{content:"";width:8px;height:8px;flex-shrink:0;border-radius:50%;background:var(--it-accent)}
-    .community h2{font-size:clamp(24px,4vw,32px);line-height:1.3;letter-spacing:-.03em;margin:22px 0 12px}.community p,.community li{color:var(--it-text-muted)}.community ul{list-style:none;padding:0;margin:26px 0;display:grid;gap:20px}.community li{display:flex;gap:14px;align-items:flex-start}.community li>span{flex-shrink:0;font-size:24px;line-height:1.5}.community strong{color:var(--it-text-primary)}
-    .community .community-button{display:flex;justify-content:center;align-items:center;gap:12px;width:100%;background:var(--it-accent);color:var(--it-accent-fg);border:0;border-radius:12px;padding:18px 20px;font-weight:800;line-height:1.4;text-align:center;text-decoration:none}.community-button:hover{background:var(--it-accent-hover)}.community-button svg{width:20px;height:20px;flex-shrink:0}.community .reassurance{font-size:13px;text-align:center;margin:12px 0 0}.community a:focus-visible{outline-color:var(--it-ring)}#mensagens{scroll-margin-top:24px}
-    @media(max-width:480px){header{padding:18px}header img{width:160px}.community{padding:24px 20px}.community li{font-size:15px}.community .badge{font-size:10px}.community-button{font-size:15px}}
-    @media print{.community{display:none}}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--it-surface-elevated);color:var(--it-text-primary);font-family:var(--it-font-primary);line-height:var(--it-lh-loose)}
+    a{color:inherit}p{margin:var(--it-space-4) 0}
+    header{background:var(--it-canvas);border-bottom:1px solid var(--it-border);padding:var(--it-space-5) var(--it-space-6)}
+    header a{display:block;max-width:var(--it-layout-tablet);margin:auto;text-decoration:none}
+    header img{display:block;height:var(--it-control-lg);width:auto}
+    main{max-width:var(--it-layout-tablet);margin:auto;padding:var(--it-space-10) var(--it-space-6) var(--it-space-16)}
+    .label{font-size:var(--it-fs-xs);font-weight:var(--it-fw-extrabold);letter-spacing:.1em;text-transform:uppercase}
+    h1{font-size:var(--it-fs-4xl);line-height:var(--it-lh-tight);letter-spacing:-.05em;margin:var(--it-space-4) 0 var(--it-space-6);font-weight:var(--it-fw-extrabold)}
+    h2{font-size:var(--it-fs-xl);line-height:var(--it-lh-snug);letter-spacing:-.03em;margin:0 0 var(--it-space-5);font-weight:var(--it-fw-bold)}
+    .intro{font-size:var(--it-fs-md)}
+    [data-it-component="Button"]{text-decoration:none}
+    button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--it-ring);outline-offset:4px}
+    .actions{display:flex;gap:var(--it-space-3);flex-wrap:wrap;margin:var(--it-space-6) 0 var(--it-space-10)}
+    .card{background:var(--it-surface);padding:var(--it-space-6);border:1px solid var(--it-border);border-radius:var(--it-radius-xl);margin:var(--it-space-5) 0}
+    .checks{display:grid;gap:var(--it-space-4)}
+    .checks label{display:flex;align-items:flex-start;gap:var(--it-space-3);cursor:pointer}
+    .checks input{flex-shrink:0;width:var(--it-space-5);height:var(--it-space-5);margin-top:var(--it-space-1);accent-color:var(--it-accent-text)}
+    .template{background:var(--it-surface-elevated);border-radius:var(--it-radius-md);padding:var(--it-space-5);white-space:pre-wrap;margin-bottom:var(--it-space-4)}
+    .note{font-size:var(--it-fs-sm);color:var(--it-text-muted)}
+    .feedback{display:block;min-height:var(--it-space-6);font-size:var(--it-fs-sm);margin-top:var(--it-space-2)}
+    footer{border-top:1px solid var(--it-border);padding-top:var(--it-space-6);margin-top:var(--it-space-8);font-size:var(--it-fs-sm)}
+    .community{background:var(--it-canvas);color:var(--it-text-primary);border:1px solid var(--it-border);border-radius:var(--it-radius-xl);padding:var(--it-space-8);margin:var(--it-space-10) 0 0}
+    .community .badge{display:inline-flex;align-items:center;gap:var(--it-space-2);padding:var(--it-space-2) var(--it-space-3);border:1px solid var(--it-accent);border-radius:var(--it-radius-full);background:var(--it-accent-soft);color:var(--it-accent);font-family:var(--it-font-mono);font-weight:var(--it-fw-bold);font-size:var(--it-fs-xs);line-height:var(--it-lh-base);letter-spacing:.06em}
+    .badge::before{content:"";width:var(--it-space-2);height:var(--it-space-2);flex-shrink:0;border-radius:var(--it-radius-full);background:var(--it-accent)}
+    .community h2{font-size:var(--it-fs-2xl);line-height:var(--it-lh-snug);letter-spacing:-.03em;margin:var(--it-space-6) 0 var(--it-space-3)}
+    .community p,.community li{color:var(--it-text-muted)}
+    .community ul{list-style:none;padding:0;margin:var(--it-space-6) 0;display:grid;gap:var(--it-space-5)}
+    .community li{display:flex;gap:var(--it-space-4);align-items:flex-start}
+    .community li>span{flex-shrink:0;font-size:var(--it-fs-xl);line-height:var(--it-lh-base)}
+    .community strong{color:var(--it-text-primary)}
+    .community [data-community-cta] span{white-space:normal}
+    .community svg{width:var(--it-space-5);height:var(--it-space-5);flex-shrink:0}
+    .community .reassurance{font-size:var(--it-fs-xs);text-align:center;margin:var(--it-space-3) 0 0}
+    #mensagens{scroll-margin-top:var(--it-space-6)}
+    @media(max-width:480px){main{padding:var(--it-space-8) var(--it-space-5) var(--it-space-12)}header{padding:var(--it-space-5)}.card{padding:var(--it-space-5)}h1{font-size:var(--it-fs-3xl)}.actions a{width:100%}.community{padding:var(--it-space-6) var(--it-space-5)}.community h2{font-size:var(--it-fs-xl)}}
+    @media print{header,.actions,button,.feedback,.community{display:none}main{padding:0}.card{break-inside:avoid}body{background:var(--it-canvas)}}
   </style>
 </head>
 <body>
@@ -30,28 +57,28 @@
     <h1>Guia do comprador<br>antes da visita</h1>
     <p class="intro">Prepare uma visita com critérios claros. Use este checklist no atendimento e adapte as mensagens antes de enviar ao comprador.</p>
     <p>Uma visita começa antes de abrir a porta do imóvel. Combine o que o comprador precisa observar, registre as dúvidas e deixe o próximo passo definido.</p>
-    <div class="actions"><a class="button" href="guia.txt" download>Baixar checklist e mensagens</a><a class="button" href="#mensagens">Ver mensagens editáveis</a></div>
+    <div class="actions" data-theme="dark"><a data-it-component="Button" data-variant="primary" data-size="md" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2" href="guia.txt" download>Baixar checklist e mensagens</a><a data-it-component="Button" data-variant="primary" data-size="md" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2" href="#mensagens">Ver mensagens editáveis</a></div>
     <section class="card"><h2>01. Antes da visita</h2><div class="checks">
-      <label><input type="checkbox">Confirmar imóvel, bairro, endereço e horário.</label>
-      <label><input type="checkbox">Confirmar quem participará e a forma de contato.</label>
-      <label><input type="checkbox">Identificar dois critérios indispensáveis e um negociável.</label>
-      <label><input type="checkbox">Perguntar qual dúvida precisa ser resolvida no local.</label>
-      <label><input type="checkbox">Combinar quais informações serão levantadas sobre orçamento e forma de pagamento.</label>
+      <label for="check-1"><input id="check-1" type="checkbox">Confirmar imóvel, bairro, endereço e horário.</label>
+      <label for="check-2"><input id="check-2" type="checkbox">Confirmar quem participará e a forma de contato.</label>
+      <label for="check-3"><input id="check-3" type="checkbox">Identificar dois critérios indispensáveis e um negociável.</label>
+      <label for="check-4"><input id="check-4" type="checkbox">Perguntar qual dúvida precisa ser resolvida no local.</label>
+      <label for="check-5"><input id="check-5" type="checkbox">Combinar quais informações serão levantadas sobre orçamento e forma de pagamento.</label>
     </div></section>
     <section class="card"><h2>02. Durante a visita</h2><div class="checks">
-      <label><input type="checkbox">Observar circulação, iluminação, ruído e conservação.</label>
-      <label><input type="checkbox">Relacionar os ambientes à rotina do comprador.</label>
-      <label><input type="checkbox">Anotar dúvidas que dependem de confirmação; não improvisar respostas.</label>
-      <label><input type="checkbox">Registrar o que agradou e o que preocupa.</label>
+      <label for="check-6"><input id="check-6" type="checkbox">Observar circulação, iluminação, ruído e conservação.</label>
+      <label for="check-7"><input id="check-7" type="checkbox">Relacionar os ambientes à rotina do comprador.</label>
+      <label for="check-8"><input id="check-8" type="checkbox">Anotar dúvidas que dependem de confirmação; não improvisar respostas.</label>
+      <label for="check-9"><input id="check-9" type="checkbox">Registrar o que agradou e o que preocupa.</label>
     </div></section>
     <section class="card"><h2>03. Depois da visita</h2><div class="checks">
-      <label><input type="checkbox">Resumir os critérios atendidos e os pontos a confirmar.</label>
-      <label><input type="checkbox">Combinar a próxima ação e uma data de retorno.</label>
-      <label><input type="checkbox">Registrar responsáveis e informações no CRM.</label>
+      <label for="check-10"><input id="check-10" type="checkbox">Resumir os critérios atendidos e os pontos a confirmar.</label>
+      <label for="check-11"><input id="check-11" type="checkbox">Combinar a próxima ação e uma data de retorno.</label>
+      <label for="check-12"><input id="check-12" type="checkbox">Registrar responsáveis e informações no CRM.</label>
     </div><p class="note">As marcações ficam nesta página enquanto ela estiver aberta. Baixe o arquivo para guardar e adaptar o material.</p></section>
-    <section class="card" id="mensagens"><h2>Mensagem antes da visita</h2><p class="note">Troque os campos entre colchetes pelas informações do atendimento.</p><div class="template" id="antes">Olá, [nome]. Confirmamos a visita ao [imóvel], em [bairro], no dia [data], às [horário]. Antes de irmos, me diga duas coisas que esse imóvel precisa ter e uma dúvida que você quer tirar no local. Separei este guia para organizar seus critérios. [link]</div><button type="button" data-copy="antes">Copiar mensagem</button><span class="feedback" aria-live="polite"></span></section>
-    <section class="card"><h2>Mensagem de retorno</h2><div class="template" id="retorno">[Nome], na visita você destacou [ponto positivo] e ficou com uma dúvida sobre [ponto]. Vou confirmar [informação] e te retorno em [data/horário]. Enquanto isso, como você compara esse imóvel com os critérios que combinamos?</div><button type="button" data-copy="retorno">Copiar mensagem</button><span class="feedback" aria-live="polite"></span></section>
-    <section class="card"><h2>Abertura do atendimento</h2><div class="template" id="abertura">Meu papel nesta visita é entender seus critérios, ajudar você a observar o imóvel e registrar o que precisa ser confirmado. Não precisamos decidir tudo no encontro; vamos combinar o próximo passo com clareza.</div><button type="button" data-copy="abertura">Copiar mensagem</button><span class="feedback" aria-live="polite"></span></section>
+    <section class="card" id="mensagens"><h2>Mensagem antes da visita</h2><p class="note">Troque os campos entre colchetes pelas informações do atendimento.</p><div class="template" id="antes">Olá, [nome]. Confirmamos a visita ao [imóvel], em [bairro], no dia [data], às [horário]. Antes de irmos, me diga duas coisas que esse imóvel precisa ter e uma dúvida que você quer tirar no local. Separei este guia para organizar seus critérios. [link]</div><button data-theme="dark" data-it-component="Button" data-variant="primary" data-size="md" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2" type="button" data-copy="antes">Copiar mensagem</button><span class="feedback" aria-live="polite"></span></section>
+    <section class="card"><h2>Mensagem de retorno</h2><div class="template" id="retorno">[Nome], na visita você destacou [ponto positivo] e ficou com uma dúvida sobre [ponto]. Vou confirmar [informação] e te retorno em [data/horário]. Enquanto isso, como você compara esse imóvel com os critérios que combinamos?</div><button data-theme="dark" data-it-component="Button" data-variant="primary" data-size="md" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2" type="button" data-copy="retorno">Copiar mensagem</button><span class="feedback" aria-live="polite"></span></section>
+    <section class="card"><h2>Abertura do atendimento</h2><div class="template" id="abertura">Meu papel nesta visita é entender seus critérios, ajudar você a observar o imóvel e registrar o que precisa ser confirmado. Não precisamos decidir tudo no encontro; vamos combinar o próximo passo com clareza.</div><button data-theme="dark" data-it-component="Button" data-variant="primary" data-size="md" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2" type="button" data-copy="abertura">Copiar mensagem</button><span class="feedback" aria-live="polite"></span></section>
     <section class="community" data-theme="dark" aria-labelledby="community-title">
       <div class="badge">COMUNIDADE IMOBITURBO · VAGAS ABERTAS</div>
       <h2 id="community-title">Qualifique compradores no WhatsApp com IA 24h e feche mais negócios todo mês</h2>
@@ -62,7 +89,7 @@
         <li><span aria-hidden="true">🧠</span><div><strong>Mentor IA 24h Especializado no Método:</strong> seu assistente comercial de bolso no WhatsApp para tirar dúvidas de negociação, contornar objeções na hora e analisar propostas.</div></li>
         <li><span aria-hidden="true">📋</span><div><strong>Scripts Anti-Vácuo &amp; Roteiros Prontos:</strong> acervo copiável testado em centenas de operações para reativar leads parados há semanas e transformá-los em visitas agendadas.</div></li>
       </ul>
-      <a class="community-button" data-community-cta href="https://www.imobiturbo.com.br/vagas/?utm_source=guias&amp;utm_medium=guia_cta&amp;utm_campaign=comunidade_vagas&amp;utm_content=guia-do-comprador-antes-da-visita"><span>Garantir Minha Vaga na Comunidade</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a>
+      <a data-it-component="Button" data-variant="primary" data-size="lg" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-lg px-it-6 rounded-it-lg text-it-base gap-it-2 w-full" data-community-cta href="https://www.imobiturbo.com.br/vagas/?utm_source=guias&amp;utm_medium=guia_cta&amp;utm_campaign=comunidade_vagas&amp;utm_content=guia-do-comprador-antes-da-visita"><span>Garantir Minha Vaga na Comunidade</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a>
       <p class="reassurance">⚡ Acesso imediato · 7 dias de garantia incondicional</p>
     </section>
     <footer>Material de Natan Pimentel / Imobiturbo para corretores adaptarem ao atendimento. O guia não promete aprovação de crédito, condições de financiamento ou resultado de venda.</footer>
