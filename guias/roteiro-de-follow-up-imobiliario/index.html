@@ -23,6 +23,7 @@
     h2{font-size:var(--it-fs-xl);line-height:var(--it-lh-snug);letter-spacing:-.03em;margin:0 0 var(--it-space-5);font-weight:var(--it-fw-bold)}
     .intro{font-size:var(--it-fs-md)}
     [data-it-component="Button"]{text-decoration:none}
+    [data-it-component="Button"][data-variant="primary"]{color:#000000!important}
     button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--it-ring);outline-offset:4px}
     .actions{display:flex;gap:var(--it-space-3);flex-wrap:wrap;margin:var(--it-space-6) 0 var(--it-space-10)}
     .card{background:var(--it-surface);padding:var(--it-space-6);border:1px solid var(--it-border);border-radius:var(--it-radius-xl);margin:var(--it-space-5) 0}
@@ -42,7 +43,9 @@
     .community li{display:flex;gap:var(--it-space-4);align-items:flex-start}
     .community li>span{flex-shrink:0;font-size:var(--it-fs-xl);line-height:var(--it-lh-base)}
     .community strong{color:var(--it-text-primary)}
-    .community [data-community-cta] span{white-space:normal}
+    .community [data-community-cta],.community [data-community-cta]:hover,.community [data-community-cta]:visited,.community [data-community-cta]:focus{color:#000000!important}
+    .community [data-community-cta] span{white-space:normal;color:#000000!important}
+    .community [data-community-cta] svg{stroke:#000000!important;color:#000000!important}
     .community svg{width:var(--it-space-5);height:var(--it-space-5);flex-shrink:0}
     .community .reassurance{font-size:var(--it-fs-xs);text-align:center;margin:var(--it-space-3) 0 0}
     #mensagens{scroll-margin-top:var(--it-space-6)}
@@ -64,7 +67,7 @@
         <li><span aria-hidden="true">🧠</span><div><strong>Mentor IA 24h Especializado no Método:</strong> seu assistente comercial de bolso no WhatsApp para tirar dúvidas de negociação, contornar objeções na hora e analisar propostas.</div></li>
         <li><span aria-hidden="true">📋</span><div><strong>Scripts Anti-Vácuo &amp; Roteiros Prontos:</strong> acervo copiável testado em centenas de operações para reativar leads parados há semanas e transformá-los em visitas agendadas.</div></li>
       </ul>
-      <a data-it-component="Button" data-variant="primary" data-size="lg" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-lg px-it-6 rounded-it-lg text-it-base gap-it-2 w-full" data-community-cta href="https://www.imobiturbo.com.br/vagas/?utm_source=guias&amp;utm_medium=guia_cta&amp;utm_campaign=comunidade_vagas&amp;utm_content=roteiro-de-follow-up-imobiliario"><span>Garantir Minha Vaga na Comunidade</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a>
+      <a data-it-component="Button" data-variant="primary" data-size="lg" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-lg px-it-6 rounded-it-lg text-it-base gap-it-2 w-full" style="color:#000000!important;" data-community-cta href="https://www.imobiturbo.com.br/vagas/?utm_source=guias&amp;utm_medium=guia_cta&amp;utm_campaign=comunidade_vagas&amp;utm_content=roteiro-de-follow-up-imobiliario"><span style="color:#000000!important;">Garantir Minha Vaga na Comunidade</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="stroke:#000000!important;color:#000000!important;"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a>
       <p class="reassurance">⚡ Acesso imediato · 7 dias de garantia incondicional</p>
     </section>
 <footer>Material de Natan Pimentel / Imobiturbo para aplicação no atendimento imobiliário. Adapte ao seu contexto; confirme informações antes de enviar ao comprador.</footer>
