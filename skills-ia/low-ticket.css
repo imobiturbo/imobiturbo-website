@@ -100,5 +100,3 @@
 @media(max-width:900px){.explain-grid{grid-template-columns:1fr;gap:20px}.explain-card{padding:26px 22px}}
 @media(max-width:600px){.explain-section{padding-block:54px}.explain-section h2{font-size:clamp(23px,6.2vw,32px)}.explain-section .section-intro{margin-bottom:32px}.explain-cta{margin-top:32px}.explain-cta .button{width:100%}}
 
-.steps>li>.step-icon{position:absolute;left:0;top:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
-.steps>li>.step-icon img{width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.15))}
