@@ -1,0 +1,18 @@
+Roteiro de follow-up imobiliário
+
+Retome a conversa com contexto e uma decisão simples.
+
+1. Preserve o motivo
+Anote imóvel, preferência e último combinado. Não use dados reais de clientes em ferramentas públicas.
+
+2. Mensagem de retomada
+Oi, [nome]. Você comentou que buscava [necessidade] em [região]. Esse critério continua ou mudou alguma coisa?
+
+3. Quando houver nova informação
+Encontrei uma opção que atende [critério confirmado]. Quer comparar a ficha com aquela que vimos? Use somente se a opção existir.
+
+4. Quando o prazo mudou
+Prefere que eu retome em [data] ou faz mais sentido pausar por enquanto? Respeite a resposta e o pedido de não contato.
+
+5. Registre a ação
+Responsável, próxima data, motivo do retorno e resposta esperada. Sem resposta não significa autorização para insistir indefinidamente.
