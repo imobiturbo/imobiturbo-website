@@ -425,6 +425,7 @@ async function sendPostPurchaseNotifications({
   paymentId,
   amountCents,
   purchaseProof,
+  liveOffer = false,
   env = {},
   fetchFn = fetch,
 }) {
@@ -485,6 +486,11 @@ async function sendPostPurchaseNotifications({
   if (safeEmail && zeptoToken) {
     try {
       const emailPayload = formatPostPurchaseEmail({ name, email: safeEmail, plan });
+      if (liveOffer) {
+        const bookingUrl = "https://agenda.imobiturbo.com.br/natanpimentel/live-997-consultoria-incluida-20261001";
+        emailPayload.html = emailPayload.html.replace("</body>", `<h2>Sua consultoria individual está incluída</h2><p>Oferta da live: Comunidade anual + CRM com IA + consultoria individual de 60 minutos. Sem pagamento adicional.</p><p><a href="${bookingUrl}">Agendar minha consultoria com Natan</a></p></body>`);
+        emailPayload.text += `\n\nSua consultoria individual de 60 minutos está incluída na oferta da live. Agende sem pagamento adicional: ${bookingUrl}`;
+      }
       const emailResp = await fetchFn(zeptoUrl, {
         method: "POST",
         headers: {
