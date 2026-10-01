@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mapa do atendimento imobiliário no Excalidraw | Imobiturbo</title>
-  <meta name="description" content="Mapa do atendimento imobiliário no Excalidraw para corretores e gestores imobiliários.">
+  <title>Próximo passo do lead imobiliário: prompt e modelo | Imobiturbo</title>
+  <meta name="description" content="Próximo passo do lead imobiliário: prompt e modelo para corretores e gestores imobiliários.">
   <link rel="canonical" href="https://www.imobiturbo.com.br/guias/mapa-do-atendimento-imobiliario/">
   <link rel="icon" href="/favicon.svg">
   <link rel="stylesheet" href="../guia-do-comprador-antes-da-visita/brand/tokens.css">
@@ -23,14 +23,14 @@
     h2{font-size:var(--it-fs-xl);line-height:var(--it-lh-snug);letter-spacing:-.03em;margin:0 0 var(--it-space-5);font-weight:var(--it-fw-bold)}
     .intro{font-size:var(--it-fs-md)}
     [data-it-component="Button"]{text-decoration:none}
-    [data-it-component="Button"][data-variant="primary"]{color:#000000!important}
+    [data-it-component="Button"][data-variant="primary"]{color:var(--it-accent-fg)!important}
     button:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--it-ring);outline-offset:4px}
     .actions{display:flex;gap:var(--it-space-3);flex-wrap:wrap;margin:var(--it-space-6) 0 var(--it-space-10)}
     .card{background:var(--it-surface);padding:var(--it-space-6);border:1px solid var(--it-border);border-radius:var(--it-radius-xl);margin:var(--it-space-5) 0}
     .checks{display:grid;gap:var(--it-space-4)}
     .checks label{display:flex;align-items:flex-start;gap:var(--it-space-3);cursor:pointer}
     .checks input{flex-shrink:0;width:var(--it-space-5);height:var(--it-space-5);margin-top:var(--it-space-1);accent-color:var(--it-accent-text)}
-    .template{background:var(--it-surface-elevated);border-radius:var(--it-radius-md);padding:var(--it-space-5);white-space:pre-wrap;margin-bottom:var(--it-space-4)}
+    .template{font-family:var(--it-font-primary);overflow-wrap:anywhere;background:var(--it-surface-elevated);border-radius:var(--it-radius-md);padding:var(--it-space-5);white-space:pre-wrap;margin-bottom:var(--it-space-4)}
     .note{font-size:var(--it-fs-sm);color:var(--it-text-muted)}
     .feedback{display:block;min-height:var(--it-space-6);font-size:var(--it-fs-sm);margin-top:var(--it-space-2)}
     footer{border-top:1px solid var(--it-border);padding-top:var(--it-space-6);margin-top:var(--it-space-8);font-size:var(--it-fs-sm)}
@@ -43,11 +43,12 @@
     .community li{display:flex;gap:var(--it-space-4);align-items:flex-start}
     .community li>span{flex-shrink:0;font-size:var(--it-fs-xl);line-height:var(--it-lh-base)}
     .community strong{color:var(--it-text-primary)}
-    .community [data-community-cta],.community [data-community-cta]:hover,.community [data-community-cta]:visited,.community [data-community-cta]:focus{color:#000000!important}
-    .community [data-community-cta] span{white-space:normal;color:#000000!important}
-    .community [data-community-cta] svg{stroke:#000000!important;color:#000000!important}
+    .community [data-community-cta],.community [data-community-cta]:hover,.community [data-community-cta]:visited,.community [data-community-cta]:focus{color:var(--it-accent-fg)!important}
+    .community [data-community-cta] span{white-space:normal;color:var(--it-accent-fg)!important}
+    .community [data-community-cta] svg{stroke:var(--it-accent-fg)!important;color:var(--it-accent-fg)!important}
     .community svg{width:var(--it-space-5);height:var(--it-space-5);flex-shrink:0}
     .community .reassurance{font-size:var(--it-fs-xs);text-align:center;margin:var(--it-space-3) 0 0}
+    [data-community-cta],[data-community-cta] span{color:var(--it-accent-fg)!important}[data-community-cta] svg{stroke:var(--it-accent-fg);color:var(--it-accent-fg)}
     #mensagens{scroll-margin-top:var(--it-space-6)}
     @media(max-width:480px){main{padding:var(--it-space-8) var(--it-space-5) var(--it-space-12)}header{padding:var(--it-space-5)}.card{padding:var(--it-space-5)}h1{font-size:var(--it-fs-3xl)}.actions a{width:100%}.community{padding:var(--it-space-6) var(--it-space-5)}.community h2{font-size:var(--it-fs-xl)}}
     @media print{header,.actions,button,.feedback,.community{display:none}main{padding:0}.card{break-inside:avoid}body{background:var(--it-canvas)}}
@@ -56,7 +57,31 @@
 <body>
   <header data-theme="dark"><a href="/" aria-label="Imobiturbo, início"><img src="../guia-do-comprador-antes-da-visita/brand/logo-imobiturbo-dark.webp" width="2456" height="875" alt="Imobiturbo"></a></header>
   <main>
-<span class="label">Atendimento imobiliário · Natan Pimentel</span><h1>Mapa do atendimento imobiliário no Excalidraw</h1><div class="actions" data-theme="dark"><a data-it-component="Button" data-variant="primary" data-size="md" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2" href="guia.txt" download>Baixar este material</a></div><p>Desenhe o caminho de uma oportunidade antes de automatizar.</p><section class="card"><h2>Abra a ferramenta oficial</h2><p> <a data-guide-link href="https://excalidraw.com">Abrir fonte oficial</a></p></section><section class="card"><h2>Repo oficial</h2><p> <a data-guide-link href="https://github.com/excalidraw/excalidraw">Abrir fonte oficial</a></p></section><section class="card"><h2>Desenhe cinco caixas</h2><p>Entrada → Atendimento → Qualificação → Retorno → Próxima decisão.</p></section><section class="card"><h2>Defina quem faz o quê</h2><p>Em cada etapa, escreva responsável e condição de saída. Exemplo fictício: qualificação termina quando região, orçamento e prazo foram entendidos.</p></section><section class="card"><h2>Encontre uma pendência</h2><p>Marque a etapa em que não há responsável ou próxima ação. O desenho é um diagnóstico; não integra nem automatiza o CRM.</p></section>
+<span class="label">Atendimento imobiliário · Natan Pimentel</span><h1>Próximo passo do lead imobiliário: prompt e modelo</h1><div class="actions" data-theme="dark"><a data-it-component="Button" data-variant="primary" data-size="md" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2" href="guia.txt" download>Baixar este material</a></div><p>Copie o prompt, preencha um caso fictício ou anonimizado e salve o próximo passo no atendimento.</p><section class="card"><h2>Faça agora</h2><ol><li>Copie o prompt e substitua os campos entre colchetes.</li><li>Cole na IA que você já usa, sem dados pessoais.</li><li>Revise a resposta e salve a versão útil no seu atendimento ou WhatsApp.</li></ol></section><section class="card"><h2>Prompt para copiar e colar</h2><pre id="prompt" class="template">Atue como assistente de organização do atendimento imobiliário. Transforme o contexto abaixo em um registro objetivo de próximo passo. Não invente informações, interesses, orçamento, prazo ou promessa de resultado. Quando faltar algo, escreva “a confirmar”.
+
+Contexto do contato: [cole um resumo sem nome, telefone ou documentos]
+Imóvel/região em análise: [preencha]
+Última conversa: [resuma]
+Dúvida pendente: [preencha ou “a confirmar”]
+Responsável pelo retorno: [preencha]
+Data combinada: [preencha ou “a combinar”]
+
+Entregue:
+1. Etapa: entrada, atendimento, qualificação, retorno ou próxima decisão, com justificativa curta.
+2. O que já sabemos, o que falta confirmar e qual pergunta fazer primeiro.
+3. Uma única próxima ação, com responsável e data; se não houver data combinada, proponha combinar, sem inventá-la.
+4. Uma mensagem de WhatsApp com até 300 caracteres, contextualizada, sem pressão, falsa urgência ou condições não confirmadas.
+5. Um registro copiável: ETAPA | PENDÊNCIA | PRÓXIMA AÇÃO | RESPONSÁVEL | DATA.
+Não use dados pessoais e não prometa aprovação de crédito ou venda.</pre><button data-it-component="Button" data-variant="primary" data-size="md" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2" data-copy="prompt">Copiar prompt</button><span class="feedback" aria-live="polite"></span></section><section class="card"><h2>Modelo para salvar no WhatsApp</h2><pre id="mensagem" class="template">LEAD IMOBILIÁRIO — PRÓXIMO PASSO
+Imóvel/região: [preencher]
+Etapa: [preencher]
+O que já foi entendido: [preencher]
+Informação que falta: [preencher]
+Próxima ação: [uma ação concreta]
+Responsável: [preencher]
+Data combinada: [preencher ou “a combinar”]
+
+Antes do retorno: conferir a informação pendente e adaptar a mensagem ao último combinado.</pre><button data-it-component="Button" data-variant="primary" data-size="md" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2" data-copy="mensagem">Copiar mensagem</button><span class="feedback" aria-live="polite"></span></section><section class="card"><h2>Exemplo preenchido</h2><p>Exemplo fictício: a pessoa recebeu a ficha de um apartamento no Centro e quer confirmar a incidência de sol na sala. Ação: conferir a orientação com a fonte responsável e retornar com a informação. Responsável: Ana. Data: amanhã às 15h, se isso foi combinado. Mensagem: “Ficou pendente confirmar o sol na sala do apartamento do Centro. Vou conferir essa informação e te retorno amanhã às 15h, como combinamos.”</p></section><section class="card"><h2>Se quiser desenhar o mapa</h2><p>Entrada → Atendimento → Qualificação → Retorno → Próxima decisão. Em cada etapa, registre responsável e condição de saída.</p><p><a data-guide-link href="https://excalidraw.com">Abrir Excalidraw</a> · <a data-guide-link href="https://github.com/excalidraw/excalidraw">Repo oficial</a></p></section>
     <section class="community" data-theme="dark" aria-labelledby="community-title">
       <div class="badge">COMUNIDADE IMOBITURBO · VAGAS ABERTAS</div>
       <h2 id="community-title">Qualifique compradores no WhatsApp com IA 24h e feche mais negócios todo mês</h2>
@@ -67,7 +92,7 @@
         <li><span aria-hidden="true">🧠</span><div><strong>Mentor IA 24h Especializado no Método:</strong> seu assistente comercial de bolso no WhatsApp para tirar dúvidas de negociação, contornar objeções na hora e analisar propostas.</div></li>
         <li><span aria-hidden="true">📋</span><div><strong>Scripts Anti-Vácuo &amp; Roteiros Prontos:</strong> acervo copiável testado em centenas de operações para reativar leads parados há semanas e transformá-los em visitas agendadas.</div></li>
       </ul>
-      <a data-it-component="Button" data-variant="primary" data-size="lg" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-lg px-it-6 rounded-it-lg text-it-base gap-it-2 w-full" style="color:#000000!important;" data-community-cta href="https://www.imobiturbo.com.br/vagas/?utm_source=guias&amp;utm_medium=guia_cta&amp;utm_campaign=comunidade_vagas&amp;utm_content=mapa-do-atendimento-imobiliario"><span style="color:#000000!important;">Garantir Minha Vaga na Comunidade</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="stroke:#000000!important;color:#000000!important;"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a>
+      <a data-it-component="Button" data-variant="primary" data-size="lg" class="inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm h-it-control-lg px-it-6 rounded-it-lg text-it-base gap-it-2 w-full" data-community-cta href="https://www.imobiturbo.com.br/vagas/?utm_source=guias&amp;utm_medium=guia_cta&amp;utm_campaign=comunidade_vagas&amp;utm_content=mapa-do-atendimento-imobiliario"><span>Garantir Minha Vaga na Comunidade</span><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></a>
       <p class="reassurance">⚡ Acesso imediato · 7 dias de garantia incondicional</p>
     </section>
 <footer>Material de Natan Pimentel / Imobiturbo para aplicação no atendimento imobiliário. Adapte ao seu contexto; confirme informações antes de enviar ao comprador.</footer>
