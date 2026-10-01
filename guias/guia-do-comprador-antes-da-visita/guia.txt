@@ -1,0 +1,31 @@
+GUIA DO COMPRADOR ANTES DA VISITA
+Material de Natan Pimentel / Imobiturbo para corretores adaptarem ao atendimento.
+
+ANTES DA VISITA
+[ ] Confirmar imóvel, bairro, endereço e horário.
+[ ] Confirmar participantes e forma de contato.
+[ ] Identificar dois critérios indispensáveis e um negociável.
+[ ] Perguntar qual dúvida precisa ser resolvida no local.
+[ ] Combinar quais informações serão levantadas sobre orçamento e forma de pagamento.
+
+DURANTE A VISITA
+[ ] Observar circulação, iluminação, ruído e conservação.
+[ ] Relacionar os ambientes à rotina do comprador.
+[ ] Anotar dúvidas que dependem de confirmação; não improvisar respostas.
+[ ] Registrar o que agradou e o que preocupa.
+
+DEPOIS DA VISITA
+[ ] Resumir os critérios atendidos e os pontos a confirmar.
+[ ] Combinar a próxima ação e uma data de retorno.
+[ ] Registrar responsáveis e informações no CRM.
+
+MENSAGEM ANTES DA VISITA
+“Olá, [nome]. Confirmamos a visita ao [imóvel], em [bairro], no dia [data], às [horário]. Antes de irmos, me diga duas coisas que esse imóvel precisa ter e uma dúvida que você quer tirar no local. Separei este guia para organizar seus critérios. [link]”
+
+MENSAGEM DE RETORNO
+“[Nome], na visita você destacou [ponto positivo] e ficou com uma dúvida sobre [ponto]. Vou confirmar [informação] e te retorno em [data/horário]. Enquanto isso, como você compara esse imóvel com os critérios que combinamos?”
+
+ABERTURA DO ATENDIMENTO
+“Meu papel nesta visita é entender seus critérios, ajudar você a observar o imóvel e registrar o que precisa ser confirmado. Não precisamos decidir tudo no encontro; vamos combinar o próximo passo com clareza.”
+
+Campos entre colchetes precisam ser substituídos antes do envio. O guia não promete aprovação de crédito, condições de financiamento ou resultado de venda.
