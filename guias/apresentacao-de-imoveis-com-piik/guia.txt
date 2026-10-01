@@ -1,0 +1,32 @@
+Apresente imóveis por um link com Piik
+
+O que é
+Piik é um projeto de compartilhamento de tela de código aberto. Quem assiste entra pelo convite no navegador; quem apresenta escolhe uma tela, janela ou aba nas opções disponíveis.
+
+Repo oficial
+Abrir Piik no GitHub
+
+Site e documentação
+Abrir site oficial · Primeiros passos
+
+Aplicação imobiliária
+Prepare uma apresentação com planta, fotos autorizadas e ficha do imóvel. Durante a conversa, mostre o material e anote as dúvidas que precisam de resposta; a ferramenta compartilha a tela, não faz tour físico nem qualifica compradores automaticamente.
+
+Roteiro de preparação
+1. Separe planta, fotos e informações conferidas. 2. Abra só a aba da apresentação. 3. Na ferramenta, escolha a origem de compartilhamento disponível e crie o convite. 4. Teste o link em outro navegador antes de enviar. 5. Ao encerrar, combine qual dúvida será respondida e a próxima conversa.
+
+Convite copiável
+“Separei a planta e as fotos do imóvel que conversamos. Podemos olhar juntos pelo navegador às [horário]? Te envio o convite e você me conta o que faz sentido para sua rotina.”
+
+Como acessar
+O site oficial informa opções de aplicativo e uso online. A disponibilidade da instância pública pode variar: se a página solicitar uma confirmação de acesso, siga o próprio site. Não garantimos acesso sem interrupções nem conexão em qualquer rede.
+
+Limite desta demonstração
+O Reel apresenta a descoberta e navega pelo README oficial. A transmissão de uma apresentação entre dois aparelhos não foi testada nesta rodada. Confira as opções da versão usada e faça esse teste antes de usar com um comprador.
+
+Origem da descoberta
+Modelado a partir do post de @gittrend.io de 30/09/2026 sobre Piik. O projeto teve atualização e versão v1.6.9 em 30/09; esta referência não comprova posição no ranking GitHub Trending.
+
+Repo: https://github.com/TNTcraftHIM/Piik
+Site: https://piik.tv/
+Documentação: https://piik.tv/docs/getting-started.html
