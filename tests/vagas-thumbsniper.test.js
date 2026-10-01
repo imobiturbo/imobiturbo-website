@@ -23,10 +23,10 @@ test('vagas uses a lightweight responsive ThumbSniper while the real VSL stays s
   assert.match(retentionVideo[1], /\bautoplay\b/);
   assert.match(retentionVideo[1], /\bloop\b/);
   assert.match(retentionVideo[1], /\bmuted\b/);
-  assert.match(retentionVideo[1], /data-desktop-src="\.\/assets\/vsl-thumbsniper-desktop\.webm"/);
-  assert.match(retentionVideo[1], /data-mobile-src="\.\/assets\/vsl-thumbsniper-mobile\.webm"/);
-  assert.match(retentionVideo[1], /data-desktop-poster="\.\/assets\/vsl-thumbsniper-desktop\.webp"/);
-  assert.match(retentionVideo[1], /data-mobile-poster="\.\/assets\/vsl-thumbsniper-mobile\.webp"/);
+  assert.match(retentionVideo[1], /data-desktop-src="\.\/assets\/vsl-thumbsniper-desktop-ai-v2\.webm"/);
+  assert.match(retentionVideo[1], /data-mobile-src="\.\/assets\/vsl-thumbsniper-mobile-ai-v2\.webm"/);
+  assert.match(retentionVideo[1], /data-desktop-poster="\.\/assets\/vsl-thumbsniper-desktop-ai-v2\.webp"/);
+  assert.match(retentionVideo[1], /data-mobile-poster="\.\/assets\/vsl-thumbsniper-mobile-ai-v2\.webp"/);
 });
 
 test('ThumbSniper reappears on pause/end and disappears on playback', () => {
@@ -40,10 +40,10 @@ test('ThumbSniper reappears on pause/end and disappears on playback', () => {
 
 test('ThumbSniper media stays small enough for fast page delivery', () => {
   const assets = [
-    'vsl-thumbsniper-desktop.webm',
-    'vsl-thumbsniper-mobile.webm',
-    'vsl-thumbsniper-desktop.webp',
-    'vsl-thumbsniper-mobile.webp'
+    'vsl-thumbsniper-desktop-ai-v2.webm',
+    'vsl-thumbsniper-mobile-ai-v2.webm',
+    'vsl-thumbsniper-desktop-ai-v2.webp',
+    'vsl-thumbsniper-mobile-ai-v2.webp'
   ];
 
   for (const asset of assets) {
