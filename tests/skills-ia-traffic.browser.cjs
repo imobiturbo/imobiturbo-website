@@ -22,6 +22,7 @@ for (const width of [393,1440]) test(`loading, lazy gallery, offer navigation an
  await page.waitForTimeout(400);
  assert.equal(requested.filter(u=>u.includes('JetBrainsMono')).length,0,'price-only font must wait for the offer section');
  assert.equal(requested.filter(u=>u.includes('/cassettes/')).length,0,'below-fold gallery must not compete at startup');
+ assert.equal(await page.locator('.tape-group[aria-hidden="true"]').count(),0,'offscreen gallery cloning and layout must wait until the section approaches');
  const initial=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,hero:document.querySelector('.hero-visual img').naturalWidth,meta:window.__meta}));
  assert.ok(initial.scroll<=initial.width+1,'no horizontal overflow');assert.ok(initial.hero>0,'hero decoded');
  assert.equal(await page.evaluate(()=>window.__rafRequests),0,"reduced motion must not schedule carousel frames");

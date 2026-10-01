@@ -21,7 +21,7 @@
     });
   }
 
-  document.querySelectorAll('[data-tape-gallery]').forEach(function (gallery) {
+  function initializeTapeGallery(gallery) {
     var viewport = gallery.querySelector('.tape-viewport');
     var track = gallery.querySelector('.tape-track');
     var original = gallery.querySelector('[data-tape-group]');
@@ -92,6 +92,19 @@
       frame = window.requestAnimationFrame(animate);
     }
     updateAnimation();
+  }
+
+  document.querySelectorAll('[data-tape-gallery]').forEach(function (gallery) {
+    if (!('IntersectionObserver' in window)) {
+      initializeTapeGallery(gallery);
+      return;
+    }
+    var observer = new IntersectionObserver(function (entries) {
+      if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+      observer.disconnect();
+      initializeTapeGallery(gallery);
+    }, { rootMargin: '400px' });
+    observer.observe(gallery);
   });
 
   var activeInfoButton = null;
