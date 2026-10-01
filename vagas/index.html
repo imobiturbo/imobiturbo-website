@@ -658,7 +658,7 @@
   }
   </style>
 
-  <link rel="stylesheet" href="./vagas.css?v=20260926-pix-tools">
+  <link rel="stylesheet" href="./vagas.css?v=20260930-thumbsniper">
   <style id="cioCriticalSliderCss">
     /* Critical Imobiturbo Club Slider Invariants */
     .cio-header-top-row {
@@ -1515,8 +1515,8 @@
         <div class="hero-mock">
           <div class="hero-vsl" id="vslFacade" tabindex="0" role="group" aria-label="Apresentação da Comunidade Imobiturbo. Pressione Enter para reproduzir ou pausar." onclick="playVslVideo(event)">
             <div class="vsl-stage">
-            <!-- Muted Video Autoplay Preview: starts instantly with zero lag -->
-            <video id="vslVideo" playsinline muted autoplay loop preload="auto"
+            <!-- Main VSL stays paused until the visitor explicitly starts it. -->
+            <video id="vslVideo" playsinline preload="metadata"
               data-desktop-src="https://vsl.imobiturbo.com.br/imobiturbo-vagas-horizontal-reels-sound-v5.mp4"
               data-mobile-src="https://vsl.imobiturbo.com.br/imobiturbo-vagas-vertical-reels-sound-v5.mp4"
               data-desktop-poster="https://video.imobiturbo.com.br/4d28eb8e-baea-46b1-bf0c-36235ffda3ea/thumbnail.jpg"
@@ -1524,25 +1524,14 @@
               Seu navegador não suporta vídeos em HTML5.
             </video>
 
-            <!-- VTurb-Style Pure HTML/CSS Smart Autoplay Overlay -->
-            <div class="vsl-overlay" id="vslOverlay" aria-label="Clique para ouvir com som">
-              <div class="vsl-autoplay-notice">
-                <strong>Seu vídeo começou</strong>
-                <span>▶️ Clique para ouvir</span>
-              </div>
-              <div class="vsl-smart-autoplay">
-                <div class="vsl-play-btn-circle">
-                  <div class="vsl-ripple-ring"></div>
-                  <div class="vsl-ripple-ring vsl-ripple-2"></div>
-                  <svg class="vsl-play-icon" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-                <div class="vsl-mouse-anim">
-                  <img src="./assets/click-sparks.png" alt="Efeito de clique" class="vsl-click-sparks" width="56" height="44" draggable="false" aria-hidden="true">
-                  <img src="./assets/pixel-cursor.png" alt="Cursor de clique" class="vsl-cursor-pointer" width="48" height="74" draggable="false" aria-hidden="true">
-                </div>
-              </div>
+            <!-- Imobiturbo ThumbSniper: lightweight animated pause/retention state. -->
+            <div class="vsl-overlay" id="vslOverlay" aria-label="Vídeo pausado. Clique para continuar assistindo.">
+              <video id="vslRetentionVideo" class="vsl-retention-video" playsinline muted autoplay loop preload="auto"
+                data-desktop-src="./assets/vsl-thumbsniper-desktop.webm"
+                data-mobile-src="./assets/vsl-thumbsniper-mobile.webm"
+                data-desktop-poster="./assets/vsl-thumbsniper-desktop.webp"
+                data-mobile-poster="./assets/vsl-thumbsniper-mobile.webp"
+                aria-hidden="true"></video>
             </div>
 
             <!-- Smart Fast Progress Bar (VTurb Retention Acceleration) -->
@@ -4732,19 +4721,6 @@
       return vslMobileQuery.matches;
     }
 
-    function startMutedVslPreview(video) {
-      if (!video || vslStarted) return;
-      video.muted = true;
-      video.defaultMuted = true;
-      video.loop = true;
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(function(err) {
-          console.log('Autoplay muted preview notice:', err);
-        });
-      }
-    }
-
     function loadResponsiveVslSource(video) {
       const mobile = isMobileVslDevice();
       const sourceUrl = mobile ? video.dataset.mobileSrc : video.dataset.desktopSrc;
@@ -4757,26 +4733,69 @@
       video.dataset.activeSrc = sourceUrl;
       video.src = sourceUrl;
       video.load();
-      startMutedVslPreview(video);
+    }
+
+    function loadResponsiveRetentionSource(retention) {
+      if (!retention) return;
+      const mobile = isMobileVslDevice();
+      const sourceUrl = mobile ? retention.dataset.mobileSrc : retention.dataset.desktopSrc;
+      const posterUrl = mobile ? retention.dataset.mobilePoster : retention.dataset.desktopPoster;
+
+      if (!sourceUrl || retention.dataset.activeSrc === sourceUrl) return;
+
+      if (posterUrl) retention.poster = posterUrl;
+      retention.dataset.vslVariant = mobile ? 'mobile' : 'desktop';
+      retention.dataset.activeSrc = sourceUrl;
+      retention.src = sourceUrl;
+      retention.load();
+    }
+
+    function setVslRetentionVisible(visible) {
+      const overlay = document.getElementById('vslOverlay');
+      const retention = document.getElementById('vslRetentionVideo');
+      if (!overlay) return;
+
+      overlay.classList.toggle('vsl-hidden', !visible);
+      if (!retention) return;
+
+      if (visible) {
+        loadResponsiveRetentionSource(retention);
+        retention.muted = true;
+        retention.defaultMuted = true;
+        retention.loop = true;
+        const playPromise = retention.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(function(err) {
+            console.log('ThumbSniper autoplay notice:', err);
+          });
+        }
+      } else {
+        retention.pause();
+      }
     }
 
     function initVslPlayer() {
       const video = document.getElementById('vslVideo');
+      const retention = document.getElementById('vslRetentionVideo');
       const progressBar = document.getElementById('vslSmartProgress');
       const progressFill = document.getElementById('vslProgressFill');
 
       if (!video) return;
 
-      // Start muted autoplay loop preview
-      video.muted = true;
-      video.defaultMuted = true;
-      video.loop = true;
+      // Keep the real VSL stopped. Only the lightweight ThumbSniper loops before intent.
+      video.muted = false;
+      video.defaultMuted = false;
+      video.loop = false;
       loadResponsiveVslSource(video);
+      loadResponsiveRetentionSource(retention);
+      setVslRetentionVisible(true);
 
       const handleResponsiveSourceChange = function() {
         if (vslStarted) return;
         video.pause();
         loadResponsiveVslSource(video);
+        loadResponsiveRetentionSource(retention);
+        setVslRetentionVisible(true);
       };
       if (vslMobileQuery.addEventListener) {
         vslMobileQuery.addEventListener('change', handleResponsiveSourceChange);
@@ -4802,7 +4821,18 @@
       }
 
       video.addEventListener('play', function() {
-        if (vslStarted) requestAnimationFrame(updateSmartProgress);
+        if (vslStarted) {
+          setVslRetentionVisible(false);
+          requestAnimationFrame(updateSmartProgress);
+        }
+      });
+
+      video.addEventListener('pause', function() {
+        if (vslStarted && !video.ended) setVslRetentionVisible(true);
+      });
+
+      video.addEventListener('ended', function() {
+        if (vslStarted) setVslRetentionVisible(true);
       });
 
       // Seeking on the smart progress bar
@@ -4823,7 +4853,6 @@
     function playVslVideo(e) {
       if (e && e.stopPropagation) e.stopPropagation();
       const video = document.getElementById('vslVideo');
-      const overlay = document.getElementById('vslOverlay');
       const progressBar = document.getElementById('vslSmartProgress');
       const soundIconOn = document.getElementById('vslSoundIconOn');
       const soundIconOff = document.getElementById('vslSoundIconOff');
@@ -4840,11 +4869,7 @@
         video.muted = false;
         video.volume = 1.0;
 
-        if (overlay) {
-          overlay.classList.add('vsl-hidden');
-          const anim = overlay.querySelector('video');
-          if (anim) anim.pause();
-        }
+        setVslRetentionVisible(false);
         if (progressBar) progressBar.classList.add('vsl-active');
         if (soundIconOn) soundIconOn.style.display = 'block';
         if (soundIconOff) soundIconOff.style.display = 'none';
@@ -4861,6 +4886,7 @@
       } else {
         // Toggle play / pause during active watch
         if (video.paused) {
+          if (video.ended) video.currentTime = 0;
           video.play();
         } else {
           video.pause();
