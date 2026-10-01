@@ -157,7 +157,7 @@ export async function onRequestGet(context) {
 
         if (isPaid) {
           const eventId = details.eventId;
-          const amount = details.productId === CONSULTING_PRODUCT_ID ? details.orderAmount : Number(data.value || 997);
+          const amount = (details.productId === CONSULTING_PRODUCT_ID || details.offerCode === "live997") ? details.orderAmount : Number(data.value || 997);
           const contentName = data.description || "Comunidade Imobiturbo";
           let buyerEmail = "";
           let buyerPhone = "";
@@ -190,7 +190,7 @@ export async function onRequestGet(context) {
                 phone: buyerPhone,
                 plan: details.plan || "anual",
                 liveOffer: details.offerCode === "live997",
-                paymentId: data.id,
+                paymentId: details.offerCode === "live997" ? details.orderId : data.id,
                 amountCents: Math.round(amount * 100),
                 purchaseProof: { approvedAt: new Date(approvedAt).toISOString() },
                 env: { COMMUNITY_ORGANIZATION_ID: (env && env.COMMUNITY_ORGANIZATION_ID) || "18b103e6-a006-45ac-84d5-62312f45ba77", ...env },
@@ -221,7 +221,7 @@ export async function onRequestGet(context) {
             status: data.status,
             paid: isPaid,
             ...details,
-            amount: details.productId === CONSULTING_PRODUCT_ID ? details.orderAmount : Number(data.value || 0),
+            amount: (details.productId === CONSULTING_PRODUCT_ID || details.offerCode === "live997") ? details.orderAmount : Number(data.value || 0),
             chargeAmount: Number(data.value || 0),
             billingType: data.billingType,
             deleted: Boolean(data.deleted),

@@ -1,15 +1,20 @@
 (() => {
+  const API='https://www.imobiturbo.com.br';
+  async function readResponse(response){
+    if(!(response.headers.get('content-type')||'').includes('application/json'))throw new Error('Não foi possível abrir o pagamento. Recarregue a página e tente novamente.');
+    return response.json();
+  }
   const get=id=>document.getElementById(id), key='imobiturbo-live997-payment';
   let order=null, checking=false;
   try { order=JSON.parse(localStorage.getItem(key)); } catch (_) {}
   const feedback=text=>{get('feedback').textContent=text;};
-  function showPending(){get('checkout').hidden=true;get('pending').hidden=false;get('invoice').href=order.invoiceUrl;feedback('Seu pagamento de R$997 está aguardando confirmação.');}
+  function showPending(){get('checkout').hidden=true;get('pending').hidden=false;get('invoice').href=order.invoiceUrl;get('invoice').textContent=order.amount===1196.4?'Pagar no Asaas — 12x de R$99,70':'Pagar no Asaas — R$997 à vista';feedback('Pagamento aguardando confirmação.');}
   async function check(){
     if(!order || checking)return;checking=true;
     try {
-      const response=await fetch('/api/checkout/status?gateway=asaas&paymentId='+encodeURIComponent(order.paymentId));
-      const status=await response.json();
-      if(status.success && status.paid && status.offerCode==='live997' && status.amount===997){
+      const response=await fetch(API+'/api/checkout/status?gateway=asaas&paymentId='+encodeURIComponent(order.paymentId));
+      const status=await readResponse(response);
+      if(status.success && status.paid && status.offerCode==='live997' && [997,1196.4].includes(status.amount)){
         get('pending').hidden=true;get('checkout').hidden=true;get('confirmed').hidden=false;
         get('booking').href='https://agenda.imobiturbo.com.br/natanpimentel/live-997-consultoria-incluida-20261001';
         feedback('Compra confirmada. Seu combo anual e sua consultoria estão incluídos.');
@@ -21,12 +26,12 @@
   get('checkout').addEventListener('submit',async event=>{
     event.preventDefault();get('submit').disabled=true;feedback('Preparando seu pagamento seguro…');
     try {
-      const response=await fetch('/api/live',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(event.target)))});
-      const result=await response.json();
+      const response=await fetch(API+'/api/live',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(event.target)))});
+      const result=await readResponse(response);
       if(!response.ok || !result.success)throw new Error(result.error || 'Falha ao abrir pagamento.');
-      order={paymentId:result.paymentId,invoiceUrl:result.invoiceUrl};
+      order={paymentId:result.paymentId,invoiceUrl:result.invoiceUrl,amount:result.amount};
       try{localStorage.setItem(key,JSON.stringify(order));}catch(_){}
-      showPending();window.open(order.invoiceUrl,'_blank','noopener');
+      showPending();window.location.assign(order.invoiceUrl);
     }catch(error){feedback(error.message);}finally{get('submit').disabled=false;}
   });
   get('check').addEventListener('click',check);

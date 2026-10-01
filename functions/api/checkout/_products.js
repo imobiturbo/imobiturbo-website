@@ -46,7 +46,12 @@ export function checkoutDetails(payment = {}) {
   return {
     productId: consulting ? CONSULTING_PRODUCT_ID : COMMUNITY_PRODUCT_ID,
     plan,
-    ...(reference.offer_code === "live997" ? { offerCode: "live997" } : {}),
+    ...(reference.offer_code === "live997" ? {
+      offerCode: "live997",
+      installmentCount: reference.i === 12 ? 12 : 1,
+      orderAmount: reference.i === 12 ? 1196.40 : 997,
+      orderId: reference.i === 12 ? `live-${reference.eid || payment.installment || payment.id}` : payment.id,
+    } : {}),
     eventId: typeof reference.eid === "string" ? reference.eid :
       (typeof payment.externalReference === "string" && !payment.externalReference.startsWith("{") ? payment.externalReference : `purch_${payment.id}`),
     expiresAt: Number.isFinite(expiresAt) ? new Date(expiresAt).toISOString() : null,
