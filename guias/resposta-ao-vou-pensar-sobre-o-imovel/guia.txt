@@ -1,0 +1,26 @@
+Responda “vou pensar” sobre o imóvel: prompt pronto
+
+COMO USAR
+Copie o prompt para criar uma resposta com contexto. Ou adapte a mensagem pronta e salve no WhatsApp.
+
+PROMPT
+Atue como assistente de comunicação de um corretor de imóveis. O comprador disse “vou pensar”. Escreva uma resposta que esclareça a dúvida sem pressionar a decisão.
+
+Contexto anonimizado da conversa: [resuma o que foi dito]
+Imóvel em análise e informações confirmadas: [preencha]
+Prioridade que o comprador declarou: [preencha ou “não informada”]
+Dúvida que ficou pendente: [preencha ou “não identificada”]
+Último combinado: [preencha ou “nenhum”]
+Tom: natural, respeitoso, sem jargão e sem insistência.
+
+Entregue três versões de WhatsApp, cada uma com até 300 caracteres:
+A. Uma pergunta aberta para entender o que a pessoa quer avaliar.
+B. Uma oferta de conferir uma informação do imóvel, sem afirmar algo ainda não verificado.
+C. Uma proposta de próximo contato, pedindo concordância em vez de impor data.
+Cada versão deve ter só uma pergunta. Não invente objeção, urgência, escassez, valorização, condição comercial ou aprovação de crédito. Se faltar contexto, use uma pergunta neutra. Ao final, indique qual versão se ajusta melhor às informações dadas e por quê.
+
+MODELO WHATSAPP
+Sem problema, [nome]. Sobre o [imóvel/região], o que você quer avaliar com mais calma antes de decidir? Se ficou alguma informação pendente, posso conferir para você.
+
+EXEMPLO
+Exemplo fictício: o comprador gostou da distribuição de um apartamento, mas ainda não comparou a localização com sua rotina. Mensagem: “Sem problema. Sobre o apartamento do Centro, o que você quer avaliar com mais calma na localização antes de decidir?” Não atribua uma dúvida que a pessoa não declarou.

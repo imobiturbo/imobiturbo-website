@@ -1,18 +1,37 @@
-Mapa do atendimento imobiliário no Excalidraw
+Próximo passo do lead imobiliário: prompt e modelo
 
-Desenhe o caminho de uma oportunidade antes de automatizar.
+COMO USAR
+Copie o prompt, preencha um caso fictício ou anonimizado e salve o próximo passo no atendimento.
 
-Abra a ferramenta oficial
-https://excalidraw.com
+PROMPT
+Atue como assistente de organização do atendimento imobiliário. Transforme o contexto abaixo em um registro objetivo de próximo passo. Não invente informações, interesses, orçamento, prazo ou promessa de resultado. Quando faltar algo, escreva “a confirmar”.
 
-Repo oficial
-https://github.com/excalidraw/excalidraw
+Contexto do contato: [cole um resumo sem nome, telefone ou documentos]
+Imóvel/região em análise: [preencha]
+Última conversa: [resuma]
+Dúvida pendente: [preencha ou “a confirmar”]
+Responsável pelo retorno: [preencha]
+Data combinada: [preencha ou “a combinar”]
 
-Desenhe cinco caixas
-Entrada → Atendimento → Qualificação → Retorno → Próxima decisão.
+Entregue:
+1. Etapa: entrada, atendimento, qualificação, retorno ou próxima decisão, com justificativa curta.
+2. O que já sabemos, o que falta confirmar e qual pergunta fazer primeiro.
+3. Uma única próxima ação, com responsável e data; se não houver data combinada, proponha combinar, sem inventá-la.
+4. Uma mensagem de WhatsApp com até 300 caracteres, contextualizada, sem pressão, falsa urgência ou condições não confirmadas.
+5. Um registro copiável: ETAPA | PENDÊNCIA | PRÓXIMA AÇÃO | RESPONSÁVEL | DATA.
+Não use dados pessoais e não prometa aprovação de crédito ou venda.
 
-Defina quem faz o quê
-Em cada etapa, escreva responsável e condição de saída. Exemplo fictício: qualificação termina quando região, orçamento e prazo foram entendidos.
+MODELO WHATSAPP
+LEAD IMOBILIÁRIO — PRÓXIMO PASSO
+Imóvel/região: [preencher]
+Etapa: [preencher]
+O que já foi entendido: [preencher]
+Informação que falta: [preencher]
+Próxima ação: [uma ação concreta]
+Responsável: [preencher]
+Data combinada: [preencher ou “a combinar”]
 
-Encontre uma pendência
-Marque a etapa em que não há responsável ou próxima ação. O desenho é um diagnóstico; não integra nem automatiza o CRM.
+Antes do retorno: conferir a informação pendente e adaptar a mensagem ao último combinado.
+
+EXEMPLO
+Exemplo fictício: a pessoa recebeu a ficha de um apartamento no Centro e quer confirmar a incidência de sol na sala. Ação: conferir a orientação com a fonte responsável e retornar com a informação. Responsável: Ana. Data: amanhã às 15h, se isso foi combinado. Mensagem: “Ficou pendente confirmar o sol na sala do apartamento do Centro. Vou conferir essa informação e te retorno amanhã às 15h, como combinamos.”
