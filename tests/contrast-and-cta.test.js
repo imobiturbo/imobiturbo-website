@@ -95,3 +95,29 @@ test("vagas and vagas-v2 enforce high contrast black ink #10130c on lime ::selec
   }
 });
 
+test("guias pages enforce strict black text #000000 and stroke on community CTA buttons", () => {
+  const guiasDir = path.join(root, "guias");
+  const entries = fs.readdirSync(guiasDir, { withFileTypes: true });
+  const htmlFiles = [path.join(guiasDir, "index.html")];
+  for (const entry of entries) {
+    if (entry.isDirectory()) {
+      const subHtml = path.join(guiasDir, entry.name, "index.html");
+      if (fs.existsSync(subHtml)) htmlFiles.push(subHtml);
+    }
+  }
+
+  assert.ok(htmlFiles.length >= 7, "Must test at least 7 guide pages");
+
+  for (const file of htmlFiles) {
+    const html = fs.readFileSync(file, "utf8");
+    assert.ok(
+      html.includes(".community [data-community-cta]") && html.includes("color:#000000!important"),
+      `${path.basename(path.dirname(file))}/${path.basename(file)} must enforce color:#000000!important on .community [data-community-cta]`
+    );
+    assert.ok(
+      html.includes("stroke:#000000!important"),
+      `${file} must enforce stroke:#000000!important on .community [data-community-cta] svg`
+    );
+  }
+});
+
