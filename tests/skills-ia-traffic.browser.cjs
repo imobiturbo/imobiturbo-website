@@ -7,7 +7,7 @@ after(async()=>{await browser?.close()});
 for (const width of [393,1440]) test(`loading, lazy gallery, offer navigation and checkout at ${width}px`,async t=>{
  const context=await browser.newContext({viewport:{width,height:852},reducedMotion:'reduce'});t.after(()=>context.close());
  const page=await context.newPage(),errors=[],requested=[];page.on('pageerror',e=>errors.push(e.message));
- await page.addInitScript(()=>{window.__meta=[];window.__hub=[];window.fbq=(...args)=>window.__meta.push(args);window.HubTracker={config:()=>({enabled:true}),track:(...args)=>{window.__hub.push(args);return true},decorate:url=>{const u=new URL(url);u.searchParams.set('rt_session_id','test-session');return u.href}};});
+ await page.addInitScript(()=>{window.__rafRequests=0;const raf=window.requestAnimationFrame.bind(window);window.requestAnimationFrame=fn=>{window.__rafRequests++;return raf(fn)};window.__meta=[];window.__hub=[];window.fbq=(...args)=>window.__meta.push(args);window.HubTracker={config:()=>({enabled:true}),track:(...args)=>{window.__hub.push(args);return true},decorate:url=>{const u=new URL(url);u.searchParams.set('rt_session_id','test-session');return u.href}};});
  await context.route('**/*',async route=>{
   const u=new URL(route.request().url());
   if(u.hostname==='pay.wiapy.com')return route.fulfill({contentType:'text/html',body:'<p>Checkout intercepted by test</p>'});
@@ -20,9 +20,11 @@ for (const width of [393,1440]) test(`loading, lazy gallery, offer navigation an
  });
  await page.goto('https://www.imobiturbo.com.br/skills-ia/?utm_source=instagram&utm_campaign=auditoria%7C123&utm_medium=conjunto%7C456&utm_content=anuncio%7C789',{waitUntil:'load'});
  await page.waitForTimeout(400);
+ assert.equal(requested.filter(u=>u.includes('JetBrainsMono')).length,0,'price-only font must wait for the offer section');
  assert.equal(requested.filter(u=>u.includes('/cassettes/')).length,0,'below-fold gallery must not compete at startup');
  const initial=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,hero:document.querySelector('.hero-visual img').naturalWidth,meta:window.__meta}));
  assert.ok(initial.scroll<=initial.width+1,'no horizontal overflow');assert.ok(initial.hero>0,'hero decoded');
+ assert.equal(await page.evaluate(()=>window.__rafRequests),0,"reduced motion must not schedule carousel frames");
  assert.deepEqual(initial.meta.map(x=>x[2]),['ViewContent'],'local code never initializes or duplicates PageView');
  await page.locator('.tape-viewport').scrollIntoViewIfNeeded();
  await page.waitForFunction(()=>document.querySelector('.tape-group img').naturalWidth>0);
@@ -34,6 +36,8 @@ for (const width of [393,1440]) test(`loading, lazy gallery, offer navigation an
  await page.locator('[data-placement="hero"]').click();
  await page.waitForTimeout(400);assert.equal(new URL(page.url()).hash,'','in-page scroll must not fabricate another PageView');
  assert.equal(await page.locator('[data-plan="essencial"]').getAttribute('aria-disabled'),null);
+ await page.waitForFunction(()=>document.querySelector('#planos').classList.contains('price-font-ready'));
+ assert.ok(requested.some(u=>u.includes('JetBrainsMono')),'price font loads when offers approach');
  if(process.env.SKILLS_ARTIFACTS){fs.mkdirSync(process.env.SKILLS_ARTIFACTS,{recursive:true});await page.screenshot({path:path.join(process.env.SKILLS_ARTIFACTS,`plans-${width}.png`)});}
  await page.locator('[data-plan="essencial"]').click();await page.waitForURL('https://pay.wiapy.com/**');
  const checkout=new URL(page.url());assert.equal(checkout.searchParams.get('utm_campaign'),'auditoria|123');assert.equal(checkout.searchParams.get('utm_medium'),'conjunto|456');assert.equal(checkout.searchParams.get('offer_code'),'essencial');assert.equal(checkout.searchParams.get('rt_session_id'),'test-session');
