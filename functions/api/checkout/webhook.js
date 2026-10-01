@@ -458,6 +458,7 @@ export async function onRequestPost(context) {
       const details = checkoutDetails(payload.payment);
       externalRef = details.eventId;
       plan = details.plan;
+      if (details.offerCode === "live997") amount = details.orderAmount;
     }
 
     // Processamento de CANCELAMENTO / REEMBOLSO
@@ -601,7 +602,7 @@ export async function onRequestPost(context) {
             phone,
             plan: plan || "anual",
             liveOffer: payload.payment && checkoutDetails(payload.payment).offerCode === "live997",
-            paymentId,
+            paymentId: payload.payment && checkoutDetails(payload.payment).offerCode === "live997" ? checkoutDetails(payload.payment).orderId : paymentId,
             amountCents,
             purchaseProof: { approvedAt: new Date(approvedAt).toISOString() },
             env: { COMMUNITY_ORGANIZATION_ID: (env && env.COMMUNITY_ORGANIZATION_ID) || "18b103e6-a006-45ac-84d5-62312f45ba77", ...env },
