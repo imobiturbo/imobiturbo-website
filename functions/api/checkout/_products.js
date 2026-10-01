@@ -46,6 +46,7 @@ export function checkoutDetails(payment = {}) {
   return {
     productId: consulting ? CONSULTING_PRODUCT_ID : COMMUNITY_PRODUCT_ID,
     plan,
+    ...(reference.offer_code === "live997" ? { offerCode: "live997" } : {}),
     eventId: typeof reference.eid === "string" ? reference.eid :
       (typeof payment.externalReference === "string" && !payment.externalReference.startsWith("{") ? payment.externalReference : `purch_${payment.id}`),
     expiresAt: Number.isFinite(expiresAt) ? new Date(expiresAt).toISOString() : null,

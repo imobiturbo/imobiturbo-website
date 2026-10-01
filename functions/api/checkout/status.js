@@ -189,6 +189,7 @@ export async function onRequestGet(context) {
                 name: buyerName,
                 phone: buyerPhone,
                 plan: details.plan || "anual",
+                liveOffer: details.offerCode === "live997",
                 paymentId: data.id,
                 amountCents: Math.round(amount * 100),
                 purchaseProof: { approvedAt: new Date(approvedAt).toISOString() },

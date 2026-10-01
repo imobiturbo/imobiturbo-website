@@ -600,6 +600,7 @@ export async function onRequestPost(context) {
             name,
             phone,
             plan: plan || "anual",
+            liveOffer: payload.payment && checkoutDetails(payload.payment).offerCode === "live997",
             paymentId,
             amountCents,
             purchaseProof: { approvedAt: new Date(approvedAt).toISOString() },
