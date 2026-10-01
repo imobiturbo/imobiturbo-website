@@ -9,8 +9,10 @@ const configured = JSON.parse(fs.readFileSync(path.join(__dirname, '../skills-ia
 async function browser(offerConfig, { rejectConfig = false, hubReady = true, hostname = 'www.imobiturbo.com.br' } = {}) {
   const navigation = [], meta = [], hub = [], timers = [];
   const status = { textContent: '', scrollIntoView() {} };
+  const windowListeners = {}, docListeners = {};
   const buttons = ['essencial', 'completo'].map(plan => ({
     dataset: { plan }, attributes: {}, listeners: {}, disabled: false,
+    innerHTML: 'Quero o plano', textContent: 'Quero o plano',
     setAttribute(key, value) { this.attributes[key] = value; },
     removeAttribute(key) { delete this.attributes[key]; },
     addEventListener(name, callback) { this.listeners[name] = callback; },
@@ -19,6 +21,8 @@ async function browser(offerConfig, { rejectConfig = false, hubReady = true, hos
     querySelectorAll(selector) { return selector === '[data-plan]' ? buttons : []; },
     getElementById() { return status; },
     createElement() { return {}; }, head: { appendChild() {} },
+    addEventListener(name, callback) { docListeners[name] = callback; },
+    visibilityState: 'visible',
   };
   const location = {
     hostname, pathname: '/skills-ia/',
@@ -28,6 +32,8 @@ async function browser(offerConfig, { rejectConfig = false, hubReady = true, hos
   const window = {
     location, crypto: { randomUUID: () => 'test-event-id' },
     setInterval(callback) { timers.push(callback); return timers.length; },
+    setTimeout(callback) { timers.push(callback); return timers.length; },
+    addEventListener(name, callback) { windowListeners[name] = callback; },
     fbq(...args) { meta.push(args); },
     HubTracker: {
       track(...args) { hub.push(args); return true; }, config() { return { enabled: hubReady }; },
@@ -40,7 +46,7 @@ async function browser(offerConfig, { rejectConfig = false, hubReady = true, hos
     fetch: async () => { if (rejectConfig) throw new Error('offline'); return { ok: true, json: async () => offerConfig }; },
   });
   await new Promise(resolve => setImmediate(resolve));
-  return { buttons, navigation, meta, hub, status, timers, ready: () => { hubReady = true; } };
+  return { buttons, navigation, meta, hub, status, timers, ready: () => { hubReady = true; }, windowListeners, docListeners };
 }
 
 const live = () => ({ ...configured, salesEnabled: true, fulfillmentStatus: 'ready', offers: {
@@ -115,4 +121,37 @@ test('the apex production host also sends product events through the configured 
   page.timers[0]();
   assert.deepEqual(page.meta.map(event => event[2]), ['ViewContent']);
   assert.equal(page.meta[0][1], '1025303472485246');
+});
+
+
+test('clicking checkout disables button, but pageshow or timeout restores it so user can click again after returning', async () => {
+  const page = await browser(live());
+  const btn = page.buttons[0];
+  const initialHtml = btn.innerHTML;
+
+  // First click: triggers navigation, disables button, shows loading state
+  btn.listeners.click();
+  assert.equal(page.navigation.length, 1);
+  assert.equal(btn.disabled, true);
+  assert.equal(btn.textContent, 'Abrindo pagamento…');
+
+  // User returns to the page (pageshow event fires via browser back or bfcache)
+  assert.ok(typeof page.windowListeners.pageshow === 'function', 'pageshow listener must be attached');
+  page.windowListeners.pageshow();
+
+  // Button is restored and enabled again
+  assert.equal(btn.disabled, false);
+  assert.equal(btn.innerHTML, initialHtml);
+
+  // User clicks again: checkout works again!
+  btn.listeners.click();
+  assert.equal(page.navigation.length, 2);
+  assert.equal(btn.disabled, true);
+  assert.equal(btn.textContent, 'Abrindo pagamento…');
+
+  // Also test visibilitychange restoration
+  assert.ok(typeof page.docListeners.visibilitychange === 'function', 'visibilitychange listener must be attached');
+  page.docListeners.visibilitychange();
+  assert.equal(btn.disabled, false);
+  assert.equal(btn.innerHTML, initialHtml);
 });

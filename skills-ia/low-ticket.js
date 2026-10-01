@@ -57,18 +57,38 @@
     target.searchParams.set('plan', 'avulso');
     return window.HubTracker ? window.HubTracker.decorate(target.href) : target.href;
   }
+  function resetCheckoutButton(button) {
+    if (!button) return;
+    button.disabled = false;
+    if (button.dataset.defaultHtml) {
+      button.innerHTML = button.dataset.defaultHtml;
+    }
+  }
+  function resetAllCheckoutButtons() {
+    document.querySelectorAll('[data-plan]').forEach(resetCheckoutButton);
+  }
+
   document.querySelectorAll('[data-plan]').forEach(function (button) {
+    button.dataset.defaultHtml = button.innerHTML || button.textContent;
     button.setAttribute('aria-disabled', 'true');
     button.addEventListener('click', function () {
       var plan = button.dataset.plan;
       var offer = config && config.offers && config.offers[plan];
       if (!config || !config.salesEnabled || !validOffer(offer)) {
         setAvailability('Não foi possível carregar os dados do checkout. Recarregue a página para tentar novamente.');
-        document.getElementById('availability').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        var avail = document.getElementById('availability');
+        if (avail && typeof avail.scrollIntoView === 'function') {
+          avail.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
       button.disabled = true;
       button.textContent = 'Abrindo pagamento…';
+      if (typeof window.setTimeout === 'function') {
+        window.setTimeout(function () {
+          resetCheckoutButton(button);
+        }, 5000);
+      }
       track('offer_selected', { offer_code: plan, value: offer.priceCents / 100, currency: 'BRL' });
       // Buttons avoid the Hub automatic anchor click handler. The fbq observer sends
       // exactly one InitiateCheckout to the Hub with the same eventID and amount.
@@ -86,10 +106,26 @@
     config = value;
     if (value.salesEnabled !== true) return;
     document.querySelectorAll('[data-plan]').forEach(function (button) {
-      if (validOffer(value.offers[button.dataset.plan])) button.removeAttribute('aria-disabled');
+      if (validOffer(value.offers[button.dataset.plan])) {
+        button.removeAttribute('aria-disabled');
+        button.disabled = false;
+      }
     });
     setAvailability('Pagamento pela Wiapy. Escolha seu kit.');
   }).catch(function () { setAvailability('Não foi possível carregar os dados do checkout. Recarregue a página para tentar novamente.'); });
+
+  if (typeof window.addEventListener === 'function') {
+    window.addEventListener('pageshow', function () {
+      resetAllCheckoutButtons();
+    });
+  }
+  if (typeof document.addEventListener === 'function') {
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') {
+        resetAllCheckoutButtons();
+      }
+    });
+  }
 
   // In-page navigation is a scroll, not a new tracked page occurrence.
   // Keep native anchors for no-JS access without triggering the tracker/hash observer.

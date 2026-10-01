@@ -44,5 +44,12 @@ for (const width of [393,1440]) test(`loading, lazy gallery, offer navigation an
  if(process.env.SKILLS_ARTIFACTS){fs.mkdirSync(process.env.SKILLS_ARTIFACTS,{recursive:true});await page.screenshot({path:path.join(process.env.SKILLS_ARTIFACTS,`plans-${width}.png`)});}
  await page.locator('[data-plan="essencial"]').click();await page.waitForURL('https://pay.wiapy.com/**');
  const checkout=new URL(page.url());assert.equal(checkout.searchParams.get('utm_campaign'),'auditoria|123');assert.equal(checkout.searchParams.get('utm_medium'),'conjunto|456');assert.equal(checkout.searchParams.get('offer_code'),'essencial');assert.equal(checkout.searchParams.get('rt_session_id'),'test-session');
+ await page.goBack();
+ await page.waitForTimeout(400);
+ assert.equal(await page.locator('[data-plan="essencial"]').getAttribute('disabled'), null, 'button must be enabled after back navigation');
+ assert.ok((await page.locator('[data-plan="essencial"]').textContent()).includes('Quero o Essencial'), 'button text must be restored after back navigation');
+ await page.locator('[data-plan="essencial"]').click();
+ await page.waitForURL('https://pay.wiapy.com/**');
+ assert.equal(new URL(page.url()).hostname, 'pay.wiapy.com');
  assert.deepEqual(errors,[]);
 });
