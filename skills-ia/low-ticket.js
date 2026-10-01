@@ -113,15 +113,59 @@
       if (item.open) track('content_expanded', { content_category: item.closest('.faq') ? 'faq' : 'catalog', content_name: item.querySelector('summary').textContent.trim() });
     });
   });
-  if ('IntersectionObserver' in window) {
-    var sticky = document.querySelector('.mobile-offer');
-    var planSection = document.getElementById('planos');
-    var seenOffers = false;
-    new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (sticky) sticky.hidden = entry.isIntersecting;
-        if (entry.isIntersecting && !seenOffers) { seenOffers = true; track('offers_viewed', { content_ids: ['essencial', 'completo'] }); }
-      });
-    }, { threshold: 0 }).observe(planSection);
+  var sticky = typeof document.querySelector === 'function' ? document.querySelector('.mobile-offer') : null;
+  var heroSection = typeof document.querySelector === 'function' ? document.querySelector('.hero') : null;
+  var planSection = document.getElementById('planos');
+  var seenOffers = false;
+
+  if ('IntersectionObserver' in window && sticky) {
+    var heroInView = true;
+    var plansInView = false;
+
+    function updateSticky() {
+      var shouldShow = !heroInView && !plansInView;
+      sticky.hidden = !shouldShow;
+    }
+
+    if (heroSection) {
+      new window.IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          heroInView = entry.isIntersecting;
+          updateSticky();
+        });
+      }, { threshold: 0 }).observe(heroSection);
+    } else {
+      heroInView = false;
+    }
+
+    if (planSection) {
+      new window.IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          plansInView = entry.isIntersecting;
+          if (entry.isIntersecting && !seenOffers) {
+            seenOffers = true;
+            track('offers_viewed', { content_ids: ['essencial', 'completo'] });
+          }
+          updateSticky();
+        });
+      }, { threshold: 0 }).observe(planSection);
+    }
+
+    updateSticky();
+  } else if (sticky) {
+    function checkScroll() {
+      var heroRect = heroSection && typeof heroSection.getBoundingClientRect === 'function' ? heroSection.getBoundingClientRect() : null;
+      var planRect = planSection && typeof planSection.getBoundingClientRect === 'function' ? planSection.getBoundingClientRect() : null;
+      var heroInView = heroRect ? (heroRect.bottom > 0 && heroRect.top < window.innerHeight) : false;
+      var plansInView = planRect ? (planRect.bottom > 0 && planRect.top < window.innerHeight) : false;
+      if (plansInView && !seenOffers) {
+        seenOffers = true;
+        track('offers_viewed', { content_ids: ['essencial', 'completo'] });
+      }
+      sticky.hidden = heroInView || plansInView;
+    }
+
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    checkScroll();
   }
 })();
