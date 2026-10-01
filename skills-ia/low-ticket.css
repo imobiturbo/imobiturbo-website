@@ -13,3 +13,52 @@
 @media(max-width:600px){.announcement{font-size:11px;gap:3px 7px}.skill-showcase{padding-top:48px;padding-bottom:34px}.showcase-heading h2{font-size:30px}.showcase-heading .section-intro{margin-bottom:24px}.tape-group{gap:14px;padding-right:14px}.tape-item{width:min(82vw,320px)}.showcase-footer{display:none}}
 
 .price-font-ready .price{font-family:"JetBrains Mono","Plus Jakarta Sans",monospace}
+
+/* Authority section: Quem está por trás / Natan Pimentel */
+.authority-section{background:#000;color:#fff;border-top:1px solid #1f231b;border-bottom:1px solid #1f231b}
+.authority-layout{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);grid-template-areas:"portrait heading" "portrait copy";gap:0 64px;align-items:start}
+.authority-heading{grid-area:heading}
+.authority-heading .section-intro{margin:0 0 26px;text-align:left;max-width:none}
+.authority-heading .eyebrow{color:var(--lt-lime);font-size:13px;line-height:1.4;font-weight:700;letter-spacing:.065em;margin-bottom:18px;text-transform:uppercase}
+.authority-heading h2{font-size:clamp(28px,3.2vw,44px);text-align:left;font-weight:800;line-height:1.16;letter-spacing:-.035em;color:#fff}
+.portrait-frame{grid-area:portrait;width:100%;max-width:420px;border-radius:var(--lt-radius);overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 16px 40px rgba(0,0,0,.45);background:#111}
+.portrait-frame img{width:100%;height:auto;display:block;aspect-ratio:1/1;object-fit:cover}
+.authority-copy{grid-area:copy}
+.founder-name{font-size:27px;font-weight:800;color:#fff;margin:0;letter-spacing:-.02em}
+.founder-role{margin:5px 0 22px;color:#a1a1aa;font-size:15px}
+.founder-highlights{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:20px}
+.founder-highlight-item{display:flex;align-items:flex-start;gap:16px;padding-left:0!important;font-size:16px}
+.founder-highlight-item::before{display:none!important;content:none!important}
+.ios-emoji-bullet{width:28px;height:28px;flex-shrink:0;object-fit:contain;margin-top:2px;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4))}
+.founder-highlight-content strong{display:block;color:#fff;margin-bottom:4px;font-size:16px;font-weight:700}
+.founder-highlight-content span{display:block;color:#a1a1aa;line-height:1.5;font-size:15px}
+.authority-section .section-cta{margin-top:40px;text-align:center}
+.authority-section .section-cta .button{border-radius:9999px;padding:16px 36px;box-shadow:0 0 20px rgba(197,254,109,.25)}
+@media(max-width:900px){.authority-layout{gap:0 36px}}
+@media(max-width:760px){.authority-layout{display:flex;flex-direction:column;gap:0}.authority-heading{order:1}.portrait-frame{order:2;width:min(360px,100%);margin:0 auto 28px}.authority-copy{order:3}.authority-heading .section-intro{margin-bottom:24px}.founder-name{font-size:25px}.founder-role{margin-bottom:24px}.authority-section .section-cta .button{width:100%}}
+
+/* Section: Que p#rra são skills de IA */
+.explain-section{background:#000;color:#fff;border-top:1px solid #1f231b;border-bottom:1px solid #1f231b}
+.explain-section .eyebrow{color:var(--lt-lime);font-size:13px;line-height:1.4;font-weight:700;letter-spacing:.065em;text-transform:uppercase;text-align:center;margin-bottom:14px}
+.explain-section h2{font-size:clamp(28px,3.4vw,44px);color:#fff;margin-bottom:18px;text-align:center}
+.explain-section h2 span{color:var(--lt-lime)}
+.explain-section .section-intro{color:#b5bcab;max-width:680px;margin:0 auto 48px;text-align:center}
+.explain-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.explain-card{background:#0d100a;border:1px solid #232a1b;border-radius:var(--lt-radius);padding:32px 28px;display:flex;flex-direction:column}
+.explain-card-tag{display:inline-flex;align-items:center;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--lt-lime);margin-bottom:10px}
+.explain-card h3{font-size:23px;color:#fff;margin-bottom:6px;line-height:1.25}
+.explain-card-subtitle{font-size:14px;color:#8f9884;margin-bottom:18px;font-weight:600}
+.explain-card p{font-size:15px;line-height:1.6;color:#d0d6c6;margin-bottom:14px}
+.explain-card p:last-child{margin-bottom:0}
+.explain-card strong{color:#fff}
+.explain-steps{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.explain-steps li{font-size:15px;line-height:1.55;color:#d0d6c6;padding-left:26px;position:relative}
+.explain-steps li strong{color:var(--lt-lime)}
+.explain-steps li::before{content:"→";position:absolute;left:0;top:0;color:var(--lt-lime);font-weight:800;font-size:16px}
+.explain-benefits{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.explain-benefits li{font-size:15px;line-height:1.55;color:#d0d6c6;padding-left:28px;position:relative}
+.explain-benefits li::before{content:"";position:absolute;left:0;top:.3em;width:18px;height:18px;background:url("/assets/emojis/emoji-apple-check.png") center/contain no-repeat}
+.explain-cta{text-align:center;margin-top:48px}
+.explain-cta .button{border-radius:9999px;padding:16px 36px;box-shadow:0 0 20px rgba(197,254,109,.25)}
+@media(max-width:900px){.explain-grid{grid-template-columns:1fr;gap:20px}.explain-card{padding:26px 22px}}
+@media(max-width:600px){.explain-section{padding-block:54px}.explain-section h2{font-size:clamp(23px,6.2vw,32px)}.explain-section .section-intro{margin-bottom:32px}.explain-cta{margin-top:32px}.explain-cta .button{width:100%}}
