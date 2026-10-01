@@ -1,0 +1,41 @@
+const {test,before,after}=require('node:test');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE);
+const root=path.resolve(__dirname,'..');let browser;
+before(async()=>{browser=await chromium.launch({headless:true,args:['--no-sandbox']});});
+after(async()=>{await browser?.close()});
+for (const width of [393,1440]) test(`loading, lazy gallery, offer navigation and checkout at ${width}px`,async t=>{
+ const context=await browser.newContext({viewport:{width,height:852},reducedMotion:'reduce'});t.after(()=>context.close());
+ const page=await context.newPage(),errors=[],requested=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.addInitScript(()=>{window.__meta=[];window.__hub=[];window.fbq=(...args)=>window.__meta.push(args);window.HubTracker={config:()=>({enabled:true}),track:(...args)=>{window.__hub.push(args);return true},decorate:url=>{const u=new URL(url);u.searchParams.set('rt_session_id','test-session');return u.href}};});
+ await context.route('**/*',async route=>{
+  const u=new URL(route.request().url());
+  if(u.hostname==='pay.wiapy.com')return route.fulfill({contentType:'text/html',body:'<p>Checkout intercepted by test</p>'});
+  if(u.hostname!=='www.imobiturbo.com.br')return route.abort();
+  let file=path.resolve(root,'.'+u.pathname+(u.pathname.endsWith('/')?'index.html':''));
+  if(!file.startsWith(root+path.sep)||!fs.existsSync(file))return route.fulfill({status:404,body:''});
+  requested.push(u.pathname);
+  const mime={'.html':'text/html','.js':'application/javascript','.css':'text/css','.json':'application/json','.woff2':'font/woff2','.webp':'image/webp','.svg':'image/svg+xml','.png':'image/png'};
+  return route.fulfill({path:file,contentType:mime[path.extname(file)]||'application/octet-stream'});
+ });
+ await page.goto('https://www.imobiturbo.com.br/skills-ia/?utm_source=instagram&utm_campaign=auditoria%7C123&utm_medium=conjunto%7C456&utm_content=anuncio%7C789',{waitUntil:'load'});
+ await page.waitForTimeout(400);
+ assert.equal(requested.filter(u=>u.includes('/cassettes/')).length,0,'below-fold gallery must not compete at startup');
+ const initial=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth,hero:document.querySelector('.hero-visual img').naturalWidth,meta:window.__meta}));
+ assert.ok(initial.scroll<=initial.width+1,'no horizontal overflow');assert.ok(initial.hero>0,'hero decoded');
+ assert.deepEqual(initial.meta.map(x=>x[2]),['ViewContent'],'local code never initializes or duplicates PageView');
+ await page.locator('.tape-viewport').scrollIntoViewIfNeeded();
+ await page.waitForFunction(()=>document.querySelector('.tape-group img').naturalWidth>0);
+ assert.ok(requested.filter(u=>u.includes('/cassettes/')).length<10,'horizontal gallery should hydrate only nearby cards');
+ const steps = await page.locator('.tape-group').first().evaluate(el=>Math.ceil(el.getBoundingClientRect().width / 264));
+ await page.locator('.tape-viewport').focus();
+ for(let i=0;i<steps;i++) await page.locator('.tape-viewport').press('ArrowRight');
+ await page.waitForFunction(()=>document.querySelector('.tape-group[aria-hidden="true"] img').naturalWidth>0);
+ await page.locator('[data-placement="hero"]').click();
+ await page.waitForTimeout(400);assert.equal(new URL(page.url()).hash,'','in-page scroll must not fabricate another PageView');
+ assert.equal(await page.locator('[data-plan="essencial"]').getAttribute('aria-disabled'),null);
+ if(process.env.SKILLS_ARTIFACTS){fs.mkdirSync(process.env.SKILLS_ARTIFACTS,{recursive:true});await page.screenshot({path:path.join(process.env.SKILLS_ARTIFACTS,`plans-${width}.png`)});}
+ await page.locator('[data-plan="essencial"]').click();await page.waitForURL('https://pay.wiapy.com/**');
+ const checkout=new URL(page.url());assert.equal(checkout.searchParams.get('utm_campaign'),'auditoria|123');assert.equal(checkout.searchParams.get('utm_medium'),'conjunto|456');assert.equal(checkout.searchParams.get('offer_code'),'essencial');assert.equal(checkout.searchParams.get('rt_session_id'),'test-session');
+ assert.deepEqual(errors,[]);
+});

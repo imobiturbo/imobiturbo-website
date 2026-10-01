@@ -6,7 +6,7 @@ const path = require('node:path');
 const source = fs.readFileSync(path.join(__dirname, '../skills-ia/low-ticket.js'), 'utf8');
 const configured = JSON.parse(fs.readFileSync(path.join(__dirname, '../skills-ia/offer.json'), 'utf8'));
 
-async function browser(offerConfig, { rejectConfig = false } = {}) {
+async function browser(offerConfig, { rejectConfig = false, hubReady = true, hostname = 'www.imobiturbo.com.br' } = {}) {
   const navigation = [], meta = [], hub = [], timers = [];
   const status = { textContent: '', scrollIntoView() {} };
   const buttons = ['essencial', 'completo'].map(plan => ({
@@ -21,7 +21,7 @@ async function browser(offerConfig, { rejectConfig = false } = {}) {
     createElement() { return {}; }, head: { appendChild() {} },
   };
   const location = {
-    hostname: 'www.imobiturbo.com.br', pathname: '/skills-ia/',
+    hostname, pathname: '/skills-ia/',
     href: 'https://www.imobiturbo.com.br/skills-ia/?utm_source=instagram&utm_campaign=skills%20teste&email=private%40example.test',
     assign(url) { navigation.push(url); },
   };
@@ -30,7 +30,7 @@ async function browser(offerConfig, { rejectConfig = false } = {}) {
     setInterval(callback) { timers.push(callback); return timers.length; },
     fbq(...args) { meta.push(args); },
     HubTracker: {
-      track(...args) { hub.push(args); return true; }, config() { return { enabled: true }; },
+      track(...args) { hub.push(args); return true; }, config() { return { enabled: hubReady }; },
       decorate(url) { const target = new URL(url); target.searchParams.set('rt_vid', 'visitor-test'); return target.href; },
     },
   };
@@ -40,7 +40,7 @@ async function browser(offerConfig, { rejectConfig = false } = {}) {
     fetch: async () => { if (rejectConfig) throw new Error('offline'); return { ok: true, json: async () => offerConfig }; },
   });
   await new Promise(resolve => setImmediate(resolve));
-  return { buttons, navigation, meta, hub, status, timers };
+  return { buttons, navigation, meta, hub, status, timers, ready: () => { hubReady = true; } };
 }
 
 const live = () => ({ ...configured, salesEnabled: true, fulfillmentStatus: 'ready', offers: {
@@ -94,9 +94,25 @@ test('an invalid or lookalike checkout host fails closed', async () => {
   }
 });
 
-test('pixel initializes once and carries the product, never a simulated purchase', async () => {
+test('Hub owns initialization and PageView; product ViewContent is sent once', async () => {
   const page = await browser(configured);
   page.timers[0](); page.timers[0]();
-  assert.equal(page.meta.filter(event => event[0] === 'init').length, 1);
-  assert.deepEqual(page.meta.filter(event => event[0] === 'trackSingle').map(event => event[2]), ['PageView', 'ViewContent']);
+  assert.equal(page.meta.filter(event => event[0] === 'init').length, 0);
+  assert.deepEqual(page.meta.filter(event => event[0] === 'trackSingle').map(event => event[2]), ['ViewContent']);
+});
+
+
+test('a slow Hub never triggers a fallback PageView and recovers with one ViewContent', async () => {
+  const page = await browser(configured, { hubReady: false });
+  for (let i = 0; i < 25; i++) page.timers[0]();
+  assert.equal(page.meta.length, 0);
+  page.ready(); page.timers[0](); page.timers[0]();
+  assert.deepEqual(page.meta.map(event => event[2]), ['ViewContent']);
+});
+
+test('the apex production host also sends product events through the configured Hub pixel', async () => {
+  const page = await browser(configured, { hostname: 'imobiturbo.com.br' });
+  page.timers[0]();
+  assert.deepEqual(page.meta.map(event => event[2]), ['ViewContent']);
+  assert.equal(page.meta[0][1], '1025303472485246');
 });

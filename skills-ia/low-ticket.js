@@ -2,7 +2,7 @@
   'use strict';
   var productId = 'skills-ia-corretor';
   var config = null;
-  var production = location.hostname === 'www.imobiturbo.com.br';
+  var production = /^(www\.)?imobiturbo\.com\.br$/.test(location.hostname);
   var pixelId = '1025303472485246';
   var pending = [];
 
@@ -19,31 +19,23 @@
   function eventId() {
     return window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'skills-' + Date.now() + '-' + Math.random().toString(36).slice(2);
   }
-  function loadPixel() {
-    if (!production || window.__skillsPixelLoaded) return;
-    window.__skillsPixelLoaded = true;
-    if (!window.fbq) {
-      var queue = function () { queue.callMethod ? queue.callMethod.apply(queue, arguments) : queue.queue.push(arguments); };
-      queue.push = queue; queue.loaded = true; queue.version = '2.0'; queue.queue = [];
-      window.fbq = queue; window._fbq = queue;
-      var script = document.createElement('script'); script.async = true;
-      script.src = 'https://connect.facebook.net/en_US/fbevents.js'; document.head.appendChild(script);
-    }
-    window.fbq('init', pixelId);
-    window.fbq('trackSingle', pixelId, 'PageView', {}, { eventID: eventId() });
+  // The Hub SDK owns initialization and the shared browser/CAPI PageView ID.
+  // Only product events belong to this page; never send a second PageView.
+  var contentViewed = false;
+  function viewContent() {
+    if (!production || contentViewed || typeof window.fbq !== 'function') return;
+    contentViewed = true;
     window.fbq('trackSingle', pixelId, 'ViewContent', {
       content_ids: [productId], content_name: '54 skills de IA para corretores', content_type: 'product', currency: 'BRL', value: 27.90
     }, { eventID: eventId() });
   }
-  // Allow the canonical Hub PageView to finish first; fbq is observed by the Hub.
-  // This prevents an extra PageView while keeping the pixel independent of a slow collector.
   var ticks = 0;
   var trackingTimer = window.setInterval(function () {
     ticks += 1;
     var ready = window.HubTracker && window.HubTracker.config().enabled;
-    if (ready || ticks >= 20) loadPixel();
+    if (ready) viewContent();
     pending = pending.filter(function (item) { return !hub(item[0], item[1]); });
-    if ((ready && pending.length === 0) || ticks >= 40) clearInterval(trackingTimer);
+    if ((ready && contentViewed && pending.length === 0) || ticks >= 120) clearInterval(trackingTimer);
   }, 250);
 
   function setAvailability(message) {
