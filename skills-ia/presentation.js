@@ -38,6 +38,16 @@
     var position = 0;
     var cycleWidth = original.getBoundingClientRect().width;
     var drag = null;
+    var frame = 0;
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function updateAnimation() {
+      if (visible && !document.hidden && !reducedMotion) {
+        if (!frame) { previous = 0; frame = window.requestAnimationFrame(animate); }
+      } else if (frame) {
+        window.cancelAnimationFrame(frame); frame = 0; previous = 0;
+      }
+    }
+    document.addEventListener('visibilitychange', updateAnimation);
 
     viewport.addEventListener('pointerdown', function (event) {
       position = viewport.scrollLeft;
@@ -65,9 +75,12 @@
     }).observe(original);
     if ('IntersectionObserver' in window) new IntersectionObserver(function (entries) {
       visible = entries[0].isIntersecting;
+      updateAnimation();
     }, { rootMargin: '80px' }).observe(viewport);
 
     function animate(time) {
+      frame = 0;
+      if (!visible || document.hidden || reducedMotion) { previous = 0; return; }
       var elapsed = previous ? Math.min(time - previous, 50) : 0;
       previous = time;
       if (!drag && visible && !document.hidden && cycleWidth > 0) {
@@ -76,9 +89,9 @@
       } else {
         position = viewport.scrollLeft;
       }
-      window.requestAnimationFrame(animate);
+      frame = window.requestAnimationFrame(animate);
     }
-    window.requestAnimationFrame(animate);
+    updateAnimation();
   });
 
   var activeInfoButton = null;

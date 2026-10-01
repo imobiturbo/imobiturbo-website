@@ -28,6 +28,20 @@
     }).observe(document.body, { childList: true, subtree: true });
   }
 
+  // This font is used only in prices far below the fold.
+  var plans = document.getElementById('planos');
+  if (plans) {
+    function enablePriceFont() { plans.classList.add('price-font-ready'); }
+    if (!('IntersectionObserver' in window)) enablePriceFont();
+    else {
+      var prices = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        enablePriceFont(); prices.disconnect();
+      }, { rootMargin: '800px' });
+      prices.observe(plans);
+    }
+  }
+
   var lcp = null, cls = 0, sent = false;
   try {
     new PerformanceObserver(function (list) {
