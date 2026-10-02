@@ -51,6 +51,13 @@ const entries = [
 ];
 
 execFileSync(process.execPath, ['build.js'], { cwd: root, stdio: 'inherit' });
+
+// Build the isolated official shadcn interface for /oficina/ and /oficina/obrigado/.
+execFileSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'build'], {
+  cwd: path.join(root, 'tools/oficina-web'),
+  stdio: 'inherit',
+  shell: process.platform === 'win32',
+});
 fs.rmSync(output, { recursive: true, force: true });
 fs.mkdirSync(output, { recursive: true });
 
@@ -59,6 +66,8 @@ for (const entry of entries) {
   if (!fs.existsSync(source)) continue;
   fs.cpSync(source, path.join(output, entry), { recursive: true });
 }
+
+fs.cpSync(path.join(root, 'tools/oficina-web/dist'), path.join(output, 'oficina'), { recursive: true });
 
 // Ensure relative symlink for vagas-v2/assets within build output
 const v2Assets = path.join(output, 'vagas-v2', 'assets');

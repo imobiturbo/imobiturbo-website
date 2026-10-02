@@ -6,6 +6,8 @@ import { sendPostPurchaseNotifications } from "./_notifications.js";
 // Consulta status de aprovação de pagamentos no AbacatePay ou Asaas
 // Dispara evento Purchase server-side para Meta CAPI (Graph API v25.0) quando pago
 
+import { identifyOficinaPayment } from "../oficina/_checkout.js";
+
 const CORS_HEADERS = {
   "Cache-Control": "no-store",
   "Access-Control-Allow-Origin": "*",
@@ -125,6 +127,9 @@ export async function onRequestGet(context) {
       }
 
       if (resp.ok && data.id) {
+        if (await identifyOficinaPayment(data, env)) {
+          return Response.json({ success: false, error: "oficina_status_via_webhook" }, { status: 409, headers: CORS_HEADERS });
+        }
         const details = checkoutDetails(data);
         if ((!paymentId.startsWith('sub_') && data.id !== paymentId) || (subscriptionOnly && data.id !== paymentId)) {
           return Response.json({ success: false, error: 'Pagamento divergente.' }, { status: 422, headers: CORS_HEADERS });

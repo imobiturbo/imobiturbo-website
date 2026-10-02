@@ -26,6 +26,7 @@ export async function dispatchVerifiedPurchaseToHub({
   productId = "comunidade-imobiturbo",
   orderId,
   offerId,
+  tracking,
 }) {
   const operationId = (env && env.HUB_TRACKING_OPERATION_ID) || DEFAULT_HUB_OPERATION_ID;
   const endpointBase = (env && env.HUB_TRACKING_COLLECT_URL) || DEFAULT_HUB_COLLECT_URL;
@@ -41,10 +42,13 @@ export async function dispatchVerifiedPurchaseToHub({
     eventId: eventId || `purch_${paymentId}`,
     visitorId: resolvedVisitorId,
     sessionId: resolvedSessionId,
-    url: productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
-    landing: productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
+    url: productId === "oficina-imobiturbo-202610" ? "https://www.imobiturbo.com.br/oficina/" : productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
+    landing: productId === "oficina-imobiturbo-202610" ? "https://www.imobiturbo.com.br/oficina/" : productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
     referrer: null,
     productId,
+    ...(productId === "oficina-imobiturbo-202610" ? { contentId: productId, ...Object.fromEntries(
+      ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "imt_adset_name", "imt_adset_id", "imt_ad_id", "imt_placement"].filter(key => typeof tracking?.[key] === "string").map(key => [key, tracking[key]])
+    ) } : {}),
     orderId: orderId || paymentId,
     ...(offerId || productId === CONSULTING_PRODUCT_ID ? { offerId: offerId || CONSULTING_OFFER_ID } : {}),
     valueCents: Math.round((Number(amount) || 0) * 100),
