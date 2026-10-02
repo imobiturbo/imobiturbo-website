@@ -506,8 +506,11 @@ test('paid buyer receives transactional rooms, dates, material and replay only a
   assert.match(mails[0].body.textbody, /24 de outubro de 2026/);
   assert.ok(mails[0].body.textbody.includes('https://meet.google.com/tvd-sxie-voj'));
   assert.ok(mails[0].body.textbody.includes('https://meet.google.com/oxg-oqro-upx'));
-  assert.ok(mails[0].body.textbody.includes('https://imobiturbo-plano-lancamento.imobiturbo.workers.dev/downloads/carteira-exemplo.csv'));
-  assert.ok(mails[0].body.textbody.includes(env.ZEPTOMAIL_FROM_EMAIL));
+  for (const file of ['carteira-cadencia.csv', 'agenda-sete-dias.csv', 'mensagens-pratica.md']) {
+    assert.ok(mails[0].body.textbody.includes('https://www.imobiturbo.com.br/oficina/material/' + file));
+  }
+  assert.ok(mails[0].body.textbody.includes('suporte@imobiturbo.com.br'));
+  assert.equal(mails[0].body.reply_to[0].address, 'suporte@imobiturbo.com.br');
   assert.equal(mails[0].body.textbody.includes('997'), false);
   assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeMailSent, true);
   assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeDelivery.requestId, 'mock-mail-receipt');

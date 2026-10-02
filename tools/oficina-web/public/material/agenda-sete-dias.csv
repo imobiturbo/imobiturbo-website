@@ -1,0 +1,8 @@
+dia,atividade,tipo,exemplo_ficticio,criterio_de_ajuste,responsavel_ficticio
+1,Executar próxima ação contextualizada,Contato se adequado,Perguntar prazo ao C01,Se houver resposta registrar combinado; pedido para parar encerra contato,Corretor A
+2,Revisar pendências e repasses,Revisão interna,Conferir se C05 chegou ao humano,Não transformar revisão em nova mensagem automática,Gestor A
+3,Cumprir retorno combinado,Contato se combinado,Retomar C02 na data combinada,Se houver novo prazo atualizar agenda,Corretor A
+4,Conferir capacidade da agenda,Revisão interna,Redistribuir ações vencidas com justificativa,Gestor mantém contexto no repasse,Gestor A
+5,Reavaliar contexto antes de novo retorno,Decisão condicional,Verificar se C01 tem pendência útil,Sem fato novo não presumir interesse ou repetir mensagem,Corretor A
+6,Revisar pausa e exceções,Revisão interna,C04 permanece pausado,Não contatar quem pediu pausa,Gestor A
+7,Planejar ciclo seguinte,Revisão interna,Atualizar cinco ações e datas,Próximo ciclo depende do contexto e permissão; não é disparo diário,Corretor A
