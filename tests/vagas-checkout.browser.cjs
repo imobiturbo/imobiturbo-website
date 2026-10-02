@@ -70,7 +70,7 @@ async function revealVisibleImages(page) {
 
 for (const width of [390, 320, 1440]) test(`restored page, original course carousel and plan navigation at ${width}px`, async t => {
   const page = await visit(t, width);
-  assert.ok(await page.evaluate(() => window.auditEvents.some(event => event.method === 'track' && event.args[0] === 'LandingView' && event.args[1].lp_version === 'vagas-restaurada-vsl-20261002' && event.args[1].traffic_classification === 'confirmed_bot')));
+  assert.ok(await page.evaluate(() => window.auditEvents.some(event => event.method === 'track' && event.args[0] === 'LandingView' && event.args[1].lp_version === 'vagas-comunidade-headlines-20261002' && event.args[1].traffic_classification === 'confirmed_bot')));
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'no horizontal overflow');
   assert.equal(await page.locator('#vslVideo').count(), 1, 'the presentation remains in the hero');
   await page.locator('main a.btn[href="#planos"]').first().click();
