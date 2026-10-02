@@ -300,6 +300,7 @@
         get('chkTabCard').setAttribute('aria-selected', 'true');
         get('chkTabPix').classList.remove('active');
         get('chkTabPix').setAttribute('aria-selected', 'false');
+        api.updatePaymentSummary?.();
         api.goToCheckoutStep(1);
         api.updateCheckoutPersonalization();
         api.showCheckoutError('Este checkout expirou ou foi encerrado. Preencha seus dados para iniciar novamente.');
