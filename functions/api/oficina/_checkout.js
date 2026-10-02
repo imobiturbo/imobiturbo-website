@@ -22,7 +22,22 @@ async function api(env, path, options = {}) {
   const response = await fetch("https://api.asaas.com/v3" + path, {
     ...options, headers: { access_token: env.ASAAS_API_KEY, "User-Agent": "Imobiturbo-Oficina/1.0", "Content-Type": "application/json" }, signal: AbortSignal.timeout(7000),
   });
-  if (!response.ok) throw new Error("oficina_link_provider_" + response.status);
+  if (!response.ok) {
+    const error = new Error("oficina_link_provider_" + response.status);
+    let code = "unknown", description = "";
+    try {
+      const detail = (await response.json()).errors?.[0];
+      if (/^[a-z0-9_]{1,64}$/i.test(detail?.code || "")) code = detail.code;
+      // This request contains only workshop configuration, never buyer data.
+      // The protected admin can inspect validation text, with tokens removed.
+      if (typeof detail?.description === "string") {
+        description = detail.description.replaceAll(env.ASAAS_API_KEY, "[redacted]").slice(0, 300);
+        if (/(?:aact_|eyJ[A-Za-z0-9_-]{15}|access_token|Bearer)/i.test(description)) description = "";
+      }
+    } catch {}
+    error.provider = { method: options.method || "GET", resource: "paymentLinks", code, description };
+    throw error;
+  }
   return response.json();
 }
 

@@ -763,3 +763,14 @@ test('refund CAS retries after manual followup move and still reaches refund', a
   assert.equal(mock.stageId(), 'stage_reembolso');
   assert.equal(mock.fields()._oficina_payments.pay_mock.state, 'cancelado');
 });
+
+test('authenticated setup diagnoses provider validation while redacting credentials', async t => {
+  t.mock.method(global, 'fetch', async () => Response.json({ errors: [{ code: 'invalid_object', description: 'Configuração inválida ' + env.ASAAS_API_KEY }] }, { status: 400 }));
+  const response = await (await load('oficina/setup.js')).onRequestPost({ request: new Request('https://website.mock/api/oficina/setup', { method: 'POST', headers: { Authorization: 'Bearer ' + env.OFICINA_SETUP_TOKEN } }), env });
+  assert.equal(response.status, 503);
+  const result = await response.json();
+  assert.equal(result.provider.method, 'GET');
+  assert.equal(result.provider.code, 'invalid_object');
+  assert.equal(JSON.stringify(result).includes(env.ASAAS_API_KEY), false);
+  assert.match(result.provider.description, /redacted/);
+});
