@@ -39,6 +39,7 @@ const entries = [
   'vagas-v2',
   'vagas-obrigado',
   'skills-ia',
+  'skills-ia-obrigado',
   'politica-de-privacidade',
   'exclusao-de-dados',
   'termos-de-servico',
@@ -65,6 +66,28 @@ if (fs.existsSync(v2Assets)) {
     if (fs.lstatSync(v2Assets).isSymbolicLink()) {
       fs.unlinkSync(v2Assets);
       fs.symlinkSync('../vagas/assets', v2Assets);
+    }
+  } catch (_) {}
+}
+
+// Ensure relative symlink for skills-ia-obrigado/assets within build output
+const skillsObrigadoAssets = path.join(output, 'skills-ia-obrigado', 'assets');
+if (fs.existsSync(skillsObrigadoAssets)) {
+  try {
+    if (fs.lstatSync(skillsObrigadoAssets).isSymbolicLink()) {
+      fs.unlinkSync(skillsObrigadoAssets);
+      fs.symlinkSync('../vagas/assets', skillsObrigadoAssets);
+    }
+  } catch (_) {}
+}
+
+// Ensure relative symlink for skills-ia-obrigado/vagas.css within build output
+const skillsObrigadoCss = path.join(output, 'skills-ia-obrigado', 'vagas.css');
+if (fs.existsSync(skillsObrigadoCss)) {
+  try {
+    if (fs.lstatSync(skillsObrigadoCss).isSymbolicLink()) {
+      fs.unlinkSync(skillsObrigadoCss);
+      fs.symlinkSync('../vagas/vagas.css', skillsObrigadoCss);
     }
   } catch (_) {}
 }
