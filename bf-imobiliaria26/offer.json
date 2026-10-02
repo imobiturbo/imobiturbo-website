@@ -1,0 +1,20 @@
+{
+  "productId": "black-friday-imobiliaria-2026",
+  "title": "SuperCombo Black Friday Imobiliária 2026",
+  "currency": "BRL",
+  "salesEnabled": true,
+  "pixelId": "",
+  "checkoutNote": "Escolha seu combo para continuar. Checkout será conectado antes da publicação.",
+  "offers": {
+    "essencial": {
+      "name": "SuperCombo Essencial",
+      "priceCents": 3790,
+      "checkoutUrl": "#checkout-pendente"
+    },
+    "completo": {
+      "name": "SuperCombo Completo",
+      "priceCents": 4790,
+      "checkoutUrl": "#checkout-pendente"
+    }
+  }
+}
