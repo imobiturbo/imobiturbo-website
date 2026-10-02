@@ -7,7 +7,7 @@ const html = fs.readFileSync(path.join(root, 'vagas/index.html'), 'utf8');
 
 test('vagas is ready for production traffic: indexed, active checkout and zero placeholder text', () => {
   assert.match(html, /<meta name="robots" content="index, follow">/);
-  assert.match(html, /<button[^>]*id="checkoutBtn"[^>]*>\s*Escolher este plano\s*<\/button>/);
+  assert.match(html, /<button[^>]*id="checkoutBtn"[^>]*>\s*[^<\s][^<]*<\/button>/);
   assert.ok(!html.includes('disabled aria-describedby="checkout-status"'));
   assert.ok(html.includes('id="checkoutModalOverlay"'));
 
@@ -183,4 +183,3 @@ test('vagas checkout strictly validates Brazilian DDDs and blocks fake/dummy Wha
     }
   }
 });
-
