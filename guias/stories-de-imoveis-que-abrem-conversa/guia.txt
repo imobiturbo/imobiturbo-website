@@ -1,0 +1,39 @@
+Stories de imóveis que abrem conversa
+
+Copie o prompt, preencha com um imóvel autorizado e transforme três critérios em perguntas que o comprador consegue responder.
+
+COMO USAR
+1. Substitua todos os campos por dados que você pode confirmar e tenha autorização para divulgar.
+2. Cole o prompt na ferramenta de IA que já usa e revise os três textos; IA não verifica o imóvel.
+3. Publique a pergunta no Story e retome apenas respostas voluntárias, usando o contexto escolhido.
+
+MODELO PARA COPIAR
+Você vai me ajudar a escrever uma sequência de três Stories sobre um imóvel no Brasil.
+Use somente os dados abaixo; não invente preço, disponibilidade, desempenho, bairro, fotos, escassez ou condições.
+
+IMÓVEL: [tipo, bairro, cidade]
+PREÇO CONFIRMADO: [valor e data da conferência]
+PONTOS CONFIRMADOS: [até três características]
+PÚBLICO/SITUAÇÃO: [rotina que o imóvel pode atender]
+INFORMAÇÕES A CONFIRMAR: [o que ainda falta verificar]
+
+Crie três textos curtos, cada um com até 180 caracteres:
+1. Mostre uma característica confirmada e a situação de uso, sem superlativos.
+2. Faça uma pergunta com duas opções sobre um critério de escolha, sem pedir renda ou telefone em público.
+3. Convide quem respondeu a dizer bairro e faixa de busca em conversa privada, sem afirmar que já há uma seleção pronta.
+Depois escreva uma resposta de WhatsApp com até 350 caracteres, retomando a opção escolhida e fazendo uma única pergunta útil.
+Marque qualquer informação faltante como “a confirmar” e explique o que devo revisar antes de publicar.
+
+Exemplo fictício preenchido, não anúncio real:
+IMÓVEL: apartamento, bairro Jardim, cidade Exemplo
+PREÇO CONFIRMADO: R$ 480 mil; exemplo fictício de 02/10/2026
+PONTOS CONFIRMADOS: dois quartos, varanda, espaço para mesa no segundo quarto
+PÚBLICO/SITUAÇÃO: comprador que trabalha de casa
+INFORMAÇÕES A CONFIRMAR: ruído durante o horário de trabalho
+
+Story 1: “Apartamento com dois quartos no Jardim: o segundo cômodo pode entrar na conversa de quem trabalha de casa.”
+Story 2: “Na sua escolha, pesa mais ter um cômodo para trabalhar ou estar perto do trabalho?”
+Story 3: “Respondeu? Me diga em conversa privada o bairro e a faixa de busca para eu entender seu critério.”
+Resposta: “Você marcou um cômodo para trabalhar. Qual condição esse espaço precisa ter para funcionar na sua rotina?”
+
+Não solicitar dados financeiros em comentários públicos nem inventar imóvel disponível, economia ou retorno comercial.

@@ -1,0 +1,41 @@
+Prompt de conteúdo com dúvidas do comprador
+
+Uma pergunta real vira um conteúdo útil quando você explica a decisão, usa dados conferidos e mostra o que falta confirmar.
+
+COMO USAR
+1. Escolha uma pergunta realmente recebida e retire nomes, números, endereços e outros dados pessoais.
+2. Preencha a resposta com informações que pode comprovar; separe lacunas e o exemplo fictício.
+3. Cole o prompt na IA, confira o conteúdo com sua experiência e valide fatos antes de publicar.
+
+MODELO PARA COPIAR
+Quero transformar uma dúvida frequente de compradores de imóveis em três ideias de conteúdo autoral para meu mercado.
+
+DÚVIDA ANONIMIZADA: [a pergunta, sem nome ou dado pessoal]
+CIDADE/REGIÃO: [local atendido]
+RESPOSTA QUE POSSO CONFIRMAR: [informações verificadas e origem/data]
+EXEMPLO FICTÍCIO: [situação simples, identificada como exemplo]
+PONTOS QUE PRECISAM DE ESPECIALISTA/CONFERÊNCIA: [lacunas]
+
+Para cada ideia, entregue:
+- Um gancho diferente que identifique o imóvel ou a situação imobiliária e gere uma pergunta concreta.
+- Três pontos curtos para o vídeo.
+- Uma legenda em português brasileiro, com uma frase por parágrafo e uma linha em branco entre parágrafos.
+- Um passo que o leitor consiga aplicar sem contratar nada.
+Não invente leis, taxas, crédito aprovado, preço de mercado, depoimentos, dados locais ou resultados.
+Se faltar um fato, escreva “a confirmar” e sugira quem deve confirmar.
+Não diga que eu sou corretor se isso não estiver nos dados; não publique automaticamente.
+
+Exemplo fictício preenchido:
+DÚVIDA ANONIMIZADA: “Um quarto a mais ou estar perto do trabalho?”
+CIDADE/REGIÃO: cidade Exemplo
+RESPOSTA QUE POSSO CONFIRMAR: quantidade de cômodos na ficha conferida; o trajeto precisa ser testado pelo comprador
+EXEMPLO FICTÍCIO: duas opções, uma com cômodo extra e outra perto do destino informado
+PONTOS A CONFERIR: tempo de deslocamento no horário habitual e ruído do possível escritório
+
+Saída revisada possível:
+Gancho: “O imóvel ganhou um quarto. Sua semana ganhou o quê?”
+Vídeo: “Compare o uso / Teste o trajeto / Escolha a prioridade”
+Aplicação: escreva qual tarefa o quarto extra resolve e qual compromisso o deslocamento atrapalha.
+O texto não afirma qual imóvel é melhor; mostra como o comprador compara suas prioridades.
+
+A IA organiza o rascunho; não é fonte para condições de financiamento, dados de bairro ou regras jurídicas.

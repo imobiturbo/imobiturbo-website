@@ -1,0 +1,26 @@
+Mensagem de status da proposta imobiliária
+
+Copie um modelo para explicar o estado da proposta, quem precisa responder e quando haverá novo contato.
+
+COMO USAR
+1. Confira o estado real da proposta e preencha todos os campos, sem afirmar aceite, aprovação ou assinatura pendente por suposição.
+2. Combine um horário que você possa cumprir e registre a tarefa no CRM.
+3. Envie a atualização no horário combinado, inclusive para informar que a resposta ainda está pendente.
+
+MODELO PARA COPIAR
+[Nome], atualização da proposta sobre [imóvel]: [estado confirmado, sem tratar envio como aceite].
+Neste momento precisamos de [resposta ou informação] com [responsável].
+Minha próxima ação é [ação concreta] até [data/horário combinado].
+Te atualizo em [data/horário do próximo contato], mesmo se ainda não houver resposta.
+Se surgir outra dúvida antes disso, pode me escrever aqui.
+
+Exemplo fictício preenchido:
+“Paulo, atualização da proposta sobre o apartamento de dois quartos no Jardim: encaminhei o valor e as condições que você autorizou; ainda não recebi resposta do proprietário.
+Neste momento precisamos do retorno do proprietário sobre essas condições.
+Minha próxima ação é confirmar o recebimento até amanhã, às 10h.
+Te atualizo amanhã, às 12h, mesmo se ainda não houver resposta.
+Se surgir outra dúvida antes disso, pode me escrever aqui.”
+
+Registro fictício no CRM: responsável Ana; ação confirmar recebimento; prazo amanhã 10h; retorno ao comprador amanhã 12h; estado aguardando resposta.
+
+É um modelo de comunicação, não contrato, parecer jurídico, promessa de aceite ou roteiro universal de compra.
