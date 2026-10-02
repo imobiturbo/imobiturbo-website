@@ -42,7 +42,8 @@ test('vagas is ready for production traffic: indexed, active checkout and zero p
 });
 
 test('FAQ keeps answers collapsed and discloses support, renewal and access limits', () => {
-  const details = [...html.matchAll(/<details\b([^>]*)>([\s\S]*?)<\/details>/g)];
+  const faq = html.match(/<section id="duvidas"[^>]*>([\s\S]*?)<\/section>/)[1];
+  const details = [...faq.matchAll(/<details\b([^>]*)>([\s\S]*?)<\/details>/g)];
   assert.equal(details.length, 8);
   assert.equal(details.filter(d => /\bopen\b/.test(d[1])).length, 0);
   for (const [, , body] of details) {
@@ -182,5 +183,4 @@ test('vagas checkout strictly validates Brazilian DDDs and blocks fake/dummy Wha
     }
   }
 });
-
 

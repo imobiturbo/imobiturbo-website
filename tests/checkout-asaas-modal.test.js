@@ -58,7 +58,7 @@ test("vagas/index.html and vagas-v2/index.html contain Option #1 transparent che
       assert.ok(html.includes('<b>R$ 97</b><small>/mês</small>'), 'legacy v2 keeps its price presentation');
     }
     assert.ok(html.includes('id="chkModalPlanEco"'), `${page} must contain #chkModalPlanEco tag`);
-    assert.ok(html.includes("Economize R$ 767"), `${page} must display savings of R$ 767 relative to monthly 1764/year`);
+    if (page === 'vagas-v2/index.html') assert.ok(html.includes("Economize R$ 767"), 'legacy v2 keeps its savings presentation');
     assert.ok(!html.includes('id="chkPaymentTerms"'), `${page} must NOT contain #chkPaymentTerms`);
     assert.ok(!html.includes('class="chk-plan-pill-tag">Plano Selecionado'), `${page} must NOT contain Plano Selecionado tag`);
 
@@ -182,5 +182,4 @@ test("vagas/checkout-session.js persists paid state and short-circuits polling o
   assert.ok(sessionCode.includes("if (record.paid === true) {"), "check() and start() must short-circuit if already paid");
   assert.ok(upsellCode.includes("if (comm && !comm.paid) community.start()"), "upsell resume must not poll paid community");
 });
-
 

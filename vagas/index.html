@@ -1975,13 +1975,13 @@
                 <div class="chk-plan-info">
                   <div class="chk-plan-title-row">
                     <strong class="chk-plan-name" id="chkModalPlanName">Plano Anual</strong>
-                    <span class="chk-plan-eco-tag" id="chkModalPlanEco"> - Economize R$ 767</span>
+                    <span class="chk-plan-eco-tag" id="chkModalPlanEco" style="display: none;"></span>
                   </div>
                   <span class="chk-plan-sub" id="chkModalPlanSub">12 meses de acesso completo + CRM IA</span>
                 </div>
                 <div class="chk-plan-side">
                   <div class="chk-plan-val" id="chkModalPlanPrice">
-                    <b>R$ 97</b><small>/mês</small>
+                    <b>12 × R$ 97</b><small>Total R$ 1.164</small>
                   </div>
                   <button type="button" class="chk-plan-change-btn" id="chkChangePlanTrigger">alterar plano</button>
                 </div>
@@ -3915,22 +3915,6 @@
     }); }, {rootMargin:'200px'});
     images.forEach(function(image) { imageObserver.observe(image); });
   } else images.forEach(hydrateImage);
-  function hydrate(video) {
-    if (video.dataset.loaded) return;
-    video.dataset.loaded = '1';
-    if (video.dataset.poster) video.poster = video.dataset.poster;
-    video.querySelectorAll('source[data-src]').forEach(function (source) { source.src = source.dataset.src; });
-    video.load();
-  }
-  var videos = document.querySelectorAll('video[data-lazy-media]');
-  if (!('IntersectionObserver' in window)) { videos.forEach(hydrate); return; }
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) { hydrate(entry.target); entry.target.play().catch(function () {}); }
-      else entry.target.pause();
-    });
-  }, { rootMargin: '100px' });
-  videos.forEach(function (video) { observer.observe(video); });
 })();
 </script>
 </body>

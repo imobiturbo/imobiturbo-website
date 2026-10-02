@@ -72,7 +72,7 @@ test('mobile offers an immediate CTA, an early price and optional depth', async 
         firstCTA: first && { href: first.getAttribute('href'), ...first.getBoundingClientRect().toJSON() },
         planTop: document.getElementById('planos').getBoundingClientRect().top + scrollY,
         catalogClosed: !document.querySelector('details.compact-catalog')?.open,
-        brokenImages: [...document.querySelectorAll('main img')].filter(image => image.getClientRects().length && !image.naturalWidth).map(image => image.getAttribute('src')),
+        brokenImages: [...document.querySelectorAll('main img')].filter(image => image.checkVisibility() && !image.naturalWidth).map(image => image.getAttribute('src')),
       };
     });
     evidence.push(geometry);
