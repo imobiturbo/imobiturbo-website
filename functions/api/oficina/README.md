@@ -109,3 +109,7 @@ O checkout usa a confirmação padrão do Asaas, sem callback personalizado. O c
 O GET oficial de webhooks não retorna `authToken`. Setup confere os campos públicos e, em um hook da oficina com nome e URL exatos, confirma uma escrita autenticada contendo somente o token; nenhum hook de outro produto é alterado. O recibo distingue `write_acknowledged` de `readback_match` sem retornar segredos. Não configura KYC, não gera pagamento e não reativa filas divergentes.
 
 `OFICINA_SETUP_READY=true` é a liberação operacional do root após setup bem-sucedido e auditoria do CRM/credenciais. Sem ela, config, criação pública de checkout e registro de lead ficam fechados. Webhook continua autenticado e verificando o pagamento real, independentemente dessa flag.
+
+## Transporte do webhook
+
+O domínio público respondeu HTTP403 a POSTs de servidor; o mesmo endpoint no domínio estável `imobiturbo-website.pages.dev` respondeu401, comprovando alcance do handler autenticado. O hook da oficina usa esse endereço estável do mesmo produto. Setup migra somente o hook com nome exato e URL anterior conhecida, preservando ID, outros hooks e a política do domínio público. As páginas e o formulário continuam em www.imobiturbo.com.br.

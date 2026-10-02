@@ -830,3 +830,23 @@ test('auth write acknowledgement cannot release a webhook whose final token pres
   await assert.rejects(() => ensureOficinaWebhook(env), /oficina_webhook_configuration_mismatch/);
   assert.equal(writes, 1);
 });
+
+test('setup migrates only the exact owned workshop hook away from blocked custom-domain transport', async t => {
+  const { ensureOficinaWebhook, OFICINA_WEBHOOK_NAME, OFICINA_WEBHOOK_URL, OFICINA_WEBHOOK_EVENTS } = await load('oficina/_setup.js');
+  let hook = { id: 'hook_office', name: OFICINA_WEBHOOK_NAME, url: 'https://www.imobiturbo.com.br/api/oficina/webhook', enabled: true, interrupted: false, apiVersion: 3, sendType: 'SEQUENTIALLY', hasAuthToken: true, events: OFICINA_WEBHOOK_EVENTS };
+  const writes = [];
+  t.mock.method(globalThis, 'fetch', async (input, options = {}) => {
+    const url = new URL(String(input));
+    if (options.method === 'PUT') {
+      assert.equal(url.pathname, '/v3/webhooks/hook_office');
+      const body = JSON.parse(options.body);
+      assert.deepEqual(body, { authToken: env.OFICINA_ASAAS_WEBHOOK_TOKEN, url: OFICINA_WEBHOOK_URL });
+      writes.push(body); hook = { ...hook, url: body.url }; return Response.json(hook);
+    }
+    return Response.json(url.pathname === '/v3/webhooks' ? { data: [hook, { id: 'legacy', name: 'Other product', url: 'https://www.imobiturbo.com.br/api/checkout/webhook' }], hasMore: false } : hook);
+  });
+  const result = await ensureOficinaWebhook(env);
+  assert.equal(result.webhookId, 'hook_office');
+  assert.equal(result.webhookUrl, OFICINA_WEBHOOK_URL);
+  assert.equal(writes.length, 1);
+});
