@@ -985,6 +985,15 @@
     .chk-plan-retractable-trigger { align-items: flex-start; }
     .chk-plan-compact-right { padding-top: 3px; }
     #planos { scroll-margin-top: 24px; }
+    @media (max-width: 600px) {
+      #planos .psel-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 12px; }
+      #planos .psel-left { display: contents; }
+      #planos .psel-title-row { grid-column: 1 / -1; }
+      #planos .psel-sub { grid-column: 1; grid-row: 2; padding-left: 0; line-height: 1.5; }
+      #planos .psel-right { grid-column: 2; grid-row: 2; }
+      #planos .psel-prc b { white-space: nowrap; }
+      #planos .psel-prc small { display: block; margin-left: 0; }
+    }
   </style>
 </head>
 <body data-lp-version="vagas-restaurada-vsl-20261002">
