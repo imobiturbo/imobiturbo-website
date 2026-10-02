@@ -75,8 +75,10 @@ export function Registration() {
       <div className="registration-intro space-y-it-6">
         <h2 className="text-it-3xl font-it-semibold">Quero participar do WORKSHOP VGV 10X</h2>
         <p className="registration-offer">
-          Ingresso individual: R$47. Dois encontros, materiais editáveis e
-          replay previsto por 14 dias.
+          Ingresso individual: R$47. Encontros em 27 e 28/10/2026,
+          18h30–22h30 Brasília: 240 minutos e duas pausas de 10 minutos por
+          noite. Materiais editáveis e replay por 14 dias, até 11/11/2026
+          às 22h30 Brasília.
         </p>
       </div>
       <Card>
