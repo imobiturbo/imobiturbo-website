@@ -49,7 +49,14 @@ test("vagas/index.html and vagas-v2/index.html contain Option #1 transparent che
 
     // Standardized Price Layout and Clean Summary
     assert.ok(html.includes('<span class="chk-plan-compact-pill">Selecionado</span>'), `${page} must display Selecionado badge`);
-    assert.ok(html.includes('<b>R$ 97</b><small>/mês</small>'), `${page} must format anual price standard as R$ 97/mês`);
+    if (page === 'vagas/index.html') {
+      const summary = html.match(/<div[^>]*id="chkModalPlanPrice"[^>]*>([\s\S]*?)<\/div>/);
+      assert.ok(summary, 'checkout must have a visible plan price');
+      assert.match(summary[1], /12 × R\$ 97/);
+      assert.match(summary[1], /Total R\$ 1\.164/, 'annual card summary must disclose the total');
+    } else {
+      assert.ok(html.includes('<b>R$ 97</b><small>/mês</small>'), 'legacy v2 keeps its price presentation');
+    }
     assert.ok(html.includes('id="chkModalPlanEco"'), `${page} must contain #chkModalPlanEco tag`);
     assert.ok(html.includes("Economize R$ 767"), `${page} must display savings of R$ 767 relative to monthly 1764/year`);
     assert.ok(!html.includes('id="chkPaymentTerms"'), `${page} must NOT contain #chkPaymentTerms`);

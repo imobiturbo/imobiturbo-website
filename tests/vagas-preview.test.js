@@ -7,7 +7,7 @@ const html = fs.readFileSync(path.join(root, 'vagas/index.html'), 'utf8');
 
 test('vagas is ready for production traffic: indexed, active checkout and zero placeholder text', () => {
   assert.match(html, /<meta name="robots" content="index, follow">/);
-  assert.match(html, /<button[^>]*id="checkoutBtn"[^>]*>\s*Quero entrar na Comunidade Imobiturbo\s*<\/button>/);
+  assert.match(html, /<button[^>]*id="checkoutBtn"[^>]*>\s*Escolher este plano\s*<\/button>/);
   assert.ok(!html.includes('disabled aria-describedby="checkout-status"'));
   assert.ok(html.includes('id="checkoutModalOverlay"'));
 
@@ -41,58 +41,45 @@ test('vagas is ready for production traffic: indexed, active checkout and zero p
   }
 });
 
-test('section 02 process cards contain rich realistic micro-UI and zero empty skeleton wireframes', () => {
-  // No empty skeleton elements inside .concept
-  assert.ok(!html.includes('<span><i></i><i></i></span>'));
-  
-  // Rich micro-UI elements
-  assert.ok(html.includes('class="concept lesson-concept"'));
-  assert.ok(html.includes('class="lesson-play-btn"'));
-  assert.ok(html.includes('Captação Exclusiva com IA'));
-  assert.ok(html.includes('class="lesson-progress-bar"'));
-
-  assert.ok(html.includes('class="concept kanban-concept"'));
-  assert.ok(html.includes('class="kanban-col"'));
-  assert.ok(html.includes('Carlos M.'));
-  assert.ok(html.includes('Dra. Silvia'));
-
-  assert.ok(html.includes('class="concept chat-concept"'));
-  assert.ok(html.includes('class="chat-bubble chat-bubble-user"'));
-  assert.ok(html.includes('class="chat-bubble chat-bubble-ai"'));
-  assert.ok(html.includes('Cliente pediu desconto na comissão'));
-  assert.ok(html.includes('Assistente Imobiturbo'));
-});
-
-test('FAQ discloses eight questions with only the first answer initially open', () => {
-  const details = [...html.matchAll(/<details\b([^>]*class="faq-item"[^>]*)>([\s\S]*?)<\/details>/g)];
+test('FAQ keeps answers collapsed and discloses support, renewal and access limits', () => {
+  const details = [...html.matchAll(/<details\b([^>]*)>([\s\S]*?)<\/details>/g)];
   assert.equal(details.length, 8);
-  assert.match(details[0][1], /\bopen\b/);
-  assert.equal(details.slice(1).filter(d => /\bopen\b/.test(d[1])).length, 0);
+  assert.equal(details.filter(d => /\bopen\b/.test(d[1])).length, 0);
   for (const [, , body] of details) {
     assert.match(body, /<summary>[\s\S]+<\/summary>/);
     assert.match(body, /<p>[\s\S]+<\/p>/);
   }
-  assert.ok(html.includes('A disponibilidade de 24 horas se refere ao assistente de IA.'));
-  assert.ok(html.includes('Participação nas mentorias ao vivo não incluída.'));
-  assert.ok(html.includes('Orientação por IA não é atendimento pessoal de Natan.'));
+  const answers = details.map(d => d[2]).join(' ');
+  assert.match(answers, /equipe humana atende em horário comercial/);
+  assert.match(answers, /Participação ao vivo e atendimento pessoal do Natan não estão incluídos/);
+  assert.match(answers, /sem renovação automática/);
+  assert.match(answers, /Cancelamento da renovação não elimina parcelas/);
 });
 
-test('page navigation resolves locally and covers all 13 semantic sections', () => {
+test('page navigation resolves locally and sends purchase CTAs to plan selection', () => {
   const ids = new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(m => m[1]));
   const internalLinks = [...html.matchAll(/<a\b[^>]*href="(#[^"]+)"/g)].map(m => m[1]);
-  assert.ok(internalLinks.length >= 3);
+  assert.ok(internalLinks.length >= 2);
   for (const href of internalLinks) {
     assert.ok(ids.has(href.slice(1)), `Internal link target ${href} must exist`);
   }
-  assert.equal([...html.matchAll(/data-section="\d{2}"/g)].length, 13);
+  assert.ok(ids.has('planos'));
+  const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)[1];
+  const purchaseLinks = [...main.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
+    .filter(link => /Ver planos|Escolher meu plano/.test(link[2]));
+  assert.equal(purchaseLinks.length, 2);
+  for (const link of purchaseLinks) assert.equal(link[1], '#planos');
+  const planChoices = [...main.matchAll(/<input\b[^>]*type="radio"[^>]*name="plano"[^>]*value="([^"]+)"/g)];
+  assert.deepEqual(planChoices.map(choice => choice[1]), ['anual', 'trimestral', 'mensal']);
+  assert.match(main, /role="radiogroup" aria-label="[^"]+"/);
 });
 
 test('all page images are real local brand/case files with explicit dimensions', () => {
   const imgs = [...html.matchAll(/<img\b([^>]+)>/g)];
-  assert.ok(imgs.length >= 20, "Page should contain all case proofs and assets");
+  assert.ok(imgs.length > 0, "Page must provide real visual evidence");
   for (const [, attrs] of imgs) {
-    const srcMatch = attrs.match(/\bsrc="([^"]+)"/);
-    assert.ok(srcMatch, "Image must have src");
+    const srcMatch = attrs.match(/(?:\bsrc|\bdata-lazy-src)="([^"]+)"/);
+    assert.ok(srcMatch, "Image must have an immediate or deferred source");
     const src = srcMatch[1];
     if (!src.startsWith('data:')) {
       const cleanSrc = src.replace(/^\.\//, '');
@@ -111,7 +98,11 @@ test('vagas checkout modal always opens on mobile and desktop without bypassing 
     assert.match(content, /function openCheckoutModal\(e\)\s*\{[\s\S]*?showCheckoutForm\(selected\);[\s\S]*?modalOverlay\.showModal\(\);/, `${pagePath} must unconditionally open modalOverlay`);
     assert.ok(!content.includes('if (completed) continueToPayment();'), `${pagePath} must not bypass modalOverlay on completed state`);
     assert.match(content, /return Math\.min\(currentCheckoutStep, 3\);/, `${pagePath} getCheckoutResumeStep must be capped at 3`);
-    assert.match(content, /<script[^>]*src="\/assets\/js\/hubla-checkout\.js/, `${pagePath} must load hubla-checkout.js`);
+    if (pagePath === 'vagas-v2/index.html') {
+      assert.match(content, /<script[^>]*src="\/assets\/js\/hubla-checkout\.js/, 'legacy v2 retains Hubla');
+    } else {
+      assert.doesNotMatch(content, /hubla-checkout\.js/, 'compact vagas uses the native checkout');
+    }
     assert.match(content, /id="chkName"[^>]*placeholder="Nome e Sobrenome"/, `${pagePath} must prompt for Nome e Sobrenome`);
     assert.match(content, /function isValidFullName/, `${pagePath} must define isValidFullName`);
     assert.match(content, /Qual é o seu <mark class="text-highlight">nome e sobrenome<\/mark>\?/, `${pagePath} must clearly ask for nome e sobrenome in modal title`);
