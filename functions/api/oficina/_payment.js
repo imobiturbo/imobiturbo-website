@@ -2,7 +2,7 @@ import { json, validOficinaPayment, paymentState, normalizePhone } from "./_shar
 import { findCheckout } from "./_checkout.js";
 import { dispatchOficinaPurchase } from "./_tracking.js";
 import { dispatchOficinaWelcome } from "./_welcome.js";
-import { captureLead, sourceConfig, recordPayment, officePhoneByVerifiedEmail } from "./_crm.js";
+import { captureLead, sourceConfig, recordPayment, officePhoneByVerifiedEmail, preserveOfficeTracking } from "./_crm.js";
 
 export async function handleOficinaPayment({ request, env = {}, payment }) {
   // Authentication is mandatory for this branch even when legacy handlers
@@ -36,6 +36,7 @@ export async function handleOficinaPayment({ request, env = {}, payment }) {
       phone = normalizePhone(await officePhoneByVerifiedEmail(env, email, config));
       if (!phone) throw new Error("oficina_phone_missing");
     }
+    await preserveOfficeTracking(env, phone, config);
     // No fabricated consent/profile: buyer can enter through the hosted link
     // without submitting our pre-checkout form.
     const leadId = await captureLead(env, { name: customer.name || "Participante da oficina", email, phone: phone || "" }, "oficina:payment:" + payment.id, config);

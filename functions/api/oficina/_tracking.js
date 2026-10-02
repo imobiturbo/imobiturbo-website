@@ -1,5 +1,5 @@
 import { dispatchVerifiedPurchaseToHub } from "../checkout/_tracking.js";
-import { paymentContext, savePaymentDelivery } from "./_crm.js";
+import { paymentContext, savePaymentDelivery, officeTracking, originTracking } from "./_crm.js";
 import { OFICINA_REFERENCE, validOficinaPayment, paymentState, normalizePhone } from "./_shared.js";
 
 const OFICINA_OFFER_ID = "f8a7e873-472d-5b58-baf4-97dc620c8cb4";
@@ -14,7 +14,8 @@ export async function dispatchOficinaPurchase({ env, payment, leadId, config, cu
   const saved = row.custom_fields?._oficina_payments?.[payment.id];
   if (saved?.state !== "pago") return { hub: false, meta: false };
   if (saved.hubPurchaseSent && saved.metaPurchaseSent) return { hub: true, meta: true };
-  const original = { ...(row.source_metadata?.meta_form?.answers || {}), ...row.custom_fields, ...row.source_metadata };
+  const snapshot = officeTracking(row.custom_fields?._oficina_tracking);
+  const original = Object.keys(snapshot).length ? snapshot : originTracking(row);
   const email = (row.contact.email || customer.email || "").trim().toLowerCase();
   const phone = (normalizePhone(row.contact.phone_number || customer.mobilePhone || customer.phone || "") || "").replace(/\D/g, "");
   const eventId = "oficina-purchase-" + payment.id;

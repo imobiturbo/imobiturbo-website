@@ -13,7 +13,10 @@ export function isOficinaPayment(payment, env = {}) {
 }
 
 export function validOficinaPayment(payment, env = {}) {
-  return payment.externalReference === OFICINA_REFERENCE &&
+  // Asaas identifies charges created by a hosted link through paymentLink.
+  // The charge reference can be absent; the trusted office link must still
+  // match exactly. An explicit conflicting reference always fails closed.
+  return (payment.externalReference == null || payment.externalReference === OFICINA_REFERENCE) &&
     typeof payment.id === "string" && /^pay_[A-Za-z0-9_-]+$/.test(payment.id) &&
     Number(payment.value) === OFICINA_PRICE &&
     ["PIX", "CREDIT_CARD", "BOLETO"].includes(payment.billingType) &&
