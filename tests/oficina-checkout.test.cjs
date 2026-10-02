@@ -815,5 +815,5 @@ test('public registration stays closed until root acknowledges complete setup', 
   const pending = { ...env, OFICINA_SETUP_READY: '' };
   assert.equal((await (await load('oficina/config.js')).onRequestGet({ env: pending })).status, 503);
   assert.equal((await (await load('oficina/checkout.js')).onRequestPost({ env: pending })).status, 503);
-  assert.equal((await capture(pending)).status, 503);
+  assert.equal((await leadRequest(lead, pending)).status, 503);
 });
