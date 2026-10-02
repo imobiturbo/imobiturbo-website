@@ -2795,13 +2795,14 @@
     function updatePaymentSummary() {
       const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
       const installments = document.getElementById('chkInstallments');
-      const pixSelected = tabPix?.classList.contains('active');
+      const pending = checkoutSession?.read();
+      const pixSelected = pending ? pending.method === 'PIX' : tabPix?.classList.contains('active');
       let summary;
       if (pixSelected) summary = info.pixVal + ' no Pix · pelo período selecionado';
       else if (currentPlan === 'mensal') summary = 'R$ 147/mês · cobrança recorrente';
       else {
-        const count = Number(installments?.value || (currentPlan === 'anual' ? 12 : 3));
-        const label = installments?.selectedOptions[0]?.textContent || info.cardVal;
+        const count = Number(pending?.installmentCount || installments?.value || (currentPlan === 'anual' ? 12 : 3));
+        const label = installments?.querySelector('option[value="' + count + '"]')?.textContent || info.cardVal;
         summary = count === 1 ? info.pixVal + ' à vista no cartão' : label + ' · total ' + (currentPlan === 'anual' ? 'R$ 1.164' : 'R$ 381');
       }
       const compactPrice = document.getElementById('chkPlanCompactPrice');
@@ -2827,6 +2828,8 @@
         }
       }
 
+      const pending = checkoutSession?.read();
+      if (pending?.method === 'CREDIT_CARD' && installmentsSelect) installmentsSelect.value = String(pending.installmentCount);
       updateInstallmentButtonText();
 
       const cardTabDesc = document.getElementById('chkCardTabDesc');

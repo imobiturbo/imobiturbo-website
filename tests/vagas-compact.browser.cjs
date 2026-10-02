@@ -212,3 +212,35 @@ test('desktop stays readable and legal links resolve to documents', async t => {
     await page.goBack({ waitUntil: 'load' });
   }
 });
+
+test('pending payment reload preserves its actual method, installments and price', async t => {
+  for (const [plan, pixAmount, count] of [['anual', '997', 1], ['trimestral', '357', 2], ['mensal', '147', 1]]) {
+    for (const method of ['PIX', 'CREDIT_CARD']) await t.test(`${plan} ${method}`, async t => {
+      const page = await visit(t);
+      const record = {
+        version: 2, paymentId: 'pay_synthetic_not_payable', gateway: 'asaas', method, plan,
+        productId: 'comunidade-imobiturbo', installmentCount: method === 'PIX' ? 1 : count,
+        amount: Number(pixAmount), paid: false, expiresAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+        pix: { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=' }
+      };
+      await page.route('**/api/checkout/status?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ...record, success: true, status: 'PENDING' }) }));
+      await page.evaluate(value => localStorage.setItem('imobiturbo:checkout:community:v2', JSON.stringify(value)), record);
+      await page.reload({ waitUntil: 'load' });
+      await page.waitForFunction(() => document.getElementById('checkoutModalOverlay').open && !document.getElementById('chkPendingNotice').hidden);
+      const summary = await page.locator('#chkPlanCompactPrice').innerText();
+      if (method === 'PIX') {
+        assert.match(summary, new RegExp(pixAmount + '.*Pix'));
+        assert.ok(!summary.includes('recorrente'));
+        assert.ok(await page.locator('#chkPixView').isVisible());
+        assert.equal(await page.locator('#chkPixCopiaCola').inputValue(), 'SYNTHETIC-NOT-PAYABLE');
+      } else {
+        assert.ok(!summary.includes('Pix'));
+        assert.equal(await page.locator('#chkInstallments').inputValue(), String(count));
+        if (plan === 'anual') assert.match(summary, /997.*à vista/);
+        if (plan === 'trimestral') assert.match(summary, /2x.*190,50.*381/);
+        if (plan === 'mensal') assert.match(summary, /147\/mês.*recorrente/);
+      }
+      assert.ok(await page.locator('#chkGeneratePixBtn').isDisabled(), 'pending charge cannot generate another payment');
+    });
+  }
+});
