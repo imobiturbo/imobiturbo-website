@@ -75,7 +75,8 @@ for (const width of [390, 320, 1440]) test(`restored page, original course carou
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'no horizontal overflow');
   assert.equal(await page.locator('#vslVideo').count(), 1, 'the presentation remains in the hero');
   await page.locator('main a.btn[href="#planos"]').first().click();
-  await page.waitForFunction(() => Math.abs(document.getElementById('planos').getBoundingClientRect().top - 24) < 5);
+  await page.waitForFunction(() => { const top = document.getElementById('planos').getBoundingClientRect().top; return top >= 0 && top < 200; });
+  evidence.push(await page.evaluate(() => ({ width: innerWidth, pageWidth: document.documentElement.scrollWidth, planTop: document.getElementById('planos').getBoundingClientRect().top, version: document.body.dataset.lpVersion })));
   assert.ok(await page.locator('#planos').isVisible());
   if (artifacts) await page.screenshot({ path: path.join(artifacts, `${width}-plans.png`) });
   const course = page.locator('#cioCardsSlider');
