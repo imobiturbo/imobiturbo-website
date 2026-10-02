@@ -51,11 +51,6 @@ async function visit(t, width = 390) {
   await page.goto(baseURL, { waitUntil: 'load' });
   await page.evaluate(async () => {
     await document.fonts.ready;
-    await Promise.all([...document.querySelectorAll('main img')].map(image => {
-      image.loading = 'eager';
-      if (image.dataset.lazySrc) { image.src = image.dataset.lazySrc; delete image.dataset.lazySrc; }
-      return image.decode().catch(() => {});
-    }));
     document.querySelectorAll('video').forEach(video => video.pause());
   });
   return page;
@@ -64,6 +59,12 @@ async function visit(t, width = 390) {
 test('mobile offers an immediate CTA, an early price and optional depth', async t => {
   for (const width of [390, 320]) await t.test(`${width}px`, async t => {
     const page = await visit(t, width);
+    // Scroll the actual page so its own lazy loader reveals the closed-page media.
+    for (const image of await page.locator('main img:visible').all()) {
+      await image.scrollIntoViewIfNeeded();
+      await page.waitForFunction(node => node.naturalWidth > 0, await image.elementHandle());
+    }
+    await page.evaluate(() => scrollTo(0, 0));
     const geometry = await page.evaluate(() => {
       const first = document.querySelector('main a.btn[href^="#"]');
       return {
@@ -71,7 +72,7 @@ test('mobile offers an immediate CTA, an early price and optional depth', async 
         firstCTA: first && { href: first.getAttribute('href'), ...first.getBoundingClientRect().toJSON() },
         planTop: document.getElementById('planos').getBoundingClientRect().top + scrollY,
         catalogClosed: !document.querySelector('details.compact-catalog')?.open,
-        brokenImages: [...document.querySelectorAll('main img')].filter(image => !image.naturalWidth).map(image => image.getAttribute('src')),
+        brokenImages: [...document.querySelectorAll('main img')].filter(image => image.getClientRects().length && !image.naturalWidth).map(image => image.getAttribute('src')),
       };
     });
     evidence.push(geometry);
@@ -89,8 +90,18 @@ test('mobile offers an immediate CTA, an early price and optional depth', async 
       await page.screenshot({ path: path.join(artifacts, `${width}-hero.png`) });
       await page.screenshot({ path: path.join(artifacts, `${width}-full.png`), fullPage: true });
     }
-    await page.locator('details.compact-catalog > summary').click();
+    await page.locator('details.compact-catalog > summary').focus();
+    await page.keyboard.press('Space');
     assert.equal(await page.locator('details.compact-catalog').evaluate(node => node.open), true);
+    const lastTrack = page.locator('.compact-catalog .cio-course-card').last();
+    for (let i = 0; i < 30; i++) {
+      const box = await lastTrack.boundingBox();
+      if (box.y + box.height < 844) break;
+      await page.keyboard.press('PageDown');
+      await page.waitForTimeout(60);
+    }
+    assert.ok((await lastTrack.boundingBox()).y < 844, 'keyboard reaches the last curriculum track');
+    await page.waitForFunction(() => [...document.querySelectorAll('.compact-catalog img')].every(image => image.naturalWidth > 0));
     await page.locator('details.compact-catalog > summary').focus();
     await page.keyboard.press('Space');
     assert.equal(await page.locator('details.compact-catalog').evaluate(node => node.open), false, 'keyboard can collapse the catalog');
@@ -98,6 +109,14 @@ test('mobile offers an immediate CTA, an early price and optional depth', async 
     await page.waitForFunction(() => document.getElementById('planos').getBoundingClientRect().top < 200);
     const bounds = await page.locator('#planos').boundingBox();
     assert.ok(bounds.y >= -1 && bounds.y < 200, 'CTA lands at the selector instead of another pitch');
+    const gallery = page.locator('details').filter({ has: page.locator('#proofSliderTrack') });
+    await gallery.locator('summary').click();
+    for (const image of await gallery.locator('img').all()) {
+      await image.scrollIntoViewIfNeeded();
+      await page.waitForFunction(node => node.naturalWidth > 0, await image.elementHandle());
+      await image.evaluate(node => node.decode());
+    }
+    assert.ok(await gallery.locator('img').last().evaluate(node => node.naturalWidth > 0), 'last print is hydrated by the real loader');
   });
 });
 
@@ -125,9 +144,22 @@ test('three plans preserve the native Asaas journey and show the Pix total befor
     assert.equal(await page.locator('#chkCardHolder').inputValue(), 'Auditoria Imobiturbo', 'identity is reused for payment');
     assert.match(await page.locator('#chkProgressPct').innerText(), /4\D+4/, 'progress describes the payment step');
     assert.ok(await page.locator('#chkStepPane4 img[alt="Asaas"]').isVisible());
+    if (plan !== 'mensal') {
+      for (const count of ['1', '2', installments]) {
+        await page.locator('#chkInstallments').selectOption(count);
+        const summary = await page.locator('#chkPlanCompactPrice').innerText();
+        const total = count === '1' ? amount : plan === 'anual' ? '1.164' : '381';
+        assert.match(summary, new RegExp(total.replace('.', '\\.')), 'summary matches the actual total for this installment count');
+        const option = await page.locator('#chkInstallments option:checked').innerText();
+        assert.ok((await page.locator('#chkBtnText').innerText()).includes(option.match(/R\$ ([\d,.]+)/)[1].replace(',00', '')), 'button agrees with selected installment price');
+      }
+    }
     await page.locator('#chkTabPix').click();
     assert.match(await page.locator('#chkPixView').innerText(), new RegExp(amount), 'Pix total is visible before generating a charge');
+    assert.match(await page.locator('#chkPlanCompactPrice').innerText(), new RegExp(amount + '.*Pix'), 'summary uses the Pix total');
     if (artifacts) await page.screenshot({ path: path.join(artifacts, `390-${plan}-pix.png`) });
+    await page.locator('#chkTabCard').click();
+    assert.ok(!(await page.locator('#chkPlanCompactPrice').innerText()).includes('Pix'), 'card summary returns with its selected installments');
     await page.keyboard.press('Escape');
     assert.equal(await page.evaluate(() => document.activeElement.id), 'checkoutBtn', 'focus returns to the purchase CTA');
     await page.reload({ waitUntil: 'load' });

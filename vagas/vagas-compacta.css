@@ -151,6 +151,17 @@ body.vagas-compact main :is(.compact-catalog, .compact-faq details) > summary {
 body.vagas-compact main :is(.compact-catalog, .compact-faq details) > summary:hover { color: var(--lime); }
 body.vagas-compact main :is(.compact-catalog, .compact-faq details)[open] > summary { color: var(--lime); }
 body.vagas-compact main .compact-catalog > :not(summary) { margin-block: 0 24px; }
+body.vagas-compact main .compact-catalog .cio-cards-slider {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  overflow: visible !important;
+  scroll-snap-type: none !important;
+  cursor: auto !important;
+}
+body.vagas-compact main .compact-catalog .cio-course-card {
+  min-width: 0 !important;
+  max-width: none !important;
+}
 body.vagas-compact main .compact-catalog :is(.cio-grid, .cio-tracks-grid, .cio-cards-grid) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 body.vagas-compact main .compact-proof-grid {
@@ -162,6 +173,7 @@ body.vagas-compact main .compact-proof-grid {
 body.vagas-compact main .compact-proof :is(.testimonial, .compact-demo) { padding: 0; border: 0; background: transparent; }
 body.vagas-compact main .compact-demo h3 { margin-bottom: 12px; }
 body.vagas-compact main .compact-demo > img { width: 100%; border-radius: 16px; margin-block: 20px; }
+body.vagas-compact main .compact-demo > video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: 16px; }
 body.vagas-compact main .compact-proof :is(.testimonial-quote, .testimonial-source, .testimonial-person p) { font-size: 16px; line-height: 1.6; }
 body.vagas-compact main .compact-proof .testimonial-quote { margin-block: 16px; }
 body.vagas-compact main :is(.compact-proof, .compact-authority) .testimonial-video-btn { min-height: 54px; font-size: 16px; white-space: normal; }
@@ -260,7 +272,7 @@ body.vagas-compact .site-footer a { display: inline-block; padding-block: 8px; t
   body.vagas-compact main .compact-plan-section .offer-card { padding: 18px; }
   body.vagas-compact main .compact-plan-section .psel-row { padding: 16px; }
   body.vagas-compact main .compact-plan-section .psel-right { text-align: left; }
-  body.vagas-compact main .compact-catalog :is(.cio-grid, .cio-tracks-grid, .cio-cards-grid) { grid-template-columns: minmax(0, 1fr); }
+  body.vagas-compact main .compact-catalog :is(.cio-grid, .cio-tracks-grid, .cio-cards-grid, .cio-cards-slider) { grid-template-columns: minmax(0, 1fr); }
   body.vagas-compact main .compact-authority-grid > img,
   body.vagas-compact main .compact-authority-grid :is(.portrait, .founder-photo, .portrait-frame) img { max-height: 300px; }
   body.vagas-compact .site-footer .footer-main { grid-template-columns: minmax(0, 1fr); gap: 24px; }

@@ -2269,11 +2269,11 @@
     }
 
     function trackHubEvent(eventName, properties) {
-      queueHubTrackerEvent('track', eventName, properties || {});
+      queueHubTrackerEvent('track', eventName, { ...properties, lp_version: document.body.dataset.lpVersion });
     }
 
     function trackHubConversion(method, properties) {
-      queueHubTrackerEvent(method, properties || {});
+      queueHubTrackerEvent(method, { ...properties, lp_version: document.body.dataset.lpVersion });
     }
 
     (function bindHubTracker() {
@@ -2767,6 +2767,7 @@
     }
 
     function updateInstallmentButtonText() {
+      updatePaymentSummary();
       if (!btnText) return;
       if (currentPlan === 'mensal') {
         btnText.textContent = 'Pagar R$ 147/mês no Cartão';
@@ -2785,6 +2786,23 @@
       } else if (currentPlan === 'trimestral') {
         btnText.textContent = count === 2 ? 'Pagar em 2x de R$ 190,50' : 'Pagar em 3x de R$ 127';
       }
+    }
+
+    function updatePaymentSummary() {
+      const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
+      const installments = document.getElementById('chkInstallments');
+      const pixSelected = tabPix?.classList.contains('active');
+      let summary;
+      if (pixSelected) summary = info.pixVal + ' no Pix · pelo período selecionado';
+      else if (currentPlan === 'mensal') summary = 'R$ 147/mês · cobrança recorrente';
+      else {
+        const count = Number(installments?.value || (currentPlan === 'anual' ? 12 : 3));
+        const label = installments?.selectedOptions[0]?.textContent || info.cardVal;
+        summary = count === 1 ? info.pixVal + ' à vista no cartão' : label + ' · total ' + (currentPlan === 'anual' ? 'R$ 1.164' : 'R$ 381');
+      }
+      const compactPrice = document.getElementById('chkPlanCompactPrice');
+      if (compactPrice) compactPrice.textContent = '· ' + summary;
+      if (modalPlanPrice) modalPlanPrice.textContent = summary;
     }
 
     function updateCtaButtonText() {
@@ -3183,6 +3201,7 @@
         tabPix.setAttribute('aria-selected', 'false');
         cardView.style.display = 'block';
         pixView.style.display = 'none';
+        updatePaymentSummary();
         if (errorMsg) errorMsg.style.display = 'none';
       });
 
@@ -3194,6 +3213,7 @@
         tabCard.setAttribute('aria-selected', 'false');
         pixView.style.display = 'block';
         cardView.style.display = 'none';
+        updatePaymentSummary();
         if (errorMsg) errorMsg.style.display = 'none';
       });
     }
