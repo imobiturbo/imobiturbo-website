@@ -146,7 +146,7 @@ details[open]>summary .disclosure-icon{transform:rotate(45deg)}
 .bonus-grid>article{min-width:0;overflow:hidden;border-radius:12px;padding:16px 24px 28px;background:#fff;color:#000}
 .bonus-art{margin:0 -12px 20px}
 .bonus-art img{width:100%;aspect-ratio:1;object-fit:contain}
-.bonus-number{display:flex;align-items:center;gap:8px;margin-bottom:14px;color:var(--bf-green-hover);font-size:14px;font-weight:700}
+.bonus-number{display:flex;align-items:center;gap:8px;margin-bottom:14px;color:var(--it-accent-700,#467025);font-size:14px;font-weight:700}
 .bonus-number .icon{width:19px;height:19px}
 .bonus-grid h3{margin-bottom:16px;font-size:21px}
 .bonus-grid p{color:#52525b;font-size:16px}
