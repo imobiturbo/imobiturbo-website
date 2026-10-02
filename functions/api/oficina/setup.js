@@ -12,6 +12,6 @@ export async function onRequestPost({ request, env = {} }) {
     return json({ ...checkout, ...hook });
   } catch (error) {
     const reason = /^(oficina|asaas)_[a-z0-9_]+$/.test(error?.message || "") ? error.message : "oficina_setup_failed";
-    return json({ ok: false, error: "oficina_setup_pending", reason }, 503);
+    return json({ ok: false, error: "oficina_setup_pending", reason, ...(error?.provider ? { provider: error.provider } : {}) }, 503);
   }
 }
