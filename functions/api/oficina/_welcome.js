@@ -1,7 +1,8 @@
 import { updateWelcomeState } from "./_crm.js";
 import { validOficinaPayment, paymentState } from "./_shared.js";
 
-const MATERIAL_URL = "https://imobiturbo-plano-lancamento.imobiturbo.workers.dev/downloads/carteira-exemplo.csv";
+const MATERIAL_BASE = "https://www.imobiturbo.com.br/oficina/material/";
+const SUPPORT_EMAIL = "suporte@imobiturbo.com.br";
 const ROOM_E1 = "https://meet.google.com/tvd-sxie-voj";
 const ROOM_E2 = "https://meet.google.com/oxg-oqro-upx";
 const validEmail = value => typeof value === "string" && value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -15,14 +16,17 @@ export function welcomePayload(env, verifiedEmail, paymentId) {
     "Sua inscrição na Oficina Imobiturbo: do lead ao próximo passo está confirmada após identificação do pagamento.",
     "", "Encontro 1: 9 de outubro de 2026, 19h30–21h30, horário de Brasília.", ROOM_E1,
     "", "Encontro 2: 10 de outubro de 2026, 19h30–21h30, horário de Brasília.", ROOM_E2,
-    "", "Material editável para preparar os cinco contatos:", MATERIAL_URL,
+    "", "Materiais para a prática:",
+    "Carteira editável: " + MATERIAL_BASE + "carteira-cadencia.csv",
+    "Agenda de sete dias: " + MATERIAL_BASE + "agenda-sete-dias.csv",
+    "Modelos de mensagens: " + MATERIAL_BASE + "mensagens-pratica.md",
     "Use contatos anonimizados ou os exemplos fictícios. Não envie dados de clientes na sala.",
-    "", "Replay: acesso até 24 de outubro de 2026. O suporte informará o acesso às gravações após os encontros.",
-    "", "Ajuda com acesso: responda a este email ou contate " + from + ".",
+    "", "Replay: acesso até 24 de outubro de 2026, às 21h30 (Brasília). O suporte informará o acesso às gravações após os encontros.",
+    "", "Ajuda com acesso: responda a este email ou contate " + SUPPORT_EMAIL + ".",
     "Guarde os links das salas para seu uso individual.", "", "Equipe Imobiturbo",
   ].join("\n");
   return { from: { address: from, name: "Imobiturbo" }, to: [{ email_address: { address: verifiedEmail } }],
-    reply_to: [{ address: from }], subject: "Seu acesso à Oficina Imobiturbo — 9 e 10 de outubro",
+    reply_to: [{ address: SUPPORT_EMAIL }], subject: "Seu acesso à Oficina Imobiturbo — 9 e 10 de outubro",
     textbody, client_reference: "oficina-welcome-" + paymentId, track_opens: false, track_clicks: false };
 }
 

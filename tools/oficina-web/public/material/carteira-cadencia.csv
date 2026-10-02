@@ -1,0 +1,6 @@
+id_ficticio,contexto_conhecido,pendencia,prioridade,motivo,proxima_acao,responsavel_ficticio,dia_relativo,regra_resposta,regra_pausa
+C01,Pediu opções na região X,Prazo não informado,Média,Falta contexto para retorno,Perguntar prazo considerado,Corretor A,1,Atualizar contexto e combinar retorno,Parar se pedir
+C02,Combinou retorno no dia 3,Confirmar se mantém interesse,Alta,Há compromisso com data,Retomar no dia combinado,Corretor A,3,Registrar próximo combinado,Reavaliar frequência sem insistência automática
+C03,Recebeu informações incompletas,Atendente deve complementar,Alta,Pendência do atendimento,Enviar informação conferida,Corretor B,1,Registrar confirmação ou nova dúvida,Não inventar disponibilidade
+C04,Pediu pausa nos contatos,Contato suspenso,Pausada,Pedido explícito,Registrar pausa sem envio,Gestor A,1,Retomar só com novo pedido autorizado,Sem contato durante pausa
+C05,Precisa de resposta sobre condição comercial,Exige decisão humana,Alta,Exceção fora do escopo IA,Repassar contexto e pendência ao humano,Gestor A,2,Humano define ação e retorno,IA não aprova exceção
