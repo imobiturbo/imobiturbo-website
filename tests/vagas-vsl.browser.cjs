@@ -46,7 +46,7 @@ before(async () => {
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
     baseURL = `http://127.0.0.1:${server.address().port}/vagas/`;
   }
-  browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_EXECUTABLE, args: ['--no-sandbox'] });
+  browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_EXECUTABLE, args: ['--no-sandbox'], proxy: process.env.VAGAS_PROXY ? { server: process.env.VAGAS_PROXY, bypass: '127.0.0.1,localhost' } : undefined });
 });
 
 after(async () => {
