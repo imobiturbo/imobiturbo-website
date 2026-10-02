@@ -925,3 +925,39 @@ test('ambiguous legacy signup identity fails before paid capture', async t => {
   assert.equal((await webhook()).status, 503);
   assert.equal(mock.calls.filter(c => c.url === env.OFICINA_CRM_FORM_URL).length, 0);
 });
+
+test('provider-confirmed office link with null reference delivers office email and constant-product Purchases', async t => {
+  const tracking = { utm_source: 'meta', utm_campaign: 'office-signup', fbc: 'fb.1.office-click', visitor_id: 'office-visitor' };
+  const mock = routes(t, { payment: { ...payment, externalReference: null, status: 'CONFIRMED' },
+    overwriteOnCapture: true, fields: { _oficina_tracking: tracking } });
+  // Only the ID comes from the webhook; identity/link/value/status are fetched.
+  const response = await webhook();
+  assert.equal(response.status, 200);
+  const result = await response.json();
+  assert.equal(result.productId, 'oficina-imobiturbo-202610');
+  assert.equal(result.state, 'pago');
+  assert.equal(mock.calls.filter(c => c.url === 'https://api.asaas.com/v3/payments/pay_mock' && c.method === 'GET').length, 1);
+  const mails = mock.calls.filter(c => c.url === 'https://api.zeptomail.com/v1.1/email');
+  assert.equal(mails.length, 1);
+  assert.equal(mails[0].body.client_reference, 'oficina-welcome-pay_mock');
+  assert.equal(mails[0].body.to[0].email_address.address, 'buyer@example.invalid');
+  assert.ok(mails[0].body.textbody.includes('https://meet.google.com/tvd-sxie-voj'));
+  const hubCalls = mock.calls.filter(c => c.url.startsWith('https://hub.mock/'));
+  assert.equal(hubCalls.length, 1);
+  assert.equal(hubCalls[0].body.type, 'Purchase');
+  assert.equal(hubCalls[0].body.productId, 'oficina-imobiturbo-202610');
+  assert.equal(hubCalls[0].body.contentId, 'oficina-imobiturbo-202610');
+  assert.equal(hubCalls[0].body.valueCents, 4700);
+  assert.equal(hubCalls[0].body.utm_campaign, tracking.utm_campaign);
+  const metaCalls = mock.calls.filter(c => c.url.startsWith('https://graph.facebook.com/'));
+  assert.equal(metaCalls.length, 1);
+  const event = metaCalls[0].body.data[0];
+  assert.equal(event.event_name, 'Purchase');
+  assert.equal(event.event_id, hubCalls[0].body.eventId);
+  assert.deepEqual(event.custom_data.content_ids, ['oficina-imobiturbo-202610']);
+  assert.equal(event.custom_data.value, 47);
+  assert.equal(event.user_data.fbc, tracking.fbc);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeMailSent, true);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.hubPurchaseSent, true);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.metaPurchaseSent, true);
+});
