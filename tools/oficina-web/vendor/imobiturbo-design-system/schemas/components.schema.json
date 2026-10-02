@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "components": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "base": {
+            "type": "string"
+          },
+          "variants": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "sizes": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "defaults": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "propertyNames": {
+              "enum": [
+                "variant",
+                "size"
+              ]
+            }
+          },
+          "slots": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "allowedOverrides": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "forbiddenOverrides": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "touchMinHeight": {
+            "type": "string"
+          },
+          "variantTarget": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "base",
+          "variants",
+          "sizes",
+          "defaults",
+          "slots",
+          "allowedOverrides",
+          "forbiddenOverrides",
+          "touchMinHeight",
+          "variantTarget"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "components"
+  ],
+  "additionalProperties": false
+}

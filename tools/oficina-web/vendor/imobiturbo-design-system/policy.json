@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "namespace": "it",
+  "componentImports": [
+    "^@/components/ui(/|$)",
+    "^@cio/ui/base(/|$)",
+    "^@cio/ui/imobiturbo(/|$)"
+  ],
+  "componentFiles": [
+    "**/components/ui/**",
+    "**/src/base/**",
+    "**/src/imobiturbo/**"
+  ],
+  "note": "Imobiturbo: consulte @imobiturbo/design-system/reference e /catalog; não crie tokens locais para silenciar erros.",
+  "forbiddenFonts": ["Futura", "Inter", "Barlow Condensed", "IBM Plex Mono"],
+  "iconography": {
+    "library": "lucide",
+    "sizes": [16, 20, 24, 32],
+    "strokeWidth": {
+      "desktop": 1.75,
+      "touch": 2
+    }
+  },
+  "copy": {
+    "locale": "pt-BR",
+    "pronoun": "você",
+    "emoji": false,
+    "uppercase": "mono-only",
+    "evidence": "Não inventar depoimentos, resultados, preços ou condições."
+  },
+  "contrastPairs": [
+    ["accentFg", "accent"],
+    ["textPrimary", "canvas"],
+    ["textMuted", "canvas"],
+    ["accentText", "canvas"],
+    ["cardFg", "card"],
+    ["destructiveFg", "destructive"],
+    ["success", "successBg"],
+    ["warning", "warningBg"],
+    ["danger", "dangerBg"],
+    ["info", "infoBg"],
+    ["accentText", "accentSoft"],
+    ["textMuted", "surface"],
+    ["textMuted", "surfaceElevated"],
+    ["textMuted", "surfaceHover"]
+  ],
+  "aliases": {
+    "css": {
+      "--it-green": "--it-accent",
+      "--it-lime": "--it-accent",
+      "--font-body": "--font-primary",
+      "--radius-pill": "--radius-full"
+    },
+    "deprecations": ["colors_and_type.css", "dist/tailwind-preset.js"],
+    "shadcnCss": {
+      "background": "canvas",
+      "foreground": "textPrimary",
+      "card": "card",
+      "card-foreground": "cardFg",
+      "popover": "popover",
+      "popover-foreground": "popoverFg",
+      "primary": "primary",
+      "primary-foreground": "primaryFg",
+      "secondary": "secondary",
+      "secondary-foreground": "secondaryFg",
+      "muted": "muted",
+      "muted-foreground": "mutedFg",
+      "accent": "accentSoft",
+      "accent-foreground": "accentText",
+      "destructive": "destructive",
+      "destructive-foreground": "destructiveFg",
+      "border": "border",
+      "input": "border",
+      "ring": "ring"
+    },
+    "legacyCss": {
+      "bg": "canvas",
+      "text": "textPrimary",
+      "error": "danger",
+      "error-bg": "dangerBg",
+      "accent-foreground": "accentFg"
+    },
+    "tailwindV3": {
+      "accent": "accent",
+      "accent-foreground": "accentFg",
+      "accent-soft": "accentSoft",
+      "accent-hover": "accentHover",
+      "bg": "canvas",
+      "surface": "surface",
+      "surface-hover": "surfaceHover",
+      "surface-elevated": "surfaceElevated",
+      "text": "textPrimary",
+      "text-muted": "textMuted",
+      "text-subtle": "textSubtle",
+      "border": "border",
+      "ring": "ring",
+      "destructive": "destructive",
+      "destructive-foreground": "destructiveFg",
+      "primary": "primary",
+      "primary-foreground": "primaryFg",
+      "secondary": "secondary",
+      "secondary-foreground": "secondaryFg",
+      "success": "success",
+      "success-bg": "successBg",
+      "warning": "warning",
+      "warning-bg": "warningBg",
+      "error": "danger",
+      "error-bg": "dangerBg"
+    }
+  },
+  "profiles": [
+    {
+      "id": "skills-ia",
+      "paths": ["templates/low-ticket-03", "assets/skills-ia"],
+      "status": "preserved",
+      "reason": "Template aprovado antes desta refatoração; tokens próprios não são regras globais."
+    }
+  ],
+  "mergeFunctions": ["cn", "clsx", "twMerge"],
+  "variantFunctions": ["cva", "tv"]
+}

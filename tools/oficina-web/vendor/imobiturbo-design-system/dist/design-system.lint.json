@@ -1,0 +1,216 @@
+{
+  "settings": {
+    "shadcn": {
+      "componentImports": [
+        "^@/components/ui(/|$)",
+        "^@cio/ui/base(/|$)",
+        "^@cio/ui/imobiturbo(/|$)"
+      ],
+      "mergeFunctions": [
+        "cn",
+        "clsx",
+        "twMerge"
+      ],
+      "variantFunctions": [
+        "cva",
+        "tv"
+      ],
+      "note": "Imobiturbo: consulte @imobiturbo/design-system/reference e /catalog; não crie tokens locais para silenciar erros."
+    }
+  },
+  "rules": {
+    "shadcn/no-restyle": [
+      "error",
+      {
+        "allow": [],
+        "contracts": [
+          {
+            "pattern": "^(Imobiturbo)?Button$",
+            "allow": [
+              "m-*",
+              "mx-*",
+              "my-*",
+              "mt-*",
+              "mb-*",
+              "ml-*",
+              "mr-*",
+              "ms-*",
+              "me-*",
+              "w-full",
+              "w-auto",
+              "self-*",
+              "order-*",
+              "col-span-*"
+            ],
+            "message": {
+              "spacing": "IT-COMPONENT: \"{{className}}\" em {{component}} não permite padding/altura. Use size: sm, md, lg, icon. Origem: components.json → Button.",
+              "default": "IT-COMPONENT: \"{{className}}\" em {{component}} exige variant: primary, authority, secondary, outline, ghost, destructive, link. Origem: components.json → Button; implementação: {{file}}."
+            }
+          },
+          {
+            "pattern": "^(Imobiturbo)?Input$",
+            "allow": [
+              "m-*",
+              "mx-*",
+              "my-*",
+              "mt-*",
+              "mb-*",
+              "ml-*",
+              "mr-*",
+              "ms-*",
+              "me-*",
+              "w-full",
+              "w-auto",
+              "self-*",
+              "order-*",
+              "col-span-*"
+            ],
+            "message": {
+              "spacing": "IT-COMPONENT: \"{{className}}\" em {{component}} não permite padding/altura. Use size: sm, md, lg. Origem: components.json → Input.",
+              "default": "IT-COMPONENT: \"{{className}}\" em {{component}} exige variant: não disponível. Origem: components.json → Input; implementação: {{file}}."
+            }
+          },
+          {
+            "pattern": "^(Imobiturbo)?Badge$",
+            "allow": [
+              "m-*",
+              "mx-*",
+              "my-*",
+              "mt-*",
+              "mb-*",
+              "ml-*",
+              "mr-*",
+              "ms-*",
+              "me-*",
+              "w-full",
+              "w-auto",
+              "self-*",
+              "order-*",
+              "col-span-*"
+            ],
+            "message": {
+              "spacing": "IT-COMPONENT: \"{{className}}\" em {{component}} não permite padding/altura. Use size: sm, md. Origem: components.json → Badge.",
+              "default": "IT-COMPONENT: \"{{className}}\" em {{component}} exige variant: default, neutral, success, warning, danger, mono. Origem: components.json → Badge; implementação: {{file}}."
+            }
+          },
+          {
+            "pattern": "^(Imobiturbo)?Card$",
+            "allow": [
+              "m-*",
+              "mx-*",
+              "my-*",
+              "mt-*",
+              "mb-*",
+              "ml-*",
+              "mr-*",
+              "ms-*",
+              "me-*",
+              "w-full",
+              "w-auto",
+              "self-*",
+              "order-*",
+              "col-span-*"
+            ],
+            "message": {
+              "spacing": "IT-COMPONENT: \"{{className}}\" em {{component}} não permite padding/altura. Use size: não disponível. Origem: components.json → Card.",
+              "default": "IT-COMPONENT: \"{{className}}\" em {{component}} exige variant: default, interactive, authority. Origem: components.json → Card; implementação: {{file}}."
+            }
+          },
+          {
+            "pattern": "^(Imobiturbo)?KpiTile$",
+            "allow": [
+              "m-*",
+              "mx-*",
+              "my-*",
+              "mt-*",
+              "mb-*",
+              "ml-*",
+              "mr-*",
+              "ms-*",
+              "me-*",
+              "w-full",
+              "w-auto",
+              "self-*",
+              "order-*",
+              "col-span-*"
+            ],
+            "message": {
+              "spacing": "IT-COMPONENT: \"{{className}}\" em {{component}} não permite padding/altura. Use size: não disponível. Origem: components.json → KpiTile.",
+              "default": "IT-COMPONENT: \"{{className}}\" em {{component}} exige variant: default, positive, negative. Origem: components.json → KpiTile; implementação: {{file}}."
+            }
+          },
+          {
+            "pattern": "^(Imobiturbo)?Hero$",
+            "allow": [
+              "m-*",
+              "mx-*",
+              "my-*",
+              "mt-*",
+              "mb-*",
+              "ml-*",
+              "mr-*",
+              "ms-*",
+              "me-*",
+              "w-full",
+              "w-auto",
+              "self-*",
+              "order-*",
+              "col-span-*"
+            ],
+            "message": {
+              "spacing": "IT-COMPONENT: \"{{className}}\" em {{component}} não permite padding/altura. Use size: não disponível. Origem: components.json → Hero.",
+              "default": "IT-COMPONENT: \"{{className}}\" em {{component}} exige variant: default, editorial. Origem: components.json → Hero; implementação: {{file}}."
+            }
+          }
+        ]
+      }
+    ],
+    "shadcn/no-raw-colors": [
+      "error",
+      {
+        "message": "IT-COLOR: \"{{className}}\" usa cor fora do tema. Use token semântico it-*; opções: {{tokens}}. Origem: tokens/colors.json; {{file}}."
+      }
+    ],
+    "shadcn/no-arbitrary-values": [
+      "error",
+      {
+        "message": "IT-VALUE: \"{{className}}\" é arbitrário. Use a escala finita it-* em /catalog; não substitua por uma fração como p-3.25."
+      }
+    ],
+    "shadcn/no-inline-styles": [
+      "error",
+      {
+        "message": "IT-INLINE: remova aparência inline; use token/variant do catálogo. Valores dinâmicos exigem exceção explícita do adapter."
+      }
+    ],
+    "shadcn/no-unknown-classes": [
+      "error",
+      {
+        "message": "IT-CLASS: \"{{className}}\" não gera CSS. {{suggestions|Consulte o catálogo e o tema carregado.}}"
+      }
+    ],
+    "shadcn/require-static-classes": [
+      "error",
+      {
+        "message": "IT-STATIC: use classes completas ou variant/size em {{component}}; a expressão não pode ser verificada."
+      }
+    ],
+    "imobiturbo/finite-vocabulary": "error",
+    "imobiturbo/component-contract": "error",
+    "imobiturbo/native-controls": "error"
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/components/ui/**",
+        "**/src/base/**",
+        "**/src/imobiturbo/**"
+      ],
+      "rules": {
+        "shadcn/no-restyle": "off",
+        "shadcn/require-static-classes": "off",
+        "imobiturbo/native-controls": "off"
+      }
+    }
+  ]
+}

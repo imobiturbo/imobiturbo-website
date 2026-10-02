@@ -1,0 +1,1895 @@
+{
+  "version": "5.0.2",
+  "tokens": {
+    "colors.brand.accent.light": {
+      "value": "#69a438",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accent.dark": {
+      "value": "#c5fe6d",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accent.darkGreen": {
+      "value": "#2F400D",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.light.50": {
+      "value": "#f4f9ef",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.light.100": {
+      "value": "#e7f2dc",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.light.200": {
+      "value": "#d1e6bc",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.light.300": {
+      "value": "#b2d593",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.light.400": {
+      "value": "#8ec066",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.light.500": {
+      "value": "#69a438",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.accent.light}"
+    },
+    "colors.brand.accentScale.light.600": {
+      "value": "#5a8f2e",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.light.700": {
+      "value": "#467025",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.light.800": {
+      "value": "#3a5922",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.light.900": {
+      "value": "#314b20",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.light.950": {
+      "value": "#172a0c",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.dark.50": {
+      "value": "#f7fee7",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.dark.100": {
+      "value": "#eefdc9",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.dark.200": {
+      "value": "#ddfb98",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.dark.300": {
+      "value": "#c5fe6d",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.accent.dark}"
+    },
+    "colors.brand.accentScale.dark.400": {
+      "value": "#a7f62e",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.dark.500": {
+      "value": "#88dc12",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.dark.600": {
+      "value": "#69b009",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.dark.700": {
+      "value": "#50860d",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.dark.800": {
+      "value": "#416a11",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.dark.900": {
+      "value": "#375913",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.accentScale.dark.950": {
+      "value": "#1b3304",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.50": {
+      "value": "#FAFAFA",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.100": {
+      "value": "#F4F4F5",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.200": {
+      "value": "#E5E5E5",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.300": {
+      "value": "#D4D4D8",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.400": {
+      "value": "#A3A3A3",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.500": {
+      "value": "#737373",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.600": {
+      "value": "#52525B",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.700": {
+      "value": "#3F3F46",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.800": {
+      "value": "#27272A",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.900": {
+      "value": "#18181B",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.brand.neutralScale.950": {
+      "value": "#09090B",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.semantic.light.accent": {
+      "value": "#69a438",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.accent.light}"
+    },
+    "colors.semantic.light.accentHover": {
+      "value": "#5a8f2e",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.accentScale.light.600}"
+    },
+    "colors.semantic.light.accentFg": {
+      "value": "#000000",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.textPrimary}"
+    },
+    "colors.semantic.light.accentSoft": {
+      "value": "rgba(105, 164, 56, 0.12)",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightAccentSoft}"
+    },
+    "colors.semantic.light.canvas": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.white}"
+    },
+    "colors.semantic.light.surface": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.white}"
+    },
+    "colors.semantic.light.surfaceHover": {
+      "value": "#F4F4F5",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.neutralScale.100}"
+    },
+    "colors.semantic.light.surfaceElevated": {
+      "value": "#F4F4F5",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.neutralScale.100}"
+    },
+    "colors.semantic.light.overlay": {
+      "value": "rgba(0, 0, 0, 0.45)",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightOverlay}"
+    },
+    "colors.semantic.light.border": {
+      "value": "#E5E5E5",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.neutralScale.200}"
+    },
+    "colors.semantic.light.borderSubtle": {
+      "value": "#EEEEEE",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightBorderSubtle}"
+    },
+    "colors.semantic.light.borderStrong": {
+      "value": "#D4D4D8",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.neutralScale.300}"
+    },
+    "colors.semantic.light.ring": {
+      "value": "#69a438",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.accent}"
+    },
+    "colors.semantic.light.ringOffset": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.canvas}"
+    },
+    "colors.semantic.light.textPrimary": {
+      "value": "#000000",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.black}"
+    },
+    "colors.semantic.light.textMuted": {
+      "value": "#52525B",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.neutralScale.600}"
+    },
+    "colors.semantic.light.textSubtle": {
+      "value": "#52525B",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.textMuted}"
+    },
+    "colors.semantic.light.success": {
+      "value": "#166534",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightSuccess}"
+    },
+    "colors.semantic.light.successBright": {
+      "value": "#22C55E",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightSuccessBright}"
+    },
+    "colors.semantic.light.successBg": {
+      "value": "rgba(34, 197, 94, 0.12)",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightSuccessBg}"
+    },
+    "colors.semantic.light.warning": {
+      "value": "#92400E",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightWarningText}"
+    },
+    "colors.semantic.light.warningBg": {
+      "value": "#FFFBEB",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightWarningBg}"
+    },
+    "colors.semantic.light.danger": {
+      "value": "#BE123C",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightDanger}"
+    },
+    "colors.semantic.light.dangerBg": {
+      "value": "#FFF1F2",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightDangerBg}"
+    },
+    "colors.semantic.light.info": {
+      "value": "#2563EB",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightInfo}"
+    },
+    "colors.semantic.light.infoBg": {
+      "value": "#EFF6FF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightInfoBg}"
+    },
+    "colors.semantic.light.card": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.surface}"
+    },
+    "colors.semantic.light.cardFg": {
+      "value": "#000000",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.textPrimary}"
+    },
+    "colors.semantic.light.popover": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.surface}"
+    },
+    "colors.semantic.light.popoverFg": {
+      "value": "#000000",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.textPrimary}"
+    },
+    "colors.semantic.light.primary": {
+      "value": "#69a438",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.accent}"
+    },
+    "colors.semantic.light.primaryFg": {
+      "value": "#000000",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.accentFg}"
+    },
+    "colors.semantic.light.secondary": {
+      "value": "#F4F4F5",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.surfaceElevated}"
+    },
+    "colors.semantic.light.secondaryFg": {
+      "value": "#000000",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.textPrimary}"
+    },
+    "colors.semantic.light.muted": {
+      "value": "#F4F4F5",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.surfaceElevated}"
+    },
+    "colors.semantic.light.mutedFg": {
+      "value": "#52525B",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.textMuted}"
+    },
+    "colors.semantic.light.destructive": {
+      "value": "#BE123C",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.light.danger}"
+    },
+    "colors.semantic.light.destructiveFg": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.white}"
+    },
+    "colors.semantic.light.accentText": {
+      "value": "#467025",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.accentScale.light.700}"
+    },
+    "colors.semantic.light.textInverse": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.white}"
+    },
+    "colors.semantic.dark.accent": {
+      "value": "#c5fe6d",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.accent.dark}"
+    },
+    "colors.semantic.dark.accentHover": {
+      "value": "#d4ff85",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkAccentHover}"
+    },
+    "colors.semantic.dark.accentFg": {
+      "value": "#000000",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.black}"
+    },
+    "colors.semantic.dark.accentSoft": {
+      "value": "rgba(197, 254, 109, 0.12)",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkAccentSoft}"
+    },
+    "colors.semantic.dark.canvas": {
+      "value": "#09090B",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.neutralScale.950}"
+    },
+    "colors.semantic.dark.surface": {
+      "value": "#121212",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkSurface}"
+    },
+    "colors.semantic.dark.surfaceHover": {
+      "value": "#1F1F23",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkSurfaceHover}"
+    },
+    "colors.semantic.dark.surfaceElevated": {
+      "value": "#18181B",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.neutralScale.900}"
+    },
+    "colors.semantic.dark.overlay": {
+      "value": "rgba(0, 0, 0, 0.70)",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkOverlay}"
+    },
+    "colors.semantic.dark.border": {
+      "value": "#27272A",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.neutralScale.800}"
+    },
+    "colors.semantic.dark.borderSubtle": {
+      "value": "#1F1F23",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkSurfaceHover}"
+    },
+    "colors.semantic.dark.borderStrong": {
+      "value": "#3F3F46",
+      "source": "tokens/colors.json",
+      "alias": "{colors.brand.neutralScale.700}"
+    },
+    "colors.semantic.dark.ring": {
+      "value": "#c5fe6d",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.accent}"
+    },
+    "colors.semantic.dark.ringOffset": {
+      "value": "#09090B",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.canvas}"
+    },
+    "colors.semantic.dark.textPrimary": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.white}"
+    },
+    "colors.semantic.dark.textMuted": {
+      "value": "#A1A1AA",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkTextMuted}"
+    },
+    "colors.semantic.dark.textSubtle": {
+      "value": "#A1A1AA",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.textMuted}"
+    },
+    "colors.semantic.dark.success": {
+      "value": "#22C55E",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightSuccessBright}"
+    },
+    "colors.semantic.dark.successBright": {
+      "value": "#22C55E",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.lightSuccessBright}"
+    },
+    "colors.semantic.dark.successBg": {
+      "value": "rgba(34, 197, 94, 0.15)",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkSuccessBg}"
+    },
+    "colors.semantic.dark.warning": {
+      "value": "#FBBF24",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkWarning}"
+    },
+    "colors.semantic.dark.warningBg": {
+      "value": "rgba(217, 119, 6, 0.18)",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkWarningBg}"
+    },
+    "colors.semantic.dark.danger": {
+      "value": "#FB7185",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkDanger}"
+    },
+    "colors.semantic.dark.dangerBg": {
+      "value": "rgba(225, 29, 72, 0.18)",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkDangerBg}"
+    },
+    "colors.semantic.dark.info": {
+      "value": "#60A5FA",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkInfo}"
+    },
+    "colors.semantic.dark.infoBg": {
+      "value": "rgba(37, 99, 235, 0.18)",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.darkInfoBg}"
+    },
+    "colors.semantic.dark.card": {
+      "value": "#121212",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.surface}"
+    },
+    "colors.semantic.dark.cardFg": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.textPrimary}"
+    },
+    "colors.semantic.dark.popover": {
+      "value": "#121212",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.surface}"
+    },
+    "colors.semantic.dark.popoverFg": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.textPrimary}"
+    },
+    "colors.semantic.dark.primary": {
+      "value": "#c5fe6d",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.accent}"
+    },
+    "colors.semantic.dark.primaryFg": {
+      "value": "#000000",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.accentFg}"
+    },
+    "colors.semantic.dark.secondary": {
+      "value": "#18181B",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.surfaceElevated}"
+    },
+    "colors.semantic.dark.secondaryFg": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.textPrimary}"
+    },
+    "colors.semantic.dark.muted": {
+      "value": "#18181B",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.surfaceElevated}"
+    },
+    "colors.semantic.dark.mutedFg": {
+      "value": "#A1A1AA",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.textMuted}"
+    },
+    "colors.semantic.dark.destructive": {
+      "value": "#FB7185",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.danger}"
+    },
+    "colors.semantic.dark.destructiveFg": {
+      "value": "#000000",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.black}"
+    },
+    "colors.semantic.dark.accentText": {
+      "value": "#c5fe6d",
+      "source": "tokens/colors.json",
+      "alias": "{colors.semantic.dark.accent}"
+    },
+    "colors.semantic.dark.textInverse": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": "{colors.primitives.white}"
+    },
+    "colors.primitives.lightAccentSoft": {
+      "value": "rgba(105, 164, 56, 0.12)",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightOverlay": {
+      "value": "rgba(0, 0, 0, 0.45)",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightBorderSubtle": {
+      "value": "#EEEEEE",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightSuccess": {
+      "value": "#166534",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightSuccessBright": {
+      "value": "#22C55E",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightSuccessBg": {
+      "value": "rgba(34, 197, 94, 0.12)",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightWarningBg": {
+      "value": "#FFFBEB",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightDanger": {
+      "value": "#BE123C",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightDangerBg": {
+      "value": "#FFF1F2",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightInfo": {
+      "value": "#2563EB",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightInfoBg": {
+      "value": "#EFF6FF",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkAccentHover": {
+      "value": "#d4ff85",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkAccentSoft": {
+      "value": "rgba(197, 254, 109, 0.12)",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkSurface": {
+      "value": "#121212",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkSurfaceHover": {
+      "value": "#1F1F23",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkOverlay": {
+      "value": "rgba(0, 0, 0, 0.70)",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkTextMuted": {
+      "value": "#A1A1AA",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkSuccessBg": {
+      "value": "rgba(34, 197, 94, 0.15)",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkWarning": {
+      "value": "#FBBF24",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkWarningBg": {
+      "value": "rgba(217, 119, 6, 0.18)",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkDanger": {
+      "value": "#FB7185",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkDangerBg": {
+      "value": "rgba(225, 29, 72, 0.18)",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkInfo": {
+      "value": "#60A5FA",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.darkInfoBg": {
+      "value": "rgba(37, 99, 235, 0.18)",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.lightWarningText": {
+      "value": "#92400E",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.white": {
+      "value": "#FFFFFF",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "colors.primitives.black": {
+      "value": "#000000",
+      "source": "tokens/colors.json",
+      "alias": null
+    },
+    "typography.fontFamily.primary": {
+      "value": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, sans-serif",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontFamily.display": {
+      "value": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, sans-serif",
+      "source": "tokens/typography.json",
+      "alias": "{typography.fontFamily.primary}"
+    },
+    "typography.fontFamily.editorial": {
+      "value": "\"Playfair Display\", Georgia, \"Times New Roman\", serif",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontFamily.mono": {
+      "value": "\"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontSize.xs": {
+      "value": "12px",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontSize.sm": {
+      "value": "14px",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontSize.base": {
+      "value": "16px",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontSize.md": {
+      "value": "18px",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontSize.lg": {
+      "value": "20px",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontSize.xl": {
+      "value": "24px",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontSize.2xl": {
+      "value": "30px",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontSize.3xl": {
+      "value": "36px",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontSize.4xl": {
+      "value": "48px",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.lineHeight.tight": {
+      "value": "1.2",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.lineHeight.snug": {
+      "value": "1.3",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.lineHeight.base": {
+      "value": "1.5",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.lineHeight.loose": {
+      "value": "1.65",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontWeight.regular": {
+      "value": "400",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontWeight.medium": {
+      "value": "500",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontWeight.semibold": {
+      "value": "600",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontWeight.bold": {
+      "value": "700",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "typography.fontWeight.extrabold": {
+      "value": "800",
+      "source": "tokens/typography.json",
+      "alias": null
+    },
+    "spacing.spacing.0": {
+      "value": "0px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.spacing.1": {
+      "value": "4px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.spacing.2": {
+      "value": "8px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.spacing.3": {
+      "value": "12px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.spacing.4": {
+      "value": "16px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.spacing.5": {
+      "value": "20px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.spacing.6": {
+      "value": "24px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.spacing.8": {
+      "value": "32px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.spacing.10": {
+      "value": "40px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.spacing.12": {
+      "value": "48px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.spacing.16": {
+      "value": "64px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.radius.none": {
+      "value": "0px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.radius.sm": {
+      "value": "4px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.radius.md": {
+      "value": "8px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.radius.lg": {
+      "value": "12px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.radius.xl": {
+      "value": "16px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.radius.full": {
+      "value": "9999px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.shadow.light.xs": {
+      "value": "0 1px 2px 0 rgba(0, 0, 0, 0.04)",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.shadow.light.sm": {
+      "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 1px 1px 0 rgba(0, 0, 0, 0.03)",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.shadow.light.md": {
+      "value": "0 4px 12px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.04)",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.shadow.light.lg": {
+      "value": "0 12px 32px -6px rgba(0, 0, 0, 0.10), 0 4px 12px -2px rgba(0, 0, 0, 0.06)",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.shadow.dark.xs": {
+      "value": "0 1px 2px 0 rgba(0, 0, 0, 0.30)",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.shadow.dark.sm": {
+      "value": "0 1px 2px 0 rgba(0, 0, 0, 0.40), 0 1px 1px 0 rgba(0, 0, 0, 0.20)",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.shadow.dark.md": {
+      "value": "0 4px 12px -2px rgba(0, 0, 0, 0.45), 0 2px 4px -1px rgba(0, 0, 0, 0.30)",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.shadow.dark.lg": {
+      "value": "0 12px 32px -6px rgba(0, 0, 0, 0.55), 0 4px 12px -2px rgba(0, 0, 0, 0.40)",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.motion.easeOut": {
+      "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.motion.easeInOut": {
+      "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "source": "tokens/spacing.json",
+      "alias": "{spacing.motion.easeOut}"
+    },
+    "spacing.motion.durationFast": {
+      "value": "120ms",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.motion.durationBase": {
+      "value": "180ms",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.motion.durationSlow": {
+      "value": "320ms",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.control.sm": {
+      "value": "36px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.control.md": {
+      "value": "48px",
+      "source": "tokens/spacing.json",
+      "alias": "{spacing.spacing.12}"
+    },
+    "spacing.control.lg": {
+      "value": "56px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.layout.container": {
+      "value": "1400px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.layout.mobile": {
+      "value": "640px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.layout.tablet": {
+      "value": "768px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    },
+    "spacing.layout.desktop": {
+      "value": "1024px",
+      "source": "tokens/spacing.json",
+      "alias": null
+    }
+  },
+  "components": {
+    "Button": {
+      "base": "inline-flex items-center justify-center font-it-primary font-it-semibold select-none transition-colors duration-it-fast ease-it-out disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring focus-visible:ring-offset-2 focus-visible:ring-offset-it-ring-offset",
+      "variants": {
+        "primary": "bg-it-accent text-it-accent-fg hover:bg-it-accent-hover shadow-it-sm",
+        "authority": "bg-it-dark-green text-it-text-inverse shadow-it-sm",
+        "secondary": "bg-it-surface-elevated text-it-text-primary hover:bg-it-surface-hover border border-it-border",
+        "outline": "border border-it-border bg-transparent text-it-text-primary hover:bg-it-surface-hover",
+        "ghost": "bg-transparent text-it-text-primary hover:bg-it-surface-hover",
+        "destructive": "bg-it-destructive text-it-destructive-fg shadow-it-sm",
+        "link": "text-it-accent-text underline underline-offset-4 bg-transparent"
+      },
+      "sizes": {
+        "sm": "h-it-control-sm px-it-3 rounded-it-md text-it-xs gap-it-1",
+        "md": "h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2",
+        "lg": "h-it-control-lg px-it-6 rounded-it-lg text-it-base gap-it-2",
+        "icon": "h-it-control-md w-it-control-md rounded-it-lg p-it-0"
+      },
+      "defaults": {
+        "variant": "primary",
+        "size": "md"
+      },
+      "slots": {},
+      "allowedOverrides": [
+        "m-*",
+        "mx-*",
+        "my-*",
+        "mt-*",
+        "mb-*",
+        "ml-*",
+        "mr-*",
+        "ms-*",
+        "me-*",
+        "w-full",
+        "w-auto",
+        "self-*",
+        "order-*",
+        "col-span-*"
+      ],
+      "forbiddenOverrides": [
+        "spacing",
+        "color",
+        "shape",
+        "typography",
+        "effects",
+        "motion"
+      ],
+      "touchMinHeight": "48px",
+      "variantTarget": "root"
+    },
+    "Input": {
+      "base": "w-full font-it-primary bg-it-surface text-it-text-primary border border-it-border placeholder:text-it-text-subtle transition-colors duration-it-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring disabled:opacity-50 disabled:cursor-not-allowed aria-invalid:border-it-danger",
+      "variants": {},
+      "sizes": {
+        "sm": "h-it-control-sm px-it-3 rounded-it-md text-it-xs gap-it-1",
+        "md": "h-it-control-md px-it-4 rounded-it-lg text-it-sm gap-it-2",
+        "lg": "h-it-control-lg px-it-6 rounded-it-lg text-it-base gap-it-2"
+      },
+      "defaults": {
+        "size": "md"
+      },
+      "slots": {},
+      "allowedOverrides": [
+        "m-*",
+        "mx-*",
+        "my-*",
+        "mt-*",
+        "mb-*",
+        "ml-*",
+        "mr-*",
+        "ms-*",
+        "me-*",
+        "w-full",
+        "w-auto",
+        "self-*",
+        "order-*",
+        "col-span-*"
+      ],
+      "forbiddenOverrides": [
+        "spacing",
+        "color",
+        "shape",
+        "typography",
+        "effects",
+        "motion"
+      ],
+      "touchMinHeight": "48px",
+      "variantTarget": "root"
+    },
+    "Badge": {
+      "base": "inline-flex items-center rounded-it-full font-it-mono uppercase",
+      "variants": {
+        "default": "bg-it-accent-soft text-it-accent-text",
+        "neutral": "bg-it-surface-elevated text-it-text-muted",
+        "success": "bg-it-success-bg text-it-success",
+        "warning": "bg-it-warning-bg text-it-warning",
+        "danger": "bg-it-danger-bg text-it-danger",
+        "mono": "bg-it-surface-elevated text-it-text-primary"
+      },
+      "sizes": {
+        "sm": "text-it-xs px-it-2 py-it-1",
+        "md": "text-it-sm px-it-3 py-it-1"
+      },
+      "defaults": {
+        "variant": "default",
+        "size": "sm"
+      },
+      "slots": {},
+      "allowedOverrides": [
+        "m-*",
+        "mx-*",
+        "my-*",
+        "mt-*",
+        "mb-*",
+        "ml-*",
+        "mr-*",
+        "ms-*",
+        "me-*",
+        "w-full",
+        "w-auto",
+        "self-*",
+        "order-*",
+        "col-span-*"
+      ],
+      "forbiddenOverrides": [
+        "color",
+        "shape",
+        "typography",
+        "spacing"
+      ],
+      "touchMinHeight": "0px",
+      "variantTarget": "root"
+    },
+    "Card": {
+      "base": "font-it-primary rounded-it-xl",
+      "variants": {
+        "default": "bg-it-surface border border-it-border shadow-it-sm text-it-text-primary",
+        "interactive": "bg-it-surface border border-it-border hover:shadow-it-md transition-shadow duration-it-fast text-it-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-it-ring",
+        "authority": "bg-it-dark-green text-it-text-inverse shadow-it-lg"
+      },
+      "sizes": {},
+      "defaults": {
+        "variant": "default"
+      },
+      "slots": {
+        "content": "p-it-6"
+      },
+      "allowedOverrides": [
+        "m-*",
+        "mx-*",
+        "my-*",
+        "mt-*",
+        "mb-*",
+        "ml-*",
+        "mr-*",
+        "ms-*",
+        "me-*",
+        "w-full",
+        "w-auto",
+        "self-*",
+        "order-*",
+        "col-span-*"
+      ],
+      "forbiddenOverrides": [
+        "color",
+        "shape",
+        "effects"
+      ],
+      "touchMinHeight": "0px",
+      "variantTarget": "root"
+    },
+    "KpiTile": {
+      "base": "font-it-primary p-it-6 bg-it-surface border border-it-border rounded-it-xl flex flex-col gap-it-2",
+      "variants": {
+        "default": "text-it-text-muted",
+        "positive": "text-it-success",
+        "negative": "text-it-danger"
+      },
+      "sizes": {},
+      "defaults": {
+        "variant": "default"
+      },
+      "slots": {
+        "label": "text-it-xs font-it-mono uppercase text-it-text-muted",
+        "value": "text-it-2xl font-it-bold font-it-primary text-it-text-primary",
+        "change": "text-it-xs font-it-mono font-it-medium inline-flex items-center gap-it-1"
+      },
+      "allowedOverrides": [
+        "m-*",
+        "mx-*",
+        "my-*",
+        "mt-*",
+        "mb-*",
+        "ml-*",
+        "mr-*",
+        "ms-*",
+        "me-*",
+        "w-full",
+        "w-auto",
+        "self-*",
+        "order-*",
+        "col-span-*"
+      ],
+      "forbiddenOverrides": [
+        "spacing",
+        "color",
+        "shape",
+        "typography"
+      ],
+      "touchMinHeight": "0px",
+      "variantTarget": "change"
+    },
+    "Hero": {
+      "base": "bg-it-canvas text-it-text-primary p-it-8",
+      "variants": {
+        "default": "font-it-primary text-it-4xl leading-it-tight",
+        "editorial": "font-it-editorial italic text-it-4xl leading-it-tight"
+      },
+      "sizes": {},
+      "defaults": {
+        "variant": "default"
+      },
+      "slots": {
+        "heading": "",
+        "description": "font-it-primary text-it-base leading-it-base"
+      },
+      "allowedOverrides": [
+        "m-*",
+        "mx-*",
+        "my-*",
+        "mt-*",
+        "mb-*",
+        "ml-*",
+        "mr-*",
+        "ms-*",
+        "me-*",
+        "w-full",
+        "w-auto",
+        "self-*",
+        "order-*",
+        "col-span-*"
+      ],
+      "forbiddenOverrides": [
+        "color",
+        "typography"
+      ],
+      "touchMinHeight": "0px",
+      "variantTarget": "heading"
+    }
+  },
+  "assets": [
+    {
+      "id": "logo.imobiturbo.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo - fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "imobiturbo",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "79dfd774f7f891440ae49edfd15d27f01f588779d7daaab2a6c3052954131fdd",
+      "width": 2456,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.ads.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo ads - fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "ads",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "e57ef8c1f7b6d696c130f4b018cc369a8ff4d34055e8fb93bff4e5eb3519ae29",
+      "width": 3440,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.ads.light",
+      "file": "assets/all-logos-imobiturbo/imobiturbo ads - fundo transparente - aplicar em tema white.webp",
+      "kind": "logo",
+      "product": "ads",
+      "theme": "light",
+      "status": "active",
+      "sha256": "a8556fee723dcb85310154446762555be2145edae9779a0f305574c573557b2e",
+      "width": 3440,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.agenda.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo agenda - fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "agenda",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "030dd93bd4ab8527be6778f11989ba73ffde9e5c2ec90f48205677fae05e6391",
+      "width": 4210,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.agenda.light",
+      "file": "assets/all-logos-imobiturbo/imobiturbo agenda - fundo transparente - aplicar em tema white.webp",
+      "kind": "logo",
+      "product": "agenda",
+      "theme": "light",
+      "status": "active",
+      "sha256": "f7cdf167a181ec7b3288a95976d84d193c28463db1ec9abf2a3405b768cae458",
+      "width": 4210,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.clone.light",
+      "file": "assets/all-logos-imobiturbo/imobiturbo clone - fundo transparente - aplicar em tema white.webp",
+      "kind": "logo",
+      "product": "clone",
+      "theme": "light",
+      "status": "active",
+      "sha256": "4bd880fdbe96f0c000d7d5d3e018289d7d1c83d08d022885a9524dd006bb252b",
+      "width": 3842,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.club.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo club - fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "club",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "25f7f88b61a39039a1ba8f7814b6fa1a4946edfdf097cf76f5261b68c769b822",
+      "width": 3596,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.club.light",
+      "file": "assets/all-logos-imobiturbo/imobiturbo club - fundo transparente - aplicar em tema white.webp",
+      "kind": "logo",
+      "product": "club",
+      "theme": "light",
+      "status": "active",
+      "sha256": "287c472b64088b23b742fc6ff3838732bb64e256b83c0b420a9e285e238c183f",
+      "width": 3596,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.finance.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo finance - fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "finance",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "ed56dea8a768c106df9b2d90b1416b3a5885b63dbf9e56f756e5272c30819ff1",
+      "width": 4182,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.finance.light",
+      "file": "assets/all-logos-imobiturbo/imobiturbo finance - fundo transparente - aplicar em tema white.webp",
+      "kind": "logo",
+      "product": "finance",
+      "theme": "light",
+      "status": "active",
+      "sha256": "5c7d992ba6630a3a0ae34701df7303da23e077c82493033c203cd35ea964c72c",
+      "width": 4182,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.news.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo news - fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "news",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "1c68ed82f8cf778bcfd9f099b24db8bb1e4897d0abdd7664d162b173c6970bef",
+      "width": 3794,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.news.light",
+      "file": "assets/all-logos-imobiturbo/imobiturbo news - fundo transparente - aplicar em tema white.webp",
+      "kind": "logo",
+      "product": "news",
+      "theme": "light",
+      "status": "active",
+      "sha256": "1a1ccd09f592896cf3f6d06915b1126b7d0d47ac9c3ce790e1a0df45d044fda4",
+      "width": 3794,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.os.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo os - fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "os",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "64efeb6ce69c22cf75c0e94a4f15e18529f92508092317a375bffb7bbe3af576",
+      "width": 3259,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.os.light",
+      "file": "assets/all-logos-imobiturbo/imobiturbo os - fundo transparente - aplicar em tema white.webp",
+      "kind": "logo",
+      "product": "os",
+      "theme": "light",
+      "status": "active",
+      "sha256": "533fef6b101693a01b3d0855a5272817ed2d85e792c0a9be004f1aae56c29849",
+      "width": 3259,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.posts.light",
+      "file": "assets/all-logos-imobiturbo/imobiturbo posts - fundo transparente - aplicar em tema white.webp",
+      "kind": "logo",
+      "product": "posts",
+      "theme": "light",
+      "status": "active",
+      "sha256": "15ae11654b90115dc147c0e05c276141ec3ed75fdcc50db720177bcc2e498ef4",
+      "width": 3842,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.posts.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo posts -fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "posts",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "e216a5b3fd2a86ee4d56aef33252aed95f8c9a05bedd4f6d0f99542f3c4209e9",
+      "width": 3842,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.radar.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo radar - fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "radar",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "78ee2f8ec6ad31204ea05a1cfa7fdfb1c8f6b6426fa7143e003f9f8aa32495d3",
+      "width": 3794,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.radar.light",
+      "file": "assets/all-logos-imobiturbo/imobiturbo radar - fundo transparente - aplicar em tema white.webp",
+      "kind": "logo",
+      "product": "radar",
+      "theme": "light",
+      "status": "active",
+      "sha256": "9bce3cd9020064bdafbb8b9a3d70ac88021dd6c9487422bc2fca6cbf75d680fb",
+      "width": 3794,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.sites.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo sites - fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "sites",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "ba3f4cbcbc3dfbc1434c6484c5a69bddf422897c9691bff1c5142675fef4f293",
+      "width": 3629,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.sites.light",
+      "file": "assets/all-logos-imobiturbo/imobiturbo sites - fundo transparente - aplicar em tema white.webp",
+      "kind": "logo",
+      "product": "sites",
+      "theme": "light",
+      "status": "active",
+      "sha256": "b686e0a7358ac032c16966987a69edfae4ce17a16a210c6781ab41d5884658ea",
+      "width": 3629,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.7b3a26a2a104",
+      "file": "assets/icon/apple-touch-icon.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "6613b0a4578e8ade9135e0b8810da9411c0aaea7ea694aaa450b564afc1510c5",
+      "width": 180,
+      "height": 180,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.74e2d55617da",
+      "file": "assets/icon/exclusivo-carrossel-instagram-selo-de-rodapé-capa-imobiturbo-instagram.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "0352cfd488f431f6bb16e45d97b9f0f40c3c1297581ef3c33a7325be17b2dcef",
+      "width": 280,
+      "height": 63,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.b4893db841a9",
+      "file": "assets/icon/favicon-16x16.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "e8fbf23d20e91415b3012902454e1e08369d86c5d29706735146aeeef4c20662",
+      "width": 16,
+      "height": 16,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.f85ab29a36ea",
+      "file": "assets/icon/favicon-32x32.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "db11a28035fb48bc011170ebd2b6b766cea144281569a96d4fadeb39ddb71f85",
+      "width": 32,
+      "height": 32,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.e2f72032f2d2",
+      "file": "assets/icon/favicon-48x48.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "dc2866442e9feeb158e4f7863a1c2b03489dcc3470e589fbe07e36df7f0c1eb3",
+      "width": 48,
+      "height": 48,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.d66098f45002",
+      "file": "assets/icon/icon-oficial-imobiturbo.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "609606e75cdfaf668cad8e930a8988ca6601ae7b065a1d0edf5624ab0c32cfd8",
+      "width": 1080,
+      "height": 1080,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.8d9a64a2cf36",
+      "file": "assets/icon-pwa/icon-128x128.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "8e9be3349bb0c19dc4ec6fa45390efffcd890ca027b33e6d6ed612f3c46b32bb",
+      "width": 128,
+      "height": 128,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.34a0d6a96afa",
+      "file": "assets/icon-pwa/icon-144x144.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "af336e84c5d79a70e4afa1b3d1bd83dfd4aa427725424aa8e1100a4a153cf451",
+      "width": 144,
+      "height": 144,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.5cad903b49ca",
+      "file": "assets/icon-pwa/icon-152x152.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "c40e35d4d07615de3c3949e6c0f6c0001d865207de2f0a1bbfd987d37b039505",
+      "width": 152,
+      "height": 152,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.f31dce0fc93a",
+      "file": "assets/icon-pwa/icon-384x384.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "a9a09e7b697b300134e4fe382089b0ea915a7464d1d37edfa150f404d92dce6d",
+      "width": 384,
+      "height": 384,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.471bc656691f",
+      "file": "assets/icon-pwa/icon-512x512.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "05bc139a1471d042450ed0779f99dc835cdddf45e1d25e55908247ab24923355",
+      "width": 512,
+      "height": 512,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.1528574a7a0e",
+      "file": "assets/icon-pwa/icon-72x72.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "f8971cb3ff4a784fcd2e0ca9e9868189e487f3125fc4d14303973fe19907418b",
+      "width": 72,
+      "height": 72,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "asset.2f92d5045679",
+      "file": "assets/icon-pwa/icon-96x96.png",
+      "kind": "icon",
+      "product": "imobiturbo",
+      "theme": "any",
+      "status": "active",
+      "sha256": "6de1c701d4726ef997421b86ad41f377efa294d30ed5dab2611bd538ea244b8b",
+      "width": 96,
+      "height": 96,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.imobiturbo.light",
+      "file": "assets/preserved/imobiturbo-on-white.webp",
+      "kind": "logo",
+      "product": "imobiturbo",
+      "theme": "light",
+      "status": "active",
+      "sha256": "bd7e1a3865efe46d19b6197ee1de31a47f11207a7ea8220aaca444754d9cea17",
+      "width": 2456,
+      "height": 875,
+      "aliases": [],
+      "provenance": "OpenDesign/source/lp-vagas-profile.json; preserved source, do not re-create"
+    }
+  ],
+  "policy": {
+    "schemaVersion": 1,
+    "namespace": "it",
+    "componentImports": [
+      "^@/components/ui(/|$)",
+      "^@cio/ui/base(/|$)",
+      "^@cio/ui/imobiturbo(/|$)"
+    ],
+    "componentFiles": [
+      "**/components/ui/**",
+      "**/src/base/**",
+      "**/src/imobiturbo/**"
+    ],
+    "note": "Imobiturbo: consulte @imobiturbo/design-system/reference e /catalog; não crie tokens locais para silenciar erros.",
+    "forbiddenFonts": [
+      "Futura",
+      "Inter",
+      "Barlow Condensed",
+      "IBM Plex Mono"
+    ],
+    "iconography": {
+      "library": "lucide",
+      "sizes": [
+        16,
+        20,
+        24,
+        32
+      ],
+      "strokeWidth": {
+        "desktop": 1.75,
+        "touch": 2
+      }
+    },
+    "copy": {
+      "locale": "pt-BR",
+      "pronoun": "você",
+      "emoji": false,
+      "uppercase": "mono-only",
+      "evidence": "Não inventar depoimentos, resultados, preços ou condições."
+    },
+    "contrastPairs": [
+      [
+        "accentFg",
+        "accent"
+      ],
+      [
+        "textPrimary",
+        "canvas"
+      ],
+      [
+        "textMuted",
+        "canvas"
+      ],
+      [
+        "accentText",
+        "canvas"
+      ],
+      [
+        "cardFg",
+        "card"
+      ],
+      [
+        "destructiveFg",
+        "destructive"
+      ],
+      [
+        "success",
+        "successBg"
+      ],
+      [
+        "warning",
+        "warningBg"
+      ],
+      [
+        "danger",
+        "dangerBg"
+      ],
+      [
+        "info",
+        "infoBg"
+      ],
+      [
+        "accentText",
+        "accentSoft"
+      ],
+      [
+        "textMuted",
+        "surface"
+      ],
+      [
+        "textMuted",
+        "surfaceElevated"
+      ],
+      [
+        "textMuted",
+        "surfaceHover"
+      ]
+    ],
+    "aliases": {
+      "css": {
+        "--it-green": "--it-accent",
+        "--it-lime": "--it-accent",
+        "--font-body": "--font-primary",
+        "--radius-pill": "--radius-full"
+      },
+      "deprecations": [
+        "colors_and_type.css",
+        "dist/tailwind-preset.js"
+      ],
+      "shadcnCss": {
+        "background": "canvas",
+        "foreground": "textPrimary",
+        "card": "card",
+        "card-foreground": "cardFg",
+        "popover": "popover",
+        "popover-foreground": "popoverFg",
+        "primary": "primary",
+        "primary-foreground": "primaryFg",
+        "secondary": "secondary",
+        "secondary-foreground": "secondaryFg",
+        "muted": "muted",
+        "muted-foreground": "mutedFg",
+        "accent": "accentSoft",
+        "accent-foreground": "accentText",
+        "destructive": "destructive",
+        "destructive-foreground": "destructiveFg",
+        "border": "border",
+        "input": "border",
+        "ring": "ring"
+      },
+      "legacyCss": {
+        "bg": "canvas",
+        "text": "textPrimary",
+        "error": "danger",
+        "error-bg": "dangerBg",
+        "accent-foreground": "accentFg"
+      },
+      "tailwindV3": {
+        "accent": "accent",
+        "accent-foreground": "accentFg",
+        "accent-soft": "accentSoft",
+        "accent-hover": "accentHover",
+        "bg": "canvas",
+        "surface": "surface",
+        "surface-hover": "surfaceHover",
+        "surface-elevated": "surfaceElevated",
+        "text": "textPrimary",
+        "text-muted": "textMuted",
+        "text-subtle": "textSubtle",
+        "border": "border",
+        "ring": "ring",
+        "destructive": "destructive",
+        "destructive-foreground": "destructiveFg",
+        "primary": "primary",
+        "primary-foreground": "primaryFg",
+        "secondary": "secondary",
+        "secondary-foreground": "secondaryFg",
+        "success": "success",
+        "success-bg": "successBg",
+        "warning": "warning",
+        "warning-bg": "warningBg",
+        "error": "danger",
+        "error-bg": "dangerBg"
+      }
+    },
+    "profiles": [
+      {
+        "id": "skills-ia",
+        "paths": [
+          "templates/low-ticket-03",
+          "assets/skills-ia"
+        ],
+        "status": "preserved",
+        "reason": "Template aprovado antes desta refatoração; tokens próprios não são regras globais."
+      }
+    ],
+    "mergeFunctions": [
+      "cn",
+      "clsx",
+      "twMerge"
+    ],
+    "variantFunctions": [
+      "cva",
+      "tv"
+    ]
+  }
+}

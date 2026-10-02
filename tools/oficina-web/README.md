@@ -1,8 +1,14 @@
-# Oficina Imobiturbo — interface
+# WORKSHOP VGV 10X — interface
 
-Landing `/oficina/` e retorno `/oficina/obrigado/`, construídos exclusivamente com componentes oficiais shadcn/ui Radix Nova, neutral claro e Geist local. Componentes foram gerados pelo CLI `shadcn@4.21.1`; os componentes comuns e o tema oficial são os mesmos da consulta do plano, sem importar CSS visual do website.
+Landing `/oficina/` e retorno `/oficina/obrigado/`, com componentes shadcn/ui Radix e identidade oficial Imobiturbo DS 5.0.2. Plus Jakarta Sans local, tema claro, prática em tema escuro e ênfase editorial Playfair italic. O pacote canônico é consumido por dependência file portátil; fontes e logos entram no grafo de assets do Vite. Ver `DESIGN.md` e `design-system-provenance.json`.
 
 Conteúdo baseado no pacote comercial `infra-launch-marketing-20261002/docs/launches/imobiturbo-oficina-202610/`, com as atualizações explícitas: 9 e 10/10/2026, programação 19h30–21h30 Brasília, ingresso R$47, Natan Pimentel como apresentador, reembolso em até sete dias pelo suporte. Replay previsto por 14 dias. Reembolso usa o texto comercial exato autorizado: solicitação com identificação da compra, pela forma de pagamento utilizada; prazo bancário informado no atendimento. Nenhuma sala privada, case de cliente inventado ou promessa financeira foi incluída.
+
+## Instalação e validação da marca na VPS3
+
+Esta mudança prepara package.json e ESLint, mas deixa o lockfile para a raiz atualizar exclusivamente na VPS3. Primeira instalação do novo pacote deve usar `npm install` em `tools/oficina-web` na VPS3 para resolver a dependência file e atualizar o lock; `npm ci` volta a ser aplicável após esse commit. O pacote vendor é um subconjunto: exports não usados continuam oficiais, mas somente os entrypoints consumidos foram copiados. Não executar os gates do pacote vendor como se fosse a origem completa.
+
+Executar os testes existentes, `npm run typecheck`, `npm run design:check` (política /lint e plugin /eslint oficiais, incluindo erro em descoberta vazia) e build de Pages. Desktop/mobile CDP precisam de nova revisão, pois a evidência histórica abaixo é do tema anterior. Datas e durações atuais são provisórias, preservadas enquanto o usuário avalia alternativas.
 
 ## Build na VPS3
 
@@ -34,7 +40,7 @@ Reutiliza `https://track.nmidigital.tech/t.js` e a operação existente `0000000
 
 A página de obrigado não carrega o tracker da LP, não emite conversão e não trata URL/query como prova de pagamento. Não há `Purchase` no frontend: esse evento pertence exclusivamente ao webhook pago do processador. Não há ativação de Comunidade.
 
-## Evidência
+## Evidência anterior à aplicação da marca
 
 - Build de Pages e typecheck passaram na VPS3 como `natan`.
 - 11 testes passaram: contrato/validação, erros, atribuição, confirmação de Lead, Hub e pixel.
