@@ -11,10 +11,16 @@ async function api(env, path, options = {}) {
 }
 
 function verifiedHook(hook, env) {
-  if (!hook.id || hook.name !== OFICINA_WEBHOOK_NAME || hook.url !== OFICINA_WEBHOOK_URL ||
-      hook.enabled !== true || hook.interrupted !== false || Number(hook.apiVersion) !== 3 ||
-      hook.sendType !== "SEQUENTIALLY" || hook.authToken !== env.OFICINA_ASAAS_WEBHOOK_TOKEN ||
-      !Array.isArray(hook.events) || OFICINA_WEBHOOK_EVENTS.some(event => !hook.events.includes(event))) throw new Error("oficina_webhook_configuration_mismatch");
+  const checks = { id: Boolean(hook.id), name: hook.name === OFICINA_WEBHOOK_NAME, url: hook.url === OFICINA_WEBHOOK_URL,
+    enabled: hook.enabled === true, interrupted: hook.interrupted === false, apiVersion: Number(hook.apiVersion) === 3,
+    sendType: hook.sendType === "SEQUENTIALLY", authToken: hook.authToken === env.OFICINA_ASAAS_WEBHOOK_TOKEN,
+    events: Array.isArray(hook.events) && OFICINA_WEBHOOK_EVENTS.every(event => hook.events.includes(event)) };
+  const invalidFields = Object.keys(checks).filter(key => !checks[key]);
+  if (invalidFields.length) {
+    const error = new Error("oficina_webhook_configuration_mismatch");
+    error.details = { webhookId: hook.id, invalidFields, apiVersion: hook.apiVersion, authTokenReturned: typeof hook.authToken === "string" };
+    throw error;
+  }
   // Never serialize authToken/provider response, even to the authenticated admin.
   return { webhookId: hook.id, webhookUrl: hook.url, enabled: true, interrupted: false, authConfigured: true };
 }
