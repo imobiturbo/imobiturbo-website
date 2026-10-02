@@ -1,0 +1,162 @@
+{
+  "url": "http://172.19.251.156:18879/bf-imobiliaria26/",
+  "results": [
+    {
+      "name": "desktop",
+      "width": 1440,
+      "height": 960,
+      "href": "http://172.19.251.156:18879/bf-imobiliaria26/",
+      "scrollWidth": 1440,
+      "bodyWidth": 1440,
+      "contentHeight": 11684,
+      "brokenImages": [],
+      "cards": 6,
+      "categoryItems": 20,
+      "bonusImages": 4,
+      "faq": 8,
+      "emojiImages": 0,
+      "logoHeight": 56,
+      "font": "\"Plus Jakarta Sans\", sans-serif",
+      "heroGrid": "547.75px 616.25px",
+      "priceText": [
+        "R$37,90",
+        "R$47,90"
+      ],
+      "assetVersion": "./css/low-ticket.css?v=20261002-tangible-v2",
+      "interactions": {
+        "gallery": {
+          "before": 88,
+          "after": 386
+        },
+        "viewer": {
+          "opened": true,
+          "focusedClose": true,
+          "closed": true
+        },
+        "catalogOpened": true,
+        "expandedWidth": 1440,
+        "faqOpened": true,
+        "faqIcons": 1,
+        "sticky": {
+          "hero": {
+            "hidden": true,
+            "display": "none"
+          },
+          "middle": {
+            "hidden": false,
+            "display": "none"
+          },
+          "pricing": {
+            "hidden": true,
+            "display": "none"
+          }
+        }
+      }
+    },
+    {
+      "name": "mobile",
+      "width": 390,
+      "height": 844,
+      "href": "http://172.19.251.156:18879/bf-imobiliaria26/",
+      "scrollWidth": 390,
+      "bodyWidth": 390,
+      "contentHeight": 19553,
+      "brokenImages": [],
+      "cards": 6,
+      "categoryItems": 20,
+      "bonusImages": 4,
+      "faq": 8,
+      "emojiImages": 0,
+      "logoHeight": 40,
+      "font": "\"Plus Jakarta Sans\", sans-serif",
+      "heroGrid": "350px",
+      "priceText": [
+        "R$37,90",
+        "R$47,90"
+      ],
+      "assetVersion": "./css/low-ticket.css?v=20261002-tangible-v2",
+      "interactions": {
+        "gallery": {
+          "before": 0,
+          "after": 270
+        },
+        "viewer": {
+          "opened": true,
+          "focusedClose": true,
+          "closed": true
+        },
+        "catalogOpened": true,
+        "expandedWidth": 390,
+        "faqOpened": true,
+        "faqIcons": 1,
+        "sticky": {
+          "hero": {
+            "hidden": true,
+            "display": "none"
+          },
+          "middle": {
+            "hidden": false,
+            "display": "flex"
+          },
+          "pricing": {
+            "hidden": true,
+            "display": "none"
+          }
+        }
+      }
+    },
+    {
+      "name": "small",
+      "width": 360,
+      "height": 800,
+      "href": "http://172.19.251.156:18879/bf-imobiliaria26/",
+      "scrollWidth": 360,
+      "bodyWidth": 360,
+      "contentHeight": 19994,
+      "brokenImages": [],
+      "cards": 6,
+      "categoryItems": 20,
+      "bonusImages": 4,
+      "faq": 8,
+      "emojiImages": 0,
+      "logoHeight": 40,
+      "font": "\"Plus Jakarta Sans\", sans-serif",
+      "heroGrid": "320px",
+      "priceText": [
+        "R$37,90",
+        "R$47,90"
+      ],
+      "assetVersion": "./css/low-ticket.css?v=20261002-tangible-v2",
+      "interactions": {
+        "gallery": {
+          "before": 0,
+          "after": 270
+        },
+        "viewer": {
+          "opened": true,
+          "focusedClose": true,
+          "closed": true
+        },
+        "catalogOpened": true,
+        "expandedWidth": 360,
+        "faqOpened": true,
+        "faqIcons": 1,
+        "sticky": {
+          "hero": {
+            "hidden": true,
+            "display": "none"
+          },
+          "middle": {
+            "hidden": false,
+            "display": "flex"
+          },
+          "pricing": {
+            "hidden": true,
+            "display": "none"
+          }
+        }
+      }
+    }
+  ],
+  "scope": "Preview render from VPS3; production deployment verified separately."
+}

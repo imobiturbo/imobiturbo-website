@@ -1,0 +1,14 @@
+{
+  "reviewer": "independent Codex agent",
+  "initialReview": "Layout, tangible previews, icon alignment and preserved copy reviewed; sole material fix: contrast of small bonus labels.",
+  "fix": "Use --it-accent-700 #467025 on white for bonus labels.",
+  "contrastRatio": 5.83,
+  "recaptures": [
+    "desktop-bonus.png",
+    "mobile-bonus.png"
+  ],
+  "verdict": "resolved",
+  "remaining": "clear",
+  "disposition": "ship",
+  "approvalScope": "Sole material correction scored after desktop and mobile recapture."
+}
