@@ -99,3 +99,7 @@ Não vincular campanha Meta USD à oferta BRL contornando currencyMismatch. Mode
 ### Patch de movimentação de stages — 02/10/2026
 
 Cobertura adicionada: inscrição pendente/paga, refund após acompanhamento, duplicata paga, pago atrasado após cancelamento, avanço manual concorrente e rejeição de stage/pipeline/tenant estrangeiro. Casos existentes de netValue permanecem. Testes deste patch não foram executados localmente: root replica o commit para seu checkout dedicado na VPS3, como natan em /opt/builds/, e valida sob mutex global /var/lock/imobiturbo-ci.lock. Nenhuma validação de runtime/deploy é alegada por este patch.
+
+## Confirmação hospedada
+
+O checkout usa a confirmação padrão do Asaas, sem callback personalizado. O cadastro da conta não tem domínio configurado; adicionar callback foi recusado com HTTP400. Não alteramos dados comerciais/KYC da conta para resolver a oficina. Salas e material seguem pelo email transacional somente após pagamento verificado. DETACHED continua obrigatório; maxInstallmentCount ausente/nulo é inaplicável à cobrança avulsa, e valores maiores que um são recusados.

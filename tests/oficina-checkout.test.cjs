@@ -286,7 +286,7 @@ test('POST checkout creates only fixed paymentLink and reads it back, no custome
       assert.equal(body.maxInstallmentCount, 1);
       assert.equal(body.notificationEnabled, true);
       assert.equal(body.externalReference, payment.externalReference);
-      assert.equal(body.callback.successUrl, fixedLink.callback.successUrl);
+      assert.equal(body.callback, undefined);
       assert.equal(body.customer, undefined);
       created = true;
       return Response.json({ id: 'link_mock' });
@@ -773,4 +773,13 @@ test('authenticated setup diagnoses provider validation while redacting credenti
   assert.equal(result.provider.code, 'invalid_object');
   assert.equal(JSON.stringify(result).includes(env.ASAAS_API_KEY), false);
   assert.match(result.provider.description, /redacted/);
+});
+
+test('detached hosted checkout accepts native confirmation and inapplicable installment limit', async () => {
+  const { checkoutResult } = await load('oficina/_checkout.js');
+  const native = { ...fixedLink, callback: null, maxInstallmentCount: null };
+  assert.equal(checkoutResult(native).checkoutUrl, fixedLink.url);
+  assert.throws(() => checkoutResult({ ...native, chargeType: 'RECURRENT' }));
+  assert.throws(() => checkoutResult({ ...native, maxInstallmentCount: 12 }));
+  assert.throws(() => checkoutResult({ ...native, callback: { successUrl: 'https://foreign.example/thanks' } }));
 });
