@@ -103,3 +103,9 @@ Cobertura adicionada: inscrição pendente/paga, refund após acompanhamento, du
 ## Confirmação hospedada
 
 O checkout usa a confirmação padrão do Asaas, sem callback personalizado. O cadastro da conta não tem domínio configurado; adicionar callback foi recusado com HTTP400. Não alteramos dados comerciais/KYC da conta para resolver a oficina. Salas e material seguem pelo email transacional somente após pagamento verificado. DETACHED continua obrigatório; maxInstallmentCount ausente/nulo é inaplicável à cobrança avulsa, e valores maiores que um são recusados.
+
+## Prontidão e token do hook
+
+O GET oficial de webhooks não retorna `authToken`. Setup confere os campos públicos e, em um hook da oficina com nome e URL exatos, confirma uma escrita autenticada contendo somente o token; nenhum hook de outro produto é alterado. O recibo distingue `write_acknowledged` de `readback_match` sem retornar segredos. Não configura KYC, não gera pagamento e não reativa filas divergentes.
+
+`OFICINA_SETUP_READY=true` é a liberação operacional do root após setup bem-sucedido e auditoria do CRM/credenciais. Sem ela, config, criação pública de checkout e registro de lead ficam fechados. Webhook continua autenticado e verificando o pagamento real, independentemente dessa flag.

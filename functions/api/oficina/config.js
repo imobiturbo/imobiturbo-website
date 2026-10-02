@@ -2,6 +2,7 @@ import { json, OFICINA_PRICE } from "./_shared.js";
 import { findCheckout } from "./_checkout.js";
 
 export async function onRequestGet({ env = {} }) {
+  if (env.OFICINA_SETUP_READY !== "true") return json({ error: "oficina_checkout_unavailable" }, 503);
   try {
     if (env.OFICINA_CHECKOUT_URL) {
       const checkout = new URL(env.OFICINA_CHECKOUT_URL);
