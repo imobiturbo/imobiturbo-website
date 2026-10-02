@@ -87,6 +87,7 @@ export async function recordPayment(env, leadId, payment, state, config) {
     return { fields: { ...fields, oficina_payment_status: state, _oficina_payments: { ...payments, [payment.id]: {
       ...previous, state, providerStatus: payment.status, value: 47, billingType: payment.billingType,
       paymentLink: payment.paymentLink,
+      ...(typeof payment.netValue === "number" && Number.isFinite(payment.netValue) ? { netValue: payment.netValue } : {}),
       ...(state === "pago" ? { purchaseEventTime: previous?.purchaseEventTime || Math.floor(Date.now() / 1000) } : {}),
       updatedAt: new Date().toISOString(),
     } } }, result: { duplicate: false, state } };

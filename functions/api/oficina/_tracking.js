@@ -2,6 +2,8 @@ import { dispatchVerifiedPurchaseToHub } from "../checkout/_tracking.js";
 import { paymentContext, savePaymentDelivery } from "./_crm.js";
 import { OFICINA_REFERENCE, validOficinaPayment, paymentState, normalizePhone } from "./_shared.js";
 
+const OFICINA_OFFER_ID = "f8a7e873-472d-5b58-baf4-97dc620c8cb4";
+
 async function sha(value) {
   return Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value))), byte => byte.toString(16).padStart(2, "0")).join("");
 }
@@ -20,7 +22,7 @@ export async function dispatchOficinaPurchase({ env, payment, leadId, config, cu
   let hub = Boolean(saved.hubPurchaseSent), meta = Boolean(saved.metaPurchaseSent);
   if (!hub) {
     hub = await dispatchVerifiedPurchaseToHub({ env, paymentId: payment.id, eventId, amount: 47,
-      contentName: "Oficina Imobiturbo", productId: OFICINA_REFERENCE, email, phone, name: row.contact.name || customer.name,
+      contentName: "Oficina Imobiturbo", productId: OFICINA_REFERENCE, offerId: OFICINA_OFFER_ID, email, phone, name: row.contact.name || customer.name,
       fbp: original.fbp || "", fbc: original.fbc || "", visitorId, sessionId: original.session_id || "", tracking: original,
     });
   }

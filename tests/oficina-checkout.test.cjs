@@ -322,7 +322,10 @@ test('paid office emits stable Hub/Meta Purchase, CRM original attribution and p
   const meta = mock.calls.filter(c => c.url.startsWith('https://graph.facebook.com/'));
   assert.equal(hub.length, 1); assert.equal(meta.length, 1);
   assert.equal(hub[0].body.eventId, 'oficina-purchase-pay_mock');
+  assert.equal(hub[0].body.offerId, 'f8a7e873-472d-5b58-baf4-97dc620c8cb4');
   assert.equal(hub[0].body.valueCents, 4700);
+  assert.equal(hub[0].body.netValue, undefined);
+  assert.equal(hub[0].body.fees, undefined);
   assert.equal(hub[0].body.currency, 'BRL');
   assert.equal(hub[0].body.productId, payment.externalReference);
   assert.equal(hub[0].body.url, 'https://www.imobiturbo.com.br/oficina/');
@@ -648,4 +651,17 @@ test('office Hub Purchase retains original canonical campaign/ad attribution', a
   const hub = mock.calls.find(c => c.url.startsWith('https://hub.mock/')).body;
   for (const [key, value] of Object.entries(original)) assert.equal(hub[key], value);
   assert.equal(hub.eventId, 'oficina-purchase-pay_mock');
+});
+
+ test('verified provider netValue is preserved in CRM without replacing gross Hub revenue', async t => {
+  const mock = routes(t, { payment: { ...payment, netValue: 45.01 } });
+  assert.equal((await webhook()).status, 200);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.netValue, 45.01);
+  assert.equal(mock.calls.find(c => c.url.startsWith('https://hub.mock/')).body.valueCents, 4700);
+});
+
+test('missing provider netValue stays unknown instead of assuming zero fees', async t => {
+  const mock = routes(t);
+  assert.equal((await webhook()).status, 200);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.netValue, undefined);
 });
