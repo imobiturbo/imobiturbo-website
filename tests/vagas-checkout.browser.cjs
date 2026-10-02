@@ -71,7 +71,6 @@ async function revealVisibleImages(page) {
 for (const width of [390, 320, 1440]) test(`restored page, original course carousel and plan navigation at ${width}px`, async t => {
   const page = await visit(t, width);
   assert.ok(await page.evaluate(() => window.auditEvents.some(event => event.method === 'track' && event.args[0] === 'LandingView' && event.args[1].lp_version === 'vagas-restaurada-vsl-20261002' && event.args[1].traffic_classification === 'confirmed_bot')));
-  await revealVisibleImages(page);
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'no horizontal overflow');
   assert.equal(await page.locator('#vslVideo').count(), 1, 'the presentation remains in the hero');
   await page.locator('main a.btn[href="#planos"]').first().click();
@@ -82,6 +81,10 @@ for (const width of [390, 320, 1440]) test(`restored page, original course carou
   const course = page.locator('#cioCardsSlider');
   await course.scrollIntoViewIfNeeded();
   assert.ok(await course.isVisible(), 'original curriculum carousel stays available');
+  const before = await course.evaluate(node => node.scrollLeft);
+  await page.locator('#cioCarouselNext').click();
+  await page.waitForFunction(previous => document.getElementById('cioCardsSlider').scrollLeft > previous, before);
+  if (artifacts) await page.screenshot({ path: path.join(artifacts, `${width}-courses.png`) });
 });
 
 test('three plans preserve the native Asaas journey and show the Pix total before QR', async t => {
