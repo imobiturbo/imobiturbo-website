@@ -14,14 +14,15 @@ export function welcomePayload(env, verifiedEmail, paymentId) {
   // community onboarding or sensitive customer records are included.
   const textbody = [
     "Sua inscrição no WORKSHOP VGV 10X: do lead ao próximo passo está confirmada após identificação do pagamento.",
-    "", "Encontro 1: 9 de outubro de 2026, 19h30–21h30, horário de Brasília.", ROOM_E1,
-    "", "Encontro 2: 10 de outubro de 2026, 19h30–21h30, horário de Brasília.", ROOM_E2,
+    "", "Encontro 1: 27 de outubro de 2026, 18h30–22h30, horário de Brasília.", ROOM_E1,
+    "", "Encontro 2: 28 de outubro de 2026, 18h30–22h30, horário de Brasília.", ROOM_E2,
+    "Cada noite tem 240 minutos, incluindo duas pausas de 10 minutos, às 19h30 e 20h40.",
     "", "Materiais para a prática:",
     "Carteira editável: " + MATERIAL_BASE + "carteira-cadencia.csv",
     "Agenda de sete dias: " + MATERIAL_BASE + "agenda-sete-dias.csv",
     "Modelos de mensagens: " + MATERIAL_BASE + "mensagens-pratica.md",
     "Use contatos anonimizados ou os exemplos fictícios. Não envie dados de clientes na sala.",
-    "", "Replay: acesso até 24 de outubro de 2026, às 21h30 (Brasília). O suporte informará o acesso às gravações após os encontros.",
+    "", "Replay: acesso por 14 dias, até 11 de novembro de 2026, às 22h30 (Brasília). O suporte informará o acesso às gravações após os encontros.",
     "", "Ajuda com acesso: responda a este email ou contate " + SUPPORT_EMAIL + ".",
     "Guarde os links das salas para seu uso individual.", "", "Equipe Imobiturbo",
   ].join("\n");
