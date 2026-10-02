@@ -12,6 +12,7 @@ async function invoke(t, overrides = {}, mode = 'normal', envOverrides = {}) {
     const address = new URL(url);
     const body = options.body ? JSON.parse(options.body) : null;
     calls.push({ path: address.pathname, host: address.hostname, method: options.method || 'GET', body, token: options.headers?.['asaas-access-token'] });
+    if (address.hostname === 'track.nmidigital.tech') return Response.json({ ok: true });
     if (address.hostname === 'hub.imobiturbo.com.br') return Response.json({ ok: true });
     assert.equal(address.origin, 'https://api.asaas.com', 'never change provider after a payment attempt');
     if (address.pathname === '/v3/customers' && !body) return Response.json({ data: [{ id: 'cus_synthetic' }] });

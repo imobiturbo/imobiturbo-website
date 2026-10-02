@@ -49,8 +49,22 @@
   function checkoutUrl(offer, plan) {
     var target = new URL(offer.checkoutUrl);
     var source = new URL(location.href);
+    var stored = {};
+    try { stored = JSON.parse(window.localStorage.getItem('_rt_attr') || '{}').utms || {}; } catch (_) {}
+    function cookie(key) {
+      var match = (document.cookie || '').match(new RegExp('(?:^|;\\s*)' + key + '=([^;]*)'));
+      try { return match ? decodeURIComponent(match[1]) : ''; } catch (_) { return ''; }
+    }
+    ['fbp', 'fbc'].forEach(function (key) { var value = cookie('_' + key); if (value) target.searchParams.set(key, value); });
+    [['visitorId', '_rt_vid'], ['sessionId', '_rt_sid']].forEach(function (pair) {
+      var value = cookie(pair[1]);
+      try { if (pair[0] === 'sessionId') value = value || window.sessionStorage.getItem(pair[1]); } catch (_) {}
+      try { value = value || window.localStorage.getItem(pair[1]); } catch (_) {}
+      if (value) target.searchParams.set(pair[0], value);
+    });
     ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id', 'fbclid', 'gclid', 'ttclid', 'src', 'sck'].forEach(function (key) {
-      if (source.searchParams.has(key)) target.searchParams.set(key, source.searchParams.get(key));
+      var value = source.searchParams.get(key) || stored[key];
+      if (value) target.searchParams.set(key, value);
     });
     target.searchParams.set('product_id', productId);
     target.searchParams.set('offer_code', plan);

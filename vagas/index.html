@@ -150,7 +150,7 @@
 
   <!-- Tracking Scripts -->
   <script id="hub-tracker" async src="https://track.nmidigital.tech/t.js?operation=00000000-0000-0000-0000-000000000001&v=20261001-connect2&offer=4242c673-131d-4fb2-b297-8e6a5f155133" data-id="00000000-0000-0000-0000-000000000001" data-operation-id="00000000-0000-0000-0000-000000000001" data-offer-id="4242c673-131d-4fb2-b297-8e6a5f155133" data-offer="4242c673-131d-4fb2-b297-8e6a5f155133" data-endpoint="https://track.nmidigital.tech"></script>
-  <script defer src="../site-tracking.js?v=20260906"></script>
+  <script defer src="../site-tracking.js?v=20261002-attribution"></script>
 
   <!-- Eventos de navegação e conversão são enviados pelo Hub Tracker. -->
 
@@ -977,7 +977,7 @@
       }
     }
   </style>
-  <script src="/vagas/checkout-session.js?v=20261002-1"></script>
+  <script src="/vagas/checkout-session.js?v=20261002-attribution"></script>
 
   <style id="vagas-checkout-summary-wrap">
     .chk-plan-compact-left { flex-wrap: wrap; }
@@ -2775,7 +2775,8 @@
     }
 
     function trackHubConversion(method, properties) {
-      queueHubTrackerEvent(method, { ...properties, lp_version: document.body.dataset.lpVersion });
+      const type = { lead: 'Lead', initiateCheckout: 'InitiateCheckout', purchase: 'Purchase' }[method] || method;
+      queueHubTrackerEvent('track', type, { ...properties, lp_version: document.body.dataset.lpVersion }, properties.eventId);
     }
 
     trackHubEvent('LandingView', {
@@ -3064,6 +3065,7 @@
       }
 
       const panes = [stepPane1, stepPane2, stepPane3, stepPane4, stepPane5];
+      if (step === 4 && modalOverlay?.open && tabCard?.classList.contains('active')) trackCheckoutStage('CREDIT_CARD');
       panes.forEach((p, idx) => {
         if (p) p.style.display = (idx + 1 === step) ? 'block' : 'none';
       });
@@ -3449,7 +3451,9 @@
     // Register after the phone mask so the persisted draft matches the field.
     [inputName, inputPhone, inputEmail].forEach(input => {
       input.addEventListener('input', saveCheckoutProgress);
+      input.addEventListener('input', fireLeadTrackingEvent);
       input.addEventListener('change', saveCheckoutProgress);
+      input.addEventListener('change', fireLeadTrackingEvent);
       input.addEventListener('focus', () => {
         if (window.innerWidth <= 768) {
           setTimeout(() => {
@@ -3459,22 +3463,42 @@
       });
     });
     window.addEventListener('pagehide', saveCheckoutProgress);
+    let trackedLeadContact = '';
+    const trackedCheckoutStages = new Set();
+    let checkoutTrackingId;
     restoreCheckoutProgress();
 
     let openingPayment = false;
 
 
 
+    function trackCheckoutStage(stage, result = {}) {
+      const key = stage + ':' + (result.paymentId || getCheckoutId());
+      if (trackedCheckoutStages.has(key)) return;
+      try { if (sessionStorage.getItem('imt_ic_' + key)) return; sessionStorage.setItem('imt_ic_' + key, '1'); } catch (_) {}
+      trackedCheckoutStages.add(key);
+      trackHubConversion('initiateCheckout', { ...getUtms(), checkoutId: getCheckoutId(),
+        orderId: result.paymentId, eid: result.eventId || getCheckoutId(), eventId: 'ic_' + key, paymentMethod: stage,
+        productId: 'comunidade-imobiturbo-' + currentPlan,
+        valueCents: Math.round((Number(result.amount) || (currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147)) * 100), currency: 'BRL' });
+    }
+
     function fireLeadTrackingEvent() {
       const name = (inputName ? inputName.value : '').trim();
       const email = (inputEmail ? inputEmail.value : '').trim();
       const phone = (inputPhone ? inputPhone.value : '').trim();
+      if (!isValidFullName(name) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.replace(/\D/g, '').length < 10) return;
+      const leadKey = getCheckoutId();
+      if (trackedLeadContact === leadKey) return;
+      try { if (sessionStorage.getItem('imt_checkout_lead') === leadKey) return; sessionStorage.setItem('imt_checkout_lead', leadKey); } catch (_) {}
+      trackedLeadContact = leadKey;
       const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
       trackHubConversion('lead', {
         name,
         email,
         phone,
         ...getUtms(),
+        eventId: 'lead_' + leadKey,
         plan: currentPlan,
         productId: 'comunidade-imobiturbo-' + currentPlan,
         valueCents: Math.round(planVal * 100),
@@ -3512,13 +3536,8 @@
         document.body.style.overflow = 'hidden';
       }
       if (pending) { checkoutSession.start(); return; }
-      const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
-      trackHubConversion('initiateCheckout', {
-        plan: currentPlan,
-        productId: 'comunidade-imobiturbo-' + currentPlan,
-        valueCents: Math.round(planVal * 100),
-        currency: 'BRL'
-      });
+      if (currentCheckoutStep === 4 && tabCard?.classList.contains('active')) trackCheckoutStage('CREDIT_CARD');
+
     }
 
     function closeCheckoutModal() {
@@ -3582,7 +3601,7 @@
 
     function getCookie(name) {
       const match = document.cookie.match(new RegExp('(?:^|;\\s*)' + name + '=([^;]+)'));
-      return match ? match[1] : null;
+      return match ? decodeURIComponent(match[1]) : null;
     }
 
     function getVisitorId() {
@@ -3593,6 +3612,21 @@
       }
     }
 
+    function resetTrackingCheckout() {
+      checkoutTrackingId = undefined;
+      trackedLeadContact = '';
+      trackedCheckoutStages.clear();
+      try { sessionStorage.removeItem('imt_checkout_eid'); sessionStorage.removeItem('imt_checkout_lead'); } catch (_) {}
+    }
+    function getCheckoutId() {
+      if (!checkoutTrackingId) {
+        try { checkoutTrackingId = sessionStorage.getItem('imt_checkout_eid'); } catch (_) {}
+        checkoutTrackingId = checkoutTrackingId || crypto.randomUUID();
+        try { sessionStorage.setItem('imt_checkout_eid', checkoutTrackingId); } catch (_) {}
+      }
+      return checkoutTrackingId;
+    }
+
     function getUtms() {
       const params = new URLSearchParams(window.location.search);
       let attrUtms = {};
@@ -3601,6 +3635,10 @@
         if (stored && typeof stored.utms === 'object') attrUtms = stored.utms;
       } catch (_) {}
       return {
+        visitorId: getVisitorId(),
+        sessionId: getCookie('_rt_sid') || getCookie('rt_sid') || sessionStorage.getItem('_rt_sid') || undefined,
+        checkoutId: getCheckoutId(),
+        utm_id: params.get('utm_id') || attrUtms.utm_id || undefined,
         utm_source: params.get('utm_source') || attrUtms.utm_source || undefined,
         utm_medium: params.get('utm_medium') || attrUtms.utm_medium || undefined,
         utm_campaign: params.get('utm_campaign') || attrUtms.utm_campaign || undefined,
@@ -3709,6 +3747,7 @@
         tabPix.classList.remove('active');
         tabPix.setAttribute('aria-selected', 'false');
         cardView.style.display = 'block';
+        if (currentCheckoutStep === 4) trackCheckoutStage('CREDIT_CARD');
         pixView.style.display = 'none';
         updatePaymentSummary();
         if (errorMsg) errorMsg.style.display = 'none';
@@ -3732,7 +3771,7 @@
     let pixCountdownInterval = null;
 
     checkoutSession = window.ImobiturboCheckoutSession.bindLanding({
-      selectPlan, goToCheckoutStep, updateCheckoutPersonalization, updatePaymentSummary, showCheckoutError, trackHubPurchase, form: nativeForm,
+      selectPlan, goToCheckoutStep, updateCheckoutPersonalization, updatePaymentSummary, showCheckoutError, trackHubPurchase, trackCheckoutStage, resetTrackingCheckout, form: nativeForm,
     });
 
     // Avanço da Etapa 3 (Email) para a Etapa 4 (Pagamento)
@@ -3832,6 +3871,7 @@
         const installmentsEl = document.getElementById('chkInstallments');
         const selectedInstallments = installmentsEl ? parseInt(installmentsEl.value, 10) : (currentPlan === 'anual' ? 12 : currentPlan === 'trimestral' ? 3 : 1);
         const payload = {
+          eventId: getCheckoutId(),
           gateway: 'asaas',
           plan: currentPlan,
           paymentMethod: 'CREDIT_CARD',
@@ -3907,6 +3947,7 @@
 
       try {
         const payload = {
+          eventId: getCheckoutId(),
           gateway: 'asaas',
           plan: currentPlan,
           paymentMethod: 'PIX',
@@ -3925,6 +3966,7 @@
         const result = await resp.json();
 
         if (resp.ok && result.success && result.paymentId) {
+          if (result.pix?.copyPaste && result.pix?.qrCodeBase64) trackCheckoutStage('PIX', result);
           startPixPolling(result.paymentId, result.eventId, result, {
             name: payload.name,
             email: payload.email,
@@ -3978,6 +4020,7 @@
     function trackHubPurchase(result) {
       const planVal = Number(result.amount) || 0;
       trackHubConversion('purchase', {
+        ...getUtms(),
         orderId: result.paymentId || result.eventId,
         eventId: result.eventId,
         plan: result.plan || currentPlan,
@@ -3988,6 +4031,7 @@
         email: inputEmail.value.trim(),
         phone: inputPhone.value.trim(),
       });
+      resetTrackingCheckout();
     }
 
     if (submitBtn) {

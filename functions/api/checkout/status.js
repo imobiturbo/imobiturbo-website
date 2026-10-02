@@ -273,6 +273,9 @@ async function dispatchPurchaseToMetaCapi({
   productId = "comunidade-imobiturbo",
 }) {
   try {
+    // Community Purchase delivery belongs to the verified webhook/Hub ledger.
+    // Polling a paid order must not trigger another Meta request.
+    if (productId === "comunidade-imobiturbo") return { skipped: "gateway_authority" };
     const pixelId = (env && env.META_PIXEL_ID) || DEFAULT_PIXEL_ID;
     const token = (env && env.META_ACCESS_TOKEN) || "";
     if (!pixelId || !token) {
@@ -332,7 +335,7 @@ async function dispatchPurchaseToMetaCapi({
       payload.test_event_code = env.META_TEST_EVENT_CODE;
     }
 
-    await fetch(
+    const response = await fetch(
       `https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${token}`,
       {
         method: "POST",
@@ -341,6 +344,11 @@ async function dispatchPurchaseToMetaCapi({
         signal: AbortSignal.timeout(6000),
       }
     );
+    const result = await response.json().catch(() => ({}));
+    const receipt = { eventId: eventId || `purch_${paymentId}`, orderId: paymentId, httpStatus: response.status,
+      events_received: Number(result.events_received || 0), accepted: response.ok && Number(result.events_received) === 1 };
+    console.info("meta_capi_receipt", JSON.stringify(receipt));
+    return receipt;
   } catch (err) {
     console.error("Failed to dispatch Purchase to Meta CAPI from status.js:", err);
   }
@@ -371,7 +379,7 @@ function normalizePhone(ph) {
 
 function normalizeName(name) {
   if (!name || typeof name !== "string") return "";
-  return name.trim().toLowerCase();
+  return name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ");
 }
 
 function parseCookies(header) {

@@ -582,7 +582,10 @@ export async function onRequestPost(context) {
             signal: AbortSignal.timeout(6000),
           }
         );
-        metaResult = await metaResp.json().catch(() => ({}));
+        const metaBody = await metaResp.json().catch(() => ({}));
+        metaResult = { eventId, orderId: paymentId, httpStatus: metaResp.status,
+          events_received: Number(metaBody.events_received || 0), accepted: metaResp.ok && Number(metaBody.events_received) === 1 };
+        console.info("meta_capi_receipt", JSON.stringify(metaResult));
       } else {
         metaResult = { ok: false, error: "meta_capi_not_configured" };
       }
@@ -669,7 +672,7 @@ function normalizePhone(ph) {
 
 function normalizeName(name) {
   if (!name || typeof name !== "string") return "";
-  return name.trim().toLowerCase();
+  return name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ");
 }
 
 function parseCookies(header) {
