@@ -61,8 +61,13 @@ test("vagas/index.html and vagas-v2/index.html strictly synchronize plan selecti
     );
 
     // Summary lines must be defined for all three plans
-    assert.ok(html.includes("'PLANO ANUAL · 12X DE R$ 97'"));
-    assert.ok(html.includes("'PLANO TRIMESTRAL · 3X DE R$ 127'"));
+    if (file === 'vagas/index.html') {
+      assert.ok(html.includes("'ANUAL · 12 × R$ 97 · TOTAL R$ 1.164 · À VISTA R$ 997'"));
+      assert.ok(html.includes("'TRIMESTRAL · 3 × R$ 127 · TOTAL R$ 381 · À VISTA R$ 357'"));
+    } else {
+      assert.ok(html.includes("'PLANO ANUAL · 12X DE R$ 97'"));
+      assert.ok(html.includes("'PLANO TRIMESTRAL · 3X DE R$ 127'"));
+    }
     assert.ok(html.includes("'PLANO MENSAL · R$ 147/MÊS'"));
   }
 });

@@ -59,7 +59,7 @@ test("vagas/vagas.css enforces proper styling and contrast on checkout buttons",
   // vagas-design.browser.cjs instead of pinning an inaccessible color/marquee.
 });
 
-test("vagas/index.html enforces Dark Mode and annual plan price formatting", () => {
+test("vagas/index.html discloses annual card installments and total", () => {
   const htmlPath = path.join(root, "vagas/index.html");
   const html = fs.readFileSync(htmlPath, "utf8");
 
@@ -68,8 +68,8 @@ test("vagas/index.html enforces Dark Mode and annual plan price formatting", () 
   assert.ok(html.includes('content="dark"'), "Must declare color-scheme dark");
 
   // Mobile price formatting in markup & PLAN_CONFIG
-  assert.ok(html.includes('<b>R$ 97</b><small>/mês</small>'), "Must render R$ 97 in bold and /mês in small");
-  assert.ok(html.includes("priceDisplay: '<b>R$ 97</b><small>/mês</small>'"), "PLAN_CONFIG must format anual plan with standard R$ 97/mês");
+  assert.ok(html.includes('<b>12 × R$ 97</b><small>Total R$ 1.164</small>'), "Must disclose 12 installments of R$ 97 and total R$ 1.164");
+  assert.ok(html.includes("priceDisplay: '<b>12 × R$ 97</b><small>Total R$ 1.164</small>'"), "PLAN_CONFIG must disclose the annual card total");
 });
 
 test("functions/api/checkout/index.js retains AbacatePay Pix and legacy Asaas endpoints", () => {
@@ -124,8 +124,17 @@ test("checkout API PLAN_DETAILS matches landing page pricing and Hub tracking co
     const html = fs.readFileSync(path.join(root, page), "utf8");
     assert.ok(html.includes("currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147"), `${page} tracking must use 997 for anual`);
     assert.ok(html.includes("pixVal: 'R$ 997'"), `${page} PLAN_CONFIG must set pixVal to R$ 997`);
-    assert.ok(html.includes("pixPrice: 'R$ 997,00'"), `${page} PLANS_CONFIG must set pixPrice to R$ 997,00`);
-    assert.ok(html.includes("R$ 997/ano no Pix Automático"), `${page} must disclose the annual automatic Pix price and period`);
-    assert.ok(html.includes("R$ 357/trimestre no Pix Automático"), `${page} must disclose the quarterly automatic Pix price and period`);
+    if (page === "vagas-v2/index.html") {
+      assert.ok(html.includes("pixPrice: 'R$ 997,00'"), `${page} PLANS_CONFIG must set pixPrice to R$ 997,00`);
+      assert.ok(html.includes("R$ 997/ano no Pix Automático"), `${page} must disclose the annual automatic Pix price and period`);
+      assert.ok(html.includes("R$ 357/trimestre no Pix Automático"), `${page} must disclose the quarterly automatic Pix price and period`);
+    } else {
+      assert.ok(html.includes('Total no cartão: R$ 1.164 · À vista: R$ 997'));
+      assert.ok(html.includes('Total no cartão: R$ 381 · À vista: R$ 357'));
+      assert.ok(html.includes('Total no cartão: R$ 147 · À vista: R$ 147'));
+      assert.ok(html.includes('Pix Instantâneo por cobrança, sem renovação automática'));
+      assert.ok(html.includes('Apenas o cartão mensal tem cobrança recorrente'));
+      assert.ok(!html.includes('Pix Automático'));
+    }
   }
 });
