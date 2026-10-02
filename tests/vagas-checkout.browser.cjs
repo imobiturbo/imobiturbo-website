@@ -68,81 +68,19 @@ async function revealVisibleImages(page) {
   await page.evaluate(() => scrollTo(0, 0));
 }
 
-test('mobile offers an immediate CTA, an early price and optional depth', async t => {
-  for (const width of [390, 320]) await t.test(`${width}px`, async t => {
-    const page = await visit(t, width);
-    assert.ok(await page.evaluate(() => window.auditEvents.some(event => event.method === 'track' && event.args[0] === 'LandingView' && event.args[1].lp_version === 'vagas-compacta-20261001' && event.args[1].traffic_classification === 'confirmed_bot')), 'version and bot classification accompany the view event');
-    // Scroll the actual page so its own lazy loader reveals the closed-page media.
-    await revealVisibleImages(page);
-    const geometry = await page.evaluate(() => {
-      const first = document.querySelector('main a.btn[href^="#"]');
-      return {
-        width: innerWidth, pageWidth: document.documentElement.scrollWidth, height: document.documentElement.scrollHeight,
-        firstCTA: first && { href: first.getAttribute('href'), ...first.getBoundingClientRect().toJSON() },
-        planTop: document.getElementById('planos').getBoundingClientRect().top + scrollY,
-        catalogClosed: !document.querySelector('details.compact-catalog')?.open,
-        brokenImages: [...document.querySelectorAll('main img')].filter(image => image.checkVisibility() && !image.naturalWidth).map(image => image.getAttribute('src')),
-      };
-    });
-    evidence.push(geometry);
-    assert.ok(geometry.pageWidth <= width, 'no horizontal overflow');
-    assert.equal(geometry.firstCTA.href, '#planos', 'initial action reaches the plan selector');
-    if (width === 390) {
-      assert.ok(geometry.firstCTA.bottom <= 844, 'primary CTA fits in the first mobile viewport');
-      assert.ok(geometry.height <= 16 * 844, 'closed page stays within the compact height budget');
-    }
-    assert.ok(geometry.firstCTA.height >= 48, 'CTA has a usable touch target');
-    assert.ok(geometry.planTop <= 6 * 844, 'plans appear by the sixth mobile viewport');
-    assert.ok(geometry.catalogClosed, 'curriculum is available without mandatory scrolling');
-    assert.deepEqual(geometry.brokenImages, [], 'all real images load');
-    if (artifacts) {
-      await page.screenshot({ path: path.join(artifacts, `${width}-hero.png`) });
-      await page.screenshot({ path: path.join(artifacts, `${width}-full.png`), fullPage: true });
-    }
-    await page.locator('details.compact-catalog > summary').focus();
-    await page.keyboard.press('Space');
-    assert.equal(await page.locator('details.compact-catalog').evaluate(node => node.open), true);
-    const lastTrack = page.locator('.compact-catalog .cio-course-card').last();
-    for (let i = 0; i < 30; i++) {
-      const box = await lastTrack.boundingBox();
-      if (box.y + box.height < 844) break;
-      await page.keyboard.press('PageDown');
-      await page.waitForTimeout(60);
-    }
-    assert.ok((await lastTrack.boundingBox()).y < 844, 'keyboard reaches the last curriculum track');
-    await page.waitForFunction(() => [...document.querySelectorAll('.compact-catalog img')].every(image => image.naturalWidth > 0));
-    await page.locator('details.compact-catalog > summary').focus();
-    await page.keyboard.press('Space');
-    assert.equal(await page.locator('details.compact-catalog').evaluate(node => node.open), false, 'keyboard can collapse the catalog');
-    await page.locator('main a.btn[href="#planos"]').first().click();
-    await page.waitForFunction(() => document.getElementById('planos').getBoundingClientRect().top < 200);
-    const bounds = await page.locator('#planos').boundingBox();
-    assert.ok(bounds.y >= -1 && bounds.y < 200, 'CTA lands at the selector instead of another pitch');
-    const gallery = page.locator('details').filter({ has: page.locator('#proofSliderTrack') });
-    await gallery.locator('summary').click();
-    for (const image of await gallery.locator('img').all()) {
-      await image.scrollIntoViewIfNeeded();
-      await page.waitForFunction(node => node.naturalWidth > 0, await image.elementHandle());
-      await image.evaluate(node => node.decode());
-    }
-    assert.ok(await gallery.locator('img').last().evaluate(node => node.naturalWidth > 0), 'last print is hydrated by the real loader');
-  });
-});
-
-test('real demonstration waits for playback and decodes after the visitor starts it', async t => {
-  const page = await visit(t, 390, true);
-  const requestedMedia = [];
-  page.on('request', request => { if (/\.(webm|mp4)$/.test(new URL(request.url()).pathname)) requestedMedia.push(request.url()); });
-  const video = page.locator('.compact-demo video');
-  await video.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(300);
-  assert.deepEqual(requestedMedia, [], 'scrolling does not download the video');
-  assert.ok(await video.evaluate(node => node.paused));
-  await video.evaluate(node => node.play());
-  await page.waitForFunction(() => document.querySelector('.compact-demo video').currentTime > 0.1);
-  assert.ok(await video.evaluate(node => node.videoWidth > 0 && !node.paused), 'real media produces video frames');
-  await video.evaluate(node => node.pause());
-  assert.ok(requestedMedia.length > 0);
+for (const width of [390, 320, 1440]) test(`restored page, original course carousel and plan navigation at ${width}px`, async t => {
+  const page = await visit(t, width);
+  assert.ok(await page.evaluate(() => window.auditEvents.some(event => event.method === 'track' && event.args[0] === 'LandingView' && event.args[1].lp_version === 'vagas-restaurada-vsl-20261002' && event.args[1].traffic_classification === 'confirmed_bot')));
+  await revealVisibleImages(page);
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), 'no horizontal overflow');
+  assert.equal(await page.locator('#vslVideo').count(), 1, 'the presentation remains in the hero');
+  await page.locator('main a.btn[href="#planos"]').first().click();
+  await page.waitForFunction(() => Math.abs(document.getElementById('planos').getBoundingClientRect().top - 24) < 5);
+  assert.ok(await page.locator('#planos').isVisible());
+  if (artifacts) await page.screenshot({ path: path.join(artifacts, `${width}-plans.png`) });
+  const course = page.locator('#cioCardsSlider');
+  await course.scrollIntoViewIfNeeded();
+  assert.ok(await course.isVisible(), 'original curriculum carousel stays available');
 });
 
 test('three plans preserve the native Asaas journey and show the Pix total before QR', async t => {
