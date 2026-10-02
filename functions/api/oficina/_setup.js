@@ -10,10 +10,12 @@ async function api(env, path, options = {}) {
   return response.json();
 }
 
-function verifiedHook(hook, env, authWriteAcknowledged = false) {
+function verifiedHook(hook, env, { authWriteAcknowledged = false, shapeOnly = false } = {}) {
   const checks = { id: Boolean(hook.id), name: hook.name === OFICINA_WEBHOOK_NAME, url: hook.url === OFICINA_WEBHOOK_URL,
     enabled: hook.enabled === true, interrupted: hook.interrupted === false, apiVersion: Number(hook.apiVersion) === 3,
-    sendType: hook.sendType === "SEQUENTIALLY", authToken: hook.authToken === env.OFICINA_ASAAS_WEBHOOK_TOKEN || (hook.authToken == null && authWriteAcknowledged),
+    sendType: hook.sendType === "SEQUENTIALLY",
+    hasAuthToken: shapeOnly || hook.hasAuthToken === true || (hook.hasAuthToken == null && hook.authToken === env.OFICINA_ASAAS_WEBHOOK_TOKEN),
+    authToken: shapeOnly || hook.authToken === env.OFICINA_ASAAS_WEBHOOK_TOKEN || (hook.authToken == null && authWriteAcknowledged),
     events: Array.isArray(hook.events) && OFICINA_WEBHOOK_EVENTS.every(event => hook.events.includes(event)) };
   const invalidFields = Object.keys(checks).filter(key => !checks[key]);
   if (invalidFields.length) {
@@ -22,7 +24,7 @@ function verifiedHook(hook, env, authWriteAcknowledged = false) {
     throw error;
   }
   // Never serialize authToken/provider response, even to the authenticated admin.
-  return { webhookId: hook.id, webhookUrl: hook.url, enabled: true, interrupted: false, authConfigured: true,
+  return { webhookId: hook.id, webhookUrl: hook.url, enabled: true, interrupted: false, authConfigured: !shapeOnly,
     authVerification: hook.authToken == null ? "write_acknowledged" : "readback_match" };
 }
 
@@ -46,10 +48,10 @@ export async function ensureOficinaWebhook(env) {
     if (current.authToken == null) {
       // The official GET schema omits authToken. Validate the nonsecret shape,
       // then acknowledge an auth-only write to this exact owned workshop hook.
-      verifiedHook(current, env, true);
+      verifiedHook(current, env, { shapeOnly: true });
       const updated = await api(env, "/webhooks/" + encodeURIComponent(hook.id), { method: "PUT", body: JSON.stringify({ authToken: env.OFICINA_ASAAS_WEBHOOK_TOKEN }) });
       if (updated.id !== hook.id) throw new Error("oficina_webhook_identity_mismatch");
-      return verifiedHook(await api(env, "/webhooks/" + encodeURIComponent(hook.id)), env, true);
+      return verifiedHook(await api(env, "/webhooks/" + encodeURIComponent(hook.id)), env, { authWriteAcknowledged: true });
     }
     return verifiedHook(current, env);
   }
@@ -59,5 +61,5 @@ export async function ensureOficinaWebhook(env) {
     authToken: env.OFICINA_ASAAS_WEBHOOK_TOKEN, events: OFICINA_WEBHOOK_EVENTS,
   }) });
   if (!hook.id) throw new Error("oficina_webhook_create_failed");
-  return verifiedHook(await api(env, "/webhooks/" + encodeURIComponent(hook.id)), env, true);
+  return verifiedHook(await api(env, "/webhooks/" + encodeURIComponent(hook.id)), env, { authWriteAcknowledged: true });
 }

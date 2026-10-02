@@ -790,7 +790,7 @@ test('detached hosted checkout accepts native confirmation and inapplicable inst
 
 test('GET webhook schema without authToken is verified through an auth-only owned write', async t => {
   const { ensureOficinaWebhook, OFICINA_WEBHOOK_NAME, OFICINA_WEBHOOK_URL, OFICINA_WEBHOOK_EVENTS } = await load('oficina/_setup.js');
-  const hook = { id: 'hook_office', name: OFICINA_WEBHOOK_NAME, url: OFICINA_WEBHOOK_URL, enabled: true, interrupted: false, apiVersion: 3, sendType: 'SEQUENTIALLY', events: OFICINA_WEBHOOK_EVENTS };
+  const hook = { id: 'hook_office', name: OFICINA_WEBHOOK_NAME, url: OFICINA_WEBHOOK_URL, enabled: true, interrupted: false, apiVersion: 3, sendType: 'SEQUENTIALLY', hasAuthToken: true, events: OFICINA_WEBHOOK_EVENTS };
   const writes = [];
   t.mock.method(globalThis, 'fetch', async (input, options = {}) => {
     const url = new URL(String(input));
@@ -816,4 +816,17 @@ test('public registration stays closed until root acknowledges complete setup', 
   assert.equal((await (await load('oficina/config.js')).onRequestGet({ env: pending })).status, 503);
   assert.equal((await (await load('oficina/checkout.js')).onRequestPost({ env: pending })).status, 503);
   assert.equal((await leadRequest(lead, pending)).status, 503);
+});
+
+test('auth write acknowledgement cannot release a webhook whose final token presence is false', async t => {
+  const { ensureOficinaWebhook, OFICINA_WEBHOOK_NAME, OFICINA_WEBHOOK_URL, OFICINA_WEBHOOK_EVENTS } = await load('oficina/_setup.js');
+  const hook = { id: 'hook_office', name: OFICINA_WEBHOOK_NAME, url: OFICINA_WEBHOOK_URL, enabled: true, interrupted: false, apiVersion: 3, sendType: 'SEQUENTIALLY', hasAuthToken: false, events: OFICINA_WEBHOOK_EVENTS };
+  let writes = 0;
+  t.mock.method(globalThis, 'fetch', async (input, options = {}) => {
+    const url = new URL(String(input));
+    if (options.method === 'PUT') writes++;
+    return Response.json(url.pathname === '/v3/webhooks' ? { data: [hook], hasMore: false } : hook);
+  });
+  await assert.rejects(() => ensureOficinaWebhook(env), /oficina_webhook_configuration_mismatch/);
+  assert.equal(writes, 1);
 });
