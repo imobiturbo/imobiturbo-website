@@ -17,7 +17,7 @@ const env = {
 const lead = { name: 'Participante Fictício', email: 'example@example.invalid', phone: '11999999999', profile: 'corretor', consent: true,
   tracking: { utm_source: 'meta', ignored: 'should-not-propagate' } };
 const payment = { id: 'pay_mock', customer: 'cus_mock', externalReference: 'oficina-imobiturbo-202610', paymentLink: 'link_mock', value: 47, billingType: 'PIX', status: 'CONFIRMED' };
-const fixedLink = { id: 'link_mock', url: env.OFICINA_CHECKOUT_URL, name: 'Oficina Imobiturbo - 9 e 10 outubro 2026', externalReference: 'oficina-imobiturbo-202610', value: 47, billingType: 'UNDEFINED', chargeType: 'DETACHED', maxInstallmentCount: 1, notificationEnabled: true, active: true, callback: { successUrl: 'https://www.imobiturbo.com.br/oficina/obrigado/' } };
+const fixedLink = { id: 'link_mock', url: env.OFICINA_CHECKOUT_URL, name: 'WORKSHOP VGV 10X - Imobiturbo', externalReference: 'oficina-imobiturbo-202610', value: 47, billingType: 'UNDEFINED', chargeType: 'DETACHED', maxInstallmentCount: 1, notificationEnabled: true, active: true, callback: { successUrl: 'https://www.imobiturbo.com.br/oficina/obrigado/' } };
 const source = { id: 'source_mock', organization_id: 'org_mock', path_token: 'token_mock', is_active: true, status: 'active', kind: 'lead_capture', default_pipeline_id: 'pipeline_mock', config: { require_auth: true, oficina_no_notifications_confirmed: true } };
 
 const stages = ['inscricao', 'pago', 'acompanhamento', 'reembolso'].map(slug => ({ id: 'stage_' + slug, slug, organization_id: 'org_mock', pipeline_id: 'pipeline_mock' }));
@@ -512,10 +512,12 @@ test('paid buyer receives transactional rooms, dates, material and replay only a
   assert.equal(mails[0].body.to[0].email_address.address, 'buyer@example.invalid');
   assert.notEqual(mails[0].body.to[0].email_address.address, 'original@example.invalid');
   assert.equal(mails[0].body.client_reference, 'oficina-welcome-pay_mock');
-  assert.match(mails[0].body.textbody, /9 de outubro de 2026/);
-  assert.match(mails[0].body.textbody, /10 de outubro de 2026/);
-  assert.match(mails[0].body.textbody, /19h30–21h30/);
-  assert.match(mails[0].body.textbody, /24 de outubro de 2026/);
+  assert.match(mails[0].body.textbody, /27 de outubro de 2026/);
+  assert.match(mails[0].body.textbody, /28 de outubro de 2026/);
+  assert.match(mails[0].body.textbody, /18h30–22h30/);
+  assert.match(mails[0].body.textbody, /240 minutos, incluindo duas pausas de 10 minutos/);
+  assert.match(mails[0].body.textbody, /Replay: acesso por 14 dias/);
+  assert.match(mails[0].body.textbody, /11 de novembro de 2026, às 22h30/);
   assert.ok(mails[0].body.textbody.includes('https://meet.google.com/tvd-sxie-voj'));
   assert.ok(mails[0].body.textbody.includes('https://meet.google.com/oxg-oqro-upx'));
   for (const file of ['carteira-cadencia.csv', 'agenda-sete-dias.csv', 'mensagens-pratica.md']) {

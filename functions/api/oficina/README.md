@@ -1,6 +1,6 @@
 # Integração oficina — contrato operacional
 
-Datas confirmadas: 9 e 10/10/2026. Programação do projeto: 19h30–21h30 Brasília. Ingresso autorizado R$47. Anúncios permanecem PAUSED. Backend não cria cobrança/customer; pode criar apenas paymentLink fixo; root invoca setup administrativo uma vez após deploy para bootstrap do link e webhook dedicado usando a env real, sem revelar ou alterar secrets.
+Datas confirmadas: 27 e 28/10/2026. Programação do projeto: 18h30–22h30 Brasília, 240 minutos por noite, incluindo duas pausas de 10 minutos. Replay por 14 dias até 11/11/2026 às 22h30 Brasília. Ingresso autorizado R$47. Anúncios permanecem PAUSED. Backend não cria cobrança/customer; pode criar apenas paymentLink fixo; root invoca setup administrativo uma vez após deploy para bootstrap do link e webhook dedicado usando a env real, sem revelar ou alterar secrets.
 
 ## Endpoints
 
@@ -74,7 +74,7 @@ Delegado não criou recurso em produção, customer, cobrança, comprador real o
 
 ## Entrega transacional e lease CAS
 
-Somente pagamento consultado no Asaas, valor47, link de identidade confiável e estado efetivo pago ativa o email. Conteúdo: salas privadas E1/E2, datas9/10 de outubro2026 às19h30–21h30 Brasília, CSV público aprovado, replay até24/10/2026 e suporte por resposta ao remetente env. Não inclui oferta da Comunidade. `POST lead`, callback, pagamento pendente/reembolsado e webhook legacy não enviam email. Headers usam Zoho-enczapikey, sem duplicar prefixo já presente. Nenhum token/endereço de envio é literal ou buscado em fallback legado.
+Somente pagamento consultado no Asaas, valor47, link de identidade confiável e estado efetivo pago ativa o email. Conteúdo: salas privadas E1/E2, datas27/28 de outubro2026 às18h30–22h30 Brasília, CSV público aprovado, replay até11/11/2026 às22h30 Brasília e suporte por resposta ao remetente env. Não inclui oferta da Comunidade. `POST lead`, callback, pagamento pendente/reembolsado e webhook legacy não enviam email. Headers usam Zoho-enczapikey, sem duplicar prefixo já presente. Nenhum token/endereço de envio é literal ou buscado em fallback legado.
 
 Outbox reservada no journal `_oficina_payments[paymentID].welcomeDelivery`: sending (lease120s e claimId exclusivo), sent (recibo request_id após EM_104), retry (rejeição4xx estruturada), uncertain (resultado ambíguo). Claim e finalização usam CAS de custom_fields. Simultâneos recebem503 se a lease estiver ocupada; não enviam uma segunda cópia. `welcomeMailSent=true` somente depois de aceitação verificável pela API e persistência do recibo. Tracking e welcome são independentes, com execução via allSettled; falha em um não impede tentar o outro, e retries respeitam flags.
 
@@ -113,3 +113,13 @@ O GET oficial de webhooks não retorna `authToken`. Setup confere os campos púb
 ## Transporte do webhook
 
 O domínio público respondeu HTTP403 a POSTs de servidor; o mesmo endpoint no domínio estável `imobiturbo-website.pages.dev` respondeu401, comprovando alcance do handler autenticado. O hook da oficina usa esse endereço estável do mesmo produto. Setup migra somente o hook com nome exato e URL anterior conhecida, preservando ID, outros hooks e a política do domínio público. As páginas e o formulário continuam em www.imobiturbo.com.br.
+
+### Calendário aprovado — 02/10/2026
+
+Captação planejada para 05/10/2026; mídia autorizada R$3.000 e anúncios PAUSED. Este patch não abre captação, ativa campanhas ou envia mensagens. URL, externalReference, IDs e ingresso de R$47 permanecem os existentes. A descrição em `_checkout.js` vale somente para eventual criação; o recurso Asaas já existente não é atualizado por este código. Root deve reconciliar sua descrição sem recriar o link.
+
+Não há endpoint de gravação nem gate/default de expiração de replay neste escopo; os links privados do welcome são salas ao vivo. Encerramento real na plataforma que hospedar o replay é gate externo de root, em `2026-11-11T22:30:00-03:00` (`2026-11-12T01:30:00Z`). Não confundir atualização de copy com revogação de acesso provada.
+
+Agenda detalhada em `tools/oficina-web/src/App.tsx`: ambas as noites contínuas de 18h30 a 22h30, pausas 19h30–19h40 e 20h40–20h50. E2 tem oferta opcional da Comunidade (R$997 anuais) 21h10–21h30, depois prática e Q&A até 22h30. Welcome continua estritamente transacional, sem pitch.
+
+Validação deste patch: revisão estática do diff e `git diff --check`; asserts do teste existente de welcome atualizados. Testes, typecheck, lint/design gates, build e prova visual não executados localmente; root executa os gates oficiais na VPS3 antes de publicar. Relatos de testes anteriores acima não validam este patch.

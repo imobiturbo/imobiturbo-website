@@ -74,7 +74,7 @@ export async function ensureCheckout(env) {
     const existing = await findCheckout(env);
     if (existing) return existing;
     const created = await api(env, "/paymentLinks", { method: "POST", body: JSON.stringify({
-      name: OFICINA_LINK_NAME, description: "Dois encontros online de organização de carteira e acompanhamento. 9 e 10/10/2026, 19h30–21h30 Brasília.",
+      name: OFICINA_LINK_NAME, description: "Dois encontros online de organização de carteira e acompanhamento. 27 e 28/10/2026, 18h30–22h30 Brasília. 240min/noite, duas pausas de 10min/noite. Replay até 11/11/2026 às 22h30 Brasília.",
       value: OFICINA_PRICE, billingType: "UNDEFINED", chargeType: "DETACHED",
       maxInstallmentCount: 1, externalReference: OFICINA_REFERENCE,
       notificationEnabled: true, dueDateLimitDays: 1,

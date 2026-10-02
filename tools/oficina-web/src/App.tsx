@@ -27,6 +27,10 @@ import {
 import { Registration } from "./Registration";
 const faq = [
   [
+    "Quando acontecem os encontros e as pausas?",
+    "Em 27 e 28 de outubro de 2026, das 18h30 às 22h30, horário de Brasília (BRT). São 240 minutos por noite, incluindo duas pausas de 10 minutos: 19h30–19h40 e 20h40–20h50.",
+  ],
+  [
     "Preciso usar o CRM Imobiturbo?",
     "Não. Você pode fazer os exercícios no modelo de planilha, sem contratar um CRM para participar.",
   ],
@@ -44,7 +48,7 @@ const faq = [
   ],
   [
     "Não consigo estar ao vivo?",
-    "O replay está previsto por 14 dias após o segundo encontro. A disponibilização e o encerramento das gravações serão informados aos participantes. Você mantém os modelos entregues para continuar praticando.",
+    "O replay fica disponível por 14 dias após o segundo encontro, até 11 de novembro de 2026, às 22h30, horário de Brasília. As orientações de acesso às gravações serão informadas aos participantes. Você mantém os modelos entregues para continuar praticando.",
   ],
   [
     "Vou sair com uma venda?",
@@ -52,7 +56,7 @@ const faq = [
   ],
   [
     "Haverá oferta?",
-    "Sim. Ao final do segundo encontro, haverá apresentação opcional da Comunidade Imobiturbo, contratada separadamente. O ingresso não inclui assinatura, consultoria ou implantação personalizada.",
+    "Sim. No segundo encontro, das 21h10 às 21h30, haverá apresentação opcional da Comunidade Imobiturbo por R$997 anuais, contratada separadamente. Depois, retomamos a prática, a revisão e as dúvidas até 22h30. O ingresso não inclui assinatura, consultoria ou implantação personalizada.",
   ],
   [
     "Como peço ajuda ou reembolso?",
@@ -122,7 +126,7 @@ function Thanks() {
           <p>
             Os encontros serão em{" "}
             <strong>
-              9 e 10 de outubro de 2026, das 19h30 às 21h30, horário de Brasília
+              27 e 28 de outubro de 2026, das 18h30 às 22h30, horário de Brasília
             </strong>
             , online. As orientações de acesso serão enviadas pelo canal
             informado na inscrição após a confirmação do pagamento.
@@ -130,6 +134,10 @@ function Thanks() {
           <p>
             Se já pagou e não recebeu a confirmação, fale com o suporte. Não
             refaça o pagamento sem conferir a situação da compra.
+          </p>
+          <p>
+            Cada noite tem 240 minutos, incluindo duas pausas de 10 minutos.
+            O replay fica disponível por 14 dias, até 11/11/2026 às 22h30 Brasília.
           </p>
           <p>
             O ingresso da oficina não inclui nem ativa acesso à Comunidade
@@ -190,16 +198,17 @@ export default function App() {
               sete dias. Você pode começar em uma planilha.
             </p>
             <div className="event-details">
-              <p className="font-it-medium">9 e 10 de outubro de 2026 · online</p>
-              <p>19h30–21h30 · horário de Brasília</p>
+              <p className="font-it-medium">27 e 28 de outubro de 2026 · online</p>
+              <p>18h30–22h30 · horário de Brasília</p>
               <p>
                 Ingresso individual: <strong>R$47</strong>
               </p>
             </div>
             <Action />
             <p className="text-it-sm text-it-text-muted">
-              Dois encontros de 120 minutos e materiais editáveis. Replay
-              previsto por 14 dias após o segundo encontro.
+              Dois encontros de 240 minutos, incluindo duas pausas de 10 minutos
+              por noite, e materiais editáveis. Replay por 14 dias, até
+              11/11/2026 às 22h30 Brasília.
             </p>
           </div>
           <aside className="example-composition" aria-label="Exemplo fictício da prática">
@@ -337,12 +346,13 @@ export default function App() {
             <h2 className="text-it-3xl font-it-semibold">O que você recebe</h2>
             <ul className="space-y-it-4 pl-it-5 list-disc leading-it-loose">
               <li>
-                Dois encontros ao vivo de 120 minutos, com prática guiada.
+                Dois encontros ao vivo de 240 minutos cada, com prática guiada
+                e duas pausas de 10 minutos por noite (8 horas no total).
               </li>
               <li>Modelo editável de carteira e agenda de acompanhamento.</li>
               <li>Textos de mensagens para adaptar ao contexto do contato.</li>
               <li>Exercício de passagem entre IA e atendimento humano.</li>
-              <li>Replay previsto por 14 dias após o segundo encontro.</li>
+              <li>Replay por 14 dias, até 11/11/2026 às 22h30 Brasília.</li>
             </ul>
           </div>
           <div className="space-y-it-5">
@@ -374,26 +384,39 @@ export default function App() {
           <div className="program-meetings">
             <article className="program-meeting">
               <p className="meeting-date">
-                9 de outubro de 2026<br />19h30–21h30 Brasília
+                27 de outubro de 2026<br />18h30–22h30 Brasília
               </p>
               <h3>Encontro 1 — carteira e prioridade</h3>
-                  <p className="mt-it-2 leading-it-loose">
-                    Diagnóstico do acompanhamento; cinco contatos organizados;
-                    escolha da próxima ação; prática e revisão. Tarefa para o
-                    dia seguinte: adaptar uma mensagem e anotar uma dificuldade.
-                  </p>
+              <ul className="mt-it-2 space-y-it-2 pl-it-5 list-disc leading-it-loose">
+                <li>18h30–18h45 · Abertura, objetivos e preparação dos exemplos anonimizados.</li>
+                <li>18h45–19h30 · Diagnóstico da carteira e atividade de organização de cinco contatos.</li>
+                <li>19h30–19h40 · Primeiro intervalo (10 minutos).</li>
+                <li>19h40–20h20 · Critérios de prioridade e prática de próxima ação, responsável e data.</li>
+                <li>20h20–20h40 · Revisão dos exercícios e Q&amp;A.</li>
+                <li>20h40–20h50 · Segundo intervalo (10 minutos).</li>
+                <li>20h50–21h35 · Laboratório de mensagens: contexto, pergunta e compromisso de retorno.</li>
+                <li>21h35–22h10 · Simulação de acompanhamento e passagem entre IA e atendimento humano.</li>
+                <li>22h10–22h30 · Q&amp;A, revisão da carteira e tarefa: adaptar uma mensagem e registrar uma dificuldade.</li>
+              </ul>
             </article>
             <article className="program-meeting">
               <p className="meeting-date">
-                10 de outubro de 2026<br />19h30–21h30 Brasília
+                28 de outubro de 2026<br />18h30–22h30 Brasília
               </p>
               <h3>Encontro 2 — cadência e aplicação</h3>
-                  <p className="mt-it-2 leading-it-loose">
-                    Revisão da tarefa; agenda de sete dias; mensagens e regras
-                    de pausa; demonstração da rotina em CRM e passagem IA →
-                    humano. Ao final, apresentação opcional da Comunidade,
-                    contratada separadamente.
-                  </p>
+              <ul className="mt-it-2 space-y-it-2 pl-it-5 list-disc leading-it-loose">
+                <li>18h30–18h50 · Revisão da tarefa e Q&amp;A sobre as dificuldades encontradas.</li>
+                <li>18h50–19h30 · Atividade: agenda de sete dias, mensagens e regras de pausa.</li>
+                <li>19h30–19h40 · Primeiro intervalo (10 minutos).</li>
+                <li>19h40–20h20 · Demonstração em CRM e prática de passagem IA → humano.</li>
+                <li>20h20–20h40 · Revisão da cadência e Q&amp;A.</li>
+                <li>20h40–20h50 · Segundo intervalo (10 minutos).</li>
+                <li>20h50–21h10 · Preparação do plano individual de aplicação.</li>
+                <li>21h10–21h30 · Apresentação opcional da Comunidade Imobiturbo: R$997 anuais, contratação separada (20 minutos).</li>
+                <li>21h30–22h00 · Prática guiada: finalizar a agenda e simular o próximo acompanhamento.</li>
+                <li>22h00–22h20 · Revisão dos planos e Q&amp;A de aplicação.</li>
+                <li>22h20–22h30 · Checklist de execução, materiais e orientações de replay.</li>
+              </ul>
             </article>
           </div>
           <p className="text-it-sm text-it-text-muted">
@@ -419,11 +442,12 @@ export default function App() {
           <h2 className="text-it-3xl font-it-semibold">Condições da oficina</h2>
           <div className="max-w-3xl space-y-it-5 text-it-sm leading-it-loose">
             <p>
-              Ingresso individual de R$47 para os encontros online de 9 e 10 de
-              outubro de 2026, das 19h30 às 21h30, horário de Brasília. Inclui
-              materiais editáveis e replay previsto por 14 dias após o segundo
-              encontro. A disponibilização e o horário de encerramento do replay
-              serão informados aos participantes.
+              Ingresso individual de R$47 para os encontros online de 27 e 28 de
+              outubro de 2026, das 18h30 às 22h30, horário de Brasília. Inclui
+              materiais editáveis e replay por 14 dias, até 11 de novembro de
+              2026 às 22h30 Brasília. Cada noite tem 240 minutos, incluindo duas
+              pausas de 10 minutos. As orientações de acesso às gravações serão
+              informadas aos participantes.
             </p>
             <p>
               O pagamento é processado no checkout Asaas. Seu registro ou a
@@ -442,8 +466,10 @@ export default function App() {
             </p>
             <p>
               A oficina não inclui assinatura da Comunidade, licenças de equipe,
-              consultoria ou implantação personalizada. A oferta opcional ao
-              final do segundo encontro tem contratação e termos próprios.
+              consultoria ou implantação personalizada. A oferta opcional no
+              segundo encontro, das 21h10 às 21h30, custa R$997 anuais e tem
+              contratação e termos próprios. Após a apresentação, a prática e
+              as dúvidas continuam até 22h30.
             </p>
             <p>
               Se houver reagendamento ou cancelamento pelo organizador, você
@@ -460,7 +486,7 @@ export default function App() {
           <p className="leading-it-loose">
             Faça isso com orientação nos dois encontros do WORKSHOP VGV 10X.
           </p>
-          <p>9 e 10 de outubro · 19h30–21h30 Brasília · R$47</p>
+          <p>27 e 28 de outubro · 18h30–22h30 Brasília · R$47</p>
           <Action />
         </section>
       </main>
