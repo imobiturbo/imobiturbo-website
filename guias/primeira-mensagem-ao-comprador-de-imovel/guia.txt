@@ -1,0 +1,26 @@
+Primeira mensagem ao comprador de imóvel
+
+Salve uma abertura curta que explica quem atende, de qual imóvel a conversa veio e o que será perguntado primeiro.
+
+COMO USAR
+1. Use sua identidade profissional real; a mensagem é para o corretor adaptar e não afirma que Natan exerce essa profissão.
+2. Troque os campos por um contato que pediu informações e uma empresa/imóvel reais; não é roteiro de envio em massa.
+3. Faça uma pergunta, escute a resposta e registre o critério antes de oferecer outros imóveis.
+
+MODELO PARA COPIAR
+Olá, [nome]. Sou [seu nome], da [empresa, se houver], e recebi seu interesse no [imóvel/bairro].
+Vou te ajudar a comparar as opções e confirmar as informações que faltarem.
+Para começar, o que fez esse imóvel entrar na sua busca?
+Depois da sua resposta, combinamos o próximo passo por aqui, no horário que funcionar para você.
+
+Exemplo fictício preenchido:
+“Olá, Julia. Sou Ana, da imobiliária Exemplo, e recebi seu interesse no apartamento de dois quartos no Jardim.
+Vou te ajudar a comparar as opções e confirmar as informações que faltarem.
+Para começar, o que fez esse imóvel entrar na sua busca?
+Depois da sua resposta, combinamos o próximo passo por aqui, no horário que funcionar para você.”
+
+Resposta fictícia do comprador: “O segundo quarto, porque trabalho de casa.”
+Continuação possível: “Entendi: o espaço de trabalho é importante. O que esse cômodo precisa ter para funcionar bem na sua rotina?”
+Registro: motivo espaço de trabalho; próximo passo confirmar características do cômodo; sem supor urgência de compra.
+
+Não declarar disponibilidade, crédito ou adequação do imóvel sem confirmar; não enviar por conveniência a uma lista de contatos.
