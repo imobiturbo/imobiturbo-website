@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "fonts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "family": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "string"
+          },
+          "style": {
+            "enum": [
+              "normal",
+              "italic"
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "family",
+          "file",
+          "weight",
+          "style",
+          "sha256"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "fonts"
+  ],
+  "additionalProperties": false
+}

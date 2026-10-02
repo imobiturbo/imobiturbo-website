@@ -2,9 +2,6 @@ import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
   CardContent,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -74,31 +71,32 @@ export function Registration() {
     }
   }
   return (
-    <Card id="inscricao" className="scroll-mt-24">
-      <CardHeader>
-        <CardTitle className="text-2xl">Quero participar da oficina</CardTitle>
-        <CardDescription>
+    <section id="inscricao" className="registration-composition">
+      <div className="registration-intro space-y-it-6">
+        <h2 className="text-it-3xl font-it-semibold">Quero participar do WORKSHOP VGV 10X</h2>
+        <p className="registration-offer">
           Ingresso individual: R$47. Dois encontros, materiais editáveis e
           replay previsto por 14 dias.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <p className="text-sm leading-6">
+        </p>
+      </div>
+      <Card>
+      <CardContent>
+        <p className="text-it-sm leading-it-loose">
           Registre seus dados para seguir ao checkout da oficina. O pagamento
           será feito no Asaas; os meios disponíveis aparecem lá.
         </p>
         <form
           onSubmit={submit}
-          className="space-y-5"
+          className="space-y-it-5"
           aria-busy={busy || checking}
         >
-          <div className="grid gap-5 sm:grid-cols-2">
+          <div className="grid gap-it-5 sm:grid-cols-2">
             {[
               ["name", "Nome", "text", "name"],
               ["email", "E-mail", "email", "email"],
               ["phone", "Telefone com DDD", "tel", "tel"],
             ].map(([key, label, type, autocomplete]) => (
-              <div key={key} className="space-y-2">
+              <div key={key} className="space-y-it-2">
                 <Label htmlFor={key}>{label}</Label>
                 <Input
                   id={key}
@@ -113,7 +111,7 @@ export function Registration() {
                 />
               </div>
             ))}
-            <div className="space-y-2">
+            <div className="space-y-it-2">
               <Label htmlFor="profile">Seu perfil</Label>
               <Select
                 required
@@ -121,7 +119,7 @@ export function Registration() {
                 onValueChange={(profile) => setForm({ ...form, profile })}
                 disabled={busy}
               >
-                <SelectTrigger id="profile" className="w-full">
+                <SelectTrigger id="profile">
                   <SelectValue placeholder="Selecione seu perfil" />
                 </SelectTrigger>
                 <SelectContent>
@@ -136,7 +134,7 @@ export function Registration() {
               </Select>
             </div>
           </div>
-          <div className="flex items-start gap-3">
+          <div className="flex items-start gap-it-3">
             <Checkbox
               required
               id="consent"
@@ -146,17 +144,17 @@ export function Registration() {
                 setForm({ ...form, consent: checked === true })
               }
             />
-            <div className="space-y-1 text-sm leading-6">
-              <Label htmlFor="consent" className="inline leading-6">
+            <div className="space-y-it-1 text-it-sm leading-it-loose">
+              <Label htmlFor="consent">
                 Li as condições da oficina e a política de privacidade e
                 concordo com o uso dos meus dados para inscrição e comunicações
                 relacionadas ao evento.
               </Label>
-              <div className="flex flex-wrap gap-x-4">
-                <Button asChild variant="link" className="h-auto p-0">
+              <div className="flex flex-wrap gap-x-it-4">
+                <Button asChild variant="link">
                   <a href="#condicoes">Ler condições</a>
                 </Button>
-                <Button asChild variant="link" className="h-auto p-0">
+                <Button asChild variant="link">
                   <a
                     href="/politica-de-privacidade/"
                     target="_blank"
@@ -174,10 +172,11 @@ export function Registration() {
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-it-3">
             <Button
               type="submit"
-              className="h-auto min-h-11 whitespace-normal py-3"
+              size="lg"
+              className="w-full"
               disabled={busy || checking || !config || !form.consent}
             >
               {busy
@@ -203,12 +202,13 @@ export function Registration() {
               </a>
             </Button>
           </div>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-it-sm text-it-text-muted">
             O registro não confirma pagamento. A oficina é uma contratação
             separada da Comunidade e não libera acesso à assinatura.
           </p>
         </form>
       </CardContent>
-    </Card>
+      </Card>
+    </section>
   );
 }

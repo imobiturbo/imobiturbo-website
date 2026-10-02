@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "$description": {
+      "type": "string"
+    },
+    "brand": {
+      "$ref": "#/$defs/node"
+    },
+    "primitives": {
+      "$ref": "#/$defs/node"
+    },
+    "semantic": {
+      "$ref": "#/$defs/node"
+    },
+    "fontFamily": {
+      "$ref": "#/$defs/node"
+    },
+    "fontSize": {
+      "$ref": "#/$defs/node"
+    },
+    "lineHeight": {
+      "$ref": "#/$defs/node"
+    },
+    "fontWeight": {
+      "$ref": "#/$defs/node"
+    },
+    "spacing": {
+      "$ref": "#/$defs/node"
+    },
+    "radius": {
+      "$ref": "#/$defs/node"
+    },
+    "shadow": {
+      "$ref": "#/$defs/node"
+    },
+    "motion": {
+      "$ref": "#/$defs/node"
+    },
+    "control": {
+      "$ref": "#/$defs/node"
+    },
+    "layout": {
+      "$ref": "#/$defs/node"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "token": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "color",
+            "dimension",
+            "fontFamily",
+            "fontWeight",
+            "number",
+            "duration",
+            "cubicBezier",
+            "shadow"
+          ]
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "additionalProperties": false
+    },
+    "node": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/token"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/node"
+          },
+          "not": {
+            "required": [
+              "value"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

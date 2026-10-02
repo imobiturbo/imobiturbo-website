@@ -1,1 +1,37 @@
-{"name":"imobiturbo-oficina-web","version":"1.0.0","private":true,"type":"module","scripts":{"build":"node scripts/prepare.mjs && tsc --noEmit && vite build","test":"node --experimental-strip-types --test tests/*.test.ts","preview":"vite preview --host 0.0.0.0"},"dependencies":{"@fontsource-variable/geist":"5.3.0","class-variance-authority":"^0.7.1","cn":"^0.4.0","lucide-react":"^1.49.0","radix-ui":"^1.6.7","react":"19.3.0","react-dom":"19.3.0","shadcn":"^4.21.1","tw-animate-css":"^1.4.0"},"devDependencies":{"@tailwindcss/vite":"4.3.3","@types/node":"^22.0.0","@types/react":"^19.0.0","@types/react-dom":"^19.0.0","@vitejs/plugin-react":"6.1.1","tailwindcss":"4.3.3","typescript":"7.0.2","vite":"8.3.2"}}
+{
+  "name": "imobiturbo-oficina-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/prepare.mjs && tsc --noEmit && vite build",
+    "test": "node --experimental-strip-types --test tests/*.test.ts",
+    "preview": "vite preview --host 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "design:check": "node scripts/design-check.mjs"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.1",
+    "cn": "^0.4.0",
+    "lucide-react": "^1.49.0",
+    "radix-ui": "^1.6.7",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "shadcn": "^4.21.1",
+    "tw-animate-css": "^1.4.0",
+    "@imobiturbo/design-system": "file:vendor/imobiturbo-design-system"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.3",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "6.1.1",
+    "tailwindcss": "4.3.3",
+    "typescript": "7.0.2",
+    "vite": "8.3.2",
+    "@shadcn/lint": "0.2.0",
+    "eslint": "9.36.0",
+    "@typescript-eslint/parser": "8.44.1"
+  }
+}

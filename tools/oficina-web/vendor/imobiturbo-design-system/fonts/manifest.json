@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "fonts": [
+    {
+      "family": "Plus Jakarta Sans",
+      "file": "fonts/PlusJakartaSans-Variable.ttf",
+      "weight": "200 800",
+      "style": "normal",
+      "sha256": "89b3fb38aa0d275d7a731d0d817a4f1622b316b4d7fbdedcf02ee9099ff68bc8"
+    },
+    {
+      "family": "Plus Jakarta Sans",
+      "file": "fonts/PlusJakartaSans-Italic-Variable.ttf",
+      "weight": "200 800",
+      "style": "italic",
+      "sha256": "9529eb888668b6a3c6dd75b6341a2fc5263fb6c9e788822e6117c29dd9e8b115"
+    },
+    {
+      "family": "Playfair Display",
+      "file": "fonts/PlayfairDisplay-Variable.ttf",
+      "weight": "400 900",
+      "style": "normal",
+      "sha256": "c40f2293766a503bc70cce9e512ef844a4ccb7cbcde792fe2ea31d191917d8d6"
+    },
+    {
+      "family": "Playfair Display",
+      "file": "fonts/PlayfairDisplay-Italic-Variable.ttf",
+      "weight": "400 900",
+      "style": "italic",
+      "sha256": "a5e26dc5e2e77fb2803a0bf02fd4f81ee136ec8dea863ccdb0c59a263b21378b"
+    },
+    {
+      "family": "JetBrains Mono",
+      "file": "fonts/JetBrainsMono-Variable.ttf",
+      "weight": "100 800",
+      "style": "normal",
+      "sha256": "662a196d58f1183bf2d77428b6d5283fe3f45161ab021bea4036bc98e5cac016"
+    },
+    {
+      "family": "JetBrains Mono",
+      "file": "fonts/JetBrainsMono-Italic-Variable.ttf",
+      "weight": "100 800",
+      "style": "italic",
+      "sha256": "f115aaa12113718c02ce72864fe6823b87241bc23d3e44cf1220155f861063f2"
+    }
+  ]
+}

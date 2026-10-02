@@ -1,0 +1,498 @@
+{
+  "$schema": "../schemas/tokens.schema.json",
+  "$description": "Imobiturbo Design System — Color Tokens (Fonte Canônica com suporte Shadcn/UI e Imobiturbo OS)",
+  "brand": {
+    "accent": {
+      "light": {
+        "value": "#69a438",
+        "description": "Acento do tema light; use semantic.accent na UI."
+      },
+      "dark": {
+        "value": "#c5fe6d",
+        "description": "Acento do tema dark; use semantic.accent na UI."
+      },
+      "darkGreen": {
+        "value": "#2F400D",
+        "description": "Fundo da variante authority; não usar como texto."
+      }
+    },
+    "accentScale": {
+      "light": {
+        "50": "#f4f9ef",
+        "100": "#e7f2dc",
+        "200": "#d1e6bc",
+        "300": "#b2d593",
+        "400": "#8ec066",
+        "500": "{colors.brand.accent.light}",
+        "600": "#5a8f2e",
+        "700": "#467025",
+        "800": "#3a5922",
+        "900": "#314b20",
+        "950": "#172a0c"
+      },
+      "dark": {
+        "50": "#f7fee7",
+        "100": "#eefdc9",
+        "200": "#ddfb98",
+        "300": "{colors.brand.accent.dark}",
+        "400": "#a7f62e",
+        "500": "#88dc12",
+        "600": "#69b009",
+        "700": "#50860d",
+        "800": "#416a11",
+        "900": "#375913",
+        "950": "#1b3304"
+      }
+    },
+    "neutralScale": {
+      "50": "#FAFAFA",
+      "100": "#F4F4F5",
+      "200": "#E5E5E5",
+      "300": "#D4D4D8",
+      "400": "#A3A3A3",
+      "500": "#737373",
+      "600": "#52525B",
+      "700": "#3F3F46",
+      "800": "#27272A",
+      "900": "#18181B",
+      "950": "#09090B"
+    }
+  },
+  "semantic": {
+    "light": {
+      "accent": {
+        "value": "{colors.brand.accent.light}",
+        "type": "color"
+      },
+      "accentHover": {
+        "value": "{colors.brand.accentScale.light.600}",
+        "type": "color"
+      },
+      "accentFg": {
+        "value": "{colors.semantic.light.textPrimary}",
+        "type": "color"
+      },
+      "accentSoft": {
+        "value": "{colors.primitives.lightAccentSoft}",
+        "type": "color"
+      },
+      "canvas": {
+        "value": "{colors.primitives.white}",
+        "type": "color"
+      },
+      "surface": {
+        "value": "{colors.primitives.white}",
+        "type": "color"
+      },
+      "surfaceHover": {
+        "value": "{colors.brand.neutralScale.100}",
+        "type": "color"
+      },
+      "surfaceElevated": {
+        "value": "{colors.brand.neutralScale.100}",
+        "type": "color"
+      },
+      "overlay": {
+        "value": "{colors.primitives.lightOverlay}",
+        "type": "color"
+      },
+      "border": {
+        "value": "{colors.brand.neutralScale.200}",
+        "type": "color"
+      },
+      "borderSubtle": {
+        "value": "{colors.primitives.lightBorderSubtle}",
+        "type": "color"
+      },
+      "borderStrong": {
+        "value": "{colors.brand.neutralScale.300}",
+        "type": "color"
+      },
+      "ring": {
+        "value": "{colors.semantic.light.accent}",
+        "type": "color"
+      },
+      "ringOffset": {
+        "value": "{colors.semantic.light.canvas}",
+        "type": "color"
+      },
+      "textPrimary": {
+        "value": "{colors.primitives.black}",
+        "type": "color"
+      },
+      "textMuted": {
+        "value": "{colors.brand.neutralScale.600}",
+        "type": "color"
+      },
+      "textSubtle": {
+        "value": "{colors.semantic.light.textMuted}",
+        "type": "color"
+      },
+      "success": {
+        "value": "{colors.primitives.lightSuccess}",
+        "type": "color"
+      },
+      "successBright": {
+        "value": "{colors.primitives.lightSuccessBright}",
+        "type": "color"
+      },
+      "successBg": {
+        "value": "{colors.primitives.lightSuccessBg}",
+        "type": "color"
+      },
+      "warning": {
+        "value": "{colors.primitives.lightWarningText}",
+        "type": "color"
+      },
+      "warningBg": {
+        "value": "{colors.primitives.lightWarningBg}",
+        "type": "color"
+      },
+      "danger": {
+        "value": "{colors.primitives.lightDanger}",
+        "type": "color"
+      },
+      "dangerBg": {
+        "value": "{colors.primitives.lightDangerBg}",
+        "type": "color"
+      },
+      "info": {
+        "value": "{colors.primitives.lightInfo}",
+        "type": "color"
+      },
+      "infoBg": {
+        "value": "{colors.primitives.lightInfoBg}",
+        "type": "color"
+      },
+      "card": {
+        "value": "{colors.semantic.light.surface}",
+        "type": "color"
+      },
+      "cardFg": {
+        "value": "{colors.semantic.light.textPrimary}",
+        "type": "color"
+      },
+      "popover": {
+        "value": "{colors.semantic.light.surface}",
+        "type": "color"
+      },
+      "popoverFg": {
+        "value": "{colors.semantic.light.textPrimary}",
+        "type": "color"
+      },
+      "primary": {
+        "value": "{colors.semantic.light.accent}",
+        "type": "color"
+      },
+      "primaryFg": {
+        "value": "{colors.semantic.light.accentFg}",
+        "type": "color"
+      },
+      "secondary": {
+        "value": "{colors.semantic.light.surfaceElevated}",
+        "type": "color"
+      },
+      "secondaryFg": {
+        "value": "{colors.semantic.light.textPrimary}",
+        "type": "color"
+      },
+      "muted": {
+        "value": "{colors.semantic.light.surfaceElevated}",
+        "type": "color"
+      },
+      "mutedFg": {
+        "value": "{colors.semantic.light.textMuted}",
+        "type": "color"
+      },
+      "destructive": {
+        "value": "{colors.semantic.light.danger}",
+        "type": "color"
+      },
+      "destructiveFg": {
+        "value": "{colors.primitives.white}",
+        "type": "color"
+      },
+      "accentText": {
+        "value": "{colors.brand.accentScale.light.700}",
+        "type": "color"
+      },
+      "textInverse": {
+        "value": "{colors.primitives.white}",
+        "type": "color"
+      }
+    },
+    "dark": {
+      "accent": {
+        "value": "{colors.brand.accent.dark}",
+        "type": "color"
+      },
+      "accentHover": {
+        "value": "{colors.primitives.darkAccentHover}",
+        "type": "color"
+      },
+      "accentFg": {
+        "value": "{colors.primitives.black}",
+        "type": "color"
+      },
+      "accentSoft": {
+        "value": "{colors.primitives.darkAccentSoft}",
+        "type": "color"
+      },
+      "canvas": {
+        "value": "{colors.brand.neutralScale.950}",
+        "type": "color"
+      },
+      "surface": {
+        "value": "{colors.primitives.darkSurface}",
+        "type": "color"
+      },
+      "surfaceHover": {
+        "value": "{colors.primitives.darkSurfaceHover}",
+        "type": "color"
+      },
+      "surfaceElevated": {
+        "value": "{colors.brand.neutralScale.900}",
+        "type": "color"
+      },
+      "overlay": {
+        "value": "{colors.primitives.darkOverlay}",
+        "type": "color"
+      },
+      "border": {
+        "value": "{colors.brand.neutralScale.800}",
+        "type": "color"
+      },
+      "borderSubtle": {
+        "value": "{colors.primitives.darkSurfaceHover}",
+        "type": "color"
+      },
+      "borderStrong": {
+        "value": "{colors.brand.neutralScale.700}",
+        "type": "color"
+      },
+      "ring": {
+        "value": "{colors.semantic.dark.accent}",
+        "type": "color"
+      },
+      "ringOffset": {
+        "value": "{colors.semantic.dark.canvas}",
+        "type": "color"
+      },
+      "textPrimary": {
+        "value": "{colors.primitives.white}",
+        "type": "color"
+      },
+      "textMuted": {
+        "value": "{colors.primitives.darkTextMuted}",
+        "type": "color"
+      },
+      "textSubtle": {
+        "value": "{colors.semantic.dark.textMuted}",
+        "type": "color"
+      },
+      "success": {
+        "value": "{colors.primitives.lightSuccessBright}",
+        "type": "color"
+      },
+      "successBright": {
+        "value": "{colors.primitives.lightSuccessBright}",
+        "type": "color"
+      },
+      "successBg": {
+        "value": "{colors.primitives.darkSuccessBg}",
+        "type": "color"
+      },
+      "warning": {
+        "value": "{colors.primitives.darkWarning}",
+        "type": "color"
+      },
+      "warningBg": {
+        "value": "{colors.primitives.darkWarningBg}",
+        "type": "color"
+      },
+      "danger": {
+        "value": "{colors.primitives.darkDanger}",
+        "type": "color"
+      },
+      "dangerBg": {
+        "value": "{colors.primitives.darkDangerBg}",
+        "type": "color"
+      },
+      "info": {
+        "value": "{colors.primitives.darkInfo}",
+        "type": "color"
+      },
+      "infoBg": {
+        "value": "{colors.primitives.darkInfoBg}",
+        "type": "color"
+      },
+      "card": {
+        "value": "{colors.semantic.dark.surface}",
+        "type": "color"
+      },
+      "cardFg": {
+        "value": "{colors.semantic.dark.textPrimary}",
+        "type": "color"
+      },
+      "popover": {
+        "value": "{colors.semantic.dark.surface}",
+        "type": "color"
+      },
+      "popoverFg": {
+        "value": "{colors.semantic.dark.textPrimary}",
+        "type": "color"
+      },
+      "primary": {
+        "value": "{colors.semantic.dark.accent}",
+        "type": "color"
+      },
+      "primaryFg": {
+        "value": "{colors.semantic.dark.accentFg}",
+        "type": "color"
+      },
+      "secondary": {
+        "value": "{colors.semantic.dark.surfaceElevated}",
+        "type": "color"
+      },
+      "secondaryFg": {
+        "value": "{colors.semantic.dark.textPrimary}",
+        "type": "color"
+      },
+      "muted": {
+        "value": "{colors.semantic.dark.surfaceElevated}",
+        "type": "color"
+      },
+      "mutedFg": {
+        "value": "{colors.semantic.dark.textMuted}",
+        "type": "color"
+      },
+      "destructive": {
+        "value": "{colors.semantic.dark.danger}",
+        "type": "color"
+      },
+      "destructiveFg": {
+        "value": "{colors.primitives.black}",
+        "type": "color"
+      },
+      "accentText": {
+        "value": "{colors.semantic.dark.accent}",
+        "type": "color"
+      },
+      "textInverse": {
+        "value": "{colors.primitives.white}",
+        "type": "color"
+      }
+    }
+  },
+  "primitives": {
+    "lightAccentSoft": {
+      "value": "rgba(105, 164, 56, 0.12)",
+      "type": "color"
+    },
+    "lightOverlay": {
+      "value": "rgba(0, 0, 0, 0.45)",
+      "type": "color"
+    },
+    "lightBorderSubtle": {
+      "value": "#EEEEEE",
+      "type": "color"
+    },
+    "lightSuccess": {
+      "value": "#166534",
+      "type": "color"
+    },
+    "lightSuccessBright": {
+      "value": "#22C55E",
+      "type": "color"
+    },
+    "lightSuccessBg": {
+      "value": "rgba(34, 197, 94, 0.12)",
+      "type": "color"
+    },
+    "lightWarningBg": {
+      "value": "#FFFBEB",
+      "type": "color"
+    },
+    "lightDanger": {
+      "value": "#BE123C",
+      "type": "color",
+      "description": "Texto e ação de perigo com contraste AA sobre canvas e dangerBg."
+    },
+    "lightDangerBg": {
+      "value": "#FFF1F2",
+      "type": "color"
+    },
+    "lightInfo": {
+      "value": "#2563EB",
+      "type": "color"
+    },
+    "lightInfoBg": {
+      "value": "#EFF6FF",
+      "type": "color"
+    },
+    "darkAccentHover": {
+      "value": "#d4ff85",
+      "type": "color"
+    },
+    "darkAccentSoft": {
+      "value": "rgba(197, 254, 109, 0.12)",
+      "type": "color"
+    },
+    "darkSurface": {
+      "value": "#121212",
+      "type": "color"
+    },
+    "darkSurfaceHover": {
+      "value": "#1F1F23",
+      "type": "color"
+    },
+    "darkOverlay": {
+      "value": "rgba(0, 0, 0, 0.70)",
+      "type": "color"
+    },
+    "darkTextMuted": {
+      "value": "#A1A1AA",
+      "type": "color"
+    },
+    "darkSuccessBg": {
+      "value": "rgba(34, 197, 94, 0.15)",
+      "type": "color"
+    },
+    "darkWarning": {
+      "value": "#FBBF24",
+      "type": "color"
+    },
+    "darkWarningBg": {
+      "value": "rgba(217, 119, 6, 0.18)",
+      "type": "color"
+    },
+    "darkDanger": {
+      "value": "#FB7185",
+      "type": "color"
+    },
+    "darkDangerBg": {
+      "value": "rgba(225, 29, 72, 0.18)",
+      "type": "color"
+    },
+    "darkInfo": {
+      "value": "#60A5FA",
+      "type": "color"
+    },
+    "darkInfoBg": {
+      "value": "rgba(37, 99, 235, 0.18)",
+      "type": "color"
+    },
+    "lightWarningText": {
+      "value": "#92400E",
+      "type": "color"
+    },
+    "white": {
+      "value": "#FFFFFF",
+      "type": "color"
+    },
+    "black": {
+      "value": "#000000",
+      "type": "color"
+    }
+  }
+}

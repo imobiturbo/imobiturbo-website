@@ -1,0 +1,131 @@
+{
+  "$description": "Imobiturbo Design System — Spacing, Radius, Shadows & Motion Tokens",
+  "spacing": {
+    "1": {
+      "value": "4px"
+    },
+    "2": {
+      "value": "8px"
+    },
+    "3": {
+      "value": "12px"
+    },
+    "4": {
+      "value": "16px"
+    },
+    "5": {
+      "value": "20px"
+    },
+    "6": {
+      "value": "24px"
+    },
+    "8": {
+      "value": "32px"
+    },
+    "10": {
+      "value": "40px"
+    },
+    "12": {
+      "value": "48px"
+    },
+    "16": {
+      "value": "64px"
+    },
+    "0": {
+      "value": "0px"
+    }
+  },
+  "radius": {
+    "none": {
+      "value": "0px"
+    },
+    "sm": {
+      "value": "4px"
+    },
+    "md": {
+      "value": "8px"
+    },
+    "lg": {
+      "value": "12px"
+    },
+    "xl": {
+      "value": "16px"
+    },
+    "full": {
+      "value": "9999px"
+    }
+  },
+  "shadow": {
+    "light": {
+      "xs": {
+        "value": "0 1px 2px 0 rgba(0, 0, 0, 0.04)"
+      },
+      "sm": {
+        "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 1px 1px 0 rgba(0, 0, 0, 0.03)"
+      },
+      "md": {
+        "value": "0 4px 12px -2px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.04)"
+      },
+      "lg": {
+        "value": "0 12px 32px -6px rgba(0, 0, 0, 0.10), 0 4px 12px -2px rgba(0, 0, 0, 0.06)"
+      }
+    },
+    "dark": {
+      "xs": {
+        "value": "0 1px 2px 0 rgba(0, 0, 0, 0.30)"
+      },
+      "sm": {
+        "value": "0 1px 2px 0 rgba(0, 0, 0, 0.40), 0 1px 1px 0 rgba(0, 0, 0, 0.20)"
+      },
+      "md": {
+        "value": "0 4px 12px -2px rgba(0, 0, 0, 0.45), 0 2px 4px -1px rgba(0, 0, 0, 0.30)"
+      },
+      "lg": {
+        "value": "0 12px 32px -6px rgba(0, 0, 0, 0.55), 0 4px 12px -2px rgba(0, 0, 0, 0.40)"
+      }
+    }
+  },
+  "motion": {
+    "easeOut": {
+      "value": "cubic-bezier(0.16, 1, 0.3, 1)"
+    },
+    "easeInOut": {
+      "value": "{spacing.motion.easeOut}"
+    },
+    "durationFast": {
+      "value": "120ms"
+    },
+    "durationBase": {
+      "value": "180ms"
+    },
+    "durationSlow": {
+      "value": "320ms"
+    }
+  },
+  "$schema": "../schemas/tokens.schema.json",
+  "control": {
+    "sm": {
+      "value": "36px"
+    },
+    "md": {
+      "value": "{spacing.spacing.12}"
+    },
+    "lg": {
+      "value": "56px"
+    }
+  },
+  "layout": {
+    "container": {
+      "value": "1400px"
+    },
+    "mobile": {
+      "value": "640px"
+    },
+    "tablet": {
+      "value": "768px"
+    },
+    "desktop": {
+      "value": "1024px"
+    }
+  }
+}

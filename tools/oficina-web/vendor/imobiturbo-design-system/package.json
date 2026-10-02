@@ -1,0 +1,111 @@
+{
+  "name": "@imobiturbo/design-system",
+  "version": "5.0.2",
+  "description": "Design System canônico do ecossistema Imobiturbo — Tokens universais, Tailwind preset, compatibilidade Shadcn/UI e assets oficiais.",
+  "type": "module",
+  "private": true,
+  "main": "./dist/tokens.js",
+  "types": "./dist/tokens.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/tokens.d.ts",
+      "default": "./dist/tokens.js"
+    },
+    "./tailwind": "./dist/tailwind-v3.cjs",
+    "./preset": "./dist/tailwind-v3.cjs",
+    "./css": "./dist/tokens.css",
+    "./tokens": {
+      "types": "./dist/tokens.d.ts",
+      "default": "./dist/tokens.js"
+    },
+    "./recipes": {
+      "types": "./dist/recipes.d.ts",
+      "default": "./dist/recipes.js"
+    },
+    "./assets/*": "./assets/*",
+    "./fonts/*": "./fonts/*",
+    "./templates/low-ticket-03/*": "./templates/low-ticket-03/*",
+    "./tailwind-v4": "./dist/tailwind-v4.css",
+    "./lint": "./dist/design-system.lint.json",
+    "./eslint": "./scripts/eslint-plugin.mjs",
+    "./policy": "./policy.json",
+    "./catalog": "./dist/catalog.json",
+    "./reference": "./dist/reference.md",
+    "./assets-manifest": "./assets-manifest.json",
+    "./components": "./components.json",
+    "./css/scoped": "./dist/tokens-scoped.css",
+    "./lint-runner": "./scripts/run-lint.mjs",
+    "./html-check": "./scripts/check-html.mjs",
+    "./css-check": "./scripts/authored-css.mjs",
+    "./recipes/css": "./dist/recipes.css"
+  },
+  "files": [
+    "dist",
+    "assets",
+    "fonts",
+    "tokens",
+    "DESIGN.md",
+    "MANUAL_DE_MARCA.md",
+    "README.md",
+    "templates",
+    "components.json",
+    "policy.json",
+    "assets-manifest.json",
+    "schemas",
+    "scripts",
+    "AGENTS.md",
+    "SKILL.md",
+    "USAGE.md",
+    "tokens.css",
+    "colors_and_type.css",
+    "index.html",
+    "components.html",
+    "fixtures",
+    "tsconfig.json",
+    "build.mjs",
+    "tests",
+    "preview",
+    "eslint.config.mjs"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "design:check": "node scripts/design-check.mjs",
+    "doctor": "node scripts/design-check.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "lint": "node scripts/run-lint.mjs fixtures/valid/*.{tsx,svelte}",
+    "export:opendesign": "node scripts/export-open-design.mjs",
+    "ci": "bash scripts/ci-vps3.sh"
+  },
+  "keywords": [
+    "imobiturbo",
+    "design-system",
+    "tailwind",
+    "tokens",
+    "shadcn"
+  ],
+  "author": "Imobiturbo",
+  "license": "UNLICENSED",
+  "bin": {
+    "imobiturbo-design": "./scripts/design-check.mjs"
+  },
+  "devDependencies": {
+    "@shadcn/lint": "0.2.0",
+    "eslint": "9.36.0",
+    "@typescript-eslint/parser": "8.44.1",
+    "typescript": "5.9.2",
+    "svelte-eslint-parser": "1.3.3",
+    "class-variance-authority": "0.7.1",
+    "prettier": "3.6.2",
+    "svelte": "5.46.1"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "dependencies": {
+    "ajv": "8.17.1",
+    "@tailwindcss/node": "4.1.18",
+    "postcss": "8.5.6",
+    "parse5": "7.3.0",
+    "tailwindcss": "4.1.18"
+  }
+}

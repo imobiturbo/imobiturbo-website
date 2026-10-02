@@ -1,0 +1,146 @@
+/* Imobiturbo 5.0.2. GERADO: edite as fontes estruturadas; npm run design:check. */
+module.exports = {
+  "darkMode": [
+    "class",
+    "[data-theme=\"dark\"]"
+  ],
+  "theme": {
+    "extend": {
+      "colors": {
+        "it-accent": "var(--it-accent)",
+        "it-accent-hover": "var(--it-accent-hover)",
+        "it-accent-fg": "var(--it-accent-fg)",
+        "it-accent-soft": "var(--it-accent-soft)",
+        "it-canvas": "var(--it-canvas)",
+        "it-surface": "var(--it-surface)",
+        "it-surface-hover": "var(--it-surface-hover)",
+        "it-surface-elevated": "var(--it-surface-elevated)",
+        "it-overlay": "var(--it-overlay)",
+        "it-border": "var(--it-border)",
+        "it-border-subtle": "var(--it-border-subtle)",
+        "it-border-strong": "var(--it-border-strong)",
+        "it-ring": "var(--it-ring)",
+        "it-ring-offset": "var(--it-ring-offset)",
+        "it-text-primary": "var(--it-text-primary)",
+        "it-text-muted": "var(--it-text-muted)",
+        "it-text-subtle": "var(--it-text-subtle)",
+        "it-success": "var(--it-success)",
+        "it-success-bright": "var(--it-success-bright)",
+        "it-success-bg": "var(--it-success-bg)",
+        "it-warning": "var(--it-warning)",
+        "it-warning-bg": "var(--it-warning-bg)",
+        "it-danger": "var(--it-danger)",
+        "it-danger-bg": "var(--it-danger-bg)",
+        "it-info": "var(--it-info)",
+        "it-info-bg": "var(--it-info-bg)",
+        "it-card": "var(--it-card)",
+        "it-card-fg": "var(--it-card-fg)",
+        "it-popover": "var(--it-popover)",
+        "it-popover-fg": "var(--it-popover-fg)",
+        "it-primary": "var(--it-primary)",
+        "it-primary-fg": "var(--it-primary-fg)",
+        "it-secondary": "var(--it-secondary)",
+        "it-secondary-fg": "var(--it-secondary-fg)",
+        "it-muted": "var(--it-muted)",
+        "it-muted-fg": "var(--it-muted-fg)",
+        "it-destructive": "var(--it-destructive)",
+        "it-destructive-fg": "var(--it-destructive-fg)",
+        "it-accent-text": "var(--it-accent-text)",
+        "it-text-inverse": "var(--it-text-inverse)",
+        "it-dark-green": "var(--it-dark-green)",
+        "accent": "var(--it-accent)",
+        "accent-foreground": "var(--it-accent-fg)",
+        "accent-soft": "var(--it-accent-soft)",
+        "accent-hover": "var(--it-accent-hover)",
+        "bg": "var(--it-canvas)",
+        "surface": "var(--it-surface)",
+        "surface-hover": "var(--it-surface-hover)",
+        "surface-elevated": "var(--it-surface-elevated)",
+        "text": "var(--it-text-primary)",
+        "text-muted": "var(--it-text-muted)",
+        "text-subtle": "var(--it-text-subtle)",
+        "border": "var(--it-border)",
+        "ring": "var(--it-ring)",
+        "destructive": "var(--it-destructive)",
+        "destructive-foreground": "var(--it-destructive-fg)",
+        "primary": "var(--it-primary)",
+        "primary-foreground": "var(--it-primary-fg)",
+        "secondary": "var(--it-secondary)",
+        "secondary-foreground": "var(--it-secondary-fg)",
+        "success": "var(--it-success)",
+        "success-bg": "var(--it-success-bg)",
+        "warning": "var(--it-warning)",
+        "warning-bg": "var(--it-warning-bg)",
+        "error": "var(--it-danger)",
+        "error-bg": "var(--it-danger-bg)"
+      },
+      "spacing": {
+        "it-0": "var(--it-space-0)",
+        "it-1": "var(--it-space-1)",
+        "it-2": "var(--it-space-2)",
+        "it-3": "var(--it-space-3)",
+        "it-4": "var(--it-space-4)",
+        "it-5": "var(--it-space-5)",
+        "it-6": "var(--it-space-6)",
+        "it-8": "var(--it-space-8)",
+        "it-10": "var(--it-space-10)",
+        "it-12": "var(--it-space-12)",
+        "it-16": "var(--it-space-16)",
+        "it-control-sm": "var(--it-control-sm)",
+        "it-control-md": "var(--it-control-md)",
+        "it-control-lg": "var(--it-control-lg)"
+      },
+      "fontFamily": {
+        "primary": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, sans-serif",
+        "display": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, sans-serif",
+        "editorial": "\"Playfair Display\", Georgia, \"Times New Roman\", serif",
+        "mono": "\"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace",
+        "it-primary": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, sans-serif",
+        "it-display": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, sans-serif",
+        "it-editorial": "\"Playfair Display\", Georgia, \"Times New Roman\", serif",
+        "it-mono": "\"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace"
+      },
+      "fontSize": {
+        "it-xs": "12px",
+        "it-sm": "14px",
+        "it-base": "16px",
+        "it-md": "18px",
+        "it-lg": "20px",
+        "it-xl": "24px",
+        "it-2xl": "30px",
+        "it-3xl": "36px",
+        "it-4xl": "48px"
+      },
+      "lineHeight": {
+        "it-tight": "1.2",
+        "it-snug": "1.3",
+        "it-base": "1.5",
+        "it-loose": "1.65"
+      },
+      "borderRadius": {
+        "it-none": "var(--it-radius-none)",
+        "it-sm": "var(--it-radius-sm)",
+        "it-md": "var(--it-radius-md)",
+        "it-lg": "var(--it-radius-lg)",
+        "it-xl": "var(--it-radius-xl)",
+        "it-full": "var(--it-radius-full)",
+        "DEFAULT": "var(--radius)"
+      },
+      "boxShadow": {
+        "it-xs": "var(--it-shadow-xs)",
+        "it-sm": "var(--it-shadow-sm)",
+        "it-md": "var(--it-shadow-md)",
+        "it-lg": "var(--it-shadow-lg)"
+      },
+      "transitionDuration": {
+        "it-fast": "120ms",
+        "it-base": "180ms",
+        "it-slow": "320ms"
+      },
+      "transitionTimingFunction": {
+        "it-out": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "it-in-out": "cubic-bezier(0.16, 1, 0.3, 1)"
+      }
+    }
+  }
+};

@@ -1,0 +1,233 @@
+{
+  "package": "@imobiturbo/design-system",
+  "version": "5.0.2",
+  "commit": "fb46a22666f5e7e95ef78c3e997bb75e0e3f4bb6",
+  "source": "imobiturbo-design-system/ai-first-20260929",
+  "method": "byte-for-byte subset; official package.json exports preserved",
+  "assets": [
+    {
+      "id": "logo.imobiturbo.dark",
+      "file": "assets/all-logos-imobiturbo/imobiturbo - fundo transparente - aplicar em tema dark.webp",
+      "kind": "logo",
+      "product": "imobiturbo",
+      "theme": "dark",
+      "status": "active",
+      "sha256": "79dfd774f7f891440ae49edfd15d27f01f588779d7daaab2a6c3052954131fdd",
+      "width": 2456,
+      "height": 875,
+      "aliases": [],
+      "provenance": "working-tree-2026-09-29"
+    },
+    {
+      "id": "logo.imobiturbo.light",
+      "file": "assets/preserved/imobiturbo-on-white.webp",
+      "kind": "logo",
+      "product": "imobiturbo",
+      "theme": "light",
+      "status": "active",
+      "sha256": "bd7e1a3865efe46d19b6197ee1de31a47f11207a7ea8220aaca444754d9cea17",
+      "width": 2456,
+      "height": 875,
+      "aliases": [],
+      "provenance": "OpenDesign/source/lp-vagas-profile.json; preserved source, do not re-create"
+    }
+  ],
+  "files": [
+    {
+      "file": "package.json",
+      "sha256": "2f99c14ce24b4923ddf4b2bfbb54f1b83cfa6816c93d30a6ee598044f2282b58"
+    },
+    {
+      "file": "AGENTS.md",
+      "sha256": "bf5544d286d55492989b4c342b1d961df5b500a923073a6d8eb0617a0f7feea9"
+    },
+    {
+      "file": "DESIGN.md",
+      "sha256": "336db122bea5d14717d5084f90e8505a9ba93cdff9ecf47d56a7123a746a485a"
+    },
+    {
+      "file": "MANUAL_DE_MARCA.md",
+      "sha256": "a9a2a3954a9fbc9ce3f1462213f5ffd864325af5b5e545506166d0b6d73ac5a4"
+    },
+    {
+      "file": "README.md",
+      "sha256": "092d1fb8d17bbf286fee3f4e6a67803af5d5feee34a9dddd6bbb07bb68b460ae"
+    },
+    {
+      "file": "policy.json",
+      "sha256": "7e3a47febad87e71951c717cc950033038ae14e93aefbacc18c477d1b6ec5ac3"
+    },
+    {
+      "file": "components.json",
+      "sha256": "f55ced955ed739e6328b0217ef195307bf11c0bbe36291a533cc8dd5e354516d"
+    },
+    {
+      "file": "assets-manifest.json",
+      "sha256": "bd2256de7336eaf2a69cf6332eff5dd2e1f43cf47ee860a0649b85f390419651"
+    },
+    {
+      "file": "fonts/manifest.json",
+      "sha256": "2c7c46dfeb99911c05cddeef7d09025b3745cd083cd569c47ac736492389852b"
+    },
+    {
+      "file": "dist/catalog.json",
+      "sha256": "9c551f6b345324a2280ed5978533ba16071f66e61daad64d83e19a1b80df469a"
+    },
+    {
+      "file": "dist/design-system.lint.json",
+      "sha256": "16db3f1e2e55a236222f14f1f5be3f1896154a67beefabb615f059d04e533d11"
+    },
+    {
+      "file": "dist/tailwind-v4.css",
+      "sha256": "8db9543b6ff37febb78c4c246edb311adab9acbbfad5f4ab1046b4f165686a21"
+    },
+    {
+      "file": "dist/tokens-scoped.css",
+      "sha256": "4f8709c8f10ef6514dacf86e1416cb7ff1b1b6fd88aa67f8cf051dd5e4e78f1f"
+    },
+    {
+      "file": "dist/tokens.css",
+      "sha256": "9d122d1b9bee3675649b948686380623cd4127108788dc0cab7615930b677bdc"
+    },
+    {
+      "file": "dist/recipes.js",
+      "sha256": "51290764679c455bd490d6f75aa99ed498b7e9bd24374abd089110316e05338f"
+    },
+    {
+      "file": "dist/recipes.d.ts",
+      "sha256": "b8513f8146ac3e3e3b8c45d558ce8f2e2c75360d9f2506cbb3d499147b78fdfc"
+    },
+    {
+      "file": "scripts/eslint-plugin.mjs",
+      "sha256": "7ee7e04bd3468dee3a781e5be81d295a541ac875a26569430c7756409f9462cd"
+    },
+    {
+      "file": "scripts/model.mjs",
+      "sha256": "98ab37d12795295ed26c5b24dfe26d3da19d7f1d89e4e2eecab8706ed8b26e0f"
+    },
+    {
+      "file": "scripts/render.mjs",
+      "sha256": "fd898b8a660874d5d132e7575a3a85f02ddc82c11157badc711e0ae3417d43c7"
+    },
+    {
+      "file": "scripts/showcase.mjs",
+      "sha256": "622dde4c720b982484d4927e85b5654cf28b09756582210f54ca402955fc8715"
+    },
+    {
+      "file": "scripts/authored-css.mjs",
+      "sha256": "c88c4a0f87a74723909ce845c76327366afdb6937216d65f7e265da3cba67f78"
+    },
+    {
+      "file": "scripts/vocabulary.mjs",
+      "sha256": "bd144238953c0e93a38f79fc5a82d41bbf9af6ae3db618a9dd584d845bc86501"
+    },
+    {
+      "file": "scripts/run-lint.mjs",
+      "sha256": "8d54db4f6d393dc21d60a5e8cb2c5f18c339a59d89fc896b772b6e7105ac9843"
+    },
+    {
+      "file": "tokens/colors.json",
+      "sha256": "c1b134c8a3331a2dd79014d2d3df90351fb732c2cf032bec9e1003de83252daa"
+    },
+    {
+      "file": "tokens/spacing.json",
+      "sha256": "b1cb049a8cbd49b142318948a74539046da959686dcfdd40379573f54b41f9c7"
+    },
+    {
+      "file": "tokens/typography.json",
+      "sha256": "66f94cbd65f26cdf31ef3cb89f79fd26c29dec82a21609dd2df3dab8784eb80f"
+    },
+    {
+      "file": "fonts/PlusJakartaSans-Variable.ttf",
+      "sha256": "89b3fb38aa0d275d7a731d0d817a4f1622b316b4d7fbdedcf02ee9099ff68bc8"
+    },
+    {
+      "file": "fonts/PlusJakartaSans-Italic-Variable.ttf",
+      "sha256": "9529eb888668b6a3c6dd75b6341a2fc5263fb6c9e788822e6117c29dd9e8b115"
+    },
+    {
+      "file": "fonts/PlayfairDisplay-Variable.ttf",
+      "sha256": "c40f2293766a503bc70cce9e512ef844a4ccb7cbcde792fe2ea31d191917d8d6"
+    },
+    {
+      "file": "fonts/PlayfairDisplay-Italic-Variable.ttf",
+      "sha256": "a5e26dc5e2e77fb2803a0bf02fd4f81ee136ec8dea863ccdb0c59a263b21378b"
+    },
+    {
+      "file": "fonts/JetBrainsMono-Variable.ttf",
+      "sha256": "662a196d58f1183bf2d77428b6d5283fe3f45161ab021bea4036bc98e5cac016"
+    },
+    {
+      "file": "fonts/JetBrainsMono-Italic-Variable.ttf",
+      "sha256": "f115aaa12113718c02ce72864fe6823b87241bc23d3e44cf1220155f861063f2"
+    },
+    {
+      "file": "assets/all-logos-imobiturbo/imobiturbo - fundo transparente - aplicar em tema dark.webp",
+      "sha256": "79dfd774f7f891440ae49edfd15d27f01f588779d7daaab2a6c3052954131fdd"
+    },
+    {
+      "file": "assets/preserved/imobiturbo-on-white.webp",
+      "sha256": "bd7e1a3865efe46d19b6197ee1de31a47f11207a7ea8220aaca444754d9cea17"
+    },
+    {
+      "file": "scripts/design-check.mjs",
+      "sha256": "b9998823d04387da1e0d51330cec9bebd93fcd4c7a58f8d433d4f393c4f8d5a5"
+    },
+    {
+      "file": "scripts/build-showcase.mjs",
+      "sha256": "4ca5f1b0616bc18f612ff815e12d46dc23ac6b68c85c88ecfaefabf99ea20e67"
+    },
+    {
+      "file": "scripts/validate.mjs",
+      "sha256": "e7ca19c1979bed52a3e0c5407e98f63151c9840e260738b1201c548b79439f26"
+    },
+    {
+      "file": "scripts/image-dimensions.mjs",
+      "sha256": "08998e0613d07e66591328cca4a6f63b2e07b5e0a05a83b277c72b4aca649afa"
+    },
+    {
+      "file": "scripts/check-html.mjs",
+      "sha256": "7bbb8bb3f22a6e754c724676afa5c59d22edbeca353ca3f239e43be4426ec88d"
+    },
+    {
+      "file": "dist/reference.md",
+      "sha256": "c09bd0cc2b2b88cbe9ef4bc3d9ebe10bb70de62894b38ab2e40b61111b88ff3d"
+    },
+    {
+      "file": "dist/recipes.css",
+      "sha256": "89f235586f66a1b6d1a47ff7b7667489ed88312287382b52d02dba9f48aec662"
+    },
+    {
+      "file": "dist/tokens.js",
+      "sha256": "d97de4bd9c11947406c809fca431c1afa03272f25065bbc4b9be22a5a3b204d3"
+    },
+    {
+      "file": "dist/tokens.d.ts",
+      "sha256": "39142d65376f793a4beb0a9c8259de63b10f90f08f0d26ee10f97e7ee19a50fa"
+    },
+    {
+      "file": "dist/tailwind-v3.cjs",
+      "sha256": "6f3b3be5e423712430f67e115a7148f006212c64f9cf6c9766fe4665843dd94c"
+    },
+    {
+      "file": "schemas/assets.schema.json",
+      "sha256": "84bdd70c6246b07dda5e0b6dd79e30668fedc783cf0f53ed16635c6602d38446"
+    },
+    {
+      "file": "schemas/fonts.schema.json",
+      "sha256": "6f07246276470248c409fe0610018ef7a59d36811c6b96dcc040035462c1ac1d"
+    },
+    {
+      "file": "schemas/components.schema.json",
+      "sha256": "8cca95519658c14629fdd09fd9ad083704f4116d5bf27033ef558e76112bcc21"
+    },
+    {
+      "file": "schemas/tokens.schema.json",
+      "sha256": "e118f6b491ec990fdf768369936926822af3d7b13a4f7e9830354de6f6f41534"
+    },
+    {
+      "file": "schemas/policy.schema.json",
+      "sha256": "ebf39b0c2c957093819a97989dbd7afa356146dc92aa83407b2778cff5dba11c"
+    }
+  ]
+}

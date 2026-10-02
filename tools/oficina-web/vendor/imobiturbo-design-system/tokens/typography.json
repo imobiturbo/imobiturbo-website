@@ -1,0 +1,82 @@
+{
+  "$description": "Imobiturbo Design System — Typography Tokens",
+  "fontFamily": {
+    "primary": {
+      "value": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, sans-serif",
+      "description": "Títulos, corpo, UI, botões, labels"
+    },
+    "display": {
+      "value": "{typography.fontFamily.primary}",
+      "description": "Alias de primary para display headings"
+    },
+    "editorial": {
+      "value": "\"Playfair Display\", Georgia, \"Times New Roman\", serif",
+      "description": "Hero sections, LPs, destaques de marca (Italic, > 36px)"
+    },
+    "mono": {
+      "value": "\"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace",
+      "description": "Código e slots definidos como mono nos contratos de componentes."
+    }
+  },
+  "fontSize": {
+    "xs": {
+      "value": "12px"
+    },
+    "sm": {
+      "value": "14px"
+    },
+    "base": {
+      "value": "16px"
+    },
+    "md": {
+      "value": "18px"
+    },
+    "lg": {
+      "value": "20px"
+    },
+    "xl": {
+      "value": "24px"
+    },
+    "2xl": {
+      "value": "30px"
+    },
+    "3xl": {
+      "value": "36px"
+    },
+    "4xl": {
+      "value": "48px"
+    }
+  },
+  "lineHeight": {
+    "tight": {
+      "value": "1.2"
+    },
+    "snug": {
+      "value": "1.3"
+    },
+    "base": {
+      "value": "1.5"
+    },
+    "loose": {
+      "value": "1.65"
+    }
+  },
+  "fontWeight": {
+    "regular": {
+      "value": "400"
+    },
+    "medium": {
+      "value": "500"
+    },
+    "semibold": {
+      "value": "600"
+    },
+    "bold": {
+      "value": "700"
+    },
+    "extrabold": {
+      "value": "800"
+    }
+  },
+  "$schema": "../schemas/tokens.schema.json"
+}

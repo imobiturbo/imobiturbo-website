@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "logo",
+              "icon",
+              "legacy",
+              "evidence"
+            ]
+          },
+          "product": {
+            "type": "string"
+          },
+          "theme": {
+            "enum": [
+              "light",
+              "dark",
+              "any"
+            ]
+          },
+          "status": {
+            "enum": [
+              "active",
+              "alias",
+              "legacy",
+              "source",
+              "profile",
+              "invalid"
+            ]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "aliases": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "provenance": {
+            "type": "string"
+          },
+          "aliasOf": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "file",
+          "kind",
+          "product",
+          "theme",
+          "status",
+          "sha256",
+          "width",
+          "height",
+          "aliases",
+          "provenance"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "assets"
+  ],
+  "additionalProperties": false
+}

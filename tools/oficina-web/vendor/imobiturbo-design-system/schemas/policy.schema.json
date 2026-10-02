@@ -1,0 +1,209 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "namespace": {
+      "type": "string"
+    },
+    "componentImports": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "componentFiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "note": {
+      "type": "string"
+    },
+    "forbiddenFonts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "iconography": {
+      "type": "object",
+      "properties": {
+        "library": {
+          "const": "lucide"
+        },
+        "sizes": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "strokeWidth": {
+          "type": "object",
+          "properties": {
+            "desktop": {
+              "type": "number"
+            },
+            "touch": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "desktop",
+            "touch"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "library",
+        "sizes",
+        "strokeWidth"
+      ],
+      "additionalProperties": false
+    },
+    "copy": {
+      "type": "object",
+      "properties": {
+        "locale": {
+          "type": "string"
+        },
+        "pronoun": {
+          "type": "string"
+        },
+        "emoji": {
+          "type": "boolean"
+        },
+        "uppercase": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "locale",
+        "pronoun",
+        "emoji",
+        "uppercase",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "contrastPairs": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "minItems": 2,
+        "maxItems": 2
+      }
+    },
+    "aliases": {
+      "type": "object",
+      "properties": {
+        "css": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "deprecations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "shadcnCss": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "legacyCss": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "tailwindV3": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "css",
+        "deprecations",
+        "shadcnCss",
+        "legacyCss",
+        "tailwindV3"
+      ],
+      "additionalProperties": false
+    },
+    "profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "paths": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "status": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "paths",
+          "status",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "mergeFunctions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "variantFunctions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "namespace",
+    "componentImports",
+    "componentFiles",
+    "note",
+    "forbiddenFonts",
+    "iconography",
+    "copy",
+    "contrastPairs",
+    "aliases",
+    "profiles",
+    "mergeFunctions",
+    "variantFunctions"
+  ],
+  "additionalProperties": false
+}
