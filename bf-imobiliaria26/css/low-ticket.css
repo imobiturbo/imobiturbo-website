@@ -102,3 +102,24 @@
 
 .steps>li>.step-icon{position:absolute;left:0;top:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
 .steps>li>.step-icon img{width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.15))}
+
+/* Black Friday Imobiliaria: generated catalog/showcase markup. */
+.tape-card{width:100%;margin:0}
+.catalog{grid-template-columns:repeat(4,minmax(0,1fr));align-items:start}
+.category{min-width:0;border:1px solid var(--lt-line);border-radius:12px;padding:20px 18px 14px;background:#fff}
+.category-name{font-size:17px;line-height:1.3;margin:0 0 12px}
+.situation-list{list-style:none;margin:0;padding:0}
+.situation-item{border-top:1px solid #eceee8}
+.situation-row{display:grid;grid-template-columns:26px minmax(0,1fr) 34px;align-items:center;gap:8px;min-height:48px;padding:5px 0}
+.situation-emoji{font-size:18px;line-height:1}
+.situation-text{min-width:0;font-size:13px;line-height:1.35}
+.situation-details{position:relative;justify-self:end}
+.situation-toggle{width:30px;height:30px;display:grid;place-items:center;border:1px solid #bdc8ad;border-radius:50%;background:#f4f7ef;color:#263b17;cursor:pointer;list-style:none}
+.situation-toggle::-webkit-details-marker{display:none}
+.situation-toggle::marker{content:""}
+.situation-icon{font:700 14px/1 "Plus Jakarta Sans",sans-serif}
+.situation-details[open] .situation-toggle,.situation-toggle:hover{background:var(--lt-lime);border-color:var(--lt-lime);color:#000}
+.situation-popover{position:absolute;z-index:50;right:0;top:calc(100% + 8px);width:min(270px,calc(100vw - 48px));padding:13px 15px;border:1px solid #d8dfcf;border-radius:12px;background:#fff;color:#15180f;box-shadow:0 8px 28px rgb(0 0 0 / 18%);font-size:13px;line-height:1.5}
+.situation-popover p{margin:0}
+@media(max-width:900px){.catalog{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.catalog{grid-template-columns:1fr}.category{padding:17px 16px 12px}.category-name{font-size:18px}.situation-row{grid-template-columns:27px minmax(0,1fr) 36px;gap:8px}.situation-text{font-size:14px}.situation-popover{width:min(320px,calc(100vw - 44px))}}
