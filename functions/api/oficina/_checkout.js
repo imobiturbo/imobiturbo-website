@@ -22,7 +22,7 @@ async function api(env, path, options = {}) {
   const response = await fetch("https://api.asaas.com/v3" + path, {
     ...options, headers: { access_token: env.ASAAS_API_KEY, "User-Agent": "Imobiturbo-Oficina/1.0", "Content-Type": "application/json" }, signal: AbortSignal.timeout(7000),
   });
-  if (!response.ok) throw new Error("oficina_link_unavailable");
+  if (!response.ok) throw new Error("oficina_link_provider_" + response.status);
   return response.json();
 }
 

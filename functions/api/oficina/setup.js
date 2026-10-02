@@ -10,5 +10,8 @@ export async function onRequestPost({ request, env = {} }) {
     const checkout = await ensureCheckout(env);
     const hook = await ensureOficinaWebhook(env);
     return json({ ...checkout, ...hook });
-  } catch { return json({ ok: false, error: "oficina_setup_pending" }, 503); }
+  } catch (error) {
+    const reason = /^(oficina|asaas)_[a-z0-9_]+$/.test(error?.message || "") ? error.message : "oficina_setup_failed";
+    return json({ ok: false, error: "oficina_setup_pending", reason }, 503);
+  }
 }

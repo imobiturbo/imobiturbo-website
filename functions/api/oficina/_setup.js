@@ -6,7 +6,7 @@ async function api(env, path, options = {}) {
   const response = await fetch("https://api.asaas.com/v3" + path, {
     ...options, headers: { access_token: env.ASAAS_API_KEY, "Content-Type": "application/json", "User-Agent": "Imobiturbo-Oficina/1.0" }, signal: AbortSignal.timeout(7000),
   });
-  if (!response.ok) throw new Error("oficina_setup_provider_failed");
+  if (!response.ok) throw new Error("oficina_setup_provider_" + response.status);
   return response.json();
 }
 
