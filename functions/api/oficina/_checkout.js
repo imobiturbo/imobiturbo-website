@@ -1,6 +1,6 @@
 import { OFICINA_REFERENCE, OFICINA_PRICE, isOficinaPayment } from "./_shared.js";
 
-export const OFICINA_LINK_NAME = "Oficina Imobiturbo - 9 e 10 outubro 2026";
+export const OFICINA_LINK_NAME = "WORKSHOP VGV 10X - Imobiturbo";
 export const OFICINA_CALLBACK = "https://www.imobiturbo.com.br/oficina/obrigado/";
 const inFlight = new Map();
 

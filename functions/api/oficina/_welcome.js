@@ -13,7 +13,7 @@ export function welcomePayload(env, verifiedEmail, paymentId) {
   // Text-only content avoids interpolating buyer data into HTML. No marketing,
   // community onboarding or sensitive customer records are included.
   const textbody = [
-    "Sua inscrição na Oficina Imobiturbo: do lead ao próximo passo está confirmada após identificação do pagamento.",
+    "Sua inscrição no WORKSHOP VGV 10X: do lead ao próximo passo está confirmada após identificação do pagamento.",
     "", "Encontro 1: 9 de outubro de 2026, 19h30–21h30, horário de Brasília.", ROOM_E1,
     "", "Encontro 2: 10 de outubro de 2026, 19h30–21h30, horário de Brasília.", ROOM_E2,
     "", "Materiais para a prática:",
@@ -26,7 +26,7 @@ export function welcomePayload(env, verifiedEmail, paymentId) {
     "Guarde os links das salas para seu uso individual.", "", "Equipe Imobiturbo",
   ].join("\n");
   return { from: { address: from, name: "Imobiturbo" }, to: [{ email_address: { address: verifiedEmail } }],
-    reply_to: [{ address: SUPPORT_EMAIL }], subject: "Seu acesso à Oficina Imobiturbo — 9 e 10 de outubro",
+    reply_to: [{ address: SUPPORT_EMAIL }], subject: "Seu acesso ao WORKSHOP VGV 10X — Imobiturbo",
     textbody, client_reference: "oficina-welcome-" + paymentId, track_opens: false, track_clicks: false };
 }
 
