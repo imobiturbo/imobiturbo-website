@@ -126,7 +126,7 @@ test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, 
     if (url.includes("/rest/v1/rpc/provision_community_membership")) {
       return { ok: true, status: 200, json: async () => ({ success: true, lead_id: "lead_mock_123" }) };
     }
-    if (url.includes("api.zeptomail.com")) {
+    if (url.includes("cpaas.zoho.com")) {
       return { ok: true, json: async () => ({ message: "OK", code: "EM_104" }) };
     }
     if (url.includes("graph.facebook.com")) {
@@ -144,6 +144,7 @@ test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, 
     amountCents: 99700,
     env: {
       ZEPTOMAIL_TOKEN: "zepto_mock_token",
+      ZEPTOMAIL_FROM_ADDRESS: "noreply@imobiturbo.com.br",
       META_WHATSAPP_TOKEN: "meta_mock_token",
       META_PHONE_NUMBER_ID: "1066935829837217",
     },
@@ -158,13 +159,72 @@ test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, 
   // Check calls
   assert.equal(calls.length, 3, "Must trigger 3 API calls: CRM RPC, ZeptoMail, Meta WhatsApp");
   assert.ok(calls.some((c) => c.url.includes("/rest/v1/rpc/provision_community_membership")));
-  assert.ok(calls.some((c) => c.url.includes("api.zeptomail.com/v1.1/email")));
+  assert.ok(calls.some((c) => c.url.includes("cpaas.zoho.com/v1.1/email")));
   assert.ok(calls.some((c) => c.url.includes("graph.facebook.com")));
   assert.ok(!calls.some((c) => c.url.includes("sites.imobiturbo.com.br")));
 
   // Verify ZeptoMail auth header
-  const zeptoCall = calls.find((c) => c.url.includes("api.zeptomail.com"));
+  const zeptoCall = calls.find((c) => c.url.includes("cpaas.zoho.com"));
   assert.ok(zeptoCall.headers.Authorization.startsWith("Zoho-enczapikey "));
   assert.equal(zeptoCall.body.bounce_address, "bounce@bounce-zem.imobiturbo.com.br");
   assert.equal(zeptoCall.body.from.address, "noreply@imobiturbo.com.br");
+});
+
+// All provider calls are intercepted; these tests never send email.
+async function captureEmail(env) {
+  const calls = [];
+  const result = await sendPostPurchaseNotifications({
+    email: "buyer@example.com", name: "Buyer", env,
+    fetchFn: async (url, options) => {
+      calls.push({ url, headers: options.headers, body: JSON.parse(options.body) });
+      return { ok: true, json: async () => ({ success: true, message: "OK" }) };
+    },
+  });
+  return { result, emails: calls.filter((call) => !call.url.includes("/rest/v1/rpc/")) };
+}
+
+test("transactional email prefers production CPaaS variables and prefixes authorization once", async () => {
+  for (const key of ["canonical_test_key", "Zoho-enczapikey canonical_test_key"]) {
+    const { result, emails } = await captureEmail({
+      ZEPTOMAIL_API_KEY: key,
+      ZEPTOMAIL_TOKEN: "unused_alias_key",
+      ZEPTOMAIL_FROM_EMAIL: "production@example.com",
+      ZEPTOMAIL_FROM_ADDRESS: "alias@example.com",
+    });
+    assert.equal(result.emailSent, true);
+    assert.equal(emails.length, 1);
+    assert.equal(emails[0].url, "https://cpaas.zoho.com/v1.1/email");
+    assert.equal(emails[0].headers.Authorization, "Zoho-enczapikey canonical_test_key");
+    assert.equal(emails[0].body.from.address, "production@example.com");
+  }
+});
+
+test("transactional email supports legacy environment aliases without embedded credentials", async () => {
+  const { result, emails } = await captureEmail({
+    ZEPTOMAIL_TOKEN: "Zoho-enczapikey alias_test_key",
+    ZEPTOMAIL_FROM_ADDRESS: "alias@example.com",
+  });
+  assert.equal(result.emailSent, true);
+  assert.equal(emails[0].headers.Authorization, "Zoho-enczapikey alias_test_key");
+  assert.equal(emails[0].body.from.address, "alias@example.com");
+});
+
+test("missing CPaaS credentials fail closed even with Resend configured", async () => {
+  for (const key of [undefined, "", "   ", "Zoho-enczapikey "]) {
+    const { result, emails } = await captureEmail({
+      ZEPTOMAIL_API_KEY: key, ZEPTOMAIL_FROM_EMAIL: "production@example.com",
+      RESEND_API_KEY: "marketing_only_test_key",
+    });
+    assert.equal(result.crmProvisioned, true);
+    assert.equal(result.emailSent, false);
+    assert.deepEqual(emails, []);
+    assert.ok(result.errors.includes("zeptomail_not_configured"));
+  }
+});
+
+test("missing CPaaS sender fails closed", async () => {
+  const { result, emails } = await captureEmail({ ZEPTOMAIL_API_KEY: "test_key" });
+  assert.equal(result.emailSent, false);
+  assert.deepEqual(emails, []);
+  assert.ok(result.errors.includes("zeptomail_not_configured"));
 });

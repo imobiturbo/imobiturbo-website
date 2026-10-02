@@ -5,12 +5,9 @@
 // 3. WhatsApp Oficial via Meta Cloud API (Template status_confirmado_120626 com link do Grupo VIP)
 // Radar e Sites desativados operacionalmente.
 
-const DEFAULT_ZEPTOMAIL_URL = "https://api.zeptomail.com/v1.1/email";
+const DEFAULT_ZEPTOMAIL_URL = "https://cpaas.zoho.com/v1.1/email";
 const DEFAULT_ZEPTOMAIL_BOUNCE = "bounce@bounce-zem.imobiturbo.com.br";
 const DEFAULT_ZEPTOMAIL_FROM_NAME = "Imobiturbo Comunidade";
-const DEFAULT_ZEPTOMAIL_FROM_ADDR = "noreply@imobiturbo.com.br";
-const FALLBACK_ZEPTOMAIL_TOKEN_ENC =
-  "d1NzVlI2MGpya0ttRHYxNXlEZjdMK2hzekZoVFZnbW5IRW9zamdTbDczV3RIZm5HcGNkcGt4ZkxEUVdqSC9BYUUyUTlGVHNUb2Uwc3lrOEkxemNMM3RWN25saFJDQ2lGOW1xUmUxVTRKM3gxN3FudmhEek5XV3RWa3hTQUtJb093d3hybldka0dza2srZz09";
 
 const DEFAULT_SUPABASE_URL = "https://api.os.imobiturbo.com.br";
 const FALLBACK_SUPABASE_KEY_ENC =
@@ -430,9 +427,10 @@ async function sendPostPurchaseNotifications({
   fetchFn = fetch,
 }) {
   const zeptoUrl = (env && env.ZEPTOMAIL_API_URL) || DEFAULT_ZEPTOMAIL_URL;
-  const zeptoToken = (env && env.ZEPTOMAIL_TOKEN) || decodeSecret(FALLBACK_ZEPTOMAIL_TOKEN_ENC);
+  const zeptoToken = String((env && (env.ZEPTOMAIL_API_KEY ?? env.ZEPTOMAIL_TOKEN)) || "")
+    .trim().replace(/^(?:Zoho-enczapikey\s*)+/i, "").trim();
   const zeptoBounce = (env && env.ZEPTOMAIL_BOUNCE_ADDRESS) || DEFAULT_ZEPTOMAIL_BOUNCE;
-  const zeptoFromAddr = (env && env.ZEPTOMAIL_FROM_ADDRESS) || DEFAULT_ZEPTOMAIL_FROM_ADDR;
+  const zeptoFromAddr = String((env && (env.ZEPTOMAIL_FROM_EMAIL ?? env.ZEPTOMAIL_FROM_ADDRESS)) || "").trim();
   const zeptoFromName = (env && env.ZEPTOMAIL_FROM_NAME) || DEFAULT_ZEPTOMAIL_FROM_NAME;
 
   const metaPhoneId = (env && env.META_PHONE_NUMBER_ID) || DEFAULT_META_PHONE_NUMBER_ID;
@@ -483,7 +481,10 @@ async function sendPostPurchaseNotifications({
   }
 
   // 2. Envio do E-mail Completo via ZeptoMail (Zoho) Ilimitado
-  if (safeEmail && zeptoToken) {
+  if (safeEmail && (!zeptoToken || !zeptoFromAddr)) {
+    errors.push("zeptomail_not_configured");
+  }
+  if (safeEmail && zeptoToken && zeptoFromAddr) {
     try {
       const emailPayload = formatPostPurchaseEmail({ name, email: safeEmail, plan });
       if (liveOffer) {
