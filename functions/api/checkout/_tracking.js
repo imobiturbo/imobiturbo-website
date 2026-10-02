@@ -47,7 +47,7 @@ export async function dispatchVerifiedPurchaseToHub({
     referrer: null,
     productId,
     ...(productId === "oficina-imobiturbo-202610" ? { contentId: productId, ...Object.fromEntries(
-      ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].filter(key => typeof tracking?.[key] === "string").map(key => [key, tracking[key]])
+      ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "imt_adset_name", "imt_adset_id", "imt_ad_id", "imt_placement"].filter(key => typeof tracking?.[key] === "string").map(key => [key, tracking[key]])
     ) } : {}),
     orderId: orderId || paymentId,
     ...(offerId || productId === CONSULTING_PRODUCT_ID ? { offerId: offerId || CONSULTING_OFFER_ID } : {}),

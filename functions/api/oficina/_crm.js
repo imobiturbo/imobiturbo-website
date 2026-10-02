@@ -59,34 +59,38 @@ export async function leadExternalId(phone) {
   return "oficina:lead:" + Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, "0")).join("");
 }
 
-export async function recordPayment(env, leadId, payment, state, config) {
-  // CAS on the whole JSON snapshot preserves unrelated keys and simultaneous
-  // payment updates. State never regresses due to a late pending snapshot.
+async function mutateOfficeFields(env, leadId, config, transition) {
   for (let attempt = 0; attempt < 4; attempt++) {
     const scope = { id: "eq." + leadId, organization_id: "eq." + env.OFICINA_CRM_ORGANIZATION_ID,
       "source_metadata->>form_source_id": "eq." + env.OFICINA_CRM_SOURCE_ID };
-    const rows = await rest(config, "crm_leads", { ...scope, select: "id,source_metadata,custom_fields" });
+    const rows = await rest(config, "crm_leads", { ...scope, select: "id,custom_fields" });
     if (rows.length !== 1) throw new Error("oficina_crm_lead_mismatch");
-    const metadata = rows[0].source_metadata || {};
-    const payments = metadata.oficina_payments || {};
+    const fields = rows[0].custom_fields || {};
+    const change = transition(fields);
+    if (!change.fields) return change.result;
+    // OS form replays overwrite source_metadata without CAS. Keep all office
+    // operational state in this reserved field; never write source_metadata.
+    const updated = await rest(config, "crm_leads", { ...scope,
+      custom_fields: rows[0].custom_fields == null ? "is.null" : "eq." + JSON.stringify(rows[0].custom_fields),
+    }, { method: "PATCH", headers: { Prefer: "return=representation" }, body: JSON.stringify({ custom_fields: change.fields }) });
+    if (updated.length === 1) return change.result;
+  }
+  throw new Error("oficina_fields_cas_conflict");
+}
+
+export async function recordPayment(env, leadId, payment, state, config) {
+  return mutateOfficeFields(env, leadId, config, fields => {
+    const payments = fields._oficina_payments || {};
     const previous = payments[payment.id];
     const ranks = { pendente: 0, pago: 1, cancelado: 2 };
-    if (previous && ranks[previous.state] >= ranks[state]) return { duplicate: true, state: previous.state };
-    const next = { ...metadata, oficina_payments: { ...payments, [payment.id]: {
+    if (previous && ranks[previous.state] >= ranks[state]) return { result: { duplicate: true, state: previous.state } };
+    return { fields: { ...fields, oficina_payment_status: state, _oficina_payments: { ...payments, [payment.id]: {
       ...previous, state, providerStatus: payment.status, value: 47, billingType: payment.billingType,
       paymentLink: payment.paymentLink,
       ...(state === "pago" ? { purchaseEventTime: previous?.purchaseEventTime || Math.floor(Date.now() / 1000) } : {}),
       updatedAt: new Date().toISOString(),
-    } } };
-    const updated = await rest(config, "crm_leads", { ...scope,
-      source_metadata: rows[0].source_metadata == null ? "is.null" : "eq." + JSON.stringify(rows[0].source_metadata),
-      custom_fields: rows[0].custom_fields == null ? "is.null" : "eq." + JSON.stringify(rows[0].custom_fields),
-    }, {
-      method: "PATCH", headers: { Prefer: "return=representation" }, body: JSON.stringify({ source_metadata: next, custom_fields: { ...rows[0].custom_fields, oficina_payment_status: state } }),
-    });
-    if (updated.length === 1) return { duplicate: false, state };
-  }
-  throw new Error("oficina_crm_update_conflict");
+    } } }, result: { duplicate: false, state } };
+  });
 }
 
 export async function paymentContext(env, leadId, config) {
@@ -106,29 +110,42 @@ export async function paymentContext(env, leadId, config) {
 }
 
 export async function savePaymentDelivery(env, leadId, paymentId, delivery, config) {
-  for (let attempt = 0; attempt < 4; attempt++) {
-    const row = await paymentContext(env, leadId, config);
-    const metadata = row.source_metadata || {};
-    const previous = metadata.oficina_payments?.[paymentId];
+  return mutateOfficeFields(env, leadId, config, fields => {
+    const previous = fields._oficina_payments?.[paymentId];
     if (!previous) throw new Error("oficina_crm_payment_missing");
-    const next = { ...metadata, oficina_payments: { ...metadata.oficina_payments, [paymentId]: {
+    return { fields: { ...fields, _oficina_payments: { ...fields._oficina_payments, [paymentId]: {
       ...previous, hubPurchaseSent: Boolean(previous.hubPurchaseSent || delivery.hub),
       metaPurchaseSent: Boolean(previous.metaPurchaseSent || delivery.meta),
-    } } };
-    const customFields = row.custom_fields || {};
-    const paid = previous.state === "pago";
-    const updated = await rest(config, "crm_leads", {
-      id: "eq." + leadId, organization_id: "eq." + env.OFICINA_CRM_ORGANIZATION_ID,
-      "source_metadata->>form_source_id": "eq." + env.OFICINA_CRM_SOURCE_ID,
-      source_metadata: row.source_metadata == null ? "is.null" : "eq." + JSON.stringify(row.source_metadata),
-      custom_fields: row.custom_fields == null ? "is.null" : "eq." + JSON.stringify(row.custom_fields),
-    }, { method: "PATCH", headers: { Prefer: "return=representation" }, body: JSON.stringify({ source_metadata: next,
-      ...(paid ? { custom_fields: { ...customFields,
-        oficina_room_e1: "https://meet.google.com/tvd-sxie-voj",
-        oficina_room_e2: "https://meet.google.com/oxg-oqro-upx",
-      } } : {}),
-    }) });
-    if (updated.length === 1) return;
-  }
-  throw new Error("oficina_crm_delivery_conflict");
+    } }, ...(previous.state === "pago" ? {
+      oficina_room_e1: "https://meet.google.com/tvd-sxie-voj",
+      oficina_room_e2: "https://meet.google.com/oxg-oqro-upx",
+    } : {}) }, result: true };
+  });
+}
+
+export async function officePhoneByVerifiedEmail(env, email, config) {
+  // Join starts at office-scoped leads, never a global email/contact lookup.
+  // email_normalized is the canonical contact key used by OS ingestion.
+  const rows = await rest(config, "crm_leads", {
+    select: "id,contact:contacts!inner(id,email_normalized,phone_number)",
+    organization_id: "eq." + env.OFICINA_CRM_ORGANIZATION_ID,
+    "source_metadata->>form_source_id": "eq." + env.OFICINA_CRM_SOURCE_ID,
+    "contact.organization_id": "eq." + env.OFICINA_CRM_ORGANIZATION_ID,
+    "contact.email_normalized": "eq." + email,
+    limit: "2",
+  });
+  if (rows.length !== 1 || !rows[0].contact || rows[0].contact.email_normalized !== email) throw new Error("oficina_email_identity_ambiguous");
+  return rows[0].contact.phone_number;
+}
+
+export async function updateWelcomeState(env, leadId, paymentId, config, transition) {
+  return mutateOfficeFields(env, leadId, config, fields => {
+    const payment = fields._oficina_payments?.[paymentId];
+    if (!payment) throw new Error("oficina_crm_payment_missing");
+    const change = transition(payment);
+    if (!change.patch) return { result: change.result };
+    return { fields: { ...fields, _oficina_payments: { ...fields._oficina_payments,
+      [paymentId]: { ...payment, ...change.patch },
+    } }, result: change.result };
+  });
 }

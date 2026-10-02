@@ -5,6 +5,7 @@ const { pathToFileURL } = require('node:url');
 const load = file => import(pathToFileURL(path.resolve(__dirname, '../functions/api', file)));
 const leadId = '550e8400-e29b-41d4-a716-446655440000';
 const env = {
+  ZEPTOMAIL_API_KEY: 'mock-zepto', ZEPTOMAIL_FROM_EMAIL: 'support@example.invalid',
   META_ACCESS_TOKEN: 'mock-meta', HUB_TRACKING_COLLECT_URL: 'https://hub.mock/api/collect', HUB_TRACKING_OPERATION_ID: 'operation_mock',
   ASAAS_API_KEY: 'mock-key', ASAAS_WEBHOOK_TOKEN: 'mock-webhook', OFICINA_ASAAS_WEBHOOK_TOKEN: 'mock-office-webhook-token-32-chars-long', OFICINA_SETUP_TOKEN: 'mock-office-setup-token-32-chars-long',
   OFICINA_CHECKOUT_URL: 'https://www.asaas.com/c/mock-oficina', OFICINA_PAYMENT_LINK_ID: 'link_mock',
@@ -27,6 +28,12 @@ function routes(t, opts = {}) {
     const url = new URL(String(input));
     const body = options.body ? JSON.parse(options.body) : null;
     calls.push({ url: url.href, method: options.method || 'GET', body, options });
+    if (url.origin === 'https://api.zeptomail.com') {
+      if (opts.welcomeDelay) await opts.welcomeDelay();
+      if (opts.welcomeTimeout) throw new Error('synthetic timeout');
+      if (opts.welcomeRejected) return Response.json({ data: { error_code: 'TM_3004' } }, { status: 400 });
+      return Response.json({ data: [{ code: 'EM_104' }], request_id: 'mock-mail-receipt' });
+    }
     if (url.origin === 'https://hub.mock') return opts.hubError ? new Response('', { status: 503 }) : Response.json({ ok: true });
     if (url.origin === 'https://graph.facebook.com') return opts.metaError ? Response.json({ error: {} }, { status: 500 }) : Response.json({ events_received: 1 });
     if (url.pathname === '/rest/v1/contacts') return Response.json([{ name: 'Original CRM', email: 'original@example.invalid', phone_number: '+5511999999999' }]);
@@ -45,17 +52,27 @@ function routes(t, opts = {}) {
       return Response.json(opts.source === null ? [] : [opts.source || source]);
     }
     if (url.href === env.OFICINA_CRM_FORM_URL) {
+      if (opts.onCapture) await opts.onCapture(body);
       assert.equal(options.headers.Authorization, 'Bearer mock-source-secret');
       return opts.captureError ? new Response('', { status: 500 }) : Response.json({ data: { lead_id: leadId } });
     }
     if (url.pathname === '/rest/v1/crm_leads') {
+      if (url.searchParams.has('contact.email_normalized')) {
+        assert.equal(url.searchParams.get('organization_id'), 'eq.org_mock');
+        assert.equal(url.searchParams.get('source_metadata->>form_source_id'), 'eq.source_mock');
+        assert.equal(url.searchParams.get('contact.organization_id'), 'eq.org_mock');
+        assert.equal(url.searchParams.get('limit'), '2');
+        return Response.json(opts.officeEmailMatches || []);
+      }
       assert.equal(url.searchParams.get('organization_id'), 'eq.org_mock');
       assert.equal(url.searchParams.get('source_metadata->>form_source_id'), 'eq.source_mock');
       if (options.method === 'PATCH') {
-        assert.equal(url.searchParams.get('source_metadata'), 'eq.' + JSON.stringify(metadata));
-        assert.ok(Object.keys(body).every(key => ['source_metadata', 'custom_fields'].includes(key)));
+        assert.equal(url.searchParams.get('source_metadata'), null);
+        assert.ok(url.searchParams.get('custom_fields')?.startsWith('eq.'));
+        if (url.searchParams.get('custom_fields') !== 'eq.' + JSON.stringify(fields)) return Response.json([]);
+        if (opts.failWelcomeSentPersistence && body.custom_fields?._oficina_payments?.pay_mock?.welcomeDelivery?.status === 'sent') return Response.json([]);
+        assert.deepEqual(Object.keys(body), ['custom_fields']);
         if (conflicts-- > 0) return Response.json([]);
-        metadata = body.source_metadata;
         if (body.custom_fields) fields = body.custom_fields;
         return Response.json([{ id: leadId }]);
       }
@@ -63,7 +80,7 @@ function routes(t, opts = {}) {
     }
     throw new Error('Unexpected external side effect: ' + url.href);
   });
-  return { calls, metadata: () => metadata, fields: () => fields };
+  return { calls, metadata: () => metadata, fields: () => fields, overwriteSource: snapshot => { metadata = structuredClone(snapshot); } };
 }
 function webhookRequest(payload = { event: 'PAYMENT_RECEIVED', payment: { id: 'pay_mock' } }, token = env.OFICINA_ASAAS_WEBHOOK_TOKEN) {
   return new Request('https://website.mock/api/checkout/webhook', { method: 'POST', headers: { 'Content-Type': 'application/json', 'asaas-access-token': token }, body: JSON.stringify(payload) });
@@ -129,10 +146,12 @@ test('verified PIX office payment records paid only in source-scoped CRM, duplic
   const first = await webhook();
   assert.equal(first.status, 200);
   assert.equal((await first.json()).state, 'pago');
+  const patchesAfterFirst = mock.calls.filter(c => c.method === 'PATCH').length;
   assert.equal((await (await webhook()).json()).duplicate, true);
-  assert.equal(mock.calls.filter(c => c.method === 'PATCH').length, 2);
+  assert.equal(mock.calls.filter(c => c.method === 'PATCH').length, patchesAfterFirst);
+  assert.equal(mock.calls.filter(c => c.url.startsWith('https://api.zeptomail.com/')).length, 1);
   assert.equal(mock.metadata().unrelated, 'keep');
-  assert.equal(mock.metadata().oficina_payments.pay_mock.state, 'pago');
+  assert.equal(mock.fields()._oficina_payments.pay_mock.state, 'pago');
   const captured = mock.calls.find(c => c.url === env.OFICINA_CRM_FORM_URL).body;
   assert.equal(captured.external_id, 'oficina:payment:pay_mock');
   assert.equal(captured.oficina_consent, undefined);
@@ -149,20 +168,20 @@ for (const [providerStatus, expected] of [['PENDING', 'pendente'], ['OVERDUE', '
 }
 
 test('payment progression is pending to paid to canceled; late pending cannot regress', async t => {
-  const mock = routes(t, { metadata: { form_source_id: 'source_mock', oficina_payments: { pay_mock: { state: 'pendente' }, pay_other: { state: 'pago' } } } });
+  const mock = routes(t, { fields: { _oficina_payments: { pay_mock: { state: 'pendente' }, pay_other: { state: 'pago' } } } });
   const { recordPayment, sourceConfig } = await load('oficina/_crm.js');
   const config = await sourceConfig(env);
   assert.equal((await recordPayment(env, leadId, payment, 'pago', config)).state, 'pago');
   assert.deepEqual(await recordPayment(env, leadId, payment, 'pendente', config), { duplicate: true, state: 'pago' });
   assert.equal((await recordPayment(env, leadId, payment, 'cancelado', config)).state, 'cancelado');
   assert.deepEqual(await recordPayment(env, leadId, payment, 'pago', config), { duplicate: true, state: 'cancelado' });
-  assert.equal(mock.metadata().oficina_payments.pay_other.state, 'pago');
+  assert.equal(mock.fields()._oficina_payments.pay_other.state, 'pago');
 });
 
 test('CAS retries conflicts and keeps writes scoped to the dedicated CRM lead', async t => {
   const mock = routes(t, { conflicts: 1 });
   assert.equal((await webhook()).status, 200);
-  assert.equal(mock.calls.filter(c => c.method === 'PATCH').length, 3);
+  assert.ok(mock.calls.filter(c => c.method === 'PATCH').length >= 5);
 });
 
 test('persistent CAS conflicts return retryable failure', async t => {
@@ -334,8 +353,8 @@ test('Meta unavailable preserves Hub acknowledgment and returns503 for tracking 
   assert.equal((await webhook()).status, 503);
   assert.equal(mock.calls.filter(c => c.url.startsWith('https://hub.mock/')).length, 1);
   assert.equal(mock.calls.filter(c => c.url.startsWith('https://graph.facebook.com/')).length, 2);
-  assert.equal(mock.metadata().oficina_payments.pay_mock.hubPurchaseSent, true);
-  assert.equal(mock.metadata().oficina_payments.pay_mock.metaPurchaseSent, false);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.hubPurchaseSent, true);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.metaPurchaseSent, false);
 });
 
 test('pending/canceled office never emits Purchase or exposes room fields', async t => {
@@ -449,6 +468,184 @@ test('payment state is visible in custom_fields and preserves profile and siblin
     assert.equal(mock.fields().oficina_payment_status, state);
     assert.equal(mock.fields().oficina_profile, 'gestor');
     assert.equal(mock.fields().custom_sibling, 'preserve');
-    assert.equal(mock.metadata().oficina_payments.pay_mock.state, state);
+    assert.equal(mock.fields()._oficina_payments.pay_mock.state, state);
   }
+});
+
+test('paid buyer receives transactional rooms, dates, material and replay only at verified email, no community offer', async t => {
+  const mock = routes(t);
+  assert.equal((await webhook()).status, 200);
+  const mails = mock.calls.filter(c => c.url === 'https://api.zeptomail.com/v1.1/email');
+  assert.equal(mails.length, 1);
+  assert.equal(mails[0].options.headers.Authorization, 'Zoho-enczapikey mock-zepto');
+  assert.equal(mails[0].body.from.address, env.ZEPTOMAIL_FROM_EMAIL);
+  assert.equal(mails[0].body.to[0].email_address.address, 'buyer@example.invalid');
+  assert.notEqual(mails[0].body.to[0].email_address.address, 'original@example.invalid');
+  assert.equal(mails[0].body.client_reference, 'oficina-welcome-pay_mock');
+  assert.match(mails[0].body.textbody, /9 de outubro de 2026/);
+  assert.match(mails[0].body.textbody, /10 de outubro de 2026/);
+  assert.match(mails[0].body.textbody, /19h30–21h30/);
+  assert.match(mails[0].body.textbody, /24 de outubro de 2026/);
+  assert.ok(mails[0].body.textbody.includes('https://meet.google.com/tvd-sxie-voj'));
+  assert.ok(mails[0].body.textbody.includes('https://meet.google.com/oxg-oqro-upx'));
+  assert.ok(mails[0].body.textbody.includes('https://imobiturbo-plano-lancamento.imobiturbo.workers.dev/downloads/carteira-exemplo.csv'));
+  assert.ok(mails[0].body.textbody.includes(env.ZEPTOMAIL_FROM_EMAIL));
+  assert.equal(mails[0].body.textbody.includes('997'), false);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeMailSent, true);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeDelivery.requestId, 'mock-mail-receipt');
+});
+
+test('already prefixed ZeptoMail env key is not double-prefixed', async t => {
+  const mock = routes(t);
+  assert.equal((await webhook({ ...env, ZEPTOMAIL_API_KEY: 'Zoho-enczapikey mock-prefixed' })).status, 200);
+  assert.equal(mock.calls.find(c => c.url.startsWith('https://api.zeptomail.com/')).options.headers.Authorization, 'Zoho-enczapikey mock-prefixed');
+});
+
+test('missing ZeptoMail secret/from never uses a fallback and leaves webhook retryable', async t => {
+  const mock = routes(t);
+  assert.equal((await webhook({ ...env, ZEPTOMAIL_API_KEY: '' })).status, 503);
+  assert.equal((await webhook({ ...env, ZEPTOMAIL_FROM_EMAIL: '' })).status, 503);
+  assert.equal(mock.calls.filter(c => c.url.startsWith('https://api.zeptomail.com/')).length, 0);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeMailSent, undefined);
+});
+
+test('concurrent welcome attempts acquire one CAS lease and send one email', async t => {
+  let release;
+  const waiting = new Promise(resolve => { release = resolve; });
+  const mock = routes(t, { fields: { _oficina_payments: { pay_mock: { state: 'pago' } } }, welcomeDelay: () => waiting });
+  const { dispatchOficinaWelcome } = await load('oficina/_welcome.js');
+  const { sourceConfig } = await load('oficina/_crm.js');
+  const config = await sourceConfig(env);
+  const input = { env, payment, leadId, config, customer: { email: 'buyer@example.invalid' }, trustedPaymentLinkId: 'link_mock' };
+  const a = dispatchOficinaWelcome(input);
+  const b = dispatchOficinaWelcome(input);
+  // Both claims race with the same initial snapshot; CAS chooses one winner.
+  await new Promise(resolve => setImmediate(resolve));
+  release();
+  const results = await Promise.all([a, b]);
+  assert.equal(results.filter(r => r.accepted).length, 1);
+  assert.equal(mock.calls.filter(c => c.url.startsWith('https://api.zeptomail.com/')).length, 1);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeMailSent, true);
+});
+
+test('structured provider rejection returns503 then retries without marking sent before acceptance', async t => {
+  const opts = { welcomeRejected: true };
+  const mock = routes(t, opts);
+  assert.equal((await webhook()).status, 503);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeMailSent, false);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeDelivery.status, 'retry');
+  opts.welcomeRejected = false;
+  assert.equal((await webhook()).status, 200);
+  assert.equal(mock.calls.filter(c => c.url.startsWith('https://api.zeptomail.com/')).length, 2);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeMailSent, true);
+});
+
+test('accepted email then persistent receipt CAS failure does not resend on duplicate or expired lease', async t => {
+  const opts = { failWelcomeSentPersistence: true };
+  const mock = routes(t, opts);
+  assert.equal((await webhook()).status, 503);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeMailSent, undefined);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeDelivery.status, 'sending');
+  opts.failWelcomeSentPersistence = false;
+  assert.equal((await webhook()).status, 503);
+  mock.fields()._oficina_payments.pay_mock.welcomeDelivery.leaseUntil = Date.now() - 1;
+  assert.equal((await webhook()).status, 503);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeDelivery.status, 'uncertain');
+  assert.equal(mock.calls.filter(c => c.url.startsWith('https://api.zeptomail.com/')).length, 1);
+});
+
+test('provider timeout is held as uncertain instead of resending indefinite copies', async t => {
+  const mock = routes(t, { welcomeTimeout: true });
+  assert.equal((await webhook()).status, 503);
+  assert.equal((await webhook()).status, 503);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.welcomeDelivery.status, 'uncertain');
+  assert.equal(mock.calls.filter(c => c.url.startsWith('https://api.zeptomail.com/')).length, 1);
+});
+
+test('absent provider phone uses exactly one office-scoped verified email contact before capture', async t => {
+  const mock = routes(t, { customer: { mobilePhone: '', phone: '' }, officeEmailMatches: [{ id: leadId, contact: { id: 'contact_mock', email_normalized: 'buyer@example.invalid', phone_number: '+5511999999999' } }] });
+  assert.equal((await webhook()).status, 200);
+  const captured = mock.calls.find(c => c.url === env.OFICINA_CRM_FORM_URL);
+  assert.equal(captured.body.phone, '+5511999999999');
+  const lookup = mock.calls.find(c => c.url.includes('contact.email_normalized'));
+  assert.equal(new URL(lookup.url).searchParams.get('contact.email_normalized'), 'eq.buyer@example.invalid');
+});
+
+for (const rows of [[], [{ contact: { email_normalized: 'buyer@example.invalid', phone_number: '+5511999999999' } }, { contact: { email_normalized: 'buyer@example.invalid', phone_number: '+5511888888888' } }]]) {
+  test('absent phone does not use an absent/ambiguous email identity (' + rows.length + ')', async t => {
+    const mock = routes(t, { customer: { mobilePhone: '', phone: '' }, officeEmailMatches: rows });
+    assert.equal((await webhook()).status, 503);
+    assert.equal(mock.calls.filter(c => c.url === env.OFICINA_CRM_FORM_URL).length, 0);
+    assert.equal(mock.calls.filter(c => c.url.startsWith('https://api.zeptomail.com/')).length, 0);
+  });
+}
+
+test('pending and refunded payments send no welcome', async t => {
+  const mock = routes(t, { payment: { ...payment, status: 'REFUNDED' } });
+  assert.equal((await webhook()).status, 200);
+  assert.equal(mock.calls.filter(c => c.url.startsWith('https://api.zeptomail.com/')).length, 0);
+});
+
+test('delayed OS form writer overwriting whole source_metadata cannot erase payment/outbox flags or event time', async t => {
+  let releaseWriter, writerStarted;
+  const release = new Promise(resolve => { releaseWriter = resolve; });
+  const started = new Promise(resolve => { writerStarted = resolve; });
+  let mock;
+  const staleSource = { form_source_id: 'source_mock', utm_source: 'original' };
+  mock = routes(t, { metadata: staleSource, onCapture: async body => {
+    if (body.external_id === 'oficina:lead:delayed-replay') {
+      writerStarted();
+      await release;
+      // This is the existing OS source writer, which never touches custom_fields.
+      mock.overwriteSource(staleSource);
+    }
+  } });
+  const { captureLead, sourceConfig } = await load('oficina/_crm.js');
+  const config = await sourceConfig(env);
+  const delayedCapture = captureLead(env, { name: lead.name, email: lead.email, phone: '+5511999999999' }, 'oficina:lead:delayed-replay', config);
+  await started;
+  assert.equal((await webhook()).status, 200);
+  const first = structuredClone(mock.fields()._oficina_payments.pay_mock);
+  assert.equal(first.hubPurchaseSent, true);
+  assert.equal(first.metaPurchaseSent, true);
+  assert.equal(first.welcomeMailSent, true);
+  releaseWriter();
+  await delayedCapture;
+  assert.deepEqual(mock.metadata(), staleSource);
+  assert.equal(mock.metadata().oficina_payments, undefined);
+  assert.deepEqual(mock.fields()._oficina_payments.pay_mock, first);
+  assert.equal((await webhook()).status, 200);
+  assert.equal(mock.fields()._oficina_payments.pay_mock.purchaseEventTime, first.purchaseEventTime);
+  assert.equal(mock.calls.filter(c => c.url.startsWith('https://api.zeptomail.com/')).length, 1);
+  assert.equal(mock.calls.filter(c => c.url.startsWith('https://hub.mock/')).length, 1);
+  assert.equal(mock.calls.filter(c => c.url.startsWith('https://graph.facebook.com/')).length, 1);
+});
+
+test('frontend cliente_atual and canonical ad attribution are captured without treating profile as a new community buyer', async t => {
+  const mock = routes(t);
+  const tracking = { utm_id: 'campaign_mock', imt_adset_name: 'office-adset', imt_adset_id: 'adset_mock', imt_ad_id: 'ad_mock', imt_placement: 'Instagram_Reels', fbp: 'fb.1.synthetic', fbc: 'fb.1.synthetic-click' };
+  assert.equal((await leadRequest({ ...lead, profile: 'cliente_atual', tracking })).status, 200);
+  const captured = mock.calls.find(c => c.url === env.OFICINA_CRM_FORM_URL).body;
+  assert.equal(captured.oficina_profile, 'cliente_atual');
+  for (const [key, value] of Object.entries(tracking)) assert.equal(captured[key], value);
+  assert.equal(mock.calls.filter(c => c.url.includes('provision')).length, 0);
+});
+
+test('additional attribution fields remain bounded strings and reject objects/control characters', async t => {
+  const mock = routes(t);
+  for (const key of ['utm_id', 'imt_adset_name', 'imt_adset_id', 'imt_ad_id', 'imt_placement']) {
+    for (const value of [{ arbitrary: true }, 'x'.repeat(501), 'x\ny']) {
+      assert.equal((await leadRequest({ ...lead, tracking: { [key]: value } })).status, 422);
+    }
+  }
+  assert.equal(mock.calls.length, 0);
+});
+
+test('office Hub Purchase retains original canonical campaign/ad attribution', async t => {
+  const original = { utm_id: 'campaign_original', imt_adset_name: 'name_original', imt_adset_id: 'set_original', imt_ad_id: 'ad_original', imt_placement: 'Reels_original' };
+  const mock = routes(t, { fields: { ...original, oficina_profile: 'cliente_atual' } });
+  assert.equal((await webhook()).status, 200);
+  const hub = mock.calls.find(c => c.url.startsWith('https://hub.mock/')).body;
+  for (const [key, value] of Object.entries(original)) assert.equal(hub[key], value);
+  assert.equal(hub.eventId, 'oficina-purchase-pay_mock');
 });

@@ -1,7 +1,8 @@
 import { json, validOficinaPayment, paymentState, normalizePhone } from "./_shared.js";
 import { findCheckout } from "./_checkout.js";
 import { dispatchOficinaPurchase } from "./_tracking.js";
-import { captureLead, sourceConfig, recordPayment } from "./_crm.js";
+import { dispatchOficinaWelcome } from "./_welcome.js";
+import { captureLead, sourceConfig, recordPayment, officePhoneByVerifiedEmail } from "./_crm.js";
 
 export async function handleOficinaPayment({ request, env = {}, payment }) {
   // Authentication is mandatory for this branch even when legacy handlers
@@ -28,16 +29,22 @@ export async function handleOficinaPayment({ request, env = {}, payment }) {
     if (!response.ok) throw new Error("customer_unavailable");
     const customer = await response.json();
     if (customer.id !== payment.customer) throw new Error("customer_mismatch");
-    const phone = normalizePhone(customer.mobilePhone || customer.phone);
+    let phone = normalizePhone(customer.mobilePhone || customer.phone);
     const email = typeof customer.email === "string" ? customer.email.trim().toLowerCase() : "";
-    if (!phone && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("customer_identity_missing");
+    if (!phone) {
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("customer_identity_missing");
+      phone = normalizePhone(await officePhoneByVerifiedEmail(env, email, config));
+      if (!phone) throw new Error("oficina_phone_missing");
+    }
     // No fabricated consent/profile: buyer can enter through the hosted link
     // without submitting our pre-checkout form.
     const leadId = await captureLead(env, { name: customer.name || "Participante da oficina", email, phone: phone || "" }, "oficina:payment:" + payment.id, config);
     const result = await recordPayment(env, leadId, payment, state, config);
     if (state === "pago" && result.state === "pago") {
-      const tracking = await dispatchOficinaPurchase({ env, payment, leadId, config, customer, trustedPaymentLinkId: paymentEnv.OFICINA_PAYMENT_LINK_ID });
-      if (!tracking.hub || !tracking.meta) return json({ ok: false, error: "oficina_purchase_tracking_pending" }, 503);
+      const deliveryInput = { env, payment, leadId, config, customer, trustedPaymentLinkId: paymentEnv.OFICINA_PAYMENT_LINK_ID };
+      const [welcome, tracking] = await Promise.allSettled([dispatchOficinaWelcome(deliveryInput), dispatchOficinaPurchase(deliveryInput)]);
+      if (welcome.status !== "fulfilled" || !welcome.value.accepted) return json({ ok: false, error: "oficina_welcome_pending" }, 503);
+      if (tracking.status !== "fulfilled" || !tracking.value.hub || !tracking.value.meta) return json({ ok: false, error: "oficina_purchase_tracking_pending" }, 503);
     }
     return json({ ok: true, productId: "oficina-imobiturbo-202610", paymentId: payment.id, ...result });
   } catch {

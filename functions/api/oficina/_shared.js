@@ -45,10 +45,10 @@ export function normalizeLead(input) {
   const phone = normalizePhone(input.phone);
   if (name.length < 2 || name.length > 120 || /[\x00-\x1f]/.test(name) ||
       email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ||
-      !phone || !["corretor", "gestor"].includes(input.profile)) return null;
+      !phone || !["corretor", "gestor", "cliente_atual"].includes(input.profile)) return null;
   if (input.tracking != null && (typeof input.tracking !== "object" || Array.isArray(input.tracking))) return null;
   const tracking = {};
-  for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "fbclid", "fbc", "fbp", "visitor_id"]) {
+  for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "imt_adset_name", "imt_adset_id", "imt_ad_id", "imt_placement", "fbclid", "fbc", "fbp", "visitor_id"]) {
     const value = input.tracking?.[key];
     if (value != null) {
       if (typeof value !== "string" || value.length > 500 || /[\x00-\x1f]/.test(value)) return null;

@@ -9,7 +9,7 @@ async function sha(value) {
 export async function dispatchOficinaPurchase({ env, payment, leadId, config, customer, trustedPaymentLinkId }) {
   if (!validOficinaPayment(payment, { ...env, OFICINA_PAYMENT_LINK_ID: trustedPaymentLinkId }) || paymentState(payment) !== "pago") return { hub: false, meta: false };
   const row = await paymentContext(env, leadId, config);
-  const saved = row.source_metadata?.oficina_payments?.[payment.id];
+  const saved = row.custom_fields?._oficina_payments?.[payment.id];
   if (saved?.state !== "pago") return { hub: false, meta: false };
   if (saved.hubPurchaseSent && saved.metaPurchaseSent) return { hub: true, meta: true };
   const original = { ...(row.source_metadata?.meta_form?.answers || {}), ...row.custom_fields, ...row.source_metadata };
