@@ -102,7 +102,7 @@ for (const width of [390, 1440]) test(`original VSL preview, pause artwork and c
     const video = document.getElementById('vslVideo');
     return !video.paused && !video.muted && !video.loop && video.currentTime < 2;
   });
-  assert.equal(await page.locator('#vslInitialOverlay').isVisible(), false);
+  await page.locator('#vslInitialOverlay').waitFor({ state: 'hidden' });
   await record(page, width, 'started');
   // The facade is the real pause/resume control, including its keyboard handler.
   await page.locator('#vslFacade').focus();
