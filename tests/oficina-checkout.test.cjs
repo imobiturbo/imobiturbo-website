@@ -19,11 +19,15 @@ const payment = { id: 'pay_mock', customer: 'cus_mock', externalReference: 'ofic
 const fixedLink = { id: 'link_mock', url: env.OFICINA_CHECKOUT_URL, name: 'Oficina Imobiturbo - 9 e 10 outubro 2026', externalReference: 'oficina-imobiturbo-202610', value: 47, billingType: 'UNDEFINED', chargeType: 'DETACHED', maxInstallmentCount: 1, notificationEnabled: true, active: true, callback: { successUrl: 'https://www.imobiturbo.com.br/oficina/obrigado/' } };
 const source = { id: 'source_mock', organization_id: 'org_mock', path_token: 'token_mock', is_active: true, status: 'active', kind: 'lead_capture', default_pipeline_id: 'pipeline_mock', config: { require_auth: true, oficina_no_notifications_confirmed: true } };
 
+const stages = ['inscricao', 'pago', 'acompanhamento', 'reembolso'].map(slug => ({ id: 'stage_' + slug, slug, organization_id: 'org_mock', pipeline_id: 'pipeline_mock' }));
+
 function routes(t, opts = {}) {
   const calls = [];
   let metadata = opts.metadata ?? { form_source_id: 'source_mock', unrelated: 'keep' };
   let fields = opts.fields || {};
   let conflicts = opts.conflicts || 0;
+  let stageId = opts.stageId || 'stage_inscricao';
+  const pipelineId = opts.pipelineId || 'pipeline_mock';
   t.mock.method(globalThis, 'fetch', async (input, options = {}) => {
     const url = new URL(String(input));
     const body = options.body ? JSON.parse(options.body) : null;
@@ -45,6 +49,11 @@ function routes(t, opts = {}) {
     }
     if (url.origin === 'https://api.asaas.com' && url.pathname.startsWith('/v3/customers/')) {
       return Response.json({ id: 'cus_mock', name: 'Comprador Fictício', email: 'buyer@example.invalid', mobilePhone: '11999999999', ...opts.customer });
+    }
+    if (url.pathname === '/rest/v1/crm_stages') {
+      assert.equal(url.searchParams.get('organization_id'), 'eq.org_mock');
+      assert.equal(url.searchParams.get('pipeline_id'), 'eq.pipeline_mock');
+      return Response.json(opts.stages || stages);
     }
     if (url.pathname === '/rest/v1/webhook_sources') {
       assert.equal(url.searchParams.get('organization_id'), 'eq.org_mock');
@@ -71,16 +80,22 @@ function routes(t, opts = {}) {
         assert.ok(url.searchParams.get('custom_fields')?.startsWith('eq.'));
         if (url.searchParams.get('custom_fields') !== 'eq.' + JSON.stringify(fields)) return Response.json([]);
         if (opts.failWelcomeSentPersistence && body.custom_fields?._oficina_payments?.pay_mock?.welcomeDelivery?.status === 'sent') return Response.json([]);
-        assert.deepEqual(Object.keys(body), ['custom_fields']);
+        assert.deepEqual(Object.keys(body).sort(), body.stage_id ? ['custom_fields', 'stage_id'] : ['custom_fields']);
+        if (body.stage_id) {
+          assert.equal(url.searchParams.get('pipeline_id'), 'eq.pipeline_mock');
+          if (opts.concurrentStage) { stageId = opts.concurrentStage; opts.concurrentStage = null; }
+          if (url.searchParams.get('stage_id') !== 'eq.' + stageId) return Response.json([]);
+        }
         if (conflicts-- > 0) return Response.json([]);
         if (body.custom_fields) fields = body.custom_fields;
+        if (body.stage_id) stageId = body.stage_id;
         return Response.json([{ id: leadId }]);
       }
-      return Response.json(opts.missingLead ? [] : [{ id: leadId, contact_id: 'contact_mock', source_metadata: metadata, custom_fields: fields }]);
+      return Response.json(opts.missingLead ? [] : [{ id: leadId, contact_id: 'contact_mock', source_metadata: metadata, custom_fields: fields, stage_id: stageId, pipeline_id: pipelineId }]);
     }
     throw new Error('Unexpected external side effect: ' + url.href);
   });
-  return { calls, metadata: () => metadata, fields: () => fields, overwriteSource: snapshot => { metadata = structuredClone(snapshot); } };
+  return { calls, stageId: () => stageId, moveStage: value => { stageId = value; }, metadata: () => metadata, fields: () => fields, overwriteSource: snapshot => { metadata = structuredClone(snapshot); } };
 }
 function webhookRequest(payload = { event: 'PAYMENT_RECEIVED', payment: { id: 'pay_mock' } }, token = env.OFICINA_ASAAS_WEBHOOK_TOKEN) {
   return new Request('https://website.mock/api/checkout/webhook', { method: 'POST', headers: { 'Content-Type': 'application/json', 'asaas-access-token': token }, body: JSON.stringify(payload) });
@@ -673,4 +688,78 @@ test('missing provider netValue stays unknown instead of assuming zero fees', as
   const mock = routes(t);
   assert.equal((await webhook()).status, 200);
   assert.equal(mock.fields()._oficina_payments.pay_mock.netValue, undefined);
+});
+
+
+test('verified paid moves registration to paid atomically with journal, pending does not move', async t => {
+  const mock = routes(t);
+  const { recordPayment, sourceConfig } = await load('oficina/_crm.js');
+  const config = await sourceConfig(env);
+  await recordPayment(env, leadId, payment, 'pendente', config);
+  assert.equal(mock.stageId(), 'stage_inscricao');
+  await recordPayment(env, leadId, payment, 'pago', config);
+  assert.equal(mock.stageId(), 'stage_pago');
+  const patch = mock.calls.find(c => c.body?.stage_id === 'stage_pago');
+  assert.equal(patch.body.custom_fields._oficina_payments.pay_mock.state, 'pago');
+  assert.equal(new URL(patch.url).searchParams.get('stage_id'), 'eq.stage_inscricao');
+});
+
+test('duplicate paid preserves manual followup; refund moves followup and cannot regress on delayed paid', async t => {
+  const mock = routes(t);
+  const { recordPayment, sourceConfig } = await load('oficina/_crm.js');
+  const config = await sourceConfig(env);
+  await recordPayment(env, leadId, payment, 'pago', config);
+  mock.moveStage('stage_acompanhamento');
+  const patches = () => mock.calls.filter(c => c.method === 'PATCH').length;
+  const before = patches();
+  assert.deepEqual(await recordPayment(env, leadId, payment, 'pago', config), { duplicate: true, state: 'pago' });
+  assert.equal(patches(), before);
+  assert.equal(mock.stageId(), 'stage_acompanhamento');
+  await recordPayment(env, leadId, { ...payment, status: 'REFUNDED' }, 'cancelado', config);
+  assert.equal(mock.stageId(), 'stage_reembolso');
+  await recordPayment(env, leadId, payment, 'pago', config);
+  assert.equal(mock.stageId(), 'stage_reembolso');
+  assert.equal(mock.fields()._oficina_payments.pay_mock.state, 'cancelado');
+});
+
+test('paid CAS retry preserves concurrent manual move to followup', async t => {
+  const mock = routes(t, { concurrentStage: 'stage_acompanhamento' });
+  const { recordPayment, sourceConfig } = await load('oficina/_crm.js');
+  await recordPayment(env, leadId, payment, 'pago', await sourceConfig(env));
+  assert.equal(mock.stageId(), 'stage_acompanhamento');
+  assert.equal(mock.fields()._oficina_payments.pay_mock.state, 'pago');
+});
+
+for (const opts of [
+  { stageId: 'stage_foreign' }, { pipelineId: 'pipeline_foreign' },
+  { stages: stages.map(s => s.slug === 'pago' ? { ...s, organization_id: 'org_foreign' } : s) },
+  { stages: stages.map(s => s.slug === 'reembolso' ? { ...s, pipeline_id: 'pipeline_foreign' } : s) },
+]) {
+  test('foreign stage/pipeline/tenant fails closed: ' + JSON.stringify(opts), async t => {
+    const mock = routes(t, opts);
+    const { recordPayment, sourceConfig } = await load('oficina/_crm.js');
+    await assert.rejects(recordPayment(env, leadId, payment, 'pago', await sourceConfig(env)), /oficina_crm_(lead_stage_mismatch|stages_not_ready)/);
+    assert.equal(mock.calls.filter(c => c.method === 'PATCH').length, 0);
+    assert.deepEqual(mock.fields(), {});
+  });
+}
+
+
+for (const stageId of ['stage_acompanhamento', 'stage_reembolso']) {
+  test('first paid observation does not regress advanced stage ' + stageId, async t => {
+    const mock = routes(t, { stageId });
+    const { recordPayment, sourceConfig } = await load('oficina/_crm.js');
+    await recordPayment(env, leadId, payment, 'pago', await sourceConfig(env));
+    assert.equal(mock.stageId(), stageId);
+    assert.equal(mock.fields()._oficina_payments.pay_mock.state, 'pago');
+    assert.ok(mock.calls.filter(c => c.method === 'PATCH').every(c => !c.body.stage_id));
+  });
+}
+
+test('refund CAS retries after manual followup move and still reaches refund', async t => {
+  const mock = routes(t, { stageId: 'stage_pago', concurrentStage: 'stage_acompanhamento' });
+  const { recordPayment, sourceConfig } = await load('oficina/_crm.js');
+  await recordPayment(env, leadId, { ...payment, status: 'REFUNDED' }, 'cancelado', await sourceConfig(env));
+  assert.equal(mock.stageId(), 'stage_reembolso');
+  assert.equal(mock.fields()._oficina_payments.pay_mock.state, 'cancelado');
 });

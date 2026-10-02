@@ -35,7 +35,7 @@ export async function sourceConfig(env) {
       decodeURIComponent(new URL(config.form).pathname.split("/").at(-1)) !== source.path_token) {
     throw new Error("oficina_crm_source_not_ready");
   }
-  return config;
+  return { ...config, pipelineId: source.default_pipeline_id };
 }
 
 export async function captureLead(env, lead, externalId, config = null) {
@@ -63,28 +63,47 @@ async function mutateOfficeFields(env, leadId, config, transition) {
   for (let attempt = 0; attempt < 4; attempt++) {
     const scope = { id: "eq." + leadId, organization_id: "eq." + env.OFICINA_CRM_ORGANIZATION_ID,
       "source_metadata->>form_source_id": "eq." + env.OFICINA_CRM_SOURCE_ID };
-    const rows = await rest(config, "crm_leads", { ...scope, select: "id,custom_fields" });
+    const rows = await rest(config, "crm_leads", { ...scope, select: "id,custom_fields,stage_id,pipeline_id" });
     if (rows.length !== 1) throw new Error("oficina_crm_lead_mismatch");
     const fields = rows[0].custom_fields || {};
-    const change = transition(fields);
+    const change = transition(fields, rows[0]);
     if (!change.fields) return change.result;
     // OS form replays overwrite source_metadata without CAS. Keep all office
     // operational state in this reserved field; never write source_metadata.
     const updated = await rest(config, "crm_leads", { ...scope,
+      ...(change.stageId ? { stage_id: "eq." + rows[0].stage_id, pipeline_id: "eq." + config.pipelineId } : {}),
       custom_fields: rows[0].custom_fields == null ? "is.null" : "eq." + JSON.stringify(rows[0].custom_fields),
-    }, { method: "PATCH", headers: { Prefer: "return=representation" }, body: JSON.stringify({ custom_fields: change.fields }) });
+    }, { method: "PATCH", headers: { Prefer: "return=representation" }, body: JSON.stringify({ custom_fields: change.fields, ...(change.stageId ? { stage_id: change.stageId } : {}) }) });
     if (updated.length === 1) return change.result;
   }
   throw new Error("oficina_fields_cas_conflict");
 }
 
 export async function recordPayment(env, leadId, payment, state, config) {
-  return mutateOfficeFields(env, leadId, config, fields => {
+  if (!config.pipelineId) throw new Error("oficina_crm_source_not_ready");
+  const stages = await rest(config, "crm_stages", {
+    select: "id,slug,organization_id,pipeline_id", organization_id: "eq." + env.OFICINA_CRM_ORGANIZATION_ID,
+    pipeline_id: "eq." + config.pipelineId,
+  });
+  const bySlug = {};
+  for (const slug of ["inscricao", "pago", "acompanhamento", "reembolso"]) {
+    const matches = stages.filter(stage => stage.slug === slug && stage.organization_id === env.OFICINA_CRM_ORGANIZATION_ID &&
+      stage.pipeline_id === config.pipelineId && typeof stage.id === "string" && stage.id);
+    if (matches.length !== 1) throw new Error("oficina_crm_stages_not_ready");
+    bySlug[slug] = matches[0].id;
+  }
+  if (new Set(Object.values(bySlug)).size !== 4) throw new Error("oficina_crm_stages_not_ready");
+  return mutateOfficeFields(env, leadId, config, (fields, current) => {
+    if (current.pipeline_id !== config.pipelineId || !Object.values(bySlug).includes(current.stage_id)) {
+      throw new Error("oficina_crm_lead_stage_mismatch");
+    }
     const payments = fields._oficina_payments || {};
     const previous = payments[payment.id];
     const ranks = { pendente: 0, pago: 1, cancelado: 2 };
     if (previous && ranks[previous.state] >= ranks[state]) return { result: { duplicate: true, state: previous.state } };
-    return { fields: { ...fields, oficina_payment_status: state, _oficina_payments: { ...payments, [payment.id]: {
+    const stageId = state === "cancelado" && current.stage_id !== bySlug.reembolso ? bySlug.reembolso :
+      state === "pago" && current.stage_id === bySlug.inscricao ? bySlug.pago : null;
+    return { stageId, fields: { ...fields, oficina_payment_status: state, _oficina_payments: { ...payments, [payment.id]: {
       ...previous, state, providerStatus: payment.status, value: 47, billingType: payment.billingType,
       paymentLink: payment.paymentLink,
       ...(typeof payment.netValue === "number" && Number.isFinite(payment.netValue) && payment.netValue >= 0 && payment.netValue <= payment.value ? { netValue: payment.netValue } : {}),
