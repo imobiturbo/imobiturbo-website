@@ -1,0 +1,128 @@
+[
+  {
+    "asset": "bonus-01-calculadora-meta-verba.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee2-7dcd-74a2-8acb-c38a9379a315",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_12_150-salmos-7-min-1.png",
+    "illustrative": true,
+    "sha256": "7b75a561b793b4f135f7edefb7bfd545855fbb98ab0ace7ca68344b4f9ad73d3",
+    "bytes": 213728
+  },
+  {
+    "asset": "bonus-02-roteiro-lista-vip.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee2-7dcd-74a2-8acb-c38a9379a315",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_12_150-salmos-7-min-1.png",
+    "illustrative": true,
+    "sha256": "1357974d0f5fe6b78a24cae3a82493139a4ab0d036ed5f890c478e7941adb13e",
+    "bytes": 208082
+  },
+  {
+    "asset": "bonus-03-follow-up-7-dias.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee2-7dcd-74a2-8acb-c38a9379a315",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_12_150-salmos-7-min-1.png",
+    "illustrative": true,
+    "sha256": "2e87f322444abd7ac645b356aa2ff7cc4155a1df5a02359c0dca2ac61fdc5f40",
+    "bytes": 240688
+  },
+  {
+    "asset": "bonus-04-pack-ultimas-horas.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee2-7dcd-74a2-8acb-c38a9379a315",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_12_150-salmos-7-min-1.png",
+    "illustrative": true,
+    "sha256": "91d1f8502ab89db64d07d07124c7a6cba3a09680f88ac2d5249e84847d0d8c68",
+    "bytes": 273792
+  },
+  {
+    "asset": "plano-completo.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0feec-8f82-73b3-9d8e-8ba59673ca85",
+    "reference": "Generated hero image, from hero-prompt.txt",
+    "illustrative": true,
+    "sha256": "907ed59f09f2b9269376a005cad124f91413f9d5094c744c173ae9d36735bf10",
+    "bytes": 178746
+  },
+  {
+    "asset": "plano-essencial.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0feec-8f82-73b3-9d8e-8ba59673ca85",
+    "reference": "Generated hero image, from hero-prompt.txt",
+    "illustrative": true,
+    "sha256": "06dae2efab8545a3785104fa032f9e6d74fd25ad088e1a3cba23c1ecbbc755cf",
+    "bytes": 157450
+  },
+  {
+    "asset": "preview-01-operacao.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee4-45c7-74b0-90b3-84e1f5ef7fe5",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_6_Salmo-91-1-min-724x1024-1.png",
+    "illustrative": true,
+    "sha256": "68a47d755b00b7237f3967ceb04175fe221fcd708b085d408e8e2173ece98fb4",
+    "bytes": 34884
+  },
+  {
+    "asset": "preview-02-spin.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee4-45c7-74b0-90b3-84e1f5ef7fe5",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_6_Salmo-91-1-min-724x1024-1.png",
+    "illustrative": true,
+    "sha256": "eb95b4f7efae88e832244389ae431ff4a5b5b1d4cfa175fdebd6a1d6442c93c1",
+    "bytes": 32010
+  },
+  {
+    "asset": "preview-03-matriz.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee4-45c7-74b0-90b3-84e1f5ef7fe5",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_6_Salmo-91-1-min-724x1024-1.png",
+    "illustrative": true,
+    "sha256": "644dc0305acfe84b61bc10c05a463de5fcbfd0bbc517cc46b72a69d57a7398e8",
+    "bytes": 22404
+  },
+  {
+    "asset": "preview-04-criativos.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee4-45c7-74b0-90b3-84e1f5ef7fe5",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_6_Salmo-91-1-min-724x1024-1.png",
+    "illustrative": true,
+    "sha256": "03bc914eaf07db282f6cc3fc7960aada27d59837300501021855aaf4bb9e8916",
+    "bytes": 87668
+  },
+  {
+    "asset": "preview-05-ganchos.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee4-45c7-74b0-90b3-84e1f5ef7fe5",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_6_Salmo-91-1-min-724x1024-1.png",
+    "illustrative": true,
+    "sha256": "62d048f671d4070a40fd99d415c894ad4c29e3cb763c577fbf8d73d6fe4e8d6f",
+    "bytes": 28264
+  },
+  {
+    "asset": "preview-06-comercial.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee4-45c7-74b0-90b3-84e1f5ef7fe5",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_6_Salmo-91-1-min-724x1024-1.png",
+    "illustrative": true,
+    "sha256": "feead7defcb7ae54f4d7e3500a25ec0e30418cacc332875464493f3b10b59989",
+    "bytes": 39116
+  },
+  {
+    "asset": "supercombo-completo.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee1-0e44-7772-b5f4-f8c7580afabc",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_1_150-salmos-4-min-1.png",
+    "illustrative": true,
+    "sha256": "c42298a43fcad7521abf513aab64210259e3bc49d98021922e563005cfde91d9",
+    "bytes": 272656
+  },
+  {
+    "asset": "supercombo-mobile.webp",
+    "generator": "GPT Image through Codex OAuth; official runner; no API key",
+    "thread": "01a0fee1-0e44-7772-b5f4-f8c7580afabc",
+    "reference": "/mnt/c/Users/Natan/Downloads/Modelo Landing Page Low Ticket - Personalizada - Mentoria O Processo/imgi_1_150-salmos-4-min-1.png",
+    "illustrative": true,
+    "sha256": "55b57bf55f2dd4cbb10006ef5beeffaab5640b8e9263ab01ed3bb01f848210b5",
+    "bytes": 132718
+  }
+]
