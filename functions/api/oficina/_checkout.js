@@ -12,8 +12,8 @@ export function checkoutResult(link) {
       typeof link.id !== "string" || !link.id || link.deleted === true || link.active === false ||
       link.externalReference !== OFICINA_REFERENCE || Number(link.value) !== OFICINA_PRICE ||
       link.chargeType !== "DETACHED" || link.billingType !== "UNDEFINED" ||
-      Number(link.maxInstallmentCount) !== 1 || link.notificationEnabled !== true ||
-      link.callback?.successUrl !== OFICINA_CALLBACK) throw new Error("oficina_link_invalid");
+      (link.maxInstallmentCount != null && Number(link.maxInstallmentCount) !== 1) || link.notificationEnabled !== true ||
+      (link.callback?.successUrl && link.callback.successUrl !== OFICINA_CALLBACK)) throw new Error("oficina_link_invalid");
   return { ok: true, checkoutUrl: url.href, paymentLinkId: link.id };
 }
 
@@ -78,7 +78,8 @@ export async function ensureCheckout(env) {
       value: OFICINA_PRICE, billingType: "UNDEFINED", chargeType: "DETACHED",
       maxInstallmentCount: 1, externalReference: OFICINA_REFERENCE,
       notificationEnabled: true, dueDateLimitDays: 1,
-      callback: { successUrl: OFICINA_CALLBACK, autoRedirect: true },
+      // Use the hosted confirmation. Custom callback requires a merchant site
+      // in the account profile; workshop setup never changes financial KYC.
     }) });
     // Read back from the processor before returning a usable link.
     if (typeof created.id !== "string" || !created.id) throw new Error("oficina_link_create_failed");
