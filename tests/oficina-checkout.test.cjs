@@ -660,6 +660,15 @@ test('office Hub Purchase retains original canonical campaign/ad attribution', a
   assert.equal(mock.calls.find(c => c.url.startsWith('https://hub.mock/')).body.valueCents, 4700);
 });
 
+for (const netValue of [-0.01, 47.01]) {
+  test(`invalid provider netValue ${netValue} is not stored as financial evidence`, async t => {
+    const mock = routes(t, { payment: { ...payment, netValue } });
+    assert.equal((await webhook()).status, 200);
+    assert.equal(mock.fields()._oficina_payments.pay_mock.netValue, undefined);
+    assert.equal(mock.calls.find(c => c.url.startsWith('https://hub.mock/')).body.valueCents, 4700);
+  });
+}
+
 test('missing provider netValue stays unknown instead of assuming zero fees', async t => {
   const mock = routes(t);
   assert.equal((await webhook()).status, 200);
