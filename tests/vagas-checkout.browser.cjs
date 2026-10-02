@@ -182,3 +182,34 @@ test('pending payment reload preserves its actual method, installments and price
     });
   }
 });
+
+
+test('expired Pix restores the card total before the visitor restarts checkout', async t => {
+  const page = await visit(t);
+  const record = {
+    version: 2, paymentId: 'pay_synthetic_expiration', gateway: 'asaas', method: 'PIX', plan: 'anual',
+    productId: 'comunidade-imobiturbo', installmentCount: 1, amount: 997, paid: false,
+    expiresAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+    pix: { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: '' }
+  };
+  let expired = false;
+  await page.route('**/api/checkout/status?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ...record, success: true, status: expired ? 'CANCELED' : 'PENDING' }) }));
+  await page.evaluate(value => localStorage.setItem('imobiturbo:checkout:community:v2', JSON.stringify(value)), record);
+  await page.reload({ waitUntil: 'load' });
+  await page.waitForFunction(() => document.getElementById('checkoutModalOverlay').open && !document.getElementById('chkPendingNotice').hidden);
+  assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /997.*Pix/);
+  expired = true;
+  await page.waitForFunction(() => document.getElementById('chkStepPane1').offsetHeight > 0 && document.getElementById('chkPendingNotice').hidden);
+  assert.equal(await page.locator('#chkTabCard').getAttribute('aria-selected'), 'true');
+  assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /12x.*97.*1.164/);
+  assert.ok(!(await page.locator('#chkPlanCompactPrice').innerText()).includes('Pix'));
+  assert.equal(await page.locator('#chkName').inputValue(), '');
+  await page.locator('#chkName').fill('Auditoria Imobiturbo');
+  await page.locator('#chkStep1Btn').click();
+  await page.locator('#chkPhone').fill('11963824751');
+  await page.locator('#chkStep2Btn').click();
+  await page.locator('#chkEmail').fill('auditoria@example.invalid');
+  await page.locator('#chkStep3Btn').click();
+  assert.ok(await page.locator('#chkCardView').isVisible());
+  assert.match(await page.locator('#chkBtnText').innerText(), /12x.*97/);
+});

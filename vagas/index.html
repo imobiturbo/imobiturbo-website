@@ -977,7 +977,7 @@
       }
     }
   </style>
-  <script src="/vagas/checkout-session.js?v=20260927-2"></script>
+  <script src="/vagas/checkout-session.js?v=20261002-1"></script>
 
   <style id="vagas-checkout-summary-wrap">
     .chk-plan-compact-left { flex-wrap: wrap; }
@@ -3724,7 +3724,7 @@
     let pixCountdownInterval = null;
 
     checkoutSession = window.ImobiturboCheckoutSession.bindLanding({
-      selectPlan, goToCheckoutStep, updateCheckoutPersonalization, showCheckoutError, trackHubPurchase, form: nativeForm,
+      selectPlan, goToCheckoutStep, updateCheckoutPersonalization, updatePaymentSummary, showCheckoutError, trackHubPurchase, form: nativeForm,
     });
 
     // Avanço da Etapa 3 (Email) para a Etapa 4 (Pagamento)
