@@ -80,9 +80,10 @@ test('vagas usam somente o Hub atual para Lead e InitiateCheckout', () => {
 test('vagas enviam atribuição para os eventos Lead do Hub', () => {
   const html = fs.readFileSync(path.join(root, 'vagas/index.html'), 'utf8');
   const leadCalls = [...html.matchAll(/trackHubConversion\('lead',\s*\{([\s\S]*?)\}\);/g)].map((match) => match[1]);
-  assert.ok(leadCalls.length >= 2, 'esperava os dois caminhos de geração de lead da LP');
+  assert.equal(leadCalls.length, 1, 'o checkout nativo é o único caminho de lead na LP atual');
   assert.match(leadCalls[0], /\.\.\.getUtms\(\)/);
-  assert.match(leadCalls[1], /\.\.\.tracking/);
+  const legacy = fs.readFileSync(path.join(root, 'vagas-v2/index.html'), 'utf8');
+  assert.match(legacy, /trackHubConversion\('lead',\s*\{[\s\S]*?\.\.\.tracking/);
   assert.match(html, /fbclid/);
   assert.match(html, /\bfbc\b/);
   assert.match(html, /\bfbp\b/);

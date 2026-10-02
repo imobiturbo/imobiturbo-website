@@ -292,3 +292,9 @@ body.vagas-compact main .compact-plan-section #planos .psel-sub { font-size: 16p
 body.vagas-compact main .compact-plan-section #planos .psel-right { flex-shrink: 1 !important; }
 body.vagas-compact main .compact-plan-section .psel-row:hover { transform: none; }
 body.vagas-compact .site-footer { color: #c4cab9; }
+
+/* Longer payment totals must wrap without covering the details control. */
+body.vagas-compact .chk-plan-compact-left { flex-wrap: wrap; }
+body.vagas-compact .chk-plan-compact-price { flex-basis: 100%; white-space: normal; overflow-wrap: anywhere; line-height: 1.5; }
+body.vagas-compact .chk-plan-retractable-trigger { align-items: flex-start; }
+body.vagas-compact .chk-plan-compact-right { padding-top: 3px; }

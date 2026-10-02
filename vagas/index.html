@@ -2276,6 +2276,10 @@
       queueHubTrackerEvent(method, { ...properties, lp_version: document.body.dataset.lpVersion });
     }
 
+    trackHubEvent('LandingView', {
+      traffic_classification: navigator.webdriver === true || new URLSearchParams(location.search).has('imt_audit') ? 'confirmed_bot' : 'unclassified'
+    });
+
     (function bindHubTracker() {
       const trackerScript = document.getElementById('hub-tracker');
       if (trackerScript) trackerScript.addEventListener('load', flushHubTrackerEvents);

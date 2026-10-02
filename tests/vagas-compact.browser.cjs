@@ -14,7 +14,7 @@ before(async () => {
   if (artifacts) fs.mkdirSync(artifacts, { recursive: true });
   if (process.env.VAGAS_URL) baseURL = process.env.VAGAS_URL;
   else {
-    const mime = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.png': 'image/png', '.svg': 'image/svg+xml' };
+    const mime = { '.html': 'text/html', '.css': 'text/css', '.js': 'text/javascript', '.webp': 'image/webp', '.woff2': 'font/woff2', '.ttf': 'font/ttf', '.png': 'image/png', '.svg': 'image/svg+xml', '.webm': 'video/webm', '.mp4': 'video/mp4' };
     server = http.createServer((request, response) => {
       let pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname);
       if (pathname.endsWith('/')) pathname += 'index.html';
@@ -35,17 +35,21 @@ after(async () => {
   if (server) await new Promise(resolve => server.close(resolve));
 });
 
-async function visit(t, width = 390) {
+async function visit(t, width = 390, allowMedia = false) {
   const context = await browser.newContext({ viewport: { width, height: 844 }, reducedMotion: 'reduce' });
   t.after(() => context.close());
   await context.route('**/*', route => {
     const request = route.request(), url = new URL(request.url());
     if (url.origin !== new URL(baseURL).origin || request.method() !== 'GET') return route.abort();
-    if (/\.(mp4|webm|m3u8)$/.test(url.pathname)) return route.abort();
+    if (!allowMedia && /\.(mp4|webm|m3u8)$/.test(url.pathname)) return route.abort();
     if (url.pathname.endsWith('/site-tracking.js')) return route.fulfill({ contentType: 'text/javascript', body: '' });
     return route.continue();
   });
   const page = await context.newPage(), errors = [];
+  await page.addInitScript(() => {
+    window.auditEvents = [];
+    window.HubTracker = Object.fromEntries(['track', 'lead', 'initiateCheckout', 'purchase'].map(method => [method, (...args) => window.auditEvents.push({ method, args })]));
+  });
   page.on('pageerror', error => errors.push(error.message));
   t.after(() => assert.deepEqual(errors, [], 'page has no uncaught JavaScript error'));
   await page.goto(baseURL, { waitUntil: 'load' });
@@ -56,15 +60,20 @@ async function visit(t, width = 390) {
   return page;
 }
 
+async function revealVisibleImages(page) {
+  for (const image of await page.locator('body img:visible').all()) {
+    await image.scrollIntoViewIfNeeded();
+    await page.waitForFunction(node => node.naturalWidth > 0, await image.elementHandle());
+  }
+  await page.evaluate(() => scrollTo(0, 0));
+}
+
 test('mobile offers an immediate CTA, an early price and optional depth', async t => {
   for (const width of [390, 320]) await t.test(`${width}px`, async t => {
     const page = await visit(t, width);
+    assert.ok(await page.evaluate(() => window.auditEvents.some(event => event.method === 'track' && event.args[0] === 'LandingView' && event.args[1].lp_version === 'vagas-compacta-20261001' && event.args[1].traffic_classification === 'confirmed_bot')), 'version and bot classification accompany the view event');
     // Scroll the actual page so its own lazy loader reveals the closed-page media.
-    for (const image of await page.locator('main img:visible').all()) {
-      await image.scrollIntoViewIfNeeded();
-      await page.waitForFunction(node => node.naturalWidth > 0, await image.elementHandle());
-    }
-    await page.evaluate(() => scrollTo(0, 0));
+    await revealVisibleImages(page);
     const geometry = await page.evaluate(() => {
       const first = document.querySelector('main a.btn[href^="#"]');
       return {
@@ -120,6 +129,22 @@ test('mobile offers an immediate CTA, an early price and optional depth', async 
   });
 });
 
+test('real demonstration waits for playback and decodes after the visitor starts it', async t => {
+  const page = await visit(t, 390, true);
+  const requestedMedia = [];
+  page.on('request', request => { if (/\.(webm|mp4)$/.test(new URL(request.url()).pathname)) requestedMedia.push(request.url()); });
+  const video = page.locator('.compact-demo video');
+  await video.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(300);
+  assert.deepEqual(requestedMedia, [], 'scrolling does not download the video');
+  assert.ok(await video.evaluate(node => node.paused));
+  await video.evaluate(node => node.play());
+  await page.waitForFunction(() => document.querySelector('.compact-demo video').currentTime > 0.1);
+  assert.ok(await video.evaluate(node => node.videoWidth > 0 && !node.paused), 'real media produces video frames');
+  await video.evaluate(node => node.pause());
+  assert.ok(requestedMedia.length > 0);
+});
+
 test('three plans preserve the native Asaas journey and show the Pix total before QR', async t => {
   for (const [plan, installments, amount] of [['anual', '12', '997'], ['trimestral', '3', '357'], ['mensal', '1', '147']]) await t.test(plan, async t => {
     const page = await visit(t);
@@ -157,6 +182,7 @@ test('three plans preserve the native Asaas journey and show the Pix total befor
     await page.locator('#chkTabPix').click();
     assert.match(await page.locator('#chkPixView').innerText(), new RegExp(amount), 'Pix total is visible before generating a charge');
     assert.match(await page.locator('#chkPlanCompactPrice').innerText(), new RegExp(amount + '.*Pix'), 'summary uses the Pix total');
+    assert.ok(await page.locator('#chkPlanCompactPrice').evaluate(node => node.scrollWidth <= node.clientWidth), 'full price summary wraps within the dialog');
     if (artifacts) await page.screenshot({ path: path.join(artifacts, `390-${plan}-pix.png`) });
     await page.locator('#chkTabCard').click();
     assert.ok(!(await page.locator('#chkPlanCompactPrice').innerText()).includes('Pix'), 'card summary returns with its selected installments');
@@ -175,6 +201,7 @@ test('three plans preserve the native Asaas journey and show the Pix total befor
 
 test('desktop stays readable and legal links resolve to documents', async t => {
   const page = await visit(t, 1440);
+  await revealVisibleImages(page);
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
   if (artifacts) await page.screenshot({ path: path.join(artifacts, '1440-full.png'), fullPage: true });
   for (const href of ['/termos-de-servico/', '/politica-de-privacidade/']) {
