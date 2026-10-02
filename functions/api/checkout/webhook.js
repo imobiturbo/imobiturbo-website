@@ -14,6 +14,8 @@ import { checkoutDetails, CONSULTING_PRODUCT_ID } from "./_products.js";
 import { handleConsultingWebhook } from "./_consulting.js";
 import { CAL_ASAAS_REFERENCE_PREFIX, parseCalAsaasReference, resolveCalAsaasConsultingPayment } from "./_cal-asaas.js";
 
+import { identifyOficinaPayment } from "../oficina/_checkout.js";
+
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -53,6 +55,9 @@ export async function onRequestPost(context) {
       if (!providerResponse.ok) return Response.json({ ok: false, error: "asaas_verification_pending" }, { status: 503 });
       const verifiedPayment = await providerResponse.json();
       if (verifiedPayment.id !== payload.payment.id) return Response.json({ ok: false, error: "asaas_payment_mismatch" }, { status: 422 });
+      if (await identifyOficinaPayment(verifiedPayment, env)) {
+        return Response.json({ ok: true, status: "delegated_oficina" });
+      }
       // Cal order references must be resolved before checkoutDetails() can
       // apply the community default. The provider-owned reference stays intact.
       if (typeof verifiedPayment.externalReference === "string" &&
