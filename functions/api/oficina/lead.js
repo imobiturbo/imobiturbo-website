@@ -3,6 +3,7 @@ import { ensureCheckout } from "./_checkout.js";
 import { captureLead, leadExternalId } from "./_crm.js";
 
 export async function onRequestPost({ request, env = {} }) {
+  if (env.OFICINA_SETUP_READY !== "true") return json({ ok: false, error: "oficina_crm_unavailable" }, 503);
   if (!request.headers.get("content-type")?.includes("application/json")) return json({ ok: false, error: "json_required" }, 415);
   let input;
   try {

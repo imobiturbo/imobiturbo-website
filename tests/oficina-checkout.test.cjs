@@ -5,6 +5,7 @@ const { pathToFileURL } = require('node:url');
 const load = file => import(pathToFileURL(path.resolve(__dirname, '../functions/api', file)));
 const leadId = '550e8400-e29b-41d4-a716-446655440000';
 const env = {
+  OFICINA_SETUP_READY: 'true',
   ZEPTOMAIL_API_KEY: 'mock-zepto', ZEPTOMAIL_FROM_EMAIL: 'support@example.invalid',
   META_ACCESS_TOKEN: 'mock-meta', HUB_TRACKING_COLLECT_URL: 'https://hub.mock/api/collect', HUB_TRACKING_OPERATION_ID: 'operation_mock',
   ASAAS_API_KEY: 'mock-key', ASAAS_WEBHOOK_TOKEN: 'mock-webhook', OFICINA_ASAAS_WEBHOOK_TOKEN: 'mock-office-webhook-token-32-chars-long', OFICINA_SETUP_TOKEN: 'mock-office-setup-token-32-chars-long',
@@ -785,4 +786,34 @@ test('detached hosted checkout accepts native confirmation and inapplicable inst
   assert.throws(() => checkoutResult({ ...native, chargeType: 'RECURRENT' }));
   assert.throws(() => checkoutResult({ ...native, maxInstallmentCount: 12 }));
   assert.throws(() => checkoutResult({ ...native, callback: { successUrl: 'https://foreign.example/thanks' } }));
+});
+
+test('GET webhook schema without authToken is verified through an auth-only owned write', async t => {
+  const { ensureOficinaWebhook, OFICINA_WEBHOOK_NAME, OFICINA_WEBHOOK_URL, OFICINA_WEBHOOK_EVENTS } = await load('oficina/_setup.js');
+  const hook = { id: 'hook_office', name: OFICINA_WEBHOOK_NAME, url: OFICINA_WEBHOOK_URL, enabled: true, interrupted: false, apiVersion: 3, sendType: 'SEQUENTIALLY', events: OFICINA_WEBHOOK_EVENTS };
+  const writes = [];
+  t.mock.method(globalThis, 'fetch', async (input, options = {}) => {
+    const url = new URL(String(input));
+    if (options.method === 'PUT') {
+      assert.equal(url.pathname, '/v3/webhooks/hook_office');
+      const body = JSON.parse(options.body);
+      assert.deepEqual(body, { authToken: env.OFICINA_ASAAS_WEBHOOK_TOKEN });
+      writes.push(body); return Response.json(hook);
+    }
+    if (url.pathname === '/v3/webhooks') return Response.json({ data: [hook], hasMore: false });
+    return Response.json(hook);
+  });
+  const result = await ensureOficinaWebhook(env);
+  assert.equal(result.authConfigured, true);
+  assert.equal(result.authVerification, 'write_acknowledged');
+  assert.equal(writes.length, 1);
+  assert.equal(JSON.stringify(result).includes(env.OFICINA_ASAAS_WEBHOOK_TOKEN), false);
+});
+
+test('public registration stays closed until root acknowledges complete setup', async t => {
+  t.mock.method(globalThis, 'fetch', () => { throw new Error('must not access any dependency'); });
+  const pending = { ...env, OFICINA_SETUP_READY: '' };
+  assert.equal((await (await load('oficina/config.js')).onRequestGet({ env: pending })).status, 503);
+  assert.equal((await (await load('oficina/checkout.js')).onRequestPost({ env: pending })).status, 503);
+  assert.equal((await capture(pending)).status, 503);
 });
