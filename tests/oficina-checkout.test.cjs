@@ -63,14 +63,25 @@ function routes(t, opts = {}) {
     }
     if (url.href === env.OFICINA_CRM_FORM_URL) {
       if (opts.onCapture) await opts.onCapture(body);
+      if (opts.overwriteOnCapture) metadata = { form_source_id: 'source_mock' };
       assert.equal(options.headers.Authorization, 'Bearer mock-source-secret');
       return opts.captureError ? new Response('', { status: 500 }) : Response.json({ data: { lead_id: leadId } });
     }
     if (url.pathname === '/rest/v1/crm_leads') {
+      if (url.searchParams.has('contact.phone_number')) {
+        assert.equal(url.searchParams.get('organization_id'), 'eq.org_mock');
+        assert.equal(url.searchParams.get('source_metadata->>form_source_id'), 'eq.source_mock');
+        assert.equal(url.searchParams.get('pipeline_id'), 'eq.pipeline_mock');
+        assert.equal(url.searchParams.get('contact.organization_id'), 'eq.org_mock');
+        assert.equal(url.searchParams.get('contact.phone_number'), 'eq.+5511999999999');
+        assert.equal(url.searchParams.get('limit'), '2');
+        return Response.json(opts.officePhoneMatches ?? [{ id: leadId, custom_fields: fields, source_metadata: metadata }]);
+      }
       if (url.searchParams.has('contact.email_normalized')) {
         assert.equal(url.searchParams.get('organization_id'), 'eq.org_mock');
         assert.equal(url.searchParams.get('source_metadata->>form_source_id'), 'eq.source_mock');
         assert.equal(url.searchParams.get('contact.organization_id'), 'eq.org_mock');
+        assert.equal(url.searchParams.get('pipeline_id'), 'eq.pipeline_mock');
         assert.equal(url.searchParams.get('limit'), '2');
         return Response.json(opts.officeEmailMatches || []);
       }
@@ -849,4 +860,68 @@ test('setup migrates only the exact owned workshop hook away from blocked custom
   assert.equal(result.webhookId, 'hook_office');
   assert.equal(result.webhookUrl, OFICINA_WEBHOOK_URL);
   assert.equal(writes.length, 1);
+});
+
+
+test('signup snapshot survives paid OS metadata overwrite through Hub and Meta delivery', async t => {
+  const mock = routes(t, { overwriteOnCapture: true });
+  const tracking = { utm_source: 'meta-first', utm_campaign: 'office-first', utm_id: 'campaign-first',
+    imt_ad_id: 'ad-first', fbc: 'fb.1.first-click', fbp: 'fb.1.first-browser', visitor_id: 'visitor-first' };
+  assert.equal((await leadRequest({ ...lead, tracking })).status, 200);
+  assert.equal((await leadRequest({ ...lead, tracking: { utm_source: 'later' } })).status, 200);
+  assert.deepEqual(mock.fields()._oficina_tracking, tracking);
+  assert.equal((await webhook()).status, 200);
+  assert.deepEqual(mock.metadata(), { form_source_id: 'source_mock' });
+  assert.deepEqual(mock.fields()._oficina_tracking, tracking);
+  const hub = mock.calls.find(c => c.url.startsWith('https://hub.mock/')).body;
+  assert.equal(hub.utm_source, tracking.utm_source);
+  assert.equal(hub.utm_campaign, tracking.utm_campaign);
+  assert.equal(hub.imt_ad_id, tracking.imt_ad_id);
+  assert.equal(hub.visitorId, tracking.visitor_id);
+  assert.equal(hub.fbc, tracking.fbc);
+  const meta = mock.calls.find(c => c.url.startsWith('https://graph.facebook.com/')).body.data[0];
+  assert.equal(meta.user_data.fbc, tracking.fbc);
+  assert.equal(meta.user_data.fbp, tracking.fbp);
+  assert.equal(meta.user_data.external_id[0], require('node:crypto').createHash('sha256').update(tracking.visitor_id).digest('hex'));
+});
+
+test('legacy signup is snapshotted before paid capture overwrites attribution', async t => {
+  const tracking = { utm_source: 'legacy', utm_campaign: 'legacy-office', fbc: 'fb.1.legacy' };
+  const mock = routes(t, { overwriteOnCapture: true,
+    metadata: { form_source_id: 'source_mock', meta_form: { utm: tracking, answers: { visitor_id: 'legacy-visitor' } },
+      access_token: 'must-not-copy', email: 'private@example.invalid', utm_medium: 'x'.repeat(501) } });
+  assert.equal((await webhook()).status, 200);
+  assert.deepEqual(mock.fields()._oficina_tracking, { ...tracking, visitor_id: 'legacy-visitor' });
+  const patch = mock.calls.findIndex(c => c.body?.custom_fields?._oficina_tracking);
+  const capture = mock.calls.findIndex(c => c.url === env.OFICINA_CRM_FORM_URL);
+  assert.ok(patch >= 0 && patch < capture);
+  assert.equal(mock.calls.find(c => c.url.startsWith('https://hub.mock/')).body.utm_campaign, tracking.utm_campaign);
+});
+
+test('direct buyer without scoped signup gets no fabricated snapshot', async t => {
+  const mock = routes(t, { officePhoneMatches: [], overwriteOnCapture: true });
+  assert.equal((await webhook()).status, 200);
+  assert.equal(mock.fields()._oficina_tracking, undefined);
+});
+
+test('tracking CAS races preserve first non-empty campaign and unrelated payment state', async t => {
+  const journal = { pay_previous: { state: 'pago', hubPurchaseSent: true } };
+  const mock = routes(t, { fields: { _oficina_payments: journal }, conflicts: 1 });
+  const { saveOfficeTracking, sourceConfig } = await load('oficina/_crm.js');
+  const config = await sourceConfig(env);
+  await saveOfficeTracking(env, leadId, { utm_source: '', email: 'private@example.invalid' }, config);
+  assert.equal(mock.fields()._oficina_tracking, undefined);
+  const attempts = [{ utm_source: 'one', utm_campaign: 'one' }, { utm_source: 'two', utm_campaign: 'two' }];
+  await Promise.all(attempts.map(value => saveOfficeTracking(env, leadId, value, config)));
+  assert.ok(attempts.some(value => JSON.stringify(value) === JSON.stringify(mock.fields()._oficina_tracking)));
+  const first = structuredClone(mock.fields()._oficina_tracking);
+  await saveOfficeTracking(env, leadId, { utm_source: 'three', fbc: 'new' }, config);
+  assert.deepEqual(mock.fields()._oficina_tracking, first);
+  assert.deepEqual(mock.fields()._oficina_payments, journal);
+});
+
+test('ambiguous legacy signup identity fails before paid capture', async t => {
+  const mock = routes(t, { officePhoneMatches: [{ id: leadId }, { id: 'other' }] });
+  assert.equal((await webhook()).status, 503);
+  assert.equal(mock.calls.filter(c => c.url === env.OFICINA_CRM_FORM_URL).length, 0);
 });

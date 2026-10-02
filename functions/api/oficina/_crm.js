@@ -1,4 +1,4 @@
-import { OFICINA_REFERENCE } from "./_shared.js";
+import { OFICINA_REFERENCE, normalizeLead } from "./_shared.js";
 
 function settings(env) {
   const required = ["SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY", "OFICINA_CRM_ORGANIZATION_ID", "OFICINA_CRM_SOURCE_ID", "OFICINA_CRM_FORM_URL", "OFICINA_CRM_FORM_TOKEN"];
@@ -79,6 +79,48 @@ async function mutateOfficeFields(env, leadId, config, transition) {
   throw new Error("oficina_fields_cas_conflict");
 }
 
+// Reuse registration's allowlist and validation; never retain identity or tokens.
+export function officeTracking(input) {
+  const tracking = {};
+  if (!input || typeof input !== "object" || Array.isArray(input)) return tracking;
+  for (const [key, value] of Object.entries(input)) {
+    const normalized = normalizeLead({ name: "Tracking", email: "tracking@example.invalid",
+      phone: "+5511999999999", profile: "corretor", consent: true, tracking: { [key]: value } });
+    const allowed = normalized?.tracking[key];
+    if (typeof allowed === "string" && allowed.trim()) tracking[key] = allowed;
+  }
+  return tracking;
+}
+
+export function originTracking(row) {
+  return officeTracking({ ...row.source_metadata?.meta_form?.utm,
+    ...row.source_metadata?.meta_form?.answers, ...row.custom_fields, ...row.source_metadata });
+}
+
+export async function saveOfficeTracking(env, leadId, tracking, config) {
+  const incoming = officeTracking(tracking);
+  return mutateOfficeFields(env, leadId, config, (fields, current) => {
+    if (current.pipeline_id !== config.pipelineId) throw new Error("oficina_crm_lead_stage_mismatch");
+    const first = officeTracking(fields._oficina_tracking);
+    // First non-empty snapshot wins as a whole: never mix campaigns on replay.
+    if (Object.keys(first).length || !Object.keys(incoming).length) return { result: first };
+    return { fields: { ...fields, _oficina_tracking: incoming }, result: incoming };
+  });
+}
+
+export async function preserveOfficeTracking(env, phone, config) {
+  const rows = await rest(config, "crm_leads", {
+    select: "id,custom_fields,source_metadata,contact:contacts!inner(phone_number)",
+    organization_id: "eq." + env.OFICINA_CRM_ORGANIZATION_ID,
+    "source_metadata->>form_source_id": "eq." + env.OFICINA_CRM_SOURCE_ID,
+    pipeline_id: "eq." + config.pipelineId,
+    "contact.organization_id": "eq." + env.OFICINA_CRM_ORGANIZATION_ID,
+    "contact.phone_number": "eq." + phone, limit: "2",
+  });
+  if (rows.length > 1) throw new Error("oficina_phone_identity_ambiguous");
+  if (rows.length === 1) await saveOfficeTracking(env, rows[0].id, originTracking(rows[0]), config);
+}
+
 export async function recordPayment(env, leadId, payment, state, config) {
   if (!config.pipelineId) throw new Error("oficina_crm_source_not_ready");
   const stages = await rest(config, "crm_stages", {
@@ -152,6 +194,7 @@ export async function officePhoneByVerifiedEmail(env, email, config) {
     "source_metadata->>form_source_id": "eq." + env.OFICINA_CRM_SOURCE_ID,
     "contact.organization_id": "eq." + env.OFICINA_CRM_ORGANIZATION_ID,
     "contact.email_normalized": "eq." + email,
+    pipeline_id: "eq." + config.pipelineId,
     limit: "2",
   });
   if (rows.length !== 1 || !rows[0].contact || rows[0].contact.email_normalized !== email) throw new Error("oficina_email_identity_ambiguous");
