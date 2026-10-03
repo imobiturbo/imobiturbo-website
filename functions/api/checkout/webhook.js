@@ -1,6 +1,6 @@
 // Cloudflare Pages Function: /api/checkout/webhook
 // Processa webhooks de liquidação e cancelamento/reembolso: AbacatePay, Asaas e Hotmart para Imobiturbo
-// Dispara evento Purchase server-side garantido e idempotente para Meta CAPI (Graph API v25.0)
+// Purchase é enviado pelo Hub após webhook financeiro autenticado; esta rota enriquece contexto.
 // Dispara Kit de Boas-Vindas 4 em 1: CRM Lead (/0-funil-de-vendas) + E-mail ZeptoMail + WhatsApp Oficial + Sites D1
 // Processa cancelamento/reembolso revogando acessos e marcando lead como lost
 
