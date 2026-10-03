@@ -91,12 +91,36 @@ async function verifyPaymentContext(config, order, payment) {
 }
 export async function recordCommunityPayment(config, order, payment, eventId) {
   const ctx = await verifyPaymentContext(config, order, payment);
-  if (payment.deleted === true || !["CONFIRMED", "RECEIVED"].includes(payment.status)) {
+  const prior = await ledgerRows(config, "cobranca_pagamentos", { provider_payment_id: `eq.${payment.id}`, limit: "2" });
+  if (prior.length > 1) throw new CommunityError("community_payment_conflict", 422);
+  const refunds = Array.isArray(payment.refunds) ? payment.refunds.filter(r =>
+    ["PENDING", "DONE"].includes(r.status)).map(r => ({ status: r.status, amount_cents: cents(r.value) })) : [];
+  const negative = payment.deleted === true || ["REFUNDED", "REFUND_REQUESTED", "REFUND_IN_PROGRESS",
+    "CHARGEBACK_REQUESTED", "CHARGEBACK_DISPUTE", "AWAITING_CHARGEBACK_REVERSAL"].includes(payment.status) ||
+    refunds.length > 0 || ["REQUESTED", "IN_DISPUTE", "DISPUTE_LOST", "DONE"].includes(payment.chargeback?.status) ||
+    (prior.length > 0 && !["CONFIRMED", "RECEIVED"].includes(payment.status));
+  if (negative) {
+    const observation = { contract_version: 1, provider: "asaas", organization_id: config.organizationId,
+      environment: config.environment, checkout_order_id: order.id, payment_id: payment.id,
+      customer_id: customerId(payment), provider_subscription_id: payment.subscription || null,
+      provider_installment_id: payment.installment || null, billing_type: payment.billingType,
+      amount_cents: cents(payment.value), installment_number: ctx.number, status: payment.status,
+      deleted: Boolean(payment.deleted), refunds, chargeback_status: payment.chargeback?.status || null,
+      source: "asaas_payment_lookup" };
+    // A partial refund can retain RECEIVED. Include the verified observation
+    // in the journal identity so a later change cannot be swallowed as replay.
+    const bytes = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(canonicalJson(observation)))));
+    const hash = [...bytes].map(b => b.toString(16).padStart(2, "0")).join("");
+    observation.event_id = `review:${payment.id}:${hash}`;
+    const result = await communityDb(config, "rpc/record_community_financial_review", { p_review: observation });
+    if (result?.contract_version !== 1 || !UUID.test(result.review_id || "") || !["pending", "resolved"].includes(result.state))
+      throw new CommunityError("community_financial_review_pending");
+    return { paid: false, financialStatus: payment.status, fulfillment: "manual_financial_review", ctx };
+  }
+  if (!["CONFIRMED", "RECEIVED"].includes(payment.status)) {
     return { paid: false, financialStatus: payment.status, fulfillment: "manual_review_or_awaiting_payment", ctx };
   }
   let proof = confirmationProof(payment, config.environment);
-  const prior = await ledgerRows(config, "cobranca_pagamentos", { provider_payment_id: `eq.${payment.id}`, limit: "2" });
-  if (prior.length > 1) throw new CommunityError("community_payment_conflict", 422);
   // A later settlement GET must not replace a stronger first-confirmation proof.
   const old = prior[0]?.confirmation_proof;
   if (old && old.precision !== "unresolved") {

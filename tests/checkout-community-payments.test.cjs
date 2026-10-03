@@ -81,3 +81,31 @@ test('renewals do not reuse the client attribution eid as the financial event jo
   assert.ok(!events.has('client-attribution-eid'));
   assert.equal(new Set(h.state.records.map(p => p.competence_key)).size, 2);
 });
+
+test('verified refund after paid history is persisted before ACK without rewriting that history', async t => {
+  const h = harness(t, { order: orderFixture() });
+  await h.webhook();
+  h.state.prior = [{ status: 'CONFIRMED' }];
+  h.state.payments.get('pay_synthetic').status = 'REFUNDED';
+  const result = await h.webhook({ id: 'evt_refund' });
+  assert.equal(result.response.status, 200); assert.equal(result.data.paid, false);
+  assert.equal(h.state.records.length, 1); assert.equal(h.state.reviews.length, 1);
+  assert.equal(h.state.reviews[0].status, 'REFUNDED');
+  assert.equal(h.state.reviews[0].source, 'asaas_payment_lookup');
+});
+test('review storage failure requests redelivery rather than acknowledging a refund', async t => {
+  const h = harness(t, { order: orderFixture(), payment: paymentFixture(undefined, { status: 'REFUNDED' }), reviewFailure: true });
+  assert.equal((await h.webhook()).response.status, 503);
+  assert.equal(h.state.records.length, 0);
+});
+test('a partial refund retained as RECEIVED still requires manual financial review', async t => {
+  const h = harness(t, { order: orderFixture(), payment: paymentFixture(undefined, { status: 'RECEIVED', refunds: [{ status: 'DONE', value: 10 }] }) });
+  const result = await h.webhook();
+  assert.equal(result.data.paid, false); assert.equal(result.data.fulfillment, 'manual_financial_review');
+  assert.deepEqual(h.state.reviews[0].refunds, [{ status: 'DONE', amount_cents: 1000 }]);
+  assert.equal(h.state.records.length, 0);
+});
+test('a fresh pending checkout waits without creating a financial incident', async t => {
+  const h = harness(t, { order: orderFixture(), payment: paymentFixture(undefined, { status: 'PENDING' }) });
+  assert.equal((await h.status()).data.paid, false); assert.equal(h.state.reviews.length, 0);
+});
