@@ -51,6 +51,7 @@ function breadcrumbs(route) {
   if (route.kind === 'profile') items.push({ name: route.audience.name, path: route.path });
   if (['directory', 'state'].includes(route.kind)) items.push({ name: 'Cidades', path: '/servicos/cidades/' });
   if (route.state) items.push({ name: route.state.name, path: statePath(route.state) });
+  if (route.kind === 'state' && route.page > 1) items.push({ name: `Página ${route.page}`, path: route.path });
   if (route.city) items.push({ name: `${route.city.n} · ${route.city.u.toUpperCase()}`, path: route.path });
   return items;
 }
@@ -64,10 +65,10 @@ export function metadata(route) {
     description = 'Encontre orientações de marketing imobiliário, landing pages, tráfego pago e social media para sua cidade. Consulte dados do IBGE e faça seu diagnóstico.';
   } else if (route.kind === 'state') {
     heading = `Marketing imobiliário em ${route.state.name}`;
-    description = `Orientações de marketing imobiliário para ${route.total} municípios de ${route.state.name}. Encontre sua cidade e planeje captação, páginas e atendimento.`;
+    description = `Cidades de ${route.state.name}, página ${route.page} de ${route.pages}: orientações de marketing imobiliário. Encontre seu município e planeje captação e atendimento.`;
   } else if (route.kind === 'city') {
     heading = `${route.service.name} em ${route.city.n}, ${route.city.u.toUpperCase()}`;
-    description = `${route.service.shortName} em ${route.city.n}: contexto municipal, roteiro de captação e diagnóstico para corretores e empresas do mercado imobiliário.`;
+    description = `${route.service.shortName} em ${route.city.n}, ${route.city.u.toUpperCase()}: contexto municipal, roteiro de captação e diagnóstico para corretores e empresas do mercado imobiliário.`;
   } else if (route.kind === 'profile') {
     const audienceName = route.audience.slug === 'corretores' ? 'corretores de imóveis' : route.audience.name.toLowerCase();
     const label = { 'agencia-de-marketing-imobiliario': 'Marketing imobiliário', 'landing-pages-imobiliarias': 'Landing page', 'trafego-pago-imobiliario': 'Tráfego pago', 'social-media-imobiliario': 'Social media' }[route.service.slug];
@@ -78,7 +79,7 @@ export function metadata(route) {
     description = route.service.intro;
   }
   // Keep the full geographic identity even when a long municipal name exceeds a SERP preview.
-  const title = `${route.kind === 'hub' ? 'Marketing imobiliário e captação de leads' : heading} | Imobiturbo`;
+  const title = `${route.kind === 'hub' ? 'Marketing imobiliário e captação de leads' : heading}${route.kind === 'state' && route.page > 1 ? ` · Página ${route.page}` : ''} | Imobiturbo`;
   return { title, heading, description: description.length > 160 ? `${description.slice(0, 156).replace(/\s+\S*$/, '')}…` : description };
 }
 const list = items => `<ul>${items.map(text => `<li>${escape(text)}</li>`).join('')}</ul>`;
