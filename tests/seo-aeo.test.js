@@ -9,9 +9,11 @@ test("sitemap.xml exists, is valid XML, and covers all canonical routes", () => 
   const sitemapPath = path.join(root, "sitemap.xml");
   assert.ok(fs.existsSync(sitemapPath), "sitemap.xml must exist in root");
 
-  const content = fs.readFileSync(sitemapPath, "utf8");
-  assert.ok(content.startsWith("<?xml"), "sitemap must start with XML declaration");
-  assert.ok(content.includes("<urlset"), "sitemap must include <urlset>");
+  const { index, content } = require('./sitemap-sources.cjs')(root);
+  assert.ok(index.startsWith("<?xml"), "sitemap must start with XML declaration");
+  assert.ok(index.includes("<sitemapindex"), "sitemap must declare its shards");
+  assert.ok(index.includes("https://www.imobiturbo.com.br/sitemaps/institucional.xml"), "index must link the institutional URL set");
+  assert.ok(content.includes("<urlset"), "child sitemap must include <urlset>");
 
   const requiredUrls = [
     "https://www.imobiturbo.com.br/",

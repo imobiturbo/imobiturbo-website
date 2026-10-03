@@ -168,7 +168,7 @@ export const SERVICES = [
       { question: 'Qual é o investimento necessário para anunciar?', answer: 'Depende do objetivo, público, canais e capacidade de atendimento. Não existe um valor único definido aqui. O diagnóstico considera a verba disponível e distingue investimento em mídia de qualquer serviço que venha a ser acordado.' },
       { question: 'O diagnóstico já inclui gestão de campanhas?', answer: 'Não automaticamente. A conversa inicial identifica a necessidade e permite discutir o escopo. Gestão recorrente, criação de anúncios, acompanhamento e acessos precisam ser confirmados antes de qualquer execução.' },
       { question: 'Tráfego pago garante vendas ou contatos qualificados?', answer: 'Não. Oferta, mercado, mensagem, qualificação e atendimento influenciam o resultado. A avaliação deve considerar o caminho até a conversa e a evolução comercial, sem promessa de custo, volume ou venda.' },
-      { question: 'Preciso anunciar para começar o diagnóstico?', answer: 'Não. Acesse /#diagnostico com sua oferta e seu principal desafio. Se já anuncia, leve exemplos e informações de atendimento; se ainda não anuncia, a conversa ajuda a avaliar as condições para começar.' },
+      { question: 'Preciso anunciar para começar o diagnóstico?', answer: 'Não. Preencha o diagnóstico desta página com sua oferta e seu principal desafio. Se já anuncia, leve exemplos e informações de atendimento; se ainda não anuncia, a conversa ajuda a avaliar as condições para começar.' },
     ],
     profiles: {
       corretores: {
