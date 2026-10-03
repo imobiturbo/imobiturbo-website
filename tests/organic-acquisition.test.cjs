@@ -19,6 +19,18 @@ test('cada município tem identidade geográfica e quatro rotas canônicas sem c
   assert.equal(resolveRoute('/servicos/social-media-imobiliario/mt/boa-esperanca-do-norte/').city.p, null);
 });
 
+test('municípios homônimos e páginas do diretório conservam títulos e descrições distintos', async () => {
+  const { localities, municipalPaths, nationalPaths, resolveRoute, metadata } = await site;
+  const paths = [...nationalPaths(), ...localities.states.flatMap(state => [...municipalPaths(state.slug)])];
+  const titles = new Map(), descriptions = new Map();
+  for (const routePath of paths) {
+    const meta = metadata(resolveRoute(routePath));
+    assert.ok(!titles.has(meta.title), `${routePath} duplicates title of ${titles.get(meta.title)}`);
+    assert.ok(!descriptions.has(meta.description), `${routePath} duplicates description of ${descriptions.get(meta.description)}`);
+    titles.set(meta.title, routePath); descriptions.set(meta.description, routePath);
+  }
+});
+
 test('cidade inválida e combinações desconhecidas retornam 404, sem soft404 ou redirecionamento genérico', async () => {
   const { handlePage } = await site;
   for (const p of ['/servicos/inexistente/', '/servicos/trafego-pago-imobiliario/sp/rio-de-janeiro/', '/servicos/cidades/xx/', '/servicos/cidades/sp/pagina/999/', '/servicos/agencia-de-marketing-imobiliario/para/diretores/', '/servicos/trafego-pago-imobiliario/sp/sao-paulo/extra/']) {
