@@ -1,5 +1,5 @@
 import { COMMUNITY_PLANS, COMMUNITY_PRODUCT_ID, communityReferenceId } from "./_products.js";
-import { CommunityError, communityConfig, communityDb, asaasGet, asaasList, findCommunityOrder,
+import { CommunityError, communityConfig, communityDb, asaasGet, findCommunityOrder,
   resolveCommunityOrder, reconcileCommunityOrder, assertCommunityOrder, customerId, cents, CLUB_ORGANIZATION_ID, UUID } from "./_community-orders.js";
 
 export function communityCalendarPeriod(date, months) {
@@ -151,6 +151,67 @@ export async function recordCommunityPayment(config, order, payment, eventId) {
         Date.parse(result[key]) !== Date.parse(ctx.period[key]))) throw new CommunityError("community_financial_record_pending");
   return { paid: true, result, confirmation: proof.precision, ctx, fulfillment: "provisioning_pending" };
 }
+
+async function reconcileOrderPayments(config, order, requestedPayment, financialEventId) {
+  const deadline = Date.now() + 60000;
+  const checkDeadline = () => {
+    if (Date.now() >= deadline) throw new CommunityError("community_reconciliation_timeout");
+  };
+  const ids = new Set();
+  if (requestedPayment) {
+    if (!/^pay_[A-Za-z0-9_]+$/.test(requestedPayment.id || "")) throw new CommunityError("community_payment_identity_conflict", 422);
+    ids.add(requestedPayment.id);
+  }
+  const path = order.provider_subscription_id ? `/subscriptions/${encodeURIComponent(order.provider_subscription_id)}/payments` :
+    order.provider_installment_id ? `/installments/${encodeURIComponent(order.provider_installment_id)}/payments` : null;
+  if (path) {
+    let offset = 0, complete = false;
+    const listed = new Set();
+    // Bounded complete enumeration. A timeout, repeated page, malformed page or
+    // exhausted bound must fail the caller, never ACK a partially scanned order.
+    for (let page = 0; page < 20; page++) {
+      checkDeadline();
+      const data = await asaasGet(config, `${path}?limit=100&offset=${offset}`);
+      checkDeadline();
+      if (!Array.isArray(data.data) || data.data.length > 100 || typeof data.hasMore !== "boolean" ||
+          (data.offset != null && data.offset !== offset)) throw new CommunityError("community_gateway_list_incomplete");
+      for (const row of data.data) {
+        if (!/^pay_[A-Za-z0-9_]+$/.test(row?.id || "")) throw new CommunityError("community_payment_identity_conflict", 422);
+        if (listed.has(row.id)) throw new CommunityError("community_gateway_list_incomplete");
+        listed.add(row.id); ids.add(row.id);
+      }
+      if (!data.hasMore) { complete = true; break; }
+      if (!data.data.length) throw new CommunityError("community_gateway_list_incomplete");
+      offset += data.data.length;
+    }
+    if (!complete) throw new CommunityError("community_gateway_list_incomplete");
+  }
+  // A known first charge/event can precede the list's eventual visibility. It
+  // still needs its own verified GET and remains subject to all binding guards.
+  if (order.provider_payment_id) ids.add(order.provider_payment_id);
+  let selected = null, reviewed = false;
+  for (const id of ids) {
+    checkDeadline();
+    const payment = await asaasGet(config, `/payments/${encodeURIComponent(id)}`);
+    checkDeadline();
+    if (payment.id !== id) throw new CommunityError("community_payment_identity_conflict", 422);
+    // Never filter by a stale list status: deleted/refunded/partial-refund,
+    // settled and fresh pending payments all use the same verified processor.
+    const financial = await recordCommunityPayment(config, order, payment,
+      id === requestedPayment?.id ? financialEventId : undefined);
+    checkDeadline();
+    if (financial.fulfillment === "manual_financial_review") reviewed = true;
+    const current = { payment, financial };
+    if (requestedPayment) {
+      if (id === requestedPayment.id) selected = current;
+    } else if (order.provider_installment_id || !order.provider_subscription_id) {
+      if (id === order.provider_payment_id) selected = current;
+    } else if (!selected || String(payment.originalDueDate) > String(selected.payment.originalDueDate) ||
+        (payment.originalDueDate === selected.payment.originalDueDate && payment.id < selected.payment.id)) selected = current;
+  }
+  return { selected, reviewed };
+}
+
 export async function communityOrderStatus(config, inputOrder, eventId, requestedPayment, financialEventId) {
   const order = await reconcileCommunityOrder(config, inputOrder);
   const s = order.sold_snapshot;
@@ -162,29 +223,10 @@ export async function communityOrderStatus(config, inputOrder, eventId, requeste
     expiresAt: new Date(Date.parse(order.created_at) + 30 * 60 * 1000).toISOString() };
   if (order.status !== "created") return { ...meta, paid: false, status: order.status.toUpperCase(), orderStatus: order.status,
     recoverable: true, retryCreationAllowed: order.status === "failed" && Boolean(order.result?.failure_proof) };
-  let payment = requestedPayment || null;
-  if (payment) {
-    const verified = await asaasGet(config, `/payments/${encodeURIComponent(payment.id)}`);
-    if (verified.id !== payment.id) throw new CommunityError("community_payment_identity_conflict", 422);
-    payment = verified;
-  } else if (order.provider_subscription_id) {
-    const rows = await asaasList(config, `/subscriptions/${encodeURIComponent(order.provider_subscription_id)}/payments`);
-    // Every paid competence is reconciled, not an arbitrary limit=1 item.
-    for (const row of rows) {
-      if (row.subscription !== order.provider_subscription_id) throw new CommunityError("community_subscription_conflict", 422);
-      if (["CONFIRMED", "RECEIVED"].includes(row.status) && !row.deleted) {
-        const verified = await asaasGet(config, `/payments/${encodeURIComponent(row.id)}`);
-        if (verified.id !== row.id) throw new CommunityError("community_payment_identity_conflict", 422);
-        await recordCommunityPayment(config, order, verified, `lookup:${verified.id}:${verified.status}`);
-      }
-    }
-    const sorted = [...rows].sort((a, b) => String(b.originalDueDate).localeCompare(String(a.originalDueDate)) || String(a.id).localeCompare(String(b.id)));
-    if (sorted.length) payment = await asaasGet(config, `/payments/${encodeURIComponent(sorted[0].id)}`);
-  } else if (order.provider_payment_id) payment = await asaasGet(config, `/payments/${encodeURIComponent(order.provider_payment_id)}`);
-  if (!payment) return { ...meta, paymentId: order.provider_subscription_id, subscriptionId: order.provider_subscription_id,
+  const { selected, reviewed } = await reconcileOrderPayments(config, order, requestedPayment, financialEventId);
+  if (!selected) return { ...meta, paymentId: order.provider_subscription_id, subscriptionId: order.provider_subscription_id,
     status: "PENDING", paid: false, orderStatus: "created", recoverable: true };
-  // Attribution eid is never the journal identity for recurring competencies.
-  const financial = await recordCommunityPayment(config, order, payment, financialEventId);
+  const { payment, financial } = selected;
   let pix = null;
   if (!financial.paid && payment.billingType === "PIX" && !payment.deleted && Date.parse(meta.expiresAt) > Date.now()) {
     try {
@@ -194,7 +236,7 @@ export async function communityOrderStatus(config, inputOrder, eventId, requeste
   }
   const result = { ...meta, eventId: eventId || `purch:${financial.ctx.competenceKey}`, orderId: financial.ctx.orderId, paymentId: payment.id, ...(order.provider_subscription_id ? { subscriptionId: order.provider_subscription_id } : {}),
     status: payment.status, paid: financial.paid, isApproved: financial.paid, orderStatus: "created", chargeAmount: cents(payment.value) / 100,
-    fulfillment: financial.fulfillment, confirmationPrecision: financial.confirmation || null,
+    fulfillment: reviewed ? "manual_financial_review" : financial.fulfillment, confirmationPrecision: financial.confirmation || null,
     ...(financial.result ? { activationId: financial.result.activation_id, products: financial.result.products,
       periodStart: financial.result.period_start, periodEnd: financial.result.period_end } : {}),
     invoiceUrl: payment.invoiceUrl, deleted: Boolean(payment.deleted), ...(pix ? { pix } : payment.billingType === "PIX" && !financial.paid ? { pixPending: true } : {}) };

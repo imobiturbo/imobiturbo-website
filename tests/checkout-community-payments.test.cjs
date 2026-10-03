@@ -1,6 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { harness, load, orderFixture, paymentFixture, env, ORDER_ID } = require('./checkout-community-routes.test.cjs');
+const { harness, load, orderFixture, paymentFixture, env, ORDER_ID,
+  recurringOrderFixture, installmentOrderFixture, historicalRefundFixture } = require('./checkout-community-routes.test.cjs');
 test('calendar periods clamp month ends and leap years', async () => {
   const { communityCalendarPeriod } = await load('_community-payments.js');
   for (const [date, months, expected] of [['2024-01-31',1,'2024-02-29'],['2024-02-29',12,'2025-02-28'],['2026-11-30',3,'2027-02-28'],['2026-12-31',1,'2027-01-31']]) {
@@ -108,4 +109,100 @@ test('a partial refund retained as RECEIVED still requires manual financial revi
 test('a fresh pending checkout waits without creating a financial incident', async t => {
   const h = harness(t, { order: orderFixture(), payment: paymentFixture(undefined, { status: 'PENDING' }) });
   assert.equal((await h.status()).data.paid, false); assert.equal(h.state.reviews.length, 0);
+});
+
+test('lost October refund is reconciled even when the latest November subscription payment is fresh PENDING', async t => {
+  const order = recurringOrderFixture(), h = harness(t, { order, listPageSize: 1 });
+  assert.equal((await h.status()).data.paid, true);
+  const positive = structuredClone(h.state.records[0]);
+  h.state.prior = [{ provider_payment_id: positive.payment_id, status: 'RECEIVED', confirmation_proof: positive.confirmation_proof }];
+  const prior = structuredClone(h.state.prior);
+  h.state.payments.get('pay_synthetic').status = 'REFUNDED';
+  h.state.payments.set('pay_pending', paymentFixture(order, { id: 'pay_pending', originalDueDate: '2026-11-03', status: 'PENDING', confirmedDate: null }));
+  // The list can lag the exact provider GET. Its PENDING label must never hide
+  // the refunded historical charge or itself become an incident.
+  h.state.listRows = [...h.state.payments.values()].map(p => ({ ...p, status: 'PENDING' }));
+  const result = await h.status();
+  assert.equal(result.response.status, 200); assert.equal(result.data.status, 'PENDING'); assert.equal(result.data.paid, false);
+  assert.equal(result.data.paymentId, 'pay_pending'); assert.equal(result.data.fulfillment, 'manual_financial_review');
+  assert.equal(h.state.reviews.length, 1); assert.equal(h.state.reviews[0].payment_id, 'pay_synthetic');
+  assert.equal(h.state.reviews[0].status, 'REFUNDED'); assert.equal(h.state.reviews[0].provider_subscription_id, 'sub_synthetic');
+  assert.deepEqual(h.state.records, [positive]); assert.deepEqual(h.state.prior, prior);
+  const pages = h.state.calls.filter(c => c.path === '/v3/subscriptions/sub_synthetic/payments');
+  assert.ok(pages.some(c => new URL(c.url).searchParams.get('offset') === '1'));
+  assert.ok(h.state.calls.some(c => c.path === '/v3/payments/pay_synthetic' && c.method === 'GET'));
+  await h.status(); assert.equal(h.state.reviews.length, 1); assert.deepEqual(h.state.records, [positive]);
+});
+
+for (const negative of [
+  { status: 'REFUNDED' },
+  { status: 'RECEIVED', refunds: [{ status: 'DONE', value: 10 }] },
+  { status: 'RECEIVED', chargeback: { status: 'REQUESTED' } },
+  { status: 'RECEIVED', deleted: true },
+]) test(`late installment chunk ${JSON.stringify(negative)} uses the same review journal and one purchase period`, async t => {
+  const order = installmentOrderFixture(), h = harness(t, { order, listPageSize: 2 });
+  assert.equal((await h.status()).data.paid, true);
+  const positive = structuredClone(h.state.records[0]);
+  h.state.prior = [{ provider_payment_id: 'pay_synthetic', status: 'CONFIRMED', confirmation_proof: positive.confirmation_proof },
+    { provider_payment_id: 'pay_part_12', status: 'RECEIVED' }];
+  const prior = structuredClone(h.state.prior);
+  for (let number = 2; number <= 12; number++) {
+    const date = new Date(Date.UTC(2026, 9 + number - 1, 3)).toISOString().slice(0, 10);
+    h.state.payments.set(`pay_part_${number}`, paymentFixture(order, { id: `pay_part_${number}`, installmentNumber: number,
+      originalDueDate: date, status: 'PENDING', confirmedDate: null, ...(number === 12 ? negative : {}) }));
+  }
+  const event = { event: 'PAYMENT_CREATED', payment: { id: 'pay_part_2', status: 'PENDING' } };
+  const result = await h.webhook(event);
+  assert.equal(result.response.status, 200); assert.equal(result.data.paid, false);
+  assert.equal(result.data.fulfillment, 'manual_financial_review');
+  assert.equal(h.state.reviews.length, 1); assert.equal(h.state.reviews[0].payment_id, 'pay_part_12');
+  assert.equal(h.state.reviews[0].provider_installment_id, 'ins_synthetic'); assert.equal(h.state.reviews[0].installment_number, 12);
+  assert.equal(h.state.reviews[0].source, 'asaas_payment_lookup');
+  assert.ok(h.state.records.every(p => p.competence_key === positive.competence_key && p.period_end === positive.period_end));
+  assert.equal(positive.period_end, '2027-10-03T00:00:00.000Z'); assert.deepEqual(h.state.prior, prior);
+  const pages = h.state.calls.filter(c => c.path === '/v3/installments/ins_synthetic/payments');
+  assert.ok(pages.some(c => new URL(c.url).searchParams.get('offset') === '10'));
+  assert.ok(h.state.calls.some(c => c.path === '/v3/payments/pay_part_12' && c.method === 'GET'));
+  await h.webhook({ ...event, id: 'evt_repeat' }); assert.equal(h.state.reviews.length, 1);
+  const lookup = await h.status();
+  assert.equal(lookup.data.paid, true); assert.equal(lookup.data.paymentId, 'pay_synthetic');
+  assert.equal(lookup.data.fulfillment, 'manual_financial_review'); assert.equal(lookup.data.periodEnd, positive.period_end);
+  assert.equal(h.state.reviews.length, 1); assert.deepEqual(h.state.prior, prior);
+  assert.ok(h.state.calls.filter(c => c.host === 'api.asaas.com').every(c => c.method === 'GET'));
+});
+
+for (const change of [
+  { customer: 'cus_other' }, { subscription: 'sub_other' }, { billingType: 'PIX' }, { value: 1 },
+  { externalReference: 'community:99999999-9999-4999-8999-999999999999' },
+]) test(`historical negative cannot bypass live binding/snapshot guards ${JSON.stringify(change)}`, async t => {
+  const h = historicalRefundFixture(t);
+  h.state.listRows = [...h.state.payments.values()].map(p => ({ ...p }));
+  Object.assign(h.state.payments.get('pay_synthetic'), change);
+  const result = await h.webhook({ payment: { id: 'pay_pending' } });
+  assert.equal(result.response.status, 422); assert.equal(h.state.reviews.length, 0); assert.equal(h.state.records.length, 0);
+});
+
+for (const change of [
+  { environment: 'sandbox' }, { provider: 'other' }, { organization_id: '99999999-9999-4999-8999-999999999999' },
+]) test(`negative enumeration keeps the configured provider/environment/tenant namespace ${JSON.stringify(change)}`, async t => {
+  const h = historicalRefundFixture(t); Object.assign(h.state.order, change);
+  assert.equal((await h.webhook({ payment: { id: 'pay_pending' } })).response.status, 422);
+  assert.equal(h.state.reviews.length, 0); assert.equal(h.state.records.length, 0);
+});
+
+test('negative enumeration cannot replace the frozen subscription snapshot', async t => {
+  const h = historicalRefundFixture(t), order = h.state.order;
+  h.state.subscriptions = [{ customer_id: order.provider_customer_id, email: order.buyer_email,
+    provider_subscription_id: order.provider_subscription_id,
+    sold_snapshot: { ...order.sold_snapshot, contract_total_cents: 1 } }];
+  assert.equal((await h.webhook({ payment: { id: 'pay_pending' } })).response.status, 422);
+  assert.equal(h.state.reviews.length, 0); assert.equal(h.state.records.length, 0);
+});
+
+test('a later pending status of a previously paid charge remains a review, unlike a fresh pending renewal', async t => {
+  const h = historicalRefundFixture(t);
+  h.state.payments.get('pay_synthetic').status = 'PENDING';
+  const result = await h.status(); assert.equal(result.response.status, 200); assert.equal(result.data.paid, false);
+  assert.equal(h.state.reviews.length, 1); assert.equal(h.state.reviews[0].payment_id, 'pay_synthetic');
+  assert.equal(h.state.reviews[0].status, 'PENDING'); assert.equal(h.state.records.length, 0);
 });
