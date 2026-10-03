@@ -130,3 +130,62 @@ test('subscription ID transitions to actual payment without resetting the window
   const { session } = harness(); session.save({ ...record, paymentId: 'sub_synthetic', method: 'CREDIT_CARD' });
   await session.check(); assert.equal(session.read().paymentId, record.paymentId); assert.equal(session.read().expiresAt, record.expiresAt);
 });
+
+const { createCommunityIntent, COMMUNITY_INTENT_KEY } = require('../vagas/checkout-session.js');
+const financialKey = '22222222-2222-4222-8222-222222222222';
+const secondKey = '66666666-6666-4666-8666-666666666666';
+const intentPayload = { plan: 'anual', paymentMethod: 'CREDIT_CARD', installments: 12, name: 'Auditoria Imobiturbo',
+  email: 'auditoria@example.invalid', phone: '11963824751', eventId: 'original-attribution', cpfCnpj: '52998224725',
+  creditCard: { number: '4111111111111111', ccv: '123' }, tracking: { visitorId: 'synthetic' } };
+function intentHarness(response = { success: true, orderStatus: 'uncertain', paid: false }) {
+  const saved = storage(), calls = [];
+  const options = { storage: saved, uuid: () => financialKey, fetch: async url => { calls.push(url); return Response.json(response); } };
+  return { saved, calls, options, intent: createCommunityIntent(options), response };
+}
+test('financial intention is durably persisted before POST, without CPF/card/buyer/tracking values', async () => {
+  const h = intentHarness(); const attempt = await h.intent.begin(intentPayload);
+  assert.equal(attempt.payload.idempotencyKey, financialKey);
+  assert.notEqual(attempt.payload.idempotencyKey, attempt.payload.eventId);
+  const persisted = JSON.parse(h.saved.getItem(COMMUNITY_INTENT_KEY));
+  assert.equal(persisted.state, 'submitting'); assert.equal(h.calls.length, 0);
+  for (const secret of [intentPayload.email, intentPayload.name, intentPayload.phone, intentPayload.cpfCnpj, intentPayload.creditCard.number, 'visitorId']) {
+    assert.ok(!h.saved.getItem(COMMUNITY_INTENT_KEY).includes(secret));
+  }
+});
+test('lost response and reload retain the same immutable intention and original attribution, without TTL', async () => {
+  const h = intentHarness(); await h.intent.begin(intentPayload); h.intent.uncertain();
+  const reopened = createCommunityIntent(h.options);
+  const recovered = await reopened.begin({ ...intentPayload, plan: 'mensal', eventId: 'different-attribution' });
+  assert.ok(!recovered.payload); assert.equal(recovered.result.eventId, intentPayload.eventId);
+  assert.equal(reopened.read().idempotencyKey, financialKey);
+  assert.equal(reopened.read().plan, 'anual'); assert.equal(reopened.read().expiresAt, undefined);
+  assert.equal(new URL(h.calls[0], 'https://example.invalid').searchParams.get('idempotencyKey'), financialKey);
+});
+test('MISSING retries the same key; it cannot rotate an uncertain in-flight intention after buyer/offer changes', async () => {
+  const h = intentHarness({ success: true, status: 'MISSING', retryCreationAllowed: true });
+  await h.intent.begin(intentPayload); h.intent.uncertain();
+  const retry = await createCommunityIntent(h.options).begin({ ...intentPayload, cpfCnpj: '11111111111' });
+  assert.equal(retry.payload.idempotencyKey, financialKey);
+  const changed = await createCommunityIntent({ ...h.options, uuid: () => secondKey }).begin({ ...intentPayload, plan: 'mensal' });
+  assert.ok(!changed.payload); assert.equal(h.intent.read().idempotencyKey, financialKey);
+});
+test('authoritative failed/no-effect result permits correction; successful creation never permits another POST', async () => {
+  const h = intentHarness({ success: true, orderStatus: 'failed', retryCreationAllowed: true });
+  await h.intent.begin(intentPayload);
+  const corrected = await createCommunityIntent(h.options).begin({ ...intentPayload, creditCard: { number: '4222222222222222' } });
+  assert.equal(corrected.payload.idempotencyKey, financialKey);
+  Object.assign(h.response, { orderStatus: 'created', retryCreationAllowed: false, paymentId: 'pay_synthetic' });
+  const replay = await h.intent.begin(intentPayload); assert.ok(!replay.payload); assert.equal(replay.result.paymentId, 'pay_synthetic');
+});
+test('blocked/corrupt persistent storage cannot silently replace the financial key', async () => {
+  const broken = createCommunityIntent({ storage: { getItem: () => null, setItem: () => { throw new Error('blocked storage'); } }, uuid: () => financialKey });
+  await assert.rejects(broken.begin(intentPayload));
+  const h = intentHarness(); h.saved.setItem(COMMUNITY_INTENT_KEY, '{broken');
+  await assert.rejects(h.intent.begin(intentPayload));
+  assert.equal(h.saved.getItem(COMMUNITY_INTENT_KEY), '{broken');
+});
+test('managed payment deadline does not unlock a new charge during authoritative pending status', async () => {
+  const { session, state } = harness(); session.save({ ...record, managedCommunity: true, checkoutOrderId: financialKey });
+  state.clock += TTL * 50; state.response.managedCommunity = true;
+  await session.check(); assert.equal(session.read().paymentId, record.paymentId); assert.equal(state.expired.length, 0);
+});

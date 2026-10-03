@@ -3,6 +3,8 @@ import { dispatchVerifiedPurchaseToHub } from "./_tracking.js";
 import { checkoutDetails, isAsaasPaymentPaid, isValidConsultingPayment, CONSULTING_PRODUCT_ID, CONSULTING_HUB_OFFER_ID } from "./_products.js";
 import { dispatchConsultingCashflowToHub } from "./_cashflow.js";
 import { sendPostPurchaseNotifications } from "./_notifications.js";
+import { communityIntentStatus, tryCommunityPayment, communityErrorResponse } from "./_community-payments.js";
+import { asaasConnection } from "./_community-orders.js";
 // Consulta status de aprovação de pagamentos no AbacatePay ou Asaas
 // Dispara evento Purchase server-side para Meta CAPI (Graph API v25.0) quando pago
 
@@ -26,6 +28,15 @@ export async function onRequestGet(context) {
 
   const gateway = url.searchParams.get("gateway") || "abacatepay";
   const paymentId = url.searchParams.get("paymentId");
+
+  if (gateway === "asaas" && url.searchParams.has("idempotencyKey")) {
+    try {
+      const managed = await communityIntentStatus(env, url.searchParams.get("idempotencyKey"), url.searchParams.get("eventId"));
+      await trackManagedPurchase(context, managed);
+      return Response.json(managed, { headers: CORS_HEADERS });
+    }
+    catch (error) { return communityErrorResponse(error, CORS_HEADERS); }
+  }
 
   if (!paymentId) {
     return new Response(JSON.stringify({ success: false, error: "paymentId obrigatório" }), {
@@ -103,9 +114,10 @@ export async function onRequestGet(context) {
         { status: 400, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
       );
     } else if (gateway === "asaas") {
-      let asaasUrl = `https://api.asaas.com/v3/payments/${encodeURIComponent(paymentId)}`;
+      const asaasBase = asaasConnection(env).base;
+      let asaasUrl = `${asaasBase}/payments/${encodeURIComponent(paymentId)}`;
       if (paymentId.startsWith("sub_")) {
-        asaasUrl = `https://api.asaas.com/v3/subscriptions/${encodeURIComponent(paymentId)}/payments?limit=1`;
+        asaasUrl = `${asaasBase}/subscriptions/${encodeURIComponent(paymentId)}/payments?limit=1`;
       }
       const resp = await fetch(
         asaasUrl,
@@ -118,7 +130,7 @@ export async function onRequestGet(context) {
       let data = (rawData.data && rawData.data[0]) || rawData;
       let subscriptionOnly = false;
       if (resp.ok && paymentId.startsWith('sub_') && Array.isArray(rawData.data) && rawData.data.length === 0) {
-        const subscriptionResponse = await fetch(`https://api.asaas.com/v3/subscriptions/${encodeURIComponent(paymentId)}`, {
+        const subscriptionResponse = await fetch(`${asaasBase}/subscriptions/${encodeURIComponent(paymentId)}`, {
           headers: { access_token: asaasKey }, signal: AbortSignal.timeout(5000),
         });
         if (!subscriptionResponse.ok) throw new Error('Não foi possível consultar a assinatura.');
@@ -127,15 +139,28 @@ export async function onRequestGet(context) {
       }
 
       if (resp.ok && data.id) {
+        if (paymentId.startsWith("sub_") && !subscriptionOnly && data.subscription !== paymentId) {
+          return Response.json({ success: false, error: "Pagamento divergente." }, { status: 422, headers: CORS_HEADERS });
+        }
+        if ((!paymentId.startsWith("sub_") && data.id !== paymentId) || (subscriptionOnly && data.id !== paymentId)) {
+          return Response.json({ success: false, error: "Pagamento divergente." }, { status: 422, headers: CORS_HEADERS });
+        }
         if (await identifyOficinaPayment(data, env)) {
           return Response.json({ success: false, error: "oficina_status_via_webhook" }, { status: 409, headers: CORS_HEADERS });
         }
+        try {
+          const managed = await tryCommunityPayment({ env, payment: data, eventId: url.searchParams.get("eventId") });
+          if (managed) {
+            await trackManagedPurchase(context, managed);
+            return Response.json(managed, { headers: CORS_HEADERS });
+          }
+        } catch (error) { return communityErrorResponse(error, CORS_HEADERS); }
         const details = checkoutDetails(data);
         if ((!paymentId.startsWith('sub_') && data.id !== paymentId) || (subscriptionOnly && data.id !== paymentId)) {
           return Response.json({ success: false, error: 'Pagamento divergente.' }, { status: 422, headers: CORS_HEADERS });
         }
         const validConsultingPayment = details.productId !== CONSULTING_PRODUCT_ID || isValidConsultingPayment(data, details);
-        const isPaid = !subscriptionOnly && isAsaasPaymentPaid(data) &&
+        const isPaid = !subscriptionOnly && details.productId !== "unknown" && isAsaasPaymentPaid(data) &&
           validConsultingPayment;
         if (!subscriptionOnly && details.productId === CONSULTING_PRODUCT_ID && validConsultingPayment) {
           const delivery = dispatchConsultingCashflowToHub({ env, payment: data });
@@ -256,6 +281,15 @@ export async function onRequestGet(context) {
       { status: 500, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
     );
   }
+}
+
+async function trackManagedPurchase(context, managed) {
+  if (!managed.paid) return;
+  const args = { env: context.env, request: context.request, paymentId: managed.paymentId,
+    eventId: managed.eventId, orderId: managed.orderId, amount: managed.amount,
+    productId: managed.productId, contentName: "Comunidade Imobiturbo", ...managed.trackingBuyer };
+  const delivery = Promise.allSettled([dispatchPurchaseToMetaCapi(args), dispatchVerifiedPurchaseToHub(args)]);
+  if (context.waitUntil) context.waitUntil(delivery); else await delivery;
 }
 
 async function dispatchPurchaseToMetaCapi({
