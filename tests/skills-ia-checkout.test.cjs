@@ -6,7 +6,7 @@ const path = require('node:path');
 const source = fs.readFileSync(path.join(__dirname, '../skills-ia/low-ticket.js'), 'utf8');
 const configured = JSON.parse(fs.readFileSync(path.join(__dirname, '../skills-ia/offer.json'), 'utf8'));
 
-async function browser(offerConfig, { rejectConfig = false, hubReady = true, hostname = 'www.imobiturbo.com.br' } = {}) {
+async function browser(offerConfig, { rejectConfig = false, hubReady = true, hostname = 'www.imobiturbo.com.br', trackingContext = false } = {}) {
   const navigation = [], meta = [], hub = [], timers = [];
   const status = { textContent: '', scrollIntoView() {} };
   const windowListeners = {}, docListeners = {};
@@ -18,6 +18,7 @@ async function browser(offerConfig, { rejectConfig = false, hubReady = true, hos
     addEventListener(name, callback) { this.listeners[name] = callback; },
   }));
   const document = {
+    cookie: trackingContext ? '_fbp=fb.1.123.browser; _fbc=fb.1.123.real-click; _rt_vid=visitor-original; _rt_sid=session-original' : '',
     querySelectorAll(selector) { return selector === '[data-plan]' ? buttons : []; },
     getElementById() { return status; },
     createElement() { return {}; }, head: { appendChild() {} },
@@ -30,6 +31,7 @@ async function browser(offerConfig, { rejectConfig = false, hubReady = true, hos
     assign(url) { navigation.push(url); },
   };
   const window = {
+    localStorage: { getItem: key => trackingContext && key === '_rt_attr' ? JSON.stringify({ utms: { utm_content: 'Ad|123|', utm_id: '456' } }) : null },
     location, crypto: { randomUUID: () => 'test-event-id' },
     setInterval(callback) { timers.push(callback); return timers.length; },
     setTimeout(callback) { timers.push(callback); return timers.length; },
@@ -154,4 +156,18 @@ test('clicking checkout disables button, but pageshow or timeout restores it so 
   page.docListeners.visibilitychange();
   assert.equal(btn.disabled, false);
   assert.equal(btn.innerHTML, initialHtml);
+});
+
+test('Wiapy navigation preserves real Facebook cookies and original identity without contact PII', async () => {
+  const page = await browser(live(), { trackingContext: true });
+  page.buttons[0].listeners.click();
+  const url = new URL(page.navigation[0]);
+  assert.equal(url.searchParams.get('fbc'), 'fb.1.123.real-click');
+  assert.equal(url.searchParams.get('fbp'), 'fb.1.123.browser');
+  assert.equal(url.searchParams.get('visitorId'), 'visitor-original');
+  assert.equal(url.searchParams.get('sessionId'), 'session-original');
+  assert.equal(url.searchParams.get('utm_content'), 'Ad|123|');
+  assert.equal(url.searchParams.get('utm_campaign'), 'skills teste');
+  assert.equal(url.searchParams.has('email'), false);
+  assert.equal(page.hub.some(([name]) => name.toLowerCase() === 'lead'), false);
 });

@@ -1,6 +1,6 @@
 // Cloudflare Pages Function: /api/checkout/webhook
 // Processa webhooks de liquidação e cancelamento/reembolso: AbacatePay, Asaas e Hotmart para Imobiturbo
-// Dispara evento Purchase server-side garantido e idempotente para Meta CAPI (Graph API v25.0)
+// Purchase é enviado pelo Hub após webhook financeiro autenticado; esta rota enriquece contexto.
 // Dispara Kit de Boas-Vindas 4 em 1: CRM Lead (/0-funil-de-vendas) + E-mail ZeptoMail + WhatsApp Oficial + Sites D1
 // Processa cancelamento/reembolso revogando acessos e marcando lead como lost
 
@@ -528,64 +528,9 @@ export async function onRequestPost(context) {
     if (isPaid && paymentId) {
       // Idempotência garantida: usa externalReference (eventId do checkout) ou purch_<paymentId>
       eventId = externalRef || `purch_${paymentId}`;
-      const pixelId = (env && env.META_PIXEL_ID) || DEFAULT_PIXEL_ID;
-      const token = (env && env.META_ACCESS_TOKEN) || "";
-
-      const userData = {
-        client_ip_address: clientIp,
-        client_user_agent: userAgent,
-      };
-      if (isValidFbCookie(fbp)) userData.fbp = fbp;
-      if (isValidFbCookie(fbc)) userData.fbc = fbc;
-      if (email) userData.em = [await sha256(normalizeEmail(email))];
-      if (phone) userData.ph = [await sha256(normalizePhone(phone))];
-      if (name) {
-        const normalized = normalizeName(name);
-        const parts = normalized.split(" ");
-        const fn = parts[0];
-        const ln = parts.slice(1).join(" ");
-        if (fn) userData.fn = [await sha256(fn)];
-        if (ln) userData.ln = [await sha256(ln)];
-      }
-
-      const purchasePayload = {
-        data: [
-          {
-            event_name: "Purchase",
-            event_time: Math.floor(Date.now() / 1000),
-            event_id: eventId,
-            event_source_url: "https://www.imobiturbo.com.br/vagas/",
-            action_source: "website",
-            user_data: userData,
-            custom_data: {
-              value: amount,
-              currency: "BRL",
-              content_name: contentName,
-              content_type: "product",
-              num_items: 1,
-            },
-          },
-        ],
-      };
-
-      if (env && env.META_TEST_EVENT_CODE) {
-        purchasePayload.test_event_code = env.META_TEST_EVENT_CODE;
-      }
-
-      if (pixelId && token) {
-        const metaResp = await fetch(
-          `https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${token}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(purchasePayload),
-            signal: AbortSignal.timeout(6000),
-          }
-        );
-        metaResult = await metaResp.json().catch(() => ({}));
-      } else {
-        metaResult = { ok: false, error: "meta_capi_not_configured" };
-      }
+      // The authenticated Asaas webhook in Hub owns Purchase delivery and retries.
+      // Browser polling and this product-delivery webhook only provide context.
+      metaResult = { delegated: true, authority: "hub_financial_webhook", eventId, orderId: paymentId };
 
       await dispatchVerifiedPurchaseToHub({
         env, request, paymentId, eventId, amount, contentName, email, phone, name, fbp, fbc, visitorId,
@@ -669,7 +614,7 @@ function normalizePhone(ph) {
 
 function normalizeName(name) {
   if (!name || typeof name !== "string") return "";
-  return name.trim().toLowerCase();
+  return name.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ");
 }
 
 function parseCookies(header) {

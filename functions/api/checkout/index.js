@@ -1,3 +1,4 @@
+import { dispatchCheckoutContextToHub } from "./_tracking.js";
 // Cloudflare Pages Function: /api/checkout
 // Checkout transparente: Asaas quando solicitado; Pix AbacatePay legado.
 // Preços e identificação do produto são definidos exclusivamente no servidor.
@@ -44,14 +45,8 @@ export function buildAsaasExternalReference({ productId, plan, eventId, checkout
   str = JSON.stringify(ref);
   if (str.length <= 100) return str;
 
-  // Trim eventId while keeping valid JSON structure
-  if (ref.eid) {
-    while (str.length > 100 && ref.eid.length > 1) {
-      const excess = str.length - 100;
-      ref.eid = ref.eid.slice(0, Math.max(1, ref.eid.length - excess));
-      str = JSON.stringify(ref);
-    }
-  }
+  // A different ID breaks browser/server deduplication. Reject instead of mutating it.
+  if (str.length > 100) throw new Error("Checkout eventId exceeds Asaas reference limit");
 
   return str;
 }
@@ -60,7 +55,7 @@ export async function onRequestOptions() {
   return new Response(null, { status: 204, headers: CORS_HEADERS });
 }
 
-export async function onRequestPost(context) {
+async function createCheckout(context) {
   const { request, env } = context;
 
   const abacateKey = (env && env.ABACATEPAY_API_KEY) || "";
@@ -154,7 +149,9 @@ export async function onRequestPost(context) {
   const offerCode = plan === "consultoria" ? (installmentCount === 1 ? "consultoria-a-vista" :
     installmentCount === 12 ? "consultoria-12x49" : `consultoria-${installmentCount}x`) : undefined;
   const checkoutEventId = plan === "consultoria" ? crypto.randomUUID().replaceAll("-", "").slice(0, 11) : eventId;
-  const externalReference = buildAsaasExternalReference({ productId, plan, eventId: checkoutEventId, checkoutExpiresAt, offerCode });
+  let externalReference;
+  try { externalReference = buildAsaasExternalReference({ productId, plan, eventId: checkoutEventId, checkoutExpiresAt, offerCode }); }
+  catch { return Response.json({ success: false, error: "Identificador do checkout inválido." }, { status: 400, headers: CORS_HEADERS }); }
 
   // ==========================================
   // ESTRATÉGIA 1: PIX VIA ASAAS (QUANDO SOLICITADO OU DEFAULT)
@@ -754,4 +751,21 @@ export async function onRequestPost(context) {
       { status: 500, headers: { ...CORS_HEADERS, "Content-Type": "application/json" } }
     );
   }
+}
+
+// Persist attribution at the gateway boundary, where both order ID and eid exist.
+export async function onRequestPost(context) {
+  const body = await context.request.clone().json().catch(() => null);
+  const response = await createCheckout(context);
+  if (response.ok && body) {
+    const result = await response.clone().json().catch(() => null);
+    if (result?.success && result.paymentId && (body.tracking?.visitorId || body.tracking?.sessionId)) {
+      const delivery = dispatchCheckoutContextToHub({ env: context.env, request: context.request,
+        paymentId: result.paymentId, eventId: result.eventId, tracking: body.tracking,
+        productId: result.productId || "comunidade-imobiturbo", amount: result.amount,
+        checkoutId: body.tracking?.checkoutId || result.eventId });
+      if (context.waitUntil) context.waitUntil(delivery); else await delivery;
+    }
+  }
+  return response;
 }

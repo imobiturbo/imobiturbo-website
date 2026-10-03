@@ -279,9 +279,13 @@
     const session = create({
       key: COMMUNITY_KEY, productId: 'comunidade-imobiturbo',
       plans: ['anual', 'semestral', 'trimestral', 'mensal'],
-      onPending: render,
+      onPending: record => {
+        if (record.method === 'PIX' && record.paymentId && record.pix?.copyPaste && record.pix?.qrCodeBase64) api.trackCheckoutStage?.('PIX', record);
+        render(record);
+      },
       onExpired: () => {
         if (timer) root.clearInterval(timer);
+        api.resetTrackingCheckout?.();
         upsellBuyerProfile.clear();
         clearDraft();
         api.form?.reset();

@@ -23,7 +23,7 @@ for (const [status, paid] of [['PENDING', false], ['CONFIRMED', true], ['RECEIVE
     for (const call of calls.filter(c => c.method === 'POST')) {
       assert.equal(call.body.productId, productId); assert.equal(call.body.valueCents, 49700);
       assert.equal(call.body.offerId, '12e90537-263d-4150-9757-52193187ffbd');
-      assert.equal(call.body.eventId, paid ? 'synthetic-consulting' : 'synthetic-consulting-pending');
+      assert.equal(call.body.eventId, paid ? 'synthetic-consulting' : 'pending_synthetic-consulting-pending');
     }
     if (['REFUNDED', 'CHARGEBACK_REQUESTED', 'CHARGEBACK_DISPUTE'].includes(status)) assert.equal(calls.length, 1);
   });

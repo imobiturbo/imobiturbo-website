@@ -219,7 +219,7 @@ test('Hubla webhook: invoice.created / pending records pending sale and dispatch
     assert.equal(data.plan, 'anual');
 
     assert.ok(dispatchedHubEvent, 'Must dispatch pending purchase to Hub');
-    assert.equal(dispatchedHubEvent.type, 'InitiateCheckout');
+    assert.equal(dispatchedHubEvent.type, 'pending_payment');
     assert.equal(dispatchedHubEvent.status, 'pending');
     assert.equal(dispatchedHubEvent.orderId, 'hubla_pending_123');
     assert.equal(dispatchedHubEvent.valueCents, 99700);
