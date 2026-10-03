@@ -446,7 +446,8 @@ async function sendPostPurchaseNotifications({
   env = {},
   fetchFn = fetch,
 }) {
-  if (purchaseProof && !liveOffer) return { crmProvisioned: false, errors: ["community_durable_notifications_required"] };
+  // Managed Asaas orders dispatch through community-notifications.js. This
+  // helper remains the existing contract for Hotmart and the live offer.
   const zeptoUrl = (env && env.ZEPTOMAIL_API_URL) || DEFAULT_ZEPTOMAIL_URL;
   const zeptoToken = String((env && (env.ZEPTOMAIL_API_KEY ?? env.ZEPTOMAIL_TOKEN)) || "")
     .trim().replace(/^(?:Zoho-enczapikey\s*)+/i, "").trim();
