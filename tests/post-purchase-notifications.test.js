@@ -177,7 +177,7 @@ test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, 
 async function captureEmail(env) {
   const calls = [];
   const result = await sendPostPurchaseNotifications({
-    email: "buyer@example.com", name: "Buyer", env,
+    email: "buyer@example.com", name: "Buyer", env: { SUPABASE_SERVICE_ROLE_KEY: "synthetic-service", ...env },
     fetchFn: async (url, options) => {
       calls.push({ url, headers: options.headers, body: JSON.parse(options.body) });
       return { ok: true, json: async () => ({ success: true, message: "OK" }) };
@@ -252,8 +252,8 @@ test('missing credentials never invoke encoded secret fallback',async()=>{
   assert.equal((await provisionCommunityMembership({email:'buyer@example.invalid',fetchFn:async()=>{calls++;}})).ok,false);
   assert.equal(calls,0);
 });
-test('managed purchase proof cannot call legacy provisioning or send',async()=>{
+test('unconfigured purchase proof cannot call provisioning or send',async()=>{
   let calls=0;
   const result=await sendPostPurchaseNotifications({purchaseProof:{approvedAt:'2026-10-03T00:00:00Z'},fetchFn:async()=>{calls++;}});
-  assert.equal(calls,0);assert.deepEqual(result.errors,['community_durable_notifications_required']);
+  assert.equal(calls,0);assert.deepEqual(result.errors,['community_provisioning_failed']);
 });
