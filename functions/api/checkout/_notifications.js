@@ -10,24 +10,11 @@ const DEFAULT_ZEPTOMAIL_BOUNCE = "bounce@bounce-zem.imobiturbo.com.br";
 const DEFAULT_ZEPTOMAIL_FROM_NAME = "Imobiturbo Comunidade";
 
 const DEFAULT_SUPABASE_URL = "https://api.os.imobiturbo.com.br";
-const FALLBACK_SUPABASE_KEY_ENC =
-  "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnliMnhsSWpvaWMyVnlkbWxqWlY5eWIyeGxJaXdpYVhOeklqb2ljM1Z3WVdKaGMyVWlMQ0pwWVhRaU9qRTNPRFUzTWpNM01ETXNJbVY0Y0NJNk1UazBNelF3TXpjd00zMC5sVkdtMEtKaHJuVGFWNFl5dmIxM0ZSSldDZmRoQ1ctZXJSdzJxWVFwdGtn";
 
 const DEFAULT_META_PHONE_NUMBER_ID = "1066935829837217";
-const FALLBACK_META_TOKEN_ENC =
-  "RUFBUHNkYWgzM1g0QlNGbjIxSTRoSWlVNDQ0R3pKbjdzT3l4RWhXTlk1b0lkOGZWaDhvajdCUUZYRmM3cmpLMDFNb2w5cVZlcjBMQWE3WGRWdmdaQU95QTVCU3BibWJveVJnclNkZnpCMjc0OEFxeXY2Z0x0QjhOV3JKOW9nSXdNY24wNG9zdE5hNWFaQmNpaHE1WkFUdTF0WkNmSjF2MjduWTBkRk1lNkNqUTNUcG5iWkFmcmZCNWZlc2lmY3lRWkRaRA==";
 const DEFAULT_META_GRAPH_VERSION = "v22.0";
 const DEFAULT_TEMPLATE_NAME = "status_confirmado_120626";
 
-function decodeSecret(b64) {
-  try {
-    if (typeof atob === "function") return atob(b64);
-    if (typeof Buffer !== "undefined") return Buffer.from(b64, "base64").toString("utf-8");
-  } catch {
-    return "";
-  }
-  return "";
-}
 
 function cleanPhoneNumber(ph) {
   if (!ph || typeof ph !== "string") return "";
@@ -49,14 +36,32 @@ function extractFirstName(name) {
   return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
 }
 
-function formatPostPurchaseEmail({ name, email, plan = "anual" }) {
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+function communitySummary({ products, duration_months, period_end, club_enrollment }) {
+  if (![1,3,12].includes(duration_months) || !Array.isArray(products) || !products.length ||
+      products.some(p => !['os','club'].includes(p)) || !Number.isFinite(Date.parse(period_end))) throw new Error('community_message_contract_invalid');
+  const plan = {1:'Mensal',3:'Trimestral',12:'Anual'}[duration_months];
+  const parts = [`Plano ${plan}, ${duration_months} ${duration_months === 1 ? 'mês' : 'meses'}, válido até ${new Date(period_end).toISOString().slice(0,10)}. Recursos ilimitados.`];
+  if (products.includes('os')) parts.push('Imobiturbo OS: https://os.imobiturbo.com.br/login.');
+  if (products.includes('club')) {
+    parts.push('Imobiturbo Club: todos os cursos e trilhas de treinamento e gravações da mentoria em https://club.imobiturbo.com.br/login.');
+    if (club_enrollment?.origin !== 'preexisting_verified' && club_enrollment?.protected_content_allowed !== true)
+      parts.push(`Conteúdos-chave, guia completo de links/ferramentas e gravações de Hot Seats têm liberação após sete dias da nova matrícula comercial. ${club_enrollment?.protected_release_at ? 'Data prevista: '+new Date(club_enrollment.protected_release_at).toISOString().slice(0,10)+'.' : 'Consulte a data disponível no Club; a confirmação temporal está em reconciliação.'} Login e conteúdos comuns já estão disponíveis.`);
+  }
+  if (products.length === 2) parts.push('Grupo de Alunos: https://chat.whatsapp.com/Iy4Uiw5t0630oK4MgZarFj.');
+  return parts.join(' ');
+}
+
+function formatPostPurchaseEmail({ name, email, plan = "anual", community }) {
   const firstName = extractFirstName(name);
   const planDisplay = plan === "trimestral" ? "Trimestral" : plan === "mensal" ? "Mensal" : "Anual";
   const safeEmail = (email || "").trim().toLowerCase();
 
   const subject = `🎉 Sua vaga na Comunidade Imobiturbo está confirmada! Aqui estão seus acessos`;
 
-  const html = `
+  let html = `
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -203,7 +208,7 @@ function formatPostPurchaseEmail({ name, email, plan = "anual" }) {
 
     <div class="content">
       <p class="intro">
-        Olá, <strong>${firstName}</strong>! Parabéns pela decisão.<br>
+        Olá, <strong>${escapeHtml(firstName)}</strong>! Parabéns pela decisão.<br>
         Sua vaga na Comunidade Imobiturbo está oficialmente ativa. 
         Guarde este e-mail nos seus favoritos para consultar seus acessos e comunidade sempre que precisar.
       </p>
@@ -221,7 +226,7 @@ function formatPostPurchaseEmail({ name, email, plan = "anual" }) {
           Acesso completo a todas as trilhas de treinamento, aulas práticas e a todas as <strong>gravações dos encontros da mentoria</strong>. Tudo organizado para você estudar e implementar no seu ritmo.
         </p>
         <div style="background: #F3F4F6; border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: 13px; color: #1F2937;">
-          🔑 <strong>Seu e-mail de acesso:</strong> <span style="font-family: monospace; font-weight: 700; color: #111827;">${safeEmail}</span><br>
+          🔑 <strong>Seu e-mail de acesso:</strong> <span style="font-family: monospace; font-weight: 700; color: #111827;">${escapeHtml(safeEmail)}</span><br>
           <span style="color: #6B7280; font-size: 12px;">Use exatamente este e-mail para fazer login na plataforma.</span>
         </div>
         <a href="https://club.imobiturbo.com.br/login" class="btn" target="_blank">Acessar Imobiturbo Club →</a>
@@ -240,7 +245,7 @@ function formatPostPurchaseEmail({ name, email, plan = "anual" }) {
           Seu sistema operacional completo com IA para triagem automática de leads, organização de funil e follow-up no WhatsApp.
         </p>
         <div style="background: #F3F4F6; border-radius: 8px; padding: 10px 14px; margin: 12px 0; font-size: 13px; color: #1F2937;">
-          🔑 <strong>Seu e-mail de acesso:</strong> <span style="font-family: monospace; font-weight: 700; color: #111827;">${safeEmail}</span><br>
+          🔑 <strong>Seu e-mail de acesso:</strong> <span style="font-family: monospace; font-weight: 700; color: #111827;">${escapeHtml(safeEmail)}</span><br>
           <span style="color: #6B7280; font-size: 12px;">Use este e-mail para entrar e iniciar suas conexões.</span>
         </div>
         <a href="https://os.imobiturbo.com.br/login" class="btn" target="_blank" style="background: #4C1D95; color: #DDD6FE !important;">
@@ -280,14 +285,14 @@ function formatPostPurchaseEmail({ name, email, plan = "anual" }) {
 
     <div class="footer">
       © 2026 Imobiturbo Tecnologia & Soluções Imobiliárias Ltda.<br>
-      E-mail cadastrado: ${safeEmail}
+      E-mail cadastrado: ${escapeHtml(safeEmail)}
     </div>
   </div>
 </body>
 </html>
   `.trim();
 
-  const text = `
+  let text = `
 Bem-vindo(a) à Comunidade Imobiturbo!
 
 Olá, ${firstName}!
@@ -311,19 +316,33 @@ Aqui estão seus acessos liberados:
 Suporte Oficial no WhatsApp: (21) 96951-6183 ou https://wa.me/5521969516183
   `.trim();
 
+  if (community) {
+    const note = communitySummary(community);
+    if (!community.products.includes("club")) {
+      html = html.replace(/<!-- ACESSO 1:[\s\S]*?(?=<!-- ACESSO 2:)/, "");
+      // Text is rebuilt from the same sold-product summary to avoid legacy promises.
+    }
+    if (!community.products.includes("os")) html = html.replace(/<!-- ACESSO 2:[\s\S]*?(?=<!-- ACESSO 3:)/, "");
+    if (community.products.length !== 2) html = html.replace(/<!-- ACESSO 3:[\s\S]*?(?=<div class="divider">)/, "");
+    html = html.replace('Acesso completo a todas as trilhas de treinamento, aulas práticas e a todas as <strong>gravações dos encontros da mentoria</strong>. Tudo organizado para você estudar e implementar no seu ritmo.', 'Direito a todos os cursos e trilhas do Club. A liberação de conteúdos protegidos segue a política da sua matrícula, informada abaixo.');
+    html = html.replace('</body>',  `<p style="padding:24px">${escapeHtml(note)}</p></body>`);
+    text = `Olá, ${extractFirstName(name)}! Seus acessos contratados estão prontos. E-mail: ${safeEmail}. ${note} Suporte: https://wa.me/5521969516183.`;
+  }
   return { subject, html, text };
 }
 
-function formatPostPurchaseWhatsApp({ name, email, phone, plan = "anual" }) {
+function formatPostPurchaseWhatsApp({ name, email, phone, plan = "anual", community }) {
   const firstName = extractFirstName(name);
   const safePhone = cleanPhoneNumber(phone);
   const safeEmail = (email || "").trim().toLowerCase();
 
   const param1 = "sua vaga na Comunidade Imobiturbo foi confirmada com";
 
-  const param2 = `Olá, ${firstName}! Seja muito bem-vindo(a) à Comunidade Imobiturbo. Seus acessos já estão liberados usando seu e-mail (${safeEmail}): 1️⃣ Imobiturbo Club: trilhas e gravações da mentoria em club.imobiturbo.com.br/login · 2️⃣ CRM com IA (Imobiturbo OS): os.imobiturbo.com.br/login · 3️⃣ Grupo de Alunos no WhatsApp: toque no link abaixo para entrar. Enviamos também o e-mail completo de boas-vindas.`;
+  let param2 = `Olá, ${firstName}! Seja muito bem-vindo(a) à Comunidade Imobiturbo. Seus acessos já estão liberados usando seu e-mail (${safeEmail}): 1️⃣ Imobiturbo Club: trilhas e gravações da mentoria em club.imobiturbo.com.br/login · 2️⃣ CRM com IA (Imobiturbo OS): os.imobiturbo.com.br/login · 3️⃣ Grupo de Alunos no WhatsApp: toque no link abaixo para entrar. Enviamos também o e-mail completo de boas-vindas.`;
 
-  const param3 = "https://chat.whatsapp.com/Iy4Uiw5t0630oK4MgZarFj";
+  if (community) param2 = `Olá, ${firstName}! Seus acessos contratados estão prontos usando ${safeEmail}. ${communitySummary(community)}`;
+  const param3 = community && community.products.length !== 2 ?
+    (community.products.includes("os") ? "https://os.imobiturbo.com.br/login" : "https://club.imobiturbo.com.br/login") : "https://chat.whatsapp.com/Iy4Uiw5t0630oK4MgZarFj";
 
   return {
     messaging_product: "whatsapp",
@@ -361,9 +380,10 @@ async function provisionCommunityMembership({
 }) {
   const supabaseUrl = (env && env.SUPABASE_URL) || DEFAULT_SUPABASE_URL;
   const serviceKey =
-    (env && env.SUPABASE_SERVICE_ROLE_KEY) || decodeSecret(FALLBACK_SUPABASE_KEY_ENC);
+    (env && env.SUPABASE_SERVICE_ROLE_KEY) || "";
   const safeEmail = (email || "").trim().toLowerCase();
 
+  if (!serviceKey) return { ok: false, error: "community_provisioning_not_configured" };
   if (!safeEmail) {
     return { ok: false, error: "email_required" };
   }
@@ -426,6 +446,7 @@ async function sendPostPurchaseNotifications({
   env = {},
   fetchFn = fetch,
 }) {
+  if (purchaseProof && !liveOffer) return { crmProvisioned: false, errors: ["community_durable_notifications_required"] };
   const zeptoUrl = (env && env.ZEPTOMAIL_API_URL) || DEFAULT_ZEPTOMAIL_URL;
   const zeptoToken = String((env && (env.ZEPTOMAIL_API_KEY ?? env.ZEPTOMAIL_TOKEN)) || "")
     .trim().replace(/^(?:Zoho-enczapikey\s*)+/i, "").trim();
@@ -434,7 +455,7 @@ async function sendPostPurchaseNotifications({
   const zeptoFromName = (env && env.ZEPTOMAIL_FROM_NAME) || DEFAULT_ZEPTOMAIL_FROM_NAME;
 
   const metaPhoneId = (env && env.META_PHONE_NUMBER_ID) || DEFAULT_META_PHONE_NUMBER_ID;
-  const metaToken = (env && env.META_WHATSAPP_TOKEN) || decodeSecret(FALLBACK_META_TOKEN_ENC);
+  const metaToken = (env && env.META_WHATSAPP_TOKEN) || "";
   const metaVersion = (env && env.META_GRAPH_VERSION) || DEFAULT_META_GRAPH_VERSION;
 
   const errors = [];
