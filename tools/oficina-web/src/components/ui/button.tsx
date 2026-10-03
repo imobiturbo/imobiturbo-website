@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 import { Slot } from "radix-ui";
 import { BUTTON_RECIPES } from "@imobiturbo/design-system/recipes";
 const buttonVariants = cva(BUTTON_RECIPES.base, {

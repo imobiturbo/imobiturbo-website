@@ -5,7 +5,12 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   base: "/oficina/",
   plugins: [react(), tailwindcss()],
-  resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "cn": fileURLToPath(new URL("./src/lib/utils.ts", import.meta.url)),
+    },
+  },
   build: {
     rollupOptions: {
       input: {
