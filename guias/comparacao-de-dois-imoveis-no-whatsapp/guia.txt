@@ -1,0 +1,24 @@
+Comparação de dois imóveis no WhatsApp
+
+Copie a mensagem para comparar duas opções pelos critérios do comprador, sem inventar vantagens.
+
+COMO USAR
+1. Preencha com duas opções autorizadas e dois critérios informados pelo comprador.
+2. Use fatos da ficha conferida; marque as lacunas sem completá-las por palpite.
+3. Envie na conversa existente, escute a escolha e registre o próximo passo.
+
+MODELO PARA COPIAR
+[Nome], comparei [imóvel A] e [imóvel B] pelos critérios que você informou.
+Prioridade 1: [critério]. No A: [fato confirmado]. No B: [fato confirmado].
+Prioridade 2: [critério]. No A: [fato confirmado]. No B: [fato confirmado].
+Ainda preciso confirmar: [lacuna e responsável pela informação].
+Qual diferença pesa mais na sua decisão? Se nenhuma opção atender, podemos rever a seleção antes de marcar outra visita.
+
+Exemplo fictício preenchido:
+Marina, comparei o apartamento A no Jardim e o B no Centro pelos critérios que você informou.
+Prioridade 1: cômodo separado para trabalhar. No A: dois quartos na ficha. No B: um quarto na ficha.
+Prioridade 2: acesso sem escadas. No A: elevador informado na ficha. No B: acesso ainda a confirmar com o responsável.
+Ainda preciso confirmar: barulho no cômodo e todo o percurso de acesso, com o responsável e na visita.
+Qual diferença pesa mais na sua decisão? Se nenhuma opção atender, podemos rever a seleção antes de marcar outra visita.
+
+A mensagem compara informações; não decide pelo comprador nem comprova condições do imóvel.

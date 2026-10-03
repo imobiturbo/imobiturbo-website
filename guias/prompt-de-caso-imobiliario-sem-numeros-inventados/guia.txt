@@ -1,0 +1,36 @@
+Prompt de caso imobiliário sem números inventados
+
+Organize um caso com situação, ação e evidência verificável, preservando informações pessoais.
+
+COMO USAR
+1. Use um caso com registros e autorização ou um exemplo explicitamente fictício.
+2. Anonimize os dados antes de colar na ferramenta de IA.
+3. Revise cada afirmação contra a evidência e mantenha os limites na legenda.
+
+MODELO PARA COPIAR
+Ajude a escrever um relato autoral de uma melhoria no atendimento imobiliário.
+DADOS ANONIMIZADOS:
+SITUAÇÃO INICIAL: [o problema observado]
+AÇÃO EXECUTADA: [o que mudou de fato]
+EVIDÊNCIA DISPONÍVEL: [registro que posso conferir, período e limites]
+O QUE NÃO FOI MEDIDO: [vendas, receita ou outros resultados desconhecidos]
+AUTORIZAÇÃO DE PUBLICAÇÃO: [o que pode ser divulgado sem identificar pessoas]
+
+Crie um gancho imobiliário, três pontos de vídeo e uma legenda com uma frase por parágrafo, separadas por uma linha em branco.
+Explique situação, ação, achado e limite.
+Não invente depoimentos, cargos, métricas, biografia ou relação causal.
+Não transforme melhora de registro ou atendimento em aumento de vendas.
+Se faltar evidência ou autorização, indique a pendência e não escreva o caso como ocorrido.
+Marque exemplos como fictícios; não use dados identificáveis de clientes.
+
+Exemplo fictício preenchido, não resultado da Imobiturbo:
+SITUAÇÃO: cinco conversas fictícias estavam sem responsável registrado.
+AÇÃO: definir responsável e próxima tarefa.
+EVIDÊNCIA: em uma revisão fictícia posterior, as cinco tinham responsável e tarefa.
+NÃO MEDIDO: vendas, receita, satisfação e rapidez de resposta.
+AUTORIZAÇÃO: usar só o exemplo fictício, sem contatos ou capturas reais.
+
+Relato possível: “Cinco conversas de imóveis tinham uma pendência que a equipe não via: faltava definir quem voltaria a falar com cada comprador”.
+Corpo: “A revisão registrou responsável e tarefa nas cinco; isso mostra organização do atendimento, sem comprovar mais vendas”.
+
+A IA organiza a escrita; não verifica registros nem fornece autorização para divulgar clientes.
