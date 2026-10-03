@@ -47,6 +47,7 @@ async function build() {
     fs.writeFileSync(path.join(distDir, 'audience.bundle.js'), audienceResult.code, 'utf8');
     console.log('Successfully created dist/audience.bundle.js');
 
+    require('./scripts/prerender.cjs')();
     console.log('Build completed successfully!');
   } catch (err) {
     console.error('Build failed:', err.message);

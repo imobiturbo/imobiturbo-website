@@ -16,6 +16,7 @@ const HOME_ASSETS = {
 };
 
 const HOME_NAV_LINKS = [
+  ['Serviços', '/servicos/'],
   ['O que faz', '#o-que-faz'],
   ['Para quem', '#publicos'],
   ['Ecossistema', '#como-faz'],
@@ -1132,6 +1133,25 @@ function AudiencesSection() {
   );
 }
 
+function MarketingServicesSection() {
+  const services = [
+    ['Agência de marketing imobiliário', 'agencia-de-marketing-imobiliario'],
+    ['Landing pages imobiliárias', 'landing-pages-imobiliarias'],
+    ['Tráfego pago imobiliário', 'trafego-pago-imobiliario'],
+    ['Social media imobiliário', 'social-media-imobiliario'],
+  ];
+  return (
+    <section className="audiences-section" id="servicos">
+      <div className="home-container audiences-heading">
+        <h2>Marketing imobiliário para sua operação<span className="lime-dot">.</span></h2>
+        <p>Conheça os serviços para atrair clientes e conectar a captação ao seu processo comercial.</p>
+        <ul>{services.map(([label, slug]) => <li key={slug}><a className="inline-link" href={`/servicos/${slug}/`}>{label}</a></li>)}</ul>
+        <a className="inline-link" href="/servicos/cidades/">Marketing imobiliário por cidade</a>
+      </div>
+    </section>
+  );
+}
+
 function MiniHubVisual() {
   return (
     <div className="mini-hub" aria-label="Visual do software Imobiturbo">
@@ -1509,6 +1529,7 @@ function HomeFooter() {
         </div>
         <div className="footer-column">
           <strong>Páginas</strong>
+          <a href="/servicos/">Serviços</a>
           <a href="/corretor-autonomo/">Corretor autônomo</a>
           <a href="/imobiliarias/">Imobiliárias</a>
           <a href="/construtoras-incorporadoras/">Construtoras e incorporadoras</a>
@@ -1868,6 +1889,7 @@ function HomePrototypes() {
           <MethodSection />
           <ProofSection />
           <DiagnosticSection />
+          <MarketingServicesSection />
           <FaqSection />
           <FinalCtaSection />
         </main>

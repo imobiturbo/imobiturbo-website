@@ -9,7 +9,7 @@ function trackAudienceEvent(name, properties = {}) {
 const AUDIENCE_INSTAGRAM_URL = 'https://www.instagram.com/imobiturbo/';
 
 function useIsMobile(maxWidth = 980) {
-  const [isMobile, setIsMobile] = React.useState(() => window.innerWidth <= maxWidth);
+  const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
     const update = () => setIsMobile(window.innerWidth <= maxWidth);
@@ -162,6 +162,7 @@ function AudienceTopbar() {
     ['Corretor Autônomo', '/corretor-autonomo/'],
     ['Imobiliárias', '/imobiliarias/'],
     ['Construtoras', '/construtoras-incorporadoras/'],
+    ['Serviços', '/servicos/'],
     ['Depoimentos', '/depoimentos/'],
   ];
 
@@ -928,6 +929,7 @@ function AudienceCta({ page }) {
 function AudienceFooter() {
   const columns = [
     ['Páginas', [
+      ['Serviços', '/servicos/'],
       ['Corretor Autônomo', '/corretor-autonomo/'],
       ['Imobiliárias', '/imobiliarias/'],
       ['Construtoras', '/construtoras-incorporadoras/'],
@@ -965,6 +967,25 @@ function AudienceFooter() {
   );
 }
 
+function AudienceMarketingServices({ pageId }) {
+  const profile = { corretor: 'corretores', imobiliarias: 'imobiliarias', incorporadoras: 'incorporadoras' }[pageId] || 'corretores';
+  const services = [
+    ['Agência de marketing imobiliário', 'agencia-de-marketing-imobiliario'],
+    ['Landing pages imobiliárias', 'landing-pages-imobiliarias'],
+    ['Tráfego pago imobiliário', 'trafego-pago-imobiliario'],
+    ['Social media imobiliário', 'social-media-imobiliario'],
+  ];
+  return (
+    <section className="aud-section">
+      <div className="aud-shell">
+        <h2>Serviços de marketing imobiliário</h2>
+        <p>Explore os serviços de captação para o perfil da sua operação.</p>
+        <ul>{services.map(([label, slug]) => <li key={slug}><a href={`/servicos/${slug}/para/${profile}/`}>{label}</a></li>)}</ul>
+      </div>
+    </section>
+  );
+}
+
 function AudiencePage({ pageId }) {
   const page = audienceContent[pageId] || audienceContent.corretor;
 
@@ -976,6 +997,7 @@ function AudiencePage({ pageId }) {
         <AudiencePainSection page={page} />
         <AudienceProcessSection page={page} />
         <AudienceDeliverablesSection page={page} />
+        <AudienceMarketingServices pageId={pageId} />
         <AudienceCta page={page} />
       </main>
       <AudienceFooter />
