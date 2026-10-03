@@ -106,7 +106,8 @@ export async function dispatchPendingPurchaseToHub({
   const payload = {
     operationId,
     type: "pending_payment",
-    eventId: eventId || `pending_${paymentId}`,
+    eventId: `pending_${eventId || paymentId}`,
+    eid: eventId || null,
     visitorId: resolvedVisitorId,
     sessionId: resolvedSessionId,
     url: productId === "consultoria-individual-natan" ? "https://www.imobiturbo.com.br/vagas-obrigado" : "https://www.imobiturbo.com.br/vagas/",
@@ -140,7 +141,7 @@ export async function dispatchPendingPurchaseToHub({
   }
 }
 
-const ATTRIBUTION_KEYS = ["visitorId", "sessionId", "checkoutId", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "src", "sck", "xcod", "fbclid", "gclid", "fbc", "fbp"];
+const ATTRIBUTION_KEYS = ["visitorId", "sessionId", "checkoutId", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "imt_adset_name", "imt_adset_id", "imt_ad_id", "imt_placement", "src", "sck", "xcod", "fbclid", "gclid", "fbc", "fbp"];
 export function checkoutAttribution(tracking = {}) {
   return Object.fromEntries(ATTRIBUTION_KEYS.filter(key => typeof tracking?.[key] === "string" && tracking[key])
     .map(key => [key, tracking[key].slice(0, 500)]));
@@ -150,7 +151,7 @@ export async function dispatchCheckoutContextToHub({ env, request, paymentId, ev
   const operationId = env?.HUB_TRACKING_OPERATION_ID || DEFAULT_HUB_OPERATION_ID;
   const base = env?.HUB_TRACKING_COLLECT_URL || DEFAULT_HUB_COLLECT_URL;
   const attribution = checkoutAttribution(tracking);
-  const utms = Object.fromEntries(Object.entries(attribution).filter(([key]) => key.startsWith("utm_") || ["src", "sck", "xcod"].includes(key)));
+  const utms = Object.fromEntries(Object.entries(attribution).filter(([key]) => key.startsWith("utm_") || key.startsWith("imt_") || ["src", "sck", "xcod"].includes(key)));
   const clickIds = Object.fromEntries(Object.entries(attribution).filter(([key]) => ["fbclid", "gclid"].includes(key)));
   try {
     const response = await fetch(`${base}${base.includes("?") ? "&" : "?"}operation=${encodeURIComponent(operationId)}`, {
