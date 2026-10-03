@@ -81,9 +81,14 @@ test('late archived ID targets its original attempt while current is manually pe
   assert.equal(h.calls[0].external_id,'provider-synthetic');assert.deepEqual(h.row,before);
  }
 });
-test('uncorrelated ID after manual reset stays unknown even with a correct client reference',async()=>{
+test('early callback retries until its provider ID is persisted; it never binds an unknown reset attempt',async()=>{
  const m=await load(),receipt=m.parseEmailReceipt(payload()),h=receiptHarness({currentId:null,state:'processing',attempts:2});
- assert.equal(await m.recordEmailReceipt(h.store,config,receipt,h.rpc),false);assert.equal(h.calls.length,0);
+ await assert.rejects(m.recordEmailReceipt(h.store,config,receipt,h.rpc),e=>e.code==='receipt_pending_dispatch'&&e.status===500);
+ assert.equal(h.calls.length,0);
+ h.row.external_id=receipt.id;
+ assert.equal(await m.recordEmailReceipt(h.store,config,receipt,h.rpc),true);
+ const reset=receiptHarness({currentId:null,state:'pending',attempts:2});
+ assert.equal(await m.recordEmailReceipt(reset.store,config,receipt,reset.rpc),false);
 });
 test('manual reset between correlation and RPC is resolved atomically, never by local PATCH',async()=>{
  const m=await load(),receipt=m.parseEmailReceipt(payload()),h=receiptHarness();
