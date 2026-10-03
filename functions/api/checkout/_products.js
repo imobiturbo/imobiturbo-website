@@ -2,6 +2,19 @@ export const COMMUNITY_PRODUCT_ID = "comunidade-imobiturbo";
 export const CONSULTING_PRODUCT_ID = "consultoria-individual-natan";
 export const CONSULTING_HUB_OFFER_ID = "12e90537-263d-4150-9757-52193187ffbd";
 
+// Public offers only. Historical semestral/live orders keep their legacy reader.
+export const COMMUNITY_PLANS = Object.freeze({
+  mensal: { offerKey: "comunidade-mensal", months: 1, pixCents: 14700, cardCents: 14700, installments: 1 },
+  trimestral: { offerKey: "comunidade-trimestral", months: 3, pixCents: 35700, cardCents: 38100, installments: 3 },
+  anual: { offerKey: "comunidade-anual", months: 12, pixCents: 99700, cardCents: 116400, installments: 12 },
+});
+
+export function communityReferenceId(reference) {
+  if (typeof reference !== "string" || !reference.startsWith("community:")) return null;
+  const id = reference.slice(10);
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id) ? id : "invalid";
+}
+
 export function consultingInstallmentTotalCents(count) {
   return Number.isInteger(count) && count >= 4 && count <= 12 ? 58800 : 49700;
 }
@@ -32,8 +45,7 @@ export function checkoutDetails(payment = {}) {
   const consulting = reference.product_id === CONSULTING_PRODUCT_ID || reference.plan === "consultoria" ||
     /^Consultoria Individual de 1h com Natan Pimentel/i.test(payment.description || "");
   const knownPlans = ["anual", "semestral", "trimestral", "mensal"];
-  const plan = consulting ? "consultoria" : knownPlans.includes(reference.plan) ? reference.plan :
-    knownPlans.find(value => (payment.description || "").toLowerCase().includes(value)) || "anual";
+  const plan = consulting ? "consultoria" : knownPlans.includes(reference.plan) ? reference.plan : null;
   const rawExp = reference.checkout_expires_at ?? reference.exp;
   const expiresAt = typeof rawExp === "number" ? rawExp : Date.parse(rawExp);
   const offerCode = consulting ? (typeof reference.offer_code === "string" ? reference.offer_code : "consultoria-a-vista") : null;
@@ -44,7 +56,7 @@ export function checkoutDetails(payment = {}) {
   const orderId = consulting && typeof reference.eid === "string" && reference.eid
     ? `consultoria-${reference.eid}` : `purch_${payment.id}`;
   return {
-    productId: consulting ? CONSULTING_PRODUCT_ID : COMMUNITY_PRODUCT_ID,
+    productId: consulting ? CONSULTING_PRODUCT_ID : (plan ? COMMUNITY_PRODUCT_ID : "unknown"),
     plan,
     ...(reference.offer_code === "live997" ? {
       offerCode: "live997",
