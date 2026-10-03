@@ -2,8 +2,12 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
+const { pathToFileURL } = require('node:url');
 const site = import('../seo/site.mjs');
 const client = import('data:text/javascript;base64,' + Buffer.from(fs.readFileSync(path.join(__dirname, '../organic.js'))).toString('base64'));
+const sitemapSource = fs.readFileSync(path.join(__dirname, '../functions/sitemaps/[file].js'), 'utf8')
+  .replace("'../../seo/site.mjs'", JSON.stringify(pathToFileURL(path.join(__dirname, '../seo/site.mjs')).href));
+const sitemapHandler = import('data:text/javascript;base64,' + Buffer.from(sitemapSource).toString('base64'));
 
 test('cada município tem identidade geográfica e quatro rotas canônicas sem colisão', async () => {
   const { localities, SERVICES, municipalPaths, resolveRoute, nationalPaths } = await site;
@@ -72,6 +76,39 @@ test('sitemaps cobrem todas as rotas, com shards planos e só URLs válidas', as
   }
   assert.equal((sitemapFor('servicos.xml').match(/<url>/g) || []).length, [...nationalPaths()].length);
   assert.equal(sitemapFor('cidades-xx.xml'), null);
+});
+
+test('todos os filhos do índice são servidos pelo Function, inclusive o arquivo institucional estático', async () => {
+  const { onRequest } = await sitemapHandler;
+  const index = fs.readFileSync(path.join(__dirname, '../sitemap.xml'), 'utf8');
+  const urls = [...index.matchAll(/<loc>(.*?)<\/loc>/g)].map(match => match[1]);
+  let count = 0;
+  for (const url of urls) {
+    const response = await onRequest({ request: new Request(url), next: () => new Response(
+      fs.readFileSync(path.join(__dirname, '..', new URL(url).pathname)),
+      { headers: { 'Content-Type': 'application/xml' } }
+    ) });
+    assert.equal(response.status, 200, url);
+    assert.match(response.headers.get('content-type'), /application\/xml/);
+    const xml = await response.text();
+    assert.match(xml, /<urlset/);
+    count += (xml.match(/<url>/g) || []).length;
+  }
+  assert.equal(count, 22390);
+});
+
+test('sitemaps preservam HEAD, rejeitam escrita e não inventam XML para arquivos desconhecidos', async () => {
+  const { onRequest } = await sitemapHandler;
+  for (const file of ['institucional.xml', 'servicos.xml', 'cidades-sp.xml']) {
+    const url = `https://www.imobiturbo.com.br/sitemaps/${file}`;
+    const head = await onRequest({ request: new Request(url, { method: 'HEAD' }), next: () => new Response(null, { headers: { 'Content-Type': 'application/xml' } }) });
+    assert.equal(head.status, 200);
+    assert.equal(await head.text(), '');
+    const write = await onRequest({ request: new Request(url, { method: 'POST' }), next: () => assert.fail('Sitemap de leitura não pode encaminhar POST ao servidor de assets') });
+    assert.equal(write.status, 405);
+  }
+  const unknown = await onRequest({ request: new Request('https://www.imobiturbo.com.br/sitemaps/inexistente.xml'), next: () => assert.fail('Arquivo desconhecido não deve cair em fallback de HTML') });
+  assert.equal(unknown.status, 404);
 });
 
 test('cenário do simulador respeita zero, limites e premissas declaradas', async () => {
