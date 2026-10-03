@@ -75,7 +75,14 @@ export async function recordEmailReceipt(store, config, receipt, rpc = notificat
     const history = await store('cobranca_notificacao_tentativas', { notification_id:`eq.${n.id}`, environment:`eq.${config.environment}`,
       channel:'eq.email', external_id:`eq.${receipt.id}`, limit:'2' });
     if (history.length > 1) throw new CommunityError('receipt_history_conflict',500);
-    if (history.length !== 1) return false; // Never attach an uncorrelated ID to a reset/unknown attempt.
+    if (history.length !== 1) {
+      // CPaaS can call back before its send response stores request_id. Keep
+      // that authenticated recent event retryable instead of losing its receipt.
+      const age = Date.now() - Date.parse(receipt.at);
+      if (n.status === 'processing' && !n.external_id && age >= -30000 && age <= 300000)
+        throw new CommunityError('receipt_pending_dispatch',500);
+      return false; // Never attach an uncorrelated ID to a reset/unknown attempt.
+    }
   }
   // Root RPC locks/rechecks current/archive IDs and preserves every attempt.
   // Historical delivery can complete the channel; contrary terminal proof needs
