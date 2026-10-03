@@ -33,7 +33,7 @@ function paymentFixture(order = orderFixture(), overrides = {}) {
     ...(order.provider_installment_id ? { installment: order.provider_installment_id, installmentNumber: 1 } : {}), ...overrides };
 }
 function harness(t, options = {}) {
-  const state = { calls: [], order: options.order || null, payments: new Map(), records: [], prior: [], subscriptions: [], group: null, subscription: null };
+  const state = { calls: [], order: options.order || null, payments: new Map(), records: [], reviews: [], prior: [], subscriptions: [], group: null, subscription: null };
   if (state.order) state.payments.set('pay_synthetic', options.payment || paymentFixture(state.order));
   t.mock.method(globalThis, 'fetch', async (url, init = {}) => {
     const u = new URL(url), body = init.body ? JSON.parse(init.body) : null, method = init.method || 'GET';
@@ -80,6 +80,11 @@ function harness(t, options = {}) {
         return Response.json({ contract_version: 1, subscription_id: '44444444-4444-4444-8444-444444444444', payment_id: '77777777-7777-4777-8777-777777777777',
           activation_id: '55555555-5555-4555-8555-555555555555', products: state.order.sold_snapshot.products,
           period_start: body.p_payment.period_start, period_end: body.p_payment.period_end, duplicate_payment: state.records.length > 1, duplicate_activation: state.records.length > 1 });
+      }
+      if (u.pathname.endsWith('/rpc/record_community_financial_review')) {
+        if (options.reviewFailure) return Response.json({ message: 'synthetic review unavailable' }, { status: 503 });
+        state.reviews.push(body.p_review);
+        return Response.json({ contract_version: 1, review_id: '88888888-8888-4888-8888-888888888888', state: 'pending' });
       }
       if (u.pathname.endsWith('/cobranca_pedidos')) {
         if (!state.order) return Response.json([]);
