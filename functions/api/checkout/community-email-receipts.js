@@ -79,7 +79,7 @@ export async function recordEmailReceipt(store, config, receipt, rpc = notificat
       // CPaaS can call back before its send response stores request_id. Keep
       // that authenticated recent event retryable instead of losing its receipt.
       const age = Date.now() - Date.parse(receipt.at);
-      if (n.status === 'processing' && !n.external_id && age >= -30000 && age <= 300000)
+      if (['processing','uncertain'].includes(n.status) && n.attempts > 0 && !n.external_id && age >= -300000)
         throw new CommunityError('receipt_pending_dispatch',500);
       return false; // Never attach an uncorrelated ID to a reset/unknown attempt.
     }

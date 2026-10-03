@@ -29,7 +29,14 @@ function fixture(missing=false, financialReview=false) {
     if(patch)rows.forEach(n=>Object.assign(n,patch));
     return rows.map(n=>({...n}));
   };
-  return {state,store};
+  const claim=async request=>{
+    if(state.financialHold)return {claimed:false,reason:'financial_review_pending',notification:null};
+    const rows=await store('cobranca_notificacoes',{id:`eq.${request.notification_id}`,status:`eq.${request.expected_status}`,updated_at:`eq.${request.expected_updated_at}`,
+      external_id:'is.null',accepted_at:'is.null',failure_proof:'is.null'}, {status:'processing',claim_token:request.claim_token,
+      lease_until:new Date(Date.now()+120000).toISOString(),updated_at:new Date().toISOString(),attempts:state.channels.find(n=>n.id===request.notification_id).attempts+1});
+    return {claimed:rows.length===1,reason:rows.length?'claimed':'claim_lost',notification:rows[0]||null};
+  };
+  return {state,store,claim};
 }
 test('strict endpoint rejects buyer/payload fields and cross environment/org',async()=>{
   const m=await load('_community-notifications.js');
@@ -42,26 +49,26 @@ test('strict endpoint rejects buyer/payload fields and cross environment/org',as
 });
 test('all sold products required before any channel claim',async()=>{
   const m=await load('_community-notifications.js'),h=fixture(true);let calls=0;
-  await m.processCommunityNotifications({config,activationId,env:{},store:h.store,send:async()=>{calls++;}});
+  await m.processCommunityNotifications({config,activationId,env:{},store:h.store,claim:h.claim,send:async()=>{calls++;}});
   assert.equal(calls,0);assert.ok(h.state.channels.every(n=>n.attempts===0));
 });
 test('concurrent duplicates send once per independent channel; API acceptance never completes',async()=>{
   const m=await load('_community-notifications.js'),h=fixture(),calls=[];
   const send=async channel=>{calls.push(channel);return {status:'processing',external_id:`synthetic-${channel}`,accepted_at:new Date().toISOString()};};
-  await Promise.all(Array.from({length:6},()=>m.processCommunityNotifications({config,activationId,env:{},store:h.store,send})));
+  await Promise.all(Array.from({length:6},()=>m.processCommunityNotifications({config,activationId,env:{},store:h.store,claim:h.claim,send})));
   assert.deepEqual(calls.sort(),['email','whatsapp']);assert.ok(h.state.channels.every(n=>n.status==='processing'&&!n.delivered_at));
   h.state.channels.forEach(n=>n.lease_until=new Date(Date.now()-1000).toISOString());
-  await m.processCommunityNotifications({config,activationId,env:{},store:h.store,send});
+  await m.processCommunityNotifications({config,activationId,env:{},store:h.store,claim:h.claim,send});
   assert.equal(calls.length,2);assert.ok(h.state.channels.every(n=>n.status==='uncertain'));
 });
 test('preflight failure retries only its channel, leaving completed sibling untouched',async()=>{
   const m=await load('_community-notifications.js'),{CommunityError}=await load('_community-orders.js'),h=fixture();
   const send=async channel=>{if(channel==='email')throw new CommunityError('community_email_configuration');return {status:'processing',external_id:'wa'};};
-  await m.processCommunityNotifications({config,activationId,env:{},store:h.store,send});
+  await m.processCommunityNotifications({config,activationId,env:{},store:h.store,claim:h.claim,send});
   assert.equal(h.state.channels[0].status,'failed');
   Object.assign(h.state.channels[1],{status:'completed',delivered_at:new Date().toISOString()});
   h.state.channels[0].next_attempt_at=new Date(0).toISOString();let calls=[];
-  await m.processCommunityNotifications({config,activationId,env:{},store:h.store,send:async channel=>{calls.push(channel);return {status:'processing',external_id:'email'};}});
+  await m.processCommunityNotifications({config,activationId,env:{},store:h.store,claim:h.claim,send:async channel=>{calls.push(channel);return {status:'processing',external_id:'email'};}});
   assert.deepEqual(calls,['email']);assert.equal(h.state.channels[1].status,'completed');
 });
 test('provider timeout/HTTP rejection remain uncertain and payload tracking is per community email',async()=>{
@@ -85,7 +92,7 @@ test('terminal/external failed and soft bounce preserve proof/error/IDs under re
   const h=fixture();Object.assign(h.state.channels[0],extra);h.state.channels[1].status='completed';
   const before=structuredClone(h.state.channels[0]);let sends=0,patches=0;
   const store=async(t,f,p)=>{if(p)patches++;return h.store(t,f,p);};
-  for(let i=0;i<3;i++)await m.processCommunityNotifications({config,activationId,env:{},store,send:async()=>{sends++;}});
+  for(let i=0;i<3;i++)await m.processCommunityNotifications({config,activationId,env:{},claim:h.claim,store,send:async()=>{sends++;}});
   assert.equal(sends,0);assert.equal(patches,0);assert.deepEqual(h.state.channels[0],before);
  }
 });
@@ -94,9 +101,9 @@ test('manual terminal archive/reset opens a new attempt only after IDs and proof
  const email=h.state.channels[0];h.state.channels[1].status='completed';
  Object.assign(email,{status:'failed',attempts:1,external_id:'old',accepted_at:'2026-10-03T00:00:00Z',failure_proof:{terminal:true},error_code:'failure'});
  const send=async(c,msg,env,reference)=>{sends.push(reference);return {status:'processing',external_id:'new'};};
- await m.processCommunityNotifications({config,activationId,env:{},store:h.store,send});assert.equal(sends.length,0);
+ await m.processCommunityNotifications({config,activationId,env:{},store:h.store,claim:h.claim,send});assert.equal(sends.length,0);
  Object.assign(email,{status:'pending',external_id:null,accepted_at:null,failure_proof:null,error_code:null,updated_at:'manual-reset'});
- await m.processCommunityNotifications({config,activationId,env:{},store:h.store,send});
+ await m.processCommunityNotifications({config,activationId,env:{},store:h.store,claim:h.claim,send});
  assert.deepEqual(sends,[m.emailReference(config,activationId)]);assert.equal(email.attempts,2);
 });
 test('claim CAS forbids an external effect added after candidate read',async()=>{
@@ -105,13 +112,13 @@ test('claim CAS forbids an external effect added after candidate read',async()=>
   if(p?.claim_token)h.state.channels[0].external_id='concurrent-provider-effect';
   return h.store(t,f,p);
  };
- await m.processCommunityNotifications({config,activationId,env:{},store,send:async()=>{sends++;}});
+ await m.processCommunityNotifications({config,activationId,env:{},claim:async request=>{h.state.channels[0].external_id='concurrent-provider-effect';return h.claim(request);},store,send:async()=>{sends++;}});
  assert.equal(sends,0);assert.equal(h.state.channels[0].attempts,0);
 });
 test('signed failure arriving before acceptance finish wins CAS and preserves proof',async()=>{
  const m=await load('_community-notifications.js'),h=fixture();h.state.channels[1].status='completed';
  const proof={contract_version:1,terminal:true,external_id:'accepted-id'};
- await m.processCommunityNotifications({config,activationId,env:{},store:h.store,send:async()=>{
+ await m.processCommunityNotifications({config,activationId,env:{},store:h.store,claim:h.claim,send:async()=>{
   Object.assign(h.state.channels[0],{status:'failed',external_id:'accepted-id',failure_proof:proof,error_code:'verified_failure'});
   return {status:'processing',external_id:'accepted-id',accepted_at:new Date().toISOString()};
  }});
@@ -126,7 +133,7 @@ test('a manual reset during reconciliation is never changed back to uncertain',a
   if(p)patches++;
   return h.store(t,f,p);
  };
- await m.processCommunityNotifications({config,activationId,env:{},store,send:async()=>assert.fail('stale snapshot cannot send')});
+ await m.processCommunityNotifications({config,activationId,env:{},claim:h.claim,store,send:async()=>assert.fail('stale snapshot cannot send')});
  assert.equal(patches,0);assert.equal(h.state.channels[0].status,'pending');
 });
 test('durable receipt transport enforces strict contract and fails closed without RPC',async()=>{
@@ -141,7 +148,7 @@ test('pending financial review scoped to sold order/env blocks new sends without
  const m=await load('_community-notifications.js'),h=fixture(false,true);let sends=0,patches=0;
  Object.assign(h.state.channels[1],{status:'completed',external_id:'paid-history',accepted_at:'accepted-proof'});
  const before=structuredClone(h.state.channels);
- const result=await m.processCommunityNotifications({config,activationId,env:{},store:async(t,f,p)=>{if(p)patches++;return h.store(t,f,p);},send:async()=>{sends++;}});
+ const result=await m.processCommunityNotifications({config,activationId,env:{},claim:h.claim,store:async(t,f,p)=>{if(p)patches++;return h.store(t,f,p);},send:async()=>{sends++;}});
  assert.equal(sends,0);assert.equal(patches,0);assert.deepEqual(h.state.channels,before);
  assert.equal(result[0].error_code,'community_financial_review_pending');assert.equal(result[1].status,'completed');
 });
@@ -149,10 +156,24 @@ test('pending financial review scoped to sold order/env blocks new sends without
 test('financial review in another paid competence does not hold this activation; unbound initial review holds order',async()=>{
  const m=await load('_community-notifications.js');
  const other=fixture(false,'22222222-2222-4222-8222-222222222222');let calls=0;
- await m.processCommunityNotifications({config,activationId,env:{},store:other.store,send:async()=>{calls++;return {status:'processing',external_id:'accepted'};}});
+ await m.processCommunityNotifications({config,activationId,env:{},store:other.store,claim:other.claim,send:async()=>{calls++;return {status:'processing',external_id:'accepted'};}});
  assert.equal(calls,2);
  const initial=fixture();let initialCalls=0;
  const store=async(t,f,p)=>t==='cobranca_revisoes_financeiras'?[{id:'initial-unpaid-review',activation_id:null}]:initial.store(t,f,p);
- await m.processCommunityNotifications({config,activationId,env:{},store,send:async()=>{initialCalls++;}});
+ await m.processCommunityNotifications({config,activationId,env:{},claim:initial.claim,store,send:async()=>{initialCalls++;}});
  assert.equal(initialCalls,0);assert.ok(initial.state.channels.every(n=>n.attempts===0));
+});
+
+test('a hold committed after context read blocks the atomic dispatch authorization',async()=>{
+ const m=await load('_community-notifications.js'),h=fixture();let sends=0;
+ const store=async(t,f,p)=>{const rows=await h.store(t,f,p);if(t==='cobranca_pending_notifications')h.state.financialHold=true;return rows;};
+ const result=await m.processCommunityNotifications({config,activationId,env:{},store,claim:h.claim,send:async()=>{sends++;}});
+ assert.equal(sends,0);assert.ok(h.state.channels.every(n=>n.attempts===0));assert.ok(result.every(n=>n.error_code==='community_financial_review_pending'));
+});
+test('atomic claim unavailable or with wrong identity cannot fall back to REST claim or send',async()=>{
+ const m=await load('_community-notifications.js'),h=fixture();let sends=0;
+ await assert.rejects(m.processCommunityNotifications({config,activationId,env:{},store:h.store,claim:async()=>{throw new Error('RPC unavailable');},send:async()=>{sends++;}}));
+ assert.equal(sends,0);assert.ok(h.state.channels.every(n=>n.attempts===0));
+ const rpc=m.notificationClaimRpc({...config,db:'https://central.invalid',key:'synthetic'},async()=>Response.json({contract_version:1,claimed:true,reason:'claimed',notification:{id:'wrong'}}));
+ await assert.rejects(rpc({notification_id:'email',claim_token:'nonce'}),e=>e.status===500);
 });

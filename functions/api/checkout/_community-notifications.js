@@ -28,6 +28,26 @@ export function notificationStore(config, fetchFn = fetch) {
     return rows;
   };
 }
+export function notificationClaimRpc(config, fetchFn = fetch) {
+  return async request => {
+    const response = await fetchFn(`${config.db}/rest/v1/rpc/claim_community_notification`, {
+      method: 'POST', headers: { apikey: config.key, Authorization: `Bearer ${config.key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_claim: request }), signal: AbortSignal.timeout(7000), redirect: 'error',
+    });
+    const result = await response.json().catch(() => null);
+    if (!response.ok || result?.contract_version !== 1 || typeof result.claimed !== 'boolean' ||
+        !['claimed','financial_review_pending','not_ready','claim_lost'].includes(result.reason))
+      throw new CommunityError('community_notification_storage', 500);
+    if (result.claimed && (result.reason !== 'claimed' || result.notification?.id !== request.notification_id ||
+        result.notification.organization_id !== config.organizationId || result.notification.status !== 'processing' ||
+        result.notification.claim_token !== request.claim_token || result.notification.external_id != null ||
+        result.notification.accepted_at != null || result.notification.failure_proof != null))
+      throw new CommunityError('community_notification_storage', 500);
+    if (!result.claimed && (result.reason === 'claimed' || result.notification !== null))
+      throw new CommunityError('community_notification_storage', 500);
+    return result;
+  };
+}
 async function one(store, table, filters) {
   const rows = await store(table, { ...filters, limit: '2' });
   if (rows.length !== 1) throw new CommunityError('community_notification_binding', 409);
@@ -110,7 +130,7 @@ export async function sendCommunityChannel(channel, message, env, reference, fet
     return { status: 'processing', external_id: id, accepted_at: new Date().toISOString() };
   } catch (_) { return { status: 'uncertain', error_code: 'community_provider_outcome_unknown' }; }
 }
-export async function processCommunityNotifications({ config, activationId, env, store = notificationStore(config), send = sendCommunityChannel }) {
+export async function processCommunityNotifications({ config, activationId, env, store = notificationStore(config), send = sendCommunityChannel, claim = notificationClaimRpc(config) }) {
   const context = await activationContext(store, config, activationId);
   const filter = { activation_id: `eq.${activationId}` };
   const channels = await store('cobranca_notificacoes', filter);
@@ -136,11 +156,14 @@ export async function processCommunityNotifications({ config, activationId, env,
       continue;
     }
     if (!['pending','failed'].includes(item.status) || !pending.some(n => n.id === item.id)) { output.push(resultChannel(item)); continue; }
-    const token = crypto.randomUUID(), now = new Date().toISOString();
-    const claimed = await store('cobranca_notificacoes', { id: `eq.${item.id}`, status: `eq.${item.status}`, updated_at: `eq.${item.updated_at}`,
-      next_attempt_at: `lte.${now}`, external_id: 'is.null', accepted_at: 'is.null', failure_proof: 'is.null' }, { status: 'processing', claim_token: token, lease_until: new Date(Date.now()+120000).toISOString(),
-      attempts: item.attempts + 1, updated_at: now });
-    if (!claimed.length) { output.push(resultChannel(await one(store, 'cobranca_notificacoes', { id: `eq.${item.id}` }))); continue; }
+    const token = crypto.randomUUID();
+    const claimed = await claim({ contract_version:1, organization_id:config.organizationId, environment:config.environment,
+      notification_id:item.id, expected_status:item.status, expected_updated_at:item.updated_at, claim_token:token });
+    if (!claimed.claimed) {
+      const current = await one(store, 'cobranca_notificacoes', { id: `eq.${item.id}` });
+      output.push({ ...resultChannel(current), ...(claimed.reason === 'financial_review_pending' ? { error_code:'community_financial_review_pending' } : {}) });
+      continue;
+    }
     let outcome;
     try { outcome = await send(item.channel, context.message, env, emailReference(config, activationId)); }
     catch (error) { outcome = error instanceof CommunityError && PRE_EFFECT_ERRORS.has(error.code) ? { status: 'failed', error_code: error.code } : { status: 'uncertain', error_code: 'community_provider_outcome_unknown' }; }

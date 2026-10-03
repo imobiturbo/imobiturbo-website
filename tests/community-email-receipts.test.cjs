@@ -103,3 +103,17 @@ test('financial review hold does not discard a real receipt for an already sent 
  assert.equal(await m.recordEmailReceipt(h.store,config,m.parseEmailReceipt(payload()),h.rpc),true);
  assert.equal(h.calls[0].status,'completed');
 });
+
+test('authenticated callback after accepted send timeout remains retryable without attaching an unknown ID',async()=>{
+ const m=await load(),receipt=m.parseEmailReceipt(payload()),h=receiptHarness({currentId:null,state:'uncertain',attempts:1});
+ await assert.rejects(m.recordEmailReceipt(h.store,config,receipt,h.rpc),e=>e.code==='receipt_pending_dispatch'&&e.status===500);
+ assert.equal(h.calls.length,0);assert.equal(h.row.external_id,null);
+ const untouched=receiptHarness({currentId:null,state:'uncertain',attempts:0});
+ assert.equal(await m.recordEmailReceipt(untouched.store,config,receipt,untouched.rpc),false);
+});
+
+test('an older authenticated receipt for an uncertain ID-less attempt remains recoverable',async()=>{
+ const m=await load(),h=receiptHarness({currentId:null,state:'uncertain',attempts:1}),receipt={...m.parseEmailReceipt(payload()),at:new Date(Date.now()-86400000).toISOString()};
+ await assert.rejects(m.recordEmailReceipt(h.store,config,receipt,h.rpc),e=>e.code==='receipt_pending_dispatch'&&e.status===500);
+ assert.equal(h.calls.length,0);
+});
