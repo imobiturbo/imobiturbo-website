@@ -52,7 +52,7 @@ export async function onRequestPost(context) {
     const email = (payload.email || '').trim();
     const cargo = (payload.cargo || payload.role || '').trim();
     const faturamento = (payload.faturamento || payload.revenue || '').trim();
-    const isImobicreator = payload.project === 'imobicreator' || cargo || faturamento;
+    const isImobicreator = payload.project === 'imobicreator' || Boolean(cargo);
 
     if (!telefone && !email) {
       return new Response(
