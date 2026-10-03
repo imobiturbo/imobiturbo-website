@@ -89,15 +89,20 @@ test('vagas enviam atribuição para os eventos Lead do Hub', () => {
   assert.match(html, /\bfbp\b/);
 });
 
-test('Purchase verificado usa segredos de ambiente e o gateway legado foi removido', () => {
+test('Purchase financeiro pertence ao Hub e gateways legados não expõem segredo', () => {
   const status = fs.readFileSync(path.join(root, 'functions/api/checkout/status.js'), 'utf8');
   const webhook = fs.readFileSync(path.join(root, 'functions/api/checkout/webhook.js'), 'utf8');
   assert.equal(fs.existsSync(path.join(root, 'functions/tracker.js')), false, 'gateway /tracker legado não deve existir');
   for (const source of [status, webhook]) {
-    assert.match(source, /env.*META_ACCESS_TOKEN/);
     assert.equal(/DEFAULT_CAPI_TOKEN/.test(source), false, 'token de CAPI não pode ficar versionado');
     assert.match(source, /dispatchVerifiedPurchaseToHub/);
   }
+});
+
+test('webhook da comunidade delega Purchase ao financeiro do Hub', () => {
+  const webhook = fs.readFileSync(path.join(root, 'functions/api/checkout/webhook.js'), 'utf8');
+  assert.match(webhook, /hub_financial_webhook/);
+  assert.doesNotMatch(webhook, /graph\.facebook\.com/);
 });
 
 test('deploy publica tracker e assets sem senha fixa no código', () => {
