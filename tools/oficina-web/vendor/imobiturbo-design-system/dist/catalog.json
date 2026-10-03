@@ -192,9 +192,9 @@
       "alias": "{colors.brand.accentScale.light.600}"
     },
     "colors.semantic.light.accentFg": {
-      "value": "#000000",
+      "value": "#FFFFFF",
       "source": "tokens/colors.json",
-      "alias": "{colors.semantic.light.textPrimary}"
+      "alias": "{colors.primitives.white}"
     },
     "colors.semantic.light.accentSoft": {
       "value": "rgba(105, 164, 56, 0.12)",
@@ -337,7 +337,7 @@
       "alias": "{colors.semantic.light.accent}"
     },
     "colors.semantic.light.primaryFg": {
-      "value": "#000000",
+      "value": "#FFFFFF",
       "source": "tokens/colors.json",
       "alias": "{colors.semantic.light.accentFg}"
     },

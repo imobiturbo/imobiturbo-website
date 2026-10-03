@@ -52,7 +52,7 @@ export const SEMANTIC = {
   "light": {
     "accent": "#69a438",
     "accentHover": "#5a8f2e",
-    "accentFg": "#000000",
+    "accentFg": "#FFFFFF",
     "accentSoft": "rgba(105, 164, 56, 0.12)",
     "canvas": "#FFFFFF",
     "surface": "#FFFFFF",
@@ -81,7 +81,7 @@ export const SEMANTIC = {
     "popover": "#FFFFFF",
     "popoverFg": "#000000",
     "primary": "#69a438",
-    "primaryFg": "#000000",
+    "primaryFg": "#FFFFFF",
     "secondary": "#F4F4F5",
     "secondaryFg": "#000000",
     "muted": "#F4F4F5",

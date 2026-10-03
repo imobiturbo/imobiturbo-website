@@ -121,3 +121,12 @@ test("guias pages enforce strict black text #000000 and stroke on community CTA 
   }
 });
 
+test("Oficina / Design System canonical green buttons enforce white text #FFFFFF", () => {
+  const tokensCssPath = path.join(root, "tools/oficina-web/vendor/imobiturbo-design-system/dist/tokens.css");
+  const content = fs.readFileSync(tokensCssPath, "utf8");
+
+  assert.ok(content.includes("--it-accent: #69a438;"), "Light theme accent must be #69a438");
+  assert.ok(content.includes("--it-accent-fg: #FFFFFF;"), "Light theme accentFg must be white #FFFFFF for green buttons");
+  assert.ok(content.includes("--it-primary-fg: #FFFFFF;"), "Light theme primaryFg must be white #FFFFFF");
+});
+

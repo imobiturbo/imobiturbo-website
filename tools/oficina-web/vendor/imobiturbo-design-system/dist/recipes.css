@@ -515,7 +515,7 @@
 :root, [data-theme="light"] {
   --it-accent: #69a438;
   --it-accent-hover: #5a8f2e;
-  --it-accent-fg: #000000;
+  --it-accent-fg: #FFFFFF;
   --it-accent-soft: rgba(105, 164, 56, 0.12);
   --it-canvas: #FFFFFF;
   --it-surface: #FFFFFF;
@@ -544,7 +544,7 @@
   --it-popover: #FFFFFF;
   --it-popover-fg: #000000;
   --it-primary: #69a438;
-  --it-primary-fg: #000000;
+  --it-primary-fg: #FFFFFF;
   --it-secondary: #F4F4F5;
   --it-secondary-fg: #000000;
   --it-muted: #F4F4F5;

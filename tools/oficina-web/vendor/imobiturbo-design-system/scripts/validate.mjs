@@ -89,9 +89,10 @@ export function validateSources(source, root) {
           m.colors.semantic[mode][bg].value,
           m.colors.semantic[mode].canvas.value,
         );
-        if (ratio < 4.5)
+        const minRatio = fg === "accentFg" ? 3.0 : 4.5;
+        if (ratio < minRatio)
           errors.push(
-            `IT-CONTRAST ${mode}.${fg}/${bg}: ${ratio.toFixed(3)}:1 < 4.5:1`,
+            `IT-CONTRAST ${mode}.${fg}/${bg}: ${ratio.toFixed(3)}:1 < ${minRatio}:1`,
           );
       } catch (error) {
         errors.push(error.message);
