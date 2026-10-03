@@ -44,7 +44,7 @@ Gerada de tokens, components.json, policy.json e manifests. Não editar.
 | colors.brand.neutralScale.950 | #09090B |  |
 | colors.semantic.light.accent | #69a438 | {colors.brand.accent.light} |
 | colors.semantic.light.accentHover | #5a8f2e | {colors.brand.accentScale.light.600} |
-| colors.semantic.light.accentFg | #000000 | {colors.semantic.light.textPrimary} |
+| colors.semantic.light.accentFg | #FFFFFF | {colors.primitives.white} |
 | colors.semantic.light.accentSoft | rgba(105, 164, 56, 0.12) | {colors.primitives.lightAccentSoft} |
 | colors.semantic.light.canvas | #FFFFFF | {colors.primitives.white} |
 | colors.semantic.light.surface | #FFFFFF | {colors.primitives.white} |
@@ -73,7 +73,7 @@ Gerada de tokens, components.json, policy.json e manifests. Não editar.
 | colors.semantic.light.popover | #FFFFFF | {colors.semantic.light.surface} |
 | colors.semantic.light.popoverFg | #000000 | {colors.semantic.light.textPrimary} |
 | colors.semantic.light.primary | #69a438 | {colors.semantic.light.accent} |
-| colors.semantic.light.primaryFg | #000000 | {colors.semantic.light.accentFg} |
+| colors.semantic.light.primaryFg | #FFFFFF | {colors.semantic.light.accentFg} |
 | colors.semantic.light.secondary | #F4F4F5 | {colors.semantic.light.surfaceElevated} |
 | colors.semantic.light.secondaryFg | #000000 | {colors.semantic.light.textPrimary} |
 | colors.semantic.light.muted | #F4F4F5 | {colors.semantic.light.surfaceElevated} |

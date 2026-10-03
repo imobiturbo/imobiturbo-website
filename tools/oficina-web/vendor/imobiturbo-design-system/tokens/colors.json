@@ -69,7 +69,7 @@
         "type": "color"
       },
       "accentFg": {
-        "value": "{colors.semantic.light.textPrimary}",
+        "value": "{colors.primitives.white}",
         "type": "color"
       },
       "accentSoft": {

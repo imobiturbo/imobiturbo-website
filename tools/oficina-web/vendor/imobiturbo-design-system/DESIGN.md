@@ -17,6 +17,6 @@ Use conteúdo concreto em português do Brasil. Não invente resultados, depoime
 
 Hierarquia, alinhamento, densidade e legibilidade continuam exigindo revisão humana. Checks automáticos comprovam as regras codificadas, não qualidade comercial nem aprovação visual.
 
-Acessibilidade: contrastPairs da política é medida para texto normal AA. As fixtures incluem foco e reduced motion. Estado disabled não substitui atributos semânticos; produtos devem testar teclado, nome acessível e erros de formulário.
+Acessibilidade: contrastPairs da política é medida para texto normal AA (mínimo 4.5:1) e ações/botões em contraste de componente e texto pesado (mínimo 3:1). As fixtures incluem foco e reduced motion. Estado disabled não substitui atributos semânticos; produtos devem testar teclado, nome acessível e erros de formulário.
 
 Referências aprovadas e perfis específicos permanecem imutáveis. Um perfil de LP não prevalece fora daquela superfície.
