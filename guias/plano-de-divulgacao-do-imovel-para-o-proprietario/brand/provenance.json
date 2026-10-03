@@ -1,0 +1,25 @@
+{
+  "design_system": "@imobiturbo/design-system",
+  "version": "5.0.2",
+  "revision": "fb46a22666f5e7e95ef78c3e997bb75e0e3f4bb6",
+  "logo": {
+    "id": "logo.imobiturbo.dark",
+    "file": "assets/all-logos-imobiturbo/imobiturbo - fundo transparente - aplicar em tema dark.webp",
+    "kind": "logo",
+    "product": "imobiturbo",
+    "theme": "dark",
+    "status": "active",
+    "sha256": "79dfd774f7f891440ae49edfd15d27f01f588779d7daaab2a6c3052954131fdd",
+    "width": 2456,
+    "height": 875,
+    "aliases": [],
+    "provenance": "working-tree-2026-09-29"
+  },
+  "recipes": {
+    "source": "dist/recipes.css",
+    "version": "5.0.2",
+    "source_sha256": "89f235586f66a1b6d1a47ff7b7667489ed88312287382b52d02dba9f48aec662",
+    "sha256": "6baba5d11f0f0d2b8b22cb875073c9032bf722d3c343516aa592b7c505300263",
+    "adaptation": "Font URLs rebased from ../fonts/ to fonts/ for existing brand/fonts directory"
+  }
+}

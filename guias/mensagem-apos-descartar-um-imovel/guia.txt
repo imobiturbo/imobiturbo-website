@@ -1,0 +1,24 @@
+Mensagem após descartar um imóvel
+
+Salve uma mensagem para entender um descarte e ajustar a seleção sem pressionar o comprador.
+
+COMO USAR
+1. Retome um descarte comunicado pelo comprador, sem disparo em massa.
+2. Escolha duas possibilidades ligadas à conversa, deixando espaço para outro motivo.
+3. Atualize a seleção e respeite a decisão e a preferência de contato da pessoa.
+
+MODELO PARA COPIAR
+[Nome], entendi que [imóvel] saiu da sua seleção.
+Qual ponto pesou mais: [duas opções pertinentes ao contexto] ou outro motivo?
+Se preferir, pode apenas me dizer o que a próxima opção precisa ter de diferente.
+Vou atualizar os critérios antes de mandar outra seleção; não precisamos insistir nesse imóvel.
+
+Exemplo fictício preenchido:
+João, entendi que o apartamento de dois quartos no Jardim saiu da sua seleção.
+Qual ponto pesou mais: o espaço do segundo quarto, o trajeto até o trabalho ou outro motivo?
+Se preferir, pode apenas me dizer o que a próxima opção precisa ter de diferente.
+Vou atualizar os critérios antes de mandar outra seleção; não precisamos insistir nesse imóvel.
+
+Registro fictício: segundo quarto pequeno para o uso pretendido; confirmar medidas das próximas opções; não presumir mudança de orçamento.
+
+Não usar a pergunta para contornar um não explícito ou insistir após pedido de interrupção.

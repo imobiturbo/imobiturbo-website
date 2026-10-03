@@ -1,0 +1,42 @@
+Plano de divulgação do imóvel para o proprietário
+
+Copie um prompt para organizar ações, responsáveis e revisão de um imóvel, antes de prometer resultado.
+
+COMO USAR
+1. Preencha com um imóvel que pode divulgar e condições combinadas com o proprietário.
+2. Cole na IA e confira se cada ação é executável com os materiais e canais disponíveis.
+3. Apresente e combine a revisão, sem transformar o plano em garantia de venda.
+
+MODELO PARA COPIAR
+Organize um plano simples de divulgação de um imóvel no Brasil para apresentar ao proprietário.
+Use somente estes dados:
+IMÓVEL E REGIÃO: [tipo, bairro, cidade]
+INFORMAÇÕES CONFERIDAS: [características, valor autorizado, data da conferência]
+AUTORIZAÇÃO E LIMITES: [o que pode ser divulgado e em quais canais]
+MATERIAIS DISPONÍVEIS: [fotos, ficha e vídeo autorizados]
+CANAIS POSSÍVEIS: [canais que realmente podemos usar]
+RESPONSÁVEL: [nome ou função]
+DATA DA REVISÃO: [data combinada]
+
+Entregue uma página com três ações, o material necessário, o responsável e o que será conferido na revisão de cada ação.
+Separe pendências e fatos confirmados.
+Feche com uma mensagem curta ao proprietário combinando a próxima atualização.
+Não invente leads, vendas, verba, prazos de venda, preço de mercado, autorização ou resultados.
+Se faltar um dado, escreva “a confirmar”.
+
+Exemplo fictício preenchido:
+IMÓVEL E REGIÃO: apartamento de dois quartos no Jardim, cidade Exemplo.
+INFORMAÇÕES CONFERIDAS: dois quartos; valor autorizado R$ 480 mil, exemplo fictício.
+AUTORIZAÇÃO E LIMITES: publicar ficha e fotos autorizadas; não divulgar número da unidade.
+MATERIAIS: ficha conferida e quatro fotos autorizadas.
+CANAIS: portal contratado e perfil da imobiliária.
+RESPONSÁVEL: Ana.
+DATA DA REVISÃO: 10/10/2026, data fictícia.
+
+Saída revisada possível:
+1. Conferir ficha e fotos; Ana; revisar lacunas antes de publicar.
+2. Publicar nos canais autorizados; Ana; registrar links e data.
+3. Reunir dúvidas recebidas; Ana; revisar se a ficha responde aos critérios mencionados.
+Mensagem: “Vou conferir os materiais e te enviar os links publicados; em 10/10 combinamos a revisão das dúvidas e das próximas ações”.
+
+Não é avaliação de preço, contrato ou garantia de demanda e venda.
