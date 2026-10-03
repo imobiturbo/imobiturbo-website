@@ -36,25 +36,65 @@ test('only genuine open/click/bounce parses; sendTest and acceptance cannot comp
  assert.equal(m.parseEmailReceipt({request_id:'provider-synthetic',data:[{code:'EM_104'}]}),null);
  assert.equal(m.parseEmailReceipt(payload('email_delivered')),null);
 });
-test('reference, provider ID, recipient and organization correlate; duplicate/failure cannot downgrade completion; DB failure throws',async()=>{
- const m=await load(),p=payload(),receipt=m.parseEmailReceipt(p);
- const row={id:'notification',status:'uncertain',attempts:1,updated_at:'old',external_id:'provider-synthetic'};
- let writes=0;
+function receiptHarness({history=[],currentId='provider-synthetic',state='uncertain',attempts=1,financialReview=false}={}) {
+ const row={id:'notification',status:state,attempts,external_id:currentId};
+ const calls=[];
  const store=async(table,filters,patch)=>{
+  assert.equal(patch,undefined,'receipt writes must use the atomic RPC');
   if(table==='cobranca_competencias')return [{subscription_id:'subscription',period_end:'2027-01-03T00:00:00Z'}];
   if(table==='cobranca_assinaturas')return [{email:'buyer@example.invalid',checkout_order_id:'order',sold_snapshot:{contract_version:1,resource_profile:{unlimited:true},products:['os'],duration_months:3}}];
   if(table==='cobranca_pedidos')return [{buyer_email:'buyer@example.invalid'}];
+  if(table==='cobranca_revisoes_financeiras')return financialReview ? [{id:'synthetic-review',activation_id:id}] : [];
   if(table==='cobranca_entregas')return [{product:'os',status:'completed',completed_at:'proof'}];
-  if(patch){writes++;Object.assign(row,patch);}
-  return [{...row}];
+  if(table==='cobranca_notificacao_tentativas') {
+   assert.equal(filters.notification_id,'eq.notification');assert.equal(filters.channel,'eq.email');assert.equal(filters.environment,'eq.production');
+   return history;
+  }
+  assert.equal(table,'cobranca_notificacoes');return [{...row}];
  };
- assert.equal(await m.recordEmailReceipt(store,config,{...receipt,recipient:'wrong@example.invalid'}),false);
- assert.equal(await m.recordEmailReceipt(store,config,{...receipt,id:'wrong'}),false);
- assert.equal(await m.recordEmailReceipt(store,config,{...receipt,reference:ref.replace(org,id)}),false);
- assert.equal(writes,0);
- assert.equal(await m.recordEmailReceipt(store,config,receipt),true);assert.equal(row.status,'completed');const at=row.delivered_at;
- assert.equal(await m.recordEmailReceipt(store,config,{...receipt,status:'failed'}),true);
- assert.equal(await m.recordEmailReceipt(store,config,{...receipt,at:new Date().toISOString()}),true);
- assert.equal(writes,1);assert.equal(row.delivered_at,at);
- await assert.rejects(m.recordEmailReceipt(async()=>{throw new Error('db failure');},config,receipt));
+ const rpc=async receipt=>{calls.push(receipt);return true;};
+ return {row,store,rpc,calls};
+}
+test('reference, provider ID, recipient and org correlate before atomic RPC',async()=>{
+ const m=await load(),receipt=m.parseEmailReceipt(payload()),h=receiptHarness();
+ for(const delta of [{recipient:'wrong@example.invalid'},{id:'wrong'},{reference:ref.replace(org,id)}])
+  assert.equal(await m.recordEmailReceipt(h.store,config,{...receipt,...delta},h.rpc),false);
+ assert.equal(h.calls.length,0);
+ assert.equal(await m.recordEmailReceipt(h.store,config,receipt,h.rpc),true);
+ assert.equal(h.calls[0].status,'completed');assert.equal(h.calls[0].failure_proof,null);
+ assert.deepEqual(Object.keys(h.calls[0]).sort(),['at','channel','contract_version','environment','external_id','failure_proof','notification_id','organization_id','status']);
+ await assert.rejects(m.recordEmailReceipt(async()=>{throw new Error('db failure');},config,receipt,h.rpc));
+});
+test('hard bounce supplies terminal proof; soft bounce remains uncertain and nonterminal',async()=>{
+ const m=await load();
+ for(const [object,status,terminal] of [['hardbounce','failed',true],['softbounce','uncertain',false]]) {
+  const h=receiptHarness(),receipt=m.parseEmailReceipt(payload(object));
+  assert.equal(receipt.status,status);assert.equal(await m.recordEmailReceipt(h.store,config,receipt,h.rpc),true);
+  assert.deepEqual(h.calls[0].failure_proof,{contract_version:1,source:'zoho_authenticated_webhook',terminal,external_id:'provider-synthetic',occurred_at:receipt.at,error_code:receipt.error_code});
+ }
+});
+test('late archived ID targets its original attempt while current is manually pending or processing a later attempt',async()=>{
+ const m=await load(),receipt=m.parseEmailReceipt(payload());
+ for(const state of ['pending','processing','completed']) {
+  const h=receiptHarness({currentId:'new-id',state,attempts:2,history:[{attempt_number:1}]});
+  const before={...h.row};assert.equal(await m.recordEmailReceipt(h.store,config,receipt,h.rpc),true);
+  assert.equal(h.calls[0].external_id,'provider-synthetic');assert.deepEqual(h.row,before);
+ }
+});
+test('uncorrelated ID after manual reset stays unknown even with a correct client reference',async()=>{
+ const m=await load(),receipt=m.parseEmailReceipt(payload()),h=receiptHarness({currentId:null,state:'processing',attempts:2});
+ assert.equal(await m.recordEmailReceipt(h.store,config,receipt,h.rpc),false);assert.equal(h.calls.length,0);
+});
+test('manual reset between correlation and RPC is resolved atomically, never by local PATCH',async()=>{
+ const m=await load(),receipt=m.parseEmailReceipt(payload()),h=receiptHarness();
+ assert.equal(await m.recordEmailReceipt(h.store,config,receipt,async args=>{
+  assert.equal(args.external_id,'provider-synthetic');Object.assign(h.row,{status:'pending',attempts:2,external_id:null});return true;
+ }),true);
+ assert.equal(h.row.external_id,null,'RPC owns historical completion and preserves current IDs');
+ const fresh=receiptHarness();await assert.rejects(m.recordEmailReceipt(fresh.store,config,receipt,async()=>{throw new Error('RPC missing');}));
+});
+test('financial review hold does not discard a real receipt for an already sent or archived attempt',async()=>{
+ const m=await load(),h=receiptHarness({financialReview:true});
+ assert.equal(await m.recordEmailReceipt(h.store,config,m.parseEmailReceipt(payload()),h.rpc),true);
+ assert.equal(h.calls[0].status,'completed');
 });
