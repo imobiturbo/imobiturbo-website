@@ -1,0 +1,15 @@
+{
+  "sourceCommit": "b8c6424e4ff1d5fe88c7e25c1434f4fc66e8a47d",
+  "commercialTextPreserved": true,
+  "removedCommercialTokens": {},
+  "addedCommercialTokens": {},
+  "tokensCompared": 1770,
+  "method": "Compare all body text tokens, including closed catalog and FAQ answers. Exclude decorative aria-hidden icon content and metadata captions exposing existing image alt titles. Ignore document head, scripts and SVG.",
+  "offerJsonUnchanged": true,
+  "offerSha256": "3a15c5cd1602007d9db5d7cdd20d3a0a7f9b8305715c191984ac017aa68b8ae7",
+  "pricesCents": {
+    "essencial": 3790,
+    "completo": 4790
+  },
+  "visualAdditions": "Illustrative images, existing alt titles as preview captions, accessible image zoom controls. No new commercial claims."
+}
