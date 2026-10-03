@@ -52,7 +52,13 @@ export async function onRequestPost(context) {
     const email = (payload.email || '').trim();
     const cargo = (payload.cargo || payload.role || '').trim();
     const faturamento = (payload.faturamento || payload.revenue || '').trim();
-    const isImobicreator = payload.project === 'imobicreator' || Boolean(cargo);
+    const isImobicreator = payload.project === 'imobicreator' || (!payload.project && Boolean(cargo));
+
+    if (payload.project === 'organic_diagnostic') {
+      const profiles = { corretores: 'Corretor autônomo', imobiliarias: 'Imobiliária', incorporadoras: 'Incorporadora', empreiteiras: 'Empreiteira', construtoras: 'Construtora' };
+      payload.perfil = profiles[payload.seo_publico] || payload.perfil;
+      payload.consentimento_versao = 'diagnostico-20261003';
+    }
 
     if (!telefone && !email) {
       return new Response(
@@ -170,6 +176,10 @@ Estou à sua disposição aqui nesta conversa para tirar dúvidas técnicas e al
       `Olá Natan! Sou ${nome || 'visitante'}${cargo ? ` (${cargo})` : ''}. Acabei de preencher o formulário no Imobicreator e quero desenhar o influenciador de IA para minha construtora.`
     );
     const redirectUrl = `https://wa.me/5521983747796?text=${msgRedirect}`;
+
+    if (payload.project === 'organic_diagnostic' && contentType.includes('application/x-www-form-urlencoded')) {
+      return new Response('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Diagnóstico registrado | Imobiturbo</title><link rel="stylesheet" href="/organic.css?v=20261003"></head><body class="seo-page"><main class="seo-shell seo-hero"><p class="seo-eyebrow">Imobiturbo</p><h1>Diagnóstico registrado</h1><p>Recebemos seus dados. A equipe entrará em contato pelos dados informados.</p><a class="seo-button" href="/servicos/">Voltar aos serviços →</a></main></body></html>', { headers: { ...CORS_HEADERS, 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' } });
+    }
 
     return new Response(
       JSON.stringify({

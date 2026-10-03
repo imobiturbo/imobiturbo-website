@@ -63,3 +63,18 @@ test('OS indisponível ou sem recibo não gera sucesso nem mensagem', async t =>
     assert.equal(calls, 1);
   }
 });
+
+test('diagnóstico sem JavaScript normaliza perfil e confirma em HTML após o recibo real', async t => {
+  const previous = global.fetch;
+  t.after(() => { global.fetch = previous; });
+  let forwarded;
+  global.fetch = async (url, options) => { forwarded = JSON.parse(options.body); return Response.json({ data: { lead_id: 'confirmado' } }); };
+  const res = await (await handler).onRequestPost({ request: new Request('https://www.imobiturbo.com.br/api/lead', {
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ project: 'organic_diagnostic', nome: 'Proprietário', email: 'proprietario@example.invalid', telefone: '21999999999', seo_publico: 'construtoras', gargalo: 'Atrair leads qualificados', consentimento_contato: 'sim', seo_cidade: 'São Paulo' }),
+  }) });
+  assert.equal(res.status, 200);
+  assert.equal(forwarded.perfil, 'Construtora');
+  assert.match(res.headers.get('content-type'), /text\/html/);
+  assert.match(await res.text(), /Diagnóstico registrado/);
+});

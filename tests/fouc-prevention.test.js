@@ -11,26 +11,20 @@ const reactPages = [
   "construtoras-incorporadoras/index.html"
 ];
 
-test("no page displays unstyled fallback HTML directly inside #root (FOUC prevention)", () => {
+test("initial React HTML is styled before paint and hydrated without a crawler-only fallback", () => {
   for (const file of reactPages) {
     const filePath = path.join(root, file);
     const html = fs.readFileSync(filePath, "utf8");
 
-    // #root must be empty (<div id="root" data-imt-decorate></div>) to prevent FOUC
     assert.match(
       html,
-      /<div id="root" data-imt-decorate>\s*<\/div>/,
-      `${file} must have an empty #root container to prevent flashing unstyled content`
+      /<div id="root" data-imt-decorate><!--prerender:start-->[\s\S]*?<h1[ >]/,
+      `${file} must include the same styled content before JavaScript executes`
     );
-
-    // If semantic fallback exists for crawlers, it MUST be wrapped in <noscript>
-    if (html.includes("Fallback semântico")) {
-      assert.match(
-        html,
-        /<noscript>[\s\S]*?<!-- Fallback semântico[\s\S]*?<\/noscript>/,
-        `${file} semantic fallback must be wrapped inside <noscript> tag`
-      );
-    }
+    const head = html.slice(0, html.indexOf('</head>'));
+    assert.match(head, /<link rel="stylesheet"/);
+    assert.match(html, /ReactDOM\.hydrateRoot/);
+    assert.doesNotMatch(html, /Fallback semântico/);
   }
 });
 
