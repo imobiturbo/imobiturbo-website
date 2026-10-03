@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const esbuild = require('esbuild');
 
-const distDir = path.join(__dirname, 'dist');
+const buildRoot = process.env.IMT_BUILD_OUTPUT_DIR ? path.resolve(process.env.IMT_BUILD_OUTPUT_DIR) : __dirname;
+const distDir = path.join(buildRoot, 'dist');
 if (!fs.existsSync(distDir)) {
   fs.mkdirSync(distDir, { recursive: true });
 }
@@ -47,6 +48,7 @@ async function build() {
     fs.writeFileSync(path.join(distDir, 'audience.bundle.js'), audienceResult.code, 'utf8');
     console.log('Successfully created dist/audience.bundle.js');
 
+    require('./scripts/prerender.cjs')({ outputDir: buildRoot });
     console.log('Build completed successfully!');
   } catch (err) {
     console.error('Build failed:', err.message);

@@ -52,13 +52,23 @@ export async function onRequestPost(context) {
     const email = (payload.email || '').trim();
     const cargo = (payload.cargo || payload.role || '').trim();
     const faturamento = (payload.faturamento || payload.revenue || '').trim();
-    const isImobicreator = payload.project === 'imobicreator' || Boolean(cargo);
+    const isImobicreator = payload.project === 'imobicreator' || (!payload.project && Boolean(cargo));
+
+    if (payload.project === 'organic_diagnostic') {
+      const profiles = { corretores: 'Corretor autônomo', imobiliarias: 'Imobiliária', incorporadoras: 'Incorporadora', empreiteiras: 'Empreiteira', construtoras: 'Construtora' };
+      payload.perfil = profiles[payload.seo_publico] || payload.perfil;
+      payload.consentimento_versao = 'diagnostico-20261003';
+    }
 
     if (!telefone && !email) {
       return new Response(
         JSON.stringify({ ok: false, error: 'Informe telefone ou e-mail para prosseguir.' }),
         { status: 400, headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' } }
       );
+    }
+
+    if (payload.project === 'organic_diagnostic' && (!nome || !telefone || !email || !payload.perfil || !payload.gargalo || payload.consentimento_contato !== 'sim')) {
+      return Response.json({ ok: false, error: 'Preencha os dados do diagnóstico e autorize o contato.' }, { status: 400, headers: CORS_HEADERS });
     }
 
     // Adiciona metadados de requisição da Cloudflare
@@ -93,6 +103,7 @@ export async function onRequestPost(context) {
           'User-Agent': 'Imobiturbo-Website/1.0 (Imobicreator)',
         },
         body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(20000),
       });
 
       const responseText = await osResponse.text();
@@ -102,8 +113,13 @@ export async function onRequestPost(context) {
       } catch {
         osResult = { raw: responseText };
       }
+      if (!osResponse.ok || osResult?.ok === false || osResult?.success === false || !leadId) {
+        console.warn('[Lead OS Ingest Rejected]', osResponse.status);
+        return Response.json({ ok: false, error: 'Não foi possível confirmar o cadastro. Tente novamente em instantes.' }, { status: 502, headers: CORS_HEADERS });
+      }
     } catch (osErr) {
-      console.error('[Lead OS Ingest Error]:', osErr);
+      console.error('[Lead OS Ingest Error]:', osErr.name);
+      return Response.json({ ok: false, error: 'Não foi possível confirmar o cadastro. Tente novamente em instantes.' }, { status: 502, headers: CORS_HEADERS });
     }
 
     // 2. Se for lead do Imobicreator e tiver telefone válido, dispara mensagem personalizada via WAHA 7796
@@ -160,6 +176,10 @@ Estou à sua disposição aqui nesta conversa para tirar dúvidas técnicas e al
       `Olá Natan! Sou ${nome || 'visitante'}${cargo ? ` (${cargo})` : ''}. Acabei de preencher o formulário no Imobicreator e quero desenhar o influenciador de IA para minha construtora.`
     );
     const redirectUrl = `https://wa.me/5521983747796?text=${msgRedirect}`;
+
+    if (payload.project === 'organic_diagnostic' && contentType.includes('application/x-www-form-urlencoded')) {
+      return new Response('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Diagnóstico registrado | Imobiturbo</title><link rel="stylesheet" href="/organic.css?v=20261003"></head><body class="seo-page"><main class="seo-shell seo-hero"><p class="seo-eyebrow">Imobiturbo</p><h1>Diagnóstico registrado</h1><p>Recebemos seus dados. A equipe entrará em contato pelos dados informados.</p><a class="seo-button" href="/servicos/">Voltar aos serviços →</a></main></body></html>', { headers: { ...CORS_HEADERS, 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' } });
+    }
 
     return new Response(
       JSON.stringify({

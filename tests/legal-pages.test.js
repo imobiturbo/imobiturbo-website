@@ -59,7 +59,7 @@ test("legal pages are public, canonical, self-contained, and distinct from the h
 
 test("legal pages are included in the Cloudflare Pages build and sitemap", () => {
   const build = fs.readFileSync(path.join(root, "build-pages.js"), "utf8");
-  const sitemap = fs.readFileSync(path.join(root, "sitemap.xml"), "utf8");
+  const { content: sitemap } = require('./sitemap-sources.cjs')(root);
 
   assert.match(build, /'legal\.css'/);
   for (const page of pages) {
