@@ -43,7 +43,12 @@ export async function activationContext(store, config, activationId) {
       new Set(products).size !== products.length || products.some(p => !['os','club'].includes(p)) ||
       ![1,3,12].includes(subscription.sold_snapshot.duration_months)) throw new CommunityError('community_notification_binding', 409);
   const deliveries = await store('cobranca_entregas', { activation_id: `eq.${activationId}` });
-  const ready = products.every(product => deliveries.some(d => d.product === product && d.status === 'completed' && d.completed_at));
+  const productsReady = products.every(product => deliveries.some(d => d.product === product && d.status === 'completed' && d.completed_at));
+  const reviews = await store('cobranca_revisoes_financeiras', { select:'id,activation_id', checkout_order_id:`eq.${subscription.checkout_order_id}`,
+    provider:'eq.asaas', environment:`eq.${config.environment}`, state:'eq.pending',
+    or:`(activation_id.eq.${activationId},activation_id.is.null)`, limit:'1' });
+  const financialReviewPending = reviews.some(review => review.activation_id === activationId || review.activation_id === null);
+  const ready = productsReady && !financialReviewPending;
   let enrollment = null;
   if (products.includes('club') && subscription.club_enrollment_id) {
     enrollment = await one(store, 'cobranca_club_matriculas', { id: `eq.${subscription.club_enrollment_id}`, environment: `eq.${config.environment}` });
@@ -51,11 +56,29 @@ export async function activationContext(store, config, activationId) {
       throw new CommunityError('community_notification_binding', 409);
     enrollment.protected_content_allowed = Boolean(enrollment.protected_release_at && Date.parse(enrollment.protected_release_at) <= Date.now());
   }
-  return { ready, subscription, order, message: { name: order.buyer_name, email: subscription.email, phone: order.buyer_phone,
+  return { ready, productsReady, financialReviewPending, subscription, order, message: { name: order.buyer_name, email: subscription.email, phone: order.buyer_phone,
     plan: {1:'mensal',3:'trimestral',12:'anual'}[subscription.sold_snapshot.duration_months],
     community: { products, duration_months: subscription.sold_snapshot.duration_months, period_end: activation.period_end, club_enrollment: enrollment } } };
 }
 export const emailReference = (config, activation) => `community:v1:${config.environment}:${config.organizationId}:${activation}:email`;
+
+export function notificationReceiptRpc(config, fetchFn = fetch) {
+  return async receipt => {
+    const response = await fetchFn(`${config.db}/rest/v1/rpc/record_community_notification_receipt`, {
+      method: 'POST', headers: { apikey: config.key, Authorization: `Bearer ${config.key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_receipt: receipt }), signal: AbortSignal.timeout(7000),
+    });
+    const result = await response.json().catch(() => null);
+    if (!response.ok || result?.contract_version !== 1 || typeof result.matched !== 'boolean')
+      throw new CommunityError('community_receipt_storage', 500);
+    return result.matched;
+  };
+}
+const PRE_EFFECT_ERRORS = new Set(['community_email_configuration', 'community_email_invalid',
+  'community_whatsapp_configuration', 'community_phone_invalid', 'community_channel_invalid', 'community_message_contract_invalid']);
+function externalFailure(n) {
+  return n.status === 'failed' && (n.external_id || n.accepted_at || n.failure_proof || !PRE_EFFECT_ERRORS.has(n.error_code));
+}
 export async function sendCommunityChannel(channel, message, env, reference, fetchFn = fetch) {
   let url, headers, payload;
   if (channel === 'email') {
@@ -91,33 +114,36 @@ export async function processCommunityNotifications({ config, activationId, env,
   const context = await activationContext(store, config, activationId);
   const filter = { activation_id: `eq.${activationId}` };
   const channels = await store('cobranca_notificacoes', filter);
-  if (!context.ready) return channels.map(n => ({ channel: n.channel, status: n.status, error_code: 'community_products_pending' }));
+  if (!context.ready) return channels.map(n => ({ ...resultChannel(n),
+    ...(!n.error_code && n.status === 'pending' ? { error_code: context.financialReviewPending ? 'community_financial_review_pending' : 'community_products_pending' } : {}) }));
   const pending = await store('cobranca_pending_notifications', { ...filter, environment: `eq.${config.environment}` });
   const output = [];
   for (const item of channels) {
-    if (item.status === 'completed' || (item.status === 'processing' && Date.parse(item.lease_until) > Date.now())) {
+    if (externalFailure(item) || item.failure_proof || item.status === 'completed' || (item.status === 'processing' && Date.parse(item.lease_until) > Date.now())) {
       output.push(resultChannel(item)); continue;
     }
     // Provider absence cannot currently be proved via Meta GET or CPaaS logs without OAuth.
     // Reconcile against authenticated persisted receipts first; hold uncertain work, never resend blindly.
     if (item.status === 'uncertain' || item.status === 'processing' || item.accepted_at || item.external_id) {
       const current = await one(store, 'cobranca_notificacoes', { id: `eq.${item.id}` });
-      if (current.status !== 'completed') {
+      if (!externalFailure(current) && !current.failure_proof && current.status !== 'completed' &&
+          current.status === item.status && current.attempts === item.attempts && current.claim_token === item.claim_token &&
+          current.external_id === item.external_id && current.accepted_at === item.accepted_at) {
         const rows = await store('cobranca_notificacoes', { id: `eq.${current.id}`, status: `eq.${current.status}`, updated_at: `eq.${current.updated_at}` },
-          { status: 'uncertain', error_code: 'community_receipt_reconciliation_required', lease_until: null, next_attempt_at: new Date(Date.now()+60000).toISOString(), updated_at: new Date().toISOString() });
+          { status: 'uncertain', error_code: current.error_code || 'community_receipt_reconciliation_required', lease_until: null, next_attempt_at: new Date(Date.now()+60000).toISOString(), updated_at: new Date().toISOString() });
         output.push(resultChannel(rows[0] || current));
       } else output.push(resultChannel(current));
       continue;
     }
-    if (!pending.some(n => n.id === item.id)) { output.push(resultChannel(item)); continue; }
+    if (!['pending','failed'].includes(item.status) || !pending.some(n => n.id === item.id)) { output.push(resultChannel(item)); continue; }
     const token = crypto.randomUUID(), now = new Date().toISOString();
     const claimed = await store('cobranca_notificacoes', { id: `eq.${item.id}`, status: `eq.${item.status}`, updated_at: `eq.${item.updated_at}`,
-      next_attempt_at: `lte.${now}` }, { status: 'processing', claim_token: token, lease_until: new Date(Date.now()+120000).toISOString(),
+      next_attempt_at: `lte.${now}`, external_id: 'is.null', accepted_at: 'is.null', failure_proof: 'is.null' }, { status: 'processing', claim_token: token, lease_until: new Date(Date.now()+120000).toISOString(),
       attempts: item.attempts + 1, updated_at: now });
     if (!claimed.length) { output.push(resultChannel(await one(store, 'cobranca_notificacoes', { id: `eq.${item.id}` }))); continue; }
     let outcome;
     try { outcome = await send(item.channel, context.message, env, emailReference(config, activationId)); }
-    catch (error) { outcome = error instanceof CommunityError ? { status: 'failed', error_code: error.code } : { status: 'uncertain', error_code: 'community_provider_outcome_unknown' }; }
+    catch (error) { outcome = error instanceof CommunityError && PRE_EFFECT_ERRORS.has(error.code) ? { status: 'failed', error_code: error.code } : { status: 'uncertain', error_code: 'community_provider_outcome_unknown' }; }
     const finished = await store('cobranca_notificacoes', { id: `eq.${item.id}`, claim_token: `eq.${token}`, status: 'eq.processing',
       lease_until: `gt.${new Date().toISOString()}` }, { ...outcome, next_attempt_at: new Date(Date.now()+60000).toISOString(), updated_at: new Date().toISOString(),
       ...(outcome.status === 'processing' ? {} : { lease_until: null }) });
