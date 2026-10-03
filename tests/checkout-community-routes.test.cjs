@@ -32,8 +32,26 @@ function paymentFixture(order = orderFixture(), overrides = {}) {
     ...(order.provider_subscription_id ? { subscription: order.provider_subscription_id } : {}),
     ...(order.provider_installment_id ? { installment: order.provider_installment_id, installmentNumber: 1 } : {}), ...overrides };
 }
+function recurringOrderFixture() {
+  return orderFixture({ provider_subscription_id: 'sub_synthetic', provider_payment_id: null,
+    sold_snapshot: { ...orderFixture().sold_snapshot, price_mode: 'recurring_card' } });
+}
+function installmentOrderFixture() {
+  return orderFixture({ provider_installment_id: 'ins_synthetic', sold_snapshot: { ...orderFixture().sold_snapshot,
+    offer_key: 'comunidade-anual', duration_months: 12, price_mode: 'installment_card', contract_total_cents: 116400, installment_count: 12 } });
+}
+function historicalRefundFixture(t, options = {}) {
+  const order = recurringOrderFixture(), h = harness(t, { ...options, order });
+  h.state.payments.get('pay_synthetic').status = 'REFUNDED';
+  h.state.prior = [{ provider_payment_id: 'pay_synthetic', status: 'RECEIVED', amount_cents: 14700 }];
+  h.state.payments.set('pay_pending', paymentFixture(order, { id: 'pay_pending', status: 'PENDING',
+    originalDueDate: '2026-11-03', confirmedDate: null }));
+  return h;
+}
 function harness(t, options = {}) {
-  const state = { calls: [], order: options.order || null, payments: new Map(), records: [], reviews: [], prior: [], subscriptions: [], group: null, subscription: null };
+  const state = { calls: [], order: options.order || null, payments: new Map(), records: [], reviews: [], prior: [], subscriptions: [], group: null, subscription: null,
+    listPageSize: options.listPageSize || 100, listFailure: options.listFailure || null,
+    listRows: null, listRepeat: false, listMalformed: false, paymentFailure: null, reviewFailure: Boolean(options.reviewFailure) };
   if (state.order) state.payments.set('pay_synthetic', options.payment || paymentFixture(state.order));
   t.mock.method(globalThis, 'fetch', async (url, init = {}) => {
     const u = new URL(url), body = init.body ? JSON.parse(init.body) : null, method = init.method || 'GET';
@@ -82,8 +100,8 @@ function harness(t, options = {}) {
           period_start: body.p_payment.period_start, period_end: body.p_payment.period_end, duplicate_payment: state.records.length > 1, duplicate_activation: state.records.length > 1 });
       }
       if (u.pathname.endsWith('/rpc/record_community_financial_review')) {
-        if (options.reviewFailure) return Response.json({ message: 'synthetic review unavailable' }, { status: 503 });
-        state.reviews.push(body.p_review);
+        if (state.reviewFailure) return Response.json({ message: 'synthetic review unavailable' }, { status: 503 });
+        if (!state.reviews.some(r => r.event_id === body.p_review.event_id)) state.reviews.push(body.p_review);
         return Response.json({ contract_version: 1, review_id: '88888888-8888-4888-8888-888888888888', state: 'pending' });
       }
       if (u.pathname.endsWith('/cobranca_pedidos')) {
@@ -93,7 +111,10 @@ function harness(t, options = {}) {
         return Response.json(match ? [state.order] : []);
       }
       if (u.pathname.endsWith('/cobranca_assinaturas')) return Response.json(state.subscriptions);
-      if (u.pathname.endsWith('/cobranca_pagamentos')) return Response.json(state.prior);
+      if (u.pathname.endsWith('/cobranca_pagamentos')) {
+        const id = u.searchParams.get('provider_payment_id')?.slice(3);
+        return Response.json(state.prior.filter(r => !r.provider_payment_id || r.provider_payment_id === id));
+      }
       throw new Error('Unexpected central request: ' + u.pathname);
     }
     assert.equal(u.origin, 'https://api.asaas.com', 'fixture cannot send real provider traffic');
@@ -118,13 +139,27 @@ function harness(t, options = {}) {
     if (u.pathname === '/v3/subscriptions/sub_synthetic') return Response.json(state.subscription || {
       id: 'sub_synthetic', customer: state.order.provider_customer_id, externalReference: state.order.external_reference,
       billingType: 'CREDIT_CARD', cycle: 'MONTHLY', value: 147, status: 'ACTIVE' });
-    if (u.pathname === '/v3/subscriptions/sub_synthetic/payments') return Response.json({ data: Array.from(state.payments.values()), hasMore: false });
+    if (['/v3/subscriptions/sub_synthetic/payments', '/v3/installments/ins_synthetic/payments'].includes(u.pathname)) {
+      const offset = Number(u.searchParams.get('offset') || 0);
+      if (state.listFailure?.offset === offset) {
+        if (state.listFailure.mode === 'timeout') throw new DOMException('synthetic list timeout', 'TimeoutError');
+        return Response.json({}, { status: 503 });
+      }
+      const rows = state.listRows || [...state.payments.values()].filter(p => u.pathname.includes('/subscriptions/') ?
+        p.subscription === 'sub_synthetic' : p.installment === 'ins_synthetic');
+      const size = Math.min(state.listPageSize, Number(u.searchParams.get('limit') || 100));
+      const data = rows.slice(state.listRepeat ? 0 : offset, (state.listRepeat ? 0 : offset) + size);
+      return Response.json({ data, offset, hasMore: state.listRepeat || offset + data.length < rows.length,
+        ...(state.listMalformed ? { hasMore: null } : {}) });
+    }
     if (u.pathname === '/v3/installments/ins_synthetic') return Response.json(state.group || {
       id: 'ins_synthetic', customer: state.order.provider_customer_id, billingType: 'CREDIT_CARD',
       value: state.order.sold_snapshot.contract_total_cents / 100, installmentCount: state.order.sold_snapshot.installment_count });
     if (u.pathname.endsWith('/pixQrCode')) return options.postMode === 'qr-failure' ? Response.json({}, { status: 503 }) : Response.json({ payload: 'synthetic-copy-paste', encodedImage: 'dGVzdA==' });
     if (u.pathname.startsWith('/v3/payments/')) {
-      const payment = state.payments.get(u.pathname.split('/').pop());
+      const id = u.pathname.split('/').pop();
+      if (state.paymentFailure === id) throw new DOMException('synthetic payment lookup timeout', 'TimeoutError');
+      const payment = state.payments.get(id);
       return payment ? Response.json(payment) : Response.json({}, { status: 404 });
     }
     if (u.pathname === '/v3/payments' && method === 'GET') return Response.json({ data: Array.from(state.payments.values()), hasMore: false });
@@ -147,7 +182,8 @@ function harness(t, options = {}) {
   }
   return { state, checkout, status, webhook };
 }
-module.exports = { load, ORDER_ID, REQUEST_KEY, CLAIM, ORG, buyer, env, orderFixture, paymentFixture, harness };
+module.exports = { load, ORDER_ID, REQUEST_KEY, CLAIM, ORG, buyer, env, orderFixture, paymentFixture, harness,
+  recurringOrderFixture, installmentOrderFixture, historicalRefundFixture };
 
 if (require.main === module) {
   for (const [plan, method, installments, total] of [['mensal','PIX',1,147],['trimestral','PIX',1,357],['anual','PIX',1,997],['mensal','CREDIT_CARD',1,147],['trimestral','CREDIT_CARD',3,381],['anual','CREDIT_CARD',12,1164]]) {
@@ -182,5 +218,55 @@ if (require.main === module) {
     const { checkoutDetails } = await load('_products.js');
     assert.equal(checkoutDetails({ description: 'Comunidade mensal', value: 147 }).productId, 'unknown');
     assert.equal(checkoutDetails({ externalReference: JSON.stringify({ plan: 'semestral', eid: 'legacy' }) }).plan, 'semestral');
+  });
+  for (const mode of ['http', 'timeout']) test(`historical refund behind a ${mode} pagination failure is not ACKed; redelivery resumes the same review`, async t => {
+    const h = historicalRefundFixture(t, { listPageSize: 1, listFailure: { offset: 1, mode } });
+    const event = { event: 'PAYMENT_CREATED', payment: { id: 'pay_pending', status: 'PENDING' } };
+    assert.equal((await h.webhook(event)).response.status, 503);
+    assert.equal(h.state.reviews.length, 0); assert.equal(h.state.records.length, 0);
+    h.state.listFailure = null;
+    assert.equal((await h.webhook(event)).response.status, 200);
+    assert.equal(h.state.reviews.length, 1); assert.equal(h.state.reviews[0].payment_id, 'pay_synthetic');
+    assert.equal((await h.webhook(event)).response.status, 200);
+    assert.equal(h.state.reviews.length, 1);
+    assert.deepEqual(h.state.prior, [{ provider_payment_id: 'pay_synthetic', status: 'RECEIVED', amount_cents: 14700 }]);
+    assert.ok(h.state.calls.filter(c => c.host === 'api.asaas.com').every(c => c.method === 'GET'));
+  });
+  test('negative review storage failure prevents ACK of a fresh pending subscription event', async t => {
+    const h = historicalRefundFixture(t, { reviewFailure: true });
+    const event = { event: 'PAYMENT_CREATED', payment: { id: 'pay_pending', status: 'PENDING' } };
+    assert.equal((await h.webhook(event)).response.status, 503);
+    h.state.reviewFailure = false;
+    assert.equal((await h.webhook(event)).response.status, 200);
+    const attempts = h.state.calls.filter(c => c.path.endsWith('/record_community_financial_review'));
+    assert.equal(attempts.length, 2); assert.equal(attempts[0].body.p_review.event_id, attempts[1].body.p_review.event_id);
+    assert.equal(h.state.reviews.length, 1); assert.equal(h.state.records.length, 0);
+  });
+  test('a related payment GET timeout cannot acknowledge an incomplete subscription reconciliation', async t => {
+    const h = historicalRefundFixture(t); h.state.paymentFailure = 'pay_synthetic';
+    const event = { payment: { id: 'pay_pending', status: 'PENDING' } };
+    assert.equal((await h.webhook(event)).response.status, 503);
+    assert.equal(h.state.reviews.length, 0);
+    h.state.paymentFailure = null;
+    assert.equal((await h.webhook(event)).response.status, 200);
+    assert.equal(h.state.reviews.length, 1); assert.equal(h.state.records.length, 0);
+  });
+  for (const broken of ['listRepeat', 'listMalformed']) test(`${broken} pagination cannot silently drop a historical negative`, async t => {
+    const h = historicalRefundFixture(t, { listPageSize: 1 }); h.state[broken] = true;
+    assert.equal((await h.webhook({ payment: { id: 'pay_pending' } })).response.status, 503);
+    assert.equal(h.state.reviews.length, 0);
+  });
+  test('exhausting the bounded page scan requests redelivery instead of ACKing a missing last chunk', async t => {
+    const h = historicalRefundFixture(t);
+    h.state.listRows = Array.from({ length: 2001 }, (_, i) => ({ id: `pay_history_${i}` }));
+    assert.equal((await h.webhook({ payment: { id: 'pay_pending' } })).response.status, 503);
+    assert.equal(h.state.reviews.length, 0); assert.equal(h.state.records.length, 0);
+  });
+  test('the reconciliation deadline cannot return a successful ACK after an incomplete scan', async t => {
+    const h = historicalRefundFixture(t); let clock = Date.now();
+    t.mock.method(Date, 'now', () => { clock += 30000; return clock; });
+    const result = await h.webhook({ payment: { id: 'pay_pending' } });
+    assert.equal(result.response.status, 503); assert.equal(result.data.error, 'community_reconciliation_timeout');
+    assert.equal(h.state.reviews.length, 0);
   });
 }
