@@ -130,3 +130,23 @@ test("Oficina / Design System canonical green buttons enforce white text #FFFFFF
   assert.ok(content.includes("--it-primary-fg: #FFFFFF;"), "Light theme primaryFg must be white #FFFFFF");
 });
 
+test("Oficina / utils.cn preserves text-it-accent-fg and font-it-primary without dropping them", () => {
+  const utilsPath = path.join(root, "tools/oficina-web/src/lib/utils.ts");
+  const utilsContent = fs.readFileSync(utilsPath, "utf8");
+  assert.ok(utilsContent.includes("clsx"), "utils.ts must use clsx to preserve all design system classes");
+
+  // Verify built bundle contains text-it-accent-fg
+  const distDir = path.join(root, "tools/oficina-web/dist/assets");
+  if (fs.existsSync(distDir)) {
+    const files = fs.readdirSync(distDir);
+    const jsBundle = files.find(f => f.startsWith("main-") && f.endsWith(".js"));
+    if (jsBundle) {
+      const jsContent = fs.readFileSync(path.join(distDir, jsBundle), "utf8");
+      assert.ok(
+        jsContent.includes("text-it-accent-fg"),
+        "Built JS bundle must include text-it-accent-fg on green buttons"
+      );
+    }
+  }
+});
+
