@@ -61,6 +61,10 @@ export async function onRequestPost(context) {
       );
     }
 
+    if (payload.project === 'organic_diagnostic' && (!nome || !telefone || !email || !payload.perfil || !payload.gargalo || payload.consentimento_contato !== 'sim')) {
+      return Response.json({ ok: false, error: 'Preencha os dados do diagnóstico e autorize o contato.' }, { status: 400, headers: CORS_HEADERS });
+    }
+
     // Adiciona metadados de requisição da Cloudflare
     const clientIp = request.headers.get('cf-connecting-ip');
     const country = request.headers.get('cf-ipcountry');
@@ -93,6 +97,7 @@ export async function onRequestPost(context) {
           'User-Agent': 'Imobiturbo-Website/1.0 (Imobicreator)',
         },
         body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(20000),
       });
 
       const responseText = await osResponse.text();
@@ -102,8 +107,13 @@ export async function onRequestPost(context) {
       } catch {
         osResult = { raw: responseText };
       }
+      if (!osResponse.ok || osResult?.ok === false || osResult?.success === false || !leadId) {
+        console.warn('[Lead OS Ingest Rejected]', osResponse.status);
+        return Response.json({ ok: false, error: 'Não foi possível confirmar o cadastro. Tente novamente em instantes.' }, { status: 502, headers: CORS_HEADERS });
+      }
     } catch (osErr) {
-      console.error('[Lead OS Ingest Error]:', osErr);
+      console.error('[Lead OS Ingest Error]:', osErr.name);
+      return Response.json({ ok: false, error: 'Não foi possível confirmar o cadastro. Tente novamente em instantes.' }, { status: 502, headers: CORS_HEADERS });
     }
 
     // 2. Se for lead do Imobicreator e tiver telefone válido, dispara mensagem personalizada via WAHA 7796

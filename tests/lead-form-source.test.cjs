@@ -40,3 +40,26 @@ test('cadastro legado do Imobicreator com cargo continua reconhecido', async t =
   const result = await submit(t, { nome: 'Proprietário', email: 'proprietario@example.invalid', cargo: 'Diretor' });
   assert.match(result.calls[0], /form-sources\/imt_imobicreator_aicreators_lead$/);
 });
+
+test('diagnóstico orgânico confirmado conserva cidade na fonte oficial e não envia WAHA', async t => {
+  const result = await submit(t, { project: 'organic_diagnostic', nome: 'Proprietário', email: 'proprietario@example.invalid',
+    telefone: '21999999999', perfil: 'Empreiteira', gargalo: 'Atrair leads qualificados', consentimento_contato: 'sim', seo_cidade: 'São Paulo' });
+  assert.match(result.calls[0], /form-sources\/imt_lp_oficial_/);
+  assert.equal(result.calls.length, 1);
+  assert.equal(result.data.lead_id, 'cadastro-descartavel');
+});
+
+test('OS indisponível ou sem recibo não gera sucesso nem mensagem', async t => {
+  const previous = global.fetch;
+  t.after(() => { global.fetch = previous; });
+  for (const response of [Response.json({ error: 'falha' }, { status: 503 }), Response.json({ data: {} }), Response.json({ ok: false, data: { lead_id: 'rejeitado' } })]) {
+    let calls = 0;
+    global.fetch = async () => { calls++; return response; };
+    const res = await (await handler).onRequestPost({ request: new Request('https://www.imobiturbo.com.br/api/lead', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ project: 'imobicreator', nome: 'Proprietário', telefone: '21999999999', cargo: 'Diretor' }),
+    }) });
+    assert.equal(res.status, 502);
+    assert.equal((await res.json()).ok, false);
+    assert.equal(calls, 1);
+  }
+});

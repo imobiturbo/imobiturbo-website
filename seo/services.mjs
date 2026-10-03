@@ -14,7 +14,7 @@ export const SERVICES = [
     shortName: 'Marketing imobiliário',
     eyebrow: 'Estratégia e operação comercial',
     headline: 'Marketing imobiliário conectado ao que sua operação consegue atender.',
-    intro: 'Quem procura uma agência de marketing imobiliário precisa entender onde a comunicação encontra a venda: oferta, canais, atendimento e acompanhamento. Comece pelo diagnóstico atual da Imobiturbo em /#diagnostico para mapear seu cenário e discutir o formato de apoio adequado.',
+    intro: 'Quem procura uma agência de marketing imobiliário precisa entender onde a comunicação encontra a venda: oferta, canais, atendimento e acompanhamento. Comece pelo diagnóstico atual da Imobiturbo para mapear seu cenário e discutir o formato de apoio adequado.',
     problem: 'Divulgar sem uma prioridade comercial definida espalha esforço. Uma carteira ampla, um lançamento e uma empresa de obras exigem mensagens e jornadas diferentes. Quando o contato chega sem contexto ou responsável, fica difícil distinguir um problema de aquisição de uma falha no atendimento.',
     steps: [
       { title: 'Entender o negócio', text: 'Identificar o que está sendo vendido, para quem, em qual estágio e com qual capacidade de atendimento. A leitura inclui canais existentes e obstáculos da rotina comercial.' },
@@ -34,7 +34,7 @@ export const SERVICES = [
       { question: 'A Imobiturbo funciona como uma agência de marketing imobiliário?', answer: 'A Imobiturbo conecta diagnóstico, orientação comercial e tecnologia. A busca por uma agência pode envolver necessidades diferentes; a conversa inicial identifica se o cenário pede consultoria, organização da operação ou uma frente específica, cujo escopo precisa ser confirmado.' },
       { question: 'O diagnóstico inclui gestão mensal de todos os canais?', answer: 'O diagnóstico é o ponto de partida para entender a operação. Gestão de anúncios, produção de conteúdo, desenvolvimento de páginas e acompanhamento recorrente precisam ser discutidos e acordados; não estão automaticamente incluídos.' },
       { question: 'Como saber se preciso de marketing ou de processo comercial?', answer: 'Observe onde a jornada trava. Ausência de procura, mensagem pouco clara, contatos sem perfil e oportunidades sem retorno são problemas distintos. Leve ao diagnóstico exemplos de campanhas e atendimentos para localizar a prioridade.' },
-      { question: 'Como começar a conversa?', answer: 'Acesse o diagnóstico atual em /#diagnostico e descreva seu público, sua oferta e o principal gargalo. Essas informações ajudam a discutir os próximos passos sem presumir um pacote único.' },
+      { question: 'Como começar a conversa?', answer: 'Acesse o diagnóstico atual e descreva seu público, sua oferta e o principal gargalo. Essas informações ajudam a discutir os próximos passos sem presumir um pacote único.' },
     ],
     profiles: {
       corretores: {
@@ -81,7 +81,7 @@ export const SERVICES = [
     shortName: 'Landing pages',
     eyebrow: 'Oferta e jornada de contato',
     headline: 'Landing pages imobiliárias com uma oferta clara e um próximo passo definido.',
-    intro: 'Uma landing page reúne as informações necessárias para uma decisão específica: conhecer um imóvel, conversar sobre um empreendimento ou solicitar avaliação de uma obra. Use o diagnóstico atual da Imobiturbo em /#diagnostico para entender qual jornada sua operação precisa antes de discutir a criação de uma página.',
+    intro: 'Uma landing page reúne as informações necessárias para uma decisão específica: conhecer um imóvel, conversar sobre um empreendimento ou solicitar avaliação de uma obra. Use o diagnóstico atual da Imobiturbo para entender qual jornada sua operação precisa antes de discutir a criação de uma página.',
     problem: 'Enviar pessoas para uma página genérica pode esconder a oferta que motivou o clique. Informações incompletas, formulários sem propósito e contatos sem destino definido criam dúvidas para o visitante e trabalho adicional para quem atende.',
     steps: [
       { title: 'Definir a decisão', text: 'Escolher uma oferta e o próximo passo esperado. Uma visita a imóvel, uma conversa sobre lançamento e um pedido de proposta de obra precisam de conteúdos e perguntas diferentes.' },
@@ -101,7 +101,7 @@ export const SERVICES = [
       { question: 'Uma landing page substitui o site da empresa?', answer: 'Ela pode atender uma oferta específica, enquanto o site reúne informações mais amplas sobre a operação. A escolha depende da jornada: o visitante deve encontrar o que procura e compreender qual é o próximo passo.' },
       { question: 'A página pode encaminhar contatos para o WhatsApp?', answer: 'Esse caminho pode ser avaliado, assim como formulários e integrações. É necessário definir número, responsável, dados úteis e continuidade do atendimento antes de confirmar a implementação.' },
       { question: 'Quais materiais preciso levar ao diagnóstico?', answer: 'Leve a oferta, o público pretendido, imagens autorizadas, informações comerciais atualizadas e exemplos das dúvidas recebidas. Para obras, inclua especialidades, área de atendimento e requisitos para avaliar uma solicitação.' },
-      { question: 'Uma landing page garante contatos ou posição no Google?', answer: 'Não. Procura, distribuição, conteúdo, concorrência e atendimento influenciam a jornada. O diagnóstico em /#diagnostico ajuda a discutir o papel da página e o escopo necessário, sem garantia de volume ou posicionamento.' },
+      { question: 'Uma landing page garante contatos ou posição no Google?', answer: 'Não. Procura, distribuição, conteúdo, concorrência e atendimento influenciam a jornada. O diagnóstico ajuda a discutir o papel da página e o escopo necessário, sem garantia de volume ou posicionamento.' },
     ],
     profiles: {
       corretores: {
@@ -148,7 +148,7 @@ export const SERVICES = [
     shortName: 'Tráfego pago',
     eyebrow: 'Mídia e atendimento',
     headline: 'Tráfego pago imobiliário começa com oferta, destino e capacidade de atendimento.',
-    intro: 'Anunciar exige mais que escolher uma plataforma: é preciso definir o que será divulgado, quem deve chegar e como o contato será conduzido. Comece pelo diagnóstico atual da Imobiturbo em /#diagnostico para avaliar essas condições e discutir se a mídia é a prioridade da sua operação.',
+    intro: 'Anunciar exige mais que escolher uma plataforma: é preciso definir o que será divulgado, quem deve chegar e como o contato será conduzido. Comece pelo diagnóstico atual da Imobiturbo para avaliar essas condições e discutir se a mídia é a prioridade da sua operação.',
     problem: 'Um anúncio pode gerar conversas que não avançam porque a oferta está pouco clara, a página não explica o produto ou o atendimento não registra o próximo passo. Olhar apenas cliques e formulários não revela se o gargalo está na campanha ou na condução comercial.',
     steps: [
       { title: 'Validar a oferta', text: 'Conferir disponibilidade, público, objetivo e informações autorizadas para os anúncios. Para empresas de obra, distinguir busca por contratantes de divulgação de produtos imobiliários.' },
@@ -215,7 +215,7 @@ export const SERVICES = [
     shortName: 'Social media',
     eyebrow: 'Conteúdo e relacionamento',
     headline: 'Social media imobiliário com temas que ajudam seu público a decidir.',
-    intro: 'Uma presença nas redes precisa explicar a atuação, responder dúvidas e orientar uma conversa relevante. Use o diagnóstico atual da Imobiturbo em /#diagnostico para relacionar conteúdo, oferta e rotina comercial antes de discutir produção ou gestão de perfis.',
+    intro: 'Uma presença nas redes precisa explicar a atuação, responder dúvidas e orientar uma conversa relevante. Use o diagnóstico atual da Imobiturbo para relacionar conteúdo, oferta e rotina comercial antes de discutir produção ou gestão de perfis.',
     problem: 'Um perfil formado apenas por anúncios de imóveis ou publicações genéricas pode deixar dúvidas sobre a atuação da empresa. Sem uma pauta ligada ao público e uma rotina de resposta, comentários e mensagens não encontram continuidade no atendimento.',
     steps: [
       { title: 'Definir público e papel do perfil', text: 'Identificar quem precisa entender a oferta e quais dúvidas antecedem a decisão. Distinguir relacionamento com compradores, proprietários, parceiros e contratantes de obras.' },
@@ -235,7 +235,7 @@ export const SERVICES = [
       { question: 'Social media imobiliário é só publicar imóveis?', answer: 'O conteúdo também pode explicar a atuação, responder dúvidas e apresentar informações que ajudem na decisão. A pauta depende do público: um comprador de imóvel, um proprietário e um contratante de obra procuram respostas diferentes.' },
       { question: 'A Imobiturbo já inclui produção e postagem diária?', answer: 'Produção, revisão, publicação e resposta a mensagens precisam de escopo e responsáveis definidos. O diagnóstico é a etapa para entender a necessidade e discutir um formato viável, sem presumir gestão diária incluída.' },
       { question: 'Preciso publicar todos os dias?', answer: 'A frequência deve considerar materiais, disponibilidade e capacidade de manter informações corretas. Uma rotina que a equipe consegue sustentar permite planejar melhor a pauta e dar continuidade às conversas.' },
-      { question: 'Como avaliar se o conteúdo ajuda a operação?', answer: 'Observe quais dúvidas aparecem, que tipo de conversa o conteúdo inicia e como essas solicitações avançam. Leve exemplos ao diagnóstico em /#diagnostico para discutir critérios de acompanhamento além de curtidas e seguidores.' },
+      { question: 'Como avaliar se o conteúdo ajuda a operação?', answer: 'Observe quais dúvidas aparecem, que tipo de conversa o conteúdo inicia e como essas solicitações avançam. Leve exemplos ao diagnóstico para discutir critérios de acompanhamento além de curtidas e seguidores.' },
     ],
     profiles: {
       corretores: {

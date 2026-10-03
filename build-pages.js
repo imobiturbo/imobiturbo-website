@@ -10,6 +10,9 @@ const entries = [
   'colors_and_type.css',
   'home.css',
   'site-tracking.js',
+  'organic.css',
+  'organic.js',
+  'sitemaps',
   'site.webmanifest',
   'favicon.ico',
   'favicon.png',
@@ -51,8 +54,6 @@ const entries = [
   'llms-full.txt',
 ];
 
-execFileSync(process.execPath, ['build.js'], { cwd: root, stdio: 'inherit' });
-
 // Build the isolated official shadcn interface for /oficina/ and /oficina/obrigado/.
 execFileSync(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'build'], {
   cwd: path.join(root, 'tools/oficina-web'),
@@ -69,6 +70,11 @@ for (const entry of entries) {
 }
 
 fs.cpSync(path.join(root, 'tools/oficina-web/dist'), path.join(output, 'oficina'), { recursive: true });
+
+// Generate compiled JS and the matching initial HTML only inside the release artifact.
+execFileSync(process.execPath, ['build.js'], {
+  cwd: root, stdio: 'inherit', env: { ...process.env, IMT_BUILD_OUTPUT_DIR: output },
+});
 
 // Ensure relative symlink for vagas-v2/assets within build output
 const v2Assets = path.join(output, 'vagas-v2', 'assets');
