@@ -1,0 +1,26 @@
+Mensagem para conferir um detalhe do imóvel
+
+Salve uma pergunta que separa impressão da visita e informação ainda não confirmada.
+
+COMO USAR
+1. Escolha um detalhe ligado ao uso informado pela pessoa, não uma objeção inventada.
+2. Registre o fato e a lacuna; peça confirmação a quem pode fornecê-la.
+3. Combine um retorno e atualize a avaliação antes de afirmar que o imóvel atende.
+
+MODELO PARA COPIAR
+[Nome], você comentou que gostou de [característica] no [imóvel].
+Antes de decidir, ficou um ponto para conferir: [detalhe relacionado ao uso informado].
+O que sabemos hoje: [fato confirmado e origem].
+O que ainda não sabemos: [lacuna, sem inventar resposta].
+Posso confirmar [informação] com [responsável] e voltar em [data combinada]?
+Se isso mudar sua avaliação, ajustamos o próximo passo antes de avançar.
+
+Exemplo fictício preenchido:
+Marina, você comentou que gostou da sala no apartamento do Jardim.
+Antes de decidir, ficou um ponto para conferir: se a mesa que você já tem cabe no espaço.
+O que sabemos hoje: a planta recebida informa as dimensões da sala.
+O que ainda não sabemos: as medidas da sua mesa e o espaço de circulação com ela.
+Posso reunir essas medidas e voltar na terça-feira combinada?
+Se isso mudar sua avaliação, ajustamos o próximo passo antes de avançar.
+
+Não é vistoria técnica nem análise documental; questões técnicas exigem profissional habilitado.

@@ -1,0 +1,34 @@
+Prompt de saldo da operação imobiliária
+
+Organize valores informados para distinguir comissão bruta, repasses e gastos, sem estimar tributos.
+
+COMO USAR
+1. Preencha com valores conferidos em seus registros, sem dados identificáveis.
+2. Cole na IA e confira cada valor e a conta, usando uma calculadora.
+3. Mantenha pendências explícitas e confirme obrigações com o profissional responsável.
+
+MODELO PARA COPIAR
+Organize um registro simples de uma operação imobiliária usando SOMENTE os valores informados abaixo.
+COMISSÃO BRUTA RECEBIDA: [valor efetivamente recebido]
+REPASSES COMBINADOS: [descrição e valor de cada repasse]
+GASTOS REGISTRADOS DA OPERAÇÃO: [descrição e valor]
+OUTRAS OBRIGAÇÕES CONFIRMADAS: [descrição e valor; se desconhecidas, a confirmar]
+VALORES AINDA NÃO RECEBIDOS: [descrição e valor, separados do recebido]
+
+Mostre uma tabela com cada entrada e saída e confira a soma.
+Calcule o saldo parcial: valor recebido menos repasses e gastos informados.
+Não chame esse saldo de lucro líquido se houver obrigações a confirmar.
+Não estime imposto, alíquota, taxa, comissão ou divisão; não dê orientação fiscal.
+Liste os dados que faltam e separe previsão de recebimento de dinheiro disponível.
+Use nomes fictícios; não inclua documentos nem dados de clientes.
+
+Exemplo fictício preenchido:
+COMISSÃO BRUTA RECEBIDA: R$ 12.000.
+REPASSES: R$ 4.000 conforme acordo fictício.
+GASTOS: R$ 600 de divulgação autorizada e R$ 200 de deslocamento registrado.
+OUTRAS OBRIGAÇÕES: a confirmar com o profissional responsável.
+VALORES AINDA NÃO RECEBIDOS: nenhum informado.
+Saída aritmética: 12.000 - 4.000 - 600 - 200 = R$ 7.200 de saldo parcial.
+Esse saldo não é lucro líquido nem recomendação de uso; existem obrigações a confirmar.
+
+Modelo de organização e aritmética; não substitui contabilidade nem orientação financeira ou fiscal.

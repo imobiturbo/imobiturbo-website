@@ -1,0 +1,34 @@
+Prompt para explicar um número imobiliário
+
+Transforme um dado conferido em explicação com fonte, período e limite, sem criar tendência.
+
+COMO USAR
+1. Preencha fonte, unidade, período e recorte antes de pedir a redação.
+2. Cole o prompt e confira a explicação contra a fonte original.
+3. Mantenha os limites; o exemplo fictício serve para treinar, nunca como notícia.
+
+MODELO PARA COPIAR
+Reescreva uma explicação curta para um público imobiliário brasileiro usando apenas o dado abaixo.
+DADO EXATO: [número, unidade e o que foi contado]
+FONTE E LINK: [origem verificável]
+PERÍODO: [datas]
+REGIÃO E RECORTE: [cidade, bairro, tipo de imóvel ou amostra]
+QUEM PRECISA ENTENDER: [comprador, proprietário ou equipe]
+O QUE NÃO FOI MEDIDO: [limitações]
+
+Entregue: uma H1 imobiliária curiosa sem exagero; três pontos curtos; uma legenda com uma frase por parágrafo e uma linha em branco entre frases.
+Explique o que esse número descreve e uma pergunta prática que ele ajuda a fazer.
+Não trate preço anunciado como preço de venda, amostra como mercado inteiro, correlação como causa ou número como previsão.
+Não invente fonte, valor, alta, queda, oportunidade ou garantia.
+Se a fonte ou o recorte faltarem, indique a pendência em vez de publicar uma conclusão.
+
+Exemplo fictício, sem dado de mercado real:
+DADO: 12 anúncios de apartamentos de dois quartos conferidos em uma lista interna fictícia.
+FONTE: lista fictícia de exercício; não é pesquisa pública.
+PERÍODO: um dia fictício.
+RECORTE: uma seleção fictícia de um bairro; não cobre todos os anúncios.
+PÚBLICO: equipe.
+NÃO MEDIDO: imóveis vendidos, preço negociado e tempo de venda.
+Explicação: “A lista do exercício tem 12 anúncios; ela ajuda a conferir quais fichas estão completas, mas não mostra quantos apartamentos foram vendidos no bairro”.
+
+A IA não verifica a fonte e o modelo não produz avaliação de preço ou previsão de mercado.
