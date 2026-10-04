@@ -1,0 +1,35 @@
+Prompt de roteiro com B-roll imobiliário autorizado
+
+Monte um roteiro a partir de filmagens que já existem e podem ser usadas.
+
+COMO USAR
+1. Liste arquivos existentes com duração, conteúdo e autorização.
+2. Escolha uma ideia que a cena sustenta; retire dados pessoais antes de usar.
+3. Revise texto, legibilidade e promessa antes de renderizar ou publicar.
+
+MODELO PARA COPIAR
+Crie um roteiro curto de B-roll textual para conteúdo imobiliário brasileiro usando um único take da lista abaixo.
+TAKES DISPONÍVEIS: [nome, duração, o que aparece e autorização de cada arquivo]
+PÚBLICO: [comprador, corretor ou gestor]
+UMA IDEIA: [o que explicar]
+FATOS CONFERIDOS: [dados que podem aparecer]
+RECURSO PREPARADO: [material real, ou nenhum]
+
+Entregue três ganchos com construções diferentes, escolha o mais claro e explique como o conteúdo resolve sua promessa.
+Escreva três pontos curtos legíveis e uma legenda desenvolvida com uma frase por parágrafo, separados por linha em branco.
+Use somente o take existente; não invente visita, atendimento, cliente, profissão, fala ou resultado.
+Não mostre contatos, documentos ou pessoas sem autorização.
+O pedido para seguir fica somente na legenda.
+Não prometa recurso inexistente; não afirme que foi gravado hoje ou para esse caso.
+
+Exemplo fictício preenchido:
+TAKE: fachada sem pessoas, 6 segundos; autorização fictícia para exercício.
+PÚBLICO: comprador.
+IDEIA: conferir uma informação que a foto não mostra.
+FATOS: a ficha fictícia não informa medidas da sala.
+RECURSO: nenhum.
+Gancho possível: “A foto do imóvel parece ampla. Onde estão as medidas?”
+Pontos: leia a ficha; marque a medida ausente; peça confirmação.
+Legenda: explicar a diferença entre impressão visual e medida, sem afirmar que o imóvel tem uma metragem específica.
+
+O prompt não fornece autorização, não cria filmagens e não comprova resultados.

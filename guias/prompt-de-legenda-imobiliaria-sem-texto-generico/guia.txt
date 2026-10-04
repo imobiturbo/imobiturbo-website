@@ -1,0 +1,34 @@
+Prompt de legenda imobiliária sem texto genérico
+
+Reescreva uma legenda com detalhe conferido, uso concreto e limites visíveis.
+
+COMO USAR
+1. Cole texto e fatos verificados, sem informações identificáveis de clientes.
+2. Use o prompt para organizar a escrita e confira cada afirmação.
+3. Leia como conversa; mantenha lacunas e retire vantagens sem suporte.
+
+MODELO PARA COPIAR
+Reescreva esta legenda de imóvel em português brasileiro de conversa.
+TEXTO ORIGINAL: [cole o texto]
+FATOS CONFERIDOS E ORIGEM: [características confirmadas]
+USO QUE O COMPRADOR INFORMOU: [necessidade, sem dados pessoais]
+PENDÊNCIAS: [informações não confirmadas]
+TOM: direto, claro, sem superlativos vazios.
+
+Entregue três ganchos imobiliários com construções diferentes e uma legenda autoral.
+Cada frase explicativa ocupa um parágrafo próprio, separado por linha em branco.
+Troque “imperdível”, “melhor localização” e “perfeito” por um fato que sustente a explicação; se não houver fato, retire a afirmação.
+Não invente metragem, preço, distância, segurança, valorização, disponibilidade ou condição do imóvel.
+Não apresente necessidade do comprador como característica confirmada.
+Marque lacunas como a confirmar e explique uma próxima pergunta útil.
+Preserve URLs e unidades sem quebrá-las.
+
+Exemplo fictício preenchido:
+ORIGINAL: “Apartamento perfeito para home office na melhor localização”.
+FATOS: ficha fictícia informa dois quartos; não há medidas nem teste de ruído.
+USO: comprador precisa de um cômodo separado para trabalhar.
+PENDÊNCIAS: medidas, ruído e condições de acesso.
+Versão possível: “Dois quartos podem abrir espaço para um escritório, mas ainda precisamos conferir medidas e ruído para o uso que você descreveu”.
+Pergunta: “Que tamanho de mesa precisa caber nesse cômodo?”
+
+A IA revisa a redação; não confirma o imóvel nem substitui a conferência das informações.
