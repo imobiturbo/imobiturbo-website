@@ -167,6 +167,7 @@ for (const landing of ['/vagas/', '/vagas-v2/', '/skills-ia-obrigado', '/skills-
     }
 
     await page.waitForURL('**/vagas-obrigado*', { timeout: 15000 });
+    await page.locator('#accessEmailPanel').waitFor({ state: 'visible' });
     assert.equal(await page.locator('#accessEmailPanel').isVisible(), true, 'the community email is visible above the access buttons');
     assert.equal(await page.locator('#accessEmail').textContent(), buyer.email);
     assert.equal(await page.locator('#accessEmailFallback').isVisible(), false);
