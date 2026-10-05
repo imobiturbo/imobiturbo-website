@@ -1629,8 +1629,16 @@
   }
 </style>
   <script src="/vagas/checkout-session.js?v=20260927-2"></script>
+  <style id="skills-checkout-plan-layout">
+    #chkPlanRetractableTrigger .chk-plan-compact-left {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+    }
+    #chkPlanRetractableTrigger .chk-plan-compact-price { white-space: normal; }
+  </style>
 </head>
-<body data-lp-version="skills-upsell-20261004">
+<body data-lp-version="skills-upsell-20261004" data-lp-revision="original-layout-20261005">
 
   <nav class="journey" aria-label="Etapas da sua experiência">
     <ol class="wrap journey-steps">
@@ -1671,7 +1679,7 @@
             </video>
 
             <!-- VTurb-Style Pure HTML/CSS Smart Autoplay Overlay -->
-            <div class="vsl-overlay" id="vslOverlay" aria-label="Clique para ouvir com som">
+            <div class="vsl-overlay vsl-initial-overlay" id="vslOverlay" aria-label="Clique para ouvir com som">
               <div class="vsl-autoplay-notice">
                 <strong>Seu vídeo começou</strong>
                 <span>▶️ Clique para ouvir</span>
