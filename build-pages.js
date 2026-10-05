@@ -45,6 +45,7 @@ const entries = [
   'vagas-obrigado',
   'live',
   'skills-ia',
+  'skills-ia-obrigado',
   'bf-imobiliaria26',
   'politica-de-privacidade',
   'exclusao-de-dados',

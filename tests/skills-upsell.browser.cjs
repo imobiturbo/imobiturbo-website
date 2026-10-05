@@ -28,8 +28,12 @@ after(async () => {
   if (server) await new Promise(resolve => server.close(resolve));
 });
 
-for (const landing of ['/skills-ia-obrigado', '/skills-ia-obrigado/?utm_source=wiapy&utm_medium=upsell&utm_campaign=skills-regression&is_test=true']) {
-  for (const method of ['PIX', 'CREDIT_CARD']) test(`${landing}: ${method} checkout preserves attribution and waits for payment approval`, async t => {
+for (const [landing, entry] of [
+  ['/skills-ia-obrigado', 'main'],
+  ['/skills-ia-obrigado/?utm_source=wiapy&utm_medium=upsell&utm_campaign=skills-regression&is_test=true', 'main'],
+  ['/skills-ia-obrigado/?utm_source=wiapy&utm_medium=upsell&utm_campaign=skills-regression&is_test=true', 'vsl'],
+]) {
+  for (const method of ['PIX', 'CREDIT_CARD']) test(`${entry} ${landing}: ${method} checkout preserves attribution and waits for payment approval`, async t => {
     const context = await browser.newContext({ viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' });
     t.after(() => context.close());
     const page = await context.newPage();
@@ -65,17 +69,28 @@ for (const landing of ['/skills-ia-obrigado', '/skills-ia-obrigado/?utm_source=w
     assert.match(await page.title(), /54 Skills de IA/);
     assert.equal(await page.locator('#skillsAccessLink').getAttribute('href'), 'https://club.imobiturbo.com.br/login');
     assert.equal(await page.locator('#skillsAccessLink').isVisible(), true);
-    assert.match(await page.locator('.skills-journey').textContent(), /assinatura é opcional/);
+    assert.match(await page.locator('.journey-steps').textContent(), /Comunidade\s+opcional/);
+    assert.match(await page.locator('.access-disclaimer').textContent(), /assinatura é opcional/i);
     assert.ok(await page.evaluate(() => [...document.styleSheets].some(sheet => sheet.href?.includes('/vagas/vagas.css'))));
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
     assert.equal(payments.length, 0, 'visiting the upsell creates no charge');
-    await page.locator('#checkoutBtn').click();
-    await page.locator('#chkName').fill('Mariana Compradora');
-    await page.locator('#chkStep1Btn').click();
-    await page.locator('#chkPhone').fill('(21) 98765-4322');
-    await page.locator('#chkStep2Btn').click();
-    await page.locator('#chkEmail').fill('mariana.skills@example.invalid');
-    await page.locator('#chkStep3Btn').click();
+    if (entry === 'vsl') {
+      await page.evaluate(() => window.openCheckoutWithCurrentPlan());
+      await page.locator('#leadFullname').fill('Mariana Compradora');
+      await page.locator('#leadPhone').fill('(21) 98765-4322');
+      await page.locator('#leadEmail').fill('mariana.skills@example.invalid');
+      await page.locator('#leadCheckoutForm button[type=submit]').click();
+      assert.equal(await page.locator('#chkName').inputValue(), 'Mariana Compradora');
+      assert.equal(await page.locator('#chkEmail').inputValue(), 'mariana.skills@example.invalid');
+    } else {
+      await page.locator('#checkoutBtn').click();
+      await page.locator('#chkName').fill('Mariana Compradora');
+      await page.locator('#chkStep1Btn').click();
+      await page.locator('#chkPhone').fill('(21) 98765-4322');
+      await page.locator('#chkStep2Btn').click();
+      await page.locator('#chkEmail').fill('mariana.skills@example.invalid');
+      await page.locator('#chkStep3Btn').click();
+    }
     await page.locator('#chkStepPane4').waitFor({ state: 'visible' });
     if (method === 'PIX') {
       await page.locator('#chkTabPix').click();
