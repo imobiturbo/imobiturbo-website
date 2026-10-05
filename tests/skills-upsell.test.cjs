@@ -29,7 +29,7 @@ test('release emits the Wiapy destination with the current community checkout an
 
 test('the dedicated journey and original presentation remain, with both purchase paths on native checkout', () => {
   const html = renderSkillsUpsell(source);
-  assert.match(html, /class="journey-steps"/);
+  assert.match(html, /class="wrap journey-steps"/);
   assert.match(html, /Como qualificar compradores no WhatsApp com IA 24h/);
   assert.match(html, /id="vslFacade"/);
   assert.match(html, /window\.openSkillsCommunityCheckout\(\{ name: fullname, email, phone \}, currentSelectedPlan\)/);
