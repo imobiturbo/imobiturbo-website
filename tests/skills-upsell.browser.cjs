@@ -28,6 +28,23 @@ after(async () => {
   if (server) await new Promise(resolve => server.close(resolve));
 });
 
+test('Skills access never uses an unrelated community checkout identity', async t => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 900 } });
+  t.after(() => context.close());
+  await context.addInitScript(() => {
+    const oldBuyer = { name: 'Outra Compradora', email: 'outra.compra@example.invalid', phone: '21987654322', cpfCnpj: '52998224725', version: 1, expiresAt: new Date(Date.now() + 3600000).toISOString() };
+    sessionStorage.setItem('imobiturbo:checkout:upsell-buyer:v1', JSON.stringify(oldBuyer));
+    localStorage.setItem('imobiturbo:vagas:checkout:v1', JSON.stringify({ ...oldBuyer, expiresAt: Date.now() + 1800000, step: 3, plan: 'anual' }));
+  });
+  await context.route('**/*', route => new URL(route.request().url()).origin === baseURL && !route.request().url().includes('/api/') ? route.continue() : route.abort());
+  const page = await context.newPage();
+  await page.goto(baseURL + '/skills-ia-obrigado/?src=skills-ia-upsell&sck=completo', { waitUntil: 'domcontentloaded' });
+  assert.equal(await page.locator('#accessEmailFallback').isVisible(), true);
+  assert.match(await page.locator('#acessos').textContent(), /e-mail usado na compra das Skills/);
+  assert.doesNotMatch(await page.locator('#acessos').textContent(), /outra\.compra/);
+  assert.equal(await page.locator('#skillsAccessLink').getAttribute('href'), 'https://club.imobiturbo.com.br/login');
+});
+
 for (const [landing, entry] of [
   ['/skills-ia-obrigado', 'main'],
   ['/skills-ia-obrigado/?utm_source=wiapy&utm_medium=upsell&utm_campaign=skills-regression&is_test=true', 'main'],

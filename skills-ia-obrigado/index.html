@@ -2942,7 +2942,6 @@
 <section class="wrap access-section" id="acessos" aria-labelledby="accessTitle">
       <div class="access-heading"><p class="eyebrow">ACESSO CONFIRMADO</p><h2 id="accessTitle">Onde encontrar seus acessos</h2></div>
       <p id="accessEmailFallback">Entre com o e-mail usado na compra das Skills. Consulte também as instruções de acesso enviadas após a confirmação do pagamento.</p>
-      <p id="accessIdentityCopy" hidden="">Use o e-mail da sua compra para entrar: <span id="accessIdentityEmail">cadastrado na compra</span>. As informações e links de acesso foram enviados para o WhatsApp <span id="accessIdentityPhone">cadastrado na compra</span> e para o e-mail <span id="accessIdentityEmailRepeat">cadastrado na compra</span> cadastrados na sua compra.</p>
       <a id="skillsAccessLink" class="btn" href="https://club.imobiturbo.com.br/login">Acessar minhas Skills</a>
       <p class="small access-disclaimer">O acesso às Skills depende apenas da confirmação da compra do kit. A assinatura é opcional e não é necessária para usar suas Skills.</p>
     </section>
@@ -5880,83 +5879,5 @@
   </script>
 
 
-  <!-- Script para resolução dos dados de acesso do comprador -->
-  <script>
-    (function() {
-      function formatPhoneDisplay(raw) {
-        if (!raw) return "";
-        var clean = String(raw).replace(/\D+/g, "");
-        if (clean.length === 13 && clean.startsWith("55")) {
-          return "+55 (" + clean.slice(2, 4) + ") " + clean.slice(4, 9) + "-" + clean.slice(9);
-        }
-        if (clean.length === 12 && clean.startsWith("55")) {
-          return "+55 (" + clean.slice(2, 4) + ") " + clean.slice(4, 8) + "-" + clean.slice(8);
-        }
-        if (clean.length === 11) {
-          return "(" + clean.slice(0, 2) + ") " + clean.slice(2, 7) + "-" + clean.slice(7);
-        }
-        if (clean.length === 10) {
-          return "(" + clean.slice(0, 2) + ") " + clean.slice(2, 6) + "-" + clean.slice(6);
-        }
-        return raw;
-      }
-
-      function setAccessIdentity(email, phone) {
-        var copy = document.getElementById("accessIdentityCopy");
-        if (!copy) return;
-        var safeEmail = typeof email === "string" ? email.trim() : "";
-        var safePhone = typeof phone === "string" ? formatPhoneDisplay(phone.trim()) : "";
-        if (safeEmail) {
-          var elEmail = document.getElementById("accessIdentityEmail");
-          var elEmailRep = document.getElementById("accessIdentityEmailRepeat");
-          if (elEmail) elEmail.textContent = safeEmail;
-          if (elEmailRep) elEmailRep.textContent = safeEmail;
-        }
-        if (safePhone) {
-          var elPhone = document.getElementById("accessIdentityPhone");
-          if (elPhone) elPhone.textContent = safePhone;
-        }
-        if (safeEmail || safePhone) {
-          copy.hidden = false;
-          var fallback = document.getElementById("accessEmailFallback");
-          if (fallback) fallback.hidden = true;
-        }
-      }
-
-      try {
-        var params = new URLSearchParams(window.location.search);
-        var email = params.get("email") || params.get("e") || params.get("buyer_email") || params.get("customer_email") || params.get("client_email");
-        var phone = params.get("phone") || params.get("tel") || params.get("whatsapp") || params.get("customer_phone") || params.get("buyer_phone");
-        if (email || phone) {
-          setAccessIdentity(email, phone);
-          return;
-        }
-      } catch (_) {}
-
-      try {
-        if (window.ImobiturboCheckoutSession && typeof window.ImobiturboCheckoutSession.getUpsellBuyer === "function") {
-          var buyer = window.ImobiturboCheckoutSession.getUpsellBuyer();
-          if (buyer && buyer.email) {
-            setAccessIdentity(buyer.email, buyer.phone);
-            return;
-          }
-        }
-      } catch (_) {}
-
-      try {
-        var keys = ["imobiturbo:skills-ia:checkout:v1", "imobiturbo:vagas:checkout:v1", "imobiturbo:vagas-v2:checkout:v1"];
-        for (var i = 0; i < keys.length; i++) {
-          var raw = localStorage.getItem(keys[i]);
-          if (raw) {
-            var draft = JSON.parse(raw);
-            if (draft && typeof draft.email === "string") {
-              setAccessIdentity(draft.email, draft.phone);
-              break;
-            }
-          }
-        }
-      } catch (_) {}
-    })();
-  </script>
 </body>
 </html>
