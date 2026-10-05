@@ -5272,25 +5272,6 @@
       const fullname = document.getElementById('leadFullname').value.trim();
       const email = document.getElementById('leadEmail').value.trim();
       const phone = document.getElementById('leadPhone').value.trim();
-      if (!isValidFullName(fullname)) {
-        alert('Por favor, informe seu nome e sobrenome completo.');
-        const nameInput = document.getElementById('leadFullname');
-        if (nameInput) nameInput.focus();
-        return;
-      }
-      const phoneErr = typeof getPhoneValidationError === 'function' ? getPhoneValidationError(phone) : null;
-      if (phoneErr) {
-        alert(phoneErr);
-        const leadPhoneInput = document.getElementById('leadPhone');
-        if (leadPhoneInput) leadPhoneInput.focus();
-        return;
-      }
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        alert('Por favor, informe seu e-mail para receber o acesso.');
-        const emailInput = document.getElementById('leadEmail');
-        if (emailInput) emailInput.focus();
-        return;
-      }
       closeLeadModal();
       window.openSkillsCommunityCheckout({ name: fullname, email, phone }, currentSelectedPlan);
     }
