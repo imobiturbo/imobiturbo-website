@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { buildSkillsUpsell } = require('./scripts/build-skills-upsell.cjs');
 
 const root = __dirname;
 const output = path.join(root, '.cloudflare-pages');
@@ -75,6 +76,9 @@ fs.cpSync(path.join(root, 'tools/oficina-web/dist'), path.join(output, 'oficina'
 execFileSync(process.execPath, ['build.js'], {
   cwd: root, stdio: 'inherit', env: { ...process.env, IMT_BUILD_OUTPUT_DIR: output },
 });
+
+// Wiapy sends both Skills kits here after payment, including URLs with UTMs.
+buildSkillsUpsell(root, output);
 
 // Ensure relative symlink for vagas-v2/assets within build output
 const v2Assets = path.join(output, 'vagas-v2', 'assets');

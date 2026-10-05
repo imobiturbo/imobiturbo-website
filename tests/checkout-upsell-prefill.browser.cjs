@@ -86,7 +86,7 @@ after(async () => {
   if (server) await new Promise(resolve => server.close(resolve));
 });
 
-for (const landing of ['/vagas/', '/vagas-v2/']) for (const method of ['PIX', 'CREDIT_CARD']) {
+for (const landing of ['/vagas/', '/vagas-v2/', '/skills-ia-obrigado', '/skills-ia-obrigado/?utm_source=wiapy&utm_campaign=skills-upsell-regression&is_test=true']) for (const method of ['PIX', 'CREDIT_CARD']) {
   test(`confirmed ${method} purchase from ${landing} carries only buyer details into the upsell`, async t => {
     const context = await browser.newContext({ viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' });
     t.after(() => context.close());
@@ -137,6 +137,13 @@ for (const landing of ['/vagas/', '/vagas-v2/']) for (const method of ['PIX', 'C
     });
 
     await page.goto(`${baseURL}${landing}`, { waitUntil: 'domcontentloaded' });
+    if (landing.startsWith('/skills-ia-obrigado')) {
+      assert.match(await page.title(), /54 Skills de IA/);
+      assert.equal(await page.locator('#skillsAccessLink').getAttribute('href'), 'https://club.imobiturbo.com.br/login');
+      assert.equal(await page.locator('#skillsAccessLink').isVisible(), true);
+      assert.ok(await page.evaluate(() => [...document.styleSheets].some(sheet => sheet.href?.includes('/vagas/vagas.css'))));
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'the mobile upsell fits the screen');
+    }
     await page.locator('#checkoutBtn').click();
     await page.locator('#chkName').fill(buyer.name);
     await page.locator('#chkStep1Btn').click();
