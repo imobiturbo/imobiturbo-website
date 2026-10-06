@@ -1,0 +1,39 @@
+ROTEIRO DE DECISÃO ANTES DE REFORMAR O IMÓVEL
+Mensagem de WhatsApp, ficha de uso e prompt completo
+
+COMO USAR
+1. Descreva o problema sem diagnosticar sua causa por foto.
+2. Separe manutenção necessária, gosto estético e hipótese de apresentação comercial.
+3. Peça avaliação, escopo e orçamento adequados antes de combinar execução.
+
+CAMPOS PARA PREENCHER
+- [imóvel e proprietário]
+- [alteração cogitada]
+- [problema observado ou dúvida real do comprador]
+- [objetivo do proprietário]
+- [avaliação profissional disponível]
+- [escopo e orçamento confirmado]
+- [decisão ainda pendente]
+
+MENSAGEM PARA COPIAR
+[nome], sobre [alteração] em [imóvel], qual problema você quer resolver? Podemos separar o que é manutenção, o que é preferência e o que ainda precisa de avaliação. Antes de recomendar execução, precisamos conferir [pendência].
+
+EXEMPLO FICTÍCIO PREENCHIDO
+Paulo, sobre trocar os armários da cozinha, qual problema você quer resolver? Podemos registrar a condição atual e separar manutenção de preferência estética. Antes de recomendar execução, precisamos de avaliação do serviço e orçamento real.
+
+PROMPT COMPLETO PARA COPIAR
+Prepare uma conversa de WhatsApp com o proprietário e uma ficha de decisão antes de reformar um imóvel para vender. Diferencie fato observado, causa não diagnosticada, manutenção, preferência estética e hipótese comercial. Use apenas avaliação, orçamento e prazo fornecidos. Não prometa valorização, retorno do gasto ou venda rápida. Se houver problema técnico, indique que falta avaliação profissional, sem prescrever obra. Entregue uma pergunta inicial, três pontos para conferir e uma mensagem com o próximo passo real.
+
+Dados disponíveis:
+- [imóvel e proprietário]
+- [alteração cogitada]
+- [problema observado ou dúvida real do comprador]
+- [objetivo do proprietário]
+- [avaliação profissional disponível]
+- [escopo e orçamento confirmado]
+- [decisão ainda pendente]
+
+Escreva em português brasileiro, com frases naturais e curtas. Use somente os fatos fornecidos. Campos sem informação ficam entre colchetes e não são completados por suposição. Preserve o pedido de pausa ou encerramento do comprador. Entregue mensagens em blocos separados e copiáveis, sem introdução nem promessa de resultado.
+
+PRÓXIMO PASSO
+Escolha uma ação que você pode executar e combine o prazo real antes de enviar. O exemplo é fictício; substitua os campos pelos dados confirmados do seu atendimento.

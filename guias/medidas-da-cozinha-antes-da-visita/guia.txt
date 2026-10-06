@@ -1,0 +1,39 @@
+MEDIDAS DA COZINHA ANTES DA VISITA
+Mensagem de WhatsApp, ficha de uso e prompt completo
+
+COMO USAR
+1. Peça as três medidas reais do item; não adivinhe pelo modelo.
+2. Meça o espaço e registre a abertura de portas, sem concluir instalação elétrica ou de gás por aparência.
+3. Compare com instruções do fabricante e leve dúvidas técnicas ao profissional adequado.
+
+CAMPOS PARA PREENCHER
+- [nome]
+- [imóvel]
+- [eletrodoméstico]
+- [largura, altura e profundidade informadas]
+- [medidas do espaço confirmadas]
+- [abertura e passagem observadas]
+- [instalação a avaliar]
+
+MENSAGEM PARA COPIAR
+[nome], você pretende levar [eletrodoméstico] para [imóvel]? Me passa a largura, altura e profundidade que você conferiu? Vou comparar com o espaço e registrar o que ainda precisa de avaliação na instalação.
+
+EXEMPLO FICTÍCIO PREENCHIDO
+Lucas, você pretende levar sua geladeira para o apartamento da Rua das Acácias? Você informou 70 cm de largura; me passa também altura e profundidade? Vou comparar com o espaço na visita e registrar a dúvida sobre a tomada.
+
+PROMPT COMPLETO PARA COPIAR
+Prepare uma ficha de comparação das medidas da cozinha e uma mensagem ao comprador. Use somente dimensões fornecidas; marque as ausentes como a conferir. Separe encaixe físico de instalação elétrica ou de gás, que exige avaliação adequada. Não afirme compatibilidade, espaço de ventilação ou segurança a partir de foto. Entregue a ficha e duas mensagens curtas, uma para pedir medidas e outra para comunicar o que ainda falta conferir.
+
+Dados disponíveis:
+- [nome]
+- [imóvel]
+- [eletrodoméstico]
+- [largura, altura e profundidade informadas]
+- [medidas do espaço confirmadas]
+- [abertura e passagem observadas]
+- [instalação a avaliar]
+
+Escreva em português brasileiro, com frases naturais e curtas. Use somente os fatos fornecidos. Campos sem informação ficam entre colchetes e não são completados por suposição. Preserve o pedido de pausa ou encerramento do comprador. Entregue mensagens em blocos separados e copiáveis, sem introdução nem promessa de resultado.
+
+PRÓXIMO PASSO
+Escolha uma ação que você pode executar e combine o prazo real antes de enviar. O exemplo é fictício; substitua os campos pelos dados confirmados do seu atendimento.

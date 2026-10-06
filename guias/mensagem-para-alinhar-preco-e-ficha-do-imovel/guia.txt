@@ -1,0 +1,39 @@
+MENSAGEM PARA ALINHAR PREÇO E FICHA DO IMÓVEL
+Mensagem de WhatsApp, ficha de uso e prompt completo
+
+COMO USAR
+1. Confirme preço e disponibilidade com o responsável autorizado.
+2. Registre data, fonte e a ficha de referência sem apagar o histórico necessário.
+3. Atualize os canais que controla e anote os demais como pendentes, sem assumir conclusão.
+
+CAMPOS PARA PREENCHER
+- [imóvel]
+- [responsável pela confirmação]
+- [preço confirmado]
+- [disponibilidade confirmada]
+- [data e horário da confirmação]
+- [canais sob seu controle]
+- [canal pendente e responsável]
+
+MENSAGEM PARA COPIAR
+[nome], para alinhar a divulgação de [imóvel], você confirma [preço] e [disponibilidade] hoje? Vou registrar a confirmação na ficha e atualizar [canais que controlo]. [Canal fora do meu controle] ficará como pendente com [responsável].
+
+EXEMPLO FICTÍCIO PREENCHIDO
+Carla, para alinhar a divulgação da casa da Rua das Flores, você confirma o preço informado e a disponibilidade hoje? Vou registrar a confirmação na ficha e atualizar nosso portal e a mensagem de WhatsApp. O anúncio de outra equipe ficará como pendente com o responsável.
+
+PROMPT COMPLETO PARA COPIAR
+Organize uma mensagem de alinhamento da ficha de um imóvel e uma tabela simples de atualização. Use preço, disponibilidade, responsável e data confirmados. Diferencie canais sob nosso controle dos que dependem de terceiros. Não invente preço, aprovação de mudança ou atualização concluída. Entregue a mensagem e as colunas canal, informação anterior, informação confirmada, responsável e estado.
+
+Dados disponíveis:
+- [imóvel]
+- [responsável pela confirmação]
+- [preço confirmado]
+- [disponibilidade confirmada]
+- [data e horário da confirmação]
+- [canais sob seu controle]
+- [canal pendente e responsável]
+
+Escreva em português brasileiro, com frases naturais e curtas. Use somente os fatos fornecidos. Campos sem informação ficam entre colchetes e não são completados por suposição. Preserve o pedido de pausa ou encerramento do comprador. Entregue mensagens em blocos separados e copiáveis, sem introdução nem promessa de resultado.
+
+PRÓXIMO PASSO
+Escolha uma ação que você pode executar e combine o prazo real antes de enviar. O exemplo é fictício; substitua os campos pelos dados confirmados do seu atendimento.

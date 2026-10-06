@@ -1,0 +1,39 @@
+ROTEIRO PARA AVALIAR QUARTO E HOME OFFICE
+Mensagem de WhatsApp, ficha de uso e prompt completo
+
+COMO USAR
+1. Pergunte como e em qual horário o comprador trabalha.
+2. Compare as medidas reais da mesa com o espaço e a abertura das portas.
+3. Registre luz e ruído apenas no período observado; confirme conectividade com o responsável.
+
+CAMPOS PARA PREENCHER
+- [nome e imóvel]
+- [medidas da mesa]
+- [horário de trabalho]
+- [uso: chamadas, concentração ou outro]
+- [medidas e passagem conferidas]
+- [luz e ruído observados com horário]
+- [internet ou instalação ainda não confirmada]
+
+MENSAGEM PARA COPIAR
+[nome], como você usaria o quarto de [imóvel] para trabalhar? Me diga as medidas da mesa e o horário em que costuma fazer chamadas. Podemos conferir espaço, passagem e o que se ouve nesse período na visita.
+
+EXEMPLO FICTÍCIO PREENCHIDO
+Bianca, você disse que faz reuniões de manhã e usa uma mesa de 1,20 m. Vamos conferir o segundo quarto do apartamento na quarta de manhã, se esse horário servir? Também vou confirmar a informação de internet antes de te responder.
+
+PROMPT COMPLETO PARA COPIAR
+Monte um roteiro de visita para avaliar um quarto como espaço de trabalho. Use a rotina informada, medidas reais da mesa, abertura das portas, luz e ruído observados com data e horário. Não garanta isolamento acústico, internet ou ergonomia sem avaliação. Entregue uma mensagem para combinar a conferência e uma ficha com observado, informado e a confirmar.
+
+Dados disponíveis:
+- [nome e imóvel]
+- [medidas da mesa]
+- [horário de trabalho]
+- [uso: chamadas, concentração ou outro]
+- [medidas e passagem conferidas]
+- [luz e ruído observados com horário]
+- [internet ou instalação ainda não confirmada]
+
+Escreva em português brasileiro, com frases naturais e curtas. Use somente os fatos fornecidos. Campos sem informação ficam entre colchetes e não são completados por suposição. Preserve o pedido de pausa ou encerramento do comprador. Entregue mensagens em blocos separados e copiáveis, sem introdução nem promessa de resultado.
+
+PRÓXIMO PASSO
+Escolha uma ação que você pode executar e combine o prazo real antes de enviar. O exemplo é fictício; substitua os campos pelos dados confirmados do seu atendimento.

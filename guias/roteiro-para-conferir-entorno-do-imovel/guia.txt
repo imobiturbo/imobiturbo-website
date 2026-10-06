@@ -1,0 +1,39 @@
+ROTEIRO PARA CONFERIR O ENTORNO DO IMÓVEL
+Mensagem de WhatsApp, ficha de uso e prompt completo
+
+COMO USAR
+1. Pergunte qual deslocamento importa antes de escolher o exemplo do anúncio.
+2. Confira o percurso pelo meio de transporte indicado; registre data e horário.
+3. Separe observação própria, indicação do mapa e informação ainda pendente.
+
+CAMPOS PARA PREENCHER
+- [imóvel e bairro]
+- [destino importante para o comprador]
+- [meio de transporte]
+- [trajeto conferido]
+- [dia e horário]
+- [tempo observado, se medido]
+- [ponto ainda não conferido]
+
+MENSAGEM PARA COPIAR
+[nome], sobre o imóvel em [bairro], qual trajeto pesa mais na sua rotina? Posso conferir o caminho até [destino] de [meio de transporte] em [horário combinado] e te passar o que observei.
+
+EXEMPLO FICTÍCIO PREENCHIDO
+Marina, sobre a casa no Jardim das Flores, o caminho até o terminal pesa mais na sua rotina? Posso conferir esse trajeto a pé na terça de manhã e te passar o que observei.
+
+PROMPT COMPLETO PARA COPIAR
+Organize um roteiro de conferência do entorno e uma mensagem de WhatsApp ao comprador. Diferencie tempo medido, estimativa de mapa e informação não conferida. Não diga que um bairro é seguro, valorizado ou o melhor sem evidência; não invente distâncias, serviços ou acessos. Entregue uma pergunta inicial, uma ficha curta para registrar o percurso e uma resposta que indique dia, horário e meio de transporte.
+
+Dados disponíveis:
+- [imóvel e bairro]
+- [destino importante para o comprador]
+- [meio de transporte]
+- [trajeto conferido]
+- [dia e horário]
+- [tempo observado, se medido]
+- [ponto ainda não conferido]
+
+Escreva em português brasileiro, com frases naturais e curtas. Use somente os fatos fornecidos. Campos sem informação ficam entre colchetes e não são completados por suposição. Preserve o pedido de pausa ou encerramento do comprador. Entregue mensagens em blocos separados e copiáveis, sem introdução nem promessa de resultado.
+
+PRÓXIMO PASSO
+Escolha uma ação que você pode executar e combine o prazo real antes de enviar. O exemplo é fictício; substitua os campos pelos dados confirmados do seu atendimento.

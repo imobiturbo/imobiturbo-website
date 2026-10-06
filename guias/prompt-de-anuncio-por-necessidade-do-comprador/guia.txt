@@ -1,0 +1,37 @@
+PROMPT DE ANÚNCIO POR NECESSIDADE DO COMPRADOR
+Mensagem de WhatsApp, ficha de uso e prompt completo
+
+COMO USAR
+1. Escolha uma característica verificada, não uma lista de adjetivos.
+2. Relacione a característica a uma necessidade prática e marque o que ainda falta conferir.
+3. Convide a uma ação concreta, sem excluir pessoas por características pessoais.
+
+CAMPOS PARA PREENCHER
+- [imóvel e bairro]
+- [atributo confirmado]
+- [necessidade ou uso declarado]
+- [preço confirmado, se usado]
+- [medida ou condição pendente]
+- [próxima ação que pode ser oferecida]
+
+MENSAGEM PARA COPIAR
+[nome], você comentou que precisa de [necessidade]. [Imóvel] tem [atributo confirmado], que vale conferir para esse uso. Quer comparar [medida ou condição a avaliar] antes de decidirmos a visita?
+
+EXEMPLO FICTÍCIO PREENCHIDO
+Diego, você comentou que quer separar o trabalho da sala. O apartamento da Rua Ipê tem um terceiro quarto, que vale conferir para esse uso. Quer comparar as medidas da sua mesa com o cômodo antes de decidirmos a visita?
+
+PROMPT COMPLETO PARA COPIAR
+Escreva três versões autorais de anúncio imobiliário, cada uma com uma abertura diferente. Relacione um atributo verificado a uma necessidade prática do comprador. Use o preço só quando informado e confirmado. Marque medidas, condições e usos ainda não avaliados. Não invente valorização, escassez, resultado ou financiamento. Não selecione ou exclua moradores por idade, origem, religião, deficiência ou situação familiar. Entregue abertura, duas frases úteis e uma pergunta ligada à próxima ação disponível.
+
+Dados disponíveis:
+- [imóvel e bairro]
+- [atributo confirmado]
+- [necessidade ou uso declarado]
+- [preço confirmado, se usado]
+- [medida ou condição pendente]
+- [próxima ação que pode ser oferecida]
+
+Escreva em português brasileiro, com frases naturais e curtas. Use somente os fatos fornecidos. Campos sem informação ficam entre colchetes e não são completados por suposição. Preserve o pedido de pausa ou encerramento do comprador. Entregue mensagens em blocos separados e copiáveis, sem introdução nem promessa de resultado.
+
+PRÓXIMO PASSO
+Escolha uma ação que você pode executar e combine o prazo real antes de enviar. O exemplo é fictício; substitua os campos pelos dados confirmados do seu atendimento.

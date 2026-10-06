@@ -1,0 +1,39 @@
+MENSAGEM PARA ALINHAR O ORÇAMENTO DA BUSCA IMOBILIÁRIA
+Mensagem de WhatsApp, ficha de uso e prompt completo
+
+COMO USAR
+1. Pergunte o que está incluído no valor, sem presumir reserva ou capacidade de crédito.
+2. Registre somente os valores fornecidos e deixe despesas não estimadas como pendentes.
+3. Confirme custos e condições com as fontes adequadas antes de sugerir um limite de busca.
+
+CAMPOS PARA PREENCHER
+- [nome]
+- [valor informado pelo comprador]
+- [valor é preço do imóvel ou total disponível]
+- [valores já separados pelo comprador]
+- [custos e condições confirmados]
+- [dados ainda pendentes]
+- [próxima conferência aceita]
+
+MENSAGEM PARA COPIAR
+[nome], quando você fala em [valor], esse é o limite para o preço do imóvel ou inclui o restante que pretende gastar na compra e na mudança? Posso organizar os valores que você já separou e o que ainda falta conferir antes de selecionar opções.
+
+EXEMPLO FICTÍCIO PREENCHIDO
+Ana, quando você fala em até R$ 400 mil, esse é o limite para o preço do imóvel ou o total que pretende usar, incluindo a mudança? Posso organizar o que você já separou e o que ainda falta conferir antes de selecionar opções.
+
+PROMPT COMPLETO PARA COPIAR
+Organize uma resposta de WhatsApp sobre o orçamento de busca de um imóvel. Primeiro esclareça se o valor é preço do imóvel ou total disponível. Use somente valores e condições fornecidos; despesas não estimadas ficam a confirmar. Não calcule tributos, financiamento, parcela, desconto ou crédito sem dados e validação adequada. Não trate o total disponível como preço de anúncio automaticamente. Entregue uma pergunta inicial, uma ficha de valores informados e um próximo passo que o comprador possa aceitar.
+
+Dados disponíveis:
+- [nome]
+- [valor informado pelo comprador]
+- [valor é preço do imóvel ou total disponível]
+- [valores já separados pelo comprador]
+- [custos e condições confirmados]
+- [dados ainda pendentes]
+- [próxima conferência aceita]
+
+Escreva em português brasileiro, com frases naturais e curtas. Use somente os fatos fornecidos. Campos sem informação ficam entre colchetes e não são completados por suposição. Preserve o pedido de pausa ou encerramento do comprador. Entregue mensagens em blocos separados e copiáveis, sem introdução nem promessa de resultado.
+
+PRÓXIMO PASSO
+Escolha uma ação que você pode executar e combine o prazo real antes de enviar. O exemplo é fictício; substitua os campos pelos dados confirmados do seu atendimento.
