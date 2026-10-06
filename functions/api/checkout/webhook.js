@@ -15,7 +15,7 @@ import { handleConsultingWebhook } from "./_consulting.js";
 import { CAL_ASAAS_REFERENCE_PREFIX, parseCalAsaasReference, resolveCalAsaasConsultingPayment } from "./_cal-asaas.js";
 
 import { identifyOficinaPayment } from "../oficina/_checkout.js";
-import { tryCommunityPayment, communityErrorResponse } from "./_community-payments.js";
+import { tryCommunityPayment, communityAutomaticWebhook, communityErrorResponse } from "./_community-payments.js";
 import { asaasConnection } from "./_community-orders.js";
 
 const CORS_HEADERS = {
@@ -43,6 +43,12 @@ export async function onRequestPost(context) {
       });
     }
 
+    if (String(payload.event || '').startsWith('PIX_AUTOMATIC_RECURRING_AUTHORIZATION_')) {
+      try {
+        const managed = await communityAutomaticWebhook(env,request,payload);
+        return Response.json({ ok:true,...managed },{ headers:CORS_HEADERS });
+      } catch (error) { return communityErrorResponse(error,CORS_HEADERS); }
+    }
     // Resolve the product before any membership side effects, including partial
     // metadata, deletion, refund and out-of-order Asaas notifications.
     if (payload.payment?.id) {
@@ -59,6 +65,9 @@ export async function onRequestPost(context) {
       if (verifiedPayment.id !== payload.payment.id) return Response.json({ ok: false, error: "asaas_payment_mismatch" }, { status: 422 });
       if (await identifyOficinaPayment(verifiedPayment, env)) {
         return Response.json({ ok: true, status: "delegated_oficina" });
+      }
+      if (!env?.ASAAS_WEBHOOK_TOKEN || request.headers.get("asaas-access-token") !== env.ASAAS_WEBHOOK_TOKEN) {
+        return Response.json({ ok: false, error: "asaas_unauthorized" }, { status: env?.ASAAS_WEBHOOK_TOKEN ? 401 : 503 });
       }
       try {
         const managed = await tryCommunityPayment({ env, request, webhook: true, payment: verifiedPayment, eventId: payload.id });

@@ -35,14 +35,14 @@ test("vagas/index.html and vagas-v2/index.html contain payment selection with ho
     assert.ok(html.indexOf('id="chkCopyPixBtn"') < html.indexOf('id="chkPixQrImg"'), `${page} must place #chkCopyPixBtn above #chkPixQrImg for mobile speed`);
 
     // CPF do pagador label format
-    assert.ok(html.includes('for="chkPixCpf">CPF do pagador:</label>'), `${page} must label CPF do pagador:`);
+    assert.ok(html.includes(page === 'vagas/index.html' ? 'for="chkPixCpf">CPF do comprador</label>' : 'for="chkPixCpf">CPF do pagador:</label>'), `${page} must identify the buyer CPF`);
 
     // Pix Tab Icon and Card Tab Subtitle
     assert.ok(html.includes('class="chk-icon-pix"'), `${page} must set class chk-icon-pix on Pix SVG`);
     assert.ok(html.includes('id="chkCardTabDesc"'), `${page} must contain #chkCardTabDesc`);
 
     // Asaas Processing Footer
-    assert.ok(html.includes("Pagamento Processado via"), `${page} must display Pagamento Processado via`);
+    assert.ok(html.includes(page === "vagas/index.html" ? "Pagamento seguro via" : "Pagamento Processado via"), `${page} must display Pagamento Processado via`);
     assert.ok(html.includes("assets/thesvg/asaas.svg"), `${page} must display Asaas logo`);
 
     // Standardized Price Layout and Clean Summary
@@ -57,7 +57,7 @@ test("vagas/index.html and vagas-v2/index.html contain payment selection with ho
     }
     assert.ok(html.includes('id="chkModalPlanEco"'), `${page} must contain #chkModalPlanEco tag`);
     if (page === 'vagas-v2/index.html') assert.ok(html.includes("Economize R$ 767"), 'legacy v2 keeps its savings presentation');
-    assert.ok(!html.includes('id="chkPaymentTerms"'), `${page} must NOT contain #chkPaymentTerms`);
+    assert.equal(html.includes('id="chkPaymentTerms"'), page === 'vagas/index.html', `${page} compact disclosure follows the current checkout contract`);
     assert.ok(!html.includes('class="chk-plan-pill-tag">Plano Selecionado'), `${page} must NOT contain Plano Selecionado tag`);
 
     // Installments: All 12 options without "(Recomendado)"

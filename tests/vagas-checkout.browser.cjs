@@ -129,8 +129,14 @@ test('three plans show the correct hosted checkout price and monthly renewal', a
       if (artifacts) await page.screenshot({ path: path.join(artifacts, `390-${plan}-pix.png`) });
       await page.locator('#chkTabCard').click();
     } else {
-      assert.equal(await page.locator('#chkTabPix').isVisible(), false);
+      assert.ok(await page.locator('#chkTabPix').isVisible());
+      assert.equal(await page.locator('#chkInstallmentsWrap').isVisible(), false);
       assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /147.*recorrente/);
+      await page.locator('#chkTabPix').click();
+      assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /147,00\/mês.*Pix Automático/);
+      assert.match(await page.locator('#chkPixTotal').innerText(), /autorize no banco.*147\/mês/);
+      if (artifacts) await page.screenshot({ path: path.join(artifacts, '390-mensal-pix-automatico.png') });
+      await page.locator('#chkTabCard').click();
     }
     assert.ok(!(await page.locator('#chkPlanCompactPrice').innerText()).includes('Pix'));
     await page.keyboard.press('Escape');
@@ -144,6 +150,67 @@ test('three plans show the correct hosted checkout price and monthly renewal', a
     assert.ok(await page.locator('#chkStepPane4').isVisible(), 'draft can resume payment');
     assert.equal(await page.locator('#chkInstallments').inputValue(), installments, 'reload preserves selected plan');
   });
+});
+
+for (const width of [390, 1440]) test(`monthly Pix Automatic is explicit and creates one recoverable consent at ${width}px`, async t => {
+  const page = await visit(t, width);
+  await page.locator('#planRowMensal').click();
+  await page.locator('#checkoutBtn').click();
+  await page.locator('#chkName').fill('Auditoria Imobiturbo');
+  await page.locator('#chkStep1Btn').click();
+  await page.locator('#chkPhone').fill('11963824751');
+  await page.locator('#chkStep2Btn').click();
+  await page.locator('#chkEmail').fill('auditoria@example.invalid');
+  await page.locator('#chkStep3Btn').click();
+  await page.locator('#chkTabPix').click();
+  const compact = await page.locator('.chk-modal-box').evaluate(node => ({ height: node.clientHeight, scrollHeight: node.scrollHeight }));
+  assert.ok(compact.scrollHeight <= compact.height + 1, 'payment choice fits without an inner scrollbar');
+  assert.ok(await page.locator('#chkGeneratePixBtn').evaluate(node => { const rect = node.getBoundingClientRect(); return rect.top >= 0 && rect.bottom <= innerHeight; }), 'monthly CTA is in view');
+  if (artifacts) await page.screenshot({ path: path.join(artifacts, `${width}-monthly-pix-choice.png`) });
+  const response = { success: true, managedCommunity: true, gateway: 'asaas', pixAutomatic: true, orderStatus: 'created',
+    checkoutOrderId: '22222222-2222-4222-8222-222222222222',
+    paymentId: 'auto_33333333-3333-4333-8333-333333333333', method: 'PIX', plan: 'mensal',
+    productId: 'comunidade-imobiturbo', amount: 147, installmentCount: 1,
+    expiresAt: new Date(Date.now() + 30 * 60000).toISOString(), paid: false,
+    pix: { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=' } };
+  const posts = [];
+  await page.route('**/api/checkout', route => {
+    posts.push(route.request().postDataJSON());
+    return route.fulfill({ contentType: 'application/json', body: JSON.stringify(response) });
+  });
+  await page.route('**/api/checkout/status?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify(response) }));
+  await page.locator('#chkPixCpf').fill('52998224725');
+  await page.locator('#chkGeneratePixBtn').click();
+  await page.waitForFunction(() => !document.getElementById('chkPendingNotice').hidden);
+  assert.equal(posts.length, 1);
+  assert.equal(posts[0].pixAutomatic, true);
+  assert.equal(posts[0].paymentMethod, 'PIX');
+  assert.equal(posts[0].plan, 'mensal');
+  assert.ok(await page.locator('#chkExternalLink').isHidden());
+  assert.match(await page.locator('#chkPendingNotice').innerText(), /autorize o Pix Automático/);
+  assert.equal(await page.locator('#chkPixCopiaCola').inputValue(), 'SYNTHETIC-NOT-PAYABLE');
+  assert.equal(await page.locator('#chkPixQrImg').getAttribute('src'), response.pix.qrCodeBase64);
+  assert.equal(await page.locator('#chkPixQrImg').getAttribute('data-lazy-src'), null);
+  await page.reload({ waitUntil: 'load' });
+  await page.waitForFunction(() => document.getElementById('chkPixCopiaCola').value === 'SYNTHETIC-NOT-PAYABLE');
+  assert.equal(posts.length, 1, 'reload never POSTs a second consent');
+  assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /Pix Automático/);
+  assert.equal(await page.locator('#chkPixQrImg').getAttribute('src'), response.pix.qrCodeBase64);
+});
+
+test('recovered automatic Pix retains the sold amount instead of the new price', async t => {
+  const page = await visit(t);
+  const record = { version: 2, paymentId: 'auto_33333333-3333-4333-8333-333333333333',
+    gateway: 'asaas', method: 'PIX', plan: 'mensal', productId: 'comunidade-imobiturbo',
+    pixAutomatic: true, managedCommunity: true, amount: 127, installmentCount: 1,
+    expiresAt: new Date(Date.now() + 30 * 60000).toISOString(), paid: false,
+    pix: { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: '' } };
+  await page.route('**/api/checkout/status?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ...record, success: true, status: 'PENDING' }) }));
+  await page.evaluate(value => localStorage.setItem('imobiturbo:checkout:community:v2', JSON.stringify(value)), record);
+  await page.reload({ waitUntil: 'load' });
+  await page.waitForFunction(() => !document.getElementById('chkPendingNotice').hidden);
+  assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /127,00\/mês.*Pix Automático/);
+  assert.match(await page.locator('#chkPaymentTerms').innerText(), /127,00 por mês/);
 });
 
 test('desktop stays readable and legal links resolve to documents', async t => {
