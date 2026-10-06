@@ -84,3 +84,33 @@ test('internal reconciler rejects unauthenticated caller before any storage', as
   const res = await route.onRequestPost({ request: new Request('https://site.test/api/checkout/community-crm', { method: 'POST' }), env: { COMMUNITY_INTERNAL_TOKEN: 'private-test' } });
   assert.equal(res.status, 401);
 });
+test('batch advances failed contact-only carts with an independent cyclic cursor', async t => {
+  const { reconcileCommunityCrm } = await load('_community-crm.js');
+  const rows = [1,2,3].map(n=>({ id: `${n}1111111-1111-4111-8111-111111111111`, contact_id: CONTACT, created_at: `2026-10-0${n}T00:00:00Z` }));
+  const observed = [];
+  t.mock.method(globalThis, 'fetch', async (url, init={}) => {
+    const u = new URL(url), table = u.pathname.split('/').pop();
+    if (table === 'cobranca_pedidos') return Response.json([]);
+    if (table === 'contacts') return Response.json([]); // First two are invalid; must not starve the third.
+    if (table === 'crm_leads') { observed.push(u.searchParams.get('or')); return Response.json(u.searchParams.has('or') ? [rows[2]] : rows); }
+    throw Error('Unexpected table');
+  });
+  const first = await reconcileCommunityCrm(env);
+  assert.equal(first.pending, 2); assert.equal(first.next_cursor.leads.id, rows[1].id);
+  const next = await reconcileCommunityCrm(env, first.next_cursor);
+  assert.equal(next.pending, 1); assert.equal(next.next_cursor.leads, null);
+  assert.match(observed[1], new RegExp(rows[1].id));
+});
+test('batch budget yields a receipt/cursor before attempting another slow order', async t => {
+  const { reconcileCommunityCrm } = await load('_community-crm.js');
+  const order = orderFixture(); let time = 0, reads = 0;
+  t.mock.method(globalThis, 'fetch', async url => {
+    const table = new URL(url).pathname.split('/').pop();
+    if (table === 'cobranca_pedidos') return Response.json([order, { ...order, id: CONTACT }, { ...order, id: LEAD }]);
+    if (table === 'cobranca_assinaturas') { reads++; time = 31000; throw Error('slow/downstream'); }
+    if (table === 'crm_leads') return Response.json([]);
+    throw Error('Unexpected table');
+  });
+  const result = await reconcileCommunityCrm(env, null, ()=>time);
+  assert.equal(reads, 1); assert.equal(result.pending, 1); assert.equal(result.next_cursor.orders.id, order.id);
+});

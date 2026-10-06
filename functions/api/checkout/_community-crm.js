@@ -106,7 +106,7 @@ async function paidObservation(config, order) {
   return payments.length > 0;
 }
 export async function syncCommunityCrm(config, order, now = Date.now()) {
-  config = { ...config, crmDeadline: Date.now() + 20000 };
+  config = { ...config, crmDeadline: Math.min(config.crmDeadline || Infinity, Date.now() + 20000) };
   assertCommunityOrder(config, order);
   const paid = await paidObservation(config, order);
   const status = paid ? 'paid' : now - Date.parse(order.created_at) >= 3600000 ? 'abandoned' : 'pending';
@@ -122,36 +122,53 @@ export function scheduleCommunityCrm(context, config, order) {
   if (context.waitUntil) context.waitUntil(work);
   return work; // CRM failures never repeat or fail a financial creation.
 }
-export async function reconcileCommunityCrm(env, cursor = null) {
-  const config = configForCrm(env);
-  if (cursor && (!UUID.test(cursor.id || '') || !/^\d{4}-\d{2}-\d{2}T[\d:.+-]+Z?$/.test(cursor.created_at || '')))
+function cursorFilter(query, cursor) {
+  if (!cursor) return;
+  if (!UUID.test(cursor.id || '') || !/^\d{4}-\d{2}-\d{2}T[\d:.+-]+Z?$/.test(cursor.created_at || '') || !Number.isFinite(Date.parse(cursor.created_at)))
+    throw new CommunityError('community_crm_cursor_invalid', 400);
+  query.set('or', `(created_at.gt.${cursor.created_at},and(created_at.eq.${cursor.created_at},id.gt.${cursor.id}))`);
+}
+const position = row => ({ created_at: row.created_at, id: row.id });
+export async function reconcileCommunityCrm(env, cursor = null, now = () => Date.now()) {
+  const started = now(), wallStarted = Date.now(), config = { ...configForCrm(env), crmDeadline: wallStarted + 45000 };
+  if (cursor && (typeof cursor !== 'object' || Array.isArray(cursor) || Object.keys(cursor).some(k=>!['orders','leads'].includes(k))))
     throw new CommunityError('community_crm_cursor_invalid', 400);
   const query = new URLSearchParams({ organization_id: `eq.${config.organizationId}`, environment: `eq.${config.environment}`,
     provider: 'eq.asaas', order: 'created_at.asc,id.asc', limit: '3' });
-  if (cursor) query.set('or', `(created_at.gt.${cursor.created_at},and(created_at.eq.${cursor.created_at},id.gt.${cursor.id}))`);
+  cursorFilter(query, cursor?.orders);
   const orders = await communityDb(config, `cobranca_pedidos?${query}`);
   if (!Array.isArray(orders)) throw fail('community_crm_storage_pending');
-  const summary = { scanned: 0, completed: 0, pending: 0, next_cursor: null };
-  // Two per cron tick, cyclic keyset pagination. A failed item cannot starve later orders.
+  const summary = { scanned: 0, completed: 0, pending: 0, next_cursor: { orders: cursor?.orders || null, leads: cursor?.leads || null } };
+  let processed = 0;
+  // Leave a separate window for contact-only carts and return before the cron's 55s timeout.
   for (const order of orders.slice(0,2)) {
-    summary.scanned++;
-    try { await syncCommunityCrm(config, order); summary.completed++; }
+    if (now() >= started + 30000) break;
+    summary.scanned++; processed++;
+    try { await syncCommunityCrm({ ...config, crmDeadline: wallStarted + 32000 }, order); summary.completed++; }
     catch { summary.pending++; }
+    summary.next_cursor.orders = position(order); // Advance even after failure; the next cycle retries it.
   }
-  if (orders.length > 2) {
-    const last = orders[1]; summary.next_cursor = { created_at: last.created_at, id: last.id };
-  }
-  const stale = await store(config, 'crm_leads', {
+  if (processed === orders.length) summary.next_cursor.orders = null;
+  const leadQuery = new URLSearchParams({
     [`source_metadata->${META}->>status`]: 'eq.pending',
     [`source_metadata->${META}->>capture_created_at`]: `lte.${new Date(Date.now()-3600000).toISOString()}`,
-    [`source_metadata->${META}->orders`]: 'eq.{}', order: 'created_at.asc,id.asc', limit: '2' });
-  for (const lead of stale) {
-    summary.scanned++;
+    [`source_metadata->${META}->orders`]: 'eq.{}', order: 'created_at.asc,id.asc', limit: '3' });
+  cursorFilter(leadQuery, cursor?.leads);
+  let stale;
+  try { stale = await store(config, 'crm_leads', Object.fromEntries(leadQuery)); }
+  catch { summary.pending++; return summary; }
+  let leadProcessed = 0;
+  for (const lead of stale.slice(0,2)) {
+    if (now() >= started + 43000) break;
+    summary.scanned++; leadProcessed++;
     try {
       const contact = await one(config, 'contacts', lead.contact_id);
-      await annotate({ ...config, crmDeadline: Date.now()+5000 }, lead.id, { email: contact.email, phone: contact.phone_number }, { status: 'abandoned' });
+      await annotate({ ...config, crmDeadline: Math.min(wallStarted+45000, Date.now()+5000) }, lead.id,
+        { email: contact.email, phone: contact.phone_number }, { status: 'abandoned' });
       summary.completed++;
     } catch { summary.pending++; }
+    summary.next_cursor.leads = position(lead);
   }
+  if (leadProcessed === stale.length) summary.next_cursor.leads = null;
   return summary;
 }
