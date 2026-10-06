@@ -5,7 +5,7 @@ const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
 
-test("vagas/index.html and vagas-v2/index.html contain Option #1 transparent checkout popup with Card, Pix and VIP WhatsApp", () => {
+test("vagas/index.html and vagas-v2/index.html contain payment selection with hosted card checkout and legacy recovery", () => {
   for (const page of ["vagas/index.html", "vagas-v2/index.html"]) {
     const htmlPath = path.join(root, page);
     const html = fs.readFileSync(htmlPath, "utf8");
@@ -16,12 +16,10 @@ test("vagas/index.html and vagas-v2/index.html contain Option #1 transparent che
     assert.ok(html.includes('id="chkCardView"'), `${page} must contain #chkCardView`);
     assert.ok(html.includes('id="chkPixView"'), `${page} must contain #chkPixView`);
 
-    // Credit Card Fields
-    assert.ok(html.includes('id="chkCardNumber"'), `${page} must contain #chkCardNumber`);
-    assert.ok(html.includes('id="chkCardBrandBadge"'), `${page} must contain #chkCardBrandBadge`);
-    assert.ok(html.includes('id="chkCardHolder"'), `${page} must contain #chkCardHolder`);
-    assert.ok(html.includes('id="chkCardExpiry"'), `${page} must contain #chkCardExpiry`);
-    assert.ok(html.includes('id="chkCardCvv"'), `${page} must contain #chkCardCvv`);
+    // The primary landing delegates sensitive card fields to Asaas.
+    for (const id of ['chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv']) {
+      assert.equal(html.includes('id="' + id + '"'), page === 'vagas-v2/index.html');
+    }
     assert.ok(html.includes('id="chkCardCpf"'), `${page} must contain #chkCardCpf`);
     assert.ok(html.includes('id="chkInstallments"'), `${page} must contain #chkInstallments`);
     assert.ok(html.includes('id="chkContinuePaymentBtn"'), `${page} must contain #chkContinuePaymentBtn`);
@@ -153,8 +151,8 @@ test("functions/api/checkout/status.js supports subscription polling and payment
   const code = fs.readFileSync(path.join(root, "functions/api/checkout/status.js"), "utf8");
 
   assert.ok(code.includes("sub_"), "Must handle subscription ID polling");
-  assert.ok(code.includes("https://api.asaas.com/v3/subscriptions/"), "Must query subscription payments");
-  assert.ok(code.includes("https://api.asaas.com/v3/payments/"), "Must query payment status");
+  assert.ok(code.includes("asaasConnection(env).base") && code.includes("/subscriptions/"), "Must query subscription payments in the configured provider namespace");
+  assert.ok(code.includes("asaasConnection(env).base") && code.includes("/payments/"), "Must query payment status in the configured provider namespace");
   assert.ok(code.includes("sendPostPurchaseNotifications"), "Must dispatch post purchase notifications on paid status");
 });
 
@@ -182,4 +180,3 @@ test("vagas/checkout-session.js persists paid state and short-circuits polling o
   assert.ok(sessionCode.includes("if (record.paid === true) {"), "check() and start() must short-circuit if already paid");
   assert.ok(upsellCode.includes("if (comm && !comm.paid) community.start()"), "upsell resume must not poll paid community");
 });
-

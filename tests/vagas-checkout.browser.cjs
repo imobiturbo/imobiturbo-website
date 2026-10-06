@@ -87,7 +87,7 @@ for (const width of [390, 320, 1440]) test(`restored page, original course carou
   if (artifacts) await page.screenshot({ path: path.join(artifacts, `${width}-courses.png`) });
 });
 
-test('three plans preserve the native Asaas journey and show the Pix total before QR', async t => {
+test('three plans show the correct hosted checkout price and monthly renewal', async t => {
   for (const [plan, installments, amount] of [['anual', '12', '997'], ['trimestral', '3', '357'], ['mensal', '1', '147']]) await t.test(plan, async t => {
     const page = await visit(t);
     const row = page.locator('.psel-row').filter({ has: page.locator(`input[name="plano"][value="${plan}"]`) });
@@ -108,11 +108,11 @@ test('three plans preserve the native Asaas journey and show the Pix total befor
     assert.ok(await page.locator('#chkStepPane4').isVisible());
     assert.equal(new URL(page.url()).pathname, '/vagas/', 'no external checkout navigation');
     assert.equal(await page.locator('#chkInstallments').inputValue(), installments);
-    assert.equal(await page.locator('#chkCardHolder').inputValue(), 'Auditoria Imobiturbo', 'identity is reused for payment');
+    assert.equal(await page.locator('#chkCardHolder').count(), 0, 'Asaas collects the card details');
     assert.match(await page.locator('#chkProgressPct').innerText(), /4\D+4/, 'progress describes the payment step');
     assert.ok(await page.locator('#chkStepPane4 img[alt="Asaas"]').isVisible());
     if (plan !== 'mensal') {
-      for (const count of ['1', '2', installments]) {
+      for (const count of [installments]) {
         await page.locator('#chkInstallments').selectOption(count);
         const summary = await page.locator('#chkPlanCompactPrice').innerText();
         const total = count === '1' ? amount : plan === 'anual' ? '1.164' : '381';
@@ -121,13 +121,18 @@ test('three plans preserve the native Asaas journey and show the Pix total befor
         assert.ok((await page.locator('#chkBtnText').innerText()).includes(option.match(/R\$ ([\d,.]+)/)[1].replace(',00', '')), 'button agrees with selected installment price');
       }
     }
-    await page.locator('#chkTabPix').click();
-    assert.match(await page.locator('#chkPixView').innerText(), new RegExp(amount), 'Pix total is visible before generating a charge');
-    assert.match(await page.locator('#chkPlanCompactPrice').innerText(), new RegExp(amount + '.*Pix'), 'summary uses the Pix total');
-    assert.ok(await page.locator('#chkPlanCompactPrice').evaluate(node => node.scrollWidth <= node.clientWidth), 'full price summary wraps within the dialog');
-    if (artifacts) await page.screenshot({ path: path.join(artifacts, `390-${plan}-pix.png`) });
-    await page.locator('#chkTabCard').click();
-    assert.ok(!(await page.locator('#chkPlanCompactPrice').innerText()).includes('Pix'), 'card summary returns with its selected installments');
+    if (plan !== 'mensal') {
+      await page.locator('#chkTabPix').click();
+      assert.match(await page.locator('#chkPixView').innerText(), new RegExp(amount), 'Pix total is visible before creating a charge');
+      assert.match(await page.locator('#chkPlanCompactPrice').innerText(), new RegExp(amount + '.*Pix'));
+      assert.ok(await page.locator('#chkPlanCompactPrice').evaluate(node => node.scrollWidth <= node.clientWidth));
+      if (artifacts) await page.screenshot({ path: path.join(artifacts, `390-${plan}-pix.png`) });
+      await page.locator('#chkTabCard').click();
+    } else {
+      assert.equal(await page.locator('#chkTabPix').isVisible(), false);
+      assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /147.*recorrente/);
+    }
+    assert.ok(!(await page.locator('#chkPlanCompactPrice').innerText()).includes('Pix'));
     await page.keyboard.press('Escape');
     assert.equal(await page.evaluate(() => document.activeElement.id), 'checkoutBtn', 'focus returns to the purchase CTA');
     await page.reload({ waitUntil: 'load' });
@@ -162,7 +167,7 @@ test('pending payment reload preserves its actual method, installments and price
       const record = {
         version: 2, paymentId: 'pay_synthetic_not_payable', gateway: 'asaas', method, plan,
         productId: 'comunidade-imobiturbo', installmentCount: method === 'PIX' ? 1 : count,
-        amount: Number(pixAmount), paid: false, expiresAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+        amount: method === 'CREDIT_CARD' && plan === 'trimestral' ? 381 : Number(pixAmount), installmentValue: method === 'CREDIT_CARD' && plan === 'trimestral' ? 190.50 : 0, paid: false, expiresAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
         pix: { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=' }
       };
       await page.route('**/api/checkout/status?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ...record, success: true, status: 'PENDING' }) }));

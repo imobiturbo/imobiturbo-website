@@ -15,6 +15,8 @@ import { handleConsultingWebhook } from "./_consulting.js";
 import { CAL_ASAAS_REFERENCE_PREFIX, parseCalAsaasReference, resolveCalAsaasConsultingPayment } from "./_cal-asaas.js";
 
 import { identifyOficinaPayment } from "../oficina/_checkout.js";
+import { tryCommunityPayment, communityErrorResponse } from "./_community-payments.js";
+import { asaasConnection } from "./_community-orders.js";
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -48,7 +50,7 @@ export async function onRequestPost(context) {
         return Response.json({ ok: false, error: "asaas_unauthorized" }, { status: 401 });
       }
       if (!env?.ASAAS_API_KEY) return Response.json({ ok: false, error: "asaas_verification_unavailable" }, { status: 503 });
-      const providerResponse = await fetch(`https://api.asaas.com/v3/payments/${encodeURIComponent(payload.payment.id)}`, {
+      const providerResponse = await fetch(`${asaasConnection(env).base}/payments/${encodeURIComponent(payload.payment.id)}`, {
         headers: { access_token: env.ASAAS_API_KEY, "User-Agent": "Imobiturbo-Checkout/1.0" },
         signal: AbortSignal.timeout(5000),
       });
@@ -58,6 +60,19 @@ export async function onRequestPost(context) {
       if (await identifyOficinaPayment(verifiedPayment, env)) {
         return Response.json({ ok: true, status: "delegated_oficina" });
       }
+      try {
+        const managed = await tryCommunityPayment({ env, request, webhook: true, payment: verifiedPayment, eventId: payload.id });
+        if (managed) {
+          if (managed.orderStatus !== "created") return Response.json({ ok: false, error: "community_order_reconciliation_pending" }, { status: 503 });
+          if (managed.paid) {
+            const delivery = dispatchVerifiedPurchaseToHub({ env, request, paymentId: managed.paymentId,
+              eventId: managed.eventId, orderId: managed.orderId, amount: managed.amount,
+              productId: managed.productId, contentName: "Comunidade Imobiturbo", ...managed.trackingBuyer });
+            if (context.waitUntil) context.waitUntil(delivery); else await delivery;
+          }
+          return Response.json({ ok: true, ...managed }, { headers: CORS_HEADERS });
+        }
+      } catch (error) { return communityErrorResponse(error, CORS_HEADERS); }
       // Cal order references must be resolved before checkoutDetails() can
       // apply the community default. The provider-owned reference stays intact.
       if (typeof verifiedPayment.externalReference === "string" &&
@@ -86,6 +101,8 @@ export async function onRequestPost(context) {
       if (checkoutDetails(verifiedPayment).productId === CONSULTING_PRODUCT_ID) {
         return await handleConsultingWebhook({ request, env, paymentId: verifiedPayment.id, verifiedPayment });
       }
+      // An unknown provider-owned reference never inherits Community by name.
+      if (checkoutDetails(verifiedPayment).productId === "unknown") return Response.json({ ok: true, status: "ignored_product" });
       payload.payment = verifiedPayment;
       delete payload.customer;
       // Status from the provider wins over an old notification event.

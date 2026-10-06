@@ -1,10 +1,12 @@
-import { dispatchCheckoutContextToHub } from "./_tracking.js";
+import { dispatchCheckoutContextToHub, dispatchVerifiedPurchaseToHub } from "./_tracking.js";
 // Cloudflare Pages Function: /api/checkout
 // Checkout transparente: Asaas quando solicitado; Pix AbacatePay legado.
 // Preços e identificação do produto são definidos exclusivamente no servidor.
 
 import { dispatchConsultingCashflowToHub } from "./_cashflow.js";
 import { consultingInstallmentTotalCents } from "./_products.js";
+import { createCommunityOrder } from "./_community-orders.js";
+import { communityOrderStatus, communityErrorResponse } from "./_community-payments.js";
 
 const CORS_HEADERS = {
   "Cache-Control": "no-store",
@@ -75,6 +77,17 @@ async function createCheckout(context) {
   const plan = rawPlan.toString().toLowerCase();
   const rawPaymentMethod = body.paymentMethod || "PIX";
   const paymentMethod = rawPaymentMethod.toString().toUpperCase();
+
+  // Community v1 is the durable Asaas path. Consulting and legacy gateways
+  // retain their existing contracts; a financial key is distinct from eid.
+  if (plan !== "consultoria" && (paymentMethod === "CREDIT_CARD" || String(body.gateway || "").toLowerCase() === "asaas")) {
+    try {
+      const { config, order } = await createCommunityOrder(env, { ...body,
+        remoteIp: request.headers.get("cf-connecting-ip") || undefined });
+      const result = await communityOrderStatus(config, order, body.eventId);
+      return Response.json({ ...result, clientIp: request.headers.get("cf-connecting-ip") || null }, { headers: CORS_HEADERS });
+    } catch (error) { return communityErrorResponse(error, CORS_HEADERS); }
+  }
 
   const {
     name = "",
@@ -565,6 +578,8 @@ async function createCheckout(context) {
           value: selectedPlan.pixReais,
           nextDueDate: todayStr,
           cycle: "MONTHLY",
+          fine: { value: 0, type: "FIXED" },
+          interest: { value: 0 },
           description: selectedPlan.title,
           creditCard: {
             holderName: creditCard.holderName || name,
@@ -581,7 +596,7 @@ async function createCheckout(context) {
           method: "POST",
           headers: asaasHeaders,
           body: JSON.stringify(subPayload),
-          signal: AbortSignal.timeout(8000),
+          signal: AbortSignal.timeout(65000),
         });
         const subData = await subResp.json();
 
@@ -684,7 +699,7 @@ async function createCheckout(context) {
           method: "POST",
           headers: asaasHeaders,
           body: JSON.stringify(cardPayload),
-          signal: AbortSignal.timeout(8000),
+          signal: AbortSignal.timeout(65000),
         });
         const payment = await payResp.json();
 
@@ -764,6 +779,13 @@ export async function onRequestPost(context) {
         paymentId: result.paymentId, eventId: result.eventId, tracking: body.tracking,
         productId: result.productId || "comunidade-imobiturbo", amount: result.amount,
         checkoutId: body.tracking?.checkoutId || result.eventId });
+      if (context.waitUntil) context.waitUntil(delivery); else await delivery;
+    }
+    if (result?.managedCommunity && result.paid) {
+      const delivery = dispatchVerifiedPurchaseToHub({ env: context.env, request: context.request,
+        paymentId: result.paymentId, eventId: result.eventId, orderId: result.orderId,
+        amount: result.amount, productId: result.productId, contentName: "Comunidade Imobiturbo",
+        email: body.email, name: body.name, phone: body.phone, tracking: body.tracking });
       if (context.waitUntil) context.waitUntil(delivery); else await delivery;
     }
   }

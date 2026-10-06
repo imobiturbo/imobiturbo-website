@@ -6,6 +6,94 @@
   const UPSELL_BUYER_KEY = 'imobiturbo:checkout:upsell-buyer:v1';
   const UPSELL_BUYER_TTL = 2 * 60 * 60 * 1000;
   const DRAFT_KEYS = ['imobiturbo:vagas:checkout:v1', 'imobiturbo:vagas-v2:checkout:v1'];
+  const COMMUNITY_INTENT_KEY = 'imobiturbo:checkout:community-intent:v1';
+  const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  function isAsaasInvoiceUrl(value) {
+    try { const url = new URL(value); return url.protocol === 'https:' &&
+      ['www.asaas.com', 'asaas.com', 'sandbox.asaas.com'].includes(url.hostname) &&
+      !url.username && !url.password && /^\/i\/[a-zA-Z0-9_-]+$/.test(url.pathname); }
+    catch (_) { return false; }
+  }
+
+  // Financial intent exists before the POST response/payment ID. It has no TTL:
+  // losing a response must not erase the only key that can recover that charge.
+  function createCommunityIntent(options = {}) {
+    let storage;
+    try { storage = options.storage || root.localStorage; } catch (_) {}
+    const fetcher = options.fetch || root.fetch.bind(root);
+    const uuid = options.uuid || (() => root.crypto.randomUUID());
+    let busy = null;
+    function read() {
+      if (!storage) return null;
+      const raw = storage.getItem(COMMUNITY_INTENT_KEY);
+      if (!raw) return null;
+      let value;
+      try { value = JSON.parse(raw); } catch (_) { throw new Error('Não foi possível recuperar a compra anterior.'); }
+      if (value?.version !== 1 || !UUID.test(value.idempotencyKey || '') || !/^[0-9a-f]{64}$/.test(value.fingerprint || '') ||
+          !['prepared', 'submitting', 'uncertain', 'created', 'failed'].includes(value.state)) throw new Error('Não foi possível recuperar a compra anterior.');
+      return value;
+    }
+    function write(value) {
+      if (!storage) throw new Error('Ative o armazenamento do navegador para recuperar esta compra com segurança.');
+      storage.setItem(COMMUNITY_INTENT_KEY, JSON.stringify(value));
+      if (storage.getItem(COMMUNITY_INTENT_KEY) !== JSON.stringify(value)) throw new Error('Não foi possível salvar esta compra com segurança.');
+      return value;
+    }
+    async function fingerprint(payload) {
+      const safe = { plan: payload.plan, paymentMethod: payload.paymentMethod, installments: Number(payload.installments || 1),
+        name: String(payload.name || '').trim(), email: String(payload.email || '').trim().toLowerCase(), phone: String(payload.phone || '').replace(/\D/g, '') };
+      const digest = await root.crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(safe)));
+      return Array.from(new Uint8Array(digest), n => n.toString(16).padStart(2, '0')).join('');
+    }
+    async function recover() {
+      const intent = read(); if (!intent) return null;
+      const response = await fetcher('/api/checkout/status?' + new URLSearchParams({ gateway: 'asaas', idempotencyKey: intent.idempotencyKey, eventId: intent.eventId }), { cache: 'no-store' });
+      const result = await response.json();
+      if (!response.ok || !result.success) throw new Error('Estamos conferindo a compra anterior. Tente novamente em instantes.');
+      // A financial key never becomes the attribution eid on recovery.
+      result.eventId = intent.eventId;
+      write({ ...intent, state: result.orderStatus === 'created' ? 'created' : result.retryCreationAllowed ? 'failed' : 'uncertain',
+        checkoutOrderId: result.checkoutOrderId || intent.checkoutOrderId || null });
+      return result;
+    }
+    function begin(payload) {
+      if (busy) return busy;
+      const operation = async () => {
+        const hash = await fingerprint(payload);
+        let intent = read();
+        if (intent) {
+          const result = await recover();
+          if (!result.retryCreationAllowed) return { result };
+          if (intent.fingerprint !== hash) {
+            // MISSING permits retrying the same immutable intention. An older
+            // POST may still be in flight, so it never authorizes a fresh key.
+            if (result.orderStatus !== 'failed') return { result };
+            intent = null;
+          }
+        }
+        if (!intent) {
+          const key = uuid();
+          const eid = payload.eventId || uuid();
+          if (key === eid) throw new Error('Identificador da compra inválido.');
+          intent = write({ version: 1, idempotencyKey: key, fingerprint: hash, eventId: eid,
+            checkoutMode: payload.checkoutMode === 'hosted' ? 'hosted' : 'transparent', plan: payload.plan, method: payload.paymentMethod, installmentCount: Number(payload.installments || 1), state: 'prepared', checkoutOrderId: null });
+        }
+        write({ ...intent, state: 'submitting' });
+        return { payload: { ...payload, idempotencyKey: intent.idempotencyKey, eventId: intent.eventId } };
+      };
+      busy = (root.navigator?.locks ? root.navigator.locks.request(COMMUNITY_INTENT_KEY, operation) : operation()).finally(() => { busy = null; });
+      return busy;
+    }
+    function uncertain() { const intent = read(); if (intent) write({ ...intent, state: 'uncertain' }); }
+    function received(result) {
+      const intent = read(); if (!intent) return;
+      write({ ...intent, state: result.orderStatus === 'created' ? 'created' : result.retryCreationAllowed ? 'failed' : 'uncertain',
+        checkoutOrderId: result.checkoutOrderId || intent.checkoutOrderId || null });
+    }
+    function complete() { storage?.removeItem(COMMUNITY_INTENT_KEY); }
+    return { read, begin, recover, received, uncertain, complete };
+  }
 
   function create(options) {
     const now = options.now || Date.now;
@@ -27,6 +115,8 @@
       const installmentCount = Number(value.installmentCount);
       const offerCodes = ['consultoria-a-vista', 'consultoria-12x49', ...Array.from({ length: 11 }, (_, index) => `consultoria-${index + 2}x`)];
       return {
+        checkoutMode: value.checkoutMode === 'hosted' ? 'hosted' : 'transparent',
+        invoiceUrl: isAsaasInvoiceUrl(value.invoiceUrl) ? value.invoiceUrl : null,
         version: 2, paymentId: value.paymentId, gateway: 'asaas',
         plan: value.plan, productId: options.productId,
         eventId: typeof value.eventId === 'string' ? value.eventId.slice(0, 250) : '',
@@ -39,6 +129,8 @@
         method: value.method === 'CREDIT_CARD' ? 'CREDIT_CARD' : 'PIX',
         expiresAt: value.expiresAt,
         paid: value.paid === true,
+        managedCommunity: value.managedCommunity === true,
+        checkoutOrderId: UUID.test(value.checkoutOrderId || '') ? value.checkoutOrderId : null,
         pix: {
           copyPaste: typeof pix.copyPaste === 'string' ? pix.copyPaste.slice(0, 4096) : '',
           qrCodeBase64: typeof pix.qrCodeBase64 === 'string' && pix.qrCodeBase64.length < 512000 &&
@@ -101,6 +193,7 @@
         const timeout = root.setTimeout(() => controller.abort(), 10000);
         try {
           const query = new URLSearchParams({ gateway: record.gateway, paymentId: record.paymentId });
+          if (record.managedCommunity && record.eventId) query.set('eventId', record.eventId);
           if (record.method === 'PIX' && (!record.pix.copyPaste || !record.pix.qrCodeBase64)) query.set('includePix', '1');
           const response = await fetcher('/api/checkout/status?' + query, {
             cache: 'no-store', signal: controller.signal,
@@ -114,6 +207,7 @@
           // Payment approval wins over the checkout deadline, including on return.
           if (data.paid === true) {
             const approved = { ...record, ...data, paid: true };
+            if (record.managedCommunity) approved.eventId = record.eventId;
             save(approved, { method: record.method, expiresAt: record.expiresAt, paid: true });
             stop();
             options.onPaid?.(approved);
@@ -122,7 +216,7 @@
           const terminal = data.deleted || ['REFUNDED', 'CHARGEBACK_REQUESTED', 'CHARGEBACK_DISPUTE', 'AWAITING_CHARGEBACK_REVERSAL', 'DELETED', 'CANCELED', 'CANCELLED', 'REJECTED', 'INACTIVE'].includes(data.status);
           const providerDeadline = Date.parse(data.expiresAt);
           const expiresAt = new Date(Math.min(Date.parse(record.expiresAt), Number.isFinite(providerDeadline) ? providerDeadline : Infinity)).toISOString();
-          if (terminal || now() >= Date.parse(expiresAt)) {
+          if (terminal || (!record.managedCommunity && now() >= Date.parse(expiresAt))) {
             clear();
             options.onExpired?.(record);
             return { expired: true };
@@ -152,7 +246,7 @@
         return Promise.resolve(record);
       }
       options.onPending?.(record);
-      polling = root.setInterval(check, 3000);
+      polling = root.setInterval(check, record.managedCommunity ? 15000 : 3000);
       return check();
     }
 
@@ -234,7 +328,14 @@
     notice.style.cssText = 'font-size:14px;line-height:1.5;color:#d4ff53;margin:12px 0';
     notice.hidden = true;
     pane.prepend(notice);
+    const externalLink = root.document.createElement('a');
+    externalLink.id = 'chkExternalLink'; externalLink.className = 'chk-btn-submit'; externalLink.hidden = true; externalLink.style.setProperty('display', 'none', 'important');
+    externalLink.textContent = 'Continuar pagamento no Asaas'; externalLink.rel = 'noopener';
+    pane.prepend(externalLink);
     let timer = null;
+    let recoveryTimer = null;
+    let recovering = false;
+    const intent = createCommunityIntent();
 
     function locked(value) {
       pane.querySelectorAll('input, select, button').forEach(control => {
@@ -248,6 +349,14 @@
       api.goToCheckoutStep(4);
       locked(true);
       notice.hidden = false;
+      externalLink.hidden = !(record.checkoutMode === 'hosted' && isAsaasInvoiceUrl(record.invoiceUrl));
+      externalLink.style.setProperty('display', externalLink.hidden ? 'none' : 'flex', 'important');
+      if (!externalLink.hidden) {
+        externalLink.href = record.invoiceUrl;
+        notice.textContent = 'Sua compra está aberta. Conclua na página segura do Asaas.';
+        get('chkCardView').style.display = 'none'; get('chkPixView').style.display = 'none';
+        return;
+      }
       const isPix = record.method === 'PIX';
       notice.textContent = isPix ? record.pix.copyPaste ?
         'Seu Pix está aberto. Use o mesmo código para concluir.' :
@@ -292,7 +401,7 @@
         for (const id of ['chkName', 'chkPhone', 'chkEmail', 'chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv', 'chkCardCpf', 'chkPixCpf']) {
           if (get(id)) get(id).value = '';
         }
-        notice.hidden = true;
+        notice.hidden = true; externalLink.hidden = true; externalLink.style.setProperty('display', 'none', 'important');
         locked(false);
         get('chkPixFormBlock').style.display = 'block';
         get('chkPixResultBlock').style.display = 'none';
@@ -311,26 +420,64 @@
       },
       onError: () => api.showCheckoutError('Não foi possível consultar o pagamento agora. Ele foi mantido; tentaremos novamente automaticamente.'),
       onPaid: result => {
+        intent.complete();
+        if (recoveryTimer) root.clearInterval(recoveryTimer);
         if (timer) root.clearInterval(timer);
         api.trackHubPurchase(result);
         root.location.replace('/vagas-obrigado');
       },
     });
+    async function recoverIntent() {
+      if (recovering) return;
+      recovering = true;
+      try {
+        const result = await intent.recover();
+        if (!result) return;
+        if (result.paymentId) {
+          if (recoveryTimer) root.clearInterval(recoveryTimer);
+          recoveryTimer = null;
+          session.save(result, { method: intent.read()?.method || 'PIX', checkoutMode: intent.read()?.checkoutMode });
+          return session.start();
+        }
+        if (result.retryCreationAllowed) {
+          if (recoveryTimer) root.clearInterval(recoveryTimer);
+          recoveryTimer = null; locked(false); notice.hidden = true;
+          api.showCheckoutError('A cobrança não foi criada. Você pode tentar novamente com os dados do pagamento.');
+        }
+      } catch (_) { notice.textContent = 'Estamos conferindo sua compra. Ela foi mantida; tentaremos novamente.'; }
+      finally { recovering = false; }
+    }
+    function keepIntent() {
+      const saved = intent.read(); if (!saved) return;
+      api.selectPlan(saved.plan); api.goToCheckoutStep(4); locked(true);
+      notice.hidden = false; notice.textContent = 'Estamos conferindo sua compra, sem criar outra cobrança.';
+      if (!recoveryTimer) recoveryTimer = root.setInterval(recoverIntent, 15000);
+      return recoverIntent();
+    }
     return {
       ...session,
+      intent,
+      pendingIntent: () => { const value = intent.read(); return value && value.state !== 'failed' ? value : null; },
+      keepIntent,
+      start() {
+        if (session.read()) return session.start();
+        if (intent.read()) return keepIntent();
+        return session.start();
+      },
       capture(result, extra = {}) {
         const { upsellBuyer, ...sessionExtra } = extra || {};
         if (upsellBuyer) upsellBuyerProfile.save(upsellBuyer);
         session.save(result, sessionExtra);
         return session.start();
       },
-      stop() { session.stop(); if (timer) root.clearInterval(timer); },
+      stop() { session.stop(); if (timer) root.clearInterval(timer); if (recoveryTimer) root.clearInterval(recoveryTimer); },
     };
   }
 
   root.ImobiturboCheckoutSession = {
-    create, bindLanding, clearDraft, TTL, COMMUNITY_KEY, CONSULTING_KEY,
+    isAsaasInvoiceUrl, create, bindLanding, clearDraft, TTL, COMMUNITY_KEY, CONSULTING_KEY,
     createUpsellBuyerProfile, UPSELL_BUYER_KEY, UPSELL_BUYER_TTL,
+    createCommunityIntent, COMMUNITY_INTENT_KEY,
     saveUpsellBuyer: upsellBuyerProfile.save,
     getUpsellBuyer: upsellBuyerProfile.read,
     clearUpsellBuyer: upsellBuyerProfile.clear,

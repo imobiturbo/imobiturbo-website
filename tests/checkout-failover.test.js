@@ -93,7 +93,7 @@ test("functions/api/checkout/status.js polls both gateways", () => {
   const code = fs.readFileSync(statusPath, "utf8");
 
   assert.ok(code.includes("https://api.abacatepay.com/v2/transparents/check"), "Must check AbacatePay transparent status");
-  assert.ok(code.includes("https://api.asaas.com/v3/payments/"), "Must check Asaas payment status");
+  assert.ok(code.includes("asaasConnection(env).base") && code.includes("${asaasBase}/payments/"), "Must check Asaas payment status");
   assert.ok(code.includes("onRequestGet"), "Must export onRequestGet");
 });
 

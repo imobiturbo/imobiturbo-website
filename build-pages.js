@@ -7,6 +7,8 @@ const root = __dirname;
 const output = path.join(root, '.cloudflare-pages');
 const entries = [
   'index.html',
+  '404.html',
+  '_redirects',
   'legal.css',
   'colors_and_type.css',
   'home.css',
@@ -98,5 +100,15 @@ execFileSync(
   { cwd: root, stdio: 'inherit', shell: process.platform === 'win32' }
 );
 fs.renameSync(path.join(output, 'index.js'), path.join(output, '_worker.js'));
+
+// Static requests are served by Pages without invoking account Workers quotas.
+// HTML keeps the first-party cookies; APIs retain the middleware and routing.
+fs.writeFileSync(path.join(output, '_routes.json'), JSON.stringify({
+  version: 1,
+  include: ['/*'],
+  exclude: ['/assets/*', '/dist/*', '/fonts/*',
+    ...['js', 'css', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot', 'map', 'json',
+      'webp', 'avif', 'mp4', 'webm', 'pdf', 'xml', 'txt', 'webmanifest'].map(ext => `/*.${ext}`)],
+}, null, 2));
 
 console.log(`Cloudflare Pages artifact created in ${output}`);
