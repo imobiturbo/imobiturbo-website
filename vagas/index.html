@@ -3301,6 +3301,13 @@
       }
       if (tabPix) {
         tabPix.hidden = currentPlan === 'mensal';
+        tabPix.style.display = currentPlan === 'mensal' ? 'none' : '';
+        if (currentPlan === 'mensal') {
+          tabCard?.classList.add('active'); tabCard?.setAttribute('aria-selected', 'true');
+          tabPix.classList.remove('active'); tabPix.setAttribute('aria-selected', 'false');
+          if (cardView) cardView.style.display = 'block';
+          if (pixView) pixView.style.display = 'none';
+        }
         if (currentPlan === 'mensal' && tabPix.classList.contains('active')) tabCard?.click();
       }
       updateInstallmentButtonText();
