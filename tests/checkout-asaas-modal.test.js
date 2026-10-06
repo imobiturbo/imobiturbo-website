@@ -20,12 +20,12 @@ test("vagas/index.html and vagas-v2/index.html contain payment selection with ho
     for (const id of ['chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv']) {
       assert.equal(html.includes('id="' + id + '"'), page === 'vagas-v2/index.html');
     }
-    assert.ok(html.includes('id="chkCardCpf"'), `${page} must contain #chkCardCpf`);
+    assert.ok(html.includes(page === 'vagas/index.html' ? 'id="chkBuyerCpf"' : 'id="chkCardCpf"'), `${page} must contain the buyer CPF input`);
     assert.ok(html.includes('id="chkInstallments"'), `${page} must contain #chkInstallments`);
     assert.ok(html.includes('id="chkContinuePaymentBtn"'), `${page} must contain #chkContinuePaymentBtn`);
 
     // Pix Fields
-    assert.ok(html.includes('id="chkPixCpf"'), `${page} must contain #chkPixCpf`);
+    assert.equal(html.includes('id="chkPixCpf"'), page === 'vagas-v2/index.html', 'primary checkout shares the buyer CPF across methods');
     assert.ok(html.includes('id="chkGeneratePixBtn"'), `${page} must contain #chkGeneratePixBtn`);
     assert.ok(html.includes('id="chkPixResultBlock"'), `${page} must contain #chkPixResultBlock`);
     assert.ok(html.includes('id="chkPixQrImg"'), `${page} must contain #chkPixQrImg`);
