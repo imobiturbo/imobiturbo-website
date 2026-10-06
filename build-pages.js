@@ -7,6 +7,7 @@ const root = __dirname;
 const output = path.join(root, '.cloudflare-pages');
 const entries = [
   'index.html',
+  '_headers',
   '404.html',
   '_redirects',
   'legal.css',
@@ -49,6 +50,7 @@ const entries = [
   'skills-ia',
   'skills-ia-obrigado',
   'bf-imobiliaria26',
+  'os-crm/clone',
   'politica-de-privacidade',
   'exclusao-de-dados',
   'termos-de-servico',
@@ -106,7 +108,7 @@ fs.renameSync(path.join(output, 'index.js'), path.join(output, '_worker.js'));
 fs.writeFileSync(path.join(output, '_routes.json'), JSON.stringify({
   version: 1,
   include: ['/*'],
-  exclude: ['/assets/*', '/dist/*', '/fonts/*',
+  exclude: ['/os-crm/clone/*', '/assets/*', '/dist/*', '/fonts/*',
     ...['js', 'css', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot', 'map', 'json',
       'webp', 'avif', 'mp4', 'webm', 'pdf', 'xml', 'txt', 'webmanifest'].map(ext => `/*.${ext}`)],
 }, null, 2));
