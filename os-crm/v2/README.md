@@ -34,16 +34,43 @@ resultados exclusivamente ao OS. Cópias locais dos três relatos públicos,
 obtidas pela API de armazenamento da conta proprietária, reproduzem com player
 nativo; não alteram as proteções da biblioteca e não distribuem seus cursos.
 Vídeos em H.264/AAC com faststart, mantendo o conteúdo integral. Retrato de Natan, demos e telas de agentes
-e follow-up vêm dos ativos existentes da página OS e `/vagas/`.
+vêm dos ativos existentes da página OS e `/vagas/`; follow-up usa a interface atual.
 
-Hero: `assets/hero-os.webp`, criado com a skill imagegen e ferramenta integrada
-em06/10/2026. Prompt: composição do laptop em pedra vulcânica do template,
-área preta livre à esquerda, iluminação #C5FF5E/#2F400D, interface Kanban
-ilustrativa do OS com pessoas fictícias, ícones WhatsApp/CRM/IA; sem vermelho,
-Cashflow ou texto externo. Segunda edição reduziu o laptop e deslocou a cena
-para a direita, preservando a metade esquerda para a copy.
-Original PNG preservado na pasta de geração do
-Codex. Logo oficial, Plus Jakarta Sans e JetBrains Mono, conforme manual da marca.
+Hero atual: vídeos próprios de 10 s para desktop e mobile, respectivamente
+`assets/hero-current-desktop.mp4` (2560 × 1440) e
+`assets/hero-current-mobile.mp4` (1440 × 2560), H.264, 24 fps, sem áudio.
+Posters WebP saem do primeiro frame de cada composição, evitando troca de tela
+quando o vídeo começa. O mobile usa enquadramento vertical próprio, com o
+notebook inteiro abaixo da copy. Carrega somente a mídia do tamanho visível.
+
+Fotografia de produto criada com a ferramenta integrada imagegen, usando o
+poster do template como referência de enquadramento e a captura atual do
+Kanban como referência de produto. Cenas animadas no Google Flow, Omni 1.1
+Flash, com início/fim iguais, câmera fixa, flutuação sutil dos ícones e luz
+verde. Geração original em 720p; download aprimorado para 1080p pelo próprio
+Flow. A composição final na VPS3 aplica a captura real de 3840 × 2160 do OS à
+tela do notebook em perspectiva: logo, textos e cards ficam estáveis, sem a
+reescrita de letras feita pelo modelo de vídeo. A resolução final descreve a
+composição; o cenário não foi gerado originalmente em 2K/4K.
+
+Follow-up: `assets/followup-current.webp` mostra o editor atual de cadências,
+suas etapas e o painel de mensagem inteligente com IA. Captura da interface
+atual; posições dos nós organizadas temporariamente para a apresentação,
+sem salvar/publicar/desativar fluxos. Contatos e responsáveis das capturas do
+Kanban são demonstrações; nenhuma informação de clientes integra os ativos.
+
+Prompts finais: fotografia de notebook grande à direita, pedras vulcânicas,
+espaço preto à esquerda para HTML, luz lime, três ícones WhatsApp/gráfico/IA,
+tela baseada no Kanban atual; adaptação mobile 9:16 com área superior preta e
+notebook centralizado na parte inferior. Movimento: câmera travada, ícones
+flutuando 3 px, reflexos verdes sutis e partículas atrás dos ícones, tela e
+texto imóveis, sem áudio, retorno ao frame inicial ao fim dos 10 s.
+Originais e comandos em
+`imobiturbo-infra/.artifacts/os-crm-imobiturbo-20261006/hero/` e no projeto
+Flow `bfd064bf-9322-4329-ba2c-96b0de681408`. Geração de imagens via ferramenta
+integrada; vídeo via CLI do Flow; composição/exportação via FFmpeg na VPS3.
+Princípios de prompts de vídeo: skill `video`, baseada no trabalho CC BY 4.0
+de SergeShima. Logo oficial e fontes conforme manual da marca.
 
 Gates na VPS3: testes normais, build Pages, desktop/mobile, planos/ciclos,
 Kanban, FAQ, vídeo, links de ativação e auditoria de rede sem trackers.
@@ -55,7 +82,7 @@ Demos de produto reproduzem sem controles, em loop, mudas e inline apenas
 quando visíveis. Fora da tela, com a aba oculta ou um depoimento aberto, pausam.
 A preferência por movimento reduzido elimina transições espaciais dos cards,
 preservando a atualização dos exemplos e o autoplay solicitado. O comando
-discreto abaixo dos cards permite pausar suas animações.
+discreto abaixo dos cards pausa os exemplos, o badge e os vídeos em loop.
 O badge Meta fica acima do título do hero, com borda e brilho girando em 1,8 s,
 como no `/vagas/`, inclusive com movimento reduzido, conforme solicitado.
 O botão de pausar animações também pausa o badge. Badge e selo Meta reutilizam

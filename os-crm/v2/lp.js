@@ -2,6 +2,7 @@
   'use strict';
   const offer = window.OSOffer;
   let cycle = 'annual';
+  let motionPaused = false;
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
   let reducedMotion = motionPreference.matches;
   const header = document.querySelector('.nav');
@@ -56,7 +57,7 @@
   const visibleVideos = new Set();
   let proofOpen = false;
   function syncVideo(element) {
-    if (!document.hidden && !proofOpen && visibleVideos.has(element)) {
+    if (!motionPaused && !document.hidden && !proofOpen && visibleVideos.has(element)) {
       let needsLoad = false;
       element.querySelectorAll('source[data-src]').forEach(source => {
         source.src = source.dataset.src;
@@ -151,7 +152,6 @@
   const motionDemos = [...document.querySelectorAll('[data-motion-demo]')];
   const visibleDemos = new Set();
   const motionButton = document.querySelector('[data-toggle-motion]');
-  let motionPaused = false;
   let motionTimer = null;
   const kanban = document.querySelector('[data-motion-demo="kanban"]');
   const motionLead = kanban.querySelector('.motion-lead');
@@ -236,6 +236,7 @@
     motionButton.textContent = motionPaused ? 'Retomar animações' : 'Pausar animações';
     motionButton.setAttribute('aria-pressed', String(motionPaused));
     syncMotion();
+    syncVideos();
   });
   document.addEventListener('visibilitychange', syncMotion);
   motionPreference.addEventListener('change', event => {
