@@ -128,12 +128,11 @@
     syncVideos();
     document.querySelector('#proof-title').textContent = `Relato de ${link.dataset.proofName}`;
     const proofVideo = document.createElement('video');
-    proofVideo.src = `/os-crm/v2/assets/${link.dataset.proof}`;
     proofVideo.poster = link.querySelector('img').src;
     proofVideo.playsInline = true;
     proofVideo.setAttribute('aria-label', `Depoimento de ${link.dataset.proofName}`);
     player.replaceChildren(proofVideo);
-    proofController = window.OSProofPlayer.mount(proofVideo, proofStage);
+    proofController = window.OSProofPlayer.mount(proofVideo, proofStage, `/os-crm/v2/assets/${link.dataset.proof}`);
     dialog.showModal();
     proofController.play();
   }));

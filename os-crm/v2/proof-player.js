@@ -5,9 +5,11 @@
     return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
   };
   window.OSProofPlayer = {
-    mount(video, stage) {
+    mount(video, stage, source) {
       const binding = new AbortController();
       const options = { signal: binding.signal };
+      let loadPromise = null;
+      let mediaUrl = '';
       const controls = stage.querySelector('.proof-controls');
       const toggle = stage.querySelector('[data-proof-toggle]');
       const mute = stage.querySelector('[data-proof-mute]');
@@ -46,10 +48,26 @@
         fullscreen.title = fullscreen.getAttribute('aria-label');
       }
       async function play() {
-        try { await video.play(); }
+        try {
+          // Pages can return the entire MP4 with HTTP 200 instead of byte ranges.
+          // A local Blob gives the browser a seekable file in that case too.
+          if (!loadPromise) {
+            loadPromise = fetch(source, { signal: binding.signal }).then(async response => {
+              if (!response.ok) throw new Error('Video unavailable');
+              const file = await response.blob();
+              if (binding.signal.aborted) return;
+              mediaUrl = URL.createObjectURL(file);
+              video.src = mediaUrl;
+            });
+          }
+          await loadPromise;
+          if (binding.signal.aborted) return;
+          await video.play();
+        }
         catch {
           if (binding.signal.aborted) return;
-          status.textContent = 'Toque em reproduzir para assistir.';
+          if (!mediaUrl) loadPromise = null;
+          status.textContent = mediaUrl ? 'Toque em reproduzir para assistir.' : 'Não foi possível carregar este relato. Toque em reproduzir para tentar novamente.';
           status.hidden = false;
         }
         update();
@@ -108,6 +126,7 @@
           video.pause();
           video.removeAttribute('src');
           video.load();
+          if (mediaUrl) URL.revokeObjectURL(mediaUrl);
           controls.hidden = true;
           status.hidden = true;
           stage.closest('dialog').classList.remove('portrait-proof');

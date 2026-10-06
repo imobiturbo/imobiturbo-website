@@ -65,3 +65,6 @@ Player de relatos: controles próprios em `proof-player.js`, com SVGs, progresso
 na cor da marca, tempo, play/pausa, mute e tela cheia. O botão Fechar tem texto,
 ícone e alvo de 44px. A barra fica abaixo do vídeo, preservando as legendas.
 Fechar libera a mídia imediatamente; Escape também encerra a reprodução.
+Ao abrir, o player carrega o MP4 local como Blob para permitir avanço mesmo
+quando o servidor responde sem suporte a byte ranges. Fechar aborta downloads
+pendentes e libera a URL temporária. A CSP permite Blob apenas para mídia.
