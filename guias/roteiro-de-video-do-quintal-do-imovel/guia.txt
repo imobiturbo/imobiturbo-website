@@ -1,0 +1,39 @@
+ROTEIRO DE VÍDEO DO QUINTAL DO IMÓVEL
+Mensagem de WhatsApp, ficha de uso e prompt completo
+
+COMO USAR
+1. Com acesso autorizado, filme uma passagem curta da casa até o quintal.
+2. Mostre o espaço com lente comum, sem ocultar degraus ou apertos de circulação.
+3. Ligue um detalhe confirmado a um uso possível e deixe medidas pendentes explícitas.
+
+CAMPOS PARA PREENCHER
+- [imóvel]
+- [uso declarado pelo comprador]
+- [acesso e degraus observados]
+- [área ou medidas confirmadas]
+- [parte coberta observada]
+- [data e horário da luz observada]
+- [limitação a informar]
+
+MENSAGEM PARA COPIAR
+[nome], você comentou que procura espaço para [uso]. Posso te mostrar o acesso e a parte [característica confirmada] do quintal de [imóvel]? As medidas de [ponto pendente] ainda vou confirmar antes de te passar.
+
+EXEMPLO FICTÍCIO PREENCHIDO
+Camila, você comentou que quer colocar uma mesa externa. Posso te mostrar o acesso e a parte coberta do quintal da casa do Jardim Azul? A largura desse trecho ainda vou medir antes de te passar.
+
+PROMPT COMPLETO PARA COPIAR
+Crie um roteiro curto de gravação do quintal, uma legenda e uma mensagem de WhatsApp. O vídeo deve mostrar acesso, distribuição do espaço e um detalhe confirmado ligado ao uso desejado. Use só as medidas e observações fornecidas. Não invente família, festa, proprietário, resultado de venda, churrasqueira ou autorização de obra. Não chame o espaço de ideal se ainda faltam medidas. Separe três tomadas possíveis e o texto de cada uma.
+
+Dados disponíveis:
+- [imóvel]
+- [uso declarado pelo comprador]
+- [acesso e degraus observados]
+- [área ou medidas confirmadas]
+- [parte coberta observada]
+- [data e horário da luz observada]
+- [limitação a informar]
+
+Escreva em português brasileiro, com frases naturais e curtas. Use somente os fatos fornecidos. Campos sem informação ficam entre colchetes e não são completados por suposição. Preserve o pedido de pausa ou encerramento do comprador. Entregue mensagens em blocos separados e copiáveis, sem introdução nem promessa de resultado.
+
+PRÓXIMO PASSO
+Escolha uma ação que você pode executar e combine o prazo real antes de enviar. O exemplo é fictício; substitua os campos pelos dados confirmados do seu atendimento.

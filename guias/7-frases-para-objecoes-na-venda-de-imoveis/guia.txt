@@ -1,0 +1,101 @@
+7 FRASES PARA OBJEÇÕES NA VENDA DE IMÓVEIS
+Roteiro de WhatsApp e prompt para adaptar ao cliente
+
+COMO USAR
+Escolha uma frase adequada ao que o comprador realmente disse. Preencha os campos,
+envie uma mensagem por vez e espere a resposta antes de escolher o próximo passo.
+Use informações confirmadas do imóvel; se ele quiser encerrar a busca, respeite a decisão.
+
+CAMPOS PARA PREENCHER
+[nome]: primeiro nome do comprador.
+[imóvel]: imóvel ou opção que vocês avaliaram.
+[fala do comprador]: o que ele disse, sem completar a objeção por conta própria.
+[dúvida]: preocupação que o comprador confirmou.
+[prioridade]: critério que ele disse ser importante.
+[informação confirmada]: dado verificado que responde à pergunta.
+[próximo passo]: uma ação concreta que você pode executar e o comprador aceitou.
+
+AS SETE FRASES
+1. “Quando você diz ‘não’, o que mais pesou na sua decisão?”
+Uso: a recusa foi vaga e você ainda não sabe o motivo.
+
+2. “Se encontrarmos uma forma de resolver [dúvida], esse imóvel ainda faria sentido?”
+Uso: o comprador já identificou uma preocupação; conferir se há interesse em continuar.
+
+3. “O que ficou mais pesado: entrada, parcela ou custo mensal com condomínio?”
+Uso: ele mencionou custo. Perguntar por qual parte antes de procurar condições confirmadas.
+
+4. “Qual detalhe desse imóvel foge do que você tinha em mente?”
+Uso: descobrir a diferença entre a opção apresentada e o critério que ele procura.
+
+5. “Você quer mudar por qual motivo? Esse imóvel resolve isso?”
+Uso: retomar o objetivo da compra quando várias opções confundiram a escolha.
+
+6. “Que informação ainda falta para você decidir com segurança?”
+Uso: identificar o dado que precisa ser conferido antes de avançar.
+
+7. “Se esse imóvel não servir, o que a próxima opção precisa ter?”
+Uso: selecionar uma alternativa a partir da resposta do comprador.
+
+MENSAGEM INICIAL PARA COPIAR
+“[nome], sobre [imóvel], você comentou que [fala do comprador]. Quando você diz
+que não quer seguir com essa opção, o que mais pesou na sua decisão?”
+
+CONTINUAÇÃO APÓS UMA DÚVIDA CONFIRMADA
+“Entendi. Então o ponto principal é [dúvida]. Vou conferir [informação que ainda
+precisa ser verificada] antes de te sugerir o próximo passo. Se encontrarmos uma
+forma de resolver isso, [imóvel] ainda faria sentido para você?”
+
+CONTINUAÇÃO QUANDO O IMÓVEL NÃO ATENDE AO CRITÉRIO
+“Entendi que [imóvel] não atende [prioridade]. O que a próxima opção precisa ter
+para fazer sentido para você? Posso buscar alternativas a partir desse critério.”
+
+PRÓXIMO PASSO COMBINADO
+“Combinado. Vou [ação aceita pelo comprador] e te retorno [prazo real combinado].”
+
+EXEMPLO FICTÍCIO PREENCHIDO
+Contexto: Ana visitou um apartamento no Jardim América e disse “a entrada ficou
+pesada para agora”. O corretor ainda não sabe se a prestação também preocupa.
+
+Corretor: “Ana, sobre o apartamento no Jardim América, você comentou que a entrada
+ficou pesada. Foi a entrada o ponto principal ou a parcela e o condomínio também pesaram?”
+
+Compradora: “Foi só a entrada.”
+
+Corretor: “Entendi. Vou conferir as condições atuais antes de te sugerir uma opção.
+Se encontrarmos uma forma de resolver a entrada, esse apartamento ainda faria sentido?”
+
+Compradora: “Sim, gostei da localização.”
+
+Corretor: “Combinado. Vou confirmar as condições com o responsável e te retorno
+amanhã de manhã, como combinamos.”
+
+O exemplo ilustra a conversa; não promete aprovação de crédito, desconto, condição
+de pagamento ou venda. O prazo só deve ser usado quando realmente combinado.
+
+PROMPT COMPLETO PARA COPIAR
+Você vai me ajudar a escrever uma resposta de WhatsApp para um comprador de imóvel.
+
+Dados reais disponíveis:
+- Nome do comprador: [nome]
+- Imóvel ou opção avaliada: [imóvel]
+- Fala exata do comprador: [fala do comprador]
+- Objeção confirmada, se houver: [dúvida ou “ainda não identificada”]
+- Prioridade declarada pelo comprador: [prioridade ou “não informada”]
+- Informações verificadas: [informações confirmadas ou “nenhuma por enquanto”]
+- Próximo passo que posso executar: [ação real]
+- Prazo que posso cumprir: [prazo real]
+
+Escreva uma primeira mensagem de até três frases, natural e fácil de copiar.
+Faça uma única pergunta para identificar o motivo da recusa ou esclarecer a
+preocupação confirmada. Use o nome e o imóvel quando os campos estiverem preenchidos.
+Não presuma a objeção, não invente preço, desconto, financiamento, prazo ou urgência.
+Não ofereça outro imóvel antes de entender o critério de escolha.
+
+Depois, entregue duas continuações alternativas: uma para quando o comprador
+confirma a dúvida e outra para quando diz que esse imóvel não atende ao que procura.
+Sugira um próximo passo somente com as informações reais fornecidas.
+Se ele disser que quer encerrar ou pausar a busca, respeite isso na resposta.
+Identifique campos sem informação entre colchetes; não invente uma resposta para eles.
+
+Entregue as mensagens separadas, sem introdução, para copiar e colar.

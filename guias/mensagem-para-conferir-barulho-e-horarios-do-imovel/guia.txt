@@ -1,0 +1,39 @@
+MENSAGEM PARA CONFERIR BARULHO E HORÁRIOS DO IMÓVEL
+Mensagem de WhatsApp, ficha de uso e prompt completo
+
+COMO USAR
+1. Pergunte em qual período o ruído faria diferença.
+2. Combine acesso autorizado e observe sem invadir a privacidade de moradores.
+3. Descreva somente a amostra observada; não prometa silêncio permanente.
+
+CAMPOS PARA PREENCHER
+- [nome e imóvel]
+- [cômodo importante]
+- [horário importante para o comprador]
+- [acesso autorizado]
+- [data e horário da observação]
+- [janela aberta ou fechada]
+- [som observado ou informação pendente]
+
+MENSAGEM PARA COPIAR
+[nome], em qual horário o barulho faria mais diferença para você em [imóvel]? Se houver acesso autorizado, podemos conferir [cômodo] nesse período e registrar o que se ouve com a janela aberta e fechada.
+
+EXEMPLO FICTÍCIO PREENCHIDO
+Rafael, você comentou que estuda à noite. Posso combinar com o responsável uma visita à sala do apartamento às 19h de terça? Assim registramos o que se ouve nesse período, sem tratar uma visita como garantia de silêncio o dia inteiro.
+
+PROMPT COMPLETO PARA COPIAR
+Escreva uma mensagem para combinar a conferência de ruído em um imóvel e um modelo de registro. Use o horário importante para o comprador e o acesso autorizado. Registre data, hora, cômodo, janela aberta ou fechada e som observado. Não invente decibéis, isolamento, silêncio permanente ou atividade de vizinhos. Se faltarem dados, diga exatamente o que precisa ser conferido.
+
+Dados disponíveis:
+- [nome e imóvel]
+- [cômodo importante]
+- [horário importante para o comprador]
+- [acesso autorizado]
+- [data e horário da observação]
+- [janela aberta ou fechada]
+- [som observado ou informação pendente]
+
+Escreva em português brasileiro, com frases naturais e curtas. Use somente os fatos fornecidos. Campos sem informação ficam entre colchetes e não são completados por suposição. Preserve o pedido de pausa ou encerramento do comprador. Entregue mensagens em blocos separados e copiáveis, sem introdução nem promessa de resultado.
+
+PRÓXIMO PASSO
+Escolha uma ação que você pode executar e combine o prazo real antes de enviar. O exemplo é fictício; substitua os campos pelos dados confirmados do seu atendimento.
