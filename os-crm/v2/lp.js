@@ -212,7 +212,7 @@
   function syncMotion() {
     if (motionTimer) clearInterval(motionTimer);
     motionTimer = null;
-    document.body.classList.toggle('motions-paused', motionPaused || reducedMotion);
+    document.body.classList.toggle('motions-paused', motionPaused || document.hidden);
     if (!motionPaused && !document.hidden && visibleDemos.size) {
       motionTimer = setInterval(() => {
         if (visibleDemos.has(kanban)) advanceKanban();

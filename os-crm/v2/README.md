@@ -56,7 +56,10 @@ quando visíveis. Fora da tela, com a aba oculta ou um depoimento aberto, pausam
 A preferência por movimento reduzido elimina transições espaciais dos cards,
 preservando a atualização dos exemplos e o autoplay solicitado. O comando
 discreto abaixo dos cards permite pausar suas animações.
-Badge e selo Meta reutilizam os SVGs próprios de `/vagas/`. Logos WhatsApp,
+O badge Meta fica acima do título do hero, com borda e brilho girando em 1,8 s,
+como no `/vagas/`, inclusive com movimento reduzido, conforme solicitado.
+O botão de pausar animações também pausa o badge. Badge e selo Meta reutilizam
+os SVGs próprios de `/vagas/`. Logos WhatsApp,
 Meta, Excel e OpenAI vêm do catálogo theSVG indicado por Natan. Site e portais
 usam ícones de categoria Lucide; fontes e licenças em `assets/icons/README.md`.
 Todos os ativos são locais; nenhum script de `/vagas/` foi copiado.
