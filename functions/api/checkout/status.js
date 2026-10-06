@@ -3,7 +3,7 @@ import { dispatchVerifiedPurchaseToHub } from "./_tracking.js";
 import { checkoutDetails, isAsaasPaymentPaid, isValidConsultingPayment, CONSULTING_PRODUCT_ID, CONSULTING_HUB_OFFER_ID } from "./_products.js";
 import { dispatchConsultingCashflowToHub } from "./_cashflow.js";
 import { sendPostPurchaseNotifications } from "./_notifications.js";
-import { communityIntentStatus, tryCommunityPayment, communityErrorResponse } from "./_community-payments.js";
+import { communityIntentStatus, communityAutomaticStatus, tryCommunityPayment, communityErrorResponse } from "./_community-payments.js";
 import { asaasConnection } from "./_community-orders.js";
 // Consulta status de aprovação de pagamentos no AbacatePay ou Asaas
 // Dispara evento Purchase server-side para Meta CAPI (Graph API v25.0) quando pago
@@ -38,6 +38,13 @@ export async function onRequestGet(context) {
     catch (error) { return communityErrorResponse(error, CORS_HEADERS); }
   }
 
+  if (gateway === "asaas" && paymentId?.startsWith("auto_")) {
+    try {
+      const managed = await communityAutomaticStatus(env,paymentId,url.searchParams.get("eventId"));
+      await trackManagedPurchase(context,managed);
+      return Response.json(managed,{ headers:CORS_HEADERS });
+    } catch (error) { return communityErrorResponse(error,CORS_HEADERS); }
+  }
   if (!paymentId) {
     return new Response(JSON.stringify({ success: false, error: "paymentId obrigatório" }), {
       status: 400,

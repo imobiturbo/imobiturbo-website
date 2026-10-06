@@ -1,3 +1,4 @@
+import { PIX_AUTO_MODE, pixAutomaticAuthorization, verifyPixAutomaticPayment, pixAutomaticPayments, resolvePixAutomaticAuthorization } from './_pix-automatic.js';
 import { COMMUNITY_PLANS, COMMUNITY_PRODUCT_ID, communityReferenceId } from "./_products.js";
 import { CommunityError, communityConfig, communityDb, asaasGet, findCommunityOrder,
   resolveCommunityOrder, reconcileCommunityOrder, assertCommunityOrder, customerId, cents, CLUB_ORGANIZATION_ID, UUID } from "./_community-orders.js";
@@ -51,7 +52,8 @@ function assertPaymentIdentity(order, payment) {
 async function verifyPaymentContext(config, order, payment) {
   assertCommunityOrder(config, order);
   if (order.status !== "created") throw new CommunityError("community_order_reconciliation_pending");
-  assertPaymentIdentity(order, payment);
+  const auto = order.sold_snapshot.price_mode === PIX_AUTO_MODE;
+  if (auto) await verifyPixAutomaticPayment(config, order, payment); else assertPaymentIdentity(order, payment);
   let snapshot = order.sold_snapshot;
   const subscriptions = await ledgerRows(config, "cobranca_assinaturas", { checkout_order_id: `eq.${order.id}`, limit: "2" });
   if (subscriptions.length > 1) throw new CommunityError("community_subscription_conflict", 422);
@@ -63,7 +65,7 @@ async function verifyPaymentContext(config, order, payment) {
     snapshot = subscription.sold_snapshot;
   }
   let date, group = null, number = 1;
-  if (snapshot.price_mode === "recurring_card") {
+  if (auto) { date = payment.originalDueDate; } else if (snapshot.price_mode === "recurring_card") {
     const source = await asaasGet(config, `/subscriptions/${encodeURIComponent(order.provider_subscription_id)}`);
     if (source.id !== order.provider_subscription_id || source.externalReference !== order.external_reference ||
         customerId(source) !== order.provider_customer_id || source.billingType !== "CREDIT_CARD" || source.cycle !== "MONTHLY") throw new CommunityError("community_subscription_conflict", 422);
@@ -84,8 +86,8 @@ async function verifyPaymentContext(config, order, payment) {
   const expected = Math.floor(total / count) + (number === count ? total % count : 0);
   if (cents(payment.value) !== expected) throw new CommunityError("community_amount_conflict", 422);
   const period = communityCalendarPeriod(date, snapshot.duration_months);
-  const orderId = snapshot.price_mode === "recurring_card" ? `${order.id}:${date}` : order.provider_installment_id || order.id;
-  const competenceKey = snapshot.price_mode === "recurring_card" ? `subscription:${order.provider_subscription_id}:${date}` :
+  const orderId = (auto || snapshot.price_mode === "recurring_card") ? `${order.id}:${date}` : order.provider_installment_id || order.id;
+  const competenceKey = auto ? `pixauto:${order.provider_pix_authorization_id}:${date}` : snapshot.price_mode === "recurring_card" ? `subscription:${order.provider_subscription_id}:${date}` :
     `${snapshot.price_mode === "installment_card" ? "installment" : "order"}:${orderId}`;
   return { snapshot, subscription, number, expected, date, orderId, competenceKey, period };
 }
@@ -102,7 +104,7 @@ export async function recordCommunityPayment(config, order, payment, eventId) {
   if (negative) {
     const observation = { contract_version: 1, provider: "asaas", organization_id: config.organizationId,
       environment: config.environment, checkout_order_id: order.id, payment_id: payment.id,
-      customer_id: customerId(payment), provider_subscription_id: payment.subscription || null,
+      customer_id: customerId(payment), provider_subscription_id: ctx.snapshot.price_mode === PIX_AUTO_MODE ? null : payment.subscription || null,
       provider_installment_id: payment.installment || null, billing_type: payment.billingType,
       amount_cents: cents(payment.value), installment_number: ctx.number, status: payment.status,
       deleted: Boolean(payment.deleted), refunds, chargeback_status: payment.chargeback?.status || null,
@@ -136,6 +138,7 @@ export async function recordCommunityPayment(config, order, payment, eventId) {
     organization_id: config.organizationId, os_organization_id: ctx.subscription?.os_organization_id || null,
     club_organization_id: ctx.snapshot.products.includes("club") ? (ctx.subscription?.club_organization_id || CLUB_ORGANIZATION_ID) : null,
     auth_user_id: ctx.subscription?.auth_user_id || null, email: order.buyer_email, customer_id: order.provider_customer_id,
+    ...(ctx.snapshot.price_mode === PIX_AUTO_MODE ? { provider_pix_authorization_id: order.provider_pix_authorization_id } : {}),
     provider_subscription_id: order.provider_subscription_id || null, checkout_order_id: order.id, order_id: ctx.orderId,
     payment_id: payment.id, event_id: /^[a-zA-Z0-9_:-]{1,180}$/.test(eventId || "") ? eventId : `lookup:${payment.id}:${payment.status}`, offer_key: ctx.snapshot.offer_key,
     offer_version: ctx.snapshot.offer_version, competence_key: ctx.competenceKey, competence_date: ctx.date, ...ctx.period,
@@ -154,10 +157,13 @@ export async function recordCommunityPayment(config, order, payment, eventId) {
 
 async function reconcileOrderPayments(config, order, requestedPayment, financialEventId) {
   const deadline = Date.now() + 60000;
+  if (order.sold_snapshot.price_mode === PIX_AUTO_MODE) config = { ...config, pixAutomaticDeadline: deadline };
   const checkDeadline = () => {
     if (Date.now() >= deadline) throw new CommunityError("community_reconciliation_timeout");
   };
   const ids = new Set();
+  const auto = order.sold_snapshot.price_mode === PIX_AUTO_MODE;
+  if (auto) { const auth = await pixAutomaticAuthorization(config, order); for (const id of await pixAutomaticPayments(config, order, auth)) ids.add(id); }
   if (requestedPayment) {
     if (!/^pay_[A-Za-z0-9_]+$/.test(requestedPayment.id || "")) throw new CommunityError("community_payment_identity_conflict", 422);
     ids.add(requestedPayment.id);
@@ -204,7 +210,7 @@ async function reconcileOrderPayments(config, order, requestedPayment, financial
     const current = { payment, financial };
     if (requestedPayment) {
       if (id === requestedPayment.id) selected = current;
-    } else if (order.provider_installment_id || !order.provider_subscription_id) {
+    } else if (!auto && (order.provider_installment_id || !order.provider_subscription_id)) {
       if (id === order.provider_payment_id) selected = current;
     } else if (!selected || String(payment.originalDueDate) > String(selected.payment.originalDueDate) ||
         (payment.originalDueDate === selected.payment.originalDueDate && payment.id < selected.payment.id)) selected = current;
@@ -219,22 +225,33 @@ export async function communityOrderStatus(config, inputOrder, eventId, requeste
   const meta = { success: true, managedCommunity: true, gateway: "asaas", checkoutOrderId: order.id, orderId: order.id,
     plan, productId: COMMUNITY_PRODUCT_ID, amount: s.contract_total_cents / 100, installmentCount: s.installment_count,
     installmentValue: Math.floor(s.contract_total_cents / s.installment_count) / 100,
-    billingType: s.price_mode === "pix" ? "PIX" : "CREDIT_CARD", eventId: eventId || `purch_${order.id}`,
+    billingType: ["pix", PIX_AUTO_MODE].includes(s.price_mode) ? "PIX" : "CREDIT_CARD", eventId: eventId || `purch_${order.id}`,
     expiresAt: new Date(Date.parse(order.created_at) + 30 * 60 * 1000).toISOString() };
   if (order.status !== "created") return { ...meta, paid: false, status: order.status.toUpperCase(), orderStatus: order.status,
     recoverable: true, retryCreationAllowed: order.status === "failed" && Boolean(order.result?.failure_proof) };
   const { selected, reviewed } = await reconcileOrderPayments(config, order, requestedPayment, financialEventId);
+  const autoAuthorization = s.price_mode === PIX_AUTO_MODE ? await pixAutomaticAuthorization(config, order) : null;
+  const automaticMeta = autoAuthorization ? { pixAutomatic: true, authorizationId: autoAuthorization.id,
+    pixAutomaticAuthorizationStatus: autoAuthorization.status } : {};
+  if (!selected && s.price_mode === PIX_AUTO_MODE) {
+    const auth = autoAuthorization;
+    const qr = auth.status === "CREATED" && Date.parse(meta.expiresAt) > Date.now() && auth.payload && auth.encodedImage ? {
+      copyPaste: auth.payload, qrCodeBase64: `data:image/png;base64,${auth.encodedImage}`, expiresAt: meta.expiresAt } : null;
+    return { ...meta, ...automaticMeta, paymentId: `auto_${auth.id}`,
+      status: auth.status === "ACTIVE" ? "PENDING" : auth.status, authorizationStatus: auth.status,
+      paid: false, isApproved: false, orderStatus: "created", ...(qr ? { pix: qr } : { pixPending: true }) };
+  }
   if (!selected) return { ...meta, paymentId: order.provider_subscription_id, subscriptionId: order.provider_subscription_id,
     status: "PENDING", paid: false, orderStatus: "created", recoverable: true };
   const { payment, financial } = selected;
   let pix = null;
-  if (!financial.paid && payment.billingType === "PIX" && !payment.deleted && Date.parse(meta.expiresAt) > Date.now()) {
+  if (s.price_mode !== PIX_AUTO_MODE && !financial.paid && payment.billingType === "PIX" && !payment.deleted && Date.parse(meta.expiresAt) > Date.now()) {
     try {
       const qr = await asaasGet(config, `/payments/${encodeURIComponent(payment.id)}/pixQrCode`);
       if (qr.payload && qr.encodedImage) pix = { copyPaste: qr.payload, qrCodeBase64: `data:image/png;base64,${qr.encodedImage}`, expiresAt: meta.expiresAt };
     } catch (_) { /* Recover the same payment later; never create another Pix. */ }
   }
-  const result = { ...meta, eventId: eventId || `purch:${financial.ctx.competenceKey}`, orderId: financial.ctx.orderId, paymentId: payment.id, ...(order.provider_subscription_id ? { subscriptionId: order.provider_subscription_id } : {}),
+  const result = { ...meta, ...automaticMeta, eventId: eventId || `purch:${financial.ctx.competenceKey}`, orderId: financial.ctx.orderId, paymentId: payment.id, ...(order.provider_subscription_id ? { subscriptionId: order.provider_subscription_id } : {}),
     status: payment.status, paid: financial.paid, isApproved: financial.paid, orderStatus: "created", chargeAmount: cents(payment.value) / 100,
     fulfillment: reviewed ? "manual_financial_review" : financial.fulfillment, confirmationPrecision: financial.confirmation || null,
     ...(financial.result ? { activationId: financial.result.activation_id, products: financial.result.products,
@@ -245,6 +262,7 @@ export async function communityOrderStatus(config, inputOrder, eventId, requeste
   return result;
 }
 export async function tryCommunityPayment({ env, payment, eventId, webhook = false, request }) {
+  if (webhook && (!env?.ASAAS_WEBHOOK_TOKEN || request.headers.get("asaas-access-token") !== env.ASAAS_WEBHOOK_TOKEN)) throw new CommunityError("asaas_unauthorized", env?.ASAAS_WEBHOOK_TOKEN ? 401 : 503);
   const ref = communityReferenceId(payment.externalReference);
   if (!ref && typeof payment.externalReference === "string") {
     if (payment.externalReference.startsWith("cal-asaas:")) return null;
@@ -270,4 +288,19 @@ export async function communityIntentStatus(env, key, eventId) {
 export function communityErrorResponse(error, headers = {}) {
   return Response.json({ success: false, ok: false, error: error instanceof CommunityError ? error.code : "community_processing_pending",
     recoverable: true }, { status: error instanceof CommunityError ? error.status : 503, headers });
+}
+
+export async function communityAutomaticStatus(env, opaqueId, eventId) {
+  if (!opaqueId.startsWith('auto_') || !UUID.test(opaqueId.slice(5))) throw new CommunityError('community_invalid_lookup',400);
+  const config = communityConfig(env);
+  const order = await findCommunityOrder(config,'provider_pix_authorization_id',opaqueId.slice(5));
+  if (!order || order.sold_snapshot.price_mode !== PIX_AUTO_MODE) throw new CommunityError('community_order_missing',422);
+  return communityOrderStatus(config,order,eventId);
+}
+export async function communityAutomaticWebhook(env, request, payload) {
+  if (!env?.ASAAS_WEBHOOK_TOKEN || request.headers.get('asaas-access-token') !== env.ASAAS_WEBHOOK_TOKEN)
+    throw new CommunityError('asaas_unauthorized',env?.ASAAS_WEBHOOK_TOKEN ? 401 : 503);
+  const config = communityConfig(env);
+  const order = await resolvePixAutomaticAuthorization(config,payload.authorization?.id);
+  return communityOrderStatus(config,order);
 }
