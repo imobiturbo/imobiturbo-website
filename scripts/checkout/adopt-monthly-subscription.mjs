@@ -37,8 +37,9 @@ const update = async (path, payload) => {
 };
 if (claimed.claimed) {
   try {
-    const payload = { externalReference: order.external_reference, fine: { value: 0, type: 'FIXED' }, interest: { value: 0 },
-      callback: { successUrl: 'https://www.imobiturbo.com.br/vagas/?paymentReturn=1', autoRedirect: true } };
+    const payload = { externalReference: order.external_reference, fine: { value: 0, type: 'FIXED' }, interest: { value: 0 } };
+    if (process.env.ASAAS_CHECKOUT_CALLBACK_ENABLED === 'true') payload.callback = {
+      successUrl: 'https://www.imobiturbo.com.br/vagas/?paymentReturn=1', autoRedirect: true };
     await update(`/subscriptions/${subscriptionId}`, payload);
     await update(`/payments/${paymentId}`, payload);
     const verifiedSubscription = await asaasGet(config, `/subscriptions/${subscriptionId}`);
