@@ -153,8 +153,8 @@ test("functions/api/checkout/status.js supports subscription polling and payment
   const code = fs.readFileSync(path.join(root, "functions/api/checkout/status.js"), "utf8");
 
   assert.ok(code.includes("sub_"), "Must handle subscription ID polling");
-  assert.ok(code.includes("https://api.asaas.com/v3/subscriptions/"), "Must query subscription payments");
-  assert.ok(code.includes("https://api.asaas.com/v3/payments/"), "Must query payment status");
+  assert.ok(code.includes("asaasConnection(env).base") && code.includes("/subscriptions/"), "Must query subscription payments in the configured provider namespace");
+  assert.ok(code.includes("asaasConnection(env).base") && code.includes("/payments/"), "Must query payment status in the configured provider namespace");
   assert.ok(code.includes("sendPostPurchaseNotifications"), "Must dispatch post purchase notifications on paid status");
 });
 
@@ -182,4 +182,3 @@ test("vagas/checkout-session.js persists paid state and short-circuits polling o
   assert.ok(sessionCode.includes("if (record.paid === true) {"), "check() and start() must short-circuit if already paid");
   assert.ok(upsellCode.includes("if (comm && !comm.paid) community.start()"), "upsell resume must not poll paid community");
 });
-

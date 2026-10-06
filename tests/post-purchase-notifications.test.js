@@ -100,6 +100,7 @@ test("provisionCommunityMembership calls Supabase RPC with proper parameters for
     source: "checkout_vagas",
     transactionId: "pay_act_001",
     amountCents: 99700,
+    env: { SUPABASE_SERVICE_ROLE_KEY: "synthetic-service" },
     fetchFn: mockFetch,
   });
   assert.equal(actResult.ok, true);
@@ -113,6 +114,7 @@ test("provisionCommunityMembership calls Supabase RPC with proper parameters for
     email: "cliente@imobiturbo.com.br",
     action: "cancel",
     transactionId: "pay_act_001",
+    env: { SUPABASE_SERVICE_ROLE_KEY: "synthetic-service" },
     fetchFn: mockFetch,
   });
   assert.equal(cancelResult.ok, true);
@@ -143,6 +145,7 @@ test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, 
     paymentId: "pay_test_001",
     amountCents: 99700,
     env: {
+      SUPABASE_SERVICE_ROLE_KEY: "synthetic-service",
       ZEPTOMAIL_TOKEN: "zepto_mock_token",
       ZEPTOMAIL_FROM_ADDRESS: "noreply@imobiturbo.com.br",
       META_WHATSAPP_TOKEN: "meta_mock_token",
@@ -174,7 +177,7 @@ test("sendPostPurchaseNotifications executes CRM provisioning, ZeptoMail email, 
 async function captureEmail(env) {
   const calls = [];
   const result = await sendPostPurchaseNotifications({
-    email: "buyer@example.com", name: "Buyer", env,
+    email: "buyer@example.com", name: "Buyer", env: { SUPABASE_SERVICE_ROLE_KEY: "synthetic-service", ...env },
     fetchFn: async (url, options) => {
       calls.push({ url, headers: options.headers, body: JSON.parse(options.body) });
       return { ok: true, json: async () => ({ success: true, message: "OK" }) };
@@ -187,6 +190,7 @@ test("transactional email prefers production CPaaS variables and prefixes author
   for (const key of ["canonical_test_key", "Zoho-enczapikey canonical_test_key"]) {
     const { result, emails } = await captureEmail({
       ZEPTOMAIL_API_KEY: key,
+      SUPABASE_SERVICE_ROLE_KEY: "synthetic-service",
       ZEPTOMAIL_TOKEN: "unused_alias_key",
       ZEPTOMAIL_FROM_EMAIL: "production@example.com",
       ZEPTOMAIL_FROM_ADDRESS: "alias@example.com",
@@ -227,4 +231,29 @@ test("missing CPaaS sender fails closed", async () => {
   assert.equal(result.emailSent, false);
   assert.deepEqual(emails, []);
   assert.ok(result.errors.includes("zeptomail_not_configured"));
+});
+
+for (const months of [1,3,12]) test(`community messages preserve ${months} calendar months, unlimited and drip`, () => {
+  const data={name:'Synthetic',email:'buyer@example.invalid',phone:'11999998888',community:{products:['os','club'],duration_months:months,period_end:'2027-10-03T00:00:00Z',club_enrollment:{origin:'new_paid',protected_release_at:'2026-10-10T00:00:00Z'}}};
+  const email=formatPostPurchaseEmail(data),wa=formatPostPurchaseWhatsApp(data);
+  assert.ok(email.text.includes(`${months} ${months===1?'mês':'meses'}`));
+  assert.ok(email.text.includes('ilimitados'));assert.ok(email.text.includes('sete dias'));
+  assert.equal(wa.template.components[0].parameters.length,3);
+  assert.ok(!wa.template.components[0].parameters[1].text.includes('Enviamos também'));
+});
+for (const product of ['os','club']) test(`sold ${product} alone does not promise the other product`, () => {
+  const data={email:'buyer@example.invalid',community:{products:[product],duration_months:1,period_end:'2026-11-03T00:00:00Z',club_enrollment:{origin:'preexisting_verified'}}};
+  const email=formatPostPurchaseEmail(data);
+  assert.ok(!email.html.includes(product==='os'?'club.imobiturbo.com.br/login':'os.imobiturbo.com.br/login'));
+  assert.ok(!email.text.includes('sete dias'));
+});
+test('missing credentials never invoke encoded secret fallback',async()=>{
+  let calls=0;
+  assert.equal((await provisionCommunityMembership({email:'buyer@example.invalid',fetchFn:async()=>{calls++;}})).ok,false);
+  assert.equal(calls,0);
+});
+test('unconfigured purchase proof cannot call provisioning or send',async()=>{
+  let calls=0;
+  const result=await sendPostPurchaseNotifications({purchaseProof:{approvedAt:'2026-10-03T00:00:00Z'},fetchFn:async()=>{calls++;}});
+  assert.equal(calls,0);assert.deepEqual(result.errors,['community_provisioning_failed']);
 });

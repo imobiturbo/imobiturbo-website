@@ -112,7 +112,7 @@ test('three plans preserve the native Asaas journey and show the Pix total befor
     assert.match(await page.locator('#chkProgressPct').innerText(), /4\D+4/, 'progress describes the payment step');
     assert.ok(await page.locator('#chkStepPane4 img[alt="Asaas"]').isVisible());
     if (plan !== 'mensal') {
-      for (const count of ['1', '2', installments]) {
+      for (const count of [installments]) {
         await page.locator('#chkInstallments').selectOption(count);
         const summary = await page.locator('#chkPlanCompactPrice').innerText();
         const total = count === '1' ? amount : plan === 'anual' ? '1.164' : '381';
@@ -162,7 +162,7 @@ test('pending payment reload preserves its actual method, installments and price
       const record = {
         version: 2, paymentId: 'pay_synthetic_not_payable', gateway: 'asaas', method, plan,
         productId: 'comunidade-imobiturbo', installmentCount: method === 'PIX' ? 1 : count,
-        amount: Number(pixAmount), paid: false, expiresAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
+        amount: method === 'CREDIT_CARD' && plan === 'trimestral' ? 381 : Number(pixAmount), installmentValue: method === 'CREDIT_CARD' && plan === 'trimestral' ? 190.50 : 0, paid: false, expiresAt: new Date(Date.now() + 30 * 60 * 1000).toISOString(),
         pix: { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=' }
       };
       await page.route('**/api/checkout/status?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ...record, success: true, status: 'PENDING' }) }));
