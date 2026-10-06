@@ -179,7 +179,7 @@ for (const width of [390, 1440]) test(`monthly Pix Automatic is explicit and cre
     return route.fulfill({ contentType: 'application/json', body: JSON.stringify(response) });
   });
   await page.route('**/api/checkout/status?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify(response) }));
-  await page.locator('#chkPixCpf').fill('52998224725');
+  await page.locator('#chkBuyerCpf').fill('52998224725');
   await page.locator('#chkGeneratePixBtn').click();
   await page.waitForFunction(() => !document.getElementById('chkPendingNotice').hidden);
   assert.equal(posts.length, 1);
@@ -288,4 +288,41 @@ test('expired Pix restores the card total before the visitor restarts checkout',
   await page.locator('#chkStep3Btn').click();
   assert.ok(await page.locator('#chkCardView').isVisible());
   assert.match(await page.locator('#chkBtnText').innerText(), /12x.*97/);
+});
+
+async function openMonthlyPayment(page) {
+ await page.locator('#planRowMensal').click();await page.locator('#checkoutBtn').click();
+ await page.locator('#chkName').fill('Auditoria Imobiturbo');await page.locator('#chkStep1Btn').click();
+ await page.locator('#chkPhone').fill('11963824751');await page.locator('#chkStep2Btn').click();
+ await page.locator('#chkEmail').fill('auditoria@example.invalid');await page.locator('#chkStep3Btn').click();
+}
+test('one ephemeral CPF survives card/Pix switching and terms are centered',async t=>{
+ const page=await visit(t);await openMonthlyPayment(page);
+ await page.locator('#chkBuyerCpf').fill('52998224725');
+ await page.locator('#chkTabPix').click();assert.equal(await page.locator('#chkBuyerCpf').inputValue(),'529.982.247-25');
+ await page.locator('#chkTabCard').click();assert.equal(await page.locator('#chkBuyerCpf').inputValue(),'529.982.247-25');
+ assert.equal(await page.locator('label:has-text("CPF do comprador")').count(),1);
+ assert.equal(await page.locator('#chkPaymentTerms').evaluate(e=>getComputedStyle(e).textAlign),'center');
+ assert.equal(await page.evaluate(()=>Object.values(localStorage).join('').includes('529')),false,'CPF never persisted');
+});
+test('uncertain Pix uses neutral status, hides locked method controls, can close/reopen without POST replay',async t=>{
+ const page=await visit(t);await openMonthlyPayment(page);await page.locator('#chkTabPix').click();
+ let posts=0;
+ await page.route('**/api/checkout',async route=>{posts++;await route.fulfill({json:{success:true,orderStatus:'uncertain',status:'UNCERTAIN',gateway:'asaas'}})});
+ await page.route('**/api/checkout/status?**',route=>route.fulfill({json:{success:true,orderStatus:'uncertain',status:'UNCERTAIN',gateway:'asaas'}}));
+ await page.locator('#chkBuyerCpf').fill('52998224725');await page.locator('#chkGeneratePixBtn').click();
+ await page.waitForFunction(()=>document.querySelector('#chkErrorMsg').dataset.kind==='progress');
+ assert.equal(await page.locator('#chkErrorMsg').getAttribute('role'),'status');
+ assert.equal(await page.locator('#chkErrorMsg').evaluate(e=>getComputedStyle(e).color),'rgb(191, 197, 183)');
+ assert.equal(await page.locator('#chkTabCard').isVisible(),false);
+ await page.keyboard.press('Escape');await page.locator('#checkoutBtn').click();
+ assert.ok(await page.locator('#chkPendingNotice').isVisible());assert.equal(posts,1);
+});
+test('plan prices use monthly display with factual contract totals and requested savings badge',async t=>{
+ const page=await visit(t);
+ for(const [plan,amount]of[['Anual',97],['Trimestral',127],['Mensal',147]]){
+  const row=page.locator('#planRow'+plan);assert.match(await row.locator('.psel-prc').innerText(),new RegExp('R\\$ '+amount+'\\s*/mês'));
+ }
+ assert.equal(await page.locator('.psel-selo').innerText(),'Economize até R$ 764');
+ assert.match(await page.locator('#planRowAnual .psel-sub').innerText(),/12x de R\$ 97.*997/);
 });

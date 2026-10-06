@@ -1816,6 +1816,7 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   margin: 0 0 16px;
 }
 .chk-modal-box .chk-payment-terms {
+  text-align: center;
   font-size: 12px;
   margin: 14px 0 0;
 }
@@ -4597,3 +4598,8 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
     padding: 20px 16px;
   }
 }
+
+/* Waiting is a status, separate from actionable validation failures. */
+#chkErrorMsg[data-kind="progress"] { color: #bfc5b7 !important; }
+#chkStepPane4 .chk-tabs[hidden] { display: none !important; }
+#chkPendingNotice { text-align: center; }

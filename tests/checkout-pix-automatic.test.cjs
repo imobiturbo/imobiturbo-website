@@ -38,8 +38,10 @@ function harness(t, options={}) {
    else if(u.pathname.endsWith('/record_community_payment')) {state.records.push(body.p_payment);data={contract_version:1,activation_id:AUTH,subscription_id:TX,payment_id:INSTRUCTION,products:['os','club'],period_start:body.p_payment.period_start,period_end:body.p_payment.period_end};}
    else throw new Error(`Unexpected DB ${u.pathname}`);
   } else if(u.pathname==='/v3/pix/automatic/authorizations' && init.method==='POST') {
-   state.posts++;assert.equal(body.contractId,state.auth.contractId);assert.equal(body.customerId,state.auth.customerId);assert.equal(body.paymentCreationMode,'SUBSCRIPTION');assert.equal(body.retryPolicy,'NOT_ALLOWED');assert.equal(body.frequency,'MONTHLY');assert.equal(body.value,147);assert.equal(body.description,'Comunidade Imobiturbo - Plano mensal');assert.ok(body.description.length<=35);assert.deepEqual(body.immediateQrCode,{expirationSeconds:1800,originalValue:147,description:'Comunidade Imobiturbo - Plano mensal'});
-   if(state.timeout) throw new Error('synthetic timeout');data=state.auth;
+   state.posts++;assert.equal(body.contractId,state.auth.contractId);assert.equal(body.customerId,state.auth.customerId);assert.equal(body.paymentCreationMode,'SUBSCRIPTION');assert.equal(body.retryPolicy,'NOT_ALLOWED');assert.equal(body.frequency,'MONTHLY');assert.equal(body.value,147);assert.equal(body.description,'Comunidade Imobiturbo mensal');assert.ok(body.description.length<=35);assert.deepEqual(body.immediateQrCode,{expirationSeconds:1800,originalValue:147,description:'Comunidade Imobiturbo mensal'});
+   if(state.timeout) throw new Error('synthetic timeout');
+   if(options.rejection) return Response.json({errors:[options.rejection]}, {status:options.rejectionStatus || 400});
+   data=state.auth;
   } else if(u.pathname==='/v3/pix/automatic/authorizations') data={data:state.timeout ? []:[state.auth],hasMore:false};
   else if(u.pathname===`/v3/pix/automatic/authorizations/${AUTH}`) data=state.auth;
   else if(u.pathname==='/v3/customers') data={data:[{id:'cus_synthetic',cpfCnpj:buyer.cpfCnpj,email:buyer.email}],hasMore:false};
@@ -177,4 +179,24 @@ test('verified partial refund retains manual financial review without a paid mon
  const m=await load('_community-orders.js'),p=await load('_community-payments.js');
  const r=await p.recordCommunityPayment(m.communityConfig(env),h.order,h.payment);
  assert.equal(r.paid,false);assert.equal(r.fulfillment,'manual_financial_review');assert.equal(h.records.length,0);assert.equal(h.reviews.length,1);assert.equal(h.reviews[0].provider_subscription_id,null);
+});
+
+test('authorization descriptions respect both provider limits before any request', async () => {
+ const a=await load('_pix-automatic.js');const payload=a.pixAutomaticPayload(fixture().order,'cus_synthetic');
+ assert.ok(payload.description.length<=35);assert.ok(payload.immediateQrCode.description.length<=35);
+ assert.equal(payload.value,147);assert.equal(payload.frequency,'MONTHLY');
+});
+test('exact description rejection is terminal; unknown errors preserve uncertain intent without replay',async t=>{
+ for(const [code,description,status,expected] of [
+  ['invalid_action','A descrição da autorização não deve ultrapassar 35 caracteres.',400,'failed'],
+  ['invalid_action','Unexpected rejection',400,'uncertain'],
+  ['invalid_action','A descrição da autorização não deve ultrapassar 35 caracteres.',500,'uncertain']
+ ])await t.test(`${status}/${expected}`,async t=>{
+  const h=harness(t,{creating:true,noPayment:true,rejection:{code,description},rejectionStatus:status});
+  const m=await load('_community-orders.js');await m.createCommunityOrder(env,buyer);
+  assert.equal(h.posts,1);assert.equal(h.order.status,expected);
+  assert.equal(h.order.error_code,`asaas_http_${status}_invalid_action`);
+  assert.equal(Boolean(h.order.failure_proof),expected==='failed');
+  if(expected==='uncertain'){await m.createCommunityOrder(env,buyer);assert.equal(h.posts,1);}
+ });
 });

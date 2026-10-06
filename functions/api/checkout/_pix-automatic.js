@@ -23,8 +23,8 @@ export function pixAutomaticPayload(order, customer) {
       order.sold_snapshot.installment_count !== 1 || order.sold_snapshot.contract_total_cents !== 14700 || !/^cus_[A-Za-z0-9_]+$/.test(customer)) fail();
   return { contractId: pixAutomaticContractId(order), customerId: customer, startDate: new Date().toISOString().slice(0,10),
     frequency: 'MONTHLY', paymentCreationMode: 'SUBSCRIPTION', value: 147, retryPolicy: 'NOT_ALLOWED',
-    description: 'Comunidade Imobiturbo - Plano mensal', immediateQrCode: { expirationSeconds: 1800, originalValue: 147,
-      description: 'Comunidade Imobiturbo - Plano mensal' } };
+    description: 'Comunidade Imobiturbo mensal', immediateQrCode: { expirationSeconds: 1800, originalValue: 147,
+      description: 'Comunidade Imobiturbo mensal' } };
 }
 export async function verifyPixAutomaticAuthorization(config, order, auth) {
   if (order.sold_snapshot.price_mode !== PIX_AUTO_MODE || order.sold_snapshot.duration_months !== 1 ||
@@ -75,7 +75,19 @@ export async function createPixAutomaticAuthorization(config, order, customer) {
   const response = await fetch(`${config.base}${AUTH_PATH}`, { method:'POST', headers:config.headers,
     body:JSON.stringify(pixAutomaticPayload(order,customer)), signal:AbortSignal.timeout(65000) });
   const created = await response.json().catch(() => null);
-  if (!response.ok || !UUID.test(created?.id || '')) throw new CommunityError('community_creation_uncertain');
+  if (!response.ok) {
+    const codes = Array.isArray(created?.errors) ? created.errors.map(e => e?.code).filter(c => /^[a-z_]{1,50}$/.test(c || '')) : [];
+    const error = new CommunityError(`asaas_http_${response.status}${codes.length ? '_' + codes[0] : ''}`);
+    // Only this exact synchronous validation rejection proves no authorization
+    // was created. Timeouts, 5xx and every unknown response remain uncertain.
+    if (response.status === 400 && created?.errors?.length === 1 && codes[0] === 'invalid_action' &&
+        created.errors[0].description === 'A descrição da autorização não deve ultrapassar 35 caracteres.') {
+      error.failureProof = { kind: 'absence_verified', evidence_ref: `asaas:${config.environment}:authorization-description-rejected:${order.id}`,
+        reason: 'Asaas HTTP 400 invalid_action: authorization description exceeds 35 characters; no authorization created.' };
+    }
+    throw error;
+  }
+  if (!UUID.test(created?.id || '')) throw new CommunityError('community_creation_uncertain');
   const auth = await pixGet(config, `${AUTH_PATH}/${encodeURIComponent(created.id)}`);
   if (auth.id !== created.id) fail();
   await verifyPixAutomaticAuthorization(config, { ...order, provider_customer_id:customer }, auth);
