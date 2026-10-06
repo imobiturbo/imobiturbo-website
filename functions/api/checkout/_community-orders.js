@@ -221,7 +221,9 @@ export async function createCommunityOrder(env, body) {
     const due = new Date().toISOString().slice(0, 10);
     const payload = { customer: knownCustomer, billingType: selection.method, externalReference: order.external_reference,
       description: `Comunidade Imobiturbo - Plano ${selection.plan}`, fine: { value: 0, type: "FIXED" }, interest: { value: 0 } };
-    if (hosted) payload.callback = { successUrl: "https://www.imobiturbo.com.br/vagas/?paymentReturn=1", autoRedirect: true };
+    // Asaas rejects callbacks until the merchant registers its website. Access
+    // follows the verified webhook, so that optional redirect must not block a sale.
+    if (hosted && env.ASAAS_CHECKOUT_CALLBACK_ENABLED === "true") payload.callback = { successUrl: "https://www.imobiturbo.com.br/vagas/?paymentReturn=1", autoRedirect: true };
     const s = order.sold_snapshot;
     if (selection.method === "CREDIT_CARD" && !hosted) {
       payload.creditCard = { holderName: card.holderName || order.buyer_name, number: String(card.number).replace(/\D/g, ""), expiryMonth: card.expiryMonth, expiryYear: card.expiryYear, ccv: card.ccv };
