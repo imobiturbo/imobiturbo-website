@@ -96,18 +96,19 @@ export async function verifyPixAutomaticPayment(config, order, payment, authoriz
     ['REQUESTED','IN_DISPUTE','DISPUTE_LOST','DONE'].includes(payment.chargeback?.status);
   // Try the initial transaction binding first. Authorization may be REFUSED
   // after a successfully paid first month; ACTIVE must not gate that month.
+  let transaction;
   if (payment.pixTransaction) {
     if (!UUID.test(payment.pixTransaction)) fail();
     const tx = await pixGet(config, `/pix/transactions/${encodeURIComponent(payment.pixTransaction)}`);
-    if (tx.id !== payment.pixTransaction || tx.payment !== payment.id) fail();
+    if (tx.id !== payment.pixTransaction || tx.payment !== payment.id ||
+        tx.type !== 'CREDIT' || !['AWAITING_REQUEST','SCHEDULED','DONE'].includes(tx.status) || cents(tx.value) !== 14700 ||
+        typeof tx.conciliationIdentifier !== 'string' || !tx.conciliationIdentifier) fail();
+    const refundedCents = cents(tx.refundedValue || 0);
+    if (refundedCents < 0 || refundedCents > 14700) fail();
+    transaction = { id: tx.id, payment_id: tx.payment, conciliation_identifier: tx.conciliationIdentifier,
+      type: tx.type, status: tx.status, amount_cents: cents(tx.value), refunded_cents: refundedCents };
     if (tx.conciliationIdentifier === auth.immediateQrCode.conciliationIdentifier) {
-      if (tx.type !== 'CREDIT' || !['AWAITING_REQUEST','SCHEDULED','DONE'].includes(tx.status) || cents(tx.value) !== 14700) fail();
-      const refundedCents = cents(tx.refundedValue || 0);
-      if (refundedCents < 0 || refundedCents > 14700) fail();
-      return { auth, initial: true, settled: tx.status === 'DONE', transaction: {
-        id: tx.id, payment_id: tx.payment, conciliation_identifier: tx.conciliationIdentifier,
-        type: tx.type, status: tx.status, amount_cents: cents(tx.value), refunded_cents: refundedCents,
-      } };
+      return { auth, initial: true, settled: tx.status === 'DONE', transaction };
     }
   }
   const rows = await pixAutomaticList(config, `${INSTRUCTION_PATH}?authorizationId=${encodeURIComponent(auth.id)}&paymentId=${encodeURIComponent(payment.id)}`);
@@ -121,7 +122,7 @@ export async function verifyPixAutomaticPayment(config, order, payment, authoriz
         (['CONFIRMED','RECEIVED'].includes(payment.status) && !reversed && instruction.status !== 'DONE')) fail();
     settled = settled && instruction.status === 'DONE';
   }
-  return { auth, initial: false, settled };
+  return { auth, initial: false, settled: settled && (!transaction || transaction.status === 'DONE'), ...(transaction ? { transaction } : {}) };
 }
 export async function resolvePixAutomaticPayment(config, payment) {
   if (!/^cus_[A-Za-z0-9_]+$/.test(customerId(payment) || "")) fail();

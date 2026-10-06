@@ -28,7 +28,7 @@ test("vagas/index.html contains complete embedded checkout modal markup and comp
   assert.ok(html.includes('id="chkChangePlanTrigger"'), "Must contain #chkChangePlanTrigger to switch plans");
   assert.ok(html.includes('id="chkModalPlanName"'), "Must contain #chkModalPlanName");
   assert.ok(html.includes('id="chkModalPlanPrice"'), "Must contain #chkModalPlanPrice");
-  assert.ok(!html.includes('id="chkPaymentTerms"'), "Must NOT contain #chkPaymentTerms (excess text removed)");
+  assert.ok(html.includes('class="chk-payment-terms" id="chkPaymentTerms"'), "Compact checkout must disclose the selected payment terms");
   assert.ok(html.includes('id="chkModalPlanEco"'), "Must contain #chkModalPlanEco for annual plan savings");
 });
 
@@ -132,9 +132,9 @@ test("checkout API PLAN_DETAILS matches landing page pricing and Hub tracking co
       assert.ok(html.includes('Total no cartão: R$ 1.164 · À vista: R$ 997'));
       assert.ok(html.includes('Total no cartão: R$ 381 · À vista: R$ 357'));
       assert.ok(html.includes('Total no cartão: R$ 147 · À vista: R$ 147'));
-      assert.ok(html.includes('Pix Instantâneo por cobrança, sem renovação automática'));
-      assert.ok(html.includes('Apenas o cartão mensal tem cobrança recorrente'));
-      assert.ok(!html.includes('Pix Automático'));
+      assert.ok(html.includes('No mensal, cartão e Pix Automático renovam todo mês'));
+      assert.ok(html.includes('anual e trimestral no Pix são pagamentos únicos'));
+      assert.ok(html.includes('pixAutomatic:'));
     }
   }
 });
