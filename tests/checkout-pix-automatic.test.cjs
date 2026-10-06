@@ -38,7 +38,7 @@ function harness(t, options={}) {
    else if(u.pathname.endsWith('/record_community_payment')) {state.records.push(body.p_payment);data={contract_version:1,activation_id:AUTH,subscription_id:TX,payment_id:INSTRUCTION,products:['os','club'],period_start:body.p_payment.period_start,period_end:body.p_payment.period_end};}
    else throw new Error(`Unexpected DB ${u.pathname}`);
   } else if(u.pathname==='/v3/pix/automatic/authorizations' && init.method==='POST') {
-   state.posts++;assert.equal(body.contractId,state.auth.contractId);assert.equal(body.customerId,state.auth.customerId);assert.equal(body.paymentCreationMode,'SUBSCRIPTION');assert.equal(body.retryPolicy,'NOT_ALLOWED');assert.equal(body.frequency,'MONTHLY');assert.equal(body.value,147);assert.deepEqual(body.immediateQrCode,{expirationSeconds:1800,originalValue:147});
+   state.posts++;assert.equal(body.contractId,state.auth.contractId);assert.equal(body.customerId,state.auth.customerId);assert.equal(body.paymentCreationMode,'SUBSCRIPTION');assert.equal(body.retryPolicy,'NOT_ALLOWED');assert.equal(body.frequency,'MONTHLY');assert.equal(body.value,147);assert.equal(body.description,'Comunidade Imobiturbo - Plano mensal');assert.ok(body.description.length<=35);assert.deepEqual(body.immediateQrCode,{expirationSeconds:1800,originalValue:147,description:'Comunidade Imobiturbo - Plano mensal'});
    if(state.timeout) throw new Error('synthetic timeout');data=state.auth;
   } else if(u.pathname==='/v3/pix/automatic/authorizations') data={data:state.timeout ? []:[state.auth],hasMore:false};
   else if(u.pathname===`/v3/pix/automatic/authorizations/${AUTH}`) data=state.auth;

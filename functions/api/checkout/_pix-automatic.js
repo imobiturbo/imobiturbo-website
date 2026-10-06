@@ -23,7 +23,8 @@ export function pixAutomaticPayload(order, customer) {
       order.sold_snapshot.installment_count !== 1 || order.sold_snapshot.contract_total_cents !== 14700 || !/^cus_[A-Za-z0-9_]+$/.test(customer)) fail();
   return { contractId: pixAutomaticContractId(order), customerId: customer, startDate: new Date().toISOString().slice(0,10),
     frequency: 'MONTHLY', paymentCreationMode: 'SUBSCRIPTION', value: 147, retryPolicy: 'NOT_ALLOWED',
-    description: 'Comunidade Imobiturbo mensal', immediateQrCode: { expirationSeconds: 1800, originalValue: 147 } };
+    description: 'Comunidade Imobiturbo - Plano mensal', immediateQrCode: { expirationSeconds: 1800, originalValue: 147,
+      description: 'Comunidade Imobiturbo - Plano mensal' } };
 }
 export async function verifyPixAutomaticAuthorization(config, order, auth) {
   if (order.sold_snapshot.price_mode !== PIX_AUTO_MODE || order.sold_snapshot.duration_months !== 1 ||
