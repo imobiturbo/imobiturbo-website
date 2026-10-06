@@ -329,7 +329,7 @@
     notice.hidden = true;
     pane.prepend(notice);
     const externalLink = root.document.createElement('a');
-    externalLink.id = 'chkExternalLink'; externalLink.className = 'chk-btn-submit'; externalLink.hidden = true; externalLink.style.display = 'none';
+    externalLink.id = 'chkExternalLink'; externalLink.className = 'chk-btn-submit'; externalLink.hidden = true; externalLink.style.setProperty('display', 'none', 'important');
     externalLink.textContent = 'Continuar pagamento no Asaas'; externalLink.rel = 'noopener';
     pane.prepend(externalLink);
     let timer = null;
@@ -350,7 +350,7 @@
       locked(true);
       notice.hidden = false;
       externalLink.hidden = !(record.checkoutMode === 'hosted' && isAsaasInvoiceUrl(record.invoiceUrl));
-      externalLink.style.display = externalLink.hidden ? 'none' : 'flex';
+      externalLink.style.setProperty('display', externalLink.hidden ? 'none' : 'flex', 'important');
       if (!externalLink.hidden) {
         externalLink.href = record.invoiceUrl;
         notice.textContent = 'Sua compra está aberta. Conclua na página segura do Asaas.';
@@ -401,7 +401,7 @@
         for (const id of ['chkName', 'chkPhone', 'chkEmail', 'chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv', 'chkCardCpf', 'chkPixCpf']) {
           if (get(id)) get(id).value = '';
         }
-        notice.hidden = true; externalLink.hidden = true; externalLink.style.display = 'none';
+        notice.hidden = true; externalLink.hidden = true; externalLink.style.setProperty('display', 'none', 'important');
         locked(false);
         get('chkPixFormBlock').style.display = 'block';
         get('chkPixResultBlock').style.display = 'none';

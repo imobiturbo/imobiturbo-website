@@ -3301,7 +3301,7 @@
       }
       if (tabPix) {
         tabPix.hidden = currentPlan === 'mensal';
-        tabPix.style.display = currentPlan === 'mensal' ? 'none' : '';
+        tabPix.style.setProperty('display', currentPlan === 'mensal' ? 'none' : 'flex', 'important');
         if (currentPlan === 'mensal') {
           tabCard?.classList.add('active'); tabCard?.setAttribute('aria-selected', 'true');
           tabPix.classList.remove('active'); tabPix.setAttribute('aria-selected', 'false');
