@@ -40,6 +40,7 @@ const entries = [
   'vagas-obrigado',
   'skills-ia',
   'skills-ia-obrigado',
+  'os-crm',
   'politica-de-privacidade',
   'exclusao-de-dados',
   'termos-de-servico',
@@ -94,7 +95,7 @@ if (fs.existsSync(skillsObrigadoCss)) {
 
 execFileSync(
   process.platform === 'win32' ? 'npx.cmd' : 'npx',
-  ['wrangler', 'pages', 'functions', 'build', 'functions', '--outdir', output, '--build-output-directory', output, '--minify'],
+  ['--yes', 'wrangler', 'pages', 'functions', 'build', 'functions', '--outdir', output, '--build-output-directory', output, '--minify'],
   { cwd: root, stdio: 'inherit', shell: process.platform === 'win32' }
 );
 fs.renameSync(path.join(output, 'index.js'), path.join(output, '_worker.js'));

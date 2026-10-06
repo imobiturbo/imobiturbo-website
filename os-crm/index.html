@@ -1,0 +1,674 @@
+<!doctype html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Imobiturbo OS — CRM Imobiliário com IA Nativa no WhatsApp</title>
+  <meta name="description" content="Atenda cada lead imobiliário em menos de 3 segundos no WhatsApp. CRM Kanban, roleta de corretores e IA DeepSeek v4 Flash ilimitada 24/7. Sem cursos, 100% tecnologia.">
+  <meta name="keywords" content="CRM imobiliário, IA para corretores, WhatsApp imobiliário, roleta de corretores, Imobiturbo OS, DeepSeek v4 Flash">
+  <meta name="author" content="Imobiturbo">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#09090b">
+  <meta name="color-scheme" content="dark">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Imobiturbo OS — CRM Imobiliário com IA Nativa no WhatsApp">
+  <meta property="og:description" content="Atenda leads em 3 segundos às 23:45 com IA DeepSeek v4 Flash, CRM Kanban e roleta de corretores. Comece em 60 segundos.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://imobiturbo.com.br/os-crm">
+  <meta property="og:image" content="https://imobiturbo.com.br/assets/brand/theme-dark/imobiturbo-os.webp">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="alternate icon" type="image/png" href="/favicon.png">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #09090b;
+      --card-bg: #121215;
+      --card-border: #222227;
+      --lime: #c5fe6d;
+      --lime-glow: rgba(197, 254, 109, 0.18);
+      --emerald: #10b981;
+      --text: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background-color: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
+
+    body { overflow-x: hidden; line-height: 1.5; }
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 9999px; padding: 6px 14px; font-size: 13px; font-weight: 600; }
+    .badge-lime { background: rgba(197, 254, 109, 0.1); border: 1px solid rgba(197, 254, 109, 0.3); color: var(--lime); }
+    .badge-white { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #fff; }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border-radius: 12px; font-weight: 700; font-size: 15px; padding: 14px 28px; transition: all 0.2s ease; cursor: pointer; border: none; text-align: center; }
+    .btn-lime { background: var(--lime); color: #000; box-shadow: 0 4px 20px var(--lime-glow); }
+    .btn-lime:hover { background: #d4ff88; transform: translateY(-2px); box-shadow: 0 6px 26px rgba(197, 254, 109, 0.35); }
+    .btn-outline { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: #fff; }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.1); border-color: #444; }
+
+    /* Header */
+    header { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--card-border); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    .brand-logo { height: 32px; width: auto; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; font-size: 14px; font-weight: 500; color: var(--text-muted); }
+    .nav-links a:hover { color: #fff; }
+
+    /* Hero */
+    .hero { padding: 80px 0 60px; text-align: center; position: relative; }
+    .hero-glow { position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 350px; background: radial-gradient(circle, rgba(197, 254, 109, 0.12) 0%, rgba(9, 9, 11, 0) 70%); pointer-events: none; }
+    .hero h1 { font-size: 44px; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; max-width: 900px; margin: 20px auto; }
+    .hero h1 span { color: var(--lime); }
+    .hero p.lead { font-size: 19px; color: var(--text-muted); max-width: 720px; margin: 0 auto 32px; line-height: 1.6; }
+    .hero-actions { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
+    .hero-proof { display: flex; align-items: center; justify-content: center; gap: 24px; font-size: 13px; color: var(--text-dim); flex-wrap: wrap; }
+    .hero-proof span { display: inline-flex; align-items: center; gap: 6px; }
+
+    /* Simulator */
+    .sim-wrap { margin: 40px auto 80px; max-width: 1000px; background: #111114; border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); display: grid; grid-template-columns: 1fr 1fr; }
+    .chat-col { background: #0c0d10; border-right: 1px solid var(--card-border); display: flex; flex-direction: column; }
+    .chat-header { padding: 14px 18px; background: #16171b; border-bottom: 1px solid var(--card-border); display: flex; align-items: center; justify-content: space-between; }
+    .chat-lead-info { display: flex; align-items: center; gap: 12px; }
+    .chat-avatar { width: 38px; height: 38px; border-radius: 50%; background: #25262c; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--lime); font-size: 14px; }
+    .chat-body { padding: 20px 16px; flex: 1; display: flex; flex-direction: column; gap: 14px; height: 380px; overflow-y: auto; background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 16px 16px; }
+    .msg { max-width: 82%; padding: 10px 14px; border-radius: 12px; font-size: 13.5px; line-height: 1.45; position: relative; }
+    .msg-lead { align-self: flex-start; background: #202229; color: #fff; border-bottom-left-radius: 2px; }
+    .msg-bot { align-self: flex-end; background: #1b3820; border: 1px solid rgba(197, 254, 109, 0.25); color: #d4ffd9; border-bottom-right-radius: 2px; }
+    .msg-time { font-size: 10px; opacity: 0.6; display: block; text-align: right; margin-top: 4px; }
+    .sim-kanban { padding: 24px; background: #131418; display: flex; flex-direction: column; justify-content: space-between; }
+    .hud-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .hud-card { background: #1b1c22; border: 1px solid var(--card-border); border-radius: 14px; padding: 18px; margin-bottom: 14px; }
+    .hud-tag { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: rgba(197, 254, 109, 0.15); color: var(--lime); display: inline-block; margin-bottom: 8px; }
+
+    /* Features Grid */
+    .section-title { text-align: center; max-width: 760px; margin: 0 auto 50px; }
+    .section-title h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin-top: 12px; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 90px; }
+    .feat-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px; transition: transform 0.2s, border-color 0.2s; }
+    .feat-card:hover { transform: translateY(-4px); border-color: rgba(197, 254, 109, 0.4); }
+    .feat-icon { width: 44px; height: 44px; border-radius: 10px; background: rgba(197, 254, 109, 0.1); display: flex; align-items: center; justify-content: center; color: var(--lime); margin-bottom: 18px; font-size: 20px; }
+    .feat-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .feat-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+    /* Comparison */
+    .comp-wrap { background: #111114; border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; margin-bottom: 100px; }
+    .comp-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .comp-table th, .comp-table td { padding: 18px 24px; border-bottom: 1px solid var(--card-border); font-size: 14px; }
+    .comp-table th { background: #16171b; font-weight: 700; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .comp-table td.highlight { background: rgba(197, 254, 109, 0.04); font-weight: 600; color: #fff; }
+    .check { color: var(--lime); font-weight: 700; }
+    .cross { color: #ef4444; }
+
+    /* Pricing */
+    .pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 30px auto 50px; background: #18191e; border: 1px solid var(--card-border); padding: 4px; border-radius: 9999px; width: fit-content; }
+    .toggle-btn { padding: 8px 22px; border-radius: 9999px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text-muted); transition: all 0.2s; }
+    .toggle-btn.active { background: var(--lime); color: #000; font-weight: 700; }
+    .toggle-badge { background: #059669; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 999px; margin-left: 6px; font-weight: 700; }
+
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+    .price-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 36px 28px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.2s; }
+    .price-card.popular { border: 2px solid var(--lime); box-shadow: 0 10px 40px rgba(197, 254, 109, 0.12); transform: scale(1.02); }
+    .card-ribbon { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--lime); color: #000; font-size: 11.5px; font-weight: 800; padding: 4px 16px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .plan-name { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .plan-desc { font-size: 13.5px; color: var(--text-muted); min-height: 42px; margin-bottom: 20px; }
+    .price-val { font-size: 40px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .price-val span.sub { font-size: 14px; font-weight: 500; color: var(--text-muted); }
+    .daily-tag { font-size: 12px; color: var(--lime); font-weight: 600; margin-bottom: 24px; display: block; }
+    .plan-features { list-style: none; margin: 24px 0 32px; display: flex; flex-direction: column; gap: 12px; font-size: 13.5px; }
+    .plan-features li { display: flex; align-items: flex-start; gap: 10px; }
+    .plan-features li span.icon { color: var(--lime); font-weight: 700; }
+
+    /* FAQ */
+    .faq-grid { max-width: 840px; margin: 0 auto 90px; display: flex; flex-direction: column; gap: 14px; }
+    .faq-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px 24px; cursor: pointer; transition: border-color 0.2s; }
+    .faq-item:hover { border-color: #3b3c44; }
+    .faq-q { font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .faq-a { font-size: 14px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; display: none; }
+    .faq-item.open .faq-a { display: block; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--lime); }
+    .faq-icon { transition: transform 0.2s; font-size: 18px; font-weight: 700; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--card-border); padding: 50px 0 40px; font-size: 13px; color: var(--text-dim); text-align: center; }
+    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+    .footer-links { display: flex; gap: 24px; color: var(--text-muted); }
+    .footer-links a:hover { color: #fff; }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero h1 { font-size: 32px; }
+      .sim-wrap { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .price-card.popular { transform: none; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container header-inner">
+      <a href="/os-crm" aria-label="Imobiturbo OS">
+        <img src="/assets/brand/theme-dark/os.webp" alt="Imobiturbo OS" class="brand-logo" width="160" height="32" onerror="this.onerror=null;this.src='/assets/brand/theme-dark/imobiturbo-os.webp';">
+      </a>
+      <ul class="nav-links">
+        <li><a href="#como-funciona">Como Funciona</a></li>
+        <li><a href="#recursos">Recursos</a></li>
+        <li><a href="#comparativo">Comparativo</a></li>
+        <li><a href="#planos">Planos & Preços</a></li>
+        <li><a href="#faq">Dúvidas</a></li>
+      </ul>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <a href="https://os.imobiturbo.com.br/login" class="btn btn-outline" style="padding:8px 18px;font-size:13px;">Login</a>
+        <a href="#planos" class="btn btn-lime" style="padding:8px 18px;font-size:13px;">Começar Agora</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="container">
+      <div class="badge badge-lime">
+        <span>⚡ CRM + WhatsApp + IA DeepSeek v4 Flash Nativa</span>
+      </div>
+      <h1>
+        Atenda cada lead imobiliário em menos de <span>3 segundos no WhatsApp.</span> 24h por dia.
+      </h1>
+      <p class="lead">
+        O Imobiturbo OS é o software all-in-one para corretores e imobiliárias. Qualificação instantânea de clientes, roleta inteligente de corretores e CRM Kanban sem deixar leads esfriarem.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#planos" class="btn btn-lime" style="font-size:16px;padding:16px 36px;">
+          Ver Planos e Testar Agora →
+        </a>
+        <a href="#como-funciona" class="btn btn-outline">
+          Ver Robô Atendendo ao Vivo
+        </a>
+      </div>
+
+      <div class="hero-proof">
+        <span>🔒 Sem Fidelidade Mensal</span>
+        <span>•</span>
+        <span>⚡ Conexão QR Code em 60s</span>
+        <span>•</span>
+        <span>🛡️ Motor Anti-Ban com Pacing Humano</span>
+        <span>•</span>
+        <span>🚀 100% Tecnologia (Zero Cursos)</span>
+      </div>
+
+      <!-- Simulador Interativo de WhatsApp -->
+      <div class="sim-wrap" id="como-funciona">
+        <!-- Coluna Chat WhatsApp -->
+        <div class="chat-col">
+          <div class="chat-header">
+            <div class="chat-lead-info">
+              <div class="chat-avatar">MC</div>
+              <div>
+                <div style="font-size:14px;font-weight:700;">Marcos Costa (Lead Jardins)</div>
+                <div style="font-size:11px;color:var(--emerald);">● Online no WhatsApp</div>
+              </div>
+            </div>
+            <span style="font-size:11px;color:var(--text-dim);">DeepSeek v4 Flash</span>
+          </div>
+
+          <div class="chat-body" id="chatStream">
+            <div class="msg msg-lead">
+              Olá! Vi o anúncio do apartamento de 3 quartos no Jardins. Ainda está disponível para visita?
+              <span class="msg-time">23:45</span>
+            </div>
+            <div class="msg msg-bot">
+              Olá, Marcos! Tudo bem? Sim, o apartamento no Jardins segue disponível. 🌟 Ele tem 115m², 2 vagas e varanda gourmet.
+              <span class="msg-time">23:45 • Resposta em 2s</span>
+            </div>
+            <div class="msg msg-bot">
+              Você busca para morar imediatamente ou investimento? E qual faixa de valor planeja?
+              <span class="msg-time">23:45</span>
+            </div>
+            <div class="msg msg-lead">
+              Para moradia com minha família. Orçamento até R$ 900 mil, posso visitar sábado às 10h?
+              <span class="msg-time">23:46</span>
+            </div>
+            <div class="msg msg-bot">
+              Perfeito! Perfil 100% compatível. Já pré-agendei sua visita para sábado às 10h e repassei para o especialista da região confirmar a portaria! 🚀
+              <span class="msg-time">23:46 • Lead Qualificado</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Coluna Painel CRM Kanban HUD -->
+        <div class="sim-kanban">
+          <div>
+            <div class="hud-header">
+              <span style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;">Painel CRM Kanban em Tempo Real</span>
+              <span class="hud-tag">Sincronizado</span>
+            </div>
+
+            <div class="hud-card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span style="font-weight:700;font-size:14px;">Marcos Costa</span>
+                <span style="font-size:12px;color:var(--emerald);font-weight:700;">R$ 900.000</span>
+              </div>
+              <div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">3 Quartos • Jardins • Visita Sáb 10h</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                <span class="hud-tag" style="background:#1e293b;color:#94a3b8;">Etapa: Visita Agendada</span>
+                <span class="hud-tag" style="background:rgba(16,185,129,0.15);color:var(--emerald);">Score IA: 98/100</span>
+              </div>
+            </div>
+
+            <div style="padding:14px;background:#18191e;border-radius:12px;border:1px dashed var(--card-border);font-size:13px;color:var(--text-muted);">
+              <div style="font-weight:600;color:#fff;margin-bottom:4px;">🎯 Roleta de Distribuição Ativada</div>
+              Lead direcionado automaticamente para o corretor de plantão sem delay humano.
+            </div>
+          </div>
+
+          <div style="border-top:1px solid var(--card-border);padding-top:16px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12px;color:var(--text-dim);">Tempo de Resposta: <b>2.4s</b></span>
+            <span style="font-size:12px;color:var(--lime);font-weight:700;">Zero Leads Perdidos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Grid -->
+  <section id="recursos" style="padding:60px 0 80px;">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-lime">Recursos Nativos</div>
+        <h2>Tudo o que sua operação precisa para vender mais imóveis.</h2>
+        <p style="color:var(--text-muted);margin-top:12px;font-size:16px;">
+          Chega de pagar 4 ferramentas diferentes para ter uma roleta que não funciona.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feat-card">
+          <div class="feat-icon">🤖</div>
+          <h3>IA DeepSeek v4 Flash Nativa</h3>
+          <p>Atende e qualifica leads 24h por dia no WhatsApp em 3 segundos. Entende áudios, imagens de fachada e responde dúvidas com dados reais da sua pauta.</p>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon">🎯</div>
+          <h3>Roleta Inteligente de Corretores</h3>
+          <p>Distribuição justa de novos leads por ordem de chegada, plantão ou especialidade, com regra de transbordo automático se o corretor não responder em 5 min.</p>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon">📊</div>
+          <h3>CRM Kanban Especializado</h3>
+          <p>Funil de vendas visual desenhado para a rotina imobiliária: Novo Lead, Qualificado, Visita Agendada, Proposta e Fechamento com lembretes automáticos.</p>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon">🛡️</div>
+          <h3>Motor Anti-Ban com Pacing Humano</h3>
+          <p>Algoritmo proprietário de digitação realista e espaçamento de mensagens para proteger a integridade do seu chip contra bloqueios do WhatsApp.</p>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon">🔗</div>
+          <h3>Integrações com Meta Ads & Portais</h3>
+          <p>Receba leads instantaneamente de campanhas do Facebook/Instagram Lead Ads, portais imobiliários e páginas de captura sem precisar de Zapier ou Make.</p>
+        </div>
+
+        <div class="feat-card">
+          <div class="feat-icon">📈</div>
+          <h3>Métricas de VGV, CAC & ROAS</h3>
+          <p>Painel executivo com taxas de conversão por corretor, tempo de primeiro contato e retorno real de cada canal de anúncio investido.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section id="comparativo" style="padding:40px 0 80px;background:#0d0d10;border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-white">Economia Real</div>
+        <h2>Por que continuar pagando uma colcha de retalhos?</h2>
+        <p style="color:var(--text-muted);margin-top:12px;font-size:16px;">
+          Compare a pilha tradicional de ferramentas fragmentadas contra o Imobiturbo OS Tudo-em-Um.
+        </p>
+      </div>
+
+      <div class="comp-wrap">
+        <table class="comp-table">
+          <thead>
+            <tr>
+              <th>Recursos & Custos</th>
+              <th>Stack Tradicional (Fragmentada)</th>
+              <th style="color:var(--lime);">Imobiturbo OS (Tudo-em-Um)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>CRM & Gestão de Funil</b></td>
+              <td>Pipedrive / RD Station (~R$ 150/mês)</td>
+              <td class="highlight"><span class="check">✓</span> Incluso Nativo</td>
+            </tr>
+            <tr>
+              <td><b>Roteador de Leads</b></td>
+              <td>ImobiLead / Converta+ (R$ 49 a R$ 85/mês)</td>
+              <td class="highlight"><span class="check">✓</span> Incluso Nativo</td>
+            </tr>
+            <tr>
+              <td><b>Automação de WhatsApp</b></td>
+              <td>BotConversa / Typebot (~R$ 197/mês)</td>
+              <td class="highlight"><span class="check">✓</span> Incluso Nativo</td>
+            </tr>
+            <tr>
+              <td><b>API / Conexão de WhatsApp</b></td>
+              <td>Z-API / Evolution paga (~R$ 49/mês)</td>
+              <td class="highlight"><span class="check">✓</span> Conexão Inclusa via QR Code</td>
+            </tr>
+            <tr>
+              <td><b>IA com Resposta Inteligente 24h</b></td>
+              <td><span class="cross">✕</span> Não possui nativo (exige Make/OpenAI)</td>
+              <td class="highlight"><span class="check">✓</span> DeepSeek v4 Flash Ilimitado</td>
+            </tr>
+            <tr>
+              <td><b>Custo Total Estimado</b></td>
+              <td style="color:#ef4444;font-weight:700;">R$ 445 a R$ 580 / mês</td>
+              <td class="highlight" style="color:var(--lime);font-size:18px;font-weight:800;">A partir de 12x de R$ 67 / mês</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="planos" style="padding:80px 0 100px;">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-lime">Planos Transparentes</div>
+        <h2>Escolha seu plano e comece a atender em 60 segundos.</h2>
+        <p style="color:var(--text-muted);margin-top:12px;font-size:16px;">
+          Sem fidelidade oculta. Cancele quando quiser no mensal ou garanta economia máxima no anual.
+        </p>
+
+        <!-- Toggle Anual / Mensal -->
+        <div class="pricing-toggle">
+          <button class="toggle-btn" id="btnMonthly" onclick="setBilling('monthly')">Mensal</button>
+          <button class="toggle-btn active" id="btnAnnual" onclick="setBilling('annual')">
+            Anual <span class="toggle-badge">Até 31% OFF</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Plano Start -->
+        <div class="price-card">
+          <div>
+            <div class="plan-name">Start</div>
+            <div style="font-size:12px;color:var(--text-dim);font-weight:600;margin-bottom:8px;">CORRETOR AUTÔNOMO</div>
+            <div class="plan-desc">Ideal para corretores solo que querem atender leads 24h sem perder vendas.</div>
+
+            <div class="price-val" id="priceStart">
+              <span id="valStart">12x R$ 67</span><span class="sub" id="cycleStart">/mês</span>
+            </div>
+            <div class="daily-tag" id="tagStart">🔥 Menos de R$ 2,23 / dia (R$ 670/ano à vista)</div>
+
+            <ul class="plan-features">
+              <li><span class="icon">✓</span> <b>1 Conexão de WhatsApp ativa</b></li>
+              <li><span class="icon">✓</span> 1 Usuário Corretor no CRM</li>
+              <li><span class="icon">✓</span> <b>IA DeepSeek v4 Flash 24/7 Ilimitada</b></li>
+              <li><span class="icon">✓</span> CRM Kanban com funil imobiliário</li>
+              <li><span class="icon">✓</span> Leads e contatos ilimitados</li>
+              <li><span class="icon">✓</span> Motor Anti-Ban com Pacing Humano</li>
+              <li><span class="icon">✓</span> Importação de contatos via CSV</li>
+            </ul>
+          </div>
+
+          <a href="https://os.imobiturbo.com.br/checkout?plan=start&cycle=annual" id="btnLinkStart" class="btn btn-outline" style="width:100%;">
+            Começar no Start →
+          </a>
+        </div>
+
+        <!-- Plano Growth (Mais Popular) -->
+        <div class="price-card popular">
+          <div class="card-ribbon">MAIS ESCOLHIDO</div>
+          <div>
+            <div class="plan-name" style="color:var(--lime);">Growth</div>
+            <div style="font-size:12px;color:var(--lime);font-weight:700;margin-bottom:8px;">IMOBILIÁRIA EQUIPE</div>
+            <div class="plan-desc">Perfeito para imobiliárias e equipes comerciais em crescimento com roleta de corretores.</div>
+
+            <div class="price-val" id="priceGrowth">
+              <span id="valGrowth">12x R$ 177</span><span class="sub" id="cycleGrowth">/mês</span>
+            </div>
+            <div class="daily-tag" id="tagGrowth">🔥 Apenas R$ 5,90 / dia (R$ 1.770/ano à vista)</div>
+
+            <ul class="plan-features">
+              <li><span class="icon">✓</span> <b>2 Conexões de WhatsApp ativas</b> (Central + Plantão)</li>
+              <li><span class="icon">✓</span> <b>Até 5 Corretores na roleta de leads</b></li>
+              <li><span class="icon">✓</span> <b>IA DeepSeek v4 Flash 24/7 Ilimitada</b></li>
+              <li><span class="icon">✓</span> Roleta inteligente com fila justa e transbordo</li>
+              <li><span class="icon">✓</span> CRM Kanban com múltiplos funis</li>
+              <li><span class="icon">✓</span> Painel de métricas de conversão da equipe</li>
+              <li><span class="icon">✓</span> Integração com Meta Lead Ads e Portais</li>
+              <li><span class="icon">✓</span> Suporte prioritário via WhatsApp</li>
+            </ul>
+          </div>
+
+          <a href="https://os.imobiturbo.com.br/checkout?plan=growth&cycle=annual" id="btnLinkGrowth" class="btn btn-lime" style="width:100%;">
+            Começar no Growth →
+          </a>
+        </div>
+
+        <!-- Plano Scale -->
+        <div class="price-card">
+          <div>
+            <div class="plan-name">Scale</div>
+            <div style="font-size:12px;color:var(--text-dim);font-weight:600;margin-bottom:8px;">IMOBILIÁRIA PRO / EXPANSÃO</div>
+            <div class="plan-desc">Para imobiliárias consolidadas e múltiplas filiais que exigem escala máxima e automação total.</div>
+
+            <div class="price-val" id="priceScale">
+              <span id="valScale">12x R$ 297</span><span class="sub" id="cycleScale">/mês</span>
+            </div>
+            <div class="daily-tag" id="tagScale">🔥 Apenas R$ 9,90 / dia (R$ 2.970/ano à vista)</div>
+
+            <ul class="plan-features">
+              <li><span class="icon">✓</span> <b>5 Conexões de WhatsApp ativas</b></li>
+              <li><span class="icon">✓</span> <b>Até 15 Corretores na roleta multi-equipes</b></li>
+              <li><span class="icon">✓</span> <b>IA DeepSeek v4 Flash 24/7 Ilimitada</b></li>
+              <li><span class="icon">✓</span> Roleta multi-equipes e filiais independentes</li>
+              <li><span class="icon">✓</span> API completa e Webhooks bidirecionais</li>
+              <li><span class="icon">✓</span> Relatórios executivos de CAC e ROAS</li>
+              <li><span class="icon">✓</span> Todas as integrações liberadas</li>
+              <li><span class="icon">✓</span> Onboarding assistido dedicado</li>
+            </ul>
+          </div>
+
+          <a href="https://os.imobiturbo.com.br/checkout?plan=scale&cycle=annual" id="btnLinkScale" class="btn btn-outline" style="width:100%;">
+            Começar no Scale →
+          </a>
+        </div>
+      </div>
+
+      <!-- Add-ons Info -->
+      <div style="max-width:800px;margin:0 auto;padding:18px 24px;background:#14151a;border:1px solid var(--card-border);border-radius:14px;font-size:13px;color:var(--text-muted);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <b style="color:#fff;">Precisa de mais conexões?</b>
+          WhatsApp conectado extra: <b>R$ 49,90/mês</b> • Corretor extra na roleta: <b>R$ 29,90/mês</b>.
+        </div>
+        <a href="https://os.imobiturbo.com.br/checkout?plan=growth&cycle=annual" style="color:var(--lime);font-weight:700;">Contratar com adicionais →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section id="faq" style="padding:60px 0 80px;">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-white">Dúvidas Frequentes</div>
+        <h2>Perguntas frequentes sobre o Imobiturbo OS</h2>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Meu número de WhatsApp corre risco de ser banido?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            Não, porque o Imobiturbo OS utiliza um algoritmo proprietário de <b>Pacing Humano e Warmup progressivo</b>. A IA não dispara mensagens em massa tipo robô de spam; ela digita em velocidade humana e responde apenas quem entra em contato com sua operação.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>A Inteligência Artificial pode falar besteira ou prometer preço errado?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            Não. O motor DeepSeek v4 Flash opera com arquitetura de <b>RAG delimitado</b>: o robô é estritamente instruído a responder com base na sua pauta de imóveis e no roteiro comercial da sua imobiliária. Se o lead perguntar algo fora do escopo, a IA transfere com elegância para o corretor responsável.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Como faço para conectar o WhatsApp da minha imobiliária?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            Leva menos de 60 segundos. Basta apontar a câmera do celular para o QR Code na tela do Imobiturbo OS (exatamente como você faz no WhatsApp Web). A sincronização é instantânea e não precisa de chip virtual nem taxas extras de ativação.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Quantos leads eu posso receber e qualificar por mês?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            <b>Leads e contatos ilimitados</b> em todos os planos. Você não é penalizado se sua campanha no Meta Ads estourar de vender.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-q">
+            <span>Existe fidelidade ou multa de cancelamento?</span>
+            <span class="faq-icon">+</span>
+          </div>
+          <div class="faq-a">
+            Nos planos mensais, zero fidelidade: você pode cancelar a qualquer momento sem taxas. No plano anual, você garante até 31% de desconto fixo e conta com <b>garantia incondicional de 7 dias</b>: se não gostar, devolvemos 100% do seu dinheiro.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-inner">
+      <img src="/assets/brand/theme-dark/os.webp" alt="Imobiturbo OS" style="height:28px;opacity:0.8;" onerror="this.onerror=null;this.src='/assets/brand/theme-dark/imobiturbo-os.webp';">
+      <div class="footer-links">
+        <a href="/termos-de-servico">Termos de Serviço</a>
+        <a href="/politica-de-privacidade">Privacidade</a>
+        <a href="/exclusao-de-dados">Exclusão de Dados</a>
+      </div>
+      <p>© 2026 Imobiturbo Tecnologia. Todos os direitos reservados. Plataforma tecnológica independente.</p>
+    </div>
+  </footer>
+
+  <script>
+    // In-App Browser Escaper (Instagram & Facebook WebViews)
+    (function() {
+      try {
+        var ua = navigator.userAgent || "";
+        if (/facebookexternalhit|Facebot|Googlebot|AdsBot-Google/i.test(ua)) return;
+        var isInstagram = /Instagram/i.test(ua);
+        var isFacebook = /FBAN|FBAV/i.test(ua);
+        if (!isInstagram && !isFacebook) return;
+
+        var isAndroid = /Android/i.test(ua);
+        var currentUrl = window.location.href;
+        if (isAndroid) {
+          if (sessionStorage.getItem('imt_os_escaped') === '1') return;
+          sessionStorage.setItem('imt_os_escaped', '1');
+          var cleanUrl = currentUrl.replace(/^https?:\/\//i, '');
+          window.location.replace("intent://" + cleanUrl + "#Intent;scheme=https;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.android.chrome;S.browser_fallback_url=" + encodeURIComponent(currentUrl) + ";end");
+        }
+      } catch (e) {}
+    })();
+
+    // UTM tracking persistence in checkout buttons
+    (function() {
+      var searchParams = window.location.search;
+      if (!searchParams) return;
+      var checkoutButtons = document.querySelectorAll('a[href*="/checkout"]');
+      checkoutButtons.forEach(function(btn) {
+        var href = btn.getAttribute('href');
+        var glue = href.indexOf('?') !== -1 ? '&' : '?';
+        btn.setAttribute('href', href + glue + searchParams.replace(/^\?/, ''));
+      });
+    })();
+
+    // Annual vs Monthly billing toggle
+    function setBilling(cycle) {
+      var btnM = document.getElementById('btnMonthly');
+      var btnA = document.getElementById('btnAnnual');
+      var isAnnual = cycle === 'annual';
+
+      if (isAnnual) {
+        btnA.classList.add('active');
+        btnM.classList.remove('active');
+
+        document.getElementById('valStart').innerText = '12x R$ 67';
+        document.getElementById('cycleStart').innerText = '/mês';
+        document.getElementById('tagStart').innerText = '🔥 Menos de R$ 2,23 / dia (R$ 670/ano à vista)';
+        document.getElementById('btnLinkStart').href = 'https://os.imobiturbo.com.br/checkout?plan=start&cycle=annual';
+
+        document.getElementById('valGrowth').innerText = '12x R$ 177';
+        document.getElementById('cycleGrowth').innerText = '/mês';
+        document.getElementById('tagGrowth').innerText = '🔥 Apenas R$ 5,90 / dia (R$ 1.770/ano à vista)';
+        document.getElementById('btnLinkGrowth').href = 'https://os.imobiturbo.com.br/checkout?plan=growth&cycle=annual';
+
+        document.getElementById('valScale').innerText = '12x R$ 297';
+        document.getElementById('cycleScale').innerText = '/mês';
+        document.getElementById('tagScale').innerText = '🔥 Apenas R$ 9,90 / dia (R$ 2.970/ano à vista)';
+        document.getElementById('btnLinkScale').href = 'https://os.imobiturbo.com.br/checkout?plan=scale&cycle=annual';
+      } else {
+        btnM.classList.add('active');
+        btnA.classList.remove('active');
+
+        document.getElementById('valStart').innerText = 'R$ 97';
+        document.getElementById('cycleStart').innerText = '/mês';
+        document.getElementById('tagStart').innerText = 'Sem fidelidade • Cancele quando quiser';
+        document.getElementById('btnLinkStart').href = 'https://os.imobiturbo.com.br/checkout?plan=start&cycle=monthly';
+
+        document.getElementById('valGrowth').innerText = 'R$ 247';
+        document.getElementById('cycleGrowth').innerText = '/mês';
+        document.getElementById('tagGrowth').innerText = 'Sem fidelidade • Cancele quando quiser';
+        document.getElementById('btnLinkGrowth').href = 'https://os.imobiturbo.com.br/checkout?plan=growth&cycle=monthly';
+
+        document.getElementById('valScale').innerText = 'R$ 397';
+        document.getElementById('cycleScale').innerText = '/mês';
+        document.getElementById('tagScale').innerText = 'Sem fidelidade • Cancele quando quiser';
+        document.getElementById('btnLinkScale').href = 'https://os.imobiturbo.com.br/checkout?plan=scale&cycle=monthly';
+      }
+    }
+
+    // FAQ Accordion
+    function toggleFaq(el) {
+      el.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
