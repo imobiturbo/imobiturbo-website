@@ -1,5 +1,6 @@
 // Cloudflare Pages Function: /api/lead
 // Encaminha leads da Landing Page para o Imobiturbo OS e dispara mensagem personalizada via WAHA 7796
+import { captureCommunityLead } from './checkout/_community-crm.js';
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': '*',
@@ -44,6 +45,11 @@ export async function onRequestPost(context) {
       payload = Object.fromEntries(new URLSearchParams(text));
     } else {
       payload = await request.json();
+    }
+
+    if (payload.source === 'vagas_modal') {
+      const receipt = await captureCommunityLead(context.env || {}, payload);
+      return Response.json({ ok: true, ...receipt }, { headers: { ...CORS_HEADERS, 'Cache-Control': 'no-store' } });
     }
 
     // Extração e normalização dos dados
