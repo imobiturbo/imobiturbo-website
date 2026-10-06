@@ -35,7 +35,7 @@ test("vagas/index.html and vagas-v2/index.html contain payment selection with ho
     assert.ok(html.indexOf('id="chkCopyPixBtn"') < html.indexOf('id="chkPixQrImg"'), `${page} must place #chkCopyPixBtn above #chkPixQrImg for mobile speed`);
 
     // CPF do pagador label format
-    assert.ok(html.includes(page === 'vagas/index.html' ? 'for="chkPixCpf">CPF do comprador</label>' : 'for="chkPixCpf">CPF do pagador:</label>'), `${page} must identify the buyer CPF`);
+    assert.ok(html.includes(page === 'vagas/index.html' ? 'for="chkBuyerCpf">CPF do comprador</label>' : 'for="chkPixCpf">CPF do pagador:</label>'), `${page} must identify the buyer CPF`);
 
     // Pix Tab Icon and Card Tab Subtitle
     assert.ok(html.includes('class="chk-icon-pix"'), `${page} must set class chk-icon-pix on Pix SVG`);
