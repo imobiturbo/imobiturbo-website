@@ -5,7 +5,7 @@ const crypto = require('node:crypto');
 function files(root, dir = '') {
   return fs.readdirSync(path.join(root, dir), { withFileTypes: true }).flatMap(entry => {
     const relative = path.join(dir, entry.name);
-    return entry.isDirectory() ? files(root, relative) : [relative];
+    return entry.isDirectory() || (entry.isSymbolicLink() && fs.statSync(path.join(root, relative)).isDirectory()) ? files(root, relative) : [relative];
   });
 }
 const changed = file => file === '_worker.js' || file === '_routes.json' || file === '_redirects' || file === '404.html' ||
@@ -14,7 +14,7 @@ const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).d
 function compose(baseline, built, output) {
   for (const source of [baseline, built]) if (!fs.existsSync(path.join(source, '_worker.js'))) throw new Error('Missing release worker');
   if ([baseline, built].some(source => path.resolve(source) === path.resolve(output))) throw new Error('Output must be isolated');
-  fs.cpSync(baseline, output, { recursive: true });
+  fs.cpSync(baseline, output, { recursive: true, dereference: true });
   for (const file of files(built).filter(changed)) {
     const dest = path.join(output, file); fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(path.join(built, file), dest);
