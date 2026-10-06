@@ -238,6 +238,47 @@
     .footer-links { display: flex; gap: 24px; color: var(--text-muted); }
     .footer-links a:hover { color: #fff; }
 
+    /* Diferencial Section (Social & WhatsApp vs Portais) */
+    .diff-section { padding: 80px 0; background: #0c0d10; border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); }
+    .diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 40px; }
+    .diff-card { border-radius: 20px; padding: 36px 32px; background: var(--card-bg); border: 1px solid var(--card-border); position: relative; display: flex; flex-direction: column; justify-content: space-between; }
+    .diff-card.legacy { border-color: rgba(239, 68, 68, 0.25); background: linear-gradient(180deg, rgba(239, 68, 68, 0.03) 0%, rgba(20, 21, 26, 0.6) 100%); }
+    .diff-card.os { border: 2px solid var(--lime); background: linear-gradient(180deg, rgba(197, 254, 109, 0.05) 0%, rgba(14, 18, 15, 0.8) 100%); box-shadow: 0 15px 50px rgba(197, 254, 109, 0.1); }
+    .diff-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 12px; border-radius: 999px; margin-bottom: 16px; width: fit-content; }
+    .diff-pill.red { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .diff-pill.lime { background: rgba(197, 254, 109, 0.15); color: var(--lime); border: 1px solid rgba(197, 254, 109, 0.4); }
+    .diff-card h3 { font-size: 22px; font-weight: 800; line-height: 1.3; margin-bottom: 10px; }
+    .diff-card p.subtitle { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px; }
+    .diff-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin: 0; padding: 0; }
+    .diff-item { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.5; color: #d4d4d8; }
+    .diff-item strong { color: #fff; display: block; margin-bottom: 2px; }
+    .diff-item .bullet { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12px; font-weight: 800; margin-top: 2px; }
+    .diff-item.cross .bullet { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+    .diff-item.check .bullet { background: rgba(197, 254, 109, 0.2); color: var(--lime); }
+    .diff-summary-box { margin-top: 28px; padding: 16px; border-radius: 12px; font-size: 13px; line-height: 1.5; }
+    .diff-summary-box.red { background: rgba(239, 68, 68, 0.08); border: 1px dashed rgba(239, 68, 68, 0.3); color: #fca5a5; }
+    .diff-summary-box.lime { background: rgba(197, 254, 109, 0.08); border: 1px solid rgba(197, 254, 109, 0.3); color: #d9f99d; font-weight: 600; }
+
+    /* Como Funciona Section (15 Minutos) */
+    .how-section { padding: 90px 0; background: var(--bg); position: relative; }
+    .speed-header-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(197, 254, 109, 0.1); border: 1px solid rgba(197, 254, 109, 0.3); color: var(--lime); padding: 6px 16px; border-radius: 999px; font-size: 12.5px; font-weight: 700; margin-bottom: 16px; }
+    .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 48px; position: relative; }
+    .step-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 26px 22px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.2s; }
+    .step-card:hover { transform: translateY(-4px); border-color: rgba(197, 254, 109, 0.4); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+    .step-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+    .step-num { font-size: 26px; font-weight: 800; font-family: 'JetBrains Mono', monospace; color: var(--lime); line-height: 1; }
+    .step-time-tag { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: #202229; color: var(--text-muted); border: 1px solid var(--card-border); }
+    .step-card h3 { font-size: 17px; font-weight: 700; line-height: 1.35; margin-bottom: 10px; color: #fff; }
+    .step-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; margin-bottom: 20px; }
+    .step-ui-preview { background: #0c0d10; border: 1px solid var(--card-border); border-radius: 10px; padding: 12px; margin-top: auto; font-size: 11.5px; }
+    .step-ui-preview .ui-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .step-ui-preview .ui-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 4px; font-weight: 600; font-size: 11px; }
+    .step-cta-banner { margin-top: 50px; background: linear-gradient(90deg, #12141a 0%, #152218 100%); border: 1px solid rgba(197, 254, 109, 0.25); border-radius: 18px; padding: 26px 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+    .step-cta-info { display: flex; align-items: center; gap: 16px; }
+    .step-cta-icon { width: 48px; height: 48px; border-radius: 12px; background: rgba(197, 254, 109, 0.15); display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .step-cta-text strong { display: block; font-size: 16px; color: #fff; margin-bottom: 2px; }
+    .step-cta-text span { font-size: 13.5px; color: var(--text-muted); }
+
     /* Responsive */
     @media (max-width: 900px) {
       .hero h1 { font-size: 32px; }
@@ -250,6 +291,8 @@
       .testimonials-grid { grid-template-columns: 1fr; }
       .fit-grid { grid-template-columns: 1fr; }
       .pricing-grid { grid-template-columns: 1fr; }
+      .diff-grid { grid-template-columns: 1fr; gap: 20px; }
+      .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
       .price-card.popular { transform: none; }
       .nav-links { display: none; }
       .table-scroll-hint { display: block; }
@@ -271,6 +314,9 @@
       .pill-bottom-right { bottom: 8px; right: 8px; }
       .hero-tab-btn { padding: 6px 14px; font-size: 12px; }
       .hero-actions .btn { width: 100%; padding: 13px 20px; font-size: 14.5px; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .step-cta-banner { flex-direction: column; text-align: center; }
+      .step-cta-info { flex-direction: column; }
     }
 
     @media (max-width: 480px) {
@@ -284,7 +330,10 @@
       .stat-num { font-size: 22px; }
       .stat-label { font-size: 11px; }
       .toggle-btn { padding: 8px 14px; font-size: 12.5px; }
+      .diff-card { padding: 24px 18px; }
+      .step-card { padding: 22px 18px; }
     }
+
   </style>
 </head>
 <body>
@@ -296,10 +345,11 @@
         <img src="/assets/brand/theme-dark/os.webp" alt="Imobiturbo OS" class="brand-logo" width="160" height="32" onerror="this.onerror=null;this.src='/assets/brand/theme-dark/imobiturbo-os.webp';">
       </a>
       <ul class="nav-links">
+        <li><a href="#diferencial">Diferencial</a></li>
         <li><a href="#como-funciona">Como Funciona</a></li>
+        <li><a href="#simulador">Ao Vivo</a></li>
         <li><a href="#crm-os">O CRM</a></li>
         <li><a href="#whatsapp-ia">IA no WhatsApp</a></li>
-        <li><a href="#resultados">Resultados</a></li>
         <li><a href="#planos">Planos & Preços</a></li>
         <li><a href="#faq">Dúvidas</a></li>
       </ul>
@@ -321,7 +371,7 @@
         Atenda cada lead imobiliário em menos de <span>3 segundos no WhatsApp.</span> 24h por dia.
       </h1>
       <p class="lead">
-        Qualificação instantânea com IA no WhatsApp, roleta de corretores e CRM Kanban sem deixar clientes esfriarem no vácuo.
+        O primeiro CRM imobiliário voltado para <b>WhatsApp e Redes Sociais</b>, não para portais antigos. Onboarding automático em 15 minutos, integração com suas campanhas e IA nativa atendendo 24/7.
       </p>
 
       <div class="hero-actions">
@@ -329,7 +379,7 @@
           Ver Planos e Testar Agora →
         </a>
         <a href="#como-funciona" class="btn btn-outline">
-          Ver Robô ao Vivo ↓
+          Como Funciona (15 min) ↓
         </a>
       </div>
 
@@ -397,9 +447,276 @@
           <div class="stat-label">Tecnologia Plug & Play (Sem Cursos)</div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO DIFERENCIAL: SOCIAL & WHATSAPP vs PORTAIS -->
+  <section id="diferencial" class="diff-section">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-lime">A Diferença Real</div>
+        <h2>Qual a diferença do Imobiturbo OS para os outros CRMs?</h2>
+        <p>Os CRMs tradicionais foram construídos para portais de 2012. O Imobiturbo OS foi desenhado para a velocidade das Redes Sociais e do WhatsApp em 2026.</p>
+      </div>
+
+      <div class="diff-grid">
+        <!-- Card 1: Outros CRMs (Foco em Portais) -->
+        <div class="diff-card legacy">
+          <div>
+            <div class="diff-pill red">❌ CRMs Tradicionais de Portais</div>
+            <h3>Projetados para cadastrar imóveis em portais</h3>
+            <p class="subtitle">Feitos na década passada para imobiliárias que dependiam exclusivamente de portais e cadastros burocráticos.</p>
+
+            <ul class="diff-list">
+              <li class="diff-item cross">
+                <span class="bullet">✕</span>
+                <div>
+                  <strong>Foco em gerar XML para Portais</strong>
+                  Telas burocráticas feitas para preencher 40 campos obrigatórios de condomínio e IPTU para alimentar ZAP e VivaReal.
+                </div>
+              </li>
+              <li class="diff-item cross">
+                <span class="bullet">✕</span>
+                <div>
+                  <strong>Leads Frios por E-mail</strong>
+                  O cliente preenche um formulário no portal e a notificação cai numa caixa de entrada esquecida.
+                </div>
+              </li>
+              <li class="diff-item cross">
+                <span class="bullet">✕</span>
+                <div>
+                  <strong>Horas de Espera para o 1º Contato</strong>
+                  O tempo médio de resposta é de 4 a 24 horas. Quando o corretor finalmente liga, o lead já fechou com outro ou nem atende.
+                </div>
+              </li>
+              <li class="diff-item cross">
+                <span class="bullet">✕</span>
+                <div>
+                  <strong>Implantação Lenta & Consultores</strong>
+                  Exige semanas de treinamento, reuniões intermináveis e técnicos cobrando taxa de implantação.
+                </div>
+              </li>
+              <li class="diff-item cross">
+                <span class="bullet">✕</span>
+                <div>
+                  <strong>Zero Automação no WhatsApp</strong>
+                  O corretor precisa copiar o número, salvar na agenda, abrir o celular e digitar tudo na mão todos os dias.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="diff-summary-box red">
+            ⚠️ <b>Resultado:</b> Mais de 70% dos leads esfriam antes da primeira resposta e dinheiro jogado fora em anúncios.
+          </div>
+        </div>
+
+        <!-- Card 2: Imobiturbo OS (Foco em Redes Sociais e WhatsApp) -->
+        <div class="diff-card os">
+          <div>
+            <div class="diff-pill lime">⚡ Imobiturbo OS (O Novo Padrão)</div>
+            <h3>Projetado para WhatsApp & Redes Sociais</h3>
+            <p class="subtitle">Feito sob medida para quem anuncia no Meta Ads (Instagram/Facebook), TikTok e tráfego pago direto para WhatsApp.</p>
+
+            <ul class="diff-list">
+              <li class="diff-item check">
+                <span class="bullet">✓</span>
+                <div>
+                  <strong>Integração com Anúncios & Redes Sociais</strong>
+                  Conectado diretamente com suas campanhas de Meta Ads, Instagram e TikTok. O lead clicou no anúncio, o CRM já sabe o criativo e o imóvel.
+                </div>
+              </li>
+              <li class="diff-item check">
+                <span class="bullet">✓</span>
+                <div>
+                  <strong>Conversa Viva Instantânea no WhatsApp</strong>
+                  Sem formulários chatos. O lead fala diretamente no WhatsApp e é respondido em menos de 3 segundos com IA nativa.
+                </div>
+              </li>
+              <li class="diff-item check">
+                <span class="bullet">✓</span>
+                <div>
+                  <strong>Qualificação Automática 24h por Dia</strong>
+                  A Inteligência Artificial atende às 23:45, no domingo ou no feriado: descobre perfil, renda, interesse e agenda a visita no calendário.
+                </div>
+              </li>
+              <li class="diff-item check">
+                <span class="bullet">✓</span>
+                <div>
+                  <strong>Onboarding Automático em 15 Minutos</strong>
+                  Você entra no CRM e em menos de 15 minutos tudo está configurado e pronto para receber leads, sem consultores ou espera.
+                </div>
+              </li>
+              <li class="diff-item check">
+                <span class="bullet">✓</span>
+                <div>
+                  <strong>Roleta Inteligente & Kanban Automático</strong>
+                  Os leads quentes são distribuídos na roleta da equipe e o card no funil é criado e atualizado sozinho.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="diff-summary-box lime">
+            🚀 <b>Resultado:</b> Zero leads no vácuo, taxa de contato de 98% e até 3x mais visitas agendadas no mês.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO COMO FUNCIONA: DO ZERO AO AR EM 15 MINUTOS -->
+  <section id="como-funciona" class="how-section">
+    <div class="container">
+      <div class="section-title">
+        <div class="speed-header-pill">
+          <span>⏱️ Facilidade de Produto & Velocidade Real</span>
+        </div>
+        <h2>Como o Imobiturbo OS funciona na prática?</h2>
+        <p style="font-size:18px;max-width:750px;margin:12px auto 0;">
+          Do cadastro ao primeiro lead atendido com IA em <b>menos de 15 minutos</b>. Sem manuais complexos, sem taxa de setup e sem precisar de técnico.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        <!-- Passo 1 -->
+        <div class="step-card">
+          <div>
+            <div class="step-top">
+              <span class="step-num">01</span>
+              <span class="step-time-tag">⏱️ Minuto 0 a 3</span>
+            </div>
+            <h3>Onboarding Automático Inteligente</h3>
+            <p>
+              Você faz login e nosso assistente configura sua operação em 3 minutos. Escolha seu nicho de atuação e defina os critérios de qualificação dos clientes.
+            </p>
+          </div>
+
+          <div class="step-ui-preview">
+            <div style="color:var(--text-dim);margin-bottom:6px;font-weight:600;">Selecione seu modelo:</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;">
+              <span class="ui-badge" style="background:#1e293b;color:#38bdf8;">Lançamentos</span>
+              <span class="ui-badge" style="background:rgba(197,254,109,0.15);color:var(--lime);">Médio/Alto</span>
+              <span class="ui-badge" style="background:#1e293b;color:#94a3b8;">MCMV</span>
+            </div>
+            <div class="ui-row" style="color:var(--emerald);font-weight:700;">
+              <span>● Regras de qualificação</span>
+              <span>Ativadas ✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passo 2 -->
+        <div class="step-card">
+          <div>
+            <div class="step-top">
+              <span class="step-num">02</span>
+              <span class="step-time-tag">⏱️ Minuto 3 a 5</span>
+            </div>
+            <h3>Conecte seu WhatsApp com 1 QR Code</h3>
+            <p>
+              Abra o WhatsApp no seu celular, aponte a câmera para o QR Code na tela e pronto. Sem aprovação de semanas na Meta, sem código e com proteção de chip.
+            </p>
+          </div>
+
+          <div class="step-ui-preview">
+            <div class="ui-row" style="margin-bottom:6px;">
+              <span style="font-weight:600;color:#fff;">WhatsApp Web Connect</span>
+              <span style="color:var(--emerald);font-weight:700;">● Online</span>
+            </div>
+            <div style="background:#18191e;border-radius:6px;padding:6px;text-align:center;color:var(--text-muted);margin-bottom:6px;font-family:'JetBrains Mono',monospace;font-size:10.5px;">
+              [ QR Code Escaneado ]
+            </div>
+            <div class="ui-row" style="color:var(--lime);font-size:11px;">
+              <span>🔒 Proteção de chip ativa</span>
+              <span>100% Seguro</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passo 3 -->
+        <div class="step-card">
+          <div>
+            <div class="step-top">
+              <span class="step-num">03</span>
+              <span class="step-time-tag">⏱️ Minuto 5 a 10</span>
+            </div>
+            <h3>Integre com Campanhas & Redes Sociais</h3>
+            <p>
+              Vincule suas campanhas do Meta Ads (Instagram/Facebook), TikTok ou o link da sua bio. Todo clique de anúncio é rastreado automaticamente.
+            </p>
+          </div>
+
+          <div class="step-ui-preview">
+            <div style="color:var(--text-dim);margin-bottom:6px;font-weight:600;">Fontes sincronizadas:</div>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;">
+              <span class="ui-badge" style="background:rgba(236,72,153,0.15);color:#f472b6;">Instagram Ads</span>
+              <span class="ui-badge" style="background:rgba(59,130,246,0.15);color:#60a5fa;">Facebook</span>
+              <span class="ui-badge" style="background:#222;color:#fff;">Bio / Link</span>
+            </div>
+            <div class="ui-row" style="color:var(--lime);font-weight:700;">
+              <span>🎯 Rastreamento de criativo</span>
+              <span>Ativo ✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Passo 4 -->
+        <div class="step-card">
+          <div>
+            <div class="step-top">
+              <span class="step-num">04</span>
+              <span class="step-time-tag">⏱️ Minuto 10 a 15</span>
+            </div>
+            <h3>IA Ativa 24/7 & Roleta de Corretores</h3>
+            <p>
+              A Inteligência Artificial assume o atendimento no WhatsApp imediatamente. Tira dúvidas, colhe orçamento e distribui os contatos quentes no Kanban.
+            </p>
+          </div>
+
+          <div class="step-ui-preview">
+            <div class="ui-row" style="margin-bottom:6px;">
+              <span style="font-weight:600;color:#fff;">IA de Atendimento</span>
+              <span style="color:var(--lime);font-weight:700;">● Plantão 24/7</span>
+            </div>
+            <div style="background:#132115;border:1px solid rgba(197,254,109,0.25);border-radius:6px;padding:6px 8px;color:#d4ffd9;margin-bottom:6px;font-size:11px;">
+              ⚡ Lead qualificado em 2.4s → Card criado no Kanban
+            </div>
+            <div class="ui-row" style="color:var(--emerald);font-size:11px;">
+              <span>🎯 Roleta de Corretores</span>
+              <span>Distribuindo ✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner de Garantia de Velocidade -->
+      <div class="step-cta-banner">
+        <div class="step-cta-info">
+          <div class="step-cta-icon">⚡</div>
+          <div class="step-cta-text">
+            <strong>Qualidade de produto de verdade não faz você perder tempo.</strong>
+            <span>Se você sabe escanear um QR Code no celular, você coloca o Imobiturbo OS para rodar hoje mesmo antes do almoço.</span>
+          </div>
+        </div>
+        <a href="#planos" class="btn btn-lime" style="white-space:nowrap;">
+          Começar Configuração de 15 min →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO SIMULADOR INTERATIVO: AO VIVO -->
+  <section id="simulador" style="padding:70px 0 90px;background:#0d0d10;border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-lime">Demonstração Interativa</div>
+        <h2>Veja a IA atendendo e o CRM sincronizando em tempo real</h2>
+        <p>O lead manda mensagem às 23:45, a IA responde em 2 segundos e o card é criado no seu CRM Kanban sem você mexer um dedo.</p>
+      </div>
 
       <!-- Simulador Interativo de WhatsApp e Kanban HUD -->
-      <div class="sim-wrap" id="como-funciona">
+      <div class="sim-wrap">
         <div class="chat-col">
           <div class="chat-header">
             <div class="chat-lead-info">

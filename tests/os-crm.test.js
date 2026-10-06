@@ -44,3 +44,25 @@ test('os-crm contains 3 plans and Asaas checkout links', () => {
   assert.ok(html.includes('Plano Scale'), 'Must have Plano Scale');
   assert.ok(html.includes('os.imobiturbo.com.br/checkout'), 'Must link to OS checkout');
 });
+
+test('os-crm highlights WhatsApp and social media over portals and 15 min onboarding', () => {
+  const html = fs.readFileSync(osCrmPath, 'utf8');
+
+  // Differential section
+  assert.ok(html.includes('id="diferencial"'), 'Must have diferencial section');
+  assert.ok(html.includes('Qual a diferença do Imobiturbo OS para os outros CRMs?'), 'Must state CRM differential clearly');
+  assert.ok(html.includes('Redes Sociais'), 'Must contrast with social media');
+  assert.ok(html.includes('portais'), 'Must contrast with portals');
+
+  // How it works 15 min section
+  assert.ok(html.includes('id="como-funciona"'), 'Must have como-funciona section');
+  assert.ok(html.includes('menos de 15 minutos'), 'Must state 15 minutes setup');
+  assert.ok(html.includes('Onboarding Automático Inteligente'), 'Must detail step 1');
+  assert.ok(html.includes('QR Code'), 'Must detail step 2 WhatsApp connection');
+  assert.ok(html.includes('Campanhas & Redes Sociais'), 'Must detail step 3 ads integration');
+  assert.ok(html.includes('IA Ativa 24/7 & Roleta de Corretores'), 'Must detail step 4 AI and round robin');
+
+  // Simulator section
+  assert.ok(html.includes('id="simulador"'), 'Must have live simulator section');
+});
+
