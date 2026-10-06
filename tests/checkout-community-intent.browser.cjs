@@ -142,7 +142,7 @@ for (const width of [320, 390, 1440]) test(`hosted monthly ${width}px: native bu
   await paymentStep(page, 'mensal');
   assert.equal(await page.locator('#chkCardNumber').count(), 0);
   assert.equal(await page.locator('#chkCardCvv').count(), 0);
-  assert.equal(await page.locator('#chkTabPix').isVisible(), false);
+  assert.equal(await page.locator('#chkTabPix').isVisible(), false, JSON.stringify(await page.locator('#chkTabPix').evaluate(n => ({hidden:n.hidden,style:n.getAttribute('style'),display:getComputedStyle(n).display,plan:window.currentSelectedPlan}))));
   await submit(page, 'CREDIT_CARD');
   await page.waitForURL('https://www.asaas.com/i/synthetic_not_payable');
   assert.equal(state.posts.length, 1);
