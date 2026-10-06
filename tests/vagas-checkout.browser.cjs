@@ -133,7 +133,7 @@ test('three plans show the correct hosted checkout price and monthly renewal', a
       assert.equal(await page.locator('#chkInstallmentsWrap').isVisible(), false);
       assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /147.*recorrente/);
       await page.locator('#chkTabPix').click();
-      assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /147\/mês.*Pix Automático/);
+      assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /147,00\/mês.*Pix Automático/);
       assert.match(await page.locator('#chkPixTotal').innerText(), /autorize no banco.*147\/mês/);
       if (artifacts) await page.screenshot({ path: path.join(artifacts, '390-mensal-pix-automatico.png') });
       await page.locator('#chkTabCard').click();
@@ -167,7 +167,8 @@ for (const width of [390, 1440]) test(`monthly Pix Automatic is explicit and cre
   assert.ok(compact.scrollHeight <= compact.height + 1, 'payment choice fits without an inner scrollbar');
   assert.ok(await page.locator('#chkGeneratePixBtn').evaluate(node => { const rect = node.getBoundingClientRect(); return rect.top >= 0 && rect.bottom <= innerHeight; }), 'monthly CTA is in view');
   if (artifacts) await page.screenshot({ path: path.join(artifacts, `${width}-monthly-pix-choice.png`) });
-  const response = { success: true, managedCommunity: true, pixAutomatic: true, orderStatus: 'created',
+  const response = { success: true, managedCommunity: true, gateway: 'asaas', pixAutomatic: true, orderStatus: 'created',
+    checkoutOrderId: '22222222-2222-4222-8222-222222222222',
     paymentId: 'auto_33333333-3333-4333-8333-333333333333', method: 'PIX', plan: 'mensal',
     productId: 'comunidade-imobiturbo', amount: 147, installmentCount: 1,
     expiresAt: new Date(Date.now() + 30 * 60000).toISOString(), paid: false,
