@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { harness } = require('./checkout-community-routes.test.cjs');
+const { harness, load, env, buyer } = require('./checkout-community-routes.test.cjs');
 
 test('hosted monthly creates one subscription without card material, zero charges for lateness and no access before payment', async t => {
   const h = harness(t, { subscriptionPayment: true });
@@ -19,6 +19,9 @@ test('hosted monthly creates one subscription without card material, zero charge
   assert.equal(post.body.creditCard, undefined);
   assert.equal(post.body.creditCardHolderInfo, undefined);
   assert.equal(post.body.endDate, undefined);
+  // A redirect is rejected by Asaas when the merchant has no registered site.
+  // Payment and access must still work without that optional account setting.
+  assert.equal(post.body.callback, undefined);
   await h.checkout(request);
   assert.equal(h.state.calls.filter(c => c.path === '/v3/subscriptions' && c.method === 'POST').length, 1);
 });
@@ -36,6 +39,19 @@ for (const [plan, method, installments, total] of [
   assert.equal(post.body.creditCard, undefined);
   assert.deepEqual(post.body.fine, { value: 0, type: 'FIXED' });
   assert.deepEqual(post.body.interest, { value: 0 });
+  assert.equal(post.body.callback, undefined);
+});
+
+test('hosted redirect remains available when the merchant explicitly enables its registered site', async t => {
+  const h = harness(t, { subscriptionPayment: true });
+  const response = await (await load('index.js')).onRequestPost({
+    request: new Request('https://example.invalid/api/checkout', { method: 'POST',
+      body: JSON.stringify({ ...buyer, checkoutMode: 'hosted', paymentMethod: 'CREDIT_CARD', creditCard: null }) }),
+    env: { ...env, ASAAS_CHECKOUT_CALLBACK_ENABLED: 'true' },
+  });
+  assert.equal(response.status, 200);
+  const post = h.state.calls.find(c => c.path === '/v3/subscriptions' && c.method === 'POST');
+  assert.deepEqual(post.body.callback, { successUrl: 'https://www.imobiturbo.com.br/vagas/?paymentReturn=1', autoRedirect: true });
 });
 
 test('hosted flow rejects accidental card material before gateway mutation', async t => {
