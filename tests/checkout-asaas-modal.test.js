@@ -42,7 +42,7 @@ test("vagas/index.html and vagas-v2/index.html contain payment selection with ho
     assert.ok(html.includes('id="chkCardTabDesc"'), `${page} must contain #chkCardTabDesc`);
 
     // Asaas Processing Footer
-    assert.ok(html.includes("Pagamento Processado via"), `${page} must display Pagamento Processado via`);
+    assert.ok(html.includes(page === "vagas/index.html" ? "Pagamento seguro via" : "Pagamento Processado via"), `${page} must display Pagamento Processado via`);
     assert.ok(html.includes("assets/thesvg/asaas.svg"), `${page} must display Asaas logo`);
 
     // Standardized Price Layout and Clean Summary

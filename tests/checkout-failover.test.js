@@ -134,7 +134,7 @@ test("checkout API PLAN_DETAILS matches landing page pricing and Hub tracking co
       assert.ok(html.includes('Total no cartão: R$ 147 · À vista: R$ 147'));
       assert.ok(html.includes('No mensal, cartão e Pix Automático renovam todo mês'));
       assert.ok(html.includes('anual e trimestral no Pix são pagamentos únicos'));
-      assert.ok(html.includes('pixAutomatic:'));
+      assert.ok(html.includes('payload.pixAutomatic = true'));
     }
   }
 });

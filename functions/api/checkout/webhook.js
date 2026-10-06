@@ -52,6 +52,9 @@ export async function onRequestPost(context) {
     // Resolve the product before any membership side effects, including partial
     // metadata, deletion, refund and out-of-order Asaas notifications.
     if (payload.payment?.id) {
+      if (env?.ASAAS_WEBHOOK_TOKEN && request.headers.get("asaas-access-token") !== env.ASAAS_WEBHOOK_TOKEN) {
+        return Response.json({ ok: false, error: "asaas_unauthorized" }, { status: 401 });
+      }
       if (!env?.ASAAS_API_KEY) return Response.json({ ok: false, error: "asaas_verification_unavailable" }, { status: 503 });
       const providerResponse = await fetch(`${asaasConnection(env).base}/payments/${encodeURIComponent(payload.payment.id)}`, {
         headers: { access_token: env.ASAAS_API_KEY, "User-Agent": "Imobiturbo-Checkout/1.0" },
