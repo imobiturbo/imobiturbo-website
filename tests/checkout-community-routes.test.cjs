@@ -125,6 +125,7 @@ function harness(t, options = {}) {
       if (options.postMode === 'rejected') return Response.json({ errors: [{ description: 'synthetic rejected' }] }, { status: 400 });
       const installment = body.installmentCount > 1 ? 'ins_synthetic' : null;
       const payment = { ...paymentFixture(orderFixture()), ...body, id: 'pay_synthetic',
+        invoiceUrl: 'https://www.asaas.com/i/synthetic',
         value: body.value ?? Math.floor(body.totalValue * 100 / body.installmentCount) / 100,
         status: options.paidCreation ? 'CONFIRMED' : 'PENDING', ...(installment ? { installment, installmentNumber: 1 } : {}) };
       state.payments.set(payment.id, payment);
@@ -134,6 +135,11 @@ function harness(t, options = {}) {
     }
     if (u.pathname === '/v3/subscriptions' && method === 'POST') {
       state.subscription = { ...body, id: 'sub_synthetic', status: 'ACTIVE' };
+      if (options.subscriptionPayment) state.payments.set('pay_synthetic', {
+        ...paymentFixture(state.order), ...body, id: 'pay_synthetic', subscription: 'sub_synthetic',
+        originalDueDate: body.nextDueDate, status: 'PENDING', confirmedDate: null,
+        invoiceUrl: 'https://www.asaas.com/i/synthetic',
+      });
       return Response.json(state.subscription);
     }
     if (u.pathname === '/v3/subscriptions/sub_synthetic') return Response.json(state.subscription || {

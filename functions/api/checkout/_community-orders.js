@@ -179,7 +179,7 @@ export async function resolveCommunityOrder(config, payment) {
 }
 async function asaasPost(config, path, body) {
   const response = await fetch(`${config.base}${path}`, { method: "POST", headers: config.headers,
-    body: JSON.stringify(body), signal: AbortSignal.timeout(15000) });
+    body: JSON.stringify(body), signal: AbortSignal.timeout(65000) });
   const data = await response.json().catch(() => null);
   if (!response.ok || !data?.id) throw new CommunityError("community_creation_uncertain");
   return data;
@@ -200,7 +200,8 @@ export async function createCommunityOrder(env, body) {
   // store CPF/card data in the order, a hash, logs or a response.
   const cpf = typeof body.cpfCnpj === "string" ? body.cpfCnpj.replace(/\D/g, "") : "";
   const card = body.creditCard;
-  if (!/^\d{11}(\d{3})?$/.test(cpf) || (selection.method === "CREDIT_CARD" &&
+  const hosted = body.checkoutMode === "hosted";
+  if (!/^\d{11}(\d{3})?$/.test(cpf) || (hosted && card) || (!hosted && selection.method === "CREDIT_CARD" &&
       (!card || !/^\d{13,19}$/.test(String(card.number || "").replace(/\D/g, "")) || !/^\d{3,4}$/.test(String(card.ccv || "")) ||
        !/^(0[1-9]|1[0-2])$/.test(String(card.expiryMonth || "")) || !/^\d{4}$/.test(String(card.expiryYear || ""))))) {
     order = await finishCommunityOrder(config, order, { status: "failed", error_code: "invalid_payment_data",
@@ -220,8 +221,9 @@ export async function createCommunityOrder(env, body) {
     const due = new Date().toISOString().slice(0, 10);
     const payload = { customer: knownCustomer, billingType: selection.method, externalReference: order.external_reference,
       description: `Comunidade Imobiturbo - Plano ${selection.plan}`, fine: { value: 0, type: "FIXED" }, interest: { value: 0 } };
+    if (hosted) payload.callback = { successUrl: "https://www.imobiturbo.com.br/vagas/?paymentReturn=1", autoRedirect: true };
     const s = order.sold_snapshot;
-    if (selection.method === "CREDIT_CARD") {
+    if (selection.method === "CREDIT_CARD" && !hosted) {
       payload.creditCard = { holderName: card.holderName || order.buyer_name, number: String(card.number).replace(/\D/g, ""), expiryMonth: card.expiryMonth, expiryYear: card.expiryYear, ccv: card.ccv };
       payload.creditCardHolderInfo = { name: card.holderName || order.buyer_name, email: order.buyer_email, cpfCnpj: cpf,
         postalCode: card.postalCode || "20050005", addressNumber: card.addressNumber || "1", phone: order.buyer_phone, mobilePhone: order.buyer_phone };

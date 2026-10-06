@@ -9,6 +9,13 @@
   const COMMUNITY_INTENT_KEY = 'imobiturbo:checkout:community-intent:v1';
   const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+  function isAsaasInvoiceUrl(value) {
+    try { const url = new URL(value); return url.protocol === 'https:' &&
+      ['www.asaas.com', 'asaas.com', 'sandbox.asaas.com'].includes(url.hostname) &&
+      !url.username && !url.password && /^\/i\/[a-zA-Z0-9_-]+$/.test(url.pathname); }
+    catch (_) { return false; }
+  }
+
   // Financial intent exists before the POST response/payment ID. It has no TTL:
   // losing a response must not erase the only key that can recover that charge.
   function createCommunityIntent(options = {}) {
@@ -70,7 +77,7 @@
           const eid = payload.eventId || uuid();
           if (key === eid) throw new Error('Identificador da compra inválido.');
           intent = write({ version: 1, idempotencyKey: key, fingerprint: hash, eventId: eid,
-            plan: payload.plan, method: payload.paymentMethod, installmentCount: Number(payload.installments || 1), state: 'prepared', checkoutOrderId: null });
+            checkoutMode: payload.checkoutMode === 'hosted' ? 'hosted' : 'transparent', plan: payload.plan, method: payload.paymentMethod, installmentCount: Number(payload.installments || 1), state: 'prepared', checkoutOrderId: null });
         }
         write({ ...intent, state: 'submitting' });
         return { payload: { ...payload, idempotencyKey: intent.idempotencyKey, eventId: intent.eventId } };
@@ -108,6 +115,8 @@
       const installmentCount = Number(value.installmentCount);
       const offerCodes = ['consultoria-a-vista', 'consultoria-12x49', ...Array.from({ length: 11 }, (_, index) => `consultoria-${index + 2}x`)];
       return {
+        checkoutMode: value.checkoutMode === 'hosted' ? 'hosted' : 'transparent',
+        invoiceUrl: isAsaasInvoiceUrl(value.invoiceUrl) ? value.invoiceUrl : null,
         version: 2, paymentId: value.paymentId, gateway: 'asaas',
         plan: value.plan, productId: options.productId,
         eventId: typeof value.eventId === 'string' ? value.eventId.slice(0, 250) : '',
@@ -319,6 +328,10 @@
     notice.style.cssText = 'font-size:14px;line-height:1.5;color:#d4ff53;margin:12px 0';
     notice.hidden = true;
     pane.prepend(notice);
+    const externalLink = root.document.createElement('a');
+    externalLink.id = 'chkExternalLink'; externalLink.className = 'chk-btn-submit'; externalLink.hidden = true;
+    externalLink.textContent = 'Continuar pagamento no Asaas'; externalLink.rel = 'noopener';
+    pane.prepend(externalLink);
     let timer = null;
     let recoveryTimer = null;
     let recovering = false;
@@ -336,6 +349,13 @@
       api.goToCheckoutStep(4);
       locked(true);
       notice.hidden = false;
+      externalLink.hidden = !(record.checkoutMode === 'hosted' && isAsaasInvoiceUrl(record.invoiceUrl));
+      if (!externalLink.hidden) {
+        externalLink.href = record.invoiceUrl;
+        notice.textContent = 'Sua compra está aberta. Conclua na página segura do Asaas.';
+        get('chkCardView').style.display = 'none'; get('chkPixView').style.display = 'none';
+        return;
+      }
       const isPix = record.method === 'PIX';
       notice.textContent = isPix ? record.pix.copyPaste ?
         'Seu Pix está aberto. Use o mesmo código para concluir.' :
@@ -380,7 +400,7 @@
         for (const id of ['chkName', 'chkPhone', 'chkEmail', 'chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv', 'chkCardCpf', 'chkPixCpf']) {
           if (get(id)) get(id).value = '';
         }
-        notice.hidden = true;
+        notice.hidden = true; externalLink.hidden = true;
         locked(false);
         get('chkPixFormBlock').style.display = 'block';
         get('chkPixResultBlock').style.display = 'none';
@@ -415,7 +435,7 @@
         if (result.paymentId) {
           if (recoveryTimer) root.clearInterval(recoveryTimer);
           recoveryTimer = null;
-          session.save(result, { method: intent.read()?.method || 'PIX' });
+          session.save(result, { method: intent.read()?.method || 'PIX', checkoutMode: intent.read()?.checkoutMode });
           return session.start();
         }
         if (result.retryCreationAllowed) {
@@ -454,7 +474,7 @@
   }
 
   root.ImobiturboCheckoutSession = {
-    create, bindLanding, clearDraft, TTL, COMMUNITY_KEY, CONSULTING_KEY,
+    isAsaasInvoiceUrl, create, bindLanding, clearDraft, TTL, COMMUNITY_KEY, CONSULTING_KEY,
     createUpsellBuyerProfile, UPSELL_BUYER_KEY, UPSELL_BUYER_TTL,
     createCommunityIntent, COMMUNITY_INTENT_KEY,
     saveUpsellBuyer: upsellBuyerProfile.save,

@@ -5,7 +5,7 @@ const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
 
-test("vagas/index.html and vagas-v2/index.html contain Option #1 transparent checkout popup with Card, Pix and VIP WhatsApp", () => {
+test("vagas/index.html and vagas-v2/index.html contain payment selection with hosted card checkout and legacy recovery", () => {
   for (const page of ["vagas/index.html", "vagas-v2/index.html"]) {
     const htmlPath = path.join(root, page);
     const html = fs.readFileSync(htmlPath, "utf8");
@@ -16,12 +16,10 @@ test("vagas/index.html and vagas-v2/index.html contain Option #1 transparent che
     assert.ok(html.includes('id="chkCardView"'), `${page} must contain #chkCardView`);
     assert.ok(html.includes('id="chkPixView"'), `${page} must contain #chkPixView`);
 
-    // Credit Card Fields
-    assert.ok(html.includes('id="chkCardNumber"'), `${page} must contain #chkCardNumber`);
-    assert.ok(html.includes('id="chkCardBrandBadge"'), `${page} must contain #chkCardBrandBadge`);
-    assert.ok(html.includes('id="chkCardHolder"'), `${page} must contain #chkCardHolder`);
-    assert.ok(html.includes('id="chkCardExpiry"'), `${page} must contain #chkCardExpiry`);
-    assert.ok(html.includes('id="chkCardCvv"'), `${page} must contain #chkCardCvv`);
+    // The primary landing delegates sensitive card fields to Asaas.
+    for (const id of ['chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv']) {
+      assert.equal(html.includes('id="' + id + '"'), page === 'vagas-v2/index.html');
+    }
     assert.ok(html.includes('id="chkCardCpf"'), `${page} must contain #chkCardCpf`);
     assert.ok(html.includes('id="chkInstallments"'), `${page} must contain #chkInstallments`);
     assert.ok(html.includes('id="chkContinuePaymentBtn"'), `${page} must contain #chkContinuePaymentBtn`);

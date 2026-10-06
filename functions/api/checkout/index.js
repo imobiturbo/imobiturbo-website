@@ -578,6 +578,8 @@ async function createCheckout(context) {
           value: selectedPlan.pixReais,
           nextDueDate: todayStr,
           cycle: "MONTHLY",
+          fine: { value: 0, type: "FIXED" },
+          interest: { value: 0 },
           description: selectedPlan.title,
           creditCard: {
             holderName: creditCard.holderName || name,
@@ -594,7 +596,7 @@ async function createCheckout(context) {
           method: "POST",
           headers: asaasHeaders,
           body: JSON.stringify(subPayload),
-          signal: AbortSignal.timeout(8000),
+          signal: AbortSignal.timeout(65000),
         });
         const subData = await subResp.json();
 
@@ -697,7 +699,7 @@ async function createCheckout(context) {
           method: "POST",
           headers: asaasHeaders,
           body: JSON.stringify(cardPayload),
-          signal: AbortSignal.timeout(8000),
+          signal: AbortSignal.timeout(65000),
         });
         const payment = await payResp.json();
 
