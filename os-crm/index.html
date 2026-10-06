@@ -332,6 +332,52 @@
       .toggle-btn { padding: 8px 14px; font-size: 12.5px; }
       .diff-card { padding: 24px 18px; }
       .step-card { padding: 22px 18px; }
+      .hero-feature-strip { grid-template-columns: 1fr; }
+      .mockup-window-header { padding: 8px 12px; }
+      .mockup-caption-bar { font-size: 11.5px; padding: 10px 12px; }
+      .visual-card-body { padding: 16px; }
+      .tangible-point-card { padding: 16px; }
+    }
+
+    /* Hero Feature Quick Strip */
+    .hero-feature-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 1060px; margin: 32px auto 0; width: 100%; box-sizing: border-box; }
+    .hero-strip-card { background: rgba(20, 21, 26, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; text-align: left; transition: all 0.2s ease; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .hero-strip-card:hover { border-color: rgba(197, 254, 109, 0.4); background: rgba(24, 25, 32, 0.95); transform: translateY(-2px); }
+    .hero-strip-icon { font-size: 22px; width: 40px; height: 40px; border-radius: 10px; background: rgba(197, 254, 109, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .hero-strip-card strong { display: block; font-size: 13.5px; font-weight: 700; color: #fff; line-height: 1.25; margin-bottom: 2px; }
+    .hero-strip-card span { display: block; font-size: 11.5px; color: var(--text-muted); line-height: 1.3; }
+
+    /* Real Product Mockup Showcase Windows */
+    .mockup-window { background: #0d0e12; border: 1px solid rgba(197, 254, 109, 0.22); border-radius: 18px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75), 0 0 40px rgba(197, 254, 109, 0.08); position: relative; transition: transform 0.3s ease, border-color 0.3s ease; }
+    .mockup-window:hover { border-color: rgba(197, 254, 109, 0.45); transform: translateY(-2px); }
+    .mockup-window-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; background: #14151a; border-bottom: 1px solid var(--card-border); }
+    .mockup-window-dots { display: flex; align-items: center; gap: 7px; }
+    .mockup-window-title { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+    .mockup-window-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: rgba(197, 254, 109, 0.12); color: var(--lime); border: 1px solid rgba(197, 254, 109, 0.25); display: inline-flex; align-items: center; gap: 5px; }
+    .mockup-window img { width: 100%; height: auto; display: block; object-fit: cover; transition: transform 0.3s ease; }
+    .mockup-caption-bar { padding: 12px 18px; background: rgba(18, 19, 24, 0.95); border-top: 1px solid var(--card-border); font-size: 12.5px; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+    .tangible-feature-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 40px; align-items: center; margin-top: 40px; }
+    .tangible-feature-grid.reverse { grid-template-columns: 0.85fr 1.15fr; }
+    .tangible-points-list { display: flex; flex-direction: column; gap: 16px; }
+    .tangible-point-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 20px 22px; transition: all 0.2s ease; }
+    .tangible-point-card:hover { border-color: rgba(197, 254, 109, 0.35); background: #171820; }
+    .tangible-point-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .tangible-point-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; background: rgba(197, 254, 109, 0.12); color: var(--lime); }
+    .tangible-point-card h4 { font-size: 16px; font-weight: 700; color: #fff; }
+    .tangible-point-card p { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; margin: 0; }
+    .tangible-highlight-callout { padding: 16px 20px; background: linear-gradient(90deg, rgba(197, 254, 109, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%); border: 1px solid rgba(197, 254, 109, 0.25); border-radius: 14px; font-size: 13.5px; color: #d9f99d; display: flex; align-items: center; gap: 12px; margin-top: 14px; line-height: 1.5; }
+    .visual-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s, border-color 0.2s; }
+    .visual-card:hover { transform: translateY(-4px); border-color: rgba(197, 254, 109, 0.4); box-shadow: 0 16px 40px rgba(0,0,0,0.5); }
+    .visual-card-thumb { width: 100%; height: 190px; background: #0a0b0e; overflow: hidden; position: relative; border-bottom: 1px solid var(--card-border); }
+    .visual-card-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top center; transition: transform 0.3s ease; }
+    .visual-card:hover .visual-card-thumb img { transform: scale(1.04); }
+    .visual-card-body { padding: 22px; display: flex; flex-direction: column; flex: 1; }
+    .visual-card-tag { font-size: 11px; font-weight: 700; color: var(--lime); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+
+    @media (max-width: 900px) {
+      .hero-feature-strip { grid-template-columns: repeat(2, 1fr); }
+      .tangible-feature-grid, .tangible-feature-grid.reverse { grid-template-columns: 1fr; gap: 28px; }
+      .visual-card-thumb { height: 160px; }
     }
 
   </style>
@@ -346,10 +392,11 @@
       </a>
       <ul class="nav-links">
         <li><a href="#diferencial">Diferencial</a></li>
+        <li><a href="#disparador">Disparador</a></li>
+        <li><a href="#ia-auto-treinamento">IA Auto-Treinada</a></li>
+        <li><a href="#followup-crm">Follow-up & CRM</a></li>
         <li><a href="#como-funciona">Como Funciona</a></li>
         <li><a href="#simulador">Ao Vivo</a></li>
-        <li><a href="#crm-os">O CRM</a></li>
-        <li><a href="#whatsapp-ia">IA no WhatsApp</a></li>
         <li><a href="#planos">Planos & Preços</a></li>
         <li><a href="#faq">Dúvidas</a></li>
       </ul>
@@ -446,6 +493,38 @@
           <div class="stat-num"><span>100%</span></div>
           <div class="stat-label">Tecnologia Plug & Play (Sem Cursos)</div>
         </div>
+      </div>
+
+      <!-- Tangibilização Rápida no Hero (Cards Visuais com Badges) -->
+      <div class="hero-feature-strip">
+        <a href="#disparador" class="hero-strip-card">
+          <div class="hero-strip-icon">🚀</div>
+          <div>
+            <strong>Disparador em Massa</strong>
+            <span>Cadência humana anti-ban & reativação</span>
+          </div>
+        </a>
+        <a href="#ia-auto-treinamento" class="hero-strip-card">
+          <div class="hero-strip-icon">🧠</div>
+          <div>
+            <strong>IA que se Auto-Treina</strong>
+            <span>Suba PDFs e tabelas • Zero tokens</span>
+          </div>
+        </a>
+        <a href="#followup-crm" class="hero-strip-card">
+          <div class="hero-strip-icon">🔄</div>
+          <div>
+            <strong>Follow-up Anti-Vácuo</strong>
+            <span>Régua inteligente D+1, D+3 e D+7</span>
+          </div>
+        </a>
+        <a href="#followup-crm" class="hero-strip-card">
+          <div class="hero-strip-icon">📋</div>
+          <div>
+            <strong>CRM Auto-Atualizado</strong>
+            <span>Move colunas e preenche dados sozinho</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -592,16 +671,13 @@
             </p>
           </div>
 
-          <div class="step-ui-preview">
-            <div style="color:var(--text-dim);margin-bottom:6px;font-weight:600;">Selecione seu modelo:</div>
-            <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;">
-              <span class="ui-badge" style="background:#1e293b;color:#38bdf8;">Lançamentos</span>
-              <span class="ui-badge" style="background:rgba(197,254,109,0.15);color:var(--lime);">Médio/Alto</span>
-              <span class="ui-badge" style="background:#1e293b;color:#94a3b8;">MCMV</span>
-            </div>
-            <div class="ui-row" style="color:var(--emerald);font-weight:700;">
-              <span>● Regras de qualificação</span>
-              <span>Ativadas ✓</span>
+          <div class="step-ui-preview" style="padding:0;overflow:hidden;border:1px solid var(--card-border);">
+            <img src="/os-crm/assets/visao-agentes-ia.png" alt="Modelos de agentes de IA no Imobiturbo OS" style="width:100%;height:105px;object-fit:cover;object-position:top left;display:block;">
+            <div style="padding:8px 10px;background:#14151a;">
+              <div class="ui-row" style="color:var(--emerald);font-weight:700;font-size:11px;">
+                <span>● Regras de qualificação</span>
+                <span>Configuradas em 3 min ✓</span>
+              </div>
             </div>
           </div>
         </div>
@@ -619,17 +695,13 @@
             </p>
           </div>
 
-          <div class="step-ui-preview">
-            <div class="ui-row" style="margin-bottom:6px;">
-              <span style="font-weight:600;color:#fff;">WhatsApp Web Connect</span>
-              <span style="color:var(--emerald);font-weight:700;">● Online</span>
-            </div>
-            <div style="background:#18191e;border-radius:6px;padding:6px;text-align:center;color:var(--text-muted);margin-bottom:6px;font-family:'JetBrains Mono',monospace;font-size:10.5px;">
-              [ QR Code Escaneado ]
-            </div>
-            <div class="ui-row" style="color:var(--lime);font-size:11px;">
-              <span>🔒 Proteção de chip ativa</span>
-              <span>100% Seguro</span>
+          <div class="step-ui-preview" style="padding:0;overflow:hidden;border:1px solid var(--card-border);">
+            <img src="/os-crm/assets/qrcode-whatsapp.png" alt="Conexão de WhatsApp por QR Code no Imobiturbo OS" style="width:100%;height:105px;object-fit:cover;object-position:center 45%;display:block;">
+            <div style="padding:8px 10px;background:#14151a;">
+              <div class="ui-row" style="color:var(--lime);font-size:11px;font-weight:700;">
+                <span>🔒 Proteção de chip ativa</span>
+                <span>Conectado em 15s ✓</span>
+              </div>
             </div>
           </div>
         </div>
@@ -674,17 +746,13 @@
             </p>
           </div>
 
-          <div class="step-ui-preview">
-            <div class="ui-row" style="margin-bottom:6px;">
-              <span style="font-weight:600;color:#fff;">IA de Atendimento</span>
-              <span style="color:var(--lime);font-weight:700;">● Plantão 24/7</span>
-            </div>
-            <div style="background:#132115;border:1px solid rgba(197,254,109,0.25);border-radius:6px;padding:6px 8px;color:#d4ffd9;margin-bottom:6px;font-size:11px;">
-              ⚡ Lead qualificado em 2.4s → Card criado no Kanban
-            </div>
-            <div class="ui-row" style="color:var(--emerald);font-size:11px;">
-              <span>🎯 Roleta de Corretores</span>
-              <span>Distribuindo ✓</span>
+          <div class="step-ui-preview" style="padding:0;overflow:hidden;border:1px solid var(--card-border);">
+            <img src="/os-crm/assets/roleta-equipe.png" alt="Roleta e equipe no Imobiturbo OS" style="width:100%;height:105px;object-fit:cover;object-position:top left;display:block;">
+            <div style="padding:8px 10px;background:#14151a;">
+              <div class="ui-row" style="color:var(--lime);font-size:11px;font-weight:700;">
+                <span>🎯 Roleta de Corretores</span>
+                <span>Distribuindo 24/7 ✓</span>
+              </div>
             </div>
           </div>
         </div>
@@ -881,6 +949,284 @@
     </div>
   </section>
 
+  <!-- SEÇÃO NOVO RECURSO: DISPARADOR EM MASSA COM CADÊNCIA HUMANA ANTI-BAN -->
+  <section id="disparador" class="showcase-section" style="background:#09090b;">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-lime">🚀 Novo Recurso Tangibilizado</div>
+        <h2>Disparador em Massa com <span style="color:var(--lime);">Cadência Humana Anti-Ban.</span></h2>
+        <p>Reative centenas de clientes parados na sua base sem risco de bloqueio de chip e sem gastar um centavo a mais em anúncios.</p>
+      </div>
+
+      <div class="tangible-feature-grid">
+        <!-- Visual Mockup Window com Screenshot Real -->
+        <div class="mockup-window">
+          <div class="mockup-window-header">
+            <div class="mockup-window-dots">
+              <span class="hero-dot dot-red"></span>
+              <span class="hero-dot dot-yellow"></span>
+              <span class="hero-dot dot-green"></span>
+            </div>
+            <div class="mockup-window-title">
+              ⚡ disparador-massa • Spintax & Variações IA
+            </div>
+            <span class="mockup-window-tag">
+              <span class="pulse-dot"></span> Disparo Ativo
+            </span>
+          </div>
+          <img src="/os-crm/assets/disparador-massa.png" alt="Interface real do Disparador em Massa com Spintax no Imobiturbo OS" loading="lazy">
+          <div class="mockup-caption-bar">
+            <span>📊 <b>482 contatos selecionados</b> • Tag: [Leads Frios 90D]</span>
+            <span style="color:var(--lime);font-weight:700;">✓ Cadência Segura: 1 msg a cada 25-45s</span>
+          </div>
+        </div>
+
+        <!-- Pontos Chave Tangibilizados -->
+        <div class="tangible-points-list">
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">✍️</div>
+              <h4>Variação Dinâmica da IA (Spintax Inteligente)</h4>
+            </div>
+            <p>
+              A Inteligência Artificial reescreve variações naturais de cada frase para cada contato. Para os algoritmos do WhatsApp, cada mensagem enviada é 100% única, eliminando padrões repetitivos de spam e blindando o seu chip contra suspensões.
+            </p>
+          </div>
+
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">🎯</div>
+              <h4>Filtros de Audiência por Tags & Perfil</h4>
+            </div>
+            <p>
+              Segmente quem recebe: <i>"Leads parados há mais de 60 dias"</i>, <i>"Interessados em 3 quartos"</i> ou <i>"Compradores na planta"</i>. Mande a oportunidade certa para quem tem interesse real em vez de atirar no escuro.
+            </p>
+          </div>
+
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">🛡️</div>
+              <h4>Pezzotti NightGuard & Intervalo Humano</h4>
+            </div>
+            <p>
+              Intervalos aleatórios entre 25s e 45s por envio, simulando a digitação de uma pessoa de carne e osso. O sistema pausa automaticamente fora do horário comercial para respeitar o descanso do cliente e manter sua reputação alta.
+            </p>
+          </div>
+
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">⚡</div>
+              <h4>Transbordo Automático para Atendimento IA</h4>
+            </div>
+            <p>
+              Assim que o cliente responde ao disparo, a IA assume a conversa no mesmo segundo para tirar dúvidas e agendar a visita. Você não precisa ficar monitorando tela: só atende quem está quente.
+            </p>
+          </div>
+
+          <div class="tangible-highlight-callout">
+            <span>💰</span>
+            <div>
+              <strong>Reativação Imediata de Caixa:</strong> Imobiliárias parceiras resgatam em média de <b>20 a 55 leads aquecidos</b> já nas primeiras 24 horas de disparo sem colocar 1 centavo a mais no Meta Ads.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO NOVO RECURSO: IA ILIMITADA QUE SE AUTO-TREINA -->
+  <section id="ia-auto-treinamento" class="showcase-section" style="background:#0c0d10;">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-white">🧠 Conhecimento Imobiliário Puro</div>
+        <h2>IA Ilimitada que se auto-treina com seus imóveis. <span style="color:var(--lime);">Zero custo por token.</span></h2>
+        <p>Você não precisa saber programar nem criar prompts complicados. Suba o PDF do empreendimento, envie a tabela de vendas ou mande um áudio e a IA aprende tudo em segundos.</p>
+      </div>
+
+      <div class="tangible-feature-grid reverse">
+        <!-- Pontos Chave Tangibilizados -->
+        <div class="tangible-points-list">
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">📄</div>
+              <h4>Upload de Tabelas, Espelhos & PDFs em 1 Clique</h4>
+            </div>
+            <p>
+              Arraste a tabela de preços da construtora, o espelho de vendas com unidades disponíveis, o memorial descritivo ou a convenção do condomínio. A IA indexa metragens, valores de entrada, fluxo de obras e taxas de condomínio sem limite de páginas.
+            </p>
+          </div>
+
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">🎙️</div>
+              <h4>Treinamento por Áudio & Regras Comerciais</h4>
+            </div>
+            <p>
+              Prefere falar? Mande um áudio no WhatsApp contando as particularidades: <i>"Aceitamos permuta por automóvel até R$ 80k e o construtor banca o ITBI neste mês"</i>. A IA assimila a regra comercial e já utiliza nas respostas aos clientes.
+            </p>
+          </div>
+
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">♾️</div>
+              <h4>IA 100% Ilimitada — Zero Surpresas no Fim do Mês</h4>
+            </div>
+            <p>
+              Enquanto outros softwares cobram por mensagem enviada, por consumo de API da OpenAI ou faturam em dólar, no Imobiturbo OS a Inteligência Artificial é <b>ilimitada em todos os planos</b>. Converse com 100 ou 10.000 leads sem pagar nada a mais.
+            </p>
+          </div>
+
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">🛡️</div>
+              <h4>Zero Alucinação com Transferência Segura</h4>
+            </div>
+            <p>
+              A IA é estritamente ancorada na sua pauta. Se um lead perguntar algo que não está cadastrado (ex: parcelamento fora do padrão), ela não inventa dados: transfere com educação para o corretor humano conduzir a negociação.
+            </p>
+          </div>
+
+          <div class="tangible-highlight-callout">
+            <span>✨</span>
+            <div>
+              <strong>Exemplo Real no WhatsApp:</strong> O comprador pergunta <i>"Quanto fica a entrada para o 3 quartos na torre B?"</i> e a IA calcula a parcela exata da tabela, simula o financiamento bancário e convida para a visita no decorado.
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Mockup Window com Screenshot Real -->
+        <div class="mockup-window">
+          <div class="mockup-window-header">
+            <div class="mockup-window-dots">
+              <span class="hero-dot dot-red"></span>
+              <span class="hero-dot dot-yellow"></span>
+              <span class="hero-dot dot-green"></span>
+            </div>
+            <div class="mockup-window-title">
+              🧠 base-conhecimento • Agente Imobiliário IA
+            </div>
+            <span class="mockup-window-tag">
+              ♾️ IA Ilimitada
+            </span>
+          </div>
+          <img src="/os-crm/assets/base-conhecimento-ia.png" alt="Interface real da Base de Conhecimento e Auto-Treinamento da IA no Imobiturbo OS" loading="lazy">
+          <div class="mockup-caption-bar">
+            <span>📚 <b>12 Empreendimentos Indexados</b> • PDF, Excel & Áudio</span>
+            <span style="color:var(--lime);font-weight:700;">Zero Cobrança de Tokens ✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO NOVO RECURSO: FOLLOW-UP AUTOMÁTICO & CRM ATUALIZADO SOZINHO -->
+  <section id="followup-crm" class="showcase-section" style="background:#09090b;">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-lime">🔄 Zero Trabalho Manual</div>
+        <h2>Follow-up Automático & CRM que se <span style="color:var(--lime);">atualiza sozinho.</span></h2>
+        <p>Corretor bom passa o dia negociando e visitando, não preenchendo campo chato de sistema. A IA faz a gestão dos contatos no vácuo e avança os cards no Kanban para você.</p>
+      </div>
+
+      <div class="tangible-feature-grid">
+        <!-- Visual Mockup Window Duplo -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div class="mockup-window">
+            <div class="mockup-window-header">
+              <div class="mockup-window-dots">
+                <span class="hero-dot dot-red"></span>
+                <span class="hero-dot dot-yellow"></span>
+                <span class="hero-dot dot-green"></span>
+              </div>
+              <div class="mockup-window-title">
+                🔄 automacoes-followup • Regras Anti-Vácuo
+              </div>
+              <span class="mockup-window-tag">
+                <span class="pulse-dot"></span> Ativo 24/7
+              </span>
+            </div>
+            <img src="/os-crm/assets/followup-regras.png" alt="Interface real de Regras de Follow-up Automático no Imobiturbo OS" loading="lazy">
+            <div class="mockup-caption-bar">
+              <span>⏱️ Retomada Inteligente: <b>4h, 24h e 72h</b> sem resposta</span>
+              <span style="color:var(--emerald);font-weight:700;">Mensagens Humanizadas ✓</span>
+            </div>
+          </div>
+
+          <div class="mockup-window">
+            <div class="mockup-window-header">
+              <div class="mockup-window-dots">
+                <span class="hero-dot dot-red"></span>
+                <span class="hero-dot dot-yellow"></span>
+                <span class="hero-dot dot-green"></span>
+              </div>
+              <div class="mockup-window-title">
+                📋 crm-lead-detalhes • Dados Preenchidos pela IA
+              </div>
+              <span class="mockup-window-tag" style="background:rgba(16,185,129,0.12);color:var(--emerald);border-color:rgba(16,185,129,0.25);">
+                Atualizado pela IA
+              </span>
+            </div>
+            <img src="/os-crm/assets/card-lead-detalhes.png" alt="Ficha do Lead no CRM atualizada automaticamente pela IA" loading="lazy">
+            <div class="mockup-caption-bar">
+              <span>👤 <b>Renda, FGTS, Bairro & Entrada</b> extraídos da conversa</span>
+              <span style="color:var(--lime);font-weight:700;">Zero Digitação Manual ✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pontos Chave Tangibilizados -->
+        <div class="tangible-points-list">
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">⏱️</div>
+              <h4>Régua Anti-Vácuo no Momento Certo</h4>
+            </div>
+            <p>
+              Mais de 65% das vendas imobiliárias acontecem após o primeiro contato. O cliente parou de responder após ver o valor da entrada? A IA retoma com novas opções no timing ideal: envio de vídeo do decorado, simulação com parcelas decrescentes ou aviso de loteamento liberado.
+            </p>
+          </div>
+
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">📊</div>
+              <h4>Movimentação Automática de Colunas no Kanban</h4>
+            </div>
+            <p>
+              Conforme o cliente responde e confirma etapas no WhatsApp, o card dele no CRM avança sozinho: de <b>Novo Lead</b> ➔ <b>Em Qualificação</b> ➔ <b>Visita Confirmada</b> ➔ <b>Proposta</b>. Seu funil fica 100% atualizado sem você precisar abrir o sistema.
+            </p>
+          </div>
+
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">📋</div>
+              <h4>Extração Automática de Dados Financeiros</h4>
+            </div>
+            <p>
+              A Inteligência Artificial ouve o que o comprador diz e preenche os campos do CRM automaticamente: renda familiar, capacidade de entrada, valor disponível em FGTS, número de quartos e condomínio de preferência.
+            </p>
+          </div>
+
+          <div class="tangible-point-card">
+            <div class="tangible-point-head">
+              <div class="tangible-point-icon">🔔</div>
+              <h4>Alerta Executivo no WhatsApp do Corretor</h4>
+            </div>
+            <p>
+              Quando o lead agenda a visita, o corretor de plantão recebe uma notificação direta no seu WhatsApp pessoal com o resumo completo: <i>"Lead qualificado! Marcos agendou visita para sábado 10h. Renda R$ 18k, busca 3 qtos. Toque para ver a ficha."</i>
+            </p>
+          </div>
+
+          <div class="tangible-highlight-callout">
+            <span>⚡</span>
+            <div>
+              <strong>Ganho de Tempo Real:</strong> Sua equipe economiza em média <b>2 horas diárias de trabalho burocrático</b>, focando 100% da energia em atender bem, visitar e fechar contratos.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- SEÇÃO VAGAS 08: RESULTADOS REAIS E DEPOIMENTOS -->
   <section id="resultados" style="padding:80px 0;">
     <div class="container">
@@ -971,40 +1317,70 @@
       </div>
 
       <div class="features-grid">
-        <div class="feat-card">
-          <div class="feat-icon">🤖</div>
-          <h3>Inteligência Artificial Integrada</h3>
-          <p>Atende e qualifica leads 24h por dia no WhatsApp em 3 segundos. Entende áudios, preferências do imóvel e responde dúvidas com dados reais da sua pauta.</p>
+        <div class="visual-card">
+          <div class="visual-card-thumb">
+            <img src="/os-crm/assets/roleta-equipe.png" alt="Roleta Inteligente de Corretores no Imobiturbo OS" loading="lazy">
+          </div>
+          <div class="visual-card-body">
+            <div class="visual-card-tag">Distribuição Equitativa</div>
+            <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;color:#fff;">Roleta Inteligente com Transbordo</h3>
+            <p style="font-size:13.5px;color:var(--text-muted);line-height:1.55;margin:0;">Distribua novos leads automaticamente por ordem justa de chegada, plantão ou perfil do imóvel. Se o corretor não responder em até 5 minutos, o lead pula imediatamente para o próximo da fila.</p>
+          </div>
         </div>
 
-        <div class="feat-card">
-          <div class="feat-icon">🎯</div>
-          <h3>Roleta Inteligente de Corretores</h3>
-          <p>Distribuição justa de novos leads por ordem de chegada, plantão ou especialidade, com regra de transbordo automático se o corretor não responder em 5 min.</p>
+        <div class="visual-card">
+          <div class="visual-card-thumb">
+            <img src="/os-crm/assets/inbox-multiatendimento.png" alt="Inbox Multiatendimento com Áudio Acelerado" loading="lazy">
+          </div>
+          <div class="visual-card-body">
+            <div class="visual-card-tag">Atendimento Centralizado</div>
+            <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;color:#fff;">Inbox 3 Colunas com Áudio Acelerado</h3>
+            <p style="font-size:13.5px;color:var(--text-muted);line-height:1.55;margin:0;">Centralize todas as conversas da imobiliária em um único lugar. Ouça áudios em 1.5x/2x com transcrição instantânea e assuma a conversa da IA com 1 clique quando desejar intervir.</p>
+          </div>
         </div>
 
-        <div class="feat-card">
-          <div class="feat-icon">📊</div>
-          <h3>CRM Kanban Especializado</h3>
-          <p>Funil de vendas visual desenhado para a rotina imobiliária: Novo Lead, Qualificado, Visita Agendada, Proposta e Fechamento com lembretes automáticos.</p>
+        <div class="visual-card">
+          <div class="visual-card-thumb">
+            <img src="/os-crm/assets/desempenho-funil.png" alt="Painel Executivo de VGV, CAC e ROAS" loading="lazy">
+          </div>
+          <div class="visual-card-body">
+            <div class="visual-card-tag">Gestão Executiva</div>
+            <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;color:#fff;">Métricas de VGV, CAC & Conversão</h3>
+            <p style="font-size:13.5px;color:var(--text-muted);line-height:1.55;margin:0;">Painel executivo com taxas de conversão por corretor, tempo de primeiro contato e retorno real de cada anúncio. Saiba exatamente onde está o gargalo da sua equipe de vendas.</p>
+          </div>
         </div>
 
-        <div class="feat-card">
-          <div class="feat-icon">🛡️</div>
-          <h3>WhatsApp Seguro e Protegido</h3>
-          <p>A inteligência artificial atende com ritmo natural de digitação humana e responde apenas leads que entram em contato com sua imobiliária, garantindo total segurança contra bloqueios.</p>
+        <div class="visual-card">
+          <div class="visual-card-thumb">
+            <img src="/os-crm/assets/conexoes-whatsapp.png" alt="Multi-Conexões de WhatsApp via QR Code" loading="lazy">
+          </div>
+          <div class="visual-card-body">
+            <div class="visual-card-tag">Conectividade Blindada</div>
+            <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;color:#fff;">Múltiplos WhatsApps Conectados</h3>
+            <p style="font-size:13.5px;color:var(--text-muted);line-height:1.55;margin:0;">Conecte o número principal da imobiliária, o número de plantão e os WhatsApps individuais dos corretores via QR Code em segundos, com monitoramento ativo e reconexão silenciosa.</p>
+          </div>
         </div>
 
-        <div class="feat-card">
-          <div class="feat-icon">🔗</div>
-          <h3>Integrações com Meta Ads & Portais</h3>
-          <p>Receba leads instantaneamente de campanhas do Facebook/Instagram Lead Ads, portais imobiliários e páginas de captura sem precisar de Zapier ou Make.</p>
+        <div class="visual-card">
+          <div class="visual-card-thumb">
+            <img src="/os-crm/assets/app-mobile-pwa.png" alt="Aplicativo Mobile PWA com Notificação Push" loading="lazy">
+          </div>
+          <div class="visual-card-body">
+            <div class="visual-card-tag">100% Mobile & Notificações</div>
+            <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;color:#fff;">PWA Mobile para Corretores no Plantão</h3>
+            <p style="font-size:13.5px;color:var(--text-muted);line-height:1.55;margin:0;">Instale o app diretamente no iPhone ou Android. O corretor recebe notificação push na hora que o lead qualificado entra, vê o resumo da IA e liga com um toque direto do celular.</p>
+          </div>
         </div>
 
-        <div class="feat-card">
-          <div class="feat-icon">📈</div>
-          <h3>Métricas de VGV, CAC & ROAS</h3>
-          <p>Painel executivo com taxas de conversão por corretor, tempo de primeiro contato e retorno real de cada canal de anúncio investido.</p>
+        <div class="visual-card">
+          <div class="visual-card-thumb">
+            <img src="/os-crm/assets/crm-kanban.png" alt="CRM Kanban Especializado Imobiliário" loading="lazy">
+          </div>
+          <div class="visual-card-body">
+            <div class="visual-card-tag">Funil Imobiliário Nativo</div>
+            <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;color:#fff;">Kanban Especializado: Do Lead à Escritura</h3>
+            <p style="font-size:13.5px;color:var(--text-muted);line-height:1.55;margin:0;">Funil visual desenhado para a rotina imobiliária: Novo Lead, Qualificado, Visita Agendada, Proposta e Fechamento. Arraste cards facilmente e acione ações em lote.</p>
+          </div>
         </div>
       </div>
     </div>

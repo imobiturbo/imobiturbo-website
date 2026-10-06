@@ -66,3 +66,43 @@ test('os-crm highlights WhatsApp and social media over portals and 15 min onboar
   assert.ok(html.includes('id="simulador"'), 'Must have live simulator section');
 });
 
+test('os-crm tangibilizes core features with real mockups and screenshots', () => {
+  const html = fs.readFileSync(osCrmPath, 'utf8');
+
+  // Disparador em massa
+  assert.ok(html.includes('id="disparador"'), 'Must have disparador section');
+  assert.ok(html.includes('/os-crm/assets/disparador-massa.png'), 'Must have disparador mockup');
+  assert.ok(html.includes('Cadência Humana Anti-Ban'), 'Must describe human cadence');
+  assert.ok(html.includes('Spintax'), 'Must mention Spintax variation');
+
+  // IA que se auto-treina
+  assert.ok(html.includes('id="ia-auto-treinamento"'), 'Must have ia-auto-treinamento section');
+  assert.ok(html.includes('/os-crm/assets/base-conhecimento-ia.png'), 'Must have knowledge base mockup');
+  assert.ok(html.includes('Zero custo por token'), 'Must guarantee zero token cost');
+  assert.ok(html.includes('PDF') || html.includes('tabelas'), 'Must mention training with PDFs or tables');
+
+  // Follow-up e CRM auto-atualizado
+  assert.ok(html.includes('id="followup-crm"'), 'Must have followup-crm section');
+  assert.ok(html.includes('/os-crm/assets/followup-regras.png'), 'Must have followup rules mockup');
+  assert.ok(html.includes('/os-crm/assets/card-lead-detalhes.png'), 'Must have lead card details mockup');
+
+  // Recursos nativos com visual cards
+  assert.ok(html.includes('visual-card'), 'Must contain visual-card elements');
+  assert.ok(html.includes('/os-crm/assets/roleta-equipe.png'), 'Must have roleta mockup');
+  assert.ok(html.includes('/os-crm/assets/inbox-multiatendimento.png'), 'Must have inbox mockup');
+  assert.ok(html.includes('/os-crm/assets/desempenho-funil.png'), 'Must have performance dashboard mockup');
+  assert.ok(html.includes('/os-crm/assets/conexoes-whatsapp.png'), 'Must have whatsapp connections mockup');
+  assert.ok(html.includes('/os-crm/assets/app-mobile-pwa.png'), 'Must have mobile PWA mockup');
+  assert.ok(html.includes('/os-crm/assets/crm-kanban.png'), 'Must have crm kanban mockup');
+
+  // Ensure all referenced asset files actually exist on disk
+  const assetMatches = [...html.matchAll(/\/os-crm\/assets\/([a-zA-Z0-9_\-.]+\.png)/g)];
+  assert.ok(assetMatches.length >= 6, 'Must reference multiple assets in /os-crm/assets/');
+  for (const match of assetMatches) {
+    const filename = match[1];
+    const assetPath = path.join(__dirname, '..', 'os-crm', 'assets', filename);
+    assert.ok(fs.existsSync(assetPath), `Asset file ${filename} must exist at ${assetPath}`);
+  }
+});
+
+
