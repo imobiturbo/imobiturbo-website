@@ -4,7 +4,7 @@ BEGIN;
 DO $unit$
 DECLARE org uuid:='18b103e6-a006-45ac-84d5-62312f45ba77'; plan public.cobranca_planos%rowtype; intent jsonb; claimed jsonb; o jsonb;
   auth uuid:=gen_random_uuid(); result jsonb; p jsonb; first_result jsonb; renewal_result jsonb;
-  n integer; denied boolean;
+  n integer; denied boolean; review jsonb; reviewed jsonb; durable_before jsonb; durable_after jsonb;
 BEGIN
   IF current_database() !~ '^pix_auto_unit_' THEN RAISE EXCEPTION 'disposable_pix_auto_unit_database_required'; END IF;
   SELECT * INTO plan FROM public.cobranca_planos WHERE active AND duration_months=1 LIMIT 1;
@@ -62,6 +62,30 @@ BEGIN
     THEN RAISE EXCEPTION 'unit_renewal_identity_changed'; END IF;
   SELECT count(*) INTO n FROM public.cobranca_competencias WHERE subscription_id=(first_result->>'subscription_id')::uuid;
   IF n<>2 THEN RAISE EXCEPTION 'unit_competence_count:%',n; END IF;
+  SELECT jsonb_agg(to_jsonb(a) ORDER BY a.id) INTO durable_before FROM public.cobranca_competencias a WHERE subscription_id=(first_result->>'subscription_id')::uuid;
+  review:=jsonb_build_object('contract_version',1,'provider','asaas','organization_id',org,'environment','sandbox',
+    'checkout_order_id',o->>'id','payment_id','pay_pix_auto_unit_initial','customer_id','cus_pix_auto_unit',
+    'provider_subscription_id',null,'provider_installment_id',null,'provider_pix_authorization_id',auth,
+    'billing_type','PIX','amount_cents',14700,'installment_number',1,'status','RECEIVED','deleted',false,
+    'refunds','[]'::jsonb,'chargeback_status',null,'event_id','unit_tx_refund','source','asaas_payment_and_pix_transaction_lookup',
+    'pix_transaction',jsonb_build_object('id',gen_random_uuid(),'payment_id','pay_pix_auto_unit_initial',
+      'conciliation_identifier','synthetic-unit-concil','type','CREDIT','status','DONE','amount_cents',14700,'refunded_cents',1000));
+  reviewed:=public.record_community_financial_review(review);
+  IF reviewed->>'state'<>'pending' OR reviewed->>'activation_id' IS DISTINCT FROM first_result->>'activation_id' THEN RAISE EXCEPTION 'unit_tx_refund_review_not_bound'; END IF;
+  IF public.record_community_financial_review(review)->>'duplicate'<>'true' THEN RAISE EXCEPTION 'unit_duplicate_refund_review'; END IF;
+  SELECT jsonb_agg(to_jsonb(a) ORDER BY a.id) INTO durable_after FROM public.cobranca_competencias a WHERE subscription_id=(first_result->>'subscription_id')::uuid;
+  IF durable_before IS DISTINCT FROM durable_after THEN RAISE EXCEPTION 'unit_negative_review_rewrote_paid_competence'; END IF;
+  denied:=false;
+  BEGIN
+    PERFORM public.record_community_financial_review(review||jsonb_build_object('event_id','unit_wrong_tx','pix_transaction',
+      (review->'pix_transaction')||jsonb_build_object('payment_id','pay_other')));
+  EXCEPTION WHEN SQLSTATE '22023' THEN denied:=true; END;
+  IF NOT denied THEN RAISE EXCEPTION 'unit_wrong_refund_transaction_accepted'; END IF;
+  denied:=false;
+  BEGIN
+    PERFORM public.record_community_financial_review(review||jsonb_build_object('event_id','unit_wrong_auth','provider_pix_authorization_id',gen_random_uuid()));
+  EXCEPTION WHEN SQLSTATE '22023' THEN denied:=true; END;
+  IF NOT denied THEN RAISE EXCEPTION 'unit_wrong_refund_authorization_accepted'; END IF;
   RAISE NOTICE 'PixAutomatic unit DB verifier passed; all fixture writes rolled back';
 END;
 $unit$;

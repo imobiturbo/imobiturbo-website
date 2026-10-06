@@ -674,6 +674,6 @@ begin
   -- No update to paid competencies, delivered products, grants or memberships.
   return jsonb_build_object('contract_version',1,'review_id',v_id,'state','pending','activation_id',v_activation,'duplicate',false);
 end;
-$function$
+$function$;
 
 COMMIT;
