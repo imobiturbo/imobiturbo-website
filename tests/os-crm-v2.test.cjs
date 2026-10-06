@@ -9,6 +9,7 @@ const root = path.join(__dirname, '..');
 
 test('OS offer preserves the published monthly, annual cash and installment totals', () => {
   assert.deepEqual(Object.values(offer.plans).map(p => [p.monthly, p.installment, p.annual]), [[97,67,670],[247,177,1770],[397,297,2970]]);
+  assert.equal(offer.existingAccessURL(), 'https://os.imobiturbo.com.br/login');
   for (const [key,p] of Object.entries(offer.plans)) {
     const annual = offer.price(key, 'annual');
     assert.ok(annual.detail.includes(offer.money(p.annual)));

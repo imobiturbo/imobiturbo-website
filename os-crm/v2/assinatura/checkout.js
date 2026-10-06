@@ -14,7 +14,7 @@
     document.querySelector('#summary-detail').textContent = price.detail;
     document.querySelector('#checkout-features').replaceChildren(...selected.features.map(text => { const li = document.createElement('li'); li.textContent = text; return li; }));
     document.querySelector('#activate-os').href = offer.activationURL(plan, cycle);
-    document.querySelector('#existing-checkout').href = offer.existingCheckoutURL(plan, cycle);
+    document.querySelector('#existing-checkout').href = offer.existingAccessURL();
     const guarantee = document.querySelector('#summary-guarantee p');
     guarantee.textContent = cycle === 'annual' ? 'Garantia incondicional de 7 dias na oferta anual.' : 'Mensal sem fidelidade. Cancele quando quiser.';
     history.replaceState(null, '', offer.checkoutURL(plan, cycle));

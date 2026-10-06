@@ -26,11 +26,13 @@
       : { headline: money(p.monthly), detail: 'Assinatura mensal. Cancele quando quiser.', period: '/mês' };
   }
   const checkoutURL = (plan, cycle) => `/os-crm/v2/assinatura/?plan=${plan}&cycle=${cycle}`;
-  const existingCheckoutURL = (plan, cycle) => `https://os.imobiturbo.com.br/checkout?plan=${plan}&cycle=${cycle}`;
+  // Existing /checkout redirects to another offer (implementation assistance).
+  // Students should enter the OS directly rather than inherit that legacy route.
+  const existingAccessURL = () => 'https://os.imobiturbo.com.br/login';
   function activationURL(plan, cycle) {
     const p = plans[plan];
     const text = `Olá! Quero ativar o Imobiturbo OS no plano ${p.name}, ciclo ${cycle === 'annual' ? 'anual' : 'mensal'}. ${price(plan, cycle).headline}. Podem me orientar sobre contratação e acesso?`;
     return `https://wa.me/5521969516183?text=${encodeURIComponent(text)}`;
   }
-  return { plans, money, selection, price, checkoutURL, existingCheckoutURL, activationURL };
+  return { plans, money, selection, price, checkoutURL, existingAccessURL, activationURL };
 });
