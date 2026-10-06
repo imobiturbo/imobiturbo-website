@@ -7,9 +7,13 @@ BEGIN
   IF md5(pg_get_functiondef('public.community_order_audit()'::regprocedure)) <> '3dd9b7bdaa8bc455acb49086e9970e6f' THEN RAISE EXCEPTION 'pix_auto_function_drift:community_order_audit'; END IF;
   IF md5(pg_get_functiondef('public.finish_community_order(uuid,uuid,jsonb)'::regprocedure)) <> '9e2966052266aa5722d0029dc023bf11' THEN RAISE EXCEPTION 'pix_auto_function_drift:finish_community_order'; END IF;
   IF md5(pg_get_functiondef('public.record_community_payment(jsonb)'::regprocedure)) <> 'af5990931d8b0c425748a5c8c1e217b1' THEN RAISE EXCEPTION 'pix_auto_function_drift:record_community_payment'; END IF;
+  IF md5(pg_get_functiondef('public.record_community_financial_review(jsonb)'::regprocedure)) <> '2be4cb87edb33dedd9192795bad4fc9d' THEN RAISE EXCEPTION 'pix_auto_function_drift:record_community_financial_review'; END IF;
+  IF (SELECT md5(pg_get_constraintdef(oid)) FROM pg_constraint WHERE conrelid='public.cobranca_pedidos'::regclass AND conname='cobranca_pedidos_check1') IS DISTINCT FROM 'd27db0f17342852cbaf1ec7cd3777c17' THEN RAISE EXCEPTION 'pix_auto_created_constraint_drift'; END IF;
 END;
 $precondition$;
 ALTER TABLE public.cobranca_pedidos ADD COLUMN provider_pix_authorization_id uuid;
+ALTER TABLE public.cobranca_pedidos DROP CONSTRAINT cobranca_pedidos_check1;
+ALTER TABLE public.cobranca_pedidos ADD CONSTRAINT cobranca_pedidos_check1 CHECK (status<>'created' OR provider_payment_id IS NOT NULL OR provider_subscription_id IS NOT NULL OR provider_installment_id IS NOT NULL OR provider_pix_authorization_id IS NOT NULL);
 CREATE UNIQUE INDEX cobranca_pedidos_pix_authorization_unique ON public.cobranca_pedidos (organization_id,provider,environment,provider_pix_authorization_id) WHERE provider_pix_authorization_id IS NOT NULL;
 ALTER TABLE public.cobranca_pedidos ADD CONSTRAINT community_pix_automatic_order_binding CHECK ((sold_snapshot->>'price_mode'='recurring_pix_auto' AND sold_snapshot->>'duration_months'='1' AND sold_snapshot->>'installment_count'='1' AND sold_snapshot->>'contract_total_cents'='14700' AND provider_subscription_id IS NULL AND provider_payment_id IS NULL AND provider_installment_id IS NULL AND (status<>'created' OR provider_pix_authorization_id IS NOT NULL)) OR (sold_snapshot->>'price_mode'<>'recurring_pix_auto' AND provider_pix_authorization_id IS NULL));
 -- Preserve every existing predicate; extend only CHECK mode enumerations.
@@ -556,4 +560,120 @@ end;
 $function$;
 
 ALTER TABLE public.cobranca_competencias ADD CONSTRAINT community_pix_automatic_competence CHECK (price_mode<>'recurring_pix_auto' OR (installment_count=1 AND contract_total_cents=14700 AND competence_key LIKE 'pixauto:%' AND period_start=(competence_date::timestamp AT TIME ZONE 'UTC') AND period_end=((competence_date::timestamp + interval '1 month') AT TIME ZONE 'UTC')));
+
+-- Preserve manual review; include independently verified Pix transaction refunds.
+CREATE OR REPLACE FUNCTION public.record_community_financial_review(p_review jsonb)
+ RETURNS jsonb
+ LANGUAGE plpgsql
+ SECURITY DEFINER
+ SET search_path TO 'public', 'pg_temp'
+AS $function$
+declare
+  v_org constant uuid := '18b103e6-a006-45ac-84d5-62312f45ba77';
+  v_order public.cobranca_pedidos%rowtype;
+  v_existing public.cobranca_revisoes_financeiras%rowtype;
+  v_activation uuid; v_id uuid; v_count integer; v_number integer; v_amount bigint; v_expected bigint;
+begin
+  if jsonb_typeof(p_review) is distinct from 'object'
+    or p_review-array['contract_version','provider','organization_id','environment','checkout_order_id','payment_id',
+      'customer_id','provider_subscription_id','provider_installment_id','billing_type','amount_cents','installment_number',
+      'status','deleted','refunds','chargeback_status','event_id','source','provider_pix_authorization_id','pix_transaction'] <> '{}'::jsonb
+    or p_review->>'contract_version' is distinct from '1'
+    or p_review->>'provider' is distinct from 'asaas'
+    or p_review->>'organization_id' is distinct from v_org::text
+    or p_review->>'environment' is null or p_review->>'environment' not in ('production','sandbox')
+    or p_review->>'source' is null or p_review->>'source' not in ('asaas_payment_lookup','asaas_payment_and_pix_transaction_lookup')
+    or coalesce(p_review->>'payment_id','') !~ '^pay_[A-Za-z0-9_]+$'
+    or coalesce(p_review->>'event_id','') !~ '^[a-zA-Z0-9_:-]{1,180}$'
+    or coalesce(p_review->>'status','') !~ '^[A-Z][A-Z0-9_]{0,99}$'
+    or jsonb_typeof(p_review->'deleted') is distinct from 'boolean'
+    or jsonb_typeof(p_review->'refunds') is distinct from 'array'
+    or jsonb_array_length(p_review->'refunds')>100 then
+    raise exception 'community_financial_review_invalid' using errcode='22023';
+  end if;
+  select * into v_order from public.cobranca_pedidos
+    where id=(p_review->>'checkout_order_id')::uuid and organization_id=v_org
+      and provider='asaas' and environment=p_review->>'environment' and status='created' for update;
+  if not found then raise exception 'community_financial_review_order_missing' using errcode='P0002'; end if;
+  if p_review->>'customer_id' is distinct from v_order.provider_customer_id
+    or p_review->>'provider_subscription_id' is distinct from v_order.provider_subscription_id
+    or p_review->>'provider_installment_id' is distinct from v_order.provider_installment_id
+    or p_review->>'billing_type' is distinct from
+      (case when v_order.sold_snapshot->>'price_mode' in ('pix','recurring_pix_auto') then 'PIX' else 'CREDIT_CARD' end)
+    or (v_order.sold_snapshot->>'price_mode'<>'recurring_pix_auto' and v_order.provider_subscription_id is null and v_order.provider_installment_id is null
+      and p_review->>'payment_id' is distinct from v_order.provider_payment_id) then
+    raise exception 'community_financial_review_binding_conflict' using errcode='22023';
+  end if;
+  if v_order.sold_snapshot->>'price_mode'='recurring_pix_auto' then
+    if p_review->>'provider_pix_authorization_id' is distinct from v_order.provider_pix_authorization_id::text
+      or v_order.provider_pix_authorization_id is null
+      or p_review->>'provider_subscription_id' is not null
+      or p_review->>'provider_installment_id' is not null then
+      raise exception 'community_financial_review_binding_conflict' using errcode='22023';
+    end if;
+  elsif p_review ? 'provider_pix_authorization_id' or p_review ? 'pix_transaction'
+    or p_review->>'source' is distinct from 'asaas_payment_lookup' then
+    raise exception 'community_financial_review_binding_conflict' using errcode='22023';
+  end if;
+  if p_review ? 'pix_transaction' then
+    if v_order.sold_snapshot->>'price_mode'<>'recurring_pix_auto'
+      or p_review->>'source' is distinct from 'asaas_payment_and_pix_transaction_lookup'
+      or jsonb_typeof(p_review->'pix_transaction') is distinct from 'object'
+      or (p_review->'pix_transaction')-array['id','payment_id','conciliation_identifier','type','status','amount_cents','refunded_cents']<>'{}'::jsonb
+      or coalesce(p_review->'pix_transaction'->>'id','') !~ '^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'
+      or p_review->'pix_transaction'->>'payment_id' is distinct from p_review->>'payment_id'
+      or length(trim(coalesce(p_review->'pix_transaction'->>'conciliation_identifier',''))) not between 1 and 200
+      or p_review->'pix_transaction'->>'type' is distinct from 'CREDIT'
+      or p_review->'pix_transaction'->>'status' is distinct from 'DONE'
+      or jsonb_typeof(p_review->'pix_transaction'->'amount_cents') is distinct from 'number'
+      or p_review->'pix_transaction'->>'amount_cents' is distinct from p_review->>'amount_cents'
+      or jsonb_typeof(p_review->'pix_transaction'->'refunded_cents') is distinct from 'number'
+      or coalesce(p_review->'pix_transaction'->>'refunded_cents','') !~ '^[1-9][0-9]*$'
+      or (p_review->'pix_transaction'->>'refunded_cents')::numeric>14700 then
+      raise exception 'community_financial_review_transaction_conflict' using errcode='22023';
+    end if;
+  elsif p_review->>'source' is distinct from 'asaas_payment_lookup' then
+    raise exception 'community_financial_review_transaction_conflict' using errcode='22023';
+  end if;
+  v_count=(v_order.sold_snapshot->>'installment_count')::integer;
+  v_number=(p_review->>'installment_number')::integer;
+  v_amount=(p_review->>'amount_cents')::bigint;
+  v_expected=(v_order.sold_snapshot->>'contract_total_cents')::bigint/v_count;
+  if v_number=v_count then v_expected=v_expected+(v_order.sold_snapshot->>'contract_total_cents')::bigint%v_count; end if;
+  if v_number is null or v_number not between 1 and v_count or v_amount is distinct from v_expected then
+    raise exception 'community_financial_review_amount_conflict' using errcode='22023';
+  end if;
+  select p.activation_id into v_activation from public.cobranca_pagamentos p
+    join public.cobranca_competencias a on a.id=p.activation_id and a.organization_id=p.organization_id
+    join public.cobranca_assinaturas s on s.id=a.subscription_id and s.organization_id=a.organization_id
+    where p.organization_id=v_org and p.provider='asaas' and p.environment=p_review->>'environment'
+      and p.provider_payment_id=p_review->>'payment_id' and s.checkout_order_id=v_order.id
+      and a.environment=p_review->>'environment' and s.environment=p_review->>'environment';
+  if not coalesce((p_review->>'deleted')::boolean
+    or p_review->>'status' in ('REFUNDED','REFUND_REQUESTED','REFUND_IN_PROGRESS','CHARGEBACK_REQUESTED',
+      'CHARGEBACK_DISPUTE','AWAITING_CHARGEBACK_REVERSAL')
+    or exists(select 1 from jsonb_array_elements(p_review->'refunds') r where r->>'status' in ('PENDING','DONE'))
+    or p_review->>'chargeback_status' in ('REQUESTED','IN_DISPUTE','DISPUTE_LOST','DONE')
+    or coalesce((p_review->'pix_transaction'->>'refunded_cents')::numeric,0)>0
+    or (v_activation is not null and p_review->>'status' not in ('CONFIRMED','RECEIVED')), false) then
+    raise exception 'community_financial_review_no_negative_evidence' using errcode='22023';
+  end if;
+  select * into v_existing from public.cobranca_revisoes_financeiras
+    where organization_id=v_org and provider='asaas' and environment=p_review->>'environment' and event_id=p_review->>'event_id';
+  if found then
+    if v_existing.observation is distinct from p_review then
+      raise exception 'community_financial_review_event_conflict' using errcode='22023';
+    end if;
+    return jsonb_build_object('contract_version',1,'review_id',v_existing.id,'state',v_existing.state,
+      'activation_id',v_existing.activation_id,'duplicate',true);
+  end if;
+  insert into public.cobranca_revisoes_financeiras(organization_id,provider,environment,checkout_order_id,
+    provider_payment_id,activation_id,provider_status,event_id,observation)
+    values(v_org,'asaas',p_review->>'environment',v_order.id,p_review->>'payment_id',v_activation,
+      p_review->>'status',p_review->>'event_id',p_review) returning id into v_id;
+  -- No update to paid competencies, delivered products, grants or memberships.
+  return jsonb_build_object('contract_version',1,'review_id',v_id,'state','pending','activation_id',v_activation,'duplicate',false);
+end;
+$function$
+
 COMMIT;

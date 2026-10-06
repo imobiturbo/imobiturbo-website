@@ -3254,7 +3254,7 @@
       const pixSelected = pending ? pending.method === 'PIX' : tabPix?.classList.contains('active');
       let summary;
       if (pixSelected) summary = currentPlan === 'mensal' && (!pending || pending.pixAutomatic) ?
-        'R$ 147/mês · Pix Automático' :
+        'R$ ' + money(Number(pending?.amount) || 147) + '/mês · Pix Automático' :
         'R$ ' + money(Number(pending?.amount) || Number(info.pixVal.replace(/[^\d,]/g, '').replace(',', '.'))) + ' no Pix · pelo período selecionado';
       else if (currentPlan === 'mensal') summary = 'R$ 147/mês · cobrança recorrente';
       else summary = count === 1 ? 'R$ ' + money(total) + ' à vista no cartão' : count + 'x de R$ ' + money(unit) + ' · total R$ ' + money(total);
@@ -3280,8 +3280,10 @@
       const cardNote = document.getElementById('chkCardPaymentNote');
       if (cardNote) cardNote.textContent = 'Preencha os dados do cartão na página segura do Asaas.';
       const paymentTerms = document.getElementById('chkPaymentTerms');
+      const monthlyAmount = pending?.pixAutomatic && Number(pending.amount) > 0 ?
+        Number(pending.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '147';
       if (paymentTerms) paymentTerms.textContent = legacyMonthlyPix ? 'Pagamento pelo período contratado, sem renovação automática.' : currentPlan === 'mensal' ?
-        'R$ 147 por mês. Cancele a renovação quando quiser.' :
+        'R$ ' + monthlyAmount + ' por mês. Cancele a renovação quando quiser.' :
         'Pagamento pelo período contratado, sem renovação automática. As parcelas permanecem devidas em caso de cancelamento.';
       const pixTabLabel = document.getElementById('chkPixTabLabel');
       const pixTabDesc = document.getElementById('chkPixTabDesc');

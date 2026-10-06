@@ -188,10 +188,28 @@ for (const width of [390, 1440]) test(`monthly Pix Automatic is explicit and cre
   assert.ok(await page.locator('#chkExternalLink').isHidden());
   assert.match(await page.locator('#chkPendingNotice').innerText(), /autorize o Pix Automático/);
   assert.equal(await page.locator('#chkPixCopiaCola').inputValue(), 'SYNTHETIC-NOT-PAYABLE');
+  assert.equal(await page.locator('#chkPixQrImg').getAttribute('src'), response.pix.qrCodeBase64);
+  assert.equal(await page.locator('#chkPixQrImg').getAttribute('data-lazy-src'), null);
   await page.reload({ waitUntil: 'load' });
   await page.waitForFunction(() => document.getElementById('chkPixCopiaCola').value === 'SYNTHETIC-NOT-PAYABLE');
   assert.equal(posts.length, 1, 'reload never POSTs a second consent');
   assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /Pix Automático/);
+  assert.equal(await page.locator('#chkPixQrImg').getAttribute('src'), response.pix.qrCodeBase64);
+});
+
+test('recovered automatic Pix retains the sold amount instead of the new price', async t => {
+  const page = await visit(t);
+  const record = { version: 2, paymentId: 'auto_33333333-3333-4333-8333-333333333333',
+    gateway: 'asaas', method: 'PIX', plan: 'mensal', productId: 'comunidade-imobiturbo',
+    pixAutomatic: true, managedCommunity: true, amount: 127, installmentCount: 1,
+    expiresAt: new Date(Date.now() + 30 * 60000).toISOString(), paid: false,
+    pix: { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: '' } };
+  await page.route('**/api/checkout/status?**', route => route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ...record, success: true, status: 'PENDING' }) }));
+  await page.evaluate(value => localStorage.setItem('imobiturbo:checkout:community:v2', JSON.stringify(value)), record);
+  await page.reload({ waitUntil: 'load' });
+  await page.waitForFunction(() => !document.getElementById('chkPendingNotice').hidden);
+  assert.match(await page.locator('#chkPlanCompactPrice').innerText(), /127,00\/mês.*Pix Automático/);
+  assert.match(await page.locator('#chkPaymentTerms').innerText(), /127,00 por mês/);
 });
 
 test('desktop stays readable and legal links resolve to documents', async t => {

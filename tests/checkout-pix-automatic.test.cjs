@@ -46,7 +46,7 @@ function harness(t, options={}) {
   else if(u.pathname==='/v3/customers/cus_synthetic') data={id:'cus_synthetic',email:buyer.email};
   else if(u.pathname==='/v3/payments') data={data:options.noPayment ? []:[state.payment],hasMore:false};
   else if(u.pathname==='/v3/payments/pay_synthetic') data=state.payment;
-  else if(u.pathname===`/v3/pix/transactions/${TX}`) data={id:TX,payment:'pay_synthetic',type:'CREDIT',status:'DONE',value:147,conciliationIdentifier:options.invalidTx ? 'wrong-concil':state.auth.immediateQrCode.conciliationIdentifier};
+  else if(u.pathname===`/v3/pix/transactions/${TX}`) data={id:TX,payment:'pay_synthetic',type:'CREDIT',status:'DONE',value:147,conciliationIdentifier:options.invalidTx ? 'wrong-concil':state.auth.immediateQrCode.conciliationIdentifier,...options.transaction};
   else if(u.pathname==='/v3/pix/automatic/paymentInstructions') data={data:state.instruction?[state.instruction]:[],hasMore:false};
   else if(u.pathname===`/v3/pix/automatic/paymentInstructions/${INSTRUCTION}`) data=state.instruction;
   else throw new Error(`Unexpected provider ${u.pathname}`);
@@ -88,6 +88,26 @@ test('initial month is financial independently of REFUSED consent and absent gen
 test('invalid first transaction binding does not record a paid month',async t=>{
  const h=harness(t,{invalidTx:true});const m=await load('_community-orders.js'),p=await load('_community-payments.js');
  await assert.rejects(p.recordCommunityPayment(m.communityConfig(env),h.order,h.payment));assert.equal(h.records.length,0);
+});
+test('an exactly bound pending Pix transaction is pending, without error or paid mutation',async t=>{
+ const h=harness(t,{payment:{status:'PENDING'},transaction:{status:'SCHEDULED'}});
+ const m=await load('_community-orders.js'),p=await load('_community-payments.js');
+ const r=await p.recordCommunityPayment(m.communityConfig(env),h.order,h.payment);
+ assert.equal(r.paid,false);assert.equal(h.records.length,0);assert.equal(h.reviews.length,0);
+ h.payment.status='RECEIVED';
+ assert.equal((await p.recordCommunityPayment(m.communityConfig(env),h.order,h.payment)).paid,false,'settlement must also be verified on the linked transaction');
+});
+test('a verified transaction refund enters durable review despite a stale RECEIVED payment',async t=>{
+ const h=harness(t,{transaction:{refundedValue:10}});
+ const m=await load('_community-orders.js'),p=await load('_community-payments.js');
+ const r=await p.recordCommunityPayment(m.communityConfig(env),h.order,h.payment);
+ assert.equal(r.paid,false);assert.equal(h.records.length,0);assert.equal(h.reviews.length,1);
+ assert.equal(h.reviews[0].source,'asaas_payment_and_pix_transaction_lookup');
+ assert.equal(h.reviews[0].provider_pix_authorization_id,AUTH);
+ assert.equal(h.reviews[0].pix_transaction.id,TX);
+ assert.equal(h.reviews[0].pix_transaction.payment_id,h.payment.id);
+ assert.equal(h.reviews[0].pix_transaction.refunded_cents,1000);
+ assert.deepEqual(h.reviews[0].refunds,[],'do not invent payment-endpoint refund rows');
 });
 test('renewal proof ignores externalReference inheritance and repeats a stable monthly competence',async t=>{
  const instruction={id:INSTRUCTION,paymentId:'pay_synthetic',authorization:{id:AUTH,customerId:'cus_synthetic'},dueDate:'2026-11-06',status:'DONE'};

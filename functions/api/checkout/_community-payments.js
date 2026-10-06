@@ -53,7 +53,8 @@ async function verifyPaymentContext(config, order, payment) {
   assertCommunityOrder(config, order);
   if (order.status !== "created") throw new CommunityError("community_order_reconciliation_pending");
   const auto = order.sold_snapshot.price_mode === PIX_AUTO_MODE;
-  if (auto) await verifyPixAutomaticPayment(config, order, payment); else assertPaymentIdentity(order, payment);
+  let automaticProof = null;
+  if (auto) automaticProof = await verifyPixAutomaticPayment(config, order, payment); else assertPaymentIdentity(order, payment);
   let snapshot = order.sold_snapshot;
   const subscriptions = await ledgerRows(config, "cobranca_assinaturas", { checkout_order_id: `eq.${order.id}`, limit: "2" });
   if (subscriptions.length > 1) throw new CommunityError("community_subscription_conflict", 422);
@@ -89,7 +90,7 @@ async function verifyPaymentContext(config, order, payment) {
   const orderId = (auto || snapshot.price_mode === "recurring_card") ? `${order.id}:${date}` : order.provider_installment_id || order.id;
   const competenceKey = auto ? `pixauto:${order.provider_pix_authorization_id}:${date}` : snapshot.price_mode === "recurring_card" ? `subscription:${order.provider_subscription_id}:${date}` :
     `${snapshot.price_mode === "installment_card" ? "installment" : "order"}:${orderId}`;
-  return { snapshot, subscription, number, expected, date, orderId, competenceKey, period };
+  return { snapshot, subscription, number, expected, date, orderId, competenceKey, period, automaticProof };
 }
 export async function recordCommunityPayment(config, order, payment, eventId) {
   const ctx = await verifyPaymentContext(config, order, payment);
@@ -97,7 +98,8 @@ export async function recordCommunityPayment(config, order, payment, eventId) {
   if (prior.length > 1) throw new CommunityError("community_payment_conflict", 422);
   const refunds = Array.isArray(payment.refunds) ? payment.refunds.filter(r =>
     ["PENDING", "DONE"].includes(r.status)).map(r => ({ status: r.status, amount_cents: cents(r.value) })) : [];
-  const negative = payment.deleted === true || ["REFUNDED", "REFUND_REQUESTED", "REFUND_IN_PROGRESS",
+  const transactionRefund = (ctx.automaticProof?.transaction?.refunded_cents || 0) > 0;
+  const negative = transactionRefund || payment.deleted === true || ["REFUNDED", "REFUND_REQUESTED", "REFUND_IN_PROGRESS",
     "CHARGEBACK_REQUESTED", "CHARGEBACK_DISPUTE", "AWAITING_CHARGEBACK_REVERSAL"].includes(payment.status) ||
     refunds.length > 0 || ["REQUESTED", "IN_DISPUTE", "DISPUTE_LOST", "DONE"].includes(payment.chargeback?.status) ||
     (prior.length > 0 && !["CONFIRMED", "RECEIVED"].includes(payment.status));
@@ -108,7 +110,9 @@ export async function recordCommunityPayment(config, order, payment, eventId) {
       provider_installment_id: payment.installment || null, billing_type: payment.billingType,
       amount_cents: cents(payment.value), installment_number: ctx.number, status: payment.status,
       deleted: Boolean(payment.deleted), refunds, chargeback_status: payment.chargeback?.status || null,
-      source: "asaas_payment_lookup" };
+      source: transactionRefund ? "asaas_payment_and_pix_transaction_lookup" : "asaas_payment_lookup",
+      ...(ctx.snapshot.price_mode === PIX_AUTO_MODE ? { provider_pix_authorization_id: order.provider_pix_authorization_id } : {}),
+      ...(transactionRefund ? { pix_transaction: ctx.automaticProof.transaction } : {}) };
     // A partial refund can retain RECEIVED. Include the verified observation
     // in the journal identity so a later change cannot be swallowed as replay.
     const bytes = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(canonicalJson(observation)))));
@@ -119,7 +123,7 @@ export async function recordCommunityPayment(config, order, payment, eventId) {
       throw new CommunityError("community_financial_review_pending");
     return { paid: false, financialStatus: payment.status, fulfillment: "manual_financial_review", ctx };
   }
-  if (!["CONFIRMED", "RECEIVED"].includes(payment.status)) {
+  if (!["CONFIRMED", "RECEIVED"].includes(payment.status) || ctx.automaticProof?.settled === false) {
     return { paid: false, financialStatus: payment.status, fulfillment: "manual_review_or_awaiting_payment", ctx };
   }
   let proof = confirmationProof(payment, config.environment);

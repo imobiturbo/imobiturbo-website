@@ -377,6 +377,7 @@
       get('chkPixFormBlock').style.display = 'none';
       get('chkPixResultBlock').style.display = 'block';
       const qr = get('chkPixQrImg');
+      qr.removeAttribute('data-lazy-src');
       if (record.pix.qrCodeBase64) qr.src = record.pix.qrCodeBase64;
       const tick = () => {
         const left = Math.max(0, Math.ceil((Date.parse(record.expiresAt) - Date.now()) / 1000));

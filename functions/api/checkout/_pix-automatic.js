@@ -101,21 +101,27 @@ export async function verifyPixAutomaticPayment(config, order, payment, authoriz
     const tx = await pixGet(config, `/pix/transactions/${encodeURIComponent(payment.pixTransaction)}`);
     if (tx.id !== payment.pixTransaction || tx.payment !== payment.id) fail();
     if (tx.conciliationIdentifier === auth.immediateQrCode.conciliationIdentifier) {
-      if (tx.type !== 'CREDIT' || tx.status !== 'DONE' || cents(tx.value) !== 14700) fail();
-      if (cents(tx.refundedValue || 0) !== 0 && !reversed) fail();
-      return { auth, initial: true };
+      if (tx.type !== 'CREDIT' || !['AWAITING_REQUEST','SCHEDULED','DONE'].includes(tx.status) || cents(tx.value) !== 14700) fail();
+      const refundedCents = cents(tx.refundedValue || 0);
+      if (refundedCents < 0 || refundedCents > 14700) fail();
+      return { auth, initial: true, settled: tx.status === 'DONE', transaction: {
+        id: tx.id, payment_id: tx.payment, conciliation_identifier: tx.conciliationIdentifier,
+        type: tx.type, status: tx.status, amount_cents: cents(tx.value), refunded_cents: refundedCents,
+      } };
     }
   }
   const rows = await pixAutomaticList(config, `${INSTRUCTION_PATH}?authorizationId=${encodeURIComponent(auth.id)}&paymentId=${encodeURIComponent(payment.id)}`);
   if (!rows.length) fail();
+  let settled = true;
   for (const row of rows) {
     if (!UUID.test(row.id)) fail();
     const instruction = await pixGet(config, `${INSTRUCTION_PATH}/${encodeURIComponent(row.id)}`);
     if (instruction.id !== row.id || instruction.paymentId !== payment.id || instruction.authorization?.id !== auth.id ||
         instruction.authorization?.customerId !== auth.customerId || instruction.dueDate !== payment.originalDueDate ||
         (['CONFIRMED','RECEIVED'].includes(payment.status) && !reversed && instruction.status !== 'DONE')) fail();
+    settled = settled && instruction.status === 'DONE';
   }
-  return { auth, initial: false };
+  return { auth, initial: false, settled };
 }
 export async function resolvePixAutomaticPayment(config, payment) {
   if (!/^cus_[A-Za-z0-9_]+$/.test(customerId(payment) || "")) fail();
