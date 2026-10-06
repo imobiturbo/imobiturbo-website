@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <title>Imobiturbo OS — CRM Imobiliário com IA Nativa no WhatsApp</title>
-  <meta name="description" content="Atenda cada lead imobiliário em menos de 3 segundos no WhatsApp. CRM Kanban, roleta de corretores e IA DeepSeek v4 Flash ilimitada 24/7. Sem cursos, 100% tecnologia.">
-  <meta name="keywords" content="CRM imobiliário, IA para corretores, WhatsApp imobiliário, roleta de corretores, Imobiturbo OS, DeepSeek v4 Flash, VGV imobiliário">
+  <meta name="description" content="Atenda cada lead imobiliário em menos de 3 segundos no WhatsApp. CRM Kanban, roleta de corretores e Inteligência Artificial integrada 24h por dia. Sem cursos, 100% tecnologia.">
+  <meta name="keywords" content="CRM imobiliário, IA para corretores, WhatsApp imobiliário, roleta de corretores, Imobiturbo OS, inteligência artificial imobiliária, VGV imobiliário">
   <meta name="author" content="Imobiturbo Tecnologia">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#09090b">
@@ -13,7 +13,7 @@
 
   <!-- Open Graph -->
   <meta property="og:title" content="Imobiturbo OS — CRM Imobiliário com IA Nativa no WhatsApp">
-  <meta property="og:description" content="Atenda leads em 3 segundos às 23:45 com IA DeepSeek v4 Flash, CRM Kanban e roleta de corretores. Comece em 60 segundos.">
+  <meta property="og:description" content="Atenda leads em 3 segundos às 23:45 com Inteligência Artificial no WhatsApp, CRM Kanban e roleta de corretores. Comece em 60 segundos.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://imobiturbo.com.br/os-crm">
   <meta property="og:image" content="https://imobiturbo.com.br/assets/brand/theme-dark/imobiturbo-os.webp">
@@ -44,11 +44,28 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; background-color: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
-    body { overflow-x: hidden; line-height: 1.5; }
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      overflow-x: clip;
+      max-width: 100vw;
+      width: 100%;
+    }
+    body {
+      overflow-x: hidden;
+      overflow-x: clip;
+      max-width: 100vw;
+      width: 100%;
+      position: relative;
+      line-height: 1.5;
+    }
     a { color: inherit; text-decoration: none; }
 
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%; box-sizing: border-box; }
     .badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 9999px; padding: 6px 14px; font-size: 13px; font-weight: 600; }
     .badge-lime { background: rgba(197, 254, 109, 0.1); border: 1px solid rgba(197, 254, 109, 0.3); color: var(--lime); }
     .badge-white { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: #fff; }
@@ -61,22 +78,25 @@
     .btn-outline:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--card-border-hover); }
 
     /* Header */
-    header { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 11, 0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--card-border); }
-    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; }
+    header { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 11, 0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--card-border); width: 100%; }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; width: 100%; box-sizing: border-box; }
     .brand-logo { height: 32px; width: auto; display: block; }
     .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; font-size: 14px; font-weight: 500; color: var(--text-muted); }
     .nav-links a:hover { color: #fff; }
+    .header-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .btn-login { padding: 8px 18px; font-size: 13px; }
+    .btn-header-cta { padding: 8px 18px; font-size: 13px; }
 
     /* Hero */
-    .hero { padding: 70px 0 50px; text-align: center; position: relative; }
-    .hero-glow { position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); width: 700px; height: 400px; background: radial-gradient(circle, rgba(197, 254, 109, 0.14) 0%, rgba(9, 9, 11, 0) 70%); pointer-events: none; }
-    .hero h1 { font-size: 46px; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; max-width: 950px; margin: 20px auto; }
+    .hero { padding: 70px 0 50px; text-align: center; position: relative; overflow: hidden; width: 100%; }
+    .hero-glow { position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); width: 700px; max-width: 100vw; height: 400px; background: radial-gradient(circle, rgba(197, 254, 109, 0.14) 0%, rgba(9, 9, 11, 0) 70%); pointer-events: none; }
+    .hero h1 { font-size: 46px; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; max-width: 950px; margin: 20px auto; overflow-wrap: break-word; word-break: break-word; }
     .hero h1 span { color: var(--lime); }
     .hero p.lead { font-size: 19px; color: var(--text-muted); max-width: 760px; margin: 0 auto 32px; line-height: 1.6; }
     .hero-actions { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 36px; }
 
     /* Faixa de Prova */
-    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 24px; background: #111115; border: 1px solid var(--card-border); border-radius: 18px; margin: 40px auto 70px; max-width: 1060px; }
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 24px; background: #111115; border: 1px solid var(--card-border); border-radius: 18px; margin: 40px auto 70px; max-width: 1060px; width: 100%; box-sizing: border-box; }
     .stat-item { text-align: center; }
     .stat-num { font-size: 28px; font-weight: 800; color: #fff; font-family: 'JetBrains Mono', monospace; }
     .stat-num span { color: var(--lime); }
@@ -141,13 +161,14 @@
     .proof-img { height: 260px; width: auto; border-radius: 14px; border: 1px solid var(--card-border); flex-shrink: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
     /* Comparison */
-    .comp-wrap { background: #111114; border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; margin-bottom: 90px; }
-    .comp-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .comp-wrap { background: #111114; border: 1px solid var(--card-border); border-radius: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 90px; width: 100%; max-width: 100%; box-sizing: border-box; }
+    .comp-table { width: 100%; min-width: 580px; border-collapse: collapse; text-align: left; }
     .comp-table th, .comp-table td { padding: 18px 24px; border-bottom: 1px solid var(--card-border); font-size: 14px; }
     .comp-table th { background: #16171b; font-weight: 700; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
     .comp-table td.highlight { background: rgba(197, 254, 109, 0.04); font-weight: 600; color: #fff; }
     .check { color: var(--lime); font-weight: 700; }
     .cross { color: #ef4444; }
+    .table-scroll-hint { display: none; font-size: 12px; color: var(--text-dim); text-align: center; margin-bottom: 12px; font-weight: 600; }
 
     /* Para Quem É / Não É */
     .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 90px; }
@@ -159,7 +180,7 @@
     .fit-list li { display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
 
     /* Pricing */
-    .pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 30px auto 50px; background: #18191e; border: 1px solid var(--card-border); padding: 4px; border-radius: 9999px; width: fit-content; }
+    .pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 30px auto 50px; background: #18191e; border: 1px solid var(--card-border); padding: 4px; border-radius: 9999px; width: fit-content; max-width: 100%; box-sizing: border-box; }
     .toggle-btn { padding: 8px 24px; border-radius: 9999px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text-muted); transition: all 0.2s; }
     .toggle-btn.active { background: var(--lime); color: #000; font-weight: 700; }
     .toggle-badge { background: #059669; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 999px; margin-left: 6px; font-weight: 700; }
@@ -196,8 +217,10 @@
     /* Responsive */
     @media (max-width: 900px) {
       .hero h1 { font-size: 32px; }
-      .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .section-title h2 { font-size: 28px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 18px; }
       .showcase-grid, .showcase-grid.reverse { grid-template-columns: 1fr; }
+      .roles-grid { grid-template-columns: 1fr; }
       .sim-wrap { grid-template-columns: 1fr; }
       .features-grid { grid-template-columns: 1fr; }
       .testimonials-grid { grid-template-columns: 1fr; }
@@ -205,6 +228,27 @@
       .pricing-grid { grid-template-columns: 1fr; }
       .price-card.popular { transform: none; }
       .nav-links { display: none; }
+      .table-scroll-hint { display: block; }
+    }
+
+    @media (max-width: 600px) {
+      .header-inner { height: 60px; }
+      .brand-logo { height: 24px; max-width: 120px; }
+      .header-actions { gap: 6px; }
+      .btn-login { display: none; }
+      .btn-header-cta { padding: 8px 14px; font-size: 12px; }
+      .comp-table th, .comp-table td { padding: 12px 14px; font-size: 13px; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      .hero h1 { font-size: 26px; }
+      .hero p.lead { font-size: 15.5px; }
+      .hero-actions .btn { width: 100%; }
+      .stats-bar { grid-template-columns: 1fr 1fr; gap: 12px; padding: 14px; }
+      .stat-num { font-size: 22px; }
+      .stat-label { font-size: 11px; }
+      .toggle-btn { padding: 8px 14px; font-size: 12.5px; }
     }
   </style>
 </head>
@@ -224,9 +268,9 @@
         <li><a href="#planos">Planos & Preços</a></li>
         <li><a href="#faq">Dúvidas</a></li>
       </ul>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <a href="https://os.imobiturbo.com.br/login" class="btn btn-outline" style="padding:8px 18px;font-size:13px;">Login</a>
-        <a href="#planos" class="btn btn-lime" style="padding:8px 18px;font-size:13px;">Começar Agora</a>
+      <div class="header-actions">
+        <a href="https://os.imobiturbo.com.br/login" class="btn btn-outline btn-login">Login</a>
+        <a href="#planos" class="btn btn-lime btn-header-cta">Começar Agora</a>
       </div>
     </div>
   </header>
@@ -236,7 +280,7 @@
     <div class="hero-glow"></div>
     <div class="container">
       <div class="badge badge-lime">
-        <span>⚡ CRM + WhatsApp + IA DeepSeek v4 Flash Nativa</span>
+        <span>⚡ CRM Imobiliário + Inteligência Artificial Nativa no WhatsApp</span>
       </div>
       <h1>
         Atenda cada lead imobiliário em menos de <span>3 segundos no WhatsApp.</span> 24h por dia.
@@ -266,11 +310,11 @@
         </div>
         <div class="stat-item">
           <div class="stat-num">+<span>R$ 5M</span></div>
-          <div class="stat-label">VGV Movimentado por Alunos & Clientes</div>
+          <div class="stat-label">VGV Movimentado por Imobiliárias & Corretores</div>
         </div>
         <div class="stat-item">
           <div class="stat-num"><span>100%</span></div>
-          <div class="stat-label">Tecnologia Plug & Play (Zero Cursos)</div>
+          <div class="stat-label">Tecnologia Plug & Play (Sem Cursos)</div>
         </div>
       </div>
 
@@ -285,7 +329,7 @@
                 <div style="font-size:11px;color:var(--emerald);">● Online no WhatsApp</div>
               </div>
             </div>
-            <span style="font-size:11px;color:var(--text-dim);">DeepSeek v4 Flash</span>
+            <span style="font-size:11px;color:var(--lime);font-weight:600;">● IA Ativa no WhatsApp</span>
           </div>
 
           <div class="chat-body" id="chatStream">
@@ -532,8 +576,8 @@
       <div class="features-grid">
         <div class="feat-card">
           <div class="feat-icon">🤖</div>
-          <h3>IA DeepSeek v4 Flash Nativa</h3>
-          <p>Atende e qualifica leads 24h por dia no WhatsApp em 3 segundos. Entende áudios, imagens de fachada e responde dúvidas com dados reais da sua pauta.</p>
+          <h3>Inteligência Artificial Integrada</h3>
+          <p>Atende e qualifica leads 24h por dia no WhatsApp em 3 segundos. Entende áudios, preferências do imóvel e responde dúvidas com dados reais da sua pauta.</p>
         </div>
 
         <div class="feat-card">
@@ -550,8 +594,8 @@
 
         <div class="feat-card">
           <div class="feat-icon">🛡️</div>
-          <h3>Motor Anti-Ban com Pacing Humano</h3>
-          <p>Algoritmo proprietário de digitação realista e espaçamento de mensagens para proteger a integridade do seu chip contra bloqueios do WhatsApp.</p>
+          <h3>WhatsApp Seguro e Protegido</h3>
+          <p>A inteligência artificial atende com ritmo natural de digitação humana e responde apenas leads que entram em contato com sua imobiliária, garantindo total segurança contra bloqueios.</p>
         </div>
 
         <div class="feat-card">
@@ -578,6 +622,7 @@
         <p>Compare a pilha tradicional de ferramentas fragmentadas contra o Imobiturbo OS Tudo-em-Um.</p>
       </div>
 
+      <div class="table-scroll-hint">← Deslize para o lado para ver a tabela completa →</div>
       <div class="comp-wrap">
         <table class="comp-table">
           <thead>
@@ -611,7 +656,7 @@
             <tr>
               <td><b>IA com Resposta Inteligente 24h</b></td>
               <td><span class="cross">✕</span> Não possui nativo (exige Make/OpenAI)</td>
-              <td class="highlight"><span class="check">✓</span> DeepSeek v4 Flash Ilimitado</td>
+              <td class="highlight"><span class="check">✓</span> Inteligência Artificial Inclusa 24/7</td>
             </tr>
             <tr>
               <td><b>Custo Total Estimado</b></td>
@@ -689,10 +734,10 @@
             <ul class="plan-features">
               <li><span class="icon">✓</span> <b>1 Conexão de WhatsApp ativa</b></li>
               <li><span class="icon">✓</span> 1 Usuário Corretor no CRM</li>
-              <li><span class="icon">✓</span> <b>IA DeepSeek v4 Flash 24/7 Ilimitada</b></li>
+              <li><span class="icon">✓</span> <b>Inteligência Artificial Integrada 24/7</b></li>
               <li><span class="icon">✓</span> CRM Kanban com funil imobiliário</li>
               <li><span class="icon">✓</span> Leads e contatos ilimitados</li>
-              <li><span class="icon">✓</span> Motor Anti-Ban com Pacing Humano</li>
+              <li><span class="icon">✓</span> WhatsApp seguro contra bloqueios</li>
               <li><span class="icon">✓</span> Importação de contatos via CSV</li>
             </ul>
           </div>
@@ -718,7 +763,7 @@
             <ul class="plan-features">
               <li><span class="icon">✓</span> <b>2 Conexões de WhatsApp ativas</b> (Central + Plantão)</li>
               <li><span class="icon">✓</span> <b>Até 5 Corretores na roleta de leads</b></li>
-              <li><span class="icon">✓</span> <b>IA DeepSeek v4 Flash 24/7 Ilimitada</b></li>
+              <li><span class="icon">✓</span> <b>Inteligência Artificial Integrada 24/7</b></li>
               <li><span class="icon">✓</span> Roleta inteligente com fila justa e transbordo</li>
               <li><span class="icon">✓</span> CRM Kanban com múltiplos funis</li>
               <li><span class="icon">✓</span> Painel de métricas de conversão da equipe</li>
@@ -747,7 +792,7 @@
             <ul class="plan-features">
               <li><span class="icon">✓</span> <b>5 Conexões de WhatsApp ativas</b></li>
               <li><span class="icon">✓</span> <b>Até 15 Corretores na roleta multi-equipes</b></li>
-              <li><span class="icon">✓</span> <b>IA DeepSeek v4 Flash 24/7 Ilimitada</b></li>
+              <li><span class="icon">✓</span> <b>Inteligência Artificial Integrada 24/7</b></li>
               <li><span class="icon">✓</span> Roleta multi-equipes e filiais independentes</li>
               <li><span class="icon">✓</span> API completa e Webhooks bidirecionais</li>
               <li><span class="icon">✓</span> Relatórios executivos de CAC e ROAS</li>
@@ -788,7 +833,7 @@
             <span class="faq-icon">+</span>
           </div>
           <div class="faq-a">
-            Não, porque o Imobiturbo OS utiliza um algoritmo proprietário de <b>Pacing Humano e Warmup progressivo</b>. A IA não dispara mensagens em massa tipo robô de spam; ela digita em velocidade humana e responde apenas quem entra em contato com sua operação.
+            Não. O Imobiturbo OS foi desenhado para ser 100% seguro: a inteligência artificial não faz disparos em massa nem spam frio. Ela atende exclusivamente os clientes que entram em contato com sua imobiliária, digitando de forma pausada e natural como uma pessoa real.
           </div>
         </div>
 
@@ -798,7 +843,7 @@
             <span class="faq-icon">+</span>
           </div>
           <div class="faq-a">
-            Não. O motor DeepSeek v4 Flash opera com arquitetura de <b>RAG delimitado</b>: o robô é estritamente instruído a responder com base na sua pauta de imóveis e no roteiro comercial da sua imobiliária. Se o lead perguntar algo fora do escopo, a IA transfere com elegância para o corretor responsável.
+            Não. A inteligência artificial segue estritamente as informações dos imóveis cadastrados e o roteiro comercial que você definir. Ela só responde o que você autorizar; se o cliente fizer uma pergunta fora do escopo ou pedir uma negociação específica, ela transfere a conversa imediatamente para o corretor responsável.
           </div>
         </div>
 
