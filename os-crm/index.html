@@ -2,11 +2,11 @@
 <html lang="pt-BR" class="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <title>Imobiturbo OS — CRM Imobiliário com IA Nativa no WhatsApp</title>
   <meta name="description" content="Atenda cada lead imobiliário em menos de 3 segundos no WhatsApp. CRM Kanban, roleta de corretores e IA DeepSeek v4 Flash ilimitada 24/7. Sem cursos, 100% tecnologia.">
-  <meta name="keywords" content="CRM imobiliário, IA para corretores, WhatsApp imobiliário, roleta de corretores, Imobiturbo OS, DeepSeek v4 Flash">
-  <meta name="author" content="Imobiturbo">
+  <meta name="keywords" content="CRM imobiliário, IA para corretores, WhatsApp imobiliário, roleta de corretores, Imobiturbo OS, DeepSeek v4 Flash, VGV imobiliário">
+  <meta name="author" content="Imobiturbo Tecnologia">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#09090b">
   <meta name="color-scheme" content="dark">
@@ -30,9 +30,12 @@
   <style>
     :root {
       --bg: #09090b;
-      --card-bg: #121215;
-      --card-border: #222227;
+      --surface: #111114;
+      --card-bg: #14151a;
+      --card-border: #23242a;
+      --card-border-hover: #383a45;
       --lime: #c5fe6d;
+      --lime-light: #d8ff8a;
       --lime-glow: rgba(197, 254, 109, 0.18);
       --emerald: #10b981;
       --text: #f4f4f5;
@@ -42,7 +45,6 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; background-color: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
-
     body { overflow-x: hidden; line-height: 1.5; }
     a { color: inherit; text-decoration: none; }
 
@@ -54,35 +56,57 @@
     /* Buttons */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border-radius: 12px; font-weight: 700; font-size: 15px; padding: 14px 28px; transition: all 0.2s ease; cursor: pointer; border: none; text-align: center; }
     .btn-lime { background: var(--lime); color: #000; box-shadow: 0 4px 20px var(--lime-glow); }
-    .btn-lime:hover { background: #d4ff88; transform: translateY(-2px); box-shadow: 0 6px 26px rgba(197, 254, 109, 0.35); }
+    .btn-lime:hover { background: var(--lime-light); transform: translateY(-2px); box-shadow: 0 6px 26px rgba(197, 254, 109, 0.35); }
     .btn-outline { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: #fff; }
-    .btn-outline:hover { background: rgba(255, 255, 255, 0.1); border-color: #444; }
+    .btn-outline:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--card-border-hover); }
 
     /* Header */
-    header { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--card-border); }
+    header { position: sticky; top: 0; z-index: 100; background: rgba(9, 9, 11, 0.88); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--card-border); }
     .header-inner { display: flex; align-items: center; justify-content: space-between; height: 70px; }
     .brand-logo { height: 32px; width: auto; display: block; }
     .nav-links { display: flex; align-items: center; gap: 28px; list-style: none; font-size: 14px; font-weight: 500; color: var(--text-muted); }
     .nav-links a:hover { color: #fff; }
 
     /* Hero */
-    .hero { padding: 80px 0 60px; text-align: center; position: relative; }
-    .hero-glow { position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 350px; background: radial-gradient(circle, rgba(197, 254, 109, 0.12) 0%, rgba(9, 9, 11, 0) 70%); pointer-events: none; }
-    .hero h1 { font-size: 44px; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; max-width: 900px; margin: 20px auto; }
+    .hero { padding: 70px 0 50px; text-align: center; position: relative; }
+    .hero-glow { position: absolute; top: 20%; left: 50%; transform: translate(-50%, -50%); width: 700px; height: 400px; background: radial-gradient(circle, rgba(197, 254, 109, 0.14) 0%, rgba(9, 9, 11, 0) 70%); pointer-events: none; }
+    .hero h1 { font-size: 46px; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; max-width: 950px; margin: 20px auto; }
     .hero h1 span { color: var(--lime); }
-    .hero p.lead { font-size: 19px; color: var(--text-muted); max-width: 720px; margin: 0 auto 32px; line-height: 1.6; }
-    .hero-actions { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
-    .hero-proof { display: flex; align-items: center; justify-content: center; gap: 24px; font-size: 13px; color: var(--text-dim); flex-wrap: wrap; }
-    .hero-proof span { display: inline-flex; align-items: center; gap: 6px; }
+    .hero p.lead { font-size: 19px; color: var(--text-muted); max-width: 760px; margin: 0 auto 32px; line-height: 1.6; }
+    .hero-actions { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 36px; }
+
+    /* Faixa de Prova */
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 24px; background: #111115; border: 1px solid var(--card-border); border-radius: 18px; margin: 40px auto 70px; max-width: 1060px; }
+    .stat-item { text-align: center; }
+    .stat-num { font-size: 28px; font-weight: 800; color: #fff; font-family: 'JetBrains Mono', monospace; }
+    .stat-num span { color: var(--lime); }
+    .stat-label { font-size: 12.5px; color: var(--text-muted); margin-top: 4px; font-weight: 500; }
+
+    /* Seções Demonstrativas (Vídeos MacBook e WhatsApp) */
+    .showcase-section { padding: 80px 0; border-top: 1px solid var(--card-border); }
+    .showcase-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; margin-top: 40px; }
+    .showcase-grid.reverse { grid-template-columns: 0.8fr 1.2fr; }
+    .showcase-media { background: #0c0d10; border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.6); position: relative; }
+    .showcase-media video, .showcase-media img { width: 100%; height: auto; display: block; }
+    .showcase-list { display: flex; flex-direction: column; gap: 20px; }
+    .showcase-item { display: flex; gap: 18px; align-items: flex-start; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 20px; }
+    .showcase-num { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 800; color: var(--lime); background: rgba(197, 254, 109, 0.1); width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .showcase-item h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; }
+    .showcase-item p { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
+
+    /* Divisão de Papéis IA vs Corretor */
+    .roles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; }
+    .role-box { padding: 20px; background: #16171d; border: 1px solid var(--card-border); border-radius: 14px; }
+    .role-box-header { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; margin-bottom: 8px; color: #fff; }
 
     /* Simulator */
-    .sim-wrap { margin: 40px auto 80px; max-width: 1000px; background: #111114; border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); display: grid; grid-template-columns: 1fr 1fr; }
+    .sim-wrap { margin: 40px auto 80px; max-width: 1050px; background: #111114; border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); display: grid; grid-template-columns: 1.1fr 0.9fr; }
     .chat-col { background: #0c0d10; border-right: 1px solid var(--card-border); display: flex; flex-direction: column; }
     .chat-header { padding: 14px 18px; background: #16171b; border-bottom: 1px solid var(--card-border); display: flex; align-items: center; justify-content: space-between; }
     .chat-lead-info { display: flex; align-items: center; gap: 12px; }
     .chat-avatar { width: 38px; height: 38px; border-radius: 50%; background: #25262c; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--lime); font-size: 14px; }
-    .chat-body { padding: 20px 16px; flex: 1; display: flex; flex-direction: column; gap: 14px; height: 380px; overflow-y: auto; background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 16px 16px; }
-    .msg { max-width: 82%; padding: 10px 14px; border-radius: 12px; font-size: 13.5px; line-height: 1.45; position: relative; }
+    .chat-body { padding: 20px 16px; flex: 1; display: flex; flex-direction: column; gap: 14px; height: 400px; overflow-y: auto; background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px); background-size: 16px 16px; }
+    .msg { max-width: 84%; padding: 11px 15px; border-radius: 12px; font-size: 13.5px; line-height: 1.45; position: relative; }
     .msg-lead { align-self: flex-start; background: #202229; color: #fff; border-bottom-left-radius: 2px; }
     .msg-bot { align-self: flex-end; background: #1b3820; border: 1px solid rgba(197, 254, 109, 0.25); color: #d4ffd9; border-bottom-right-radius: 2px; }
     .msg-time { font-size: 10px; opacity: 0.6; display: block; text-align: right; margin-top: 4px; }
@@ -92,8 +116,9 @@
     .hud-tag { font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: rgba(197, 254, 109, 0.15); color: var(--lime); display: inline-block; margin-bottom: 8px; }
 
     /* Features Grid */
-    .section-title { text-align: center; max-width: 760px; margin: 0 auto 50px; }
-    .section-title h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin-top: 12px; }
+    .section-title { text-align: center; max-width: 800px; margin: 0 auto 50px; }
+    .section-title h2 { font-size: 38px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin-top: 12px; }
+    .section-title p { font-size: 16px; color: var(--text-muted); margin-top: 12px; }
     .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 90px; }
     .feat-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 28px; transition: transform 0.2s, border-color 0.2s; }
     .feat-card:hover { transform: translateY(-4px); border-color: rgba(197, 254, 109, 0.4); }
@@ -101,8 +126,22 @@
     .feat-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
     .feat-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 
+    /* Depoimentos e Prova Real */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+    .testi-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 28px; display: flex; flex-direction: column; justify-content: space-between; }
+    .testi-result { font-weight: 800; color: var(--lime); font-size: 15px; margin-bottom: 12px; }
+    .testi-quote { font-size: 13.5px; color: #d4d4d8; line-height: 1.6; margin-bottom: 24px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 14px; }
+    .testi-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 1px solid var(--card-border); }
+    .testi-meta strong { display: block; font-size: 14px; color: #fff; }
+    .testi-meta span { font-size: 12px; color: var(--text-dim); }
+
+    /* Galeria de Comprovantes WhatsApp */
+    .proof-gallery { display: flex; gap: 16px; overflow-x: auto; padding: 20px 0; margin-bottom: 80px; scrollbar-width: thin; }
+    .proof-img { height: 260px; width: auto; border-radius: 14px; border: 1px solid var(--card-border); flex-shrink: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
     /* Comparison */
-    .comp-wrap { background: #111114; border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; margin-bottom: 100px; }
+    .comp-wrap { background: #111114; border: 1px solid var(--card-border); border-radius: 20px; overflow: hidden; margin-bottom: 90px; }
     .comp-table { width: 100%; border-collapse: collapse; text-align: left; }
     .comp-table th, .comp-table td { padding: 18px 24px; border-bottom: 1px solid var(--card-border); font-size: 14px; }
     .comp-table th { background: #16171b; font-weight: 700; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -110,9 +149,18 @@
     .check { color: var(--lime); font-weight: 700; }
     .cross { color: #ef4444; }
 
+    /* Para Quem É / Não É */
+    .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 90px; }
+    .fit-card { padding: 32px; border-radius: 18px; border: 1px solid var(--card-border); background: var(--card-bg); }
+    .fit-card.yes { border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.03); }
+    .fit-card.no { border-color: rgba(239, 68, 68, 0.25); background: rgba(239, 68, 68, 0.02); }
+    .fit-card h3 { font-size: 20px; font-weight: 800; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+    .fit-list { list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: var(--text-muted); }
+    .fit-list li { display: flex; align-items: flex-start; gap: 10px; line-height: 1.5; }
+
     /* Pricing */
     .pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 30px auto 50px; background: #18191e; border: 1px solid var(--card-border); padding: 4px; border-radius: 9999px; width: fit-content; }
-    .toggle-btn { padding: 8px 22px; border-radius: 9999px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text-muted); transition: all 0.2s; }
+    .toggle-btn { padding: 8px 24px; border-radius: 9999px; font-size: 14px; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--text-muted); transition: all 0.2s; }
     .toggle-btn.active { background: var(--lime); color: #000; font-weight: 700; }
     .toggle-badge { background: #059669; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 999px; margin-left: 6px; font-weight: 700; }
 
@@ -120,9 +168,9 @@
     .price-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 36px 28px; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: all 0.2s; }
     .price-card.popular { border: 2px solid var(--lime); box-shadow: 0 10px 40px rgba(197, 254, 109, 0.12); transform: scale(1.02); }
     .card-ribbon { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: var(--lime); color: #000; font-size: 11.5px; font-weight: 800; padding: 4px 16px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .plan-name { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .plan-name { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
     .plan-desc { font-size: 13.5px; color: var(--text-muted); min-height: 42px; margin-bottom: 20px; }
-    .price-val { font-size: 40px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
+    .price-val { font-size: 42px; font-weight: 800; line-height: 1; margin-bottom: 6px; }
     .price-val span.sub { font-size: 14px; font-weight: 500; color: var(--text-muted); }
     .daily-tag { font-size: 12px; color: var(--lime); font-weight: 600; margin-bottom: 24px; display: block; }
     .plan-features { list-style: none; margin: 24px 0 32px; display: flex; flex-direction: column; gap: 12px; font-size: 13.5px; }
@@ -130,14 +178,14 @@
     .plan-features li span.icon { color: var(--lime); font-weight: 700; }
 
     /* FAQ */
-    .faq-grid { max-width: 840px; margin: 0 auto 90px; display: flex; flex-direction: column; gap: 14px; }
-    .faq-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 20px 24px; cursor: pointer; transition: border-color 0.2s; }
-    .faq-item:hover { border-color: #3b3c44; }
-    .faq-q { font-size: 16px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-    .faq-a { font-size: 14px; color: var(--text-muted); margin-top: 12px; line-height: 1.6; display: none; }
+    .faq-grid { max-width: 860px; margin: 0 auto 90px; display: flex; flex-direction: column; gap: 14px; }
+    .faq-item { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 22px 26px; cursor: pointer; transition: border-color 0.2s; }
+    .faq-item:hover { border-color: var(--card-border-hover); }
+    .faq-q { font-size: 16.5px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+    .faq-a { font-size: 14px; color: var(--text-muted); margin-top: 14px; line-height: 1.65; display: none; }
     .faq-item.open .faq-a { display: block; }
     .faq-item.open .faq-icon { transform: rotate(45deg); color: var(--lime); }
-    .faq-icon { transition: transform 0.2s; font-size: 18px; font-weight: 700; }
+    .faq-icon { transition: transform 0.2s; font-size: 20px; font-weight: 700; }
 
     /* Footer */
     footer { border-top: 1px solid var(--card-border); padding: 50px 0 40px; font-size: 13px; color: var(--text-dim); text-align: center; }
@@ -148,8 +196,12 @@
     /* Responsive */
     @media (max-width: 900px) {
       .hero h1 { font-size: 32px; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .showcase-grid, .showcase-grid.reverse { grid-template-columns: 1fr; }
       .sim-wrap { grid-template-columns: 1fr; }
       .features-grid { grid-template-columns: 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .fit-grid { grid-template-columns: 1fr; }
       .pricing-grid { grid-template-columns: 1fr; }
       .price-card.popular { transform: none; }
       .nav-links { display: none; }
@@ -166,8 +218,9 @@
       </a>
       <ul class="nav-links">
         <li><a href="#como-funciona">Como Funciona</a></li>
-        <li><a href="#recursos">Recursos</a></li>
-        <li><a href="#comparativo">Comparativo</a></li>
+        <li><a href="#crm-os">O CRM</a></li>
+        <li><a href="#whatsapp-ia">IA no WhatsApp</a></li>
+        <li><a href="#resultados">Resultados</a></li>
         <li><a href="#planos">Planos & Preços</a></li>
         <li><a href="#faq">Dúvidas</a></li>
       </ul>
@@ -201,19 +254,28 @@
         </a>
       </div>
 
-      <div class="hero-proof">
-        <span>🔒 Sem Fidelidade Mensal</span>
-        <span>•</span>
-        <span>⚡ Conexão QR Code em 60s</span>
-        <span>•</span>
-        <span>🛡️ Motor Anti-Ban com Pacing Humano</span>
-        <span>•</span>
-        <span>🚀 100% Tecnologia (Zero Cursos)</span>
+      <!-- Faixa de Prova em Números Reais -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <div class="stat-num">&lt; <span>3s</span></div>
+          <div class="stat-label">Tempo de 1º Contato no WhatsApp</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">+<span>10.000</span></div>
+          <div class="stat-label">Leads Qualificados por Mês</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">+<span>R$ 5M</span></div>
+          <div class="stat-label">VGV Movimentado por Alunos & Clientes</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num"><span>100%</span></div>
+          <div class="stat-label">Tecnologia Plug & Play (Zero Cursos)</div>
+        </div>
       </div>
 
-      <!-- Simulador Interativo de WhatsApp -->
+      <!-- Simulador Interativo de WhatsApp e Kanban HUD -->
       <div class="sim-wrap" id="como-funciona">
-        <!-- Coluna Chat WhatsApp -->
         <div class="chat-col">
           <div class="chat-header">
             <div class="chat-lead-info">
@@ -250,7 +312,6 @@
           </div>
         </div>
 
-        <!-- Coluna Painel CRM Kanban HUD -->
         <div class="sim-kanban">
           <div>
             <div class="hud-header">
@@ -285,15 +346,187 @@
     </div>
   </section>
 
+  <!-- SEÇÃO VAGAS 03: SHOWCASE REAL DO CRM KANBAN (MACBOOK) -->
+  <section id="crm-os" class="showcase-section">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-lime">O Sistema Operacional</div>
+        <h2>Um CRM feito para fechar negócios, <span style="color:var(--lime);">não para preencher relatório chato.</span></h2>
+        <p>Chega de perder vendas porque o contato sumiu no WhatsApp ou porque você esqueceu de dar retorno. Tenha o controle visual de cada proposta em segundos.</p>
+      </div>
+
+      <div class="showcase-grid">
+        <div class="showcase-media">
+          <video autoplay loop muted playsinline preload="auto" poster="/vagas/assets/os-macbook-real.webp">
+            <source src="/vagas/assets/os-macbook-real.webm" type="video/webm">
+            <source src="/vagas/assets/os-macbook-real.mp4" type="video/mp4">
+            <img src="/vagas/assets/os-macbook-real.webp" alt="Interface real do CRM Imobiturbo OS no MacBook" loading="lazy">
+          </video>
+        </div>
+
+        <div class="showcase-list">
+          <div class="showcase-item">
+            <span class="showcase-num">01</span>
+            <div>
+              <h3>Kanban Visual de Oportunidades</h3>
+              <p>Acompanhe seus leads por etapas lógicas: Novos, Qualificados, Visitas Agendadas e Propostas. Arraste e avance sem complicação.</p>
+            </div>
+          </div>
+
+          <div class="showcase-item">
+            <span class="showcase-num">02</span>
+            <div>
+              <h3>Alertas e Follow-up Anti-Vácuo</h3>
+              <p>Histórico completo da conversa e alertas automáticos para você nunca mais deixar um cliente qualificado esfriar na gaveta.</p>
+            </div>
+          </div>
+
+          <div class="showcase-item">
+            <span class="showcase-num">03</span>
+            <div>
+              <h3>Contexto Imediato antes de Abordar</h3>
+              <p>Consulte orçamento, bairro desejado, urgência e notas da família antes de enviar um áudio. Quem aborda com contexto fecha muito mais rápido.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO VAGAS 04: ATENDIMENTO NO WHATSAPP E DIVISÃO DE PAPÉIS -->
+  <section id="whatsapp-ia" class="showcase-section" style="background:#0c0d10;">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-white">Inteligência Artificial no WhatsApp</div>
+        <h2>Qualifique Compradores no 1º Minuto, <span style="color:var(--lime);">24 Horas por Dia no WhatsApp.</span></h2>
+        <p>A IA não substitui você: ela atende no minuto zero, filtra quem tem perfil real de compra e coloca o lead pronto na sua agenda.</p>
+      </div>
+
+      <div class="showcase-grid reverse">
+        <div class="showcase-list">
+          <div class="roles-grid" style="grid-template-columns: 1fr;">
+            <div class="role-box" style="border-color: rgba(197, 254, 109, 0.3);">
+              <div class="role-box-header">
+                <span>🤖 Atendimento Imediato & Qualificação (A IA)</span>
+              </div>
+              <p style="font-size:13.5px;color:var(--text-muted);line-height:1.6;">
+                Responde instantaneamente a qualquer hora, levanta orçamento, filtra curiosos e confirma o interesse real com dados da sua pauta antes de passar para você.
+              </p>
+            </div>
+
+            <div class="role-box" style="border-color: rgba(16, 185, 129, 0.3);">
+              <div class="role-box-header">
+                <span>👤 Condução Comercial & Fechamento (Você)</span>
+              </div>
+              <p style="font-size:13.5px;color:var(--text-muted);line-height:1.6;">
+                Você entra em ação quando o cliente já está qualificado para agendar a visita presencial, apresentar o imóvel e assinar o contrato com a comissão no bolso.
+              </p>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;padding:16px;background:#14151a;border-radius:12px;border:1px solid var(--card-border);font-size:13px;color:var(--text-muted);">
+            💡 <b>Conexão Direta com Google Agenda & Meet:</b> A IA agenda visitas compatíveis com a sua disponibilidade sem choque de horários.
+          </div>
+        </div>
+
+        <div class="showcase-media">
+          <video autoplay loop muted playsinline preload="auto" poster="/vagas/assets/wa-agenda-real.webp">
+            <source src="/vagas/assets/wa-agenda-real.webm" type="video/webm">
+            <source src="/vagas/assets/wa-agenda-real.mp4" type="video/mp4">
+            <img src="/vagas/assets/wa-agenda-real.webp" alt="Atendimento no WhatsApp e Google Agenda pela IA Imobiturbo" loading="lazy">
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEÇÃO VAGAS 08: RESULTADOS REAIS E DEPOIMENTOS -->
+  <section id="resultados" style="padding:80px 0;">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-lime">Resultados Reais Comprovados</div>
+        <h2>Dezenas de milhões em comissões fechadas com a tecnologia Imobiturbo.</h2>
+        <p>Veja os resultados de corretores e imobiliárias comuns em todo o Brasil que colocaram a esteira para rodar.</p>
+      </div>
+
+      <div class="testimonials-grid">
+        <!-- Fernando Tavares -->
+        <div class="testi-card">
+          <div>
+            <div class="testi-result">15 leads em 4 dias • Apê 3 quartos vendido</div>
+            <p class="testi-quote">
+              "Eu captei 15 leads quentes em só 4 dias e agendei 5 visitas na mesma semana. Vendi um apartamento de 3 quartos em menos de um mês, com uma comissão que pagou a ferramenta centenas de vezes. Hoje atuo como autônomo ganhando 4x mais."
+            </p>
+          </div>
+          <div class="testi-author">
+            <img src="/vagas/assets/student-fernando.webp" alt="Fernando Tavares" class="testi-avatar" loading="lazy" onerror="this.onerror=null;this.src='/favicon.png';">
+            <div class="testi-meta">
+              <strong>Fernando Tavares</strong>
+              <span>Corretor Autônomo · Porto Alegre - RS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Joyce -->
+        <div class="testi-card">
+          <div>
+            <div class="testi-result">R$ 67 mil de comissão em 30 dias</div>
+            <p class="testi-quote">
+              "No meu primeiro dia com a esteira já veio um lead qualificado. Já chamei, atendi no tempo certo e fechou. Fechei duas vendas e estou com mais duas propostas em andamento. Trabalho da minha casa com tranquilidade."
+            </p>
+          </div>
+          <div class="testi-author">
+            <img src="/vagas/assets/student-joyce.webp" alt="Joyce" class="testi-avatar" loading="lazy" onerror="this.onerror=null;this.src='/favicon.png';">
+            <div class="testi-meta">
+              <strong>Joyce</strong>
+              <span>Corretora Autônoma · São Paulo - SP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Joan -->
+        <div class="testi-card">
+          <div>
+            <div class="testi-result">R$ 155 mil de comissão • 7 imóveis</div>
+            <p class="testi-quote">
+              "Só no primeiro trimestre eu já vendi sete imóveis exclusivos que captei e organizei na esteira. Colocou R$ 155 mil no meu bolso, num VGV de mais de R$ 5 milhões em 3 meses. Média de R$ 51 mil mensais."
+            </p>
+          </div>
+          <div class="testi-author">
+            <img src="/vagas/assets/student-joan.webp" alt="Joan" class="testi-avatar" loading="lazy" onerror="this.onerror=null;this.src='/favicon.png';">
+            <div class="testi-meta">
+              <strong>Joan</strong>
+              <span>Corretor Autônomo · Paraíba - PB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Galeria de Comprovantes do WhatsApp -->
+      <div style="margin-top:20px;text-align:center;">
+        <span style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;">Comprovantes Reais de WhatsApp e Fechamento de Vendas</span>
+      </div>
+
+      <div class="proof-gallery">
+        <img src="/vagas/assets/testimonials/gallery/10.webp" alt="Comprovante WhatsApp: R$ 44 investidos para R$ 15.000 retorno" class="proof-img" loading="lazy">
+        <img src="/vagas/assets/testimonials/gallery/12.webp" alt="Comprovante WhatsApp: 19 leads, casa vendida" class="proof-img" loading="lazy">
+        <img src="/vagas/assets/testimonials/gallery/15.webp" alt="Comprovante WhatsApp: 8 leads em 4 dias, comissão R$ 7.200" class="proof-img" loading="lazy">
+        <img src="/vagas/assets/testimonials/gallery/22.webp" alt="Comprovante WhatsApp: Fechamento de contrato com leads qualificados" class="proof-img" loading="lazy">
+        <img src="/vagas/assets/testimonials/gallery/7.webp" alt="Comprovante WhatsApp: Atendimento imediato e agendamento de visita" class="proof-img" loading="lazy">
+        <img src="/vagas/assets/testimonials/gallery/16.webp" alt="Comprovante WhatsApp: Venda concretizada com esteira" class="proof-img" loading="lazy">
+        <img src="/vagas/assets/testimonials/gallery/19.webp" alt="Comprovante WhatsApp: Fechamento de venda com esteira" class="proof-img" loading="lazy">
+        <img src="/vagas/assets/testimonials/gallery/21.webp" alt="Comprovante WhatsApp: Visita agendada e cliente fechado" class="proof-img" loading="lazy">
+      </div>
+    </div>
+  </section>
+
   <!-- Features Grid -->
-  <section id="recursos" style="padding:60px 0 80px;">
+  <section id="recursos" style="padding:40px 0 80px;border-top:1px solid var(--card-border);">
     <div class="container">
       <div class="section-title">
         <div class="badge badge-lime">Recursos Nativos</div>
         <h2>Tudo o que sua operação precisa para vender mais imóveis.</h2>
-        <p style="color:var(--text-muted);margin-top:12px;font-size:16px;">
-          Chega de pagar 4 ferramentas diferentes para ter uma roleta que não funciona.
-        </p>
+        <p>Chega de pagar 4 ferramentas diferentes para ter uma roleta que não funciona.</p>
       </div>
 
       <div class="features-grid">
@@ -337,14 +570,12 @@
   </section>
 
   <!-- Comparison Section -->
-  <section id="comparativo" style="padding:40px 0 80px;background:#0d0d10;border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);">
+  <section id="comparativo" style="padding:60px 0 80px;background:#0d0d10;border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);">
     <div class="container">
       <div class="section-title">
         <div class="badge badge-white">Economia Real</div>
         <h2>Por que continuar pagando uma colcha de retalhos?</h2>
-        <p style="color:var(--text-muted);margin-top:12px;font-size:16px;">
-          Compare a pilha tradicional de ferramentas fragmentadas contra o Imobiturbo OS Tudo-em-Um.
-        </p>
+        <p>Compare a pilha tradicional de ferramentas fragmentadas contra o Imobiturbo OS Tudo-em-Um.</p>
       </div>
 
       <div class="comp-wrap">
@@ -393,15 +624,45 @@
     </div>
   </section>
 
+  <!-- SEÇÃO VAGAS 09: PARA QUEM É / NÃO É -->
+  <section style="padding:80px 0;">
+    <div class="container">
+      <div class="section-title">
+        <div class="badge badge-white">Alinhamento Operacional</div>
+        <h2>O Imobiturbo OS é para você?</h2>
+        <p>Somos transparentes sobre quem tem os maiores resultados com o software.</p>
+      </div>
+
+      <div class="fit-grid">
+        <div class="fit-card yes">
+          <h3 style="color:var(--emerald);"><span>✓</span> Para quem é</h3>
+          <ul class="fit-list">
+            <li><b>Corretores Autônomos</b> que perdem vendas porque demoram para responder leads e não têm tempo de fazer follow-up manual.</li>
+            <li><b>Imobiliárias e Construtoras</b> que investem em anúncios e querem que cada lead seja distribuído com justiça e velocidade.</li>
+            <li><b>Equipes Comerciais</b> que precisam de transparência total de quem está atendendo e convertendo cada contato.</li>
+            <li><b>Profissionais focados em fechar</b> que não querem perder dias configurando ferramentas complexas e código.</li>
+          </ul>
+        </div>
+
+        <div class="fit-card no">
+          <h3 style="color:#ef4444;"><span>✕</span> Para quem NÃO é</h3>
+          <ul class="fit-list">
+            <li>Quem quer fazer disparos em massa indiscriminados (spam frio) sem autorização do contato.</li>
+            <li>Quem acha que o software vai visitar o imóvel e assinar a escritura pelo corretor.</li>
+            <li>Quem não atende chamadas ou não dá retorno aos leads qualificados pela inteligência artificial.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Pricing Section -->
-  <section id="planos" style="padding:80px 0 100px;">
+  <section id="planos" style="padding:80px 0 100px;background:#0d0d10;border-top:1px solid var(--card-border);">
     <div class="container">
       <div class="section-title">
         <div class="badge badge-lime">Planos Transparentes</div>
         <h2>Escolha seu plano e comece a atender em 60 segundos.</h2>
-        <p style="color:var(--text-muted);margin-top:12px;font-size:16px;">
-          Sem fidelidade oculta. Cancele quando quiser no mensal ou garanta economia máxima no anual.
-        </p>
+        <p>Sem fidelidade oculta. Cancele quando quiser no mensal ou garanta economia máxima no anual.</p>
 
         <!-- Toggle Anual / Mensal -->
         <div class="pricing-toggle">

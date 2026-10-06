@@ -71,6 +71,7 @@ if (fs.existsSync(v2Assets)) {
   } catch (_) {}
 }
 
+
 // Ensure relative symlink for skills-ia-obrigado/assets within build output
 const skillsObrigadoAssets = path.join(output, 'skills-ia-obrigado', 'assets');
 if (fs.existsSync(skillsObrigadoAssets)) {
