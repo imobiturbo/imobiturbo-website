@@ -323,6 +323,6 @@ test('plan prices use monthly display with factual contract totals and requested
  for(const [plan,amount]of[['Anual',97],['Trimestral',127],['Mensal',147]]){
   const row=page.locator('#planRow'+plan);assert.match(await row.locator('.psel-prc').innerText(),new RegExp('R\\$ '+amount+'\\s*/mês'));
  }
- assert.equal(await page.locator('.psel-selo').innerText(),'Economize até R$ 764');
+ assert.equal(await page.locator('.psel-selo').textContent(),'Economize até R$ 764');
  assert.match(await page.locator('#planRowAnual .psel-sub').innerText(),/12x de R\$ 97.*997/);
 });
