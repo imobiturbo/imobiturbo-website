@@ -47,3 +47,16 @@ Codex. Logo oficial, Plus Jakarta Sans e JetBrains Mono, conforme manual da marc
 
 Gates na VPS3: testes normais, build Pages, desktop/mobile, planos/ciclos,
 Kanban, FAQ, vídeo, links de ativação e auditoria de rede sem trackers.
+
+Refinamento de 06/10/2026: cards com movimento de lead entre etapas e conversa
+contínua de qualificação, layout CRM com anotações, demonstração de IA no
+WhatsApp e seção de apoio com o loop dos guias de uso, adaptados de `/vagas/`.
+Demos de produto reproduzem sem controles, em loop, mudas e inline apenas
+quando visíveis. Fora da tela, com a aba oculta ou um depoimento aberto, pausam.
+A preferência por movimento reduzido elimina transições espaciais dos cards,
+preservando a atualização dos exemplos e o autoplay solicitado. O comando
+discreto abaixo dos cards permite pausar suas animações.
+Badge e selo Meta reutilizam os SVGs próprios de `/vagas/`. Logos WhatsApp,
+Meta, Excel e OpenAI vêm do catálogo theSVG indicado por Natan. Site e portais
+usam ícones de categoria Lucide; fontes e licenças em `assets/icons/README.md`.
+Todos os ativos são locais; nenhum script de `/vagas/` foi copiado.
