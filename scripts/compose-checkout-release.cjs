@@ -1,0 +1,32 @@
+// Retain the deployed static site and overlay only this checkout release.
+const fs = require('node:fs');
+const path = require('node:path');
+const crypto = require('node:crypto');
+function files(root, dir = '') {
+  return fs.readdirSync(path.join(root, dir), { withFileTypes: true }).flatMap(entry => {
+    const relative = path.join(dir, entry.name);
+    return entry.isDirectory() ? files(root, relative) : [relative];
+  });
+}
+const changed = file => file === '_worker.js' || file === '_routes.json' || file === '_redirects' || file === '404.html' ||
+  ['vagas/', 'vagas-v2/', 'vagas-obrigado/'].some(prefix => file.startsWith(prefix));
+const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+function compose(baseline, built, output) {
+  for (const source of [baseline, built]) if (!fs.existsSync(path.join(source, '_worker.js'))) throw new Error('Missing release worker');
+  if ([baseline, built].some(source => path.resolve(source) === path.resolve(output))) throw new Error('Output must be isolated');
+  fs.cpSync(baseline, output, { recursive: true });
+  for (const file of files(built).filter(changed)) {
+    const dest = path.join(output, file); fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(path.join(built, file), dest);
+  }
+  const protectedFiles = files(baseline).filter(file => !changed(file));
+  for (const file of protectedFiles) if (hash(path.join(baseline, file)) !== hash(path.join(output, file))) throw new Error(`Unrelated asset changed: ${file}`);
+  return { protectedFiles: protectedFiles.length, changed: files(built).filter(changed).length,
+    workerSha256: hash(path.join(output, '_worker.js')), routes: JSON.parse(fs.readFileSync(path.join(output, '_routes.json'))) };
+}
+if (require.main === module) {
+  const [baseline, built, output] = process.argv.slice(2);
+  if (!baseline || !built || !output || fs.existsSync(output)) throw new Error('Pass baseline, built and a new output directory');
+  console.log(JSON.stringify(compose(baseline, built, output)));
+}
+module.exports = { compose };

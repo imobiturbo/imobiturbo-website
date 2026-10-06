@@ -40,11 +40,13 @@ async function visit(t, routePath, options = {}) {
       amount: total, installmentCount: payload.installments, installmentValue: total / payload.installments,
       expiresAt: new Date(Date.now() + 1800000).toISOString() };
     return state.recovered ? { ...meta, orderStatus: 'created', paymentId: 'pay_synthetic_not_payable', status: state.paid ? 'CONFIRMED' : 'PENDING',
+      ...(options.hostedInvoice ? { invoiceUrl: 'https://www.asaas.com/i/synthetic_not_payable' } : {}),
       billingType: payload.paymentMethod, pix: payload.paymentMethod === 'PIX' ? { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: 'data:image/png;base64,dGVzdA==', expiresAt: meta.expiresAt } : undefined } :
       { ...meta, orderStatus: 'uncertain', status: 'UNCERTAIN', recoverable: true };
   }
   await context.route('**/*', async route => {
     const req = route.request(), url = new URL(req.url());
+    if (options.hostedInvoice && url.href === 'https://www.asaas.com/i/synthetic_not_payable') return route.fulfill({ contentType: 'text/html', body: '<h1>Checkout fixture — not payable</h1>' });
     if (url.origin !== origin) return route.abort();
     if (url.pathname === '/api/checkout' && req.method() === 'POST') {
       state.persistedBeforePost.push(await page.evaluate(key => JSON.parse(localStorage.getItem(key)), INTENT));
@@ -81,9 +83,11 @@ async function submit(page, method) {
   if (method === 'PIX') {
     await page.locator('#chkTabPix').click(); await page.locator('#chkPixCpf').fill('52998224725');
   } else {
-    await page.locator('#chkCardNumber').fill('4111111111111111');
-    await page.locator('#chkCardHolder').fill('Auditoria Imobiturbo');
-    await page.locator('#chkCardExpiry').fill('12/30'); await page.locator('#chkCardCvv').fill('123');
+    if (await page.locator('#chkCardNumber').count()) {
+      await page.locator('#chkCardNumber').fill('4111111111111111');
+      await page.locator('#chkCardHolder').fill('Auditoria Imobiturbo');
+      await page.locator('#chkCardExpiry').fill('12/30'); await page.locator('#chkCardCvv').fill('123');
+    }
     await page.locator('#chkCardCpf').fill('52998224725');
   }
   // Real DOM call sites receive a double click while the first fetch is pending.
@@ -91,7 +95,7 @@ async function submit(page, method) {
 }
 for (const route of ['/vagas/', '/vagas-v2/']) {
   for (const [plan, count, pix, card] of [['mensal',1,147,147], ['trimestral',3,357,381], ['anual',12,997,1164]]) {
-    for (const method of ['PIX', 'CREDIT_CARD']) test(`${route} ${plan}/${method}: one POST, durable key, canonical payload and recovered payment`, async t => {
+    for (const method of route === '/vagas/' && plan === 'mensal' ? ['CREDIT_CARD'] : ['PIX', 'CREDIT_CARD']) test(`${route} ${plan}/${method}: one POST, durable key, canonical payload and recovered payment`, async t => {
       const { page, state } = await visit(t, route);
       await paymentStep(page, plan);
       assert.equal(await page.locator('#chkInstallments option').count(), 1, 'only the frozen card count is purchasable');
@@ -100,6 +104,7 @@ for (const route of ['/vagas/', '/vagas-v2/']) {
       await page.waitForFunction(key => Boolean(JSON.parse(localStorage.getItem(key) || 'null')?.paymentId), SESSION);
       assert.equal(state.posts.length, 1);
       const payload = state.posts[0], before = state.persistedBeforePost[0];
+      if (route === '/vagas/') { assert.equal(payload.checkoutMode, 'hosted'); assert.equal(payload.creditCard, undefined); }
       assert.equal(payload.plan, plan); assert.equal(payload.paymentMethod, method);
       assert.equal(payload.installments, method === 'PIX' ? 1 : count);
       assert.match(payload.idempotencyKey, UUID); assert.notEqual(payload.idempotencyKey, payload.eventId);
@@ -130,3 +135,17 @@ for (const route of ['/vagas/', '/vagas-v2/']) {
     assert.equal(state.posts.length, 1);
   });
 }
+
+for (const width of [320, 390, 1440]) test(`hosted monthly ${width}px: native button delegates payment and captures no card data`, async t => {
+  const { page, state } = await visit(t, '/vagas/', { hostedInvoice: true });
+  await page.setViewportSize({ width, height: 844 });
+  await paymentStep(page, 'mensal');
+  assert.equal(await page.locator('#chkCardNumber').count(), 0);
+  assert.equal(await page.locator('#chkCardCvv').count(), 0);
+  assert.equal(await page.locator('#chkTabPix').isVisible(), false);
+  await submit(page, 'CREDIT_CARD');
+  await page.waitForURL('https://www.asaas.com/i/synthetic_not_payable');
+  assert.equal(state.posts.length, 1);
+  assert.equal(state.posts[0].checkoutMode, 'hosted');
+  assert.equal(state.posts[0].creditCard, undefined);
+});
