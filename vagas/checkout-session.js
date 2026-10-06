@@ -43,6 +43,9 @@
     async function fingerprint(payload) {
       const safe = { plan: payload.plan, paymentMethod: payload.paymentMethod, installments: Number(payload.installments || 1),
         name: String(payload.name || '').trim(), email: String(payload.email || '').trim().toLowerCase(), phone: String(payload.phone || '').replace(/\D/g, '') };
+      // Keep historical one-off fingerprints stable; automatic consent is a
+      // different financial intention and must never reuse their charge key.
+      if (payload.pixAutomatic === true) safe.pixAutomatic = true;
       const digest = await root.crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(safe)));
       return Array.from(new Uint8Array(digest), n => n.toString(16).padStart(2, '0')).join('');
     }
@@ -77,7 +80,8 @@
           const eid = payload.eventId || uuid();
           if (key === eid) throw new Error('Identificador da compra inválido.');
           intent = write({ version: 1, idempotencyKey: key, fingerprint: hash, eventId: eid,
-            checkoutMode: payload.checkoutMode === 'hosted' ? 'hosted' : 'transparent', plan: payload.plan, method: payload.paymentMethod, installmentCount: Number(payload.installments || 1), state: 'prepared', checkoutOrderId: null });
+            checkoutMode: payload.checkoutMode === 'hosted' ? 'hosted' : 'transparent', plan: payload.plan, method: payload.paymentMethod,
+            pixAutomatic: payload.pixAutomatic === true, installmentCount: Number(payload.installments || 1), state: 'prepared', checkoutOrderId: null });
         }
         write({ ...intent, state: 'submitting' });
         return { payload: { ...payload, idempotencyKey: intent.idempotencyKey, eventId: intent.eventId } };
@@ -130,6 +134,7 @@
         expiresAt: value.expiresAt,
         paid: value.paid === true,
         managedCommunity: value.managedCommunity === true,
+        pixAutomatic: value.pixAutomatic === true && value.plan === 'mensal' && value.method === 'PIX',
         checkoutOrderId: UUID.test(value.checkoutOrderId || '') ? value.checkoutOrderId : null,
         pix: {
           copyPaste: typeof pix.copyPaste === 'string' ? pix.copyPaste.slice(0, 4096) : '',
@@ -359,6 +364,7 @@
       }
       const isPix = record.method === 'PIX';
       notice.textContent = isPix ? record.pix.copyPaste ?
+        record.pixAutomatic ? 'Pague o primeiro mês e autorize o Pix Automático no aplicativo do seu banco.' :
         'Seu Pix está aberto. Use o mesmo código para concluir.' :
         'A cobrança foi criada. Recuperando o QR Code, sem gerar outro Pix…' :
         'Seu cartão está em análise. Aguardando a confirmação do pagamento.';
@@ -436,7 +442,7 @@
         if (result.paymentId) {
           if (recoveryTimer) root.clearInterval(recoveryTimer);
           recoveryTimer = null;
-          session.save(result, { method: intent.read()?.method || 'PIX', checkoutMode: intent.read()?.checkoutMode });
+          session.save(result, { method: intent.read()?.method || 'PIX', checkoutMode: result.pixAutomatic ? 'transparent' : intent.read()?.checkoutMode });
           return session.start();
         }
         if (result.retryCreationAllowed) {

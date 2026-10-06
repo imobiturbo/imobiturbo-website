@@ -1804,6 +1804,35 @@ a.button:hover { background: #b3f257; box-shadow: 0 3px 12px #4a742d14; }
   gap: 8px;
   margin-bottom: 18px;
 }
+.chk-tabs:has(> .chk-tab[hidden]) {
+  grid-template-columns: 1fr;
+}
+#chkInstallmentsWrap[hidden] { display: none !important; }
+.chk-modal-box .chk-payment-note,
+.chk-modal-box .chk-payment-terms {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #bfc5b7;
+  margin: 0 0 16px;
+}
+.chk-modal-box .chk-payment-terms {
+  font-size: 12px;
+  margin: 14px 0 0;
+}
+.chk-modal-box .chk-asaas-footer {
+  margin-top: 16px;
+  padding-top: 14px;
+}
+.chk-modal-box .chk-tab {
+  min-height: 70px;
+  align-items: flex-start;
+  text-align: left;
+  padding: 12px 14px;
+  box-shadow: none;
+}
+.chk-modal-box .chk-tab-desc { font-size: 12px; line-height: 1.4; }
+.chk-modal-box .chk-plan-compact-price { font-size: 14px; line-height: 1.4; }
+.chk-modal-box .chk-guarantee-line { font-size: 12px; line-height: 1.4; }
 .chk-tab {
   background: #141613;
   border: 1px solid #282c23;
