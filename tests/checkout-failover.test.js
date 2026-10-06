@@ -129,8 +129,8 @@ test("checkout API PLAN_DETAILS matches landing page pricing and Hub tracking co
       assert.ok(html.includes("R$ 997/ano no Pix Automático"), `${page} must disclose the annual automatic Pix price and period`);
       assert.ok(html.includes("R$ 357/trimestre no Pix Automático"), `${page} must disclose the quarterly automatic Pix price and period`);
     } else {
-      assert.ok(html.includes('Total no cartão: R$ 1.164 · À vista: R$ 997'));
-      assert.ok(html.includes('Total no cartão: R$ 381 · À vista: R$ 357'));
+      assert.ok(html.includes('12x de R$ 97 no cartão · À vista: R$ 997'));
+      assert.ok(html.includes('3x de R$ 127 no cartão · À vista: R$ 357'));
       assert.ok(html.includes('Total no cartão: R$ 147 · À vista: R$ 147'));
       assert.ok(html.includes('No mensal, cartão e Pix Automático renovam todo mês'));
       assert.ok(html.includes('anual e trimestral no Pix são pagamentos únicos'));

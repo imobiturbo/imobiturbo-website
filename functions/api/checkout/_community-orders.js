@@ -257,7 +257,10 @@ export async function createCommunityOrder(env, body) {
   } catch (error) {
     // Any attempted provider mutation/unknown finish result is uncertain. No
     // fallback gateway, second POST, or fabricated absence/failure proof.
-    try { order = await finishCommunityOrder(config, order, { status: "uncertain", ...(knownCustomer ? { provider_customer_id: knownCustomer } : {}), error_code: "gateway_creation_uncertain" }); }
+    try { order = await finishCommunityOrder(config, order, { status: error.failureProof ? "failed" : "uncertain",
+      ...(knownCustomer ? { provider_customer_id: knownCustomer } : {}),
+      error_code: /^asaas_http_[0-9]{3}(?:_[a-z_]{1,50})?$/.test(error.code || "") ? error.code : "gateway_creation_uncertain",
+      ...(error.failureProof ? { failure_proof: error.failureProof } : {}) }); }
     catch (_) { /* A successful finish may have lost its response; lookup wins. */ }
     if (error instanceof CommunityError && error.status === 409) throw error;
     return { config, order };

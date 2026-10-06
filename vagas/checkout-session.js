@@ -343,6 +343,7 @@
     const intent = createCommunityIntent();
 
     function locked(value) {
+      pane.querySelector('.chk-tabs').hidden = value;
       pane.querySelectorAll('input, select, button').forEach(control => {
         if (control.id !== 'chkCopyPixBtn') control.disabled = value;
       });
@@ -358,7 +359,7 @@
       externalLink.style.setProperty('display', externalLink.hidden ? 'none' : 'flex', 'important');
       if (!externalLink.hidden) {
         externalLink.href = record.invoiceUrl;
-        notice.textContent = 'Sua compra está aberta. Conclua na página segura do Asaas.';
+        notice.textContent = 'Sua compra está aberta. Continue no Asaas ou feche esta janela para voltar depois.';
         get('chkCardView').style.display = 'none'; get('chkPixView').style.display = 'none';
         return;
       }
@@ -405,7 +406,7 @@
         upsellBuyerProfile.clear();
         clearDraft();
         api.form?.reset();
-        for (const id of ['chkName', 'chkPhone', 'chkEmail', 'chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv', 'chkCardCpf', 'chkPixCpf']) {
+        for (const id of ['chkName', 'chkPhone', 'chkEmail', 'chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv', 'chkBuyerCpf']) {
           if (get(id)) get(id).value = '';
         }
         notice.hidden = true; externalLink.hidden = true; externalLink.style.setProperty('display', 'none', 'important');
@@ -425,7 +426,7 @@
         api.updateCheckoutPersonalization();
         api.showCheckoutError('Este checkout expirou ou foi encerrado. Preencha seus dados para iniciar novamente.');
       },
-      onError: () => api.showCheckoutError('Não foi possível consultar o pagamento agora. Ele foi mantido; tentaremos novamente automaticamente.'),
+      onError: () => api.showCheckoutError('A confirmação está demorando. Sua compra continua disponível; você pode fechar esta janela e voltar.', 'progress'),
       onPaid: result => {
         intent.complete();
         if (recoveryTimer) root.clearInterval(recoveryTimer);
@@ -449,7 +450,7 @@
         if (result.retryCreationAllowed) {
           if (recoveryTimer) root.clearInterval(recoveryTimer);
           recoveryTimer = null; locked(false); notice.hidden = true;
-          api.showCheckoutError('A cobrança não foi criada. Você pode tentar novamente com os dados do pagamento.');
+          api.showCheckoutError('Esta tentativa não gerou cobrança. Confira seus dados e tente novamente.', 'progress');
         }
       } catch (_) { notice.textContent = 'Estamos conferindo sua compra. Ela foi mantida; tentaremos novamente.'; }
       finally { recovering = false; }

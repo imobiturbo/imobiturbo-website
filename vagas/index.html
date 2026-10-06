@@ -155,7 +155,7 @@
   <!-- Eventos de navegação e conversão são enviados pelo Hub Tracker. -->
 
 
-  <link rel="stylesheet" href="./vagas.css?v=20261006-pix-automatico">
+  <link rel="stylesheet" href="./vagas.css?v=20261006-cpf-pix-recovery">
   <style id="cioCriticalSliderCss">
     /* Critical Imobiturbo Club Slider Invariants */
     .cio-header-top-row {
@@ -977,7 +977,7 @@
       }
     }
   </style>
-  <script src="/vagas/checkout-session.js?v=20261006-pix-automatico"></script>
+  <script src="/vagas/checkout-session.js?v=20261006-cpf-pix-recovery"></script>
 
   <style id="vagas-checkout-summary-wrap">
     .chk-plan-compact-left { flex-wrap: wrap; }
@@ -1982,13 +1982,13 @@
                 <div class="psel-title-row">
                   <span class="psel-indicator" aria-hidden="true"></span>
                   <span class="psel-nm">Anual</span>
-                  <span class="psel-badge psel-selo">12 MESES DE ACESSO</span>
+                  <span class="psel-badge psel-selo">Economize até R$ 764</span>
                 </div>
-                <div class="psel-sub">Total no cartão: R$ 1.164 · À vista: R$ 997</div>
+                <div class="psel-sub">12x de R$ 97 no cartão · À vista: R$ 997</div>
               </div>
               <div class="psel-right">
                 <div class="psel-prc">
-                  <b>12 × R$ 97</b><small>no cartão</small>
+                  <b>R$ 97</b><small>/mês</small>
                 </div>
               </div>
             </label>
@@ -2000,11 +2000,11 @@
                   <span class="psel-indicator" aria-hidden="true"></span>
                   <span class="psel-nm">Trimestral</span>
                 </div>
-                <div class="psel-sub">Total no cartão: R$ 381 · À vista: R$ 357</div>
+                <div class="psel-sub">3x de R$ 127 no cartão · À vista: R$ 357</div>
               </div>
               <div class="psel-right">
                 <div class="psel-prc">
-                  <b>3 × R$ 127</b><small>no cartão</small>
+                  <b>R$ 127</b><small>/mês</small>
                 </div>
               </div>
             </label>
@@ -2540,9 +2540,9 @@
           <!-- ABA 1: CARTÃO DE CRÉDITO -->
           <div id="chkCardView">
             <p class="chk-payment-note" id="chkCardPaymentNote">Preencha os dados do cartão na página segura do Asaas.</p>
-            <div class="chk-field">
-              <label for="chkCardCpf">CPF do comprador</label>
-              <input type="text" id="chkCardCpf" class="chk-input" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
+            <div class="chk-field" id="chkBuyerCpfField">
+              <label for="chkBuyerCpf">CPF do comprador</label>
+              <input type="text" id="chkBuyerCpf" class="chk-input" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
             </div>
 
             <div class="chk-field" id="chkInstallmentsWrap">
@@ -2573,11 +2573,6 @@
           <div id="chkPixView" style="display: none;">
             <!-- Formulário CPF para gerar Pix -->
             <div id="chkPixFormBlock"><p class="chk-payment-note" id="chkPixTotal" aria-live="polite">R$ 997 à vista por 12 meses. Sem renovação automática.</p>
-
-              <div class="chk-field">
-                <label for="chkPixCpf">CPF do comprador</label>
-                <input type="text" id="chkPixCpf" class="chk-input" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
-              </div>
 
               <button type="button" class="chk-btn-submit" id="chkGeneratePixBtn" style="margin-top: 14px;">
                 <span id="chkPixBtnText">Pagar com Pix no Asaas</span>
@@ -3016,9 +3011,11 @@
       return map[ddd] || 'sua região';
     }
 
-    function showCheckoutError(msg) {
+    function showCheckoutError(msg, kind = 'error') {
       if (errorMsg) {
         errorMsg.textContent = msg;
+        errorMsg.dataset.kind = kind;
+        errorMsg.setAttribute('role', kind === 'error' ? 'alert' : 'status');
         errorMsg.style.display = 'block';
       }
     }
@@ -3263,7 +3260,15 @@
       if (modalPlanPrice) modalPlanPrice.textContent = summary;
     }
 
-    function updatePaymentSummary() { updateInstallmentButtonText(); }
+    function updatePaymentSummary() {
+      updateInstallmentButtonText();
+      // One ephemeral buyer field follows the selected method; never persist CPF.
+      const field = document.getElementById('chkBuyerCpfField');
+      const pix = tabPix?.classList.contains('active');
+      const parent = document.getElementById(pix ? 'chkPixFormBlock' : 'chkCardView');
+      const next = document.getElementById(pix ? 'chkGeneratePixBtn' : 'chkInstallmentsWrap');
+      if (field && parent && next) parent.insertBefore(field, next);
+    }
 
     function updateCtaButtonText() {
       const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
@@ -3315,7 +3320,7 @@
         tabPix.hidden = false;
         tabPix.style.setProperty('display', 'flex', 'important');
       }
-      updateInstallmentButtonText();
+      updatePaymentSummary();
 
       const cardTabDesc = document.getElementById('chkCardTabDesc');
       if (cardTabDesc) {
@@ -3713,11 +3718,8 @@
       e.target.value = v;
     }
 
-    const cardCpfInput = document.getElementById('chkCardCpf');
-    if (cardCpfInput) cardCpfInput.addEventListener('input', applyCpfMask);
-
-    const pixCpfInput = document.getElementById('chkPixCpf');
-    if (pixCpfInput) pixCpfInput.addEventListener('input', applyCpfMask);
+    const buyerCpfInput = document.getElementById('chkBuyerCpf');
+    if (buyerCpfInput) buyerCpfInput.addEventListener('input', applyCpfMask);
 
     // Controle de abas de pagamento (Cartão vs Pix)
     if (tabCard && tabPix && cardView && pixView) {
@@ -3802,7 +3804,7 @@
       if (e) e.preventDefault();
       if (isProcessingPayment) return;
       if (checkoutSession.read()) { checkoutSession.start(); return; }
-      const cpfInput = document.getElementById(method === 'PIX' ? 'chkPixCpf' : 'chkCardCpf');
+      const cpfInput = document.getElementById('chkBuyerCpf');
       const cpf = (cpfInput?.value || '').replace(/\D/g, '');
       if (!isValidCpf(cpf)) {
         showCheckoutError('Informe um CPF válido para abrir o checkout.');
@@ -3811,7 +3813,7 @@
       isProcessingPayment = true;
       const button = method === 'PIX' ? generatePixBtn : submitBtn;
       if (button) button.disabled = true;
-      showCheckoutError('Abrindo o pagamento seguro no Asaas…');
+      showCheckoutError(method === 'PIX' && currentPlan === 'mensal' ? 'Preparando o QR Code para autorizar no seu banco…' : 'Abrindo o pagamento seguro no Asaas…', 'progress');
       try {
         let payload = { checkoutMode: 'hosted', gateway: 'asaas', eventId: getCheckoutId(), plan: currentPlan,
           paymentMethod: method, installments: method === 'PIX' ? 1 : currentPlan === 'anual' ? 12 : currentPlan === 'trimestral' ? 3 : 1,
@@ -3840,11 +3842,15 @@
             return;
           }
         }
+        if (result.retryCreationAllowed) {
+          await checkoutSession.keepIntent();
+          return;
+        }
         checkoutSession.keepIntent();
-        showCheckoutError('Estamos preparando a página do Asaas. Sua compra foi mantida; aguarde a conferência.');
+        showCheckoutError('O Asaas ainda não confirmou esta tentativa. Você pode fechar esta janela e voltar; manteremos a mesma compra.', 'progress');
       } catch (_) {
         checkoutSession.intent.uncertain(); checkoutSession.keepIntent();
-        showCheckoutError('Não foi possível abrir o pagamento agora. Estamos conferindo a mesma compra.');
+        showCheckoutError('A confirmação do Asaas está demorando. Você pode fechar esta janela e voltar para consultar a mesma compra.', 'progress');
       } finally {
         isProcessingPayment = false;
         if (button) button.disabled = Boolean(checkoutSession.read() || checkoutSession.pendingIntent());
