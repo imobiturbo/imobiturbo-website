@@ -111,30 +111,42 @@
   });
   const dialog = document.querySelector('#proof-dialog');
   const player = document.querySelector('#proof-player');
-  document.querySelectorAll('[data-proof]').forEach(link => link.addEventListener('click', event => {
-    if (typeof dialog.showModal !== 'function') return;
-    event.preventDefault();
-    proofOpen = true;
-    syncVideos();
-    document.querySelector('#proof-title').textContent = `Relato de ${link.dataset.proofName} · Imobiturbo`;
-    const proofVideo = document.createElement('video');
-    proofVideo.src = `/os-crm/v2/assets/${link.dataset.proof}`;
-    proofVideo.poster = link.querySelector('img').src;
-    proofVideo.controls = true;
-    proofVideo.playsInline = true;
-    proofVideo.setAttribute('aria-label', `Depoimento de ${link.dataset.proofName}`);
-    player.replaceChildren(proofVideo);
-    dialog.showModal();
-    proofVideo.play().catch(() => {});
-  }));
-  document.querySelector('[data-close-proof]').addEventListener('click', () => dialog.close());
-  dialog.addEventListener('close', () => {
-    player.querySelector('video')?.pause();
+  const proofStage = dialog.querySelector('.proof-stage');
+  let proofController = null;
+  function clearProof() {
+    proofController?.dispose();
+    proofController = null;
     player.replaceChildren();
     proofOpen = false;
     syncVideos();
+  }
+  document.querySelectorAll('[data-proof]').forEach(link => link.addEventListener('click', event => {
+    if (typeof dialog.showModal !== 'function') return;
+    event.preventDefault();
+    clearProof();
+    proofOpen = true;
+    syncVideos();
+    document.querySelector('#proof-title').textContent = `Relato de ${link.dataset.proofName}`;
+    const proofVideo = document.createElement('video');
+    proofVideo.src = `/os-crm/v2/assets/${link.dataset.proof}`;
+    proofVideo.poster = link.querySelector('img').src;
+    proofVideo.playsInline = true;
+    proofVideo.setAttribute('aria-label', `Depoimento de ${link.dataset.proofName}`);
+    player.replaceChildren(proofVideo);
+    proofController = window.OSProofPlayer.mount(proofVideo, proofStage);
+    dialog.showModal();
+    proofController.play();
+  }));
+  async function closeProof() {
+    if (document.fullscreenElement === proofStage) await document.exitFullscreen().catch(() => {});
+    clearProof();
+    dialog.close();
+  }
+  document.querySelector('[data-close-proof]').addEventListener('click', closeProof);
+  dialog.addEventListener('close', () => {
+    if (!dialog.open) clearProof();
   });
-  dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
+  dialog.addEventListener('click', event => { if (event.target === dialog) closeProof(); });
 
   // Short, local demonstrations: no borrowed marketing scripts or timers offscreen.
   const motionDemos = [...document.querySelectorAll('[data-motion-demo]')];

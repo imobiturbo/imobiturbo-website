@@ -60,3 +60,8 @@ Badge e selo Meta reutilizam os SVGs próprios de `/vagas/`. Logos WhatsApp,
 Meta, Excel e OpenAI vêm do catálogo theSVG indicado por Natan. Site e portais
 usam ícones de categoria Lucide; fontes e licenças em `assets/icons/README.md`.
 Todos os ativos são locais; nenhum script de `/vagas/` foi copiado.
+
+Player de relatos: controles próprios em `proof-player.js`, com SVGs, progresso
+na cor da marca, tempo, play/pausa, mute e tela cheia. O botão Fechar tem texto,
+ícone e alvo de 44px. A barra fica abaixo do vídeo, preservando as legendas.
+Fechar libera a mídia imediatamente; Escape também encerra a reprodução.
