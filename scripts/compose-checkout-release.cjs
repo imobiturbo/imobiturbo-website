@@ -14,7 +14,12 @@ const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).d
 function compose(baseline, built, output) {
   for (const source of [baseline, built]) if (!fs.existsSync(path.join(source, '_worker.js'))) throw new Error('Missing release worker');
   if ([baseline, built].some(source => path.resolve(source) === path.resolve(output))) throw new Error('Output must be isolated');
-  fs.cpSync(baseline, output, { recursive: true, dereference: true });
+  // Copy bytes into fresh regular files. Directory symlinks in old releases
+  // must never point an overlay back into the retained rollback artifact.
+  for (const file of files(baseline)) {
+    const dest = path.join(output, file); fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(path.join(baseline, file), dest);
+  }
   for (const file of files(built).filter(changed)) {
     const dest = path.join(output, file); fs.mkdirSync(path.dirname(dest), { recursive: true });
     fs.copyFileSync(path.join(built, file), dest);
