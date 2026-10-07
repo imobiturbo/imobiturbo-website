@@ -1405,7 +1405,8 @@
         margin-top: 12px !important;
       }
     }
-  
+  </style>
+<style id="skills-journey-access-styles">
   /* UPSELL JOURNEY & ACCESS STYLES */
   .wrap {
     width: min(1200px, calc(100% - 64px));
@@ -1628,7 +1629,8 @@
     }
   }
 </style>
-  <script src="/vagas/checkout-session.js?v=20260927-2"></script>
+  <script src="/vagas/lead-capture.js?v=20261006-crm-receipt"></script>
+  <script src="/vagas/checkout-session.js?v=20261007-skills-hosted"></script>
   <style id="skills-checkout-plan-layout">
     #chkPlanRetractableTrigger .chk-plan-compact-left {
       flex-direction: column;
@@ -1638,7 +1640,7 @@
     #chkPlanRetractableTrigger .chk-plan-compact-price { white-space: normal; }
   </style>
 </head>
-<body data-lp-version="skills-upsell-20261004" data-lp-revision="original-layout-20261005">
+<body data-lp-version="skills-upsell-20261004" data-lp-revision="hosted-upsell-checkout-20261007">
 
   <nav class="journey" aria-label="Etapas da sua experiência">
     <ol class="wrap journey-steps">
@@ -3009,9 +3011,9 @@
       </div>
       <div class="chk-header-progress-wrap" id="chkHeaderProgressWrap">
         <div class="chk-progress-track">
-          <div class="chk-progress-bar" id="chkProgressBar" style="width: 70%;"></div>
+          <div class="chk-progress-bar" id="chkProgressBar" style="width: 25%;"></div>
         </div>
-        <span class="chk-progress-pct" id="chkProgressPct">70%</span>
+        <span class="chk-progress-pct" id="chkProgressPct">Etapa 1 de 4</span>
         <span class="chk-progress-label" id="chkProgressLabel" style="display: none;">Quase lá...</span>
       </div>
       <button type="button" class="chk-modal-close" id="checkoutModalClose" aria-label="Fechar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
@@ -3071,7 +3073,7 @@
               <div class="chk-plan-compact-left">
                 <span class="chk-plan-compact-pill">Selecionado</span>
                 <strong class="chk-plan-compact-title" id="chkPlanCompactTitle">Plano Anual</strong>
-                <span class="chk-plan-compact-price" id="chkPlanCompactPrice">· R$ 97/mês</span>
+                <span class="chk-plan-compact-price" id="chkPlanCompactPrice">· 12 × R$ 97 · total R$ 1.164</span>
               </div>
               <div class="chk-plan-compact-right">
                 <span class="chk-plan-compact-action" id="chkPlanCompactAction">Ver detalhes</span>
@@ -3085,13 +3087,13 @@
                 <div class="chk-plan-info">
                   <div class="chk-plan-title-row">
                     <strong class="chk-plan-name" id="chkModalPlanName">Plano Anual</strong>
-                    <span class="chk-plan-eco-tag" id="chkModalPlanEco"> - Economize R$ 767</span>
+                    <span class="chk-plan-eco-tag" id="chkModalPlanEco" style="display: none;"></span>
                   </div>
                   <span class="chk-plan-sub" id="chkModalPlanSub">12 meses de acesso completo + CRM IA</span>
                 </div>
                 <div class="chk-plan-side">
                   <div class="chk-plan-val" id="chkModalPlanPrice">
-                    <b>R$ 97</b><small>/mês</small>
+                    <b>12 × R$ 97</b><small>Total R$ 1.164</small>
                   </div>
                   <button type="button" class="chk-plan-change-btn" id="chkChangePlanTrigger">alterar plano</button>
                 </div>
@@ -3105,7 +3107,7 @@
                     <b>Plano Anual</b>
                     <span>12 meses de acesso completo + CRM IA</span>
                   </div>
-                  <span class="chk-plan-badge">R$ 97/mês</span>
+                  <span class="chk-plan-badge">12 × R$ 97 · total R$ 1.164</span>
                 </label>
                 <label class="chk-plan-opt">
                   <input type="radio" name="chkModalPlanRadio" value="trimestral">
@@ -3113,13 +3115,13 @@
                     <b>Plano Trimestral</b>
                     <span>3 meses de acesso completo + CRM IA</span>
                   </div>
-                  <span class="chk-plan-badge">R$ 127/mês</span>
+                  <span class="chk-plan-badge">3 × R$ 127 · total R$ 381</span>
                 </label>
                 <label class="chk-plan-opt">
                   <input type="radio" name="chkModalPlanRadio" value="mensal">
                   <div class="chk-plan-opt-info">
                     <b>Plano Mensal</b>
-                    <span>Mensalidade com cancelamento livre</span>
+                    <span>Renovação mensal no cartão ou Pix Automático</span>
                   </div>
                   <span class="chk-plan-badge">R$ 147/mês</span>
                 </label>
@@ -3139,7 +3141,7 @@
             <button type="button" class="chk-tab" id="chkTabPix" role="tab" aria-selected="false" aria-controls="chkPixView">
               <span class="chk-tab-label">
                 <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" class="chk-icon-pix"><path d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"/><path d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"/></svg>
-                Pix Instantâneo
+                <span id="chkPixTabLabel">Pix</span>
               </span>
               <span class="chk-tab-desc" id="chkPixTabDesc">Aprovação imediata</span>
             </button>
@@ -3147,35 +3149,10 @@
 
           <!-- ABA 1: CARTÃO DE CRÉDITO -->
           <div id="chkCardView">
-            <div class="chk-field">
-              <label for="chkCardNumber">Número do cartão</label>
-              <div class="chk-input-card-wrap">
-                <input type="text" id="chkCardNumber" class="chk-input" placeholder="0000 0000 0000 0000" maxlength="19" inputmode="numeric" autocomplete="cc-number">
-                <div class="chk-card-brand-badge" id="chkCardBrandBadge">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7b8270" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-                </div>
-              </div>
-            </div>
-
-            <div class="chk-field">
-              <label for="chkCardHolder">Nome impresso no cartão</label>
-              <input type="text" id="chkCardHolder" class="chk-input" placeholder="Nome como está no cartão" autocomplete="cc-name">
-            </div>
-
-            <div class="chk-grid-2">
-              <div class="chk-field">
-                <label for="chkCardExpiry">Validade</label>
-                <input type="text" id="chkCardExpiry" class="chk-input" placeholder="MM/AA" maxlength="5" inputmode="numeric" autocomplete="cc-exp">
-              </div>
-              <div class="chk-field">
-                <label for="chkCardCvv">CVV <small style="color: #7b8270; font-weight: normal;">(3 ou 4 dígitos)</small></label>
-                <input type="text" id="chkCardCvv" class="chk-input" placeholder="123" maxlength="4" inputmode="numeric" autocomplete="cc-csc">
-              </div>
-            </div>
-
-            <div class="chk-field">
-              <label for="chkCardCpf">CPF do titular do cartão</label>
-              <input type="text" id="chkCardCpf" class="chk-input" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
+            <p class="chk-payment-note" id="chkCardPaymentNote">Preencha os dados do cartão na página segura do Asaas.</p>
+            <div class="chk-field" id="chkBuyerCpfField">
+              <label for="chkBuyerCpf">CPF do comprador</label>
+              <input type="text" id="chkBuyerCpf" class="chk-input" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
             </div>
 
             <div class="chk-field" id="chkInstallmentsWrap">
@@ -3205,24 +3182,10 @@
           <!-- ABA 2: PIX INSTANTÂNEO -->
           <div id="chkPixView" style="display: none;">
             <!-- Formulário CPF para gerar Pix -->
-            <div id="chkPixFormBlock">
-              <div class="chk-pix-discount-banner">
-                <div class="chk-pix-badge-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                </div>
-                <div class="chk-pix-discount-text">
-                  <span>Pagamento via <strong>Pix Instantâneo</strong></span>
-                  <span style="font-size: 11.5px; color: #a8b09d;">Liberação imediata assim que pago no aplicativo do seu banco.</span>
-                </div>
-              </div>
-
-              <div class="chk-field">
-                <label for="chkPixCpf">CPF do pagador:</label>
-                <input type="text" id="chkPixCpf" class="chk-input" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
-              </div>
+            <div id="chkPixFormBlock"><p class="chk-payment-note" id="chkPixTotal" aria-live="polite">R$ 997 à vista por 12 meses. Sem renovação automática.</p>
 
               <button type="button" class="chk-btn-submit" id="chkGeneratePixBtn" style="margin-top: 14px;">
-                <span>Gerar QR Code Pix</span>
+                <span id="chkPixBtnText">Pagar com Pix no Asaas</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </button>
             </div>
@@ -3244,7 +3207,7 @@
               </button>
 
               <div class="chk-qr-frame">
-                <img id="chkPixQrImg" class="chk-qr-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='190' height='190' viewBox='0 0 190 190'%3E%3Crect width='190' height='190' fill='%23181b16'/%3E%3C/svg%3E" alt="QR Code Pix" width="190" height="190">
+                <img loading="lazy" decoding="async" id="chkPixQrImg" class="chk-qr-img" data-lazy-src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='190' height='190' viewBox='0 0 190 190'%3E%3Crect width='190' height='190' fill='%23181b16'/%3E%3C/svg%3E" alt="QR Code Pix" width="190" height="190">
               </div>
 
               <div class="chk-pix-code-wrap">
@@ -3258,10 +3221,11 @@
             </div>
           </div>
 
+          <p class="chk-payment-terms" id="chkPaymentTerms">Pagamento pelo período contratado, sem renovação automática.</p>
           <!-- PROCESSAMENTO ASAAS -->
           <div class="chk-asaas-footer">
-            <span class="chk-asaas-label">Pagamento Processado via</span>
-            <img src="assets/thesvg/asaas.svg" alt="Asaas" class="chk-asaas-logo" width="75" height="13" loading="lazy">
+            <span class="chk-asaas-label">Pagamento seguro via</span>
+            <img data-lazy-src="assets/thesvg/asaas.svg" alt="Asaas" class="chk-asaas-logo" width="75" height="13" loading="lazy">
           </div>
         </div>
 
@@ -3308,13 +3272,13 @@
         <!-- Prova Social do Checkout (Passos 1, 2 e 3) -->
         <div class="chk-social-proof" id="chkSocialProofBar">
           <div class="chk-proof-avatars">
-            <img src="assets/avatars/avatar-004.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
-            <img src="assets/avatars/avatar-005.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo" loading="lazy">
-            <img src="assets/avatars/avatar-006.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
-            <img src="assets/avatars/avatar-007.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo" loading="lazy">
-            <img src="assets/avatars/avatar-008.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
-            <img src="assets/avatars/avatar-009.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo" loading="lazy">
-            <img src="assets/avatars/avatar-010.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
+            <img data-lazy-src="assets/avatars/avatar-004.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
+            <img data-lazy-src="assets/avatars/avatar-005.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo" loading="lazy">
+            <img data-lazy-src="assets/avatars/avatar-006.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
+            <img data-lazy-src="assets/avatars/avatar-007.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo" loading="lazy">
+            <img data-lazy-src="assets/avatars/avatar-008.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
+            <img data-lazy-src="assets/avatars/avatar-009.webp" class="chk-avatar-img" width="28" height="28" alt="Aluna Imobiturbo" loading="lazy">
+            <img data-lazy-src="assets/avatars/avatar-010.webp" class="chk-avatar-img" width="28" height="28" alt="Aluno Imobiturbo" loading="lazy">
           </div>
           <span class="chk-proof-text"><strong>+4 mil corretores acelerados</strong> · ⭐ 4,9/5</span>
         </div>
@@ -3322,7 +3286,7 @@
         <!-- Garantia do Checkout (Passo 4) -->
         <div class="chk-guarantee-line chk-hidden" id="chkGuaranteeProofBar" style="display: none !important;">
           <span class="chk-guarantee-lock">🔒</span>
-          <span class="chk-guarantee-text">7 dias de garantia incondicional · Zero risco</span>
+          <span class="chk-guarantee-text">7 dias de garantia · Suporte na área de membros</span>
         </div>
       </form>
     </div>
@@ -3378,12 +3342,17 @@
     }
 
     function trackHubEvent(eventName, properties) {
-      queueHubTrackerEvent('track', eventName, properties || {});
+      queueHubTrackerEvent('track', eventName, { ...properties, lp_version: document.body.dataset.lpVersion });
     }
 
     function trackHubConversion(method, properties) {
-      queueHubTrackerEvent(method, properties || {});
+      const type = { lead: 'Lead', initiateCheckout: 'InitiateCheckout', purchase: 'Purchase' }[method] || method;
+      queueHubTrackerEvent('track', type, { ...properties, lp_version: document.body.dataset.lpVersion }, properties.eventId);
     }
+
+    trackHubEvent('LandingView', {
+      traffic_classification: navigator.webdriver === true || new URLSearchParams(location.search).has('imt_audit') ? 'confirmed_bot' : 'unclassified'
+    });
 
     (function bindHubTracker() {
       const trackerScript = document.getElementById('hub-tracker');
@@ -3392,6 +3361,33 @@
       [0, 250, 1000, 3000].forEach(function(delay) {
         window.setTimeout(flushHubTrackerEvents, delay);
       });
+    }());
+
+
+    (function measureLandingPerformance() {
+      let lcp = null, cls = 0, sent = false;
+      try {
+        new PerformanceObserver(list => { for (const entry of list.getEntries()) lcp = entry.startTime; }).observe({type:'largest-contentful-paint', buffered:true});
+        new PerformanceObserver(list => { for (const entry of list.getEntries()) if (!entry.hadRecentInput) cls += entry.value; }).observe({type:'layout-shift', buffered:true});
+      } catch (_) {}
+      function report(reason) {
+        if (sent || !hubTrackerReady()) return;
+        sent = true;
+        const nav = performance.getEntriesByType('navigation')[0];
+        const fcp = performance.getEntriesByName('first-contentful-paint')[0];
+        const params = new URL(location.href).searchParams;
+        const audit = params.has('imt_audit') || params.get('utm_source') === 'audit' || navigator.webdriver === true;
+        trackHubEvent('LandingPerformance', {
+          measurementVersion:'connect-v1', reportReason:reason, elapsedMs:Math.round(performance.now()),
+          ttfbMs:nav ? Math.round(nav.responseStart) : null,
+          fcpMs:fcp ? Math.round(fcp.startTime) : null, lcpMs:lcp == null ? null : Math.round(lcp), cls:Math.round(cls*1000)/1000,
+          viewportWidth:innerWidth, inAppBrowser:/Instagram|FBAN|FBAV/.test(navigator.userAgent),
+          traffic_classification:audit ? 'confirmed_bot' : 'unclassified'
+        });
+      }
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') report('hidden'); });
+      window.addEventListener('pagehide', () => report('pagehide'));
+      window.setTimeout(() => report('20s-snapshot'), 20000);
     }());
 
     // 1. Seletor de Planos e Controle do Modal de Checkout Nativo
@@ -3625,9 +3621,11 @@
       return map[ddd] || 'sua região';
     }
 
-    function showCheckoutError(msg) {
+    function showCheckoutError(msg, kind = 'error') {
       if (errorMsg) {
         errorMsg.textContent = msg;
+        errorMsg.dataset.kind = kind;
+        errorMsg.setAttribute('role', kind === 'error' ? 'alert' : 'status');
         errorMsg.style.display = 'block';
       }
     }
@@ -3640,6 +3638,7 @@
       }
 
       const panes = [stepPane1, stepPane2, stepPane3, stepPane4, stepPane5];
+      if (step === 4 && modalOverlay?.open && tabCard?.classList.contains('active')) trackCheckoutStage('CREDIT_CARD');
       panes.forEach((p, idx) => {
         if (p) p.style.display = (idx + 1 === step) ? 'block' : 'none';
       });
@@ -3666,24 +3665,24 @@
       }
 
       if (step === 1) {
-        if (progressBar) progressBar.style.width = '70%';
+        if (progressBar) progressBar.style.width = '25%';
         if (progressLabel) progressLabel.textContent = 'Quase lá...';
-        if (progressPct) progressPct.textContent = '70%';
+        if (progressPct) progressPct.textContent = 'Etapa 1 de 4';
         setTimeout(() => inputName && inputName.focus(), 50);
       } else if (step === 2) {
-        if (progressBar) progressBar.style.width = '90%';
+        if (progressBar) progressBar.style.width = '50%';
         if (progressLabel) progressLabel.textContent = 'Quase lá...';
-        if (progressPct) progressPct.textContent = '90%';
+        if (progressPct) progressPct.textContent = 'Etapa 2 de 4';
         setTimeout(() => inputPhone && inputPhone.focus(), 50);
       } else if (step === 3) {
-        if (progressBar) progressBar.style.width = '95%';
+        if (progressBar) progressBar.style.width = '75%';
         if (progressLabel) progressLabel.textContent = 'Último dado antes de liberar...';
-        if (progressPct) progressPct.textContent = '95%';
+        if (progressPct) progressPct.textContent = 'Etapa 3 de 4';
         setTimeout(() => inputEmail && inputEmail.focus(), 50);
       } else if (step === 4) {
-        if (progressBar) progressBar.style.width = '98%';
+        if (progressBar) progressBar.style.width = '100%';
         if (progressLabel) progressLabel.textContent = 'Quase pronto!';
-        if (progressPct) progressPct.textContent = '98%';
+        if (progressPct) progressPct.textContent = 'Etapa 4 de 4';
         const collapsibleBody = document.getElementById('chkPlanCollapsibleBody');
         const retractableTrigger = document.getElementById('chkPlanRetractableTrigger');
         if (collapsibleBody) collapsibleBody.style.display = 'none';
@@ -3707,8 +3706,8 @@
         }, 100);
       } else if (step === 5) {
         if (progressBar) progressBar.style.width = '100%';
-        if (progressLabel) progressLabel.textContent = 'Acesso Liberado!';
-        if (progressPct) progressPct.textContent = '100%';
+        if (progressLabel) progressLabel.textContent = 'Pagamento confirmado';
+        if (progressPct) progressPct.textContent = 'Pagamento confirmado';
         const planInfo = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
         const planTitleEl = document.getElementById('chkSuccessPlanTitle');
         if (planTitleEl) planTitleEl.textContent = planInfo.name;
@@ -3737,7 +3736,7 @@
       },
       'mensal': {
         name: 'Plano Mensal',
-        sub: '1 mês de acesso · recorrência no cartão',
+        sub: 'Renovação mensal no cartão ou Pix Automático',
         priceDisplay: '<b>R$ 147</b><small>/mês</small>',
         pixVal: 'R$ 147',
         cardVal: 'R$ 147/mês',
@@ -3777,15 +3776,11 @@
       if (modalPlanSub) modalPlanSub.textContent = info.sub;
       if (modalPlanPrice) modalPlanPrice.innerHTML = info.priceDisplay;
       const ecoTag = document.getElementById('chkModalPlanEco');
-      if (ecoTag) {
-        if (planKey === 'anual') {
-          ecoTag.textContent = ' - Economize R$ 767';
-          ecoTag.style.display = 'inline';
-        } else {
-          ecoTag.textContent = '';
-          ecoTag.style.display = 'none';
-        }
-      }
+      if (ecoTag) { ecoTag.textContent = ''; ecoTag.style.display = 'none'; }
+      const pixTotal = document.getElementById('chkPixTotal');
+      if (pixTotal) pixTotal.textContent = planKey === 'mensal' ?
+        'Pague o primeiro mês e autorize no banco os próximos débitos de R$ 147/mês.' :
+        info.pixVal + ' pelo período contratado. Sem renovação automática.';
       const modalRadio = document.querySelector('input[name="chkModalPlanRadio"][value="' + planKey + '"]');
       if (modalRadio) modalRadio.checked = true;
       updateCtaButtonText();
@@ -3793,13 +3788,13 @@
     }
 
     const PLAN_SUMMARY_MAP = {
-      anual: 'PLANO ANUAL · 12X DE R$ 97',
-      trimestral: 'PLANO TRIMESTRAL · 3X DE R$ 127',
+      anual: 'ANUAL · 12 × R$ 97 · TOTAL R$ 1.164 · À VISTA R$ 997',
+      trimestral: 'TRIMESTRAL · 3 × R$ 127 · TOTAL R$ 381 · À VISTA R$ 357',
       mensal: 'PLANO MENSAL · R$ 147/MÊS'
     };
 
     function selectPlan(planKey) {
-      const pending = checkoutSession?.read();
+      const pending = checkoutSession?.read() || checkoutSession?.pendingIntent?.();
       if (pending && planKey !== pending.plan) return;
       const normalizedPlan = (planKey && PLAN_CONFIG[planKey]) ? planKey : 'anual';
       currentPlan = normalizedPlan;
@@ -3827,9 +3822,7 @@
 
       updateModalPlanUI(normalizedPlan);
 
-      if (typeof updateModalPlanBadge === 'function') {
-        updateModalPlanBadge();
-      }
+
     }
     window.selectPlan = selectPlan;
     window.checkoutSelectPlan = selectPlan;
@@ -3857,54 +3850,96 @@
     }
 
     function updateInstallmentButtonText() {
-      if (!btnText) return;
-      if (currentPlan === 'mensal') {
-        btnText.textContent = 'Pagar R$ 147/mês no Cartão';
-        return;
-      }
-      const installmentsSelect = document.getElementById('chkInstallments');
-      const count = installmentsSelect ? parseInt(installmentsSelect.value, 10) : (currentPlan === 'anual' ? 12 : 3);
-      if (count === 1) {
-        btnText.textContent = currentPlan === 'anual' ? 'Pagar R$ 997 à vista' : 'Pagar R$ 357 à vista';
-      } else if (currentPlan === 'anual') {
-        const valMap = {
-          12: '97', 11: '105,82', 10: '116,40', 9: '129,33', 8: '145,50',
-          7: '166,29', 6: '194', 5: '232,80', 4: '291', 3: '388', 2: '582'
-        };
-        btnText.textContent = 'Pagar em ' + count + 'x de R$ ' + (valMap[count] || '97');
-      } else if (currentPlan === 'trimestral') {
-        btnText.textContent = count === 2 ? 'Pagar em 2x de R$ 190,50' : 'Pagar em 3x de R$ 127';
-      }
+      const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
+      const pending = checkoutSession?.read() || checkoutSession?.pendingIntent?.();
+      const money = value => Number(value).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      const count = Number(pending?.installmentCount || (currentPlan === 'anual' ? 12 : currentPlan === 'trimestral' ? 3 : 1));
+      const total = Number(pending?.amount) || (currentPlan === 'anual' ? 1164 : currentPlan === 'trimestral' ? 381 : 147);
+      const unit = Number(pending?.installmentValue) || Number(pending?.chargeAmount) || Math.floor(total * 100 / count) / 100;
+      if (btnText) btnText.textContent = currentPlan === 'mensal' ? 'Assinar R$ 147/mês no Asaas' :
+        count === 1 ? 'Continuar no Asaas · R$ ' + money(total) + ' à vista' : 'Continuar no Asaas · ' + count + 'x de R$ ' + money(unit);
+      const pixSelected = pending ? pending.method === 'PIX' : tabPix?.classList.contains('active');
+      let summary;
+      if (pixSelected) summary = currentPlan === 'mensal' && (!pending || pending.pixAutomatic) ?
+        'R$ ' + money(Number(pending?.amount) || 147) + '/mês · Pix Automático' :
+        'R$ ' + money(Number(pending?.amount) || Number(info.pixVal.replace(/[^\d,]/g, '').replace(',', '.'))) + ' no Pix · pelo período selecionado';
+      else if (currentPlan === 'mensal') summary = 'R$ 147/mês · cobrança recorrente';
+      else summary = count === 1 ? 'R$ ' + money(total) + ' à vista no cartão' : count + 'x de R$ ' + money(unit) + ' · total R$ ' + money(total);
+      const compactPrice = document.getElementById('chkPlanCompactPrice');
+      if (compactPrice) compactPrice.textContent = '· ' + summary;
+      if (modalPlanPrice) modalPlanPrice.textContent = summary;
+    }
+
+    function updatePaymentSummary() {
+      updateInstallmentButtonText();
+      // One ephemeral buyer field follows the selected method; never persist CPF.
+      const field = document.getElementById('chkBuyerCpfField');
+      const pix = tabPix?.classList.contains('active');
+      const parent = document.getElementById(pix ? 'chkPixFormBlock' : 'chkCardView');
+      const next = document.getElementById(pix ? 'chkGeneratePixBtn' : 'chkInstallmentsWrap');
+      if (field && parent && next) parent.insertBefore(field, next);
     }
 
     function updateCtaButtonText() {
       const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
+      const pending = checkoutSession?.read() || checkoutSession?.pendingIntent?.();
+      const legacyMonthlyPix = currentPlan === 'mensal' && pending?.method === 'PIX' && !pending.pixAutomatic;
       const compactTitle = document.getElementById('chkPlanCompactTitle');
       if (compactTitle) compactTitle.textContent = info.name;
       const compactPrice = document.getElementById('chkPlanCompactPrice');
       if (compactPrice) compactPrice.textContent = '· ' + info.cardVal;
 
       const installmentsSelect = document.getElementById('chkInstallments');
+      const installmentsWrap = document.getElementById('chkInstallmentsWrap');
+      if (installmentsWrap) installmentsWrap.hidden = currentPlan === 'mensal';
+      const cardNote = document.getElementById('chkCardPaymentNote');
+      if (cardNote) cardNote.textContent = 'Preencha os dados do cartão na página segura do Asaas.';
+      const paymentTerms = document.getElementById('chkPaymentTerms');
+      const monthlyAmount = pending?.pixAutomatic && Number(pending.amount) > 0 ?
+        Number(pending.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '147';
+      if (paymentTerms) paymentTerms.textContent = legacyMonthlyPix ? 'Pagamento pelo período contratado, sem renovação automática.' : currentPlan === 'mensal' ?
+        'R$ ' + monthlyAmount + ' por mês. Cancele a renovação quando quiser.' :
+        'Pagamento pelo período contratado, sem renovação automática. As parcelas permanecem devidas em caso de cancelamento.';
+      const pixTabLabel = document.getElementById('chkPixTabLabel');
+      const pixTabDesc = document.getElementById('chkPixTabDesc');
+      const pixBtnText = document.getElementById('chkPixBtnText');
+      if (pixTabLabel) pixTabLabel.textContent = currentPlan === 'mensal' && !legacyMonthlyPix ? 'Pix Automático' : 'Pix';
+      if (pixTabDesc) pixTabDesc.textContent = currentPlan === 'mensal' && !legacyMonthlyPix ? 'Autorize uma vez no banco' : 'Pagamento à vista';
+      if (pixBtnText) pixBtnText.textContent = currentPlan === 'mensal' ? 'Assinar com Pix · R$ 147/mês' : 'Pagar com Pix no Asaas';
       if (installmentsSelect) {
         if (currentPlan === 'anual') {
-          installmentsSelect.innerHTML = '<option value="12" selected>12x de R$ 97,00</option><option value="11">11x de R$ 105,82</option><option value="10">10x de R$ 116,40</option><option value="9">9x de R$ 129,33</option><option value="8">8x de R$ 145,50</option><option value="7">7x de R$ 166,29</option><option value="6">6x de R$ 194,00</option><option value="5">5x de R$ 232,80</option><option value="4">4x de R$ 291,00</option><option value="3">3x de R$ 388,00</option><option value="2">2x de R$ 582,00</option><option value="1">1x de R$ 997,00 à vista</option>';
+          installmentsSelect.innerHTML = '<option value="12" selected>12x de R$ 97,00 · total R$ 1.164</option>';
         } else if (currentPlan === 'trimestral') {
-          installmentsSelect.innerHTML = '<option value="3" selected>3x de R$ 127,00</option><option value="2">2x de R$ 190,50</option><option value="1">1x de R$ 357,00 à vista</option>';
+          installmentsSelect.innerHTML = '<option value="3" selected>3x de R$ 127,00 · total R$ 381</option>';
         } else {
           installmentsSelect.innerHTML = '<option value="1" selected>1x de R$ 147,00 / mês</option>';
         }
       }
 
-      updateInstallmentButtonText();
+      if (pending?.method === 'CREDIT_CARD' && installmentsSelect) {
+        // Historical charges retain their sold count and price. The option is
+        // disabled with the existing session and cannot start a new sale.
+        const value = String(pending.installmentCount);
+        if (!installmentsSelect.querySelector('option[value="' + value + '"]')) {
+          const historical = new Option(value + 'x · pagamento em andamento', value);
+          installmentsSelect.add(historical);
+        }
+        installmentsSelect.value = value;
+      }
+      if (tabPix) {
+        tabPix.hidden = false;
+        tabPix.style.setProperty('display', 'flex', 'important');
+      }
+      updatePaymentSummary();
 
       const cardTabDesc = document.getElementById('chkCardTabDesc');
       if (cardTabDesc) {
         if (currentPlan === 'anual') {
-          cardTabDesc.textContent = 'Até 12x · Imediato';
+          cardTabDesc.textContent = '12x de R$ 97 · total R$ 1.164';
         } else if (currentPlan === 'trimestral') {
-          cardTabDesc.textContent = 'Até 3x · Imediato';
+          cardTabDesc.textContent = '3x de R$ 127 · total R$ 381';
         } else {
-          cardTabDesc.textContent = '1x · Imediato';
+          cardTabDesc.textContent = 'Renovação mensal automática';
         }
       }
     }
@@ -3978,7 +4013,7 @@
       });
     }
 
-    // E-mail -> checkout Hotmart, sem uma confirmação intermediária.
+    // E-mail -> checkout Asaas, sem uma confirmação intermediária.
     if (step3Btn && inputEmail) {
       step3Btn.addEventListener('click', continueToPayment);
 
@@ -4012,7 +4047,9 @@
     // Register after the phone mask so the persisted draft matches the field.
     [inputName, inputPhone, inputEmail].forEach(input => {
       input.addEventListener('input', saveCheckoutProgress);
+      input.addEventListener('input', fireLeadTrackingEvent);
       input.addEventListener('change', saveCheckoutProgress);
+      input.addEventListener('change', fireLeadTrackingEvent);
       input.addEventListener('focus', () => {
         if (window.innerWidth <= 768) {
           setTimeout(() => {
@@ -4022,45 +4059,59 @@
       });
     });
     window.addEventListener('pagehide', saveCheckoutProgress);
+    const leadCapture = window.CommunityLeadCapture.create();
+    window.addEventListener('online', fireLeadTrackingEvent);
+    let trackedLeadContact = '';
+    const trackedCheckoutStages = new Set();
+    let checkoutTrackingId;
     restoreCheckoutProgress();
+    // The saved contact survives a reload; retry until the CRM acknowledges it.
+    fireLeadTrackingEvent();
 
     let openingPayment = false;
+
+
+
+    function trackCheckoutStage(stage, result = {}) {
+      const key = stage + ':' + (result.paymentId || getCheckoutId());
+      if (trackedCheckoutStages.has(key)) return;
+      try { if (sessionStorage.getItem('imt_ic_' + key)) return; sessionStorage.setItem('imt_ic_' + key, '1'); } catch (_) {}
+      trackedCheckoutStages.add(key);
+      trackHubConversion('initiateCheckout', { ...getUtms(), checkoutId: getCheckoutId(),
+        orderId: result.paymentId, eid: result.eventId || getCheckoutId(), eventId: 'ic_' + key, paymentMethod: stage,
+        productId: 'comunidade-imobiturbo-' + currentPlan,
+        valueCents: Math.round((Number(result.amount) || (currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147)) * 100), currency: 'BRL' });
+    }
 
     function fireLeadTrackingEvent() {
       const name = (inputName ? inputName.value : '').trim();
       const email = (inputEmail ? inputEmail.value : '').trim();
       const phone = (inputPhone ? inputPhone.value : '').trim();
+      if (!isValidFullName(name) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.replace(/\D/g, '').length < 10) return;
+      const leadKey = getCheckoutId();
+      if (typeof leadCapture !== 'undefined') leadCapture.submit({ name, email, phone, plan: currentPlan, source: 'vagas_modal', ...getUtms() });
+      if (trackedLeadContact === leadKey) return;
+      try { if (sessionStorage.getItem('imt_checkout_lead') === leadKey) return; sessionStorage.setItem('imt_checkout_lead', leadKey); } catch (_) {}
+      trackedLeadContact = leadKey;
       const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
       trackHubConversion('lead', {
         name,
         email,
         phone,
+        ...getUtms(),
+        eventId: 'lead_' + leadKey,
         plan: currentPlan,
         productId: 'comunidade-imobiturbo-' + currentPlan,
         valueCents: Math.round(planVal * 100),
         currency: 'BRL'
       });
-      try {
-        const payload = JSON.stringify({
-          name,
-          email,
-          phone,
-          plan: currentPlan,
-          source: 'vagas_modal',
-          ...getUtms(),
-        });
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon('/api/lead', new Blob([payload], { type: 'application/json' }));
-        } else {
-          fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(function() {});
-        }
-      } catch (_) {}
+
     }
 
     function openCheckoutModal(e) {
       if (e) e.preventDefault();
       if (openingPayment) return;
-      const pending = checkoutSession?.read();
+      const pending = checkoutSession?.read() || checkoutSession?.pendingIntent?.();
       const selected = pending?.plan || getSelectedPlan();
       updateModalPlanUI(selected);
       showCheckoutForm(selected);
@@ -4072,13 +4123,8 @@
         document.body.style.overflow = 'hidden';
       }
       if (pending) { checkoutSession.start(); return; }
-      const planVal = currentPlan === 'anual' ? 997 : currentPlan === 'trimestral' ? 357 : 147;
-      trackHubConversion('initiateCheckout', {
-        plan: currentPlan,
-        productId: 'comunidade-imobiturbo-' + currentPlan,
-        valueCents: Math.round(planVal * 100),
-        currency: 'BRL'
-      });
+      if (currentCheckoutStep === 4 && tabCard?.classList.contains('active')) trackCheckoutStage('CREDIT_CARD');
+
     }
 
     function closeCheckoutModal() {
@@ -4142,7 +4188,7 @@
 
     function getCookie(name) {
       const match = document.cookie.match(new RegExp('(?:^|;\\s*)' + name + '=([^;]+)'));
-      return match ? match[1] : null;
+      return match ? decodeURIComponent(match[1]) : null;
     }
 
     function getVisitorId() {
@@ -4153,6 +4199,21 @@
       }
     }
 
+    function resetTrackingCheckout() {
+      checkoutTrackingId = undefined;
+      trackedLeadContact = '';
+      trackedCheckoutStages.clear();
+      try { sessionStorage.removeItem('imt_checkout_eid'); sessionStorage.removeItem('imt_checkout_lead'); } catch (_) {}
+    }
+    function getCheckoutId() {
+      if (!checkoutTrackingId) {
+        try { checkoutTrackingId = sessionStorage.getItem('imt_checkout_eid'); } catch (_) {}
+        checkoutTrackingId = checkoutTrackingId || crypto.randomUUID();
+        try { sessionStorage.setItem('imt_checkout_eid', checkoutTrackingId); } catch (_) {}
+      }
+      return checkoutTrackingId;
+    }
+
     function getUtms() {
       const params = new URLSearchParams(window.location.search);
       let attrUtms = {};
@@ -4161,6 +4222,10 @@
         if (stored && typeof stored.utms === 'object') attrUtms = stored.utms;
       } catch (_) {}
       return {
+        visitorId: getVisitorId(),
+        sessionId: getCookie('_rt_sid') || getCookie('rt_sid') || sessionStorage.getItem('_rt_sid') || undefined,
+        checkoutId: getCheckoutId(),
+        utm_id: params.get('utm_id') || attrUtms.utm_id || undefined,
         utm_source: params.get('utm_source') || attrUtms.utm_source || undefined,
         utm_medium: params.get('utm_medium') || attrUtms.utm_medium || undefined,
         utm_campaign: params.get('utm_campaign') || attrUtms.utm_campaign || undefined,
@@ -4215,11 +4280,11 @@
 
         const brand = detectCardBrand(v);
         if (brand === 'visa') {
-          cardBrandBadge.innerHTML = '<img src="assets/thesvg/visa.svg" alt="Visa" width="32" height="18">';
+          cardBrandBadge.innerHTML = '<img loading="lazy" decoding="async" src="assets/thesvg/visa.svg" alt="Visa" width="32" height="18">';
         } else if (brand === 'mastercard') {
-          cardBrandBadge.innerHTML = '<img src="assets/thesvg/mastercard.svg" alt="Mastercard" width="32" height="18">';
+          cardBrandBadge.innerHTML = '<img loading="lazy" decoding="async" src="assets/thesvg/mastercard.svg" alt="Mastercard" width="32" height="18">';
         } else if (brand === 'amex') {
-          cardBrandBadge.innerHTML = '<img src="assets/thesvg/american-express.svg" alt="American Express" width="32" height="18">';
+          cardBrandBadge.innerHTML = '<img loading="lazy" decoding="async" src="assets/thesvg/american-express.svg" alt="American Express" width="32" height="18">';
         } else if (brand === 'elo') {
           cardBrandBadge.innerHTML = '<span style="font-size:10px;font-weight:800;color:#00a4e4;background:#fff;padding:2px 4px;border-radius:3px;">ELO</span>';
         } else if (brand === 'hipercard') {
@@ -4254,33 +4319,33 @@
       e.target.value = v;
     }
 
-    const cardCpfInput = document.getElementById('chkCardCpf');
-    if (cardCpfInput) cardCpfInput.addEventListener('input', applyCpfMask);
-
-    const pixCpfInput = document.getElementById('chkPixCpf');
-    if (pixCpfInput) pixCpfInput.addEventListener('input', applyCpfMask);
+    const buyerCpfInput = document.getElementById('chkBuyerCpf');
+    if (buyerCpfInput) buyerCpfInput.addEventListener('input', applyCpfMask);
 
     // Controle de abas de pagamento (Cartão vs Pix)
     if (tabCard && tabPix && cardView && pixView) {
       tabCard.addEventListener('click', () => {
-        if (checkoutSession?.read()) return;
+        if (checkoutSession?.read() || checkoutSession?.pendingIntent?.()) return;
         tabCard.classList.add('active');
         tabCard.setAttribute('aria-selected', 'true');
         tabPix.classList.remove('active');
         tabPix.setAttribute('aria-selected', 'false');
         cardView.style.display = 'block';
+        if (currentCheckoutStep === 4) trackCheckoutStage('CREDIT_CARD');
         pixView.style.display = 'none';
+        updatePaymentSummary();
         if (errorMsg) errorMsg.style.display = 'none';
       });
 
       tabPix.addEventListener('click', () => {
-        if (checkoutSession?.read()) return;
+        if (checkoutSession?.read() || checkoutSession?.pendingIntent?.()) return;
         tabPix.classList.add('active');
         tabPix.setAttribute('aria-selected', 'true');
         tabCard.classList.remove('active');
         tabCard.setAttribute('aria-selected', 'false');
         pixView.style.display = 'block';
         cardView.style.display = 'none';
+        updatePaymentSummary();
         if (errorMsg) errorMsg.style.display = 'none';
       });
     }
@@ -4290,8 +4355,12 @@
     let pixCountdownInterval = null;
 
     checkoutSession = window.ImobiturboCheckoutSession.bindLanding({
-      selectPlan, goToCheckoutStep, updateCheckoutPersonalization, showCheckoutError, trackHubPurchase, form: nativeForm,
+      selectPlan, goToCheckoutStep, updateCheckoutPersonalization, updatePaymentSummary, showCheckoutError, trackHubPurchase, trackCheckoutStage, resetTrackingCheckout, form: nativeForm,
     });
+
+    if (new URLSearchParams(window.location.search).get('paymentReturn') === '1') {
+      openCheckoutModal(); checkoutSession.start();
+    }
 
     // Avanço da Etapa 3 (Email) para a Etapa 4 (Pagamento)
     async function continueToPayment(e) {
@@ -4331,8 +4400,10 @@
       goToCheckoutStep(4);
     }
 
-    // The VSL lead form uses the same native payment and confirmation lifecycle.
+    // The Skills VSL lead form enters the same durable checkout as the main offer.
     window.openSkillsCommunityCheckout = function(buyer, plan) {
+      const pending = checkoutSession.read() || checkoutSession.pendingIntent();
+      if (pending) { openCheckoutModal(); return; }
       selectPlan(plan);
       inputName.value = buyer.name;
       inputEmail.value = buyer.email;
@@ -4341,177 +4412,65 @@
       continueToPayment();
     };
 
-    // Processamento de Cartão de Crédito via Asaas
-    async function handleCardPaymentSubmit(e) {
+    // The provider collects card details and renders the Pix on its own page.
+    async function openHostedCheckout(method, e) {
       if (e) e.preventDefault();
       if (isProcessingPayment) return;
       if (checkoutSession.read()) { checkoutSession.start(); return; }
-
-      const cardNum = (document.getElementById('chkCardNumber')?.value || '').replace(/\D/g, '');
-      const cardHolder = (document.getElementById('chkCardHolder')?.value || '').trim();
-      const cardExpiry = (document.getElementById('chkCardExpiry')?.value || '').trim();
-      const cardCvv = (document.getElementById('chkCardCvv')?.value || '').trim();
-      const cardCpf = (document.getElementById('chkCardCpf')?.value || '').replace(/\D/g, '');
-
-      if (cardNum.length < 13) {
-        showCheckoutError('Por favor, informe o número completo do cartão.');
-        document.getElementById('chkCardNumber')?.focus();
-        return;
+      const cpfInput = document.getElementById('chkBuyerCpf');
+      const cpf = (cpfInput?.value || '').replace(/\D/g, '');
+      if (!isValidCpf(cpf)) {
+        showCheckoutError('Informe um CPF válido para abrir o checkout.');
+        cpfInput?.focus(); return;
       }
-      if (!isValidFullName(cardHolder)) {
-        showCheckoutError('Informe o nome impresso no cartão completo (nome e sobrenome).');
-        document.getElementById('chkCardHolder')?.focus();
-        return;
-      }
-      const expMatch = cardExpiry.match(/^(\d{2})\/(\d{2})$/);
-      if (!expMatch) {
-        showCheckoutError('Validade inválida. Digite no formato MM/AA.');
-        document.getElementById('chkCardExpiry')?.focus();
-        return;
-      }
-      const expMonth = parseInt(expMatch[1], 10);
-      const expYear = parseInt('20' + expMatch[2], 10);
-      const curYear = new Date().getFullYear();
-      const curMonth = new Date().getMonth() + 1;
-      if (expMonth < 1 || expMonth > 12 || expYear < curYear || (expYear === curYear && expMonth < curMonth)) {
-        showCheckoutError('Data de validade do cartão vencida ou inválida.');
-        document.getElementById('chkCardExpiry')?.focus();
-        return;
-      }
-      if (cardCvv.length < 3) {
-        showCheckoutError('Código CVV inválido (3 ou 4 dígitos no verso do cartão).');
-        document.getElementById('chkCardCvv')?.focus();
-        return;
-      }
-      if (!isValidCpf(cardCpf)) {
-        showCheckoutError('CPF do titular inválido. O CPF é obrigatório para validação antifraude.');
-        document.getElementById('chkCardCpf')?.focus();
-        return;
-      }
-
       isProcessingPayment = true;
-      showCheckoutError('');
-      const submitBtn = document.getElementById('chkContinuePaymentBtn');
-      const originalText = btnText ? btnText.textContent : 'Pagar e Liberar Acesso';
-      if (submitBtn) submitBtn.disabled = true;
-      if (btnText) btnText.textContent = 'Processando com segurança...';
-
+      const button = method === 'PIX' ? generatePixBtn : submitBtn;
+      if (button) button.disabled = true;
+      showCheckoutError(method === 'PIX' && currentPlan === 'mensal' ? 'Preparando o QR Code para autorizar no seu banco…' : 'Abrindo o pagamento seguro no Asaas…', 'progress');
       try {
-        const installmentsEl = document.getElementById('chkInstallments');
-        const selectedInstallments = installmentsEl ? parseInt(installmentsEl.value, 10) : (currentPlan === 'anual' ? 12 : currentPlan === 'trimestral' ? 3 : 1);
-        const payload = {
-          gateway: 'asaas',
-          plan: currentPlan,
-          paymentMethod: 'CREDIT_CARD',
-          installments: selectedInstallments,
-          name: inputName.value.trim(),
-          email: inputEmail.value.trim(),
-          phone: inputPhone.value.trim(),
-          cpfCnpj: cardCpf,
-          creditCard: {
-            holderName: cardHolder,
-            number: cardNum,
-            expiryMonth: String(expMonth).padStart(2, '0'),
-            expiryYear: String(expYear),
-            ccv: cardCvv,
-          },
-          tracking: { ...getUtms(), visitorId: getVisitorId() }
-        };
-
-        const resp = await fetch('/api/checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const result = await resp.json();
-
-        if (resp.ok && result.success && result.paymentId) {
-          checkoutSession.capture(result, {
-            plan: currentPlan,
-            method: 'CREDIT_CARD',
-            upsellBuyer: {
-              name: payload.name,
-              email: payload.email,
-              phone: payload.phone,
-              cpfCnpj: cardCpf,
-              cardHolderName: cardHolder,
-            },
-          });
-          [cardNumInput, cardCvvInput, cardExpiryInput, cardCpfInput].forEach(input => { if (input) input.value = ''; });
-        } else {
-          const errMsg = result.error || 'Não foi possível autorizar o cartão. Verifique os dados ou tente outro cartão.';
-          showCheckoutError(errMsg);
+        let payload = { checkoutMode: 'hosted', gateway: 'asaas', eventId: getCheckoutId(), plan: currentPlan,
+          paymentMethod: method, installments: method === 'PIX' ? 1 : currentPlan === 'anual' ? 12 : currentPlan === 'trimestral' ? 3 : 1,
+          name: inputName.value.trim(), email: inputEmail.value.trim(), phone: inputPhone.value.trim(), cpfCnpj: cpf,
+          tracking: { ...getUtms(), visitorId: getVisitorId() } };
+        if (currentPlan === 'mensal' && method === 'PIX') payload.pixAutomatic = true;
+        const attempt = await checkoutSession.intent.begin(payload);
+        let result = attempt.result;
+        if (!result) {
+          payload = attempt.payload;
+          const response = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          result = await response.json();
+          if (!response.ok || !result.success) throw new Error('checkout_pending');
+          checkoutSession.intent.received(result);
         }
-      } catch (err) {
-        showCheckoutError('Instabilidade temporária na operadora de cartão. Tente novamente em instantes.');
+        if (result.paymentId) {
+          checkoutSession.capture({ ...result, checkoutMode: result.pixAutomatic ? 'transparent' : 'hosted' }, { method,
+            upsellBuyer: { name: payload.name, email: payload.email, phone: payload.phone } });
+          if (result.pixAutomatic) {
+            if (errorMsg) { errorMsg.style.display = 'none'; errorMsg.textContent = ''; }
+            return;
+          }
+          if (window.ImobiturboCheckoutSession.isAsaasInvoiceUrl(result.invoiceUrl)) {
+            trackCheckoutStage(method, result);
+            window.location.assign(result.invoiceUrl);
+            return;
+          }
+        }
+        if (result.retryCreationAllowed) {
+          await checkoutSession.keepIntent();
+          return;
+        }
+        checkoutSession.keepIntent();
+        showCheckoutError('O Asaas ainda não confirmou esta tentativa. Você pode fechar esta janela e voltar; manteremos a mesma compra.', 'progress');
+      } catch (_) {
+        checkoutSession.intent.uncertain(); checkoutSession.keepIntent();
+        showCheckoutError('A confirmação do Asaas está demorando. Você pode fechar esta janela e voltar para consultar a mesma compra.', 'progress');
       } finally {
         isProcessingPayment = false;
-        if (submitBtn) submitBtn.disabled = Boolean(checkoutSession.read());
-        if (btnText) btnText.textContent = originalText;
+        if (button) button.disabled = Boolean(checkoutSession.read() || checkoutSession.pendingIntent());
       }
     }
-
-    // Geração de Pix Instantâneo via Asaas
-    async function handleGeneratePixSubmit(e) {
-      if (e) e.preventDefault();
-      if (isProcessingPayment) return;
-      if (checkoutSession.read()) { checkoutSession.start(); return; }
-
-      const pixCpf = (document.getElementById('chkPixCpf')?.value || '').replace(/\D/g, '');
-      if (!isValidCpf(pixCpf)) {
-        showCheckoutError('Por favor, informe um CPF válido para emissão do Pix nominal.');
-        document.getElementById('chkPixCpf')?.focus();
-        return;
-      }
-
-      isProcessingPayment = true;
-      showCheckoutError('');
-      const pixBtn = document.getElementById('chkGeneratePixBtn');
-      const originalText = pixBtn ? pixBtn.innerHTML : 'Gerar QR Code Pix';
-      if (pixBtn) {
-        pixBtn.disabled = true;
-        pixBtn.innerHTML = '<span>Gerando Pix seguro...</span>';
-      }
-
-      try {
-        const payload = {
-          gateway: 'asaas',
-          plan: currentPlan,
-          paymentMethod: 'PIX',
-          name: inputName.value.trim(),
-          email: inputEmail.value.trim(),
-          phone: inputPhone.value.trim(),
-          cpfCnpj: pixCpf,
-          tracking: { ...getUtms(), visitorId: getVisitorId() }
-        };
-
-        const resp = await fetch('/api/checkout', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-        const result = await resp.json();
-
-        if (resp.ok && result.success && result.paymentId) {
-          startPixPolling(result.paymentId, result.eventId, result, {
-            name: payload.name,
-            email: payload.email,
-            phone: payload.phone,
-            cpfCnpj: pixCpf,
-          });
-        } else {
-          showCheckoutError(result.error || 'Erro ao gerar o Pix. Tente novamente.');
-        }
-      } catch (err) {
-        showCheckoutError('Erro de conexão ao gerar o Pix. Tente novamente.');
-      } finally {
-        isProcessingPayment = false;
-        if (pixBtn) {
-          pixBtn.disabled = Boolean(checkoutSession.read());
-          pixBtn.innerHTML = originalText;
-        }
-      }
-    }
+    function handleCardPaymentSubmit(e) { return openHostedCheckout('CREDIT_CARD', e); }
+    function handleGeneratePixSubmit(e) { return openHostedCheckout('PIX', e); }
 
     // The shared session owns status polling and the absolute checkout deadline.
     function startPixPolling(paymentId, eventId, checkoutResult, upsellBuyer) {
@@ -4546,6 +4505,7 @@
     function trackHubPurchase(result) {
       const planVal = Number(result.amount) || 0;
       trackHubConversion('purchase', {
+        ...getUtms(),
         orderId: result.paymentId || result.eventId,
         eventId: result.eventId,
         plan: result.plan || currentPlan,
@@ -4556,6 +4516,7 @@
         email: inputEmail.value.trim(),
         phone: inputPhone.value.trim(),
       });
+      resetTrackingCheckout();
     }
 
     if (submitBtn) {
@@ -4568,12 +4529,12 @@
       copyPixBtn.addEventListener('click', handleCopyPixCode);
     }
 
-    if (checkoutSession.read()) openCheckoutModal();
+    if (checkoutSession.read() || checkoutSession.pendingIntent()) openCheckoutModal();
     window.addEventListener('pageshow', event => {
-      if (event.persisted && checkoutSession.read()) openCheckoutModal();
+      if (event.persisted && (checkoutSession.read() || checkoutSession.pendingIntent())) openCheckoutModal();
     });
     document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible' && checkoutSession.read()) checkoutSession.start();
+      if (document.visibilityState === 'visible' && (checkoutSession.read() || checkoutSession.pendingIntent())) checkoutSession.start();
     });
 
     if (nativeForm) {
@@ -4655,7 +4616,10 @@
 
       const nudge = direction => {
         pauseAutoScroll(3000);
-        track.scrollBy({ left: direction * 320, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+        const positions = [...track.querySelectorAll('.proof-card')].map(card => card.offsetLeft - track.offsetLeft);
+        const current = positions.reduce((nearest, left, index) => Math.abs(left - track.scrollLeft) < Math.abs(positions[nearest] - track.scrollLeft) ? index : nearest, 0);
+        const target = positions[Math.max(0, Math.min(positions.length - 1, current + direction))];
+        if (target != null) track.scrollTo({ left: target, behavior: reducedMotion.matches ? 'auto' : 'smooth' });
       };
       prevBtn?.addEventListener('click', () => nudge(-1));
       nextBtn?.addEventListener('click', () => nudge(1));

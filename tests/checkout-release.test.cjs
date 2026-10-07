@@ -17,10 +17,35 @@ test('checkout composition preserves unrelated assets and never writes through b
   }
   fs.writeFileSync(path.join(baseline, 'index.html'), 'preserve homepage');
   fs.writeFileSync(path.join(built, 'index.html'), 'unrelated source page must not replace production');
+  for (const dir of [baseline, built]) fs.mkdirSync(path.join(dir, 'skills-ia-obrigado'), { recursive: true });
+  fs.writeFileSync(path.join(baseline, 'skills-ia-obrigado/index.html'), 'obsolete upsell without durable key');
+  fs.writeFileSync(path.join(built, 'skills-ia-obrigado/index.html'), 'current hosted upsell with durable key');
   fs.writeFileSync(path.join(built, '_routes.json'), JSON.stringify({ version: 1, include: ['/*'], exclude: ['/*.js'] }));
   const proof = compose(baseline, built, output);
   assert.equal(proof.protectedFiles, 1);
   assert.equal(fs.readFileSync(path.join(output, 'index.html'), 'utf8'), 'preserve homepage');
   assert.equal(fs.readFileSync(path.join(baseline, 'vagas/assets/test.txt'), 'utf8'), baseline);
   assert.equal(fs.readFileSync(path.join(output, 'vagas-v2/assets/test.txt'), 'utf8'), built);
+  assert.equal(fs.readFileSync(path.join(output, 'skills-ia-obrigado/index.html'), 'utf8'), 'current hosted upsell with durable key');
+});
+
+test('Skills-only release retains the deployed worker and other pages, and rejects incompatible shared dependencies', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'skills-release-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const baseline = path.join(root, 'baseline'), built = path.join(root, 'built');
+  for (const dir of [baseline, built]) {
+    fs.mkdirSync(path.join(dir, 'skills-ia-obrigado'), { recursive: true });
+    fs.mkdirSync(path.join(dir, 'vagas'), { recursive: true });
+    fs.writeFileSync(path.join(dir, '_worker.js'), dir);
+    fs.writeFileSync(path.join(dir, '_routes.json'), JSON.stringify({ version: 1 }));
+    for (const file of ['checkout-session.js', 'vagas.css']) fs.writeFileSync(path.join(dir, 'vagas', file), 'same shared dependency');
+    fs.writeFileSync(path.join(dir, 'skills-ia-obrigado/index.html'), dir);
+  }
+  fs.writeFileSync(path.join(baseline, 'index.html'), 'production homepage');
+  compose(baseline, built, path.join(root, 'release'), { skillsUpsellOnly: true });
+  assert.equal(fs.readFileSync(path.join(root, 'release/_worker.js'), 'utf8'), baseline);
+  assert.equal(fs.readFileSync(path.join(root, 'release/index.html'), 'utf8'), 'production homepage');
+  assert.equal(fs.readFileSync(path.join(root, 'release/skills-ia-obrigado/index.html'), 'utf8'), built);
+  fs.writeFileSync(path.join(built, 'vagas/checkout-session.js'), 'incompatible dependency');
+  assert.throws(() => compose(baseline, built, path.join(root, 'rejected'), { skillsUpsellOnly: true }), /shared dependency differs/);
 });

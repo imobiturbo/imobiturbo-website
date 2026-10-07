@@ -20,6 +20,11 @@ test('release emits the Wiapy destination with the current community checkout an
   assert.match(html, /ImobiturboCheckoutSession.bindLanding/);
   assert.match(html, /gateway: 'asaas'/);
   assert.match(html, /fetch\('\/api\/checkout'/);
+  assert.match(html, /\/vagas\/lead-capture\.js/);
+  assert.match(html, /checkoutSession\.intent\.begin\(payload\)/);
+  assert.match(html, /checkoutMode: 'hosted'/);
+  assert.equal((html.match(/id="chkBuyerCpf"/g) || []).length, 1);
+  assert.doesNotMatch(html, /id="chkCard(?:Number|Holder|Expiry|Cvv)"/);
   assert.doesNotMatch(html, /ImobiturboHubla|hubla-checkout|intent:\/\//);
   assert.doesNotMatch(html, /(?:src|href|data-[\w-]+)=["'](?:\.\/)?assets\//);
   assert.match(html, /href="\/vagas\/vagas.css\?/);

@@ -4,7 +4,7 @@ const path = require('node:path');
 // Publish the original dedicated journey, with shared assets resolved on both URL forms.
 // A missing page or checkout must fail the release instead of serving the home fallback.
 function renderSkillsUpsell(source) {
-  for (const marker of ['</head>', '<main id="conteudo"', '</main>', 'journey-steps"', 'id="skillsAccessLink"', 'id="checkoutBtn"', 'ImobiturboCheckoutSession.bindLanding', 'window.openSkillsCommunityCheckout']) {
+  for (const marker of ['</head>', '<main id="conteudo"', '</main>', 'journey-steps"', 'id="skillsAccessLink"', 'id="checkoutBtn"', 'ImobiturboCheckoutSession.bindLanding', 'window.openSkillsCommunityCheckout', '/vagas/lead-capture.js', 'checkoutSession.intent.begin(payload)', "checkoutMode: 'hosted'", 'id="chkBuyerCpf"']) {
     if (!source.includes(marker)) throw new Error(`Skills upsell: missing page marker ${marker}`);
   }
   return source
