@@ -19,3 +19,10 @@ h1,h2,h3,p {color:inherit;}
 
 
 .price-card,.card,details {background:#edf4e9;color:#182824;border-color:#a8b9a1;}
+.section-dark h2,.section-green h2,.authority-heading h2 {color:var(--lt-ink);}
+.section-dark h2 span,.section-green h2 span {color:var(--lt-green);}
+.explain-section .eyebrow,.authority-heading .eyebrow {color:var(--lt-green);}
+.explain-section .section-intro {color:var(--lt-muted);}
+.vs-bad .vs-header strong {color:#91232b;}
+.bonus-grid p {color:var(--lt-muted);}
+.bonus-footer strong {color:var(--lt-ink);}

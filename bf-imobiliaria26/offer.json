@@ -2,7 +2,7 @@
   "productId": "black-friday-imobiliaria-2026",
   "title": "SuperCombo Black Friday Imobiliária 2026",
   "currency": "BRL",
-  "salesEnabled": false,
+  "salesEnabled": true,
   "pixelId": "1025303472485246",
   "checkoutNote": "Pagamento seguro pela Wiapy. Acesso ao material no Club após confirmação.",
   "offers": {

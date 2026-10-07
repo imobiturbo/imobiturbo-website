@@ -2,7 +2,7 @@
   "productId": "maquina-de-prospeccao",
   "title": "Máquina de Prospecção",
   "currency": "BRL",
-  "salesEnabled": false,
+  "salesEnabled": true,
   "pixelId": "1025303472485246",
   "checkoutNote": "Pagamento seguro pela Wiapy. Acesso ao material no Club após confirmação.",
   "offers": {
