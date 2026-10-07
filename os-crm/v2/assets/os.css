@@ -177,3 +177,107 @@
 @media(max-width:767px){.whatsapp-video-desktop{display:none!important}.whatsapp-video-mobile{display:block!important;aspect-ratio:9/16!important;object-fit:contain}.guarantee-assurance{gap:16px;margin-top:24px}.guarantee-assurance strong{font-size:14px}.guarantee-assurance p{font-size:12px}}
 
 .pricing-payment-note{text-align:center;color:#929888;font-size:12px;line-height:1.8;margin:24px auto 0;max-width:620px}
+
+/* Readable sales copy at 100% zoom, with room for enlarged browser text. */
+:root{--muted:#c4c4c4;--reading-body:1.125rem;--reading-note:.9375rem}
+body{font-size:var(--reading-body)}
+h2,h3,p{overflow-wrap:anywhere}
+.feature,.compare-card,.split>*{min-width:0}
+.skip{top:0;transform:translateY(calc(-100% - 12px))}
+.skip:focus{transform:none}
+.light{--muted:#57575b}
+.cta,.hero-actions .cta,.plan-card .cta{font-size:1rem;line-height:1.5;letter-spacing:0;min-height:56px;text-align:center}
+.cta:after{flex-shrink:0}
+.nav-inner{height:auto;min-height:80px;padding-block:12px;gap:20px}
+.nav-links a,.nav-login{font-size:1rem;color:#d0d0d0}
+.nav-links a{padding-inline:12px}
+.nav .cta{font-size:.9375rem;min-height:48px;padding:12px 20px}
+.eyebrow{font-size:.875rem;color:var(--lime)}
+.meta-partner-badge{padding:9px 14px;max-width:100%;text-align:left}
+.meta-partner-badge span{font-size:.875rem;line-height:1.3;white-space:normal}
+.hero p{max-width:500px;font-size:1.375rem;line-height:1.6;color:#d0d0d0}
+.hero-actions .cta{padding-inline:20px}
+.hero-proof span{display:block;font-size:1rem;line-height:1.5;color:#c4c4c4}
+.hero-notice{font-size:var(--reading-note);line-height:1.6;color:#c4c4c4;max-width:500px}
+.section-head p,.feature-copy p,.pillar p,.compare-card li,.split p,
+.overview-card p,.authority-copy p,.whatsapp-copy>p,.annotations p,
+.responsibilities p,.conversation-panel>p,.support-bubble p,
+.support-guide>p,.faq-intro p,.faq-list p,.final-panel p{
+  font-size:var(--reading-body);line-height:1.65;
+}
+.feature-copy h3,.pillar h3,.overview-card h3,.annotations h3{font-size:1.5rem;line-height:1.3}
+.responsibilities h3{font-size:1.25rem;line-height:1.35}
+.compare-card li{color:var(--muted)}
+.compare-card .label,.small,.demo-caption,.integration-note,.crm-note,
+.offer-notes,.support-note,.pricing-payment-note,.proof-context,
+.product-frame .frame-note{font-size:var(--reading-note);line-height:1.65;color:var(--muted)}
+.badge{font-size:.75rem;line-height:1.4}
+.demo-tabs,.billing-toggle{flex-wrap:wrap}
+.demo-tabs button,.billing-toggle button{font-size:1rem;line-height:1.5;min-height:48px;color:#c4c4c4}
+.demo-tabs button[aria-selected=true],.billing-toggle button[aria-pressed=true]{color:#000}
+.integration-node{font-size:1rem;line-height:1.5}
+.tags span{font-size:.8125rem;line-height:1.5;color:#bdbdbd}
+.proof-play{font-size:1rem;line-height:1.4}
+.proof-play b{width:48px;height:48px;flex-shrink:0}
+.proof-copy p{font-size:1rem;line-height:1.6}
+.proof-context{font-size:var(--reading-note)!important;line-height:1.65}
+.pillar .num,.outcome span{font-size:.875rem;line-height:1.6;color:#527d2a}
+.light .eyebrow{color:#527d2a}
+.authority-copy .signature{font-size:1rem}
+.plan-top{flex-wrap:wrap;min-height:34px}
+.plan-top h3{font-size:1.125rem}
+.plan-card>p,.plan-card ul{font-size:1rem;line-height:1.6;color:var(--muted)}
+.plan-card>p{min-height:52px}
+.plan-period{font-size:1rem;line-height:1.5;color:var(--muted)}
+.plan-detail{font-size:var(--reading-note);line-height:1.65;color:var(--muted);min-height:75px}
+.plan-card li{line-height:1.6}
+.guarantee{font-size:1rem;line-height:1.6;color:var(--muted)}
+.guarantee-assurance p{font-size:1rem;line-height:1.6;color:var(--muted)}
+.guarantee-assurance strong{font-size:1.125rem}
+.support-bubble strong{font-size:1rem;line-height:1.7}
+.faq-list summary{font-size:1.125rem;line-height:1.6}
+.faq-list summary:after{flex-shrink:0;color:#bdbdbd}
+.footer-main .nav-links a{font-size:1rem}
+.footer-bottom{flex-wrap:wrap}
+.footer-brand{flex-wrap:wrap}
+.footer-bottom p,.legal-links a{font-size:.875rem;line-height:1.6;letter-spacing:0;color:#bdbdbd}
+.legal-links a{padding-block:10px}
+.dialog-eyebrow{font-size:.8125rem;line-height:1.4}
+#proof-title{font-size:1rem;line-height:1.5}
+.dialog-top .proof-close,.proof-time,.proof-status{font-size:.875rem;line-height:1.5}
+.proof-time span{color:#bfc8b5}
+.proof-status{color:#e3e8dd}
+@media(min-width:768px) and (max-width:1100px){
+  .hero p{font-size:1.25rem}
+  .responsibilities{gap:20px}
+  .support-panel{grid-template-columns:1fr}
+  .support-guide{border-left:0;border-top:1px solid var(--line);padding:28px 0 0}
+}
+@media(max-width:767px){
+  .hero{min-height:1340px;padding-bottom:460px}
+  .hero p{font-size:1.25rem;line-height:1.6}
+  .hero-actions{flex-direction:column;align-items:center}
+  .hero-actions .cta{width:100%;max-width:360px;font-size:1rem;padding:16px 20px}
+  .hero-proof{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,5rem),1fr));gap:12px}
+  .hero-proof div+div{padding-left:12px}
+  .hero-proof span{font-size:.875rem}
+  .hero-shade{background:linear-gradient(#050505 0%,#050505 53%,#050505b3 65%,transparent 77%,transparent 93%,#050505 100%)}
+  .hero-notice{font-size:.875rem}
+  .section-head p,.feature-copy p{font-size:var(--reading-body)}
+  .responsibilities{grid-template-columns:1fr}
+  .integration-orbit{grid-template-columns:repeat(auto-fit,minmax(min(100%,9rem),1fr))}
+  .integration-center{grid-column:1/-1}
+  .integration-node{font-size:.9375rem;gap:10px;padding:16px 12px;min-width:0}
+  .integration-node .brand-icon{width:24px;height:24px}
+  .plan-card>p,.plan-detail{min-height:0}
+  .footer{position:relative;height:auto;min-height:100svh}
+  .page-surface{margin-bottom:0}
+  .footer-main{padding-block:140px 40px}
+  .proof-controls-row{gap:8px;flex-wrap:wrap}
+  .dialog-top .proof-close{min-width:88px;font-size:.875rem}
+}
+@media(max-width:380px){.hero{min-height:1420px}.integration-node{padding-inline:10px;gap:8px}}
+@media(min-width:768px) and (max-height:760px){
+  .footer{position:relative;height:auto;min-height:100svh}
+  .page-surface{margin-bottom:0}
+}
