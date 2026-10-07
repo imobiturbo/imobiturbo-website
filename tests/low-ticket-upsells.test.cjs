@@ -12,7 +12,7 @@ test('as duas ofertas preservam o checkout corrigido e a entrega independente da
   t.after(() => fs.rmSync(output, { recursive: true, force: true }));
   buildLowTicketUpsells(root, output);
   for (const offer of offers) {
-    const html = fs.readFileSync(path.join(output, offer.route, 'index.html'), 'utf8');
+    const html = fs.readFileSync(path.join(output, offer.publicPath, 'index.html'), 'utf8');
     assert.match(html, /checkoutSession\.intent\.begin\(payload\)/);
     assert.match(html, /checkoutMode: 'hosted'/);
     assert.match(html, /window\.openSkillsCommunityCheckout\(\{ name: fullname, email, phone \}, currentSelectedPlan\)/);
@@ -24,7 +24,9 @@ test('as duas ofertas preservam o checkout corrigido e a entrega independente da
     assert.equal((html.match(/id="chkBuyerCpf"/g) || []).length, 1);
     assert.doesNotMatch(html, /id="chkCard(?:Number|Holder|Expiry|Cvv)"/);
     assert.doesNotMatch(html, /Obrigado por escolher as 54 Skills|Acessar minhas Skills|compra das Skills/);
-    assert.ok(html.includes(`/${offer.route}/`));
+    assert.ok(html.includes(`/${offer.publicPath}/`));
+    assert.doesNotMatch(html, /(?:href|src)="\.\.\//);
+    assert.equal(fs.readFileSync(path.join(output, offer.route, 'index.html'), 'utf8'), html);
   }
 });
 

@@ -1,0 +1,20 @@
+{
+  "productId": "maquina-de-prospeccao",
+  "title": "Máquina de Prospecção",
+  "currency": "BRL",
+  "salesEnabled": false,
+  "pixelId": "1025303472485246",
+  "checkoutNote": "Pagamento seguro pela Wiapy. Acesso ao material no Club após confirmação.",
+  "offers": {
+    "essencial": {
+      "name": "Essencial",
+      "priceCents": 2700,
+      "checkoutUrl": "https://pay.wiapy.com/6ac5cb6c6d1f28f2c3d53065"
+    },
+    "completo": {
+      "name": "Completo",
+      "priceCents": 3700,
+      "checkoutUrl": "https://pay.wiapy.com/6ac5cc2fc7ae865f6ec7e183"
+    }
+  }
+}

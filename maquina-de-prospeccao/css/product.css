@@ -1,0 +1,21 @@
+/* Product palette, retaining canonical structure and local fonts. */
+:root {--lt-lime:#C9ED97;--lt-green:#314F48;--lt-muted:#52665c;--lt-ink:#182824;--lt-paper:#edf4e9;--lt-line:#a8b9a1;--bg:#fafcf8;--text:#182824;--muted:#52665c;--accent:#c9ed97;--surface:#edf4e9;--border:#a8b9a1; color-scheme:light;}
+body {background:#fafcf8;color:#182824;}
+section, .hero {background-color:#fafcf8;color:#182824;}
+h1,h2,h3,p {color:inherit;}
+.section-dark,.section-green,.brand-header {background:#fafcf8;color:#182824;}
+.hero-checks,.hero-description,.purchase-note,.section-dark .section-intro,.hero-visual figcaption,.bonus-visual figcaption {color:#52665c;}
+.explain-diagram,.diag-card,.diag-highlight,.explain-card,.bonus-card,.founder-highlight {background:#edf4e9;color:#182824;border-color:#a8b9a1;box-shadow:none;}
+.diag-card h4,.diag-card p,.diagram-title,.diagram-lead,.vs-side li,.founder-highlight-content strong,.founder-highlight-content span {color:#182824;}
+.diag-step-pill,.diag-chip {background:#c9ed97;color:#182824;border-color:#a8b9a1;}
+.vs-good .vs-header strong,.diag-connector {color:#314f48;}
+.hero-visual img {aspect-ratio:3/2;object-fit:contain;}
+.brand-header a {background:#314f48;}
+.explain-card h3,.explain-card p,.explain-card strong,.explain-card-subtitle,.founder-name,.founder-role {color:#182824;}
+.diagram-hero-badge,.explain-card-tag,.eyebrow {color:#314f48;}
+.price-card-featured .price {color:#314f48;}
+.price-card-featured .plan-description,.price-card-featured .price-caption,.plan-value {color:#52665c;}
+
+
+
+.price-card,.card,details {background:#edf4e9;color:#182824;border-color:#a8b9a1;}
