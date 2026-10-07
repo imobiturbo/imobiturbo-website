@@ -306,5 +306,6 @@ export async function communityAutomaticWebhook(env, request, payload) {
     throw new CommunityError('asaas_unauthorized',env?.ASAAS_WEBHOOK_TOKEN ? 401 : 503);
   const config = communityConfig(env);
   const order = await resolvePixAutomaticAuthorization(config,payload.authorization?.id);
+  if (!order) return { status: 'ignored_product' };
   return communityOrderStatus(config,order);
 }

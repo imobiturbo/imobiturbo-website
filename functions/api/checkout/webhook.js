@@ -96,6 +96,10 @@ export async function onRequestPost(context) {
         } catch {
           return Response.json({ ok: false, error: "cal_asaas_order_lookup_unavailable" }, { status: 503 });
         }
+        if (resolved.kind === "deleted_unpaid_order") {
+          return Response.json({ ok: true, status: "ignored_deleted_unpaid_order", paid: false,
+            communityMembershipChanged: false }, { status: 200 });
+        }
         if (resolved.kind === "ignored_product") {
           return Response.json({ ok: true, status: "ignored_product" }, { status: 200 });
         }

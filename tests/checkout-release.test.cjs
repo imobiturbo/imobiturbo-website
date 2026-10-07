@@ -4,6 +4,24 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { compose } = require('../scripts/compose-checkout-release.cjs');
+test('webhook release replaces only the worker and retains all deployed pages and routing', t => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'webhook-release-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const baseline = path.join(root, 'baseline'), built = path.join(root, 'built'), output = path.join(root, 'release');
+  for (const dir of [baseline, built]) {
+    fs.mkdirSync(path.join(dir, 'vagas'), { recursive: true });
+    fs.writeFileSync(path.join(dir, '_worker.js'), dir);
+    fs.writeFileSync(path.join(dir, '_routes.json'), JSON.stringify({ version: 1, marker: dir }));
+    fs.writeFileSync(path.join(dir, 'vagas/index.html'), dir);
+  }
+  const proof = compose(baseline, built, output, { webhookOnly: true });
+  assert.equal(proof.changed, 1);
+  assert.equal(proof.protectedFiles, 2);
+  assert.equal(fs.readFileSync(path.join(output, '_worker.js'), 'utf8'), built);
+  assert.equal(fs.readFileSync(path.join(output, 'vagas/index.html'), 'utf8'), baseline);
+  assert.equal(fs.readFileSync(path.join(output, '_routes.json'), 'utf8'), fs.readFileSync(path.join(baseline, '_routes.json'), 'utf8'));
+  assert.throws(() => compose(baseline, built, path.join(root, 'mixed'), { webhookOnly: true, skillsUpsellOnly: true }), /Select one release scope/);
+});
 test('checkout composition preserves unrelated assets and never writes through baseline symlinks', t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'checkout-release-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));

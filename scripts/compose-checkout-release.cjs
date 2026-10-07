@@ -11,11 +11,11 @@ function files(root, dir = '') {
 const changed = file => file === '_worker.js' || file === '_routes.json' || file === '_redirects' || file === '404.html' ||
   ['vagas/', 'vagas-v2/', 'vagas-obrigado/', 'skills-ia-obrigado/'].some(prefix => file.startsWith(prefix));
 const hash = file => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
-function compose(baseline, built, output, { skillsUpsellOnly = false, lowTicketOffersOnly = false } = {}) {
+function compose(baseline, built, output, { skillsUpsellOnly = false, lowTicketOffersOnly = false, webhookOnly = false } = {}) {
   for (const source of [baseline, built]) if (!fs.existsSync(path.join(source, '_worker.js'))) throw new Error('Missing release worker');
   if ([baseline, built].some(source => path.resolve(source) === path.resolve(output))) throw new Error('Output must be isolated');
-  if (skillsUpsellOnly && lowTicketOffersOnly) throw new Error('Select one release scope');
-  const selected = lowTicketOffersOnly ? file => ['bf-imobiliaria26/', 'maquina-de-prospeccao/', 'bf-imobiliaria26-obrigado/', 'maquina-de-prospeccao-obrigado/'].some(prefix => file.startsWith(prefix)) : skillsUpsellOnly ? file => file.startsWith('skills-ia-obrigado/') : changed;
+  if ([skillsUpsellOnly, lowTicketOffersOnly, webhookOnly].filter(Boolean).length > 1) throw new Error('Select one release scope');
+  const selected = webhookOnly ? file => file === '_worker.js' : lowTicketOffersOnly ? file => ['bf-imobiliaria26/', 'maquina-de-prospeccao/', 'bf-imobiliaria26-obrigado/', 'maquina-de-prospeccao-obrigado/'].some(prefix => file.startsWith(prefix)) : skillsUpsellOnly ? file => file.startsWith('skills-ia-obrigado/') : changed;
   if (lowTicketOffersOnly) {
     for (const route of ['bf-imobiliaria26', 'maquina-de-prospeccao', 'bf-imobiliaria26-obrigado', 'maquina-de-prospeccao-obrigado']) {
       if (!fs.existsSync(path.join(built, route, 'index.html'))) throw new Error(`Missing offer route: ${route}`);
@@ -43,7 +43,7 @@ function compose(baseline, built, output, { skillsUpsellOnly = false, lowTicketO
 }
 if (require.main === module) {
   const [baseline, built, output, scope] = process.argv.slice(2);
-  if (!baseline || !built || !output || fs.existsSync(output) || (scope && !['--skills-upsell-only', '--low-ticket-offers-only'].includes(scope))) throw new Error('Pass baseline, built and a new output directory, optionally --skills-upsell-only or --low-ticket-offers-only');
-  console.log(JSON.stringify(compose(baseline, built, output, { skillsUpsellOnly: scope === '--skills-upsell-only', lowTicketOffersOnly: scope === '--low-ticket-offers-only' })));
+  if (!baseline || !built || !output || fs.existsSync(output) || (scope && !['--skills-upsell-only', '--low-ticket-offers-only', '--webhook-only'].includes(scope))) throw new Error('Pass baseline, built and a new output directory, optionally --skills-upsell-only, --low-ticket-offers-only or --webhook-only');
+  console.log(JSON.stringify(compose(baseline, built, output, { skillsUpsellOnly: scope === '--skills-upsell-only', lowTicketOffersOnly: scope === '--low-ticket-offers-only', webhookOnly: scope === '--webhook-only' })));
 }
 module.exports = { compose };
