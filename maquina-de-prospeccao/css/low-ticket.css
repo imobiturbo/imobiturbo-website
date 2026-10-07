@@ -100,5 +100,23 @@
 @media(max-width:900px){.explain-grid{grid-template-columns:1fr;gap:20px}.explain-card{padding:26px 22px}}
 @media(max-width:600px){.explain-section{padding-block:54px}.explain-section h2{font-size:clamp(23px,6.2vw,32px)}.explain-section .section-intro{margin-bottom:32px}.explain-cta{margin-top:32px}.explain-cta .button{width:100%}}
 
-.steps>li>.step-icon{position:absolute;left:0;top:0;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.steps>li>.step-icon{position:static;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
 .steps>li>.step-icon img{width:44px;height:44px;object-fit:contain;filter:drop-shadow(0 4px 10px rgba(0,0,0,.15))}
+
+@media(max-width:600px){.steps>li>.step-icon{position:absolute;left:0;top:0}}
+
+/* Keep the product, promise and purchase action together on desktop. */
+@media(min-width:981px){
+  .brand-header{padding:24px 0 12px}
+  .brand-header .container,.hero-container{width:min(1280px,calc(100% - 64px))}
+  .hero{padding:28px 0 64px}
+  .hero-container{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);column-gap:clamp(28px,3.5vw,64px);row-gap:0;align-items:start;text-align:left}
+  .hero-container>:not(.hero-visual){grid-column:1;min-width:0}
+  .hero-container>.hero-visual{grid-column:2;grid-row:1/span 6;align-self:center;width:100%;margin:0}
+  .hero .announcement{width:fit-content;max-width:100%;justify-self:start;padding:8px 14px;border-radius:999px;font-size:11px;line-height:1.5}
+  .hero h1{max-width:none;margin:20px 0 0;font-size:clamp(36px,3.1vw,52px);line-height:1.13;text-align:left}
+  .hero-subtitle{margin:20px 0 0;font-size:18px;line-height:1.6}
+  .hero-checks{width:auto;margin:24px 0 28px;font-size:15px;gap:10px}
+  .hero .button{justify-self:start}
+  .hero .purchase-note{margin-top:14px;font-size:14px}
+}
