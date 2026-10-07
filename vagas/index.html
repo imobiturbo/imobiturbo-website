@@ -977,6 +977,7 @@
       }
     }
   </style>
+  <script src="/vagas/lead-capture.js?v=20261006-crm-receipt"></script>
   <script src="/vagas/checkout-session.js?v=20261006-cpf-pix-recovery"></script>
 
   <style id="vagas-checkout-summary-wrap">
@@ -3449,10 +3450,14 @@
       });
     });
     window.addEventListener('pagehide', saveCheckoutProgress);
+    const leadCapture = window.CommunityLeadCapture.create();
+    window.addEventListener('online', fireLeadTrackingEvent);
     let trackedLeadContact = '';
     const trackedCheckoutStages = new Set();
     let checkoutTrackingId;
     restoreCheckoutProgress();
+    // The saved contact survives a reload; retry until the CRM acknowledges it.
+    fireLeadTrackingEvent();
 
     let openingPayment = false;
 
@@ -3475,6 +3480,7 @@
       const phone = (inputPhone ? inputPhone.value : '').trim();
       if (!isValidFullName(name) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.replace(/\D/g, '').length < 10) return;
       const leadKey = getCheckoutId();
+      if (typeof leadCapture !== 'undefined') leadCapture.submit({ name, email, phone, plan: currentPlan, source: 'vagas_modal', ...getUtms() });
       if (trackedLeadContact === leadKey) return;
       try { if (sessionStorage.getItem('imt_checkout_lead') === leadKey) return; sessionStorage.setItem('imt_checkout_lead', leadKey); } catch (_) {}
       trackedLeadContact = leadKey;
@@ -3490,21 +3496,7 @@
         valueCents: Math.round(planVal * 100),
         currency: 'BRL'
       });
-      try {
-        const payload = JSON.stringify({
-          name,
-          email,
-          phone,
-          plan: currentPlan,
-          source: 'vagas_modal',
-          ...getUtms(),
-        });
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon('/api/lead', new Blob([payload], { type: 'application/json' }));
-        } else {
-          fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(function() {});
-        }
-      } catch (_) {}
+
     }
 
     function openCheckoutModal(e) {
