@@ -2,7 +2,6 @@
   'use strict';
   const offer = window.OSOffer;
   let cycle = 'annual';
-  let motionPaused = false;
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
   let reducedMotion = motionPreference.matches;
   const header = document.querySelector('.nav');
@@ -57,7 +56,7 @@
   const visibleVideos = new Set();
   let proofOpen = false;
   function syncVideo(element) {
-    if (!motionPaused && !document.hidden && !proofOpen && visibleVideos.has(element)) {
+    if (!document.hidden && !proofOpen && visibleVideos.has(element)) {
       let needsLoad = false;
       element.querySelectorAll('source[data-src]').forEach(source => {
         source.src = source.dataset.src;
@@ -151,7 +150,6 @@
   // Short, local demonstrations: no borrowed marketing scripts or timers offscreen.
   const motionDemos = [...document.querySelectorAll('[data-motion-demo]')];
   const visibleDemos = new Set();
-  const motionButton = document.querySelector('[data-toggle-motion]');
   let motionTimer = null;
   const kanban = document.querySelector('[data-motion-demo="kanban"]');
   const motionLead = kanban.querySelector('.motion-lead');
@@ -212,8 +210,8 @@
   function syncMotion() {
     if (motionTimer) clearInterval(motionTimer);
     motionTimer = null;
-    document.body.classList.toggle('motions-paused', motionPaused || document.hidden);
-    if (!motionPaused && !document.hidden && visibleDemos.size) {
+    document.body.classList.toggle('motions-paused', document.hidden);
+    if (!document.hidden && visibleDemos.size) {
       motionTimer = setInterval(() => {
         if (visibleDemos.has(kanban)) advanceKanban();
         if (visibleDemos.has(chat)) advanceChat();
@@ -230,13 +228,6 @@
   motionDemos.forEach(element => {
     if (motionObserver) motionObserver.observe(element);
     else visibleDemos.add(element);
-  });
-  motionButton.addEventListener('click', () => {
-    motionPaused = !motionPaused;
-    motionButton.textContent = motionPaused ? 'Retomar animações' : 'Pausar animações';
-    motionButton.setAttribute('aria-pressed', String(motionPaused));
-    syncMotion();
-    syncVideos();
   });
   document.addEventListener('visibilitychange', syncMotion);
   motionPreference.addEventListener('change', event => {
