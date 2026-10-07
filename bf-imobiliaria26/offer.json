@@ -3,18 +3,18 @@
   "title": "SuperCombo Black Friday Imobiliária 2026",
   "currency": "BRL",
   "salesEnabled": true,
-  "pixelId": "",
-  "checkoutNote": "Escolha seu combo para continuar. Checkout será conectado antes da publicação.",
+  "pixelId": "1025303472485246",
+  "checkoutNote": "Pagamento seguro pela Wiapy. Acesso ao material no Club após confirmação.",
   "offers": {
     "essencial": {
       "name": "SuperCombo Essencial",
       "priceCents": 3790,
-      "checkoutUrl": "#checkout-pendente"
+      "checkoutUrl": "https://pay.wiapy.com/6ac5c8246d1f28f2c3d50033"
     },
     "completo": {
       "name": "SuperCombo Completo",
       "priceCents": 4790,
-      "checkoutUrl": "#checkout-pendente"
+      "checkoutUrl": "https://pay.wiapy.com/6ac5ca04c7ae865f6ec7b9e0"
     }
   }
 }
