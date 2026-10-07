@@ -26,9 +26,11 @@ function sliceStream(body, start, length) {
 }
 
 function mediaResponse(request, response, headers) {
+  const generatedLength = headers.get('X-Imobiturbo-Media-Length');
+  headers.delete('X-Imobiturbo-Media-Length');
   const full = () => new Response(response.body, {status:response.status,statusText:response.statusText,headers});
   if (response.status !== 200 || !/^(video|audio)\//.test(headers.get('Content-Type') || '')) return full();
-  const total = Number(headers.get('Content-Length'));
+  const total = Number(headers.get('Content-Length') || generatedLength);
   if (!Number.isSafeInteger(total) || total <= 0) return full();
   headers.set('Accept-Ranges', 'bytes');
   if (request.method !== 'GET' || !response.body) return full();
@@ -47,7 +49,14 @@ function mediaResponse(request, response, headers) {
   const length = end - start + 1;
   headers.set('Content-Range', `bytes ${start}-${end}/${total}`);
   headers.set('Content-Length', String(length));
-  return new Response(sliceStream(response.body, start, length), {status:206,headers});
+  let body = sliceStream(response.body, start, length);
+  // Workers calcula Content-Length pelo stream; o tamanho conhecido mantém a resposta exata.
+  if (typeof FixedLengthStream === 'function') {
+    const fixed = new FixedLengthStream(length);
+    body.pipeTo(fixed.writable).catch(() => {});
+    body = fixed.readable;
+  }
+  return new Response(body, {status:206,headers});
 }
 
 export default {

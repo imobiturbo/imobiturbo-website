@@ -95,6 +95,16 @@ test('ranges inválidos e If-Range divergente preservam o protocolo de vídeo', 
   assert.equal(await response.text(),'12');
 });
 
+test('range usa o tamanho gerado no build quando o Cloudflare omite Content-Length no binding', async () => {
+  const handler = await worker();
+  const response=await handler.fetch(new Request(origin+'/os-crm/v2/assets/proof.mp4',{headers:{range:'bytes=2-4'}}),{ASSETS:{fetch:async()=>new Response('0123456789',{headers:{'content-type':'video/mp4','X-Imobiturbo-Media-Length':'10'}})}});
+  assert.equal(response.status,206);
+  assert.equal(response.headers.get('content-range'),'bytes 2-4/10');
+  assert.equal(response.headers.get('content-length'),'3');
+  assert.equal(response.headers.has('X-Imobiturbo-Media-Length'),false);
+  assert.equal(await response.text(),'234');
+});
+
 test('endereço da versão de revisão redireciona à raiz preservando auditoria', async () => {
   const handler = await worker();
   const response = await handler.fetch(new Request(origin+'/os-crm/v2/?imt_audit=1&utm_source=meta'),{});
@@ -116,4 +126,6 @@ test('artefato de produção contém todos os recursos da LP e não inclui as ou
   assert.equal(fs.existsSync(path.join(output,'os-crm/v2/render.cjs')),false);
   assert.equal(fs.existsSync(path.join(output,'vagas')),false);
   assert.ok(fs.readFileSync(path.join(output,'_headers'),'utf8').includes('connect-src \'self\' https://track.nmidigital.tech'));
+  const video='/os-crm/v2/assets/hero-current-mobile-phone.mp4';
+  assert.ok(fs.readFileSync(path.join(output,'_headers'),'utf8').includes(`${video}\n  X-Imobiturbo-Media-Length: ${fs.statSync(path.join(output,video)).size}`));
 });
