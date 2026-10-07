@@ -16,6 +16,12 @@ function build(output = path.join(root, '.cloudflare-os-landing')) {
   const html = fs.readFileSync(path.join(output,'index.html'),'utf8');
   const csp = html.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)[1];
   fs.writeFileSync(path.join(output,'_headers'), `/*\n  Content-Security-Policy: ${csp}\n  X-Content-Type-Options: nosniff\n  X-Frame-Options: DENY\n  Referrer-Policy: strict-origin-when-cross-origin\n\n/os-crm/v2/assinatura/*\n  X-Robots-Tag: noindex, nofollow\n`);
+  // O binding de assets omite Content-Length em produção. Gere o tamanho do arquivo exato.
+  for (const file of fs.readdirSync(path.join(target,'assets'))) {
+    if (!/\.(mp4|webm|mp3|m4a|wav|ogg)$/i.test(file)) continue;
+    const size = fs.statSync(path.join(target,'assets',file)).size;
+    fs.appendFileSync(path.join(output,'_headers'), `\n/os-crm/v2/assets/${file}\n  X-Imobiturbo-Media-Length: ${size}\n`);
+  }
   console.log(`LP de produção gerada em ${output}`);
 }
 if (require.main === module) build(process.argv[2]);
