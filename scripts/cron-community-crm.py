@@ -33,7 +33,8 @@ def main():
         cursor_file = ROOT / 'community-crm-cursor.json'
         cursor = json.loads(cursor_file.read_text()) if cursor_file.exists() else None
         request = urllib.request.Request(ENDPOINT, data=json.dumps({'cursor': cursor}).encode(),
-            headers={'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}, method='POST')
+            headers={'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token,
+                'User-Agent': 'Imobiturbo-CRM-Reconciliation/1.0'}, method='POST')
         with urllib.request.urlopen(request, timeout=55) as response:
             result = json.load(response)
         if not all(type(result.get(key)) is int and result[key] >= 0 for key in ('scanned','completed','pending')) or 'next_cursor' not in result:
