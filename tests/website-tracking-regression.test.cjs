@@ -101,8 +101,10 @@ test('opening the initial form is not IC; payment stage IDs deduplicate independ
   const opened = html.slice(html.indexOf('    function openCheckoutModal('), html.indexOf('    function closeCheckoutModal('));
   assert.doesNotMatch(opened, /trackHubConversion\('initiateCheckout'/);
   assert.match(opened, /currentCheckoutStep === 4/);
-  const events = [], store = new Map();
+  const events = [], capturedLeads = [], store = new Map();
   const context = { trackedCheckoutStages: new Set(), getCheckoutId: () => 'checkout_test', getUtms: () => ({ sessionId: 'session_test' }),
+    leadCapture: { submit: lead => capturedLeads.push(lead) },
+    inputName: { value: ' Cliente Teste ' }, inputEmail: { value: ' cliente@example.invalid ' }, inputPhone: { value: ' 21999990000 ' },
     currentPlan: 'mensal', trackHubConversion: (...args) => events.push(args),
     sessionStorage: { getItem: key => store.get(key), setItem: (key, value) => store.set(key, value) } };
   vm.createContext(context); vm.runInContext(stageSource, context);
@@ -114,4 +116,9 @@ test('opening the initial form is not IC; payment stage IDs deduplicate independ
   assert.equal(events[1][1].eid, 'checkout_test');
   assert.notEqual(events[1][1].eventId, 'checkout_test');
   assert.equal(events[1][1].sessionId, 'session_test');
+  assert.equal(capturedLeads[0].checkout_stage, 'CREDIT_CARD');
+  assert.equal(capturedLeads[2].checkout_stage, 'PIX');
+  assert.equal(capturedLeads[0].name, 'Cliente Teste');
+  assert.equal(capturedLeads[0].checkout_id, 'checkout_test');
+  assert.equal(capturedLeads[0].sessionId, 'session_test');
 });
