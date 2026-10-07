@@ -37,6 +37,7 @@ function fixture(t, options = {}) {
     if (table === 'contact_emails' || table === 'contact_phones') {
       assert.equal(u.searchParams.get('removed_at'), 'is.null');
       assert.equal(u.searchParams.get('organization_id'), `eq.${ORG}`);
+      assert.equal(u.searchParams.get('normalized_value'), table === 'contact_phones' ? 'eq.+5511987654320' : 'eq.checkout@example.invalid');
       return Response.json(options[table] || []);
     }
     if (table === 'cobranca_assinaturas') return Response.json(state.paid ? [{ id: 'c1111111-1111-4111-8111-111111111111' }] : []);

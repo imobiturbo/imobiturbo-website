@@ -61,7 +61,7 @@ async function assertBuyerContact(config, contact, buyer) {
   const emailMatches = email(contact.email) === email(buyer.email) ||
     await addressBelongsToContact(config, 'contact_emails', email(buyer.email), contact.id);
   const phoneMatches = phone(contact.phone_number) === phone(buyer.phone) ||
-    await addressBelongsToContact(config, 'contact_phones', phone(buyer.phone), contact.id);
+    await addressBelongsToContact(config, 'contact_phones', `+${phone(buyer.phone)}`, contact.id);
   if (!emailMatches || !phoneMatches) throw fail('community_crm_buyer_conflict');
 }
 async function annotate(config, leadId, buyer, observation) {
