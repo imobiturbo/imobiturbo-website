@@ -18,7 +18,7 @@
     scale: { name: 'Scale', audience: 'Para equipes que querem dominar.', monthly: 397, annual: 2970,
       features: ['5 conexões de WhatsApp', 'Até 15 usuários corretores', 'Tudo do Growth', 'Distribuição para múltiplas equipes', 'API e webhooks', 'Painel executivo de desempenho', 'Onboarding assistido'] },
   };
-  const money = value => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 }).format(value);
+  const money = (value, fractionDigits = 0) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits }).format(value);
   function selection(search) {
     const query = new URLSearchParams(search);
     const key = query.get('plan') || query.get('plano');
@@ -27,7 +27,7 @@
   function price(plan, cycle) {
     const p = plans[plan];
     return cycle === 'annual'
-      ? { headline: money(p.annual), detail: 'Assinatura anual. Renovação automática a cada 12 meses.', period: '/ano' }
+      ? { headline: money(p.annual / 12, 2), detail: `Cobrança anual de ${money(p.annual)}. Renovação automática a cada 12 meses.`, period: 'por mês' }
       : { headline: money(p.monthly), detail: 'Assinatura mensal. Cancele quando quiser.', period: '/mês' };
   }
   const attributionKeys = ['src', 'sck', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id', 'imt_adset_name', 'imt_adset_id', 'imt_ad_id', 'imt_placement', 'fbclid', 'gclid', 'gbraid', 'wbraid', 'ttclid', 'msclkid', 'rt_vid', 'rt_fbp', 'rt_fbc', 'xcod', 'imt_audit'];
@@ -57,7 +57,8 @@
   const existingAccessURL = () => 'https://os.imobiturbo.com.br/login';
   function activationURL(plan, cycle) {
     const p = plans[plan];
-    const text = `Olá! Quero ativar o Imobiturbo OS no plano ${p.name}, ciclo ${cycle === 'annual' ? 'anual' : 'mensal'}. ${price(plan, cycle).headline}. Podem me orientar sobre contratação e acesso?`;
+    const selectedPrice = price(plan, cycle);
+    const text = `Olá! Quero ativar o Imobiturbo OS no plano ${p.name}, ciclo ${cycle === 'annual' ? 'anual' : 'mensal'}. ${selectedPrice.headline} ${selectedPrice.period}. ${selectedPrice.detail} Podem me orientar sobre contratação e acesso?`;
     return `https://wa.me/5521969516183?text=${encodeURIComponent(text)}`;
   }
   return { plans, checkouts, money, selection, price, checkoutURL, checkoutSelection, existingAccessURL, activationURL };

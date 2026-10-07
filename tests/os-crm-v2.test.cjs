@@ -7,12 +7,15 @@ const offer = require('../os-crm/v2/offer.js');
 const { render } = require('../os-crm/v2/render.cjs');
 const root = path.join(__dirname, '..');
 
-test('OS mantém os preços publicados e informa o parcelamento da Cakto', () => {
+test('OS exibe o equivalente mensal do anual e informa sua cobrança e renovação', () => {
   assert.deepEqual(Object.values(offer.plans).map(p => [p.monthly, p.annual]), [[97,670],[247,1770],[397,2970]]);
   assert.equal(offer.existingAccessURL(), 'https://os.imobiturbo.com.br/login');
+  const equivalents = {start:'R$55,83',growth:'R$147,50',scale:'R$247,50'};
   for (const [key,p] of Object.entries(offer.plans)) {
     const annual = offer.price(key, 'annual');
-    assert.equal(annual.headline, offer.money(p.annual));
+    assert.equal(annual.headline.replace(/\s/g, ''), equivalents[key]);
+    assert.equal(annual.period, 'por mês');
+    assert.ok(annual.detail.includes(`Cobrança anual de ${offer.money(p.annual)}`));
     assert.match(annual.detail, /Renovação automática a cada 12 meses/);
     assert.ok(offer.price(key, 'monthly').headline.includes(offer.money(p.monthly)));
     const message = new URL(offer.activationURL(key, 'annual'));
