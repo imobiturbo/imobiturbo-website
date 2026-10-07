@@ -25,4 +25,7 @@ h1,h2,h3,p {color:inherit;}
 .explain-section .section-intro {color:var(--lt-muted);}
 .vs-bad .vs-header strong {color:#91232b;}
 .bonus-grid p {color:var(--lt-muted);}
+.bonus-number {color:var(--lt-green);}
+.bonus-footer {color:var(--lt-muted);}
 .bonus-footer strong {color:var(--lt-ink);}
+.closing p {color:var(--lt-muted);}
