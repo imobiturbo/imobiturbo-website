@@ -12,3 +12,11 @@
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
 /tests/*
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+
+/os-crm/clone/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self'; frame-src https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'none'
+
+/os-crm/v2/*
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://track.nmidigital.tech https://connect.facebook.net; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.facebook.com; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://track.nmidigital.tech https://www.facebook.com; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'

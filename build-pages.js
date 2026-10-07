@@ -2,11 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { buildSkillsUpsell } = require('./scripts/build-skills-upsell.cjs');
+const { render: renderOSLanding } = require('./os-crm/v2/render.cjs');
 
 const root = __dirname;
 const output = path.join(root, '.cloudflare-pages');
 const entries = [
   'index.html',
+  '_headers',
   '404.html',
   '_redirects',
   'legal.css',
@@ -49,6 +51,8 @@ const entries = [
   'skills-ia',
   'skills-ia-obrigado',
   'bf-imobiliaria26',
+  'os-crm/clone',
+  'os-crm/v2',
   'politica-de-privacidade',
   'exclusao-de-dados',
   'termos-de-servico',
@@ -72,6 +76,9 @@ for (const entry of entries) {
   if (!fs.existsSync(source)) continue;
   fs.cpSync(source, path.join(output, entry), { recursive: true });
 }
+
+// Use the shared offer renderer after static copies so stale HTML cannot win.
+renderOSLanding(path.join(output, 'os-crm/v2'));
 
 fs.cpSync(path.join(root, 'tools/oficina-web/dist'), path.join(output, 'oficina'), { recursive: true });
 
@@ -106,7 +113,7 @@ fs.renameSync(path.join(output, 'index.js'), path.join(output, '_worker.js'));
 fs.writeFileSync(path.join(output, '_routes.json'), JSON.stringify({
   version: 1,
   include: ['/*'],
-  exclude: ['/assets/*', '/dist/*', '/fonts/*',
+  exclude: ['/os-crm/clone/*', '/os-crm/v2', '/os-crm/v2/*', '/assets/*', '/dist/*', '/fonts/*',
     ...['js', 'css', 'png', 'jpg', 'jpeg', 'gif', 'svg', 'ico', 'woff', 'woff2', 'ttf', 'eot', 'map', 'json',
       'webp', 'avif', 'mp4', 'webm', 'pdf', 'xml', 'txt', 'webmanifest'].map(ext => `/*.${ext}`)],
 }, null, 2));
