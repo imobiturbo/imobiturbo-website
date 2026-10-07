@@ -18,8 +18,8 @@ function renderLowTicketUpsell(source, offer) {
     ['<span>Skills de IA</span>', `<span>${offer.step}</span>`],
     ['Obrigado por escolher as 54 Skills de IA. Veja seus acessos e o próximo passo opcional.', `Obrigado por escolher ${offer.kit}. Veja como receber seu material e o próximo passo opcional.`],
     ['<p class="eyebrow">ACESSO CONFIRMADO</p><h2 id="accessTitle">Onde encontrar seus acessos</h2>', '<p class="eyebrow">SEU MATERIAL</p><h2 id="accessTitle">Onde encontrar seu material</h2>'],
-    ['Entre com o e-mail usado na compra das Skills. Consulte também as instruções de acesso enviadas após a confirmação do pagamento.', `Após a confirmação do pagamento de ${offer.kit}, a Wiapy envia as instruções de entrega para o e-mail usado na compra. Confira também a pasta de spam. Se precisar de ajuda, use o canal de suporte informado no recibo.`],
-    ['id="skillsAccessLink" class="btn" href="https://club.imobiturbo.com.br/login">Acessar minhas Skills', 'id="skillsAccessLink" class="btn" href="https://wiapy.com/customer">Consultar minha compra na Wiapy'],
+    ['Entre com o e-mail usado na compra das Skills. Consulte também as instruções de acesso enviadas após a confirmação do pagamento.', `Após a confirmação do pagamento de ${offer.kit}, enviamos as instruções de acesso ao Club para o e-mail usado na compra. Confira também a pasta de spam. Entre com esse e-mail e abra a biblioteca do seu produto para baixar os arquivos.`],
+    ['id="skillsAccessLink" class="btn" href="https://club.imobiturbo.com.br/login">Acessar minhas Skills', 'id="skillsAccessLink" class="btn" href="https://club.imobiturbo.com.br/login">Acessar meu material'],
     ['O acesso às Skills depende apenas da confirmação da compra do kit. A assinatura é opcional e não é necessária para usar suas Skills.', 'A entrega do kit depende apenas da confirmação da compra dele. A assinatura da Comunidade é opcional e não é necessária para usar seu material.'],
   ];
   for (const [previous, next] of replacements) {

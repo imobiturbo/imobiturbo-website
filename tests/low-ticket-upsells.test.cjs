@@ -16,7 +16,7 @@ test('as duas ofertas preservam o checkout corrigido e a entrega independente da
     assert.match(html, /checkoutSession\.intent\.begin\(payload\)/);
     assert.match(html, /checkoutMode: 'hosted'/);
     assert.match(html, /window\.openSkillsCommunityCheckout\(\{ name: fullname, email, phone \}, currentSelectedPlan\)/);
-    assert.match(html, /href="https:\/\/wiapy.com\/customer"/);
+    assert.match(html, /href="https:\/\/club.imobiturbo.com.br\/login"/);
     assert.match(html, /assinatura da Comunidade é opcional/);
     assert.match(html, /apenas da confirmação da compra dele/);
     assert.match(html, /Após a confirmação do pagamento/);

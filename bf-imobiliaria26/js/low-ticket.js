@@ -1,9 +1,9 @@
 (function () {
   'use strict';
-  var productId = 'skills-ia-corretor';
+  var productId = null;
   var config = null;
   var production = /^(www\.)?imobiturbo\.com\.br$/.test(location.hostname);
-  var pixelId = '1025303472485246';
+  var pixelId = null;
   var pending = [];
 
   function hub(name, properties) {
@@ -12,21 +12,21 @@
     return false;
   }
   function track(name, properties) {
-    if (!production) return;
+    if (!production || !config || !productId) return;
     var data = Object.assign({ product_id: productId, page_path: location.pathname }, properties);
     if (!hub(name, data) && pending.length < 20) pending.push([name, data]);
   }
   function eventId() {
-    return window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'skills-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+    return window.crypto && crypto.randomUUID ? crypto.randomUUID() : 'offer-' + Date.now() + '-' + Math.random().toString(36).slice(2);
   }
   // The Hub SDK owns initialization and the shared browser/CAPI PageView ID.
   // Only product events belong to this page; never send a second PageView.
   var contentViewed = false;
   function viewContent() {
-    if (!production || contentViewed || typeof window.fbq !== 'function') return;
+    if (!production || !config || !productId || !pixelId || contentViewed || typeof window.fbq !== 'function') return;
     contentViewed = true;
     window.fbq('trackSingle', pixelId, 'ViewContent', {
-      content_ids: [productId], content_name: '54 skills de IA para corretores', content_type: 'product', currency: 'BRL', value: 27.90
+      content_ids: [productId], content_name: config.title, content_type: 'product', currency: 'BRL', value: Math.min.apply(null, Object.keys(config.offers).map(function (plan) { return config.offers[plan].priceCents / 100; }))
     }, { eventID: eventId() });
   }
   var ticks = 0;
@@ -43,10 +43,10 @@
     if (status) status.textContent = message;
   }
   function validOffer(offer) {
-    if (!offer || !Number.isInteger(offer.priceCents)) return false;
+    if (!offer || !Number.isInteger(offer.priceCents) || offer.priceCents <= 0) return false;
     try {
       var url = new URL(offer.checkoutUrl);
-      return (url.protocol === 'https:' || url.protocol === 'http:') && url.hostname.length > 3 && url.pathname.length > 0;
+      return url.protocol === 'https:' && url.hostname === 'pay.wiapy.com' && url.pathname.length > 1 && !url.username && !url.password;
     } catch (_) {
       return false;
     }
@@ -64,7 +64,7 @@
   }
   function resetCheckoutButton(button) {
     if (!button) return;
-    button.disabled = false;
+    button.disabled = !(config && config.salesEnabled && validOffer(config.offers && config.offers[button.dataset.plan]));
     if (button.dataset.defaultHtml) {
       button.innerHTML = button.dataset.defaultHtml;
     }
@@ -76,6 +76,7 @@
   document.querySelectorAll('[data-plan]').forEach(function (button) {
     button.dataset.defaultHtml = button.innerHTML || button.textContent;
     button.setAttribute('aria-disabled', 'true');
+    button.disabled = true;
     button.addEventListener('click', function () {
       var plan = button.dataset.plan;
       var offer = config && config.offers && config.offers[plan];
@@ -97,8 +98,8 @@
       track('offer_selected', { offer_code: plan, value: offer.priceCents / 100, currency: 'BRL' });
       // Buttons avoid the Hub automatic anchor click handler. The fbq observer sends
       // exactly one InitiateCheckout to the Hub with the same eventID and amount.
-      if (production && window.fbq) window.fbq('trackSingle', pixelId, 'InitiateCheckout', {
-        content_ids: [productId + ':' + plan], content_name: 'Skills IA — ' + offer.name,
+      if (production && pixelId && window.fbq) window.fbq('trackSingle', pixelId, 'InitiateCheckout', {
+        content_ids: [productId + ':' + plan], content_name: config.title + ' — ' + offer.name,
         content_type: 'product', product_id: productId, offer_code: plan, currency: 'BRL', value: offer.priceCents / 100, num_items: 1
       }, { eventID: eventId() });
       else track('InitiateCheckout', { offer_code: plan, value: offer.priceCents / 100, currency: 'BRL' });
@@ -108,10 +109,11 @@
   fetch('./offer.json', { cache: 'no-store' }).then(function (response) {
     if (!response.ok) throw new Error('offer_unavailable'); return response.json();
   }).then(function (value) {
+    if (!value || !value.productId || !value.title || !value.offers) throw new Error('offer_invalid');
     config = value;
     if (value.productId) productId = value.productId;
     if (value.pixelId) pixelId = value.pixelId;
-    if (value.salesEnabled !== true) return;
+    if (value.salesEnabled !== true) { setAvailability(value.checkoutNote || 'As vendas ainda não estão abertas.'); return; }
     document.querySelectorAll('[data-plan]').forEach(function (button) {
       if (validOffer(value.offers && value.offers[button.dataset.plan])) {
         button.removeAttribute('aria-disabled');
