@@ -17,7 +17,7 @@
   }
   function track(name, plan, cycle) {
     if (queue.length >= 32) return;
-    queue.push({ name, productId: ['imobiturbo-os', plan, cycle].filter(Boolean).join(':') });
+    queue.push({ name, productId: ['imobiturbo-os', 'ilimitado', cycle].filter(Boolean).join(':') });
     flush();
   }
   document.querySelectorAll('a[href]').forEach(link => {

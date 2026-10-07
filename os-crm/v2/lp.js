@@ -1,7 +1,6 @@
 (() => {
   'use strict';
   const offer = window.OSOffer;
-  let cycle = 'annual';
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
   let reducedMotion = motionPreference.matches;
   const header = document.querySelector('.nav');
@@ -24,19 +23,6 @@
     });
     document.body.classList.add('motion-ready');
   }
-
-  document.querySelectorAll('[data-cycle]').forEach(button => button.addEventListener('click', () => {
-    cycle = button.dataset.cycle;
-    document.querySelectorAll('[data-cycle]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cycle === cycle)));
-    document.querySelectorAll('[data-plan]').forEach(card => {
-      const key = card.dataset.plan;
-      const price = offer.price(key, cycle);
-      card.querySelector('[data-plan-price]').textContent = price.headline;
-      card.querySelector('[data-plan-period]').textContent = price.period;
-      card.querySelector('[data-plan-detail]').textContent = price.detail;
-      card.querySelector('a').href = offer.checkoutURL(key, cycle);
-    });
-  }));
 
   const videos = {
     crm: { name: 'os-macbook-real', tab: 'tab-crm', label: 'Demonstração do CRM Imobiturbo OS no computador', points: [

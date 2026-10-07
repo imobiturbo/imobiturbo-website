@@ -7,29 +7,22 @@ const offer = require('../os-crm/v2/offer.js');
 const { render } = require('../os-crm/v2/render.cjs');
 const root = path.join(__dirname, '..');
 
-test('OS exibe o equivalente mensal do anual e informa sua cobrança e renovação', () => {
-  assert.deepEqual(Object.values(offer.plans).map(p => [p.monthly, p.annual]), [[97,670],[247,1770],[397,2970]]);
-  assert.equal(offer.existingAccessURL(), 'https://os.imobiturbo.com.br/login');
-  const equivalents = {start:'R$55,83',growth:'R$147,50',scale:'R$247,50'};
+test('três períodos compartilham o acesso ilimitado e informam cobrança e renovação reais', () => {
+  assert.deepEqual(Object.values(offer.plans).map(p => [p.amount,p.months,p.offerKey]), [[147,1,'comunidade-mensal'],[357,3,'comunidade-trimestral'],[997,12,'comunidade-anual']]);
+  const equivalents = {monthly:'R$147',quarterly:'R$119',annual:'R$83,08'};
   for (const [key,p] of Object.entries(offer.plans)) {
-    const annual = offer.price(key, 'annual');
-    assert.equal(annual.headline.replace(/\s/g, ''), equivalents[key]);
-    assert.equal(annual.period, 'por mês');
-    assert.ok(annual.detail.includes(`Cobrança anual de ${offer.money(p.annual)}`));
-    assert.match(annual.detail, /Renovação automática a cada 12 meses/);
-    assert.ok(offer.price(key, 'monthly').headline.includes(offer.money(p.monthly)));
-    const message = new URL(offer.activationURL(key, 'annual'));
-    assert.equal(message.hostname, 'wa.me');
-    assert.ok(message.searchParams.get('text').includes(p.name));
-    assert.ok(message.searchParams.get('text').includes(annual.headline));
+    const price=offer.price(key);
+    assert.equal(price.headline.replace(/\s/g,''),equivalents[key]);
+    assert.ok(price.detail.includes(offer.money(p.amount)));
+    assert.match(price.detail,/Renovação automática/);
+    assert.ok(new URL(offer.activationURL(key)).searchParams.get('text').includes(p.name));
   }
+  assert.equal(offer.existingAccessURL(),'https://os.imobiturbo.com.br/login');
 });
-test('invalid checkout query cannot select another product or unsafe property', () => {
-  assert.deepEqual(offer.selection('?plan=scale&cycle=monthly'), {plan:'scale',cycle:'monthly'});
-  assert.deepEqual(offer.selection('?plano=start&cycle=annual'), {plan:'start',cycle:'annual'});
-  for (const plan of ['gold','__proto__','constructor','toString','<script>']) {
-    assert.deepEqual(offer.selection(`?plan=${encodeURIComponent(plan)}&cycle=invalid`), {plan:'growth',cycle:'annual'});
-  }
+test('consulta segura seleciona períodos atuais e preserva duração dos links legados', () => {
+  for(const [alias,key] of [['mensal','monthly'],['trimestral','quarterly'],['anual','annual']]) assert.deepEqual(offer.selection('?plano='+alias),{plan:key,cycle:key});
+  assert.deepEqual(offer.selection('?plan=scale&cycle=monthly'),{plan:'monthly',cycle:'monthly'});
+  for(const plan of ['gold','__proto__','constructor','toString','<script>']) assert.deepEqual(offer.selection('?plan='+encodeURIComponent(plan)+'&cycle=invalid'),{plan:'annual',cycle:'annual'});
 });
 test('adapted landing and subscription contain no competitor scripts, pixels or payment collection', t => {
   const output = fs.mkdtempSync(path.join(os.tmpdir(), 'os-crm-v2-'));
@@ -48,7 +41,7 @@ test('adapted landing and subscription contain no competitor scripts, pixels or 
   assert.match(checkout, /Abrindo seu checkout seguro na Cakto/);
   assert.match(checkout, /Continuar para a Cakto/);
   assert.match(landing, /Relatos de clientes do ecossistema Imobiturbo/);
-  for (const section of ['produto','demo','resultados','diferenciais','integracoes','crm','inbox','ia','followup','operacao','criador','planos','faq']) {
+  for (const section of ['produto','demo','resultados','diferenciais','integracoes','crm','inbox','ia','followup','operacao','criador','bonus','trilhas','planos','faq']) {
     assert.ok(landing.includes(`id="${section}"`), section);
   }
   for (const source of [landing,checkout]) for (const match of source.matchAll(/(?:src|href|poster)="(\/os-crm\/v2\/[^"?#]+)"/g)) {
@@ -76,8 +69,8 @@ test('LP e assinatura instalam o Tracker Imobiturbo com CSP que permite o coleto
 });
 test('trocar plano ou ciclo preserva atribuição e auditoria sem copiar dados arbitrários', () => {
   const search = '?utm_source=meta&utm_id=campaign&imt_adset_name=Corretores&imt_adset_id=adset&imt_ad_id=ad&imt_placement=Reels&fbclid=click&imt_audit=1&rt_vid=visitor&email=private@example.com&redirect=https://invalid.example';
-  const target = new URL(offer.checkoutURL('scale', 'monthly', search), 'https://www.imobiturbo.com.br');
-  assert.deepEqual(offer.checkoutSelection(target.href), {plan:'scale',cycle:'monthly'});
+  const target = new URL(offer.checkoutURL('monthly', 'monthly', search), 'https://www.imobiturbo.com.br');
+  assert.deepEqual(offer.checkoutSelection(target.href), {plan:'monthly',cycle:'monthly'});
   assert.equal(target.origin, 'https://pay.cakto.com.br');
   for (const key of ['utm_source','utm_id','imt_adset_name','imt_adset_id','imt_ad_id','imt_placement','fbclid','imt_audit','rt_vid']) {
     assert.equal(target.searchParams.get(key), new URLSearchParams(search).get(key));
@@ -86,26 +79,30 @@ test('trocar plano ou ciclo preserva atribuição e auditoria sem copiar dados a
   assert.equal(target.searchParams.has('redirect'), false);
 });
 
-test('seis seleções abrem seis ofertas distintas e URLs desconhecidas não representam o OS', () => {
-  const targets = new Set();
-  for (const plan of Object.keys(offer.plans)) for (const cycle of ['monthly','annual']) {
-    const url = offer.checkoutURL(plan,cycle,'?utm_source=audit&imt_audit=1');
-    targets.add(new URL(url).pathname);
-    assert.deepEqual(offer.checkoutSelection(url), {plan,cycle});
+test('três períodos abrem três ofertas distintas sem herdar as ofertas anteriores', () => {
+  const targets=new Set();
+  for(const plan of Object.keys(offer.plans)) {
+    const url=offer.checkoutURL(plan,plan,'?imt_audit=1'); targets.add(new URL(url).pathname);
+    assert.deepEqual(offer.checkoutSelection(url),{plan,cycle:plan});
   }
-  assert.equal(targets.size,6);
-  for (const url of ['https://evil.example/384adhh','https://pay.cakto.com.br/unknown','https://pay.cakto.com.br/384adhh/other']) assert.equal(offer.checkoutSelection(url),null);
-  assert.deepEqual(offer.checkoutSelection(offer.checkoutURL('__proto__','invalid')), {plan:'growth',cycle:'annual'});
+  assert.equal(targets.size,3);
+  for(const url of ['https://evil.example/cdpxiid','https://pay.cakto.com.br/unknown','https://pay.cakto.com.br/384adhh','https://pay.cakto.com.br/cdpxiid/other']) assert.equal(offer.checkoutSelection(url),null);
 });
-test('links antigos de assinatura encaminham a oferta e a atribuição sem cobrança', () => {
-  const vm = require('node:vm');
-  const source = fs.readFileSync(path.join(root,'os-crm/v2/assinatura/checkout.js'),'utf8');
-  for (const plan of Object.keys(offer.plans)) for (const cycle of ['monthly','annual']) {
-    const link = {}; let destination;
-    const search = `?plan=${plan}&cycle=${cycle}&utm_source=audit&imt_audit=1`;
+test('links da assinatura encaminham o período e atribuição sem cobrança local', () => {
+  const vm=require('node:vm'),source=fs.readFileSync(path.join(root,'os-crm/v2/assinatura/checkout.js'),'utf8');
+  for(const plan of Object.keys(offer.plans)) {
+    const link={};let destination;const search='?plan='+plan+'&utm_source=audit&imt_audit=1';
     vm.runInNewContext(source,{window:{OSOffer:{...offer,checkoutURL:(p,c)=>offer.checkoutURL(p,c,search)}},location:{search,replace:url=>{destination=url;}},document:{querySelector:()=>link}});
-    assert.deepEqual(offer.checkoutSelection(destination), {plan,cycle});
-    assert.equal(new URL(destination).searchParams.get('imt_audit'),'1');
-    assert.equal(link.href,destination);
+    assert.deepEqual(offer.checkoutSelection(destination),{plan,cycle:plan});assert.equal(new URL(destination).searchParams.get('imt_audit'),'1');assert.equal(link.href,destination);
   }
+});
+test('bônus e planos comunicam a mesma entrega com limites e promessas honestos', t => {
+  const output=fs.mkdtempSync(path.join(os.tmpdir(),'os-club-'));t.after(()=>fs.rmSync(output,{recursive:true,force:true}));render(output);
+  const html=fs.readFileSync(path.join(output,'index.html'),'utf8');
+  assert.equal((html.match(/data-plan="/g)||[]).length,3);
+  for(const text of ['Imobiturbo Club','Mentor IA','gravações','Scripts','ilimitados','mesma entrega da Comunidade']) assert.ok(html.includes(text),text);
+  assert.doesNotMatch(html,/Start|Growth|Scale|R\$ 49,90|R\$ 29,90|Até 5 usuários|Até 15 usuários|data-cycle=/);
+  assert.match(html,/participação ao vivo e acompanhamento individual não fazem parte/);
+  assert.match(html,/Acesso ao Club e aos bônus durante o período contratado/);
+  assert.match(html,/ativa[çc][aã]o.*nossa equipe/);
 });

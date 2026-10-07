@@ -13,7 +13,7 @@ function browser(checkout = false) {
   const timers = [];
   const received = [];
   let enabled = false;
-  const link = { href: origin + '/os-crm/v2/assinatura/?plan=start&cycle=annual' };
+  const link = { href: origin + '/os-crm/v2/assinatura/?plan=annual&cycle=annual' };
   const window = { OSOffer: {...offer, checkoutURL: (plan, cycle) => offer.checkoutURL(plan, cycle, location.search)},
     setTimeout: fn => {timers.push(fn);return timers.length;},
     HubTracker: {track: (name, properties) => {if (!enabled) return false;received.push({name, properties});return true;}} };
@@ -30,7 +30,7 @@ function browser(checkout = false) {
 test('links estáticos de plano preservam UTMs e a flag de auditoria', () => {
   const b = browser();
   const url = new URL(b.link.href, 'https://example.com');
-  assert.deepEqual(offer.checkoutSelection(url.href), {plan:'start',cycle:'annual'});
+  assert.deepEqual(offer.checkoutSelection(url.href), {plan:'annual',cycle:'annual'});
   assert.equal(url.searchParams.get('utm_source'), 'meta');
   assert.equal(url.searchParams.get('imt_audit'), '1');
 });
@@ -39,7 +39,7 @@ test('visita à assinatura aguarda o tracker e não duplica o evento após carre
   const b = browser(true);
   assert.equal(b.received.length, 0);
   b.enable();b.flush();b.handlers['tracker-load']();
-  assert.deepEqual(b.received.map(e => [e.name, e.properties.productId]), [['subscription_view','imobiturbo-os:scale:monthly']]);
+  assert.deepEqual(b.received.map(e => [e.name, e.properties.productId]), [['subscription_view','imobiturbo-os:ilimitado:monthly']]);
 });
 
 test('seleção e WhatsApp são eventos de intenção, sem conversão financeira', () => {
@@ -48,7 +48,7 @@ test('seleção e WhatsApp são eventos de intenção, sem conversão financeira
   b.click({closest: selector => selector === 'a[href]' ? anchor : null});
   b.click({closest: selector => selector === '[data-cycle]' ? {dataset:{cycle:'annual'}} : null});
   assert.deepEqual(b.received.map(e => e.name), ['subscription_view','select_plan','cta_click','select_cycle']);
-  assert.equal(b.received.at(-1).properties.productId, 'imobiturbo-os:scale:annual');
+  assert.equal(b.received.at(-1).properties.productId, 'imobiturbo-os:ilimitado:annual');
   assert.equal(b.received.some(e => /purchase|lead|initiatecheckout/i.test(e.name)), false);
 });
 
@@ -57,5 +57,5 @@ test('um clique de plano antes da configuração é enviado uma única vez ao tr
   const anchor = {href:b.link.href};
   b.click({closest: selector => selector === 'a[href]' ? anchor : null});
   assert.equal(b.received.length, 0);b.enable();b.flush();b.handlers['tracker-load']();
-  assert.deepEqual(b.received.map(e => [e.name, e.properties.productId]), [['select_plan','imobiturbo-os:start:annual']]);
+  assert.deepEqual(b.received.map(e => [e.name, e.properties.productId]), [['select_plan','imobiturbo-os:ilimitado:annual']]);
 });
