@@ -30,8 +30,7 @@ function browser(checkout = false) {
 test('links estáticos de plano preservam UTMs e a flag de auditoria', () => {
   const b = browser();
   const url = new URL(b.link.href, 'https://example.com');
-  assert.equal(url.searchParams.get('plan'), 'start');
-  assert.equal(url.searchParams.get('cycle'), 'annual');
+  assert.deepEqual(offer.checkoutSelection(url.href), {plan:'start',cycle:'annual'});
   assert.equal(url.searchParams.get('utm_source'), 'meta');
   assert.equal(url.searchParams.get('imt_audit'), '1');
 });
