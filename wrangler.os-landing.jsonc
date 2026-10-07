@@ -1,0 +1,21 @@
+{
+  "name": "imobiturbo-os-landing",
+  "main": "workers/os-landing.js",
+  "compatibility_date": "2026-10-06",
+  "workers_dev": false,
+  "preview_urls": false,
+  "assets": {
+    "directory": ".cloudflare-os-landing",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "not_found_handling": "none"
+  },
+  "observability": {
+    "enabled": true,
+    "logs": {"enabled": true, "invocation_logs": false},
+    "traces": {"enabled": true, "head_sampling_rate": 0.01}
+  },
+  "routes": [
+    {"pattern": "os.imobiturbo.com.br/*", "zone_name": "imobiturbo.com.br"}
+  ]
+}

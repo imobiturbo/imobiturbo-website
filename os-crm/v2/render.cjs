@@ -100,10 +100,22 @@ const checkout = `${docHead('Sua assinatura — Imobiturbo OS', 'Escolha seu pla
 <aside class="checkout-summary"><div class="checkout-summary-head"><span class="badge live">Imobiturbo OS</span><h2>Resumo da assinatura</h2></div><div class="summary-row"><span>Plano escolhido</span><b id="summary-plan">Growth</b></div><div class="summary-row"><span>Contratação</span><b id="summary-cycle">Anual</b></div><div class="summary-price" id="summary-price">12x R$ 177</div><p class="summary-price-detail" id="summary-detail">R$ 1.770 por ano à vista · ou R$ 2.124 em 12 parcelas</p><div class="summary-divider"></div><div class="activation-note"><span class="step-number">02</span><div><strong>Ative com a equipe Imobiturbo</strong><p>O próximo passo abre nosso WhatsApp com o plano escolhido. A equipe orienta a contratação e a liberação do acesso.</p></div></div><a class="cta" id="activate-os" href="${offer.activationURL('growth','annual')}" target="_blank" rel="noopener noreferrer">Solicitar minha ativação</a><p class="summary-fine">A seleção do plano não realiza cobrança.</p><div class="summary-guarantee" id="summary-guarantee"><span>✓</span><p>Garantia incondicional de 7 dias na oferta anual.</p></div><a id="existing-checkout" class="existing-access" href="${offer.existingAccessURL()}">Já sou aluno: acessar meu OS →</a></aside></div><div class="checkout-assurance"><span>✓ IA + CRM + WhatsApp</span><span>✓ Atendimento com a equipe</span><span>✓ Plano claro antes de contratar</span></div></main>
 <footer class="checkout-footer"><span>© 2026 Imobiturbo</span><nav aria-label="Termos da contratação"><a href="/termos-de-servico/">Termos</a><a href="/politica-de-privacidade/">Privacidade</a></nav></footer>
 </body></html>`;
-function render(output = __dirname) {
+function render(output = __dirname, { productionOrigin } = {}) {
+  function document(source, canonicalPath, indexable) {
+    if (!productionOrigin) return source;
+    const origin = new URL(productionOrigin).origin;
+    return source
+      .replace('<meta name="robots" content="noindex,nofollow">', `<meta name="robots" content="${indexable ? 'index,follow' : 'noindex,nofollow'}">`)
+      .replace('</head>', `<link rel="canonical" href="${origin}${canonicalPath}"></head>`)
+      .replace(`https://www.imobiturbo.com.br${asset('hero-current-desktop.webp')}`, `${origin}${asset('hero-current-desktop.webp')}`)
+      .replace('href="/favicon.svg"', `href="${base}favicon.svg"`)
+      .replaceAll('href="/termos-de-servico/"', 'href="https://www.imobiturbo.com.br/termos-de-servico/"')
+      .replaceAll('href="/politica-de-privacidade/"', 'href="https://www.imobiturbo.com.br/politica-de-privacidade/"')
+      .replaceAll('href="/exclusao-de-dados/"', 'href="https://www.imobiturbo.com.br/exclusao-de-dados/"');
+  }
   fs.mkdirSync(path.join(output, 'assinatura'), { recursive: true });
-  fs.writeFileSync(path.join(output, 'index.html'), html);
-  fs.writeFileSync(path.join(output, 'assinatura/index.html'), checkout);
+  fs.writeFileSync(path.join(output, 'index.html'), document(html, '/', true));
+  fs.writeFileSync(path.join(output, 'assinatura/index.html'), document(checkout, `${base}assinatura/`, false));
 }
 if (require.main === module) render(process.argv[2]);
 module.exports = { render };

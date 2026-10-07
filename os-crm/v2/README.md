@@ -124,3 +124,25 @@ ou Purchase. `offer.js` preserva UTMs, dimensões de anúncio, IDs permitidos e
 `imt_audit` nos links e nas trocas de plano/ciclo; parâmetros arbitrários
 não são copiados. Verificação pública usa `imt_audit=1`, recibos persistidos
 com `isTest=true` e exclusão das métricas comerciais e da fila CAPI.
+
+Produção: a LP é servida na raiz de `https://os.imobiturbo.com.br/`, com a
+assinatura em `/os-crm/v2/assinatura/`. `npm run build:os-landing` gera apenas
+os recursos aprovados em `.cloudflare-os-landing`, com canonical próprio,
+indexação da LP, favicon local e links legais do site oficial. A prévia
+continua sem indexação.
+
+`wrangler.os-landing.jsonc` publica o Worker `imobiturbo-os-landing` e seus
+assets. A rota do domínio precisa terminar com `*` para aceitar UTMs;
+`workers/os-landing.js` atende somente a raiz e `/os-crm/v2/`, passando todos
+os demais pedidos à origem sem alterar método, headers ou corpo. Login,
+painel, APIs, OAuth, recursos Next e WebSocket permanecem no runtime atual.
+A versão de revisão no domínio de produção redireciona à raiz preservando
+a query. `RELEASE_SHA` é informado no deploy e aparece no header da LP.
+
+O pixel Imobiturbo `1025303472485246` é selecionado pela política do Hub
+para a origem exata `https://os.imobiturbo.com.br`, sem instalação direta
+de `fbq` na LP. Validação usa `imt_audit=1`; essas ocorrências ficam fora
+das métricas comerciais e do envio Meta. Nenhum Purchase é simulado.
+Build, testes e publicação são executados na VPS3. Rollback: remover a rota
+do Worker de `os.imobiturbo.com.br/*` restaura a página da aplicação atual,
+sem trocar DNS nem reiniciar containers.
