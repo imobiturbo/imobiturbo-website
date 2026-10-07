@@ -76,7 +76,7 @@ Princípios de prompts de vídeo: skill `video`, baseada no trabalho CC BY 4.0
 de SergeShima. Logo oficial e fontes conforme manual da marca.
 
 Gates na VPS3: testes normais, build Pages, desktop/mobile, planos/ciclos,
-Kanban, FAQ, vídeo, links de ativação e auditoria de rede sem trackers.
+Kanban, FAQ, vídeo, links de ativação e recebimento do Tracker Imobiturbo.
 
 Refinamento de 06/10/2026: cards com movimento de lead entre etapas e conversa
 contínua de qualificação, layout CRM com anotações, demonstração de IA no
@@ -108,3 +108,18 @@ vertical com notebook. O aparelho mantém o Kanban mobile atual, dados de
 demonstração e enquadramento próprio; a captura real é aplicada sobre o vídeo
 para manter texto e logo estáveis. Fontes e prompts específicos estão em
 `imobiturbo-infra/.artifacts/os-crm-imobiturbo-20261006/hero/mobile-phone/`.
+
+Tracker Imobiturbo: LP e assinatura carregam o script canônico de
+`track.nmidigital.tech`, operação `00000000-0000-0000-0000-000000000001`,
+produto `imobiturbo-os`. A CSP no HTML e em `_headers` permite o coletor e
+a biblioteca Meta própria, quando selecionada pela configuração oficial do
+Hub; não instala scripts ou identificadores do concorrente. O domínio exato
+da prévia foi autorizado no coletor, com rota `/os-crm/v2/` sem pixels Meta.
+
+`tracking.js` registra escolha de plano/ciclo, visita à assinatura e clique
+de WhatsApp. O `productId` distingue plano e ciclo sem vincular o OS à oferta
+da Comunidade. A assinatura assistida não registra Lead, InitiateCheckout
+ou Purchase. `offer.js` preserva UTMs, dimensões de anúncio, IDs permitidos e
+`imt_audit` nos links e nas trocas de plano/ciclo; parâmetros arbitrários
+não são copiados. Verificação pública usa `imt_audit=1`, recibos persistidos
+com `isTest=true` e exclusão das métricas comerciais e da fila CAPI.

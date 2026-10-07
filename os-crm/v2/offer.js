@@ -25,7 +25,16 @@
       ? { headline: `12x ${money(p.installment)}`, detail: `${money(p.annual)} por ano à vista · ou ${money(p.installment * 12)} em 12 parcelas`, period: '/ano parcelado' }
       : { headline: money(p.monthly), detail: 'Assinatura mensal. Cancele quando quiser.', period: '/mês' };
   }
-  const checkoutURL = (plan, cycle) => `/os-crm/v2/assinatura/?plan=${plan}&cycle=${cycle}`;
+  const attributionKeys = ['src', 'sck', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id', 'imt_adset_name', 'imt_adset_id', 'imt_ad_id', 'imt_placement', 'fbclid', 'gclid', 'gbraid', 'wbraid', 'ttclid', 'msclkid', 'rt_vid', 'rt_fbp', 'rt_fbc', 'xcod', 'imt_audit'];
+  function checkoutURL(plan, cycle, search = typeof window === 'undefined' ? '' : window.location.search) {
+    const query = new URLSearchParams({ plan, cycle });
+    const incoming = new URLSearchParams(search);
+    for (const key of attributionKeys) {
+      const value = incoming.get(key);
+      if (value && value.length <= 2000) query.set(key, value);
+    }
+    return `/os-crm/v2/assinatura/?${query}`;
+  }
   // Existing /checkout redirects to another offer (implementation assistance).
   // Students should enter the OS directly rather than inherit that legacy route.
   const existingAccessURL = () => 'https://os.imobiturbo.com.br/login';
