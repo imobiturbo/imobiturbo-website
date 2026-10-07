@@ -38,18 +38,21 @@ vêm dos ativos existentes da página OS e `/vagas/`; follow-up usa a interface 
 
 Hero atual: vídeos próprios de 10 s para desktop e mobile, respectivamente
 `assets/hero-current-desktop.mp4` (2560 × 1440) e
-`assets/hero-current-mobile.mp4` (1440 × 2560), H.264, 24 fps, sem áudio.
+`assets/hero-current-mobile-phone.mp4` (1440 × 2560), H.264, 24 fps, sem áudio.
 Posters WebP saem do primeiro frame de cada composição, evitando troca de tela
-quando o vídeo começa. O mobile usa enquadramento vertical próprio, com o
-notebook inteiro abaixo da copy. Carrega somente a mídia do tamanho visível.
+quando o vídeo começa. O mobile usa uma cena própria com smartphone inclinado entre as rochas,
+abaixo da copy, e a interface mobile atual do OS. Carrega somente a mídia do tamanho visível.
 
 Fotografia de produto criada com a ferramenta integrada imagegen, usando o
 poster do template como referência de enquadramento e a captura atual do
 Kanban como referência de produto. Cenas animadas no Google Flow, Omni 1.1
 Flash, com início/fim iguais, câmera fixa, flutuação sutil dos ícones e luz
-verde. Geração original em 720p; download aprimorado para 1080p pelo próprio
-Flow. A composição final na VPS3 aplica a captura real de 3840 × 2160 do OS à
-tela do notebook em perspectiva: logo, textos e cards ficam estáveis, sem a
+verde. Geração original em 720p; o cenário desktop teve download aprimorado
+para 1080p pelo próprio Flow. O cenário do celular usa a geração original
+720 × 1280; a resolução final maior inclui a tela real em alta resolução.
+A composição final na VPS3 aplica capturas reais do OS (3840 × 2160
+no desktop e 1170 × 2532 no mobile) às telas dos aparelhos em perspectiva:
+logo, textos e cards ficam estáveis, sem a
 reescrita de letras feita pelo modelo de vídeo. A resolução final descreve a
 composição; o cenário não foi gerado originalmente em 2K/4K.
 
@@ -62,7 +65,7 @@ Kanban são demonstrações; nenhuma informação de clientes integra os ativos.
 Prompts finais: fotografia de notebook grande à direita, pedras vulcânicas,
 espaço preto à esquerda para HTML, luz lime, três ícones WhatsApp/gráfico/IA,
 tela baseada no Kanban atual; adaptação mobile 9:16 com área superior preta e
-notebook centralizado na parte inferior. Movimento: câmera travada, ícones
+smartphone inclinado entre rochas na parte inferior. Movimento: câmera travada, ícones
 flutuando 3 px, reflexos verdes sutis e partículas atrás dos ícones, tela e
 texto imóveis, sem áudio, retorno ao frame inicial ao fim dos 10 s.
 Originais e comandos em
@@ -98,3 +101,10 @@ Fechar libera a mídia imediatamente; Escape também encerra a reprodução.
 Ao abrir, o player carrega o MP4 local como Blob para permitir avanço mesmo
 quando o servidor responde sem suporte a byte ranges. Fechar aborta downloads
 pendentes e libera a URL temporária. A CSP permite Blob apenas para mídia.
+
+Correção mobile: a referência Cashflow usa um celular, enquanto o desktop usa
+notebook. `hero-current-mobile-phone.{mp4,webp}` substitui a primeira versão
+vertical com notebook. O aparelho mantém o Kanban mobile atual, dados de
+demonstração e enquadramento próprio; a captura real é aplicada sobre o vídeo
+para manter texto e logo estáveis. Fontes e prompts específicos estão em
+`imobiturbo-infra/.artifacts/os-crm-imobiturbo-20261006/hero/mobile-phone/`.
