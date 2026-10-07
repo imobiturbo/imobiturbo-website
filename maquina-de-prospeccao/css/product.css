@@ -9,7 +9,9 @@ h1,h2,h3,p {color:inherit;}
 .diag-card h4,.diag-card p,.diagram-title,.diagram-lead,.vs-side li,.founder-highlight-content strong,.founder-highlight-content span {color:#182824;}
 .diag-step-pill,.diag-chip {background:#c9ed97;color:#182824;border-color:#a8b9a1;}
 .vs-good .vs-header strong,.diag-connector {color:#314f48;}
-.hero-visual img {aspect-ratio:3/2;object-fit:contain;}
+.hero-visual img {aspect-ratio:1;object-fit:contain;}
+.mockup-note {margin-top:10px;font-size:11px;line-height:1.5;color:var(--lt-muted);}
+.hero-requirements {font-size:12px;}
 .brand-header a {background:#314f48;}
 .explain-card h3,.explain-card p,.explain-card strong,.explain-card-subtitle,.founder-name,.founder-role {color:#182824;}
 .diagram-hero-badge,.explain-card-tag,.eyebrow {color:#314f48;}
