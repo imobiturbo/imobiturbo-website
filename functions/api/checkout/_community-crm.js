@@ -78,6 +78,11 @@ async function annotate(config, leadId, buyer, observation) {
     const status = Object.values(orders).some(o => o.status === 'paid') ? 'paid' : observation.status;
     const summary = { ...previous, product: 'comunidade-imobiturbo', orders, status,
       capture_created_at: previous.capture_created_at || new Date().toISOString() };
+    if (observation.initiated_stage) {
+      summary.initiated_at = previous.initiated_at || new Date().toISOString();
+      summary.initiated_stage = observation.initiated_stage;
+      summary.checkout_id = observation.checkout_id;
+    }
     const tags = lifecycleTags(lead.tags || [], status);
     if (JSON.stringify(previous) !== JSON.stringify(summary) || JSON.stringify(lead.tags || []) !== JSON.stringify(tags)) {
       const changed = await store(config, 'crm_leads', { id: `eq.${leadId}`, updated_at: `eq.${lead.updated_at}` },
@@ -106,7 +111,9 @@ export async function captureCommunityLead(env, payload) {
   const leadId = await ingest(config, { ...buyer, plan: ['anual','trimestral','mensal'].includes(payload.plan) ? payload.plan : 'anual',
     source: 'vagas_modal', external_id: external,
     ...Object.fromEntries(Object.entries(payload).filter(([k,v]) => /^(utm_(source|medium|campaign|content|term)|fbclid|fbc|fbp)$/.test(k) && typeof v === 'string').map(([k,v]) => [k,v.slice(0,500)])) });
-  return annotate(config, leadId, buyer, { status: 'pending' });
+  const progress = ['CREDIT_CARD', 'PIX'].includes(payload.checkout_stage) && UUID.test(payload.checkout_id || '')
+    ? { initiated_stage: payload.checkout_stage, checkout_id: payload.checkout_id } : {};
+  return annotate(config, leadId, buyer, { status: 'pending', ...progress });
 }
 async function paidObservation(config, order) {
   const subscriptions = await store(config, 'cobranca_assinaturas', { checkout_order_id: `eq.${order.id}`, environment: `eq.${config.environment}`, select: 'id' });

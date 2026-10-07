@@ -19,3 +19,19 @@ test('changed contact is delivered after earlier in-flight request instead of si
   await new Promise(r=>setImmediate(r));
   assert.deepEqual(sent, [payload.email, 'updated@example.invalid']);
 });
+test('checkout progress gets a separate receipt after the contact was already captured', async () => {
+  const sent = [];
+  const capture = create({ send: async p => { sent.push(p); return Response.json({ ok: true, lead_id: 'confirmed' }); } });
+  await capture.submit(payload);
+  const progress = { ...payload, checkout_stage: 'CREDIT_CARD', checkout_id: 'a1111111-1111-4111-8111-111111111111' };
+  await capture.submit(progress); await capture.submit(progress);
+  assert.equal(sent.length, 2); assert.equal(sent[1].checkout_stage, 'CREDIT_CARD');
+});
+test('confirmed contact resubmission cannot discard a failed checkout milestone retry', async () => {
+  const sent = [], retries = [];
+  const capture = create({ send: async p => { sent.push(p); return sent.length === 2 ? Response.json({ ok: false }, { status: 503 }) : Response.json({ ok: true, lead_id: 'confirmed' }); }, schedule: f => retries.push(f) });
+  await capture.submit(payload);
+  const progress = { ...payload, checkout_stage: 'CREDIT_CARD', checkout_id: 'a1111111-1111-4111-8111-111111111111' };
+  await capture.submit(progress); await capture.submit(payload); await retries.shift()();
+  assert.equal(sent.length, 3); assert.equal(sent[2].checkout_stage, 'CREDIT_CARD');
+});
