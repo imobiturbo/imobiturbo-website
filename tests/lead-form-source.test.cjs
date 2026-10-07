@@ -2,8 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const source = fs.readFileSync(path.join(__dirname, '../functions/api/lead.js'), 'utf8');
-const handler = import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
+const handler = import(require('node:url').pathToFileURL(path.join(__dirname, '../functions/api/lead.js')));
 
 async function submit(t, payload) {
   const previous = global.fetch;

@@ -43,6 +43,9 @@
     async function fingerprint(payload) {
       const safe = { plan: payload.plan, paymentMethod: payload.paymentMethod, installments: Number(payload.installments || 1),
         name: String(payload.name || '').trim(), email: String(payload.email || '').trim().toLowerCase(), phone: String(payload.phone || '').replace(/\D/g, '') };
+      // Keep historical one-off fingerprints stable; automatic consent is a
+      // different financial intention and must never reuse their charge key.
+      if (payload.pixAutomatic === true) safe.pixAutomatic = true;
       const digest = await root.crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(safe)));
       return Array.from(new Uint8Array(digest), n => n.toString(16).padStart(2, '0')).join('');
     }
@@ -77,7 +80,8 @@
           const eid = payload.eventId || uuid();
           if (key === eid) throw new Error('Identificador da compra inválido.');
           intent = write({ version: 1, idempotencyKey: key, fingerprint: hash, eventId: eid,
-            checkoutMode: payload.checkoutMode === 'hosted' ? 'hosted' : 'transparent', plan: payload.plan, method: payload.paymentMethod, installmentCount: Number(payload.installments || 1), state: 'prepared', checkoutOrderId: null });
+            checkoutMode: payload.checkoutMode === 'hosted' ? 'hosted' : 'transparent', plan: payload.plan, method: payload.paymentMethod,
+            pixAutomatic: payload.pixAutomatic === true, installmentCount: Number(payload.installments || 1), state: 'prepared', checkoutOrderId: null });
         }
         write({ ...intent, state: 'submitting' });
         return { payload: { ...payload, idempotencyKey: intent.idempotencyKey, eventId: intent.eventId } };
@@ -130,6 +134,7 @@
         expiresAt: value.expiresAt,
         paid: value.paid === true,
         managedCommunity: value.managedCommunity === true,
+        pixAutomatic: value.pixAutomatic === true && value.plan === 'mensal' && value.method === 'PIX',
         checkoutOrderId: UUID.test(value.checkoutOrderId || '') ? value.checkoutOrderId : null,
         pix: {
           copyPaste: typeof pix.copyPaste === 'string' ? pix.copyPaste.slice(0, 4096) : '',
@@ -338,6 +343,7 @@
     const intent = createCommunityIntent();
 
     function locked(value) {
+      pane.querySelector('.chk-tabs').hidden = value;
       pane.querySelectorAll('input, select, button').forEach(control => {
         if (control.id !== 'chkCopyPixBtn') control.disabled = value;
       });
@@ -353,12 +359,13 @@
       externalLink.style.setProperty('display', externalLink.hidden ? 'none' : 'flex', 'important');
       if (!externalLink.hidden) {
         externalLink.href = record.invoiceUrl;
-        notice.textContent = 'Sua compra está aberta. Conclua na página segura do Asaas.';
+        notice.textContent = 'Sua compra está aberta. Continue no Asaas ou feche esta janela para voltar depois.';
         get('chkCardView').style.display = 'none'; get('chkPixView').style.display = 'none';
         return;
       }
       const isPix = record.method === 'PIX';
       notice.textContent = isPix ? record.pix.copyPaste ?
+        record.pixAutomatic ? 'Pague o primeiro mês e autorize o Pix Automático no aplicativo do seu banco.' :
         'Seu Pix está aberto. Use o mesmo código para concluir.' :
         'A cobrança foi criada. Recuperando o QR Code, sem gerar outro Pix…' :
         'Seu cartão está em análise. Aguardando a confirmação do pagamento.';
@@ -371,6 +378,7 @@
       get('chkPixFormBlock').style.display = 'none';
       get('chkPixResultBlock').style.display = 'block';
       const qr = get('chkPixQrImg');
+      qr.removeAttribute('data-lazy-src');
       if (record.pix.qrCodeBase64) qr.src = record.pix.qrCodeBase64;
       const tick = () => {
         const left = Math.max(0, Math.ceil((Date.parse(record.expiresAt) - Date.now()) / 1000));
@@ -398,7 +406,7 @@
         upsellBuyerProfile.clear();
         clearDraft();
         api.form?.reset();
-        for (const id of ['chkName', 'chkPhone', 'chkEmail', 'chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv', 'chkCardCpf', 'chkPixCpf']) {
+        for (const id of ['chkName', 'chkPhone', 'chkEmail', 'chkCardNumber', 'chkCardHolder', 'chkCardExpiry', 'chkCardCvv', 'chkBuyerCpf']) {
           if (get(id)) get(id).value = '';
         }
         notice.hidden = true; externalLink.hidden = true; externalLink.style.setProperty('display', 'none', 'important');
@@ -418,7 +426,7 @@
         api.updateCheckoutPersonalization();
         api.showCheckoutError('Este checkout expirou ou foi encerrado. Preencha seus dados para iniciar novamente.');
       },
-      onError: () => api.showCheckoutError('Não foi possível consultar o pagamento agora. Ele foi mantido; tentaremos novamente automaticamente.'),
+      onError: () => api.showCheckoutError('A confirmação está demorando. Sua compra continua disponível; você pode fechar esta janela e voltar.', 'progress'),
       onPaid: result => {
         intent.complete();
         if (recoveryTimer) root.clearInterval(recoveryTimer);
@@ -436,13 +444,13 @@
         if (result.paymentId) {
           if (recoveryTimer) root.clearInterval(recoveryTimer);
           recoveryTimer = null;
-          session.save(result, { method: intent.read()?.method || 'PIX', checkoutMode: intent.read()?.checkoutMode });
+          session.save(result, { method: intent.read()?.method || 'PIX', checkoutMode: result.pixAutomatic ? 'transparent' : intent.read()?.checkoutMode });
           return session.start();
         }
         if (result.retryCreationAllowed) {
           if (recoveryTimer) root.clearInterval(recoveryTimer);
           recoveryTimer = null; locked(false); notice.hidden = true;
-          api.showCheckoutError('A cobrança não foi criada. Você pode tentar novamente com os dados do pagamento.');
+          api.showCheckoutError('Esta tentativa não gerou cobrança. Confira seus dados e tente novamente.', 'progress');
         }
       } catch (_) { notice.textContent = 'Estamos conferindo sua compra. Ela foi mantida; tentaremos novamente.'; }
       finally { recovering = false; }

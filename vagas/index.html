@@ -124,7 +124,7 @@
           "name": "Como funcionam os períodos e a renovação?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Anual e trimestral são contratações de 12 e 3 meses, com pagamento pelo período. Apenas o cartão mensal tem cobrança recorrente. O Pix é Instantâneo por cobrança, sem renovação automática. Cancelamento da renovação não elimina parcelas do período já contratado."
+            "text": "Anual e trimestral são contratações de 12 e 3 meses, com pagamento pelo período. No mensal, cartão e Pix Automático renovam todo mês. No Pix Automático, autorize os débitos no banco; anual e trimestral no Pix são pagamentos únicos, sem renovação automática. Cancelamento da renovação não elimina parcelas do período já contratado."
           }
         },
         {
@@ -155,7 +155,7 @@
   <!-- Eventos de navegação e conversão são enviados pelo Hub Tracker. -->
 
 
-  <link rel="stylesheet" href="./vagas.css?v=20261001-initial-preview">
+  <link rel="stylesheet" href="./vagas.css?v=20261006-cpf-pix-recovery">
   <style id="cioCriticalSliderCss">
     /* Critical Imobiturbo Club Slider Invariants */
     .cio-header-top-row {
@@ -977,7 +977,8 @@
       }
     }
   </style>
-  <script src="/vagas/checkout-session.js?v=20261006-hosted-asaas"></script>
+  <script src="/vagas/lead-capture.js?v=20261006-crm-receipt"></script>
+  <script src="/vagas/checkout-session.js?v=20261006-cpf-pix-recovery"></script>
 
   <style id="vagas-checkout-summary-wrap">
     .chk-plan-compact-left { flex-wrap: wrap; }
@@ -1982,13 +1983,13 @@
                 <div class="psel-title-row">
                   <span class="psel-indicator" aria-hidden="true"></span>
                   <span class="psel-nm">Anual</span>
-                  <span class="psel-badge psel-selo">12 MESES DE ACESSO</span>
+                  <span class="psel-badge psel-selo">Economize até R$ 764</span>
                 </div>
-                <div class="psel-sub">Total no cartão: R$ 1.164 · À vista: R$ 997</div>
+                <div class="psel-sub">12x de R$ 97 no cartão · À vista: R$ 997</div>
               </div>
               <div class="psel-right">
                 <div class="psel-prc">
-                  <b>12 × R$ 97</b><small>no cartão</small>
+                  <b>R$ 97</b><small>/mês</small>
                 </div>
               </div>
             </label>
@@ -2000,11 +2001,11 @@
                   <span class="psel-indicator" aria-hidden="true"></span>
                   <span class="psel-nm">Trimestral</span>
                 </div>
-                <div class="psel-sub">Total no cartão: R$ 381 · À vista: R$ 357</div>
+                <div class="psel-sub">3x de R$ 127 no cartão · À vista: R$ 357</div>
               </div>
               <div class="psel-right">
                 <div class="psel-prc">
-                  <b>3 × R$ 127</b><small>no cartão</small>
+                  <b>R$ 127</b><small>/mês</small>
                 </div>
               </div>
             </label>
@@ -2033,7 +2034,7 @@
           <div class="psel-footer-notes">
             <div class="psel-plan-summary-line" id="pselSummaryLine">PLANO ANUAL · 12 × R$97 · TOTAL R$1.164 NO CARTÃO OU R$997 À VISTA</div>
             <div class="psel-guarantee-line">PAGAMENTO SEGURO · GARANTIA DE 7 DIAS</div>
-            <div class="psel-reassurance">Anual e trimestral: pagamento por período contratado. Apenas o cartão mensal tem cobrança recorrente. Pix Instantâneo por cobrança, sem renovação automática.</div>
+            <div class="psel-reassurance">Mensal: cartão ou Pix Automático, com autorização no banco. Anual e trimestral: pagamento pelo período contratado, sem renovação automática.</div>
           </div>
         </div>
       </div>
@@ -2212,7 +2213,7 @@
         </details>
         <details class="faq-item">
           <summary>Como funcionam os períodos e a renovação?<span class="disclosure" aria-hidden="true"></span></summary>
-          <p>Anual e trimestral são contratações de 12 e 3 meses, com pagamento pelo período. Apenas o cartão mensal tem cobrança recorrente. O Pix é Instantâneo por cobrança, sem renovação automática. Cancelamento da renovação não elimina parcelas do período já contratado.</p>
+          <p>Anual e trimestral são contratações de 12 e 3 meses, com pagamento pelo período. No mensal, cartão e Pix Automático renovam todo mês. No Pix Automático, autorize os débitos no banco; anual e trimestral no Pix são pagamentos únicos, sem renovação automática. Cancelamento da renovação não elimina parcelas do período já contratado.</p>
         </details>
         <details class="faq-item">
           <summary>Como cancelo a renovação?<span class="disclosure" aria-hidden="true"></span></summary>
@@ -2511,7 +2512,7 @@
                   <input type="radio" name="chkModalPlanRadio" value="mensal">
                   <div class="chk-plan-opt-info">
                     <b>Plano Mensal</b>
-                    <span>1 mês de acesso · recorrência no cartão</span>
+                    <span>Renovação mensal no cartão ou Pix Automático</span>
                   </div>
                   <span class="chk-plan-badge">R$ 147/mês</span>
                 </label>
@@ -2531,7 +2532,7 @@
             <button type="button" class="chk-tab" id="chkTabPix" role="tab" aria-selected="false" aria-controls="chkPixView">
               <span class="chk-tab-label">
                 <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor" class="chk-icon-pix"><path d="M11.917 11.71a2.046 2.046 0 0 1-1.454-.602l-2.1-2.1a.4.4 0 0 0-.551 0l-2.108 2.108a2.044 2.044 0 0 1-1.454.602h-.414l2.66 2.66c.83.83 2.177.83 3.007 0l2.667-2.668h-.253zM4.25 4.282c.55 0 1.066.214 1.454.602l2.108 2.108a.39.39 0 0 0 .552 0l2.1-2.1a2.044 2.044 0 0 1 1.453-.602h.253L9.503 1.623a2.127 2.127 0 0 0-3.007 0l-2.66 2.66h.414z"/><path d="m14.377 6.496-1.612-1.612a.307.307 0 0 1-.114.023h-.733c-.379 0-.75.154-1.017.422l-2.1 2.1a1.005 1.005 0 0 1-1.425 0L5.268 5.32a1.448 1.448 0 0 0-1.018-.422h-.9a.306.306 0 0 1-.109-.021L1.623 6.496c-.83.83-.83 2.177 0 3.008l1.618 1.618a.305.305 0 0 1 .108-.022h.901c.38 0 .75-.153 1.018-.421L7.375 8.57a1.034 1.034 0 0 1 1.426 0l2.1 2.1c.267.268.638.421 1.017.421h.733c.04 0 .079.01.114.024l1.612-1.612c.83-.83.83-2.178 0-3.008z"/></svg>
-                Pix Instantâneo
+                <span id="chkPixTabLabel">Pix</span>
               </span>
               <span class="chk-tab-desc" id="chkPixTabDesc">Aprovação imediata</span>
             </button>
@@ -2539,10 +2540,10 @@
 
           <!-- ABA 1: CARTÃO DE CRÉDITO -->
           <div id="chkCardView">
-            <p class="compact-note">Você preencherá os dados do cartão na página segura do Asaas. O plano mensal renova automaticamente por R$ 147/mês.</p>
-            <div class="chk-field">
-              <label for="chkCardCpf">CPF do comprador</label>
-              <input type="text" id="chkCardCpf" class="chk-input" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
+            <p class="chk-payment-note" id="chkCardPaymentNote">Preencha os dados do cartão na página segura do Asaas.</p>
+            <div class="chk-field" id="chkBuyerCpfField">
+              <label for="chkBuyerCpf">CPF do comprador</label>
+              <input type="text" id="chkBuyerCpf" class="chk-input" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
             </div>
 
             <div class="chk-field" id="chkInstallmentsWrap">
@@ -2569,28 +2570,13 @@
             </button>
           </div>
 
-          <p class="compact-note">Apenas o cartão mensal tem cobrança recorrente. Anual e trimestral são pagamentos pelo período. Cancelamento da renovação não elimina parcelas do período já contratado.</p>
           <!-- ABA 2: PIX INSTANTÂNEO -->
           <div id="chkPixView" style="display: none;">
             <!-- Formulário CPF para gerar Pix -->
-            <div id="chkPixFormBlock"><p id="chkPixTotal" aria-live="polite">Total no Pix: R$ 997 por 12 meses. Sem renovação automática.</p>
-              <div class="chk-pix-discount-banner">
-                <div class="chk-pix-badge-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                </div>
-                <div class="chk-pix-discount-text">
-                  <span>Pagamento via <strong>Pix Instantâneo</strong></span>
-                  <span style="font-size: 11.5px; color: #a8b09d;">Liberação imediata assim que pago no aplicativo do seu banco.</span>
-                </div>
-              </div>
-
-              <div class="chk-field">
-                <label for="chkPixCpf">CPF do pagador:</label>
-                <input type="text" id="chkPixCpf" class="chk-input" placeholder="000.000.000-00" maxlength="14" inputmode="numeric">
-              </div>
+            <div id="chkPixFormBlock"><p class="chk-payment-note" id="chkPixTotal" aria-live="polite">R$ 997 à vista por 12 meses. Sem renovação automática.</p>
 
               <button type="button" class="chk-btn-submit" id="chkGeneratePixBtn" style="margin-top: 14px;">
-                <span>Pagar com Pix no Asaas</span>
+                <span id="chkPixBtnText">Pagar com Pix no Asaas</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </button>
             </div>
@@ -2626,9 +2612,10 @@
             </div>
           </div>
 
+          <p class="chk-payment-terms" id="chkPaymentTerms">Pagamento pelo período contratado, sem renovação automática.</p>
           <!-- PROCESSAMENTO ASAAS -->
           <div class="chk-asaas-footer">
-            <span class="chk-asaas-label">Pagamento Processado via</span>
+            <span class="chk-asaas-label">Pagamento seguro via</span>
             <img data-lazy-src="assets/thesvg/asaas.svg" alt="Asaas" class="chk-asaas-logo" width="75" height="13" loading="lazy">
           </div>
         </div>
@@ -2690,7 +2677,7 @@
         <!-- Garantia do Checkout (Passo 4) -->
         <div class="chk-guarantee-line chk-hidden" id="chkGuaranteeProofBar" style="display: none !important;">
           <span class="chk-guarantee-lock">🔒</span>
-          <span class="chk-guarantee-text">7 dias de garantia · Pedido via suporte ou área de membros</span>
+          <span class="chk-guarantee-text">7 dias de garantia · Suporte na área de membros</span>
         </div>
       </form>
     </div>
@@ -3025,9 +3012,11 @@
       return map[ddd] || 'sua região';
     }
 
-    function showCheckoutError(msg) {
+    function showCheckoutError(msg, kind = 'error') {
       if (errorMsg) {
         errorMsg.textContent = msg;
+        errorMsg.dataset.kind = kind;
+        errorMsg.setAttribute('role', kind === 'error' ? 'alert' : 'status');
         errorMsg.style.display = 'block';
       }
     }
@@ -3138,7 +3127,7 @@
       },
       'mensal': {
         name: 'Plano Mensal',
-        sub: '1 mês de acesso · recorrência no cartão',
+        sub: 'Renovação mensal no cartão ou Pix Automático',
         priceDisplay: '<b>R$ 147</b><small>/mês</small>',
         pixVal: 'R$ 147',
         cardVal: 'R$ 147/mês',
@@ -3180,7 +3169,9 @@
       const ecoTag = document.getElementById('chkModalPlanEco');
       if (ecoTag) { ecoTag.textContent = ''; ecoTag.style.display = 'none'; }
       const pixTotal = document.getElementById('chkPixTotal');
-      if (pixTotal) pixTotal.textContent = 'Total no Pix: ' + info.pixVal + ' pelo período selecionado. Sem renovação automática.';
+      if (pixTotal) pixTotal.textContent = planKey === 'mensal' ?
+        'Pague o primeiro mês e autorize no banco os próximos débitos de R$ 147/mês.' :
+        info.pixVal + ' pelo período contratado. Sem renovação automática.';
       const modalRadio = document.querySelector('input[name="chkModalPlanRadio"][value="' + planKey + '"]');
       if (modalRadio) modalRadio.checked = true;
       updateCtaButtonText();
@@ -3260,7 +3251,9 @@
         count === 1 ? 'Continuar no Asaas · R$ ' + money(total) + ' à vista' : 'Continuar no Asaas · ' + count + 'x de R$ ' + money(unit);
       const pixSelected = pending ? pending.method === 'PIX' : tabPix?.classList.contains('active');
       let summary;
-      if (pixSelected) summary = 'R$ ' + money(Number(pending?.amount) || Number(info.pixVal.replace(/[^\d,]/g, '').replace(',', '.'))) + ' no Pix · pelo período selecionado';
+      if (pixSelected) summary = currentPlan === 'mensal' && (!pending || pending.pixAutomatic) ?
+        'R$ ' + money(Number(pending?.amount) || 147) + '/mês · Pix Automático' :
+        'R$ ' + money(Number(pending?.amount) || Number(info.pixVal.replace(/[^\d,]/g, '').replace(',', '.'))) + ' no Pix · pelo período selecionado';
       else if (currentPlan === 'mensal') summary = 'R$ 147/mês · cobrança recorrente';
       else summary = count === 1 ? 'R$ ' + money(total) + ' à vista no cartão' : count + 'x de R$ ' + money(unit) + ' · total R$ ' + money(total);
       const compactPrice = document.getElementById('chkPlanCompactPrice');
@@ -3268,16 +3261,42 @@
       if (modalPlanPrice) modalPlanPrice.textContent = summary;
     }
 
-    function updatePaymentSummary() { updateInstallmentButtonText(); }
+    function updatePaymentSummary() {
+      updateInstallmentButtonText();
+      // One ephemeral buyer field follows the selected method; never persist CPF.
+      const field = document.getElementById('chkBuyerCpfField');
+      const pix = tabPix?.classList.contains('active');
+      const parent = document.getElementById(pix ? 'chkPixFormBlock' : 'chkCardView');
+      const next = document.getElementById(pix ? 'chkGeneratePixBtn' : 'chkInstallmentsWrap');
+      if (field && parent && next) parent.insertBefore(field, next);
+    }
 
     function updateCtaButtonText() {
       const info = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.anual;
+      const pending = checkoutSession?.read() || checkoutSession?.pendingIntent?.();
+      const legacyMonthlyPix = currentPlan === 'mensal' && pending?.method === 'PIX' && !pending.pixAutomatic;
       const compactTitle = document.getElementById('chkPlanCompactTitle');
       if (compactTitle) compactTitle.textContent = info.name;
       const compactPrice = document.getElementById('chkPlanCompactPrice');
       if (compactPrice) compactPrice.textContent = '· ' + info.cardVal;
 
       const installmentsSelect = document.getElementById('chkInstallments');
+      const installmentsWrap = document.getElementById('chkInstallmentsWrap');
+      if (installmentsWrap) installmentsWrap.hidden = currentPlan === 'mensal';
+      const cardNote = document.getElementById('chkCardPaymentNote');
+      if (cardNote) cardNote.textContent = 'Preencha os dados do cartão na página segura do Asaas.';
+      const paymentTerms = document.getElementById('chkPaymentTerms');
+      const monthlyAmount = pending?.pixAutomatic && Number(pending.amount) > 0 ?
+        Number(pending.amount).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '147';
+      if (paymentTerms) paymentTerms.textContent = legacyMonthlyPix ? 'Pagamento pelo período contratado, sem renovação automática.' : currentPlan === 'mensal' ?
+        'R$ ' + monthlyAmount + ' por mês. Cancele a renovação quando quiser.' :
+        'Pagamento pelo período contratado, sem renovação automática. As parcelas permanecem devidas em caso de cancelamento.';
+      const pixTabLabel = document.getElementById('chkPixTabLabel');
+      const pixTabDesc = document.getElementById('chkPixTabDesc');
+      const pixBtnText = document.getElementById('chkPixBtnText');
+      if (pixTabLabel) pixTabLabel.textContent = currentPlan === 'mensal' && !legacyMonthlyPix ? 'Pix Automático' : 'Pix';
+      if (pixTabDesc) pixTabDesc.textContent = currentPlan === 'mensal' && !legacyMonthlyPix ? 'Autorize uma vez no banco' : 'Pagamento à vista';
+      if (pixBtnText) pixBtnText.textContent = currentPlan === 'mensal' ? 'Assinar com Pix · R$ 147/mês' : 'Pagar com Pix no Asaas';
       if (installmentsSelect) {
         if (currentPlan === 'anual') {
           installmentsSelect.innerHTML = '<option value="12" selected>12x de R$ 97,00 · total R$ 1.164</option>';
@@ -3288,7 +3307,6 @@
         }
       }
 
-      const pending = checkoutSession?.read() || checkoutSession?.pendingIntent?.();
       if (pending?.method === 'CREDIT_CARD' && installmentsSelect) {
         // Historical charges retain their sold count and price. The option is
         // disabled with the existing session and cannot start a new sale.
@@ -3300,17 +3318,10 @@
         installmentsSelect.value = value;
       }
       if (tabPix) {
-        tabPix.hidden = currentPlan === 'mensal';
-        tabPix.style.setProperty('display', currentPlan === 'mensal' ? 'none' : 'flex', 'important');
-        if (currentPlan === 'mensal') {
-          tabCard?.classList.add('active'); tabCard?.setAttribute('aria-selected', 'true');
-          tabPix.classList.remove('active'); tabPix.setAttribute('aria-selected', 'false');
-          if (cardView) cardView.style.display = 'block';
-          if (pixView) pixView.style.display = 'none';
-        }
-        if (currentPlan === 'mensal' && tabPix.classList.contains('active')) tabCard?.click();
+        tabPix.hidden = false;
+        tabPix.style.setProperty('display', 'flex', 'important');
       }
-      updateInstallmentButtonText();
+      updatePaymentSummary();
 
       const cardTabDesc = document.getElementById('chkCardTabDesc');
       if (cardTabDesc) {
@@ -3439,10 +3450,14 @@
       });
     });
     window.addEventListener('pagehide', saveCheckoutProgress);
+    const leadCapture = window.CommunityLeadCapture.create();
+    window.addEventListener('online', fireLeadTrackingEvent);
     let trackedLeadContact = '';
     const trackedCheckoutStages = new Set();
     let checkoutTrackingId;
     restoreCheckoutProgress();
+    // The saved contact survives a reload; retry until the CRM acknowledges it.
+    fireLeadTrackingEvent();
 
     let openingPayment = false;
 
@@ -3465,6 +3480,7 @@
       const phone = (inputPhone ? inputPhone.value : '').trim();
       if (!isValidFullName(name) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.replace(/\D/g, '').length < 10) return;
       const leadKey = getCheckoutId();
+      if (typeof leadCapture !== 'undefined') leadCapture.submit({ name, email, phone, plan: currentPlan, source: 'vagas_modal', ...getUtms() });
       if (trackedLeadContact === leadKey) return;
       try { if (sessionStorage.getItem('imt_checkout_lead') === leadKey) return; sessionStorage.setItem('imt_checkout_lead', leadKey); } catch (_) {}
       trackedLeadContact = leadKey;
@@ -3480,21 +3496,7 @@
         valueCents: Math.round(planVal * 100),
         currency: 'BRL'
       });
-      try {
-        const payload = JSON.stringify({
-          name,
-          email,
-          phone,
-          plan: currentPlan,
-          source: 'vagas_modal',
-          ...getUtms(),
-        });
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon('/api/lead', new Blob([payload], { type: 'application/json' }));
-        } else {
-          fetch('/api/lead', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(function() {});
-        }
-      } catch (_) {}
+
     }
 
     function openCheckoutModal(e) {
@@ -3708,11 +3710,8 @@
       e.target.value = v;
     }
 
-    const cardCpfInput = document.getElementById('chkCardCpf');
-    if (cardCpfInput) cardCpfInput.addEventListener('input', applyCpfMask);
-
-    const pixCpfInput = document.getElementById('chkPixCpf');
-    if (pixCpfInput) pixCpfInput.addEventListener('input', applyCpfMask);
+    const buyerCpfInput = document.getElementById('chkBuyerCpf');
+    if (buyerCpfInput) buyerCpfInput.addEventListener('input', applyCpfMask);
 
     // Controle de abas de pagamento (Cartão vs Pix)
     if (tabCard && tabPix && cardView && pixView) {
@@ -3797,24 +3796,22 @@
       if (e) e.preventDefault();
       if (isProcessingPayment) return;
       if (checkoutSession.read()) { checkoutSession.start(); return; }
-      const cpfInput = document.getElementById(method === 'PIX' ? 'chkPixCpf' : 'chkCardCpf');
+      const cpfInput = document.getElementById('chkBuyerCpf');
       const cpf = (cpfInput?.value || '').replace(/\D/g, '');
       if (!isValidCpf(cpf)) {
         showCheckoutError('Informe um CPF válido para abrir o checkout.');
         cpfInput?.focus(); return;
       }
-      if (currentPlan === 'mensal' && method === 'PIX') {
-        showCheckoutError('A renovação mensal automática é feita no cartão. Selecione Cartão de Crédito.'); return;
-      }
       isProcessingPayment = true;
       const button = method === 'PIX' ? generatePixBtn : submitBtn;
       if (button) button.disabled = true;
-      showCheckoutError('Abrindo o pagamento seguro no Asaas…');
+      showCheckoutError(method === 'PIX' && currentPlan === 'mensal' ? 'Preparando o QR Code para autorizar no seu banco…' : 'Abrindo o pagamento seguro no Asaas…', 'progress');
       try {
         let payload = { checkoutMode: 'hosted', gateway: 'asaas', eventId: getCheckoutId(), plan: currentPlan,
           paymentMethod: method, installments: method === 'PIX' ? 1 : currentPlan === 'anual' ? 12 : currentPlan === 'trimestral' ? 3 : 1,
           name: inputName.value.trim(), email: inputEmail.value.trim(), phone: inputPhone.value.trim(), cpfCnpj: cpf,
           tracking: { ...getUtms(), visitorId: getVisitorId() } };
+        if (currentPlan === 'mensal' && method === 'PIX') payload.pixAutomatic = true;
         const attempt = await checkoutSession.intent.begin(payload);
         let result = attempt.result;
         if (!result) {
@@ -3825,19 +3822,27 @@
           checkoutSession.intent.received(result);
         }
         if (result.paymentId) {
-          checkoutSession.capture({ ...result, checkoutMode: 'hosted' }, { method,
+          checkoutSession.capture({ ...result, checkoutMode: result.pixAutomatic ? 'transparent' : 'hosted' }, { method,
             upsellBuyer: { name: payload.name, email: payload.email, phone: payload.phone } });
+          if (result.pixAutomatic) {
+            if (errorMsg) { errorMsg.style.display = 'none'; errorMsg.textContent = ''; }
+            return;
+          }
           if (window.ImobiturboCheckoutSession.isAsaasInvoiceUrl(result.invoiceUrl)) {
             trackCheckoutStage(method, result);
             window.location.assign(result.invoiceUrl);
             return;
           }
         }
+        if (result.retryCreationAllowed) {
+          await checkoutSession.keepIntent();
+          return;
+        }
         checkoutSession.keepIntent();
-        showCheckoutError('Estamos preparando a página do Asaas. Sua compra foi mantida; aguarde a conferência.');
+        showCheckoutError('O Asaas ainda não confirmou esta tentativa. Você pode fechar esta janela e voltar; manteremos a mesma compra.', 'progress');
       } catch (_) {
         checkoutSession.intent.uncertain(); checkoutSession.keepIntent();
-        showCheckoutError('Não foi possível abrir o pagamento agora. Estamos conferindo a mesma compra.');
+        showCheckoutError('A confirmação do Asaas está demorando. Você pode fechar esta janela e voltar para consultar a mesma compra.', 'progress');
       } finally {
         isProcessingPayment = false;
         if (button) button.disabled = Boolean(checkoutSession.read() || checkoutSession.pendingIntent());

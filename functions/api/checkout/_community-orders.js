@@ -1,3 +1,4 @@
+import { PIX_AUTO_MODE, createPixAutomaticAuthorization, reconcilePixAutomaticOrder, resolvePixAutomaticPayment } from './_pix-automatic.js';
 import { COMMUNITY_PLANS, communityReferenceId } from "./_products.js";
 
 export const COMMERCIAL_ORGANIZATION_ID = "18b103e6-a006-45ac-84d5-62312f45ba77";
@@ -58,7 +59,7 @@ export async function asaasList(config, path) {
   throw new CommunityError("community_gateway_list_incomplete");
 }
 export async function findCommunityOrder(config, field, value) {
-  if (!["id", "request_key", "provider_payment_id", "provider_subscription_id", "provider_installment_id"].includes(field)) throw new CommunityError("community_invalid_lookup", 400);
+  if (!["id", "request_key", "provider_payment_id", "provider_subscription_id", "provider_installment_id", "provider_pix_authorization_id"].includes(field)) throw new CommunityError("community_invalid_lookup", 400);
   const query = new URLSearchParams({ provider: "eq.asaas", environment: `eq.${config.environment}`,
     organization_id: `eq.${config.organizationId}`, [field]: `eq.${value}`, limit: "2" });
   const rows = await communityDb(config, `cobranca_pedidos?${query}`);
@@ -72,10 +73,13 @@ export function assertCommunityOrder(config, order) {
       s?.contract_version !== 1 || ![1, 3, 12].includes(s.duration_months) || s.currency !== "BRL" ||
       !Number.isSafeInteger(s.contract_total_cents) || s.contract_total_cents <= 0 ||
       !Number.isInteger(s.installment_count) || s.installment_count < 1 || s.installment_count > 12 ||
-      !["pix", "recurring_card", "installment_card"].includes(s.price_mode) ||
+      !["pix", "recurring_card", "installment_card", PIX_AUTO_MODE].includes(s.price_mode) ||
       (s.price_mode !== "installment_card" && s.installment_count !== 1) ||
       !Array.isArray(s.products) || !s.products.length || s.products.some(p => !["os", "club"].includes(p)) ||
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(order.buyer_email || "")) throw new CommunityError("community_order_identity_conflict", 422);
+  if (s.price_mode === PIX_AUTO_MODE && (s.duration_months !== 1 || s.contract_total_cents !== 14700 ||
+      order.provider_subscription_id || order.provider_payment_id || order.provider_installment_id ||
+      (order.status === "created" && !UUID.test(order.provider_pix_authorization_id || "")))) throw new CommunityError("community_order_identity_conflict",422);
   return order;
 }
 export function communitySelection(body) {
@@ -85,7 +89,7 @@ export function communitySelection(body) {
   if (!product || !["PIX", "CREDIT_CARD"].includes(method)) throw new CommunityError("community_offer_unavailable", 400);
   const count = method === "PIX" ? 1 : product.installments;
   if (body.installments != null && Number(body.installments) !== count) throw new CommunityError("community_installments_conflict", 400);
-  return { plan, method, count, product, priceMode: method === "PIX" ? "pix" : plan === "mensal" ? "recurring_card" : "installment_card",
+  return { plan, method, count, product, priceMode: method === "PIX" ? (plan === "mensal" && body.pixAutomatic === true ? PIX_AUTO_MODE : "pix") : plan === "mensal" ? "recurring_card" : "installment_card",
     total: method === "PIX" ? product.pixCents : product.cardCents };
 }
 export async function communityIntent(config, body) {
@@ -99,7 +103,8 @@ export async function communityIntent(config, body) {
     environment: config.environment, expected_environment: config.environment, request_key: body.idempotencyKey,
     buyer_email: email, buyer_name: name, buyer_phone: phone, offer_key: choice.product.offerKey, offer_version: 1,
     price_mode: choice.priceMode, contract_total_cents: choice.total, installment_count: choice.count, currency: "BRL" };
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(intent)));
+  const fingerprint = choice.priceMode === PIX_AUTO_MODE ? { ...intent, pix_automatic: true } : intent;
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(fingerprint)));
   return { ...intent, request_hash: Array.from(new Uint8Array(digest), n => n.toString(16).padStart(2, "0")).join("") };
 }
 export async function finishCommunityOrder(config, order, result) {
@@ -148,6 +153,7 @@ export async function reconcileCommunityOrder(config, order) {
   if (order.status === "failed" && ["pre_effect_definitive", "absence_verified"].includes(order.result?.failure_proof?.kind)) return order;
   if (order.status === "creating" && Date.parse(order.lease_until) > Date.now()) return order;
   if (order.status === "creating") order = await finishCommunityOrder(config, order, { status: "uncertain", error_code: "lease_expired" });
+  if (order.sold_snapshot.price_mode === PIX_AUTO_MODE) return reconcilePixAutomaticOrder(config, order);
   const recurring = order.sold_snapshot.price_mode === "recurring_card";
   const path = recurring ? "/subscriptions" : "/payments";
   const rows = await asaasList(config, `${path}?externalReference=${encodeURIComponent(order.external_reference)}`);
@@ -175,6 +181,7 @@ export async function resolveCommunityOrder(config, payment) {
   for (const [field, value] of [["provider_subscription_id", payment.subscription || (payment.id?.startsWith("sub_") ? payment.id : null)], ["provider_installment_id", payment.installment], ["provider_payment_id", payment.id]]) {
     if (value) { const order = await findCommunityOrder(config, field, value); if (order) return order; }
   }
+  if (payment.billingType === "PIX" && /^pay_/.test(payment.id || "")) return resolvePixAutomaticPayment(config, payment);
   return null;
 }
 async function asaasPost(config, path, body) {
@@ -218,6 +225,11 @@ export async function createCommunityOrder(env, body) {
       mobilePhone: order.buyer_phone, cpfCnpj: cpf, notificationDisabled: true, externalReference: order.external_reference });
     if (!/^cus_[A-Za-z0-9_]+$/.test(customer.id || "")) throw new CommunityError("community_gateway_binding_conflict", 422);
     knownCustomer = customer.id;
+    if (selection.priceMode === PIX_AUTO_MODE) {
+      order = await finishCommunityOrder(config, order, { status: "uncertain", provider_customer_id: knownCustomer, error_code: "pix_automatic_post_reserved" });
+      order = await createPixAutomaticAuthorization(config, order, knownCustomer);
+      return { config, order };
+    }
     const due = new Date().toISOString().slice(0, 10);
     const payload = { customer: knownCustomer, billingType: selection.method, externalReference: order.external_reference,
       description: `Comunidade Imobiturbo - Plano ${selection.plan}`, fine: { value: 0, type: "FIXED" }, interest: { value: 0 } };
@@ -245,7 +257,10 @@ export async function createCommunityOrder(env, body) {
   } catch (error) {
     // Any attempted provider mutation/unknown finish result is uncertain. No
     // fallback gateway, second POST, or fabricated absence/failure proof.
-    try { order = await finishCommunityOrder(config, order, { status: "uncertain", ...(knownCustomer ? { provider_customer_id: knownCustomer } : {}), error_code: "gateway_creation_uncertain" }); }
+    try { order = await finishCommunityOrder(config, order, { status: error.failureProof ? "failed" : "uncertain",
+      ...(knownCustomer ? { provider_customer_id: knownCustomer } : {}),
+      error_code: /^asaas_http_[0-9]{3}(?:_[a-z_]{1,50})?$/.test(error.code || "") ? error.code : "gateway_creation_uncertain",
+      ...(error.failureProof ? { failure_proof: error.failureProof } : {}) }); }
     catch (_) { /* A successful finish may have lost its response; lookup wins. */ }
     if (error instanceof CommunityError && error.status === 409) throw error;
     return { config, order };

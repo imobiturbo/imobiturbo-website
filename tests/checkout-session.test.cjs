@@ -130,6 +130,21 @@ test('subscription ID transitions to actual payment without resetting the window
   const { session } = harness(); session.save({ ...record, paymentId: 'sub_synthetic', method: 'CREDIT_CARD' });
   await session.check(); assert.equal(session.read().paymentId, record.paymentId); assert.equal(session.read().expiresAt, record.expiresAt);
 });
+test('Pix Automatic consent survives reload with its mode and original QR', async () => {
+  const { session, options, state } = harness();
+  const automatic = { ...record, paymentId: 'auto_33333333-3333-4333-8333-333333333333',
+    method: 'PIX', managedCommunity: true, pixAutomatic: true, checkoutMode: 'transparent' };
+  session.save(automatic);
+  state.response = { ...automatic, success: true, status: 'PENDING' };
+  const reopened = create(options);
+  await reopened.check();
+  assert.equal(reopened.read().pixAutomatic, true);
+  assert.equal(reopened.read().checkoutMode, 'transparent');
+  assert.equal(reopened.read().pix.copyPaste, record.pix.copyPaste);
+  assert.ok(state.calls[0].url.includes('paymentId=auto_'));
+  session.save({ ...record, method: 'PIX' });
+  assert.equal(session.read().pixAutomatic, false, 'historical monthly Pix remains a one-off payment');
+});
 
 const { createCommunityIntent, COMMUNITY_INTENT_KEY } = require('../vagas/checkout-session.js');
 const financialKey = '22222222-2222-4222-8222-222222222222';
@@ -142,6 +157,16 @@ function intentHarness(response = { success: true, orderStatus: 'uncertain', pai
   const options = { storage: saved, uuid: () => financialKey, fetch: async url => { calls.push(url); return Response.json(response); } };
   return { saved, calls, options, intent: createCommunityIntent(options), response };
 }
+test('automatic consent and monthly one-off Pix are distinct financial intentions', async () => {
+  const h = intentHarness({ success: true, orderStatus: 'failed', retryCreationAllowed: true });
+  const monthly = { ...intentPayload, plan: 'mensal', paymentMethod: 'PIX', installments: 1 };
+  await h.intent.begin(monthly);
+  const fingerprint = h.intent.read().fingerprint;
+  const automatic = await createCommunityIntent({ ...h.options, uuid: () => secondKey }).begin({ ...monthly, pixAutomatic: true });
+  assert.equal(automatic.payload.idempotencyKey, secondKey);
+  assert.notEqual(h.intent.read().fingerprint, fingerprint);
+  assert.equal(h.intent.read().pixAutomatic, true);
+});
 test('financial intention is durably persisted before POST, without CPF/card/buyer/tracking values', async () => {
   const h = intentHarness(); const attempt = await h.intent.begin(intentPayload);
   assert.equal(attempt.payload.idempotencyKey, financialKey);
