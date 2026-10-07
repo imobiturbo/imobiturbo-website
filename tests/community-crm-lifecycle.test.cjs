@@ -34,6 +34,11 @@ function fixture(t, options = {}) {
       return Response.json(state.lead.source_metadata.community_checkout_v1 ? [state.lead] : []);
     }
     if (table === 'contacts') return Response.json([state.contact]);
+    if (table === 'contact_emails' || table === 'contact_phones') {
+      assert.equal(u.searchParams.get('removed_at'), 'is.null');
+      assert.equal(u.searchParams.get('organization_id'), `eq.${ORG}`);
+      return Response.json(options[table] || []);
+    }
     if (table === 'cobranca_assinaturas') return Response.json(state.paid ? [{ id: 'c1111111-1111-4111-8111-111111111111' }] : []);
     if (table === 'cobranca_competencias') return Response.json([{ id: 'd1111111-1111-4111-8111-111111111111' }]);
     if (table === 'cobranca_pagamentos') return Response.json(state.paid ? [{ status: 'CONFIRMED', provider_payment_id: 'pay_actual_binding' }] : []);
@@ -77,6 +82,33 @@ test('different contact owner is rejected rather than updating a foreign CRM ide
   const { syncCommunityCrm } = await load('_community-crm.js');
   await assert.rejects(syncCommunityCrm((await load('_community-orders.js')).communityConfig(env), state.order));
   assert.equal(state.writes.length, 0);
+});
+test('active secondary email belongs to the same contact without replacing canonical email', async t => {
+  const state = fixture(t, { contact_emails: [{ contact_id: CONTACT }] });
+  state.contact.email = 'canonical@example.invalid';
+  const { syncCommunityCrm } = await load('_community-crm.js');
+  await syncCommunityCrm((await load('_community-orders.js')).communityConfig(env), state.order);
+  assert.equal(state.contact.email, 'canonical@example.invalid');
+  assert.ok(state.contact.tags.includes('checkout:comunidade'));
+  assert.ok(state.writes.every(w => !Object.hasOwn(w.body, 'email') && !Object.hasOwn(w.body, 'phone_number')));
+});
+test('email alias owned by a different or ambiguously shared contact rejects every CRM write', async t => {
+  for (const owners of [[LEAD], [CONTACT, LEAD]]) {
+    const state = fixture(t, { contact_emails: owners.map(contact_id=>({ contact_id })) });
+    state.contact.email = 'canonical@example.invalid';
+    const { syncCommunityCrm } = await load('_community-crm.js');
+    await assert.rejects(syncCommunityCrm((await load('_community-orders.js')).communityConfig(env), state.order), /community_crm_buyer_conflict/);
+    assert.equal(state.writes.length, 0);
+    t.mock.restoreAll();
+  }
+});
+test('active secondary phone belongs to the same contact without replacing canonical phone', async t => {
+  const state = fixture(t, { contact_phones: [{ contact_id: CONTACT }] });
+  state.contact.phone_number = '+5511970000000';
+  const { syncCommunityCrm } = await load('_community-crm.js');
+  await syncCommunityCrm((await load('_community-orders.js')).communityConfig(env), state.order);
+  assert.equal(state.contact.phone_number, '+5511970000000');
+  assert.ok(state.lead.tags.includes('checkout:comunidade'));
 });
 test('internal reconciler rejects unauthenticated caller before any storage', async t => {
   const route = await load('community-crm.js');

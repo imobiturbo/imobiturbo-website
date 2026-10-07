@@ -51,12 +51,24 @@ function lifecycleTags(current, status) {
   return [...new Set([...current.filter(t => !LABELS.includes(t)), 'checkout:comunidade',
     next === 'paid' ? 'checkout:pago' : next === 'abandoned' ? 'checkout:abandonado' : 'checkout:pendente'])];
 }
+async function addressBelongsToContact(config, table, value, contactId) {
+  const rows = await store(config, table, { normalized_value: `eq.${value}`, removed_at: 'is.null', select: 'contact_id', limit: '2' });
+  const owners = new Set(rows.map(row => row.contact_id));
+  return owners.size === 1 && owners.has(contactId);
+}
+async function assertBuyerContact(config, contact, buyer) {
+  if (contact.is_anonymized || contact.is_merged_into) throw fail('community_crm_buyer_conflict');
+  const emailMatches = email(contact.email) === email(buyer.email) ||
+    await addressBelongsToContact(config, 'contact_emails', email(buyer.email), contact.id);
+  const phoneMatches = phone(contact.phone_number) === phone(buyer.phone) ||
+    await addressBelongsToContact(config, 'contact_phones', phone(buyer.phone), contact.id);
+  if (!emailMatches || !phoneMatches) throw fail('community_crm_buyer_conflict');
+}
 async function annotate(config, leadId, buyer, observation) {
   for (let attempt = 0; attempt < 3; attempt++) {
     const lead = await one(config, 'crm_leads', leadId);
     const contact = await one(config, 'contacts', lead.contact_id);
-    if (contact.is_anonymized || contact.is_merged_into || email(contact.email) !== email(buyer.email) ||
-        phone(contact.phone_number) !== phone(buyer.phone)) throw fail('community_crm_buyer_conflict');
+    await assertBuyerContact(config, contact, buyer);
     const metadata = lead.source_metadata || {}, previous = metadata[META] || {};
     const orders = { ...(previous.orders || {}) };
     if (observation.orderId) {
@@ -74,8 +86,7 @@ async function annotate(config, leadId, buyer, observation) {
     }
     for (let i = 0; i < 3; i++) {
       const current = i ? await one(config, 'contacts', contact.id) : contact;
-      if (current.is_anonymized || current.is_merged_into || email(current.email) !== email(buyer.email) ||
-          phone(current.phone_number) !== phone(buyer.phone)) throw fail('community_crm_buyer_conflict');
+      await assertBuyerContact(config, current, buyer);
       const contactTags = lifecycleTags(current.tags || [], status);
       if (JSON.stringify(contactTags) === JSON.stringify(current.tags || [])) return { lead_id: leadId, contact_id: contact.id, status };
       const changed = await store(config, 'contacts', { id: `eq.${contact.id}`, updated_at: `eq.${current.updated_at}` }, { tags: contactTags });
