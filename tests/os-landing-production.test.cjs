@@ -58,6 +58,43 @@ test('mídia preserva byte ranges e a resposta parcial', async () => {
   assert.equal(await response.text(),'partial');
 });
 
+test('vídeos retornam somente o trecho pedido quando o binding responde com o arquivo inteiro', async () => {
+  const handler = await worker();
+  const cases = [['bytes=2-6','23456','bytes 2-6/10'],['bytes=7-','789','bytes 7-9/10'],['bytes=-3','789','bytes 7-9/10'],['bytes=8-99','89','bytes 8-9/10']];
+  for (const [range, expected, contentRange] of cases) {
+    let cancelled = false;
+    const body = new ReadableStream({
+      start(controller) { for (const chunk of ['012','345','678','9']) controller.enqueue(new TextEncoder().encode(chunk)); },
+      cancel() { cancelled = true; },
+    });
+    const response = await handler.fetch(new Request(origin+'/os-crm/v2/assets/proof.mp4',{headers:{range}}),{ASSETS:{fetch:async()=>new Response(body,{headers:{'content-type':'video/mp4','content-length':'10',etag:'"fixture"'}})}});
+    assert.equal(response.status,206);
+    assert.equal(response.headers.get('content-range'),contentRange);
+    assert.equal(response.headers.get('content-length'),String(expected.length));
+    assert.equal(await response.text(),expected);
+    assert.equal(cancelled,true);
+  }
+});
+
+test('ranges inválidos e If-Range divergente preservam o protocolo de vídeo', async () => {
+  const handler = await worker();
+  const assets={fetch:async()=>new Response('0123456789',{headers:{'content-type':'video/mp4','content-length':'10',etag:'"fixture"'}})};
+  for (const range of ['bytes=10-20','bytes=7-2','bytes=-0']) {
+    const response=await handler.fetch(new Request(origin+'/os-crm/v2/assets/proof.mp4',{headers:{range}}),{ASSETS:assets});
+    assert.equal(response.status,416);
+    assert.equal(response.headers.get('content-range'),'bytes */10');
+    assert.equal(await response.text(),'');
+  }
+  for (const headers of [{range:'bytes=1-2','if-range':'"old"'},{range:'bytes=1-2,4-5'}]) {
+    const response=await handler.fetch(new Request(origin+'/os-crm/v2/assets/proof.mp4',{headers}),{ASSETS:assets});
+    assert.equal(response.status,200);
+    assert.equal(await response.text(),'0123456789');
+  }
+  const response=await handler.fetch(new Request(origin+'/os-crm/v2/assets/proof.mp4',{headers:{range:'bytes=1-2','if-range':'"fixture"'}}),{ASSETS:assets});
+  assert.equal(response.status,206);
+  assert.equal(await response.text(),'12');
+});
+
 test('endereço da versão de revisão redireciona à raiz preservando auditoria', async () => {
   const handler = await worker();
   const response = await handler.fetch(new Request(origin+'/os-crm/v2/?imt_audit=1&utm_source=meta'),{});
