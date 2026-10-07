@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { buildSkillsUpsell } = require('./scripts/build-skills-upsell.cjs');
+const { buildLowTicketUpsells } = require('./scripts/build-low-ticket-upsells.cjs');
 const { render: renderOSLanding } = require('./os-crm/v2/render.cjs');
 
 const root = __dirname;
@@ -51,6 +52,7 @@ const entries = [
   'skills-ia',
   'skills-ia-obrigado',
   'bf-imobiliaria26',
+  'maquina-de-prospeccao',
   'os-crm/clone',
   'os-crm/v2',
   'politica-de-privacidade',
@@ -89,6 +91,7 @@ execFileSync(process.execPath, ['build.js'], {
 
 // Wiapy sends both Skills kits here after payment, including URLs with UTMs.
 buildSkillsUpsell(root, output);
+buildLowTicketUpsells(root, output);
 
 // Ensure relative symlink for vagas-v2/assets within build output
 const v2Assets = path.join(output, 'vagas-v2', 'assets');
