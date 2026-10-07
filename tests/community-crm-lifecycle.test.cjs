@@ -47,6 +47,17 @@ function fixture(t, options = {}) {
   });
   return state;
 }
+test('card checkout stage is recorded without creating a financial order or resetting capture time', async t => {
+  const state = fixture(t); const { captureCommunityLead } = await load('_community-crm.js');
+  const buyer = { name: 'Synthetic Buyer', email: 'checkout@example.invalid', phone: '11987654320', source: 'vagas_modal' };
+  await captureCommunityLead(env, buyer);
+  const capturedAt = state.lead.source_metadata.community_checkout_v1.capture_created_at;
+  await captureCommunityLead(env, { ...buyer, checkout_stage: 'CREDIT_CARD', checkout_id: ORDER_ID });
+  const meta = state.lead.source_metadata.community_checkout_v1;
+  assert.ok(meta.initiated_at); assert.equal(meta.initiated_stage, 'CREDIT_CARD');
+  assert.equal(meta.capture_created_at, capturedAt); assert.deepEqual(meta.orders, {});
+  assert.equal(state.writes.some(w => /^cobranca_/.test(w.table)), false);
+});
 test('order creates and records CRM link without browser; retries reuse lead and preserve funnel', async t => {
   const state = fixture(t); const { syncCommunityCrm } = await load('_community-crm.js');
   const config = (await load('_community-orders.js')).communityConfig(env);

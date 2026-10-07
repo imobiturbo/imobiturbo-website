@@ -977,7 +977,7 @@
       }
     }
   </style>
-  <script src="/vagas/lead-capture.js?v=20261006-crm-receipt"></script>
+  <script src="/vagas/lead-capture.js?v=20261007-checkout-progress"></script>
   <script src="/vagas/checkout-session.js?v=20261006-cpf-pix-recovery"></script>
 
   <style id="vagas-checkout-summary-wrap">
@@ -3464,6 +3464,9 @@
 
 
     function trackCheckoutStage(stage, result = {}) {
+      // Persist the checkout milestone independently of analytics/ad blockers.
+      leadCapture.submit({ name: inputName.value.trim(), email: inputEmail.value.trim(), phone: inputPhone.value.trim(),
+        plan: currentPlan, source: 'vagas_modal', checkout_stage: stage, checkout_id: getCheckoutId(), ...getUtms() });
       const key = stage + ':' + (result.paymentId || getCheckoutId());
       if (trackedCheckoutStages.has(key)) return;
       try { if (sessionStorage.getItem('imt_ic_' + key)) return; sessionStorage.setItem('imt_ic_' + key, '1'); } catch (_) {}
