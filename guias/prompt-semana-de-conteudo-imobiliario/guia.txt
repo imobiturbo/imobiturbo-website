@@ -1,0 +1,30 @@
+Prompt para uma semana de conteúdo imobiliário
+
+PARA USAR AGORA
+1. Preencha os campos com informações confirmadas.
+2. Use o modelo no contexto descrito; mensagens respondem a uma conversa real e respeitam a preferência da pessoa.
+3. Confira o texto antes de enviar ou publicar; não publique dados pessoais.
+
+CAMPOS
+região; público; duas perguntas; imóvel autorizado; fato local; bastidor real; dias disponíveis
+
+MODELO PARA COPIAR
+Minha região: [cidade/bairro]. Público: [situação]. Pergunta de comprador: [pergunta]. Pergunta de proprietário: [pergunta]. Imóvel autorizado: [dados]. Observação local conferida: [dado]. Bastidor real: [ação].
+
+EXEMPLO FICTÍCIO
+Região: Jardim das Flores. Público: compradores de apartamento com garagem. Pergunta de comprador: como conferir a vaga? Pergunta de proprietário: que informações separar antes das fotos? Imóvel: apartamento autorizado, dados a preencher. Observação local: trajeto ainda a conferir. Bastidor: organização da ficha.
+
+PROMPT COMPLETO PARA COPIAR
+Crie cinco pautas diferentes para uma semana imobiliária: região, comprador, proprietário, imóvel e bastidor. Para cada uma, entregue gancho, três pontos e material necessário. Não invente dados locais, disponibilidade, resultados ou estatísticas. Uma pauta por dia; adapte ao tempo disponível e marque pesquisa pendente.
+
+Dados para usar:
+Minha região: [cidade/bairro]. Público: [situação]. Pergunta de comprador: [pergunta]. Pergunta de proprietário: [pergunta]. Imóvel autorizado: [dados]. Observação local conferida: [dado]. Bastidor real: [ação].
+
+Não invente os campos ausentes. Marque o que está pendente e indique o que precisa ser conferido.
+
+CONFERÊNCIA FINAL
+📍 Reserve uma pauta sobre a região baseada em algo que você conferiu.
+💬 Use duas perguntas recorrentes, uma de comprador e outra de proprietário.
+🎬 Complete com uma apresentação de imóvel e um bastidor que mostre seu critério de trabalho.
+
+Material educativo de Natan Pimentel / Imobiturbo; adapte à situação real.

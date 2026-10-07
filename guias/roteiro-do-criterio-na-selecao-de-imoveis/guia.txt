@@ -1,0 +1,30 @@
+Roteiro do critério na seleção de imóveis
+
+PARA USAR AGORA
+1. Preencha os campos com informações confirmadas.
+2. Use o modelo no contexto descrito; mensagens respondem a uma conversa real e respeitam a preferência da pessoa.
+3. Confira o texto antes de enviar ou publicar; não publique dados pessoais.
+
+CAMPOS
+critério do comprador; opções; fatos confirmados; fonte e data; pendências; diferença concreta
+
+MODELO PARA COPIAR
+Critério informado: [critério]. Esta opção entrou porque [fato confirmado]. O ponto que ainda falta conferir é [pendência]. Em relação à outra opção, a diferença é [dado verificável].
+
+EXEMPLO FICTÍCIO
+Critério informado: dois quartos e vaga com acesso independente. Esta opção entrou porque esses dados constam da ficha conferida. Falta verificar o acesso na visita. A outra opção informa dois quartos, mas o acesso da vaga ainda não foi confirmado.
+
+PROMPT COMPLETO PARA COPIAR
+Crie um roteiro de apresentação de duas opções imobiliárias pelo critério fornecido. Mostre raciocínio, fatos confirmados e pendências. Não crie ranking absoluto, promessa de valorização, escassez ou dados ausentes. Entregue texto de vídeo, legenda e mensagem de WhatsApp.
+
+Dados para usar:
+Critério informado: [critério]. Esta opção entrou porque [fato confirmado]. O ponto que ainda falta conferir é [pendência]. Em relação à outra opção, a diferença é [dado verificável].
+
+Não invente os campos ausentes. Marque o que está pendente e indique o que precisa ser conferido.
+
+CONFERÊNCIA FINAL
+📝 Escolha um critério que o comprador informou, como número de quartos ou acesso à garagem.
+🔎 Mostre o dado confirmado que atende a esse critério e o que ainda falta verificar.
+💬 Diga qual diferença pesa entre as opções, sem chamar uma delas de perfeita.
+
+Material educativo de Natan Pimentel / Imobiturbo; adapte à situação real.

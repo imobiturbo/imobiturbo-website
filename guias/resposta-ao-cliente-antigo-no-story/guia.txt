@@ -1,0 +1,30 @@
+Resposta ao cliente antigo no Story
+
+PARA USAR AGORA
+1. Preencha os campos com informações confirmadas.
+2. Use o modelo no contexto descrito; mensagens respondem a uma conversa real e respeitam a preferência da pessoa.
+3. Confira o texto antes de enviar ou publicar; não publique dados pessoais.
+
+CAMPOS
+nome; comentário recebido; relação conhecida; detalhe real; assunto que a pessoa trouxe
+
+MODELO PARA COPIAR
+[nome], que bom te ver por aqui! [resposta ao comentário real]. Como está [detalhe do imóvel que você conhece de fato]?
+
+EXEMPLO FICTÍCIO
+Lia, que bom te ver por aqui! Essa varanda chamou atenção mesmo. Como está a varanda do seu apartamento, conseguiu montar o cantinho de plantas?
+
+PROMPT COMPLETO PARA COPIAR
+Escreva uma resposta humana a uma mensagem recebida de um cliente antigo no Story. Responda ao assunto antes de oferecer serviço. Não invente memória, intimidade, resultado ou demanda. Se não houver detalhe conhecido, mantenha uma pergunta geral.
+
+Dados para usar:
+[nome], que bom te ver por aqui! [resposta ao comentário real]. Como está [detalhe do imóvel que você conhece de fato]?
+
+Não invente os campos ausentes. Marque o que está pendente e indique o que precisa ser conferido.
+
+CONFERÊNCIA FINAL
+💬 Retome o assunto da mensagem, sem transformar toda interação em uma oferta.
+🏡 Se você conhece a história, pergunte como está a adaptação ao imóvel que ele comprou.
+✅ Só avance para outra busca quando a própria conversa trouxer essa necessidade.
+
+Material educativo de Natan Pimentel / Imobiturbo; adapte à situação real.

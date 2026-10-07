@@ -1,0 +1,30 @@
+Abertura de conversa no perfil imobiliário
+
+PARA USAR AGORA
+1. Preencha os campos com informações confirmadas.
+2. Use o modelo no contexto descrito; mensagens respondem a uma conversa real e respeitam a preferência da pessoa.
+3. Confira o texto antes de enviar ou publicar; não publique dados pessoais.
+
+CAMPOS
+nome; mensagem recebida; assunto; região; intenção respondida
+
+MODELO PARA COPIAR
+[nome], vi sua mensagem sobre [assunto]. Você acompanha o conteúdo de [região] ou está procurando algum imóvel por lá?
+
+EXEMPLO FICTÍCIO
+Leo, vi sua mensagem sobre o Jardim das Flores. Você acompanha o conteúdo dessa região ou está procurando algum imóvel por lá?
+
+PROMPT COMPLETO PARA COPIAR
+Crie uma abertura para responder a uma mensagem recebida no perfil imobiliário. Pergunte a intenção sem pressupor compra. Não gere disparos a seguidores, insistência, falsa urgência ou mensagens para quem ainda não respondeu.
+
+Dados para usar:
+[nome], vi sua mensagem sobre [assunto]. Você acompanha o conteúdo de [região] ou está procurando algum imóvel por lá?
+
+Não invente os campos ausentes. Marque o que está pendente e indique o que precisa ser conferido.
+
+CONFERÊNCIA FINAL
+💬 Responda ao comentário ou à mensagem que ele realmente enviou.
+📍 Pergunte se está acompanhando o conteúdo ou procurando algo na região.
+✅ Continue a partir da resposta, sem disparar ofertas para todo seguidor novo.
+
+Material educativo de Natan Pimentel / Imobiturbo; adapte à situação real.

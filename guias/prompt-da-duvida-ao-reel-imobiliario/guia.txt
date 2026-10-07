@@ -1,0 +1,30 @@
+Prompt da dúvida ao Reel imobiliário
+
+PARA USAR AGORA
+1. Preencha os campos com informações confirmadas.
+2. Use o modelo no contexto descrito; mensagens respondem a uma conversa real e respeitam a preferência da pessoa.
+3. Confira o texto antes de enviar ou publicar; não publique dados pessoais.
+
+CAMPOS
+pergunta anônima; contexto; fatos confirmados; pendências; objetivo; exemplo fictício
+
+MODELO PARA COPIAR
+Pergunta recorrente: [pergunta sem dados pessoais]. Contexto imobiliário: [tipo de imóvel e dúvida]. Fatos confirmados: [lista]. Ainda a conferir: [lista]. Meu objetivo é explicar [uma ideia].
+
+EXEMPLO FICTÍCIO
+Pergunta recorrente: a vaga desse apartamento é presa? Contexto: comprador compara apartamentos com garagem. Fatos confirmados: a ficha não informa o acesso. Ainda a conferir: posição e uso da vaga. Objetivo: ensinar o que perguntar antes da visita.
+
+PROMPT COMPLETO PARA COPIAR
+Transforme a pergunta fornecida em um Reel educativo para corretores brasileiros. Entregue três ganchos diferentes com nicho explícito, um roteiro de 10 segundos sem narração e uma legenda com três tópicos e exemplo fictício. Use parágrafos separados. Não exponha cliente, invente respostas técnicas ou atribua resultados a mim. Explique o que ainda deve ser conferido.
+
+Dados para usar:
+Pergunta recorrente: [pergunta sem dados pessoais]. Contexto imobiliário: [tipo de imóvel e dúvida]. Fatos confirmados: [lista]. Ainda a conferir: [lista]. Meu objetivo é explicar [uma ideia].
+
+Não invente os campos ausentes. Marque o que está pendente e indique o que precisa ser conferido.
+
+CONFERÊNCIA FINAL
+📝 Anote a pergunta com suas palavras, sem nome, telefone, endereço exato ou print da conversa.
+🔎 Separe o que você consegue explicar do que depende de documentos ou de avaliação de outro profissional.
+🎬 Faça uma peça com uma pergunta, três pontos úteis e um exemplo fictício.
+
+Material educativo de Natan Pimentel / Imobiturbo; adapte à situação real.

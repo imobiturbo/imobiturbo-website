@@ -1,0 +1,30 @@
+Modelo de apresentação do corretor
+
+PARA USAR AGORA
+1. Preencha os campos com informações confirmadas.
+2. Use o modelo no contexto descrito; mensagens respondem a uma conversa real e respeitam a preferência da pessoa.
+3. Confira o texto antes de enviar ou publicar; não publique dados pessoais.
+
+CAMPOS
+nome; registro real; região; público; escopo; etapas; canal; entregas; limites; contato
+
+MODELO PARA COPIAR
+Sou [nome], corretor(a) em [região], registro profissional [dado real]. Ajudo [público] com [escopo]. Nosso atendimento passa por [etapas]. Combinamos os retornos por [canal e regra]. Você pode esperar [entregas reais]. O que depende de confirmação: [limites]. Meu contato: [contato].
+
+EXEMPLO FICTÍCIO
+Exemplo fictício — Ana, corretora no Jardim das Flores. Registro: preencher com dado real antes de usar. Atendimento: entender a busca, preparar opções e registrar dúvidas da visita. Retornos: pelo WhatsApp, em data combinada. Entrega: ficha e resumo da visita. Disponibilidade e documentação: a confirmar em cada imóvel. Contato: preencher.
+
+PROMPT COMPLETO PARA COPIAR
+Organize uma apresentação de corretor em uma página e uma versão curta para WhatsApp. Use somente dados fornecidos. Não invente registro, prêmio, experiência, depoimento, venda ou equipe. Explique etapas e entregas de forma simples; deixe campos ausentes visíveis para preenchimento.
+
+Dados para usar:
+Sou [nome], corretor(a) em [região], registro profissional [dado real]. Ajudo [público] com [escopo]. Nosso atendimento passa por [etapas]. Combinamos os retornos por [canal e regra]. Você pode esperar [entregas reais]. O que depende de confirmação: [limites]. Meu contato: [contato].
+
+Não invente os campos ausentes. Marque o que está pendente e indique o que precisa ser conferido.
+
+CONFERÊNCIA FINAL
+📝 Diga quem você atende e em qual região, usando informações reais.
+📅 Explique as etapas e como os próximos retornos serão combinados.
+✅ Inclua o que você entrega e o que depende de confirmação, com um contato fácil de encontrar.
+
+Material educativo de Natan Pimentel / Imobiturbo; adapte à situação real.

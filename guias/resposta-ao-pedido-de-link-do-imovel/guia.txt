@@ -1,0 +1,30 @@
+Resposta ao pedido de link do imóvel
+
+PARA USAR AGORA
+1. Preencha os campos com informações confirmadas.
+2. Use o modelo no contexto descrito; mensagens respondem a uma conversa real e respeitam a preferência da pessoa.
+3. Confira o texto antes de enviar ou publicar; não publique dados pessoais.
+
+CAMPOS
+nome; imóvel pedido; URL pública; data da conferência; informação ainda pendente
+
+MODELO PARA COPIAR
+[nome], aqui está a ficha do [imóvel]: [URL pública conferida]. A informação foi conferida em [data]. Essa região faz sentido pra sua busca ou você está comparando outras?
+
+EXEMPLO FICTÍCIO
+Marina, aqui está a ficha do apartamento de dois quartos no Jardim das Flores: [cole a URL real]. Conferi a informação hoje. Essa região faz sentido pra sua busca ou você está comparando outras?
+
+PROMPT COMPLETO PARA COPIAR
+Crie duas respostas curtas ao pedido de link de um imóvel. Entregue a URL antes da pergunta. Use somente a ficha fornecida; marque preço e disponibilidade não conferidos. Não condicione acesso a email, telefone ou cadastro.
+
+Dados para usar:
+[nome], aqui está a ficha do [imóvel]: [URL pública conferida]. A informação foi conferida em [data]. Essa região faz sentido pra sua busca ou você está comparando outras?
+
+Não invente os campos ausentes. Marque o que está pendente e indique o que precisa ser conferido.
+
+CONFERÊNCIA FINAL
+🔗 Envie o endereço público e confirme qual imóvel a pessoa pediu.
+✅ Confira se preço, disponibilidade e informações básicas estão atualizados.
+💬 Depois faça uma pergunta curta ligada à busca, deixando a pessoa escolher se quer continuar.
+
+Material educativo de Natan Pimentel / Imobiturbo; adapte à situação real.

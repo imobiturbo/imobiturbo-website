@@ -1,0 +1,30 @@
+Permissão para retomar a busca de imóvel
+
+PARA USAR AGORA
+1. Preencha os campos com informações confirmadas.
+2. Use o modelo no contexto descrito; mensagens respondem a uma conversa real e respeitam a preferência da pessoa.
+3. Confira o texto antes de enviar ou publicar; não publique dados pessoais.
+
+CAMPOS
+nome; comentário ou conversa original; mês; critério confirmado; região; resposta; prazo
+
+MODELO PARA COPIAR
+[nome], você comentou sobre [imóvel] em [mês] e mencionou [critério real]. Sua busca continua? Se fizer sentido, posso te avisar quando houver uma opção com esse critério em [região].
+
+EXEMPLO FICTÍCIO
+Rafael, você comentou sobre a casa da Rua das Flores em julho e mencionou um quintal. Sua busca continua? Se fizer sentido, posso te avisar quando houver uma opção com quintal nessa região.
+
+PROMPT COMPLETO PARA COPIAR
+Redija uma mensagem de retomada ligada a um comentário antigo sobre imóvel. Peça permissão antes de enviar opções. Não invente intimidade, urgência ou interesse atual. Gere respostas para sim, não e ainda não sei; uma recusa encerra os avisos.
+
+Dados para usar:
+[nome], você comentou sobre [imóvel] em [mês] e mencionou [critério real]. Sua busca continua? Se fizer sentido, posso te avisar quando houver uma opção com esse critério em [região].
+
+Não invente os campos ausentes. Marque o que está pendente e indique o que precisa ser conferido.
+
+CONFERÊNCIA FINAL
+📍 Recupere o imóvel e o critério que a pessoa mencionou na conversa.
+💬 Pergunte se ela quer receber uma opção parecida, sem supor que ainda procura.
+📅 Registre a resposta e o prazo combinado, inclusive quando ela preferir uma pausa.
+
+Material educativo de Natan Pimentel / Imobiturbo; adapte à situação real.

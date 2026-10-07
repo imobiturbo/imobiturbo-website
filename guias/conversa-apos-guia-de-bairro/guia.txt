@@ -1,0 +1,30 @@
+Conversa após o guia de bairro
+
+PARA USAR AGORA
+1. Preencha os campos com informações confirmadas.
+2. Use o modelo no contexto descrito; mensagens respondem a uma conversa real e respeitam a preferência da pessoa.
+3. Confira o texto antes de enviar ou publicar; não publique dados pessoais.
+
+CAMPOS
+nome; bairro; motivo informado; cidade atual se mencionada; período; próxima informação solicitada
+
+MODELO PARA COPIAR
+[nome], o guia de [bairro] ajudou? Você está conhecendo a região ou pensando em mudar pra lá? Se for mudança, já tem algum período em mente?
+
+EXEMPLO FICTÍCIO
+Bia, o guia do Jardim das Flores ajudou? Você está conhecendo a região ou pensando em mudar pra lá? Se for mudança, já tem algum período em mente?
+
+PROMPT COMPLETO PARA COPIAR
+Prepare três respostas após a pessoa pedir um guia de bairro: curiosidade, comparação e mudança futura. Faça uma pergunta por vez. Não classifique o pedido como compra confirmada. Não afirme segurança, valorização ou qualidade do bairro sem dados.
+
+Dados para usar:
+[nome], o guia de [bairro] ajudou? Você está conhecendo a região ou pensando em mudar pra lá? Se for mudança, já tem algum período em mente?
+
+Não invente os campos ausentes. Marque o que está pendente e indique o que precisa ser conferido.
+
+CONFERÊNCIA FINAL
+📍 Comece pelo motivo: conhecer a região, comparar bairros ou planejar uma mudança.
+📅 Se houver mudança, pergunte se existe um período em mente.
+💬 Use a resposta para escolher a próxima informação, sem oferecer visita para quem só pediu o guia.
+
+Material educativo de Natan Pimentel / Imobiturbo; adapte à situação real.

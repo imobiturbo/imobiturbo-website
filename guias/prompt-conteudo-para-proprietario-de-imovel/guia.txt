@@ -1,0 +1,30 @@
+Prompt de conteúdo para proprietário de imóvel
+
+PARA USAR AGORA
+1. Preencha os campos com informações confirmadas.
+2. Use o modelo no contexto descrito; mensagens respondem a uma conversa real e respeitam a preferência da pessoa.
+3. Confira o texto antes de enviar ou publicar; não publique dados pessoais.
+
+CAMPOS
+pergunta; imóvel; ação imediata; fatos; pendências; limite da explicação
+
+MODELO PARA COPIAR
+Pergunta do proprietário: [pergunta]. Tipo de imóvel: [tipo]. Ação possível agora: [ação]. Dados confirmados: [dados]. Pontos que exigem avaliação: [lista].
+
+EXEMPLO FICTÍCIO
+Pergunta: o que separar antes das fotos? Tipo: apartamento. Ação: preparar ficha e liberar ambientes para o registro. Dados: quantidade de quartos confirmada. Pendências: área e itens que permanecem, a conferir.
+
+PROMPT COMPLETO PARA COPIAR
+Crie um conteúdo para um proprietário brasileiro que ainda pensa em vender. Responda à pergunta com três passos, modelo de ficha e exemplo fictício. Não dê orientação jurídica, prometa preço ou prazo, ou apresente reforma como garantia de venda. Use apenas fatos fornecidos e marque pendências.
+
+Dados para usar:
+Pergunta do proprietário: [pergunta]. Tipo de imóvel: [tipo]. Ação possível agora: [ação]. Dados confirmados: [dados]. Pontos que exigem avaliação: [lista].
+
+Não invente os campos ausentes. Marque o que está pendente e indique o que precisa ser conferido.
+
+CONFERÊNCIA FINAL
+📝 Escolha uma pergunta concreta, como o que organizar antes de fotografar o imóvel.
+✅ Entregue uma ação simples: separar dados confirmados, liberar os ambientes e combinar autorização das fotos.
+💬 Diga o que depende de avaliação individual, sem prometer preço ou prazo de venda.
+
+Material educativo de Natan Pimentel / Imobiturbo; adapte à situação real.
