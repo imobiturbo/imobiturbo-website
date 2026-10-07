@@ -1,4 +1,5 @@
 import { CONSULTING_PRODUCT_ID, isValidConsultingPayment } from "./_products.js";
+import { asaasConnection } from "./_community-orders.js";
 
 export const CAL_ASAAS_REFERENCE_PREFIX = "cal-asaas:";
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -22,7 +23,7 @@ function validOrderEnvelope(order, uid) {
     (typeof order.productId === "string" || order.productId === null));
 }
 
-export async function fetchCalAsaasOrder({ env, uid }) {
+export async function fetchCalAsaasOrder({ env, uid, allowMissing = false }) {
   const token = typeof env?.CAL_ASAAS_INTEGRATION_TOKEN === "string" ? env.CAL_ASAAS_INTEGRATION_TOKEN.trim() : "";
   if (!token || !UUID_PATTERN.test(uid || "")) throw unavailable();
 
@@ -37,6 +38,7 @@ export async function fetchCalAsaasOrder({ env, uid }) {
   } catch {
     throw unavailable();
   }
+  if (response.status === 404 && allowMissing) return null;
   if (!response.ok) throw unavailable();
 
   let order;
@@ -72,7 +74,7 @@ async function fetchAsaasInstallment({ env, installmentId }) {
   if (!env?.ASAAS_API_KEY) throw unavailable();
   let response;
   try {
-    response = await fetch("https://api.asaas.com/v3/installments/" + encodeURIComponent(installmentId), {
+    response = await fetch(asaasConnection(env).base + "/installments/" + encodeURIComponent(installmentId), {
       headers: { access_token: env.ASAAS_API_KEY, "User-Agent": "Imobiturbo-Checkout/1.0" },
       signal: AbortSignal.timeout(5000),
     });
@@ -107,7 +109,32 @@ function trustedConsultingDetails(order) {
 }
 
 export async function resolveCalAsaasConsultingPayment({ env, uid, payment }) {
-  const order = await fetchCalAsaasOrder({ env, uid });
+  // The authenticated gateway lookup is the durable cancellation record after
+  // an unpaid test booking was removed. A missing paid order or an integration
+  // outage must remain retryable; neither can be acknowledged as a deletion.
+  const deletedUnpaid = payment?.deleted === true && payment.status === "PENDING" &&
+    ["PIX", "CREDIT_CARD"].includes(payment.billingType) &&
+    !payment.confirmedDate && !payment.paymentDate && !payment.clientPaymentDate &&
+    !payment.pixTransaction && !payment.chargeback && !payment.refunds?.length;
+  // Some Agenda revisions report both removed orders and outages as 503.
+  // A server-configured cleanup receipt binds the exact cancelled provider
+  // payment, order, environment and amount; it never permits a paid event.
+  if (deletedUnpaid && env?.CAL_ASAAS_REMOVED_UNPAID_ORDERS) {
+    let receipts;
+    try { receipts = JSON.parse(env.CAL_ASAAS_REMOVED_UNPAID_ORDERS); }
+    catch { throw unavailable(); }
+    if (!Array.isArray(receipts) || receipts.length > 100) throw unavailable();
+    const environment = asaasConnection(env).environment;
+    if (receipts.some(receipt => receipt?.uid === uid && receipt.paymentId === payment.id &&
+        receipt.environment === environment && receipt.billingType === payment.billingType &&
+        Number.isSafeInteger(receipt.amountCents) && receipt.amountCents > 0 &&
+        Math.round(Number(payment.value) * 100) === receipt.amountCents &&
+        payment.externalReference === CAL_ASAAS_REFERENCE_PREFIX + uid)) {
+      return { kind: "deleted_unpaid_order" };
+    }
+  }
+  const order = await fetchCalAsaasOrder({ env, uid, allowMissing: deletedUnpaid });
+  if (!order) return { kind: "deleted_unpaid_order" };
   if (order.productId !== CONSULTING_PRODUCT_ID) return { kind: "ignored_product", order };
 
   const count = order.installmentCount;

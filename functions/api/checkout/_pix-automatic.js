@@ -169,6 +169,13 @@ export async function resolvePixAutomaticAuthorization(config, id) {
   if (!UUID.test(id || '')) fail();
   const auth = await pixGet(config,`${AUTH_PATH}/${encodeURIComponent(id)}`);
   if (auth.id !== id) fail();
+  // Account-wide webhooks also deliver authorizations from other integrations.
+  // Only provider data can establish an unrelated contract, and an existing
+  // Community binding must still fail if its contract was changed.
+  if (typeof auth.contractId === 'string' && auth.contractId && !/^[0-9a-f]{32}$/.test(auth.contractId)) {
+    if (await findCommunityOrder(config,'provider_pix_authorization_id',id)) fail();
+    return null;
+  }
   const order = await findCommunityOrder(config,'id',pixAutomaticOrderId(auth.contractId));
   if (!order) throw new CommunityError('community_order_missing',422);
   await verifyPixAutomaticAuthorization(config,order,auth);
