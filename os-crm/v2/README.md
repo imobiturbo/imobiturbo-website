@@ -114,7 +114,8 @@ Tracker Imobiturbo: LP e assinatura carregam o script canônico de
 produto `imobiturbo-os`. A CSP no HTML e em `_headers` permite o coletor e
 a biblioteca Meta própria, quando selecionada pela configuração oficial do
 Hub; não instala scripts ou identificadores do concorrente. O domínio exato
-da prévia foi autorizado no coletor, com rota `/os-crm/v2/` sem pixels Meta.
+da prévia foi autorizado no coletor. A prévia não tem destino de pixel Meta;
+as rotas oficiais e seus pixels permanecem definidos pela política do Hub.
 
 `tracking.js` registra escolha de plano/ciclo, visita à assinatura e clique
 de WhatsApp. O `productId` distingue plano e ciclo sem vincular o OS à oferta
