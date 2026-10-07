@@ -9,7 +9,13 @@ const [baseline, output] = process.argv.slice(2);
 if (!baseline || !output || fs.existsSync(output) || fs.existsSync(output + '-built')) throw Error('Pass deployed baseline and a new release path');
 const built = output + '-built';
 fs.mkdirSync(built, { recursive: true });
+// An existing _worker.js activates advanced mode in Wrangler. Compile the
+// current functions against an empty asset directory, then retain the deployed
+// site's assets during composition; never compile the old baseline Worker.
+const assets = path.join(built, 'static');
+fs.mkdirSync(assets);
 execFileSync(path.join(root, 'node_modules/.bin/wrangler'), ['pages', 'functions', 'build', 'functions',
-  '--outdir', built, '--build-output-directory', baseline, '--minify'], { cwd: root, stdio: 'inherit' });
+  '--outdir', built, '--build-output-directory', assets, '--minify'], { cwd: root, stdio: 'inherit' });
 if (fs.existsSync(path.join(built, 'index.js'))) fs.renameSync(path.join(built, 'index.js'), path.join(built, '_worker.js'));
+if (!fs.existsSync(path.join(built, '_worker.js'))) throw Error('Missing compiled Worker');
 console.log(JSON.stringify(compose(baseline, built, output, { webhookOnly: true })));
