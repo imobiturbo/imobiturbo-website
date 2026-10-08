@@ -1,0 +1,26 @@
+TABELA DE ORIGEM E AVANÇO DO LEAD IMOBILIÁRIO
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Comece com os contatos de uma semana e atualize as etapas com fatos observados. Use o mesmo critério para todas as origens. Uma amostra pequena serve para localizar dúvidas, não para provar qual canal vende mais.
+
+CAMPOS PARA PREENCHER
+[ID INTERNO], [DATA], [ORIGEM], [IMÓVEL], [CONVERSA], [VISITA], [PRÓXIMO PASSO]
+
+MATERIAL PARA COPIAR
+Copie este cabeçalho para sua planilha ou nota:
+ID interno | Data de entrada | Origem informada | Imóvel/necessidade | Conversa iniciada? | Necessidade entendida? | Visita combinada para | Visita realizada? | Próximo passo e data
+
+Regras de preenchimento:
+- Use ID interno; evite expor telefone ou nome de cliente no material compartilhado.
+- Origem desconhecida fica “desconhecida”; não adivinhe pelo imóvel ou pela aparência do contato.
+- Visita combinada e visita realizada são campos diferentes.
+- Marque venda só com a confirmação correspondente, em seu controle próprio.
+- Para comparar origens, informe o período e quantos contatos foram acompanhados.
+
+Pergunta opcional na conversa: “Para eu registrar aqui, por onde você encontrou esse imóvel?”
+
+EXEMPLO FICTÍCIO
+Exemplo fictício: L008 | 08/10 | Instagram, informado pelo comprador | apartamento 2 quartos no Taquaral | sim | sim | 10/10, 10h | ainda não | confirmar presença em 09/10. Essa linha registra uma visita combinada, não uma venda.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

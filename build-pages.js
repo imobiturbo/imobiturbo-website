@@ -32,6 +32,7 @@ const entries = [
   'test',
   'ui_kits',
   'guia',
+  'guias',
   'downloads',
   'lovable',
   'demo',

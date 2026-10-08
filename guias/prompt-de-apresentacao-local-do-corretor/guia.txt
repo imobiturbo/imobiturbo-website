@@ -1,0 +1,16 @@
+PROMPT DE APRESENTAÇÃO LOCAL DO CORRETOR
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Copie o prompt, substitua os campos e revise a resposta. Confira o contato e a região de atendimento antes de publicar. Apresentação clara não garante alcance nem posição no Google.
+
+CAMPOS PARA PREENCHER
+[CIDADE], [BAIRROS ATENDIDOS], [TIPO DE IMÓVEL], [PÚBLICO], [FORMA DE CONTATO]
+
+MATERIAL PARA COPIAR
+Escreva três versões de uma apresentação curta de corretor de imóveis. Dados confirmados: cidade [CIDADE]; bairros atendidos [BAIRROS ATENDIDOS]; tipo de imóvel [TIPO DE IMÓVEL]; público que ajudo [PÚBLICO]; contato [FORMA DE CONTATO]. Cada versão deve explicar onde atuo, quem ajudo e como conversar comigo. Use português brasileiro, frases diretas e no máximo 3 linhas. Não invente resultados, anos de experiência, imóveis disponíveis ou posição em buscas. Não use “melhor”, “perfeito” ou “em toda a região” sem informação que sustente isso. Se faltar algum dado, marque como pendente. Entregue também uma lista do que preciso conferir antes de publicar.
+
+EXEMPLO FICTÍCIO
+Dados fictícios para testar: Campinas; Cambuí e Taquaral; apartamentos de 2 quartos; compradores que querem comparar esses dois bairros; WhatsApp informado no perfil. Exemplo de apresentação: “Apartamentos de 2 quartos no Cambuí e no Taquaral, em Campinas. Ajudo você a comparar as opções para sua rotina. Fale comigo pelo WhatsApp do perfil.”
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

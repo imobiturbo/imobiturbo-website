@@ -1,0 +1,16 @@
+MENSAGEM PARA ALINHAR EXPECTATIVAS DA VENDA DO IMÓVEL
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Preencha com o que foi realmente conversado. Peça confirmação do proprietário. Este modelo é uma mensagem de alinhamento, não substitui contrato ou avaliação profissional.
+
+CAMPOS PARA PREENCHER
+[NOME], [IMÓVEL], [DATA DESEJADA], [PRÓXIMA TAREFA], [DATA DE REVISÃO]
+
+MATERIAL PARA COPIAR
+Oi, [NOME]. Só para confirmar o que conversamos sobre o [IMÓVEL]: você gostaria de concluir a venda até [DATA DESEJADA]. Minha próxima tarefa será [PRÓXIMA TAREFA]. Essa tarefa não garante a data da venda; a decisão do comprador e as demais etapas ainda precisam acontecer. Podemos revisar o andamento em [DATA DE REVISÃO]?
+
+EXEMPLO FICTÍCIO
+Oi, Bruno. Só para confirmar o que conversamos sobre a casa no Jardim América: você gostaria de concluir a venda até 30 de novembro. Minha próxima tarefa será conferir a ficha e organizar as fotos nesta semana. Essa tarefa não garante a data da venda; a decisão do comprador e as demais etapas ainda precisam acontecer. Podemos revisar o andamento em 15 de outubro?
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

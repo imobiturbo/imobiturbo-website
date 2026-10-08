@@ -1,0 +1,27 @@
+ROTEIRO DE PENDÊNCIAS DA PROPOSTA DO IMÓVEL
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Use fatos e fontes verificáveis. Não inclua dados sensíveis em cópias públicas. Questões de contrato, financiamento ou documentação devem ser encaminhadas ao profissional competente; este roteiro organiza a conversa.
+
+CAMPOS PARA PREENCHER
+[NOME], [IMÓVEL], [DÚVIDA], [RESPONSÁVEL PELA INFORMAÇÃO], [DATA DE RETORNO]
+
+MATERIAL PARA COPIAR
+MENSAGEM
+“[NOME], sobre o [IMÓVEL], qual ponto você ainda precisa conferir para avaliar o próximo passo? Se depender de informação que eu ainda não tenho, registro aqui e consulto a pessoa responsável antes de responder.”
+
+REGISTRO
+Dúvida exata: [DÚVIDA]
+Informação já confirmada e origem: [FATO/FONTE]
+Informação pendente: [PONTO]
+Quem pode confirmar: [RESPONSÁVEL PELA INFORMAÇÃO]
+Retorno combinado: [DATA DE RETORNO]
+
+RETORNO
+“[NOME], sobre [DÚVIDA], consegui confirmar [FATO] com [FONTE]. O ponto [PONTO PENDENTE] ainda está em consulta. Quer que eu te atualize em [DATA]?”
+
+EXEMPLO FICTÍCIO
+Exemplo fictício: Maria perguntou se a vaga pode receber um segundo veículo. O corretor registra a pergunta, consulta a administração do condomínio e não responde antes de ter a informação. Retorno fictício: “Maria, a regra da vaga ainda está em consulta com a administração. Quer que eu te atualize amanhã?”
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

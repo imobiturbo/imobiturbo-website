@@ -1,0 +1,16 @@
+PROMPT DE SÉRIE IMOBILIÁRIA COM 3 EPISÓDIOS DE BAIRRO
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Preencha o prompt, gere o roteiro e cheque cada fato. Não apresente imagem ilustrativa gerada como imóvel disponível. A série organiza conteúdo, não garante seguidores.
+
+CAMPOS PARA PREENCHER
+[CIDADE/BAIRRO], [DÚVIDA], [FATOS CONFERIDOS], [MÍDIAS AUTORIZADAS]
+
+MATERIAL PARA COPIAR
+Crie uma série de 3 Reels imobiliários para [CIDADE/BAIRRO] sobre a dúvida [DÚVIDA]. Use somente estes fatos: [FATOS CONFERIDOS]. Mídias disponíveis e autorizadas: [MÍDIAS AUTORIZADAS]. Entregue: nome da série; critério próprio de cada episódio; gancho com contexto imobiliário; 3 pontos para desenvolver na legenda; plano de imagem; próximo episódio relacionado. O primeiro vídeo deve fazer sentido para quem nunca viu o perfil. Use português brasileiro e tom de conversa. Não invente preço, valorização, tempo de trajeto, disponibilidade, características do imóvel ou experiência pessoal. Quando faltar dado, escreva “conferir antes de publicar”. Não use nome ou conversa de cliente real. Não prometa resultado de alcance ou venda.
+
+EXEMPLO FICTÍCIO
+Exemplo fictício: cidade Campinas, bairro Taquaral; dúvida “essa região combina com quem trabalha de casa?”; fatos disponíveis: uma ficha autorizada informa quarto extra e varanda; dados de ruído e internet não foram conferidos. Episódio 1: espaço para trabalhar. Episódio 2: o que observar em horários diferentes. Episódio 3: o que perguntar antes de escolher. Ruído, internet e deslocamento permanecem pendentes até conferência.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

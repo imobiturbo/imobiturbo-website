@@ -1,0 +1,28 @@
+ROTEIRO DE CONFERÊNCIA DO CONTATO NO PERFIL IMOBILIÁRIO
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Copie o roteiro para uma nota e abra cada URL pública. Altere somente perfis que você administra. No Google, siga https://support.google.com/business/answer/3039617?hl=pt-BR . Não invente endereço físico, nome comercial ou avaliações.
+
+CAMPOS PARA PREENCHER
+[DATA], [PERFIL/URL], [CONTATO EXIBIDO], [REGIÃO], [HORÁRIO], [RESPONSÁVEL]
+
+MATERIAL PARA COPIAR
+CONFERÊNCIA DO CONTATO IMOBILIÁRIO
+Data: [DATA]
+Perfil e endereço público: [PERFIL/URL]
+Telefone exibido: [CONTATO EXIBIDO]
+Região atendida: [REGIÃO]
+Horário informado: [HORÁRIO]
+1. Abri o perfil em um celular e encontrei o contato? [SIM/NÃO]
+2. O botão abriu o destino correto? [SIM/NÃO — QUAL DESTINO]
+3. O número e o horário correspondem à operação atual? [SIM/NÃO]
+4. A região está descrita sem ampliar o atendimento por engano? [SIM/NÃO]
+5. Correção necessária: [DESCREVER]
+Responsável e data de conferência após a correção: [RESPONSÁVEL / DATA]
+Observação: testar um botão não comprova atendimento de uma pessoa real.
+
+EXEMPLO FICTÍCIO
+Exemplo fictício: 8 de outubro; perfil público de uma imobiliária em Campinas; número atual no Instagram e número antigo no Google; Cambuí/Taquaral; atendimento comercial das 9h às 18h. Correção: o responsável pelo perfil verificado atualizará o número no Google e conferirá o resultado público depois.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

@@ -1,0 +1,22 @@
+PEDIDO DE INDICAÇÃO IMOBILIÁRIA COM MENSAGEM ENCAMINHÁVEL
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Use somente quando a conversa justificar o pedido. Envie a mensagem encaminhável depois do aceite do cliente. Aguarde a pessoa interessada procurar você; o material não autoriza contato em massa.
+
+CAMPOS PARA PREENCHER
+[NOME DO CLIENTE], [SEU NOME], [REGIÃO], [TIPO DE BUSCA], [CONTATO PÚBLICO]
+
+MATERIAL PARA COPIAR
+PEDIDO AO CLIENTE
+“[NOME DO CLIENTE], obrigado pelo retorno sobre o atendimento. Se conhecer alguém procurando [TIPO DE BUSCA] em [REGIÃO], posso te mandar uma apresentação curta para encaminhar? A pessoa conversa comigo se quiser.”
+
+MENSAGEM PARA ENCAMINHAR, DEPOIS DO ACEITE
+“Conheci [SEU NOME], que atende [TIPO DE BUSCA] em [REGIÃO]. Se isso fizer sentido para sua procura, você pode falar com ele por [CONTATO PÚBLICO].”
+
+Não inclua resultado, recomendação ou elogio que o cliente não tenha confirmado. Não solicite contatos de terceiros por lista.
+
+EXEMPLO FICTÍCIO
+Exemplo fictício: “Ana, obrigado pelo retorno sobre o atendimento. Se conhecer alguém procurando apartamento de 2 quartos no Taquaral, posso te mandar uma apresentação curta para encaminhar? A pessoa conversa comigo se quiser.” Apresentação: “Conheci um corretor que atende apartamentos de 2 quartos no Taquaral. Se fizer sentido para sua procura, você pode falar com ele pelo contato público do perfil.”
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

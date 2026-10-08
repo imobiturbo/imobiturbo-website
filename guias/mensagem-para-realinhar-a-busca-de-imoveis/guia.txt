@@ -1,0 +1,22 @@
+MENSAGEM PARA REALINHAR A BUSCA DE IMÓVEIS
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Substitua pelos critérios reais da conversa. A quantidade na capa é uma situação ilustrativa, não um registro de cliente. Não use a mensagem para pressionar uma decisão ou ignorar pedido de pausa.
+
+CAMPOS PARA PREENCHER
+[NOME], [CRITÉRIOS CONFIRMADOS], [PONTO A CONFERIR]
+
+MATERIAL PARA COPIAR
+Oi, [NOME]. Antes de buscar mais imóveis, quero conferir se entendi sua procura: [CRITÉRIOS CONFIRMADOS]. Algum desses pontos mudou depois das opções que vimos? E qual deles você não quer abrir mão agora? Com isso, consigo selecionar a próxima opção com mais contexto.
+
+Depois da resposta, registre:
+Obrigatório agora: [CRITÉRIO]
+Pode ser flexível: [CRITÉRIO]
+Informação ainda pendente: [PONTO A CONFERIR]
+Próximo passo combinado: [AÇÃO/DATA]
+
+EXEMPLO FICTÍCIO
+Exemplo fictício: “Oi, João. Antes de buscar mais imóveis, quero conferir se entendi sua procura: apartamento de 2 quartos no Cambuí ou no Taquaral, com vaga. Algum desses pontos mudou depois das opções que vimos? E qual deles você não quer abrir mão agora?” Resposta fictícia: só Taquaral passou a funcionar para o trabalho. Registro: bairro obrigatório; andar flexível; conferir medida da vaga na próxima opção.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.
