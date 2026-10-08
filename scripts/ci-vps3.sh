@@ -28,5 +28,6 @@ fi
 tail -n 10 "$task_evidence/tests.log"
 npm run build:pages
 node scripts/verify-organic-artifact.mjs
+node scripts/verify-lp-assets.mjs
 [[ -z "$(git status --porcelain --untracked-files=no)" ]] || { echo 'Build alterou fontes versionadas' >&2; exit 78; }
 git rev-parse HEAD
