@@ -1,6 +1,10 @@
 (() => {
   'use strict';
   const offer = window.OSOffer;
+  document.querySelector('[data-open-curriculum]')?.addEventListener('click', () => {
+    const curriculum = document.getElementById('trilhas');
+    if (curriculum) curriculum.open = true;
+  });
   const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
   let reducedMotion = motionPreference.matches;
   const header = document.querySelector('.nav');
