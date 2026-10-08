@@ -1,0 +1,165 @@
+{
+  "generator": "built-in image_gen",
+  "generatedAt": "2026-10-07",
+  "purpose": "Mockups ilustrativos de conteúdos e bônus digitais da assinatura OS + Club",
+  "references": [
+    "https://mimiu.app/kit/hero-dispositivos.webp",
+    "os-crm/v2/assets/club/logo-club.webp"
+  ],
+  "assets": [
+    {
+      "name": "club-kit",
+      "prompt": "Create a premium photorealistic 3D digital-product mockup cutout for Imobiturbo's real estate CRM landing page. Genuine transparent alpha background. The attached wordmark is the ONLY allowed brand logo: reproduce its white lettering and lime .club precisely, no invented house logo. Adult, sophisticated black graphite, white and lime #C5FF5E aesthetic, crisp rich typography and realistic physical perspective, soft realistic shadows. Use the attached Mimiu device image ONLY for the high quality tangible presentation of devices; do NOT use its purple, fantasy artwork, children, or storybook content. Complete objects within canvas, a small margin, no crop. No sales price, badges, gifts, guarantees, percentages, invented course quantities, mockup watermark, surrounding headline, checkerboard or decorative floating icons. Cover and screen titles only, in Portuguese, short, large and legible. Digital products are represented with physical books/devices as illustrative mockups, not actual physical shipping. Landscape 3:2 composition, subjects fill about 90% of width and height. A complete attractive digital educational collection: a large open slim black laptop behind with a real estate course library on screen titled 'Imobiturbo Club', a tablet on its left with a paused lesson and tasteful play symbol, and in foreground three standing book/course covers at differing angles titled 'CAPTAÇÃO', 'WHATSAPP', 'NEGOCIAÇÃO'. Put premium architectural photography and lime geometric cover typography on books, legible main titles. A slim black smartphone on right shows Mentor IA in a clean lime-accented conversation UI. Clear hierarchy, laptop and books large, dense convincing bundle, compact cinematic product photography.",
+      "source": "/home/natan/.codex/generated_images/01a11279-1faa-7ee0-b20f-c704a0a6a3c8/exec-c31b7243-fa2a-476e-b6d1-ce0c0b29ba58.png",
+      "publishedWidths": [
+        600,
+        1200
+      ],
+      "sourceSha256": "b7828898878523db6ec808357e6c061673374625025e4421a8dfa1bb17b0c2ee",
+      "published": [
+        {
+          "path": "os-crm/v2/assets/club/mockups/club-kit-600.webp",
+          "bytes": 66118,
+          "sha256": "6aa0a70cfcc4199dfb3ca39080c4e24839dd850efd7648a0106dbb5df236ab9a"
+        },
+        {
+          "path": "os-crm/v2/assets/club/mockups/club-kit-1200.webp",
+          "bytes": 184522,
+          "sha256": "d8f0b858028ff57071fa679d8228a508ab11d70611f7ad088176eb14c44b95b2"
+        }
+      ]
+    },
+    {
+      "name": "mentor-ia",
+      "prompt": "Create a premium photorealistic 3D digital-product mockup cutout for Imobiturbo's real estate CRM landing page. Genuine transparent alpha background. The attached wordmark is the ONLY allowed brand logo: reproduce its white lettering and lime .club precisely, no invented house logo. Adult, sophisticated black graphite, white and lime #C5FF5E aesthetic, crisp rich typography and realistic physical perspective, soft realistic shadows. Use the attached Mimiu device image ONLY for the high quality tangible presentation of devices; do NOT use its purple, fantasy artwork, children, or storybook content. Complete objects within canvas, a small margin, no crop. No sales price, badges, gifts, guarantees, percentages, invented course quantities, mockup watermark, surrounding headline, checkerboard or decorative floating icons. Cover and screen titles only, in Portuguese, short, large and legible. Digital products are represented with physical books/devices as illustrative mockups, not actual physical shipping. Landscape 3:2 composition, subjects fill about 90% of width and height. A tall modern black smartphone in three-quarter perspective, slightly rotated, next to a sophisticated black standing book titled 'MENTOR IA'. Phone screen has clear top title 'Mentor IA' and a simple conversational interface with a single white question bubble 'Como retomar a conversa?' and lime answer bubble 'Comece pelo que o cliente procura.' Add tiny response dots and a restrained sparkling AI symbol within UI. On book use a beautiful close-up architectural facade photograph with white title 'MENTOR IA' and subtitle 'Captação • Atendimento • Negociação'. Phone and book equally impressive. No robot mascot.",
+      "source": "/home/natan/.codex/generated_images/01a11279-1faa-7ee0-b20f-c704a0a6a3c8/exec-e2e259dc-a8dd-43cd-bd37-8584ca56b001.png",
+      "publishedWidths": [
+        600,
+        1200
+      ],
+      "sourceSha256": "b88c0d22cd44495e3d64e34913dcf45b96ebe55c0a156cf4aeea79ba82faee3a",
+      "published": [
+        {
+          "path": "os-crm/v2/assets/club/mockups/mentor-ia-600.webp",
+          "bytes": 51918,
+          "sha256": "154af5f55899d0ed87dad7f5a34de18c24652defb341e96a9b12b99b967081bd"
+        },
+        {
+          "path": "os-crm/v2/assets/club/mockups/mentor-ia-1200.webp",
+          "bytes": 156254,
+          "sha256": "18524e4f8d9b2a7d1fa22f699dbd38095e539eeab90337f754e9673b49ce7912"
+        }
+      ]
+    },
+    {
+      "name": "scripts-whatsapp",
+      "prompt": "Create a premium photorealistic 3D digital-product mockup cutout for Imobiturbo's real estate CRM landing page. Genuine transparent alpha background. The attached wordmark is the ONLY allowed brand logo: reproduce its white lettering and lime .club precisely, no invented house logo. Adult, sophisticated black graphite, white and lime #C5FF5E aesthetic, crisp rich typography and realistic physical perspective, soft realistic shadows. Use the attached Mimiu device image ONLY for the high quality tangible presentation of devices; do NOT use its purple, fantasy artwork, children, or storybook content. Complete objects within canvas, a small margin, no crop. No sales price, badges, gifts, guarantees, percentages, invented course quantities, mockup watermark, surrounding headline, checkerboard or decorative floating icons. Cover and screen titles only, in Portuguese, short, large and legible. Digital products are represented with physical books/devices as illustrative mockups, not actual physical shipping. Landscape 3:2 composition, subjects fill about 90% of width and height. An impressive standing black paperback guide titled 'SCRIPTS PARA WHATSAPP' in large white and lime typography, with a beautiful modern luxury home photo on its cover, beside a black smartphone angled with a recognizable WhatsApp conversation screen, and two clean white printable sheets partially fanned behind the book with headings 'PRIMEIRO CONTATO' and 'FOLLOW-UP'. Book foremost and dominant, clearly tangible stack, green accents on paper, smartphone chats visually large, realistic page edges.",
+      "source": "/home/natan/.codex/generated_images/01a11279-1faa-7ee0-b20f-c704a0a6a3c8/exec-6f51eca8-b953-427c-a889-afae6ea02536.png",
+      "publishedWidths": [
+        600,
+        1200
+      ],
+      "sourceSha256": "515c2c3a5d1b6f3de16b6541d8aee5fc4eca7071ef9f22f47a31999da4be87ed",
+      "published": [
+        {
+          "path": "os-crm/v2/assets/club/mockups/scripts-whatsapp-600.webp",
+          "bytes": 61426,
+          "sha256": "cb5cce2909fbed15075463d28bb54d0dd686ec0abf14f744fcea300d2d5523c8"
+        },
+        {
+          "path": "os-crm/v2/assets/club/mockups/scripts-whatsapp-1200.webp",
+          "bytes": 179448,
+          "sha256": "8059717f073decaa372006599ffaf321d6d5bde6ac3e1c90930b1491b01fa397"
+        }
+      ]
+    },
+    {
+      "name": "captacao",
+      "prompt": "Create a premium photorealistic 3D digital-product mockup cutout for Imobiturbo's real estate CRM landing page. Genuine transparent alpha background. The attached wordmark is the ONLY allowed brand logo: reproduce its white lettering and lime .club precisely, no invented house logo. Adult, sophisticated black graphite, white and lime #C5FF5E aesthetic, crisp rich typography and realistic physical perspective, soft realistic shadows. Use the attached Mimiu device image ONLY for the high quality tangible presentation of devices; do NOT use its purple, fantasy artwork, children, or storybook content. Complete objects within canvas, a small margin, no crop. No sales price, badges, gifts, guarantees, percentages, invented course quantities, mockup watermark, surrounding headline, checkerboard or decorative floating icons. Cover and screen titles only, in Portuguese, short, large and legible. Digital products are represented with physical books/devices as illustrative mockups, not actual physical shipping. Landscape 3:2 composition, subjects fill about 90% of width and height. An impressive real estate digital materials kit represented as a thick black binder/workbook titled 'KIT DE CAPTAÇÃO', with premium modern house photograph on cover, beside an open white workbook page with a neat checklist, and three fanned paper documents titled 'CHECKLIST', 'ROTEIRO', 'EXCLUSIVIDADE'. A thin black document folder behind with lime tab. Elegant black-white-lime print design, book foremost and documents readable as documents, varied angle and depth, professional premium product shot.",
+      "source": "/home/natan/.codex/generated_images/01a11279-1faa-7ee0-b20f-c704a0a6a3c8/exec-47d7516d-22cc-41c3-9f45-744d48ecbd67.png",
+      "publishedWidths": [
+        600,
+        1200
+      ],
+      "sourceSha256": "53d14e531ded88165c61168437c621954288214805bea51ad77d65cf189dcaf3",
+      "published": [
+        {
+          "path": "os-crm/v2/assets/club/mockups/captacao-600.webp",
+          "bytes": 56856,
+          "sha256": "06f65db6a466ad0b865c124bbd2d2b97d0830c7f751a8ad3a574d6e6bfc00e8a"
+        },
+        {
+          "path": "os-crm/v2/assets/club/mockups/captacao-1200.webp",
+          "bytes": 165100,
+          "sha256": "f6ad918d72733aa42306a2215721d5883b60ea6892b2a5402bfd80e8a00813b8"
+        }
+      ]
+    },
+    {
+      "name": "aulas-gravadas",
+      "prompt": "Create a premium photorealistic 3D digital-product mockup cutout for Imobiturbo's real estate CRM landing page. Genuine transparent alpha background. The attached wordmark is the ONLY allowed brand logo: reproduce its white lettering and lime .club precisely, no invented house logo. Adult, sophisticated black graphite, white and lime #C5FF5E aesthetic, crisp rich typography and realistic physical perspective, soft realistic shadows. Use the attached Mimiu device image ONLY for the high quality tangible presentation of devices; do NOT use its purple, fantasy artwork, children, or storybook content. Complete objects within canvas, a small margin, no crop. No sales price, badges, gifts, guarantees, percentages, invented course quantities, mockup watermark, surrounding headline, checkerboard or decorative floating icons. Cover and screen titles only, in Portuguese, short, large and legible. Digital products are represented with physical books/devices as illustrative mockups, not actual physical shipping. Landscape 3:2 composition, subjects fill about 90% of width and height. A premium collection of digital video classes represented as a black tablet in landscape showing a paused online lesson, plus two upright realistic black DVD course boxes in foreground with titles 'MENTORIAS GRAVADAS' and 'HOT SEATS'. Covers feature sophisticated modern architecture photography and large white/lime titles, a restrained play symbol. The tablet interface has clear title 'Acervo de aulas' and a dark video frame showing an adult presenter in a realistic studio, not any claimed identity. No LIVE badges, no appointment calendar, no quantity or certification promises.",
+      "source": "/home/natan/.codex/generated_images/01a11279-1faa-7ee0-b20f-c704a0a6a3c8/exec-5b56fa9a-13c3-4df6-8e75-fb433f66895b.png",
+      "publishedWidths": [
+        600,
+        1200
+      ],
+      "sourceSha256": "207c310d1054de5dcaeebf37186c8a2392620dcc6c024b538ab8330670ef8b1b",
+      "published": [
+        {
+          "path": "os-crm/v2/assets/club/mockups/aulas-gravadas-600.webp",
+          "bytes": 49780,
+          "sha256": "b2ae5a2936dadbb7229ed1dac04efee1e6b8f58a856271e9aa2542679663cc7a"
+        },
+        {
+          "path": "os-crm/v2/assets/club/mockups/aulas-gravadas-1200.webp",
+          "bytes": 143206,
+          "sha256": "c6ae04119ef7804fe1fdb6f7eab567b25d75880ae920b06108c40d1a21dbbf20"
+        }
+      ]
+    },
+    {
+      "name": "ferramentas",
+      "prompt": "Create a premium photorealistic 3D digital-product mockup cutout for Imobiturbo's real estate CRM landing page. Genuine transparent alpha background. The attached wordmark is the ONLY allowed brand logo: reproduce its white lettering and lime .club precisely, no invented house logo. Adult, sophisticated black graphite, white and lime #C5FF5E aesthetic, crisp rich typography and realistic physical perspective, soft realistic shadows. Use the attached Mimiu device image ONLY for the high quality tangible presentation of devices; do NOT use its purple, fantasy artwork, children, or storybook content. Complete objects within canvas, a small margin, no crop. No sales price, badges, gifts, guarantees, percentages, invented course quantities, mockup watermark, surrounding headline, checkerboard or decorative floating icons. Cover and screen titles only, in Portuguese, short, large and legible. Digital products are represented with physical books/devices as illustrative mockups, not actual physical shipping. Landscape 3:2 composition, subjects fill about 90% of width and height. A sophisticated black laptop three-quarter view with dark video script editing interface titled 'Roteirista', accompanied by a smaller landscape tablet showing a video editing timeline titled 'Templates de edição', and a modern phone standing in foreground titled 'Simulador' with clean financing calculation interface. Three tangible devices, dynamic overlapping arrangement, crisp black metal bodies and white/lime UI, no branded CapCut or ChatGPT logos, no specific interest rates or fictitious promises, cinematic product photo with legible simple headings.",
+      "source": "/home/natan/.codex/generated_images/01a11279-1faa-7ee0-b20f-c704a0a6a3c8/exec-cec28182-f83d-46e9-a61c-2da45df5c0ef.png",
+      "publishedWidths": [
+        600,
+        1200
+      ],
+      "sourceSha256": "b3467079088496c83bbbf18abab8d4b6368f0029b8f78f5d673db5d7a5dc7898",
+      "published": [
+        {
+          "path": "os-crm/v2/assets/club/mockups/ferramentas-600.webp",
+          "bytes": 51098,
+          "sha256": "c2d741ab2cb4f3de6319c579070f5d1a12359cd8e3be77d4814fdbf4bccfc367"
+        },
+        {
+          "path": "os-crm/v2/assets/club/mockups/ferramentas-1200.webp",
+          "bytes": 145170,
+          "sha256": "1c37f2a702a7d875cdf1d8e72bf59b011388fa0e5a12d7c95912e5cb09606bf6"
+        }
+      ]
+    },
+    {
+      "name": "comunidade",
+      "prompt": "Create a NEW premium photorealistic 3D digital-product mockup for the Imobiturbo Club community bonus. Match the photographic craft and black-white-lime #C5FF5E material style of the supplied Mentor IA phone-and-book mockup. Genuine transparent alpha background; no colored backdrop, checkerboard, sales price, badge or gift. Landscape 3:2 composition, devices fill about 90%, entirely visible. Show a modern black smartphone in foreground at a slight realistic angle, next to a landscape black tablet behind. Both show a beautifully clear community interface headed 'Comunidade Imobiturbo' with the exact supplied official white-and-lime imobiturbo.club wordmark. Large rows with adult broker profile photos, use supplied woman's photo for one small profile photo. Tablet shows four elegant portrait thumbnails of varied adult professionals and topic labels 'Captação', 'Atendimento', 'Negociação', 'Parcerias'. Phone shows similar topic rows, no invented testimonial quotes, no member count, no online member counts, no physical book, no promises of individual mentoring. Professional community app showcase, substantial screen bodies, crisp readable short headings, soft realistic shadows, no invented brand symbol or house logo.",
+      "source": "/home/natan/.codex/generated_images/01a11279-1faa-7ee0-b20f-c704a0a6a3c8/exec-561c2b0a-7653-4000-8950-0eeaee036c41.png",
+      "publishedWidths": [
+        600,
+        1200
+      ],
+      "sourceSha256": "780515b5a6b737203a8461bf681e0ba91eac05920d615208b2721e58f473ce6a",
+      "published": [
+        {
+          "path": "os-crm/v2/assets/club/mockups/comunidade-600.webp",
+          "bytes": 49422,
+          "sha256": "af5a2f2e00584ea5ca262586f2d99879670f9fb2f34926f2f0611870e7370f45"
+        },
+        {
+          "path": "os-crm/v2/assets/club/mockups/comunidade-1200.webp",
+          "bytes": 136834,
+          "sha256": "bd15191f34b8c4dd0f35e3b976ea9f53cbe27930c16877a0c72f7109df4742f3"
+        }
+      ]
+    }
+  ]
+}
