@@ -1,0 +1,26 @@
+FICHA DE TAREFA DO LEAD IMOBILIÁRIO
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Preencha na sua ferramenta ou nota. Use informações reais e respeite a preferência de contato. Não envie a mensagem sem contexto de conversa.
+
+CAMPOS PARA PREENCHER
+[ID], [NECESSIDADE], [PENDÊNCIA], [RESPONSÁVEL], [AÇÃO], [DATA/ACEITE]
+
+MATERIAL PARA COPIAR
+FICHA PARA COPIAR
+ID interno: [ID]
+Imóvel ou necessidade confirmada: [NECESSIDADE]
+Última conversa em: [DATA]
+Informação pendente: [PENDÊNCIA]
+Responsável: [NOME INTERNO]
+Próxima ação: [AÇÃO CONCRETA]
+Retorno combinado e canal: [DATA/CANAL/ACEITE]
+Pedido de pausa ou encerramento: [SE HOUVER]
+
+Confirmação ao comprador: “Vou conferir [INFORMAÇÃO] e posso retornar por aqui em [DATA]? Se preferir outro momento, me avisa.”
+
+EXEMPLO FICTÍCIO
+Contato fictício L09; apartamento com vaga; medida da vaga pendente; responsável João; consultar ficha e proprietário; retorno sexta-feira pelo WhatsApp, aceito pelo comprador.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

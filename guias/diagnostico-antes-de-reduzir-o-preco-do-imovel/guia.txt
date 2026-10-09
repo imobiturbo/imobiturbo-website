@@ -1,0 +1,27 @@
+DIAGNÓSTICO ANTES DE REDUZIR O PREÇO DO IMÓVEL
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Preencha com registros reais. Ausência de dados fica explícita. Este material organiza a conversa e não substitui avaliação profissional nem garante venda.
+
+CAMPOS PARA PREENCHER
+[IMÓVEL], [PERÍODO], [CONVERSAS], [VISITAS], [FEEDBACK], [COMPARÁVEIS], [AÇÃO/DATA]
+
+MATERIAL PARA COPIAR
+DIAGNÓSTICO PARA COPIAR
+Imóvel: [IMÓVEL]
+Período observado: [PERÍODO]
+Conversas iniciadas: [NÚMERO CONFIRMADO OU NÃO MEDIDO]
+Visitas realizadas: [NÚMERO CONFIRMADO]
+Motivos de recusa nas palavras dos compradores: [FEEDBACK]
+Ficha, fotos e contato conferidos: [O QUE FOI TESTADO]
+Imóveis comparáveis e diferenças: [COMPARÁVEIS]
+Hipótese a investigar: [HIPÓTESE, NÃO CONCLUSÃO]
+Próxima ação e revisão: [AÇÃO/DATA]
+
+Mensagem: “Reuni estes registros sobre o [IMÓVEL]. Antes de decidir o próximo ajuste, podemos olhar juntos as conversas, as visitas e as opções semelhantes? Há pontos confirmados e pontos que ainda precisamos conferir.”
+
+EXEMPLO FICTÍCIO
+Apartamento fictício no Taquaral; 14 dias; conversas não medidas; 0 visitas; fotos escuras; preço ainda sem comparação suficiente. Ação: conferir ficha e apresentação, levantar comparáveis e conversar com o proprietário em 16/10.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

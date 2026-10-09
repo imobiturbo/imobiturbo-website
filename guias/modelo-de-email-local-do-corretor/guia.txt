@@ -1,0 +1,27 @@
+MODELO DE EMAIL LOCAL DO CORRETOR
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Preencha fatos e fonte, teste o caminho de saída e confira a permissão do destinatário. O recurso é um modelo, não autoriza disparo nem comprova entrega de email.
+
+CAMPOS PARA PREENCHER
+[REGIÃO], [DÚVIDA], [FATO/FONTE/DATA], [SEU CONTATO], [SAÍDA]
+
+MATERIAL PARA COPIAR
+ASSUNTO: [DÚVIDA CONCRETA] em [REGIÃO]
+
+Olá, [NOME].
+Uma dúvida que vale conferir antes de escolher um imóvel em [REGIÃO] é [DÚVIDA].
+O que consegui confirmar: [FATO / FONTE / DATA].
+Para aplicar: [PASSO ÚTIL].
+Exemplo fictício: [EXEMPLO SEM DADOS DE CLIENTE].
+Se quiser conversar sobre esse ponto na sua busca, pode responder este email.
+[SEU NOME/CONTATO]
+Para deixar de receber: [SAÍDA FUNCIONAL].
+
+Envie somente a quem aceitou esse tipo de comunicação e confira a saída antes de enviar.
+
+EXEMPLO FICTÍCIO
+Exemplo fictício: assunto “Como conferir o trajeto antes de escolher entre dois bairros?”; conteúdo orienta testar o percurso no horário habitual e anotar origem, destino, horário e meio de transporte; nenhum tempo é prometido.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

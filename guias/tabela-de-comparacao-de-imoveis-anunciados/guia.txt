@@ -1,0 +1,21 @@
+TABELA DE COMPARAÇÃO DE IMÓVEIS ANUNCIADOS
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Use anúncios atuais e confirme as características com a fonte. Não use a tabela como laudo ou garantia de preço.
+
+CAMPOS PARA PREENCHER
+[URL], [DATA], [REGIÃO], [ÁREA], [VAGAS], [CONSERVAÇÃO], [PREÇO PEDIDO], [CUSTOS]
+
+MATERIAL PARA COPIAR
+TABELA PARA COPIAR
+Opção | URL/fonte e data | Região | Tipo | Área informada | Vagas | Conservação informada | Preço pedido | Custos informados | Dados pendentes
+
+Regras: registre a fonte; não trate preço anunciado como preço de venda; não estime área ou condomínio ausentes; escreva “a conferir”.
+
+Mensagem ao proprietário: “Separei estas opções anunciadas que podem entrar na mesma busca. Elas diferem em [DIFERENÇAS CONFIRMADAS]. Os preços são pedidos nos anúncios, não valores de vendas comprovadas. Podemos conferir [LACUNAS] antes de tirar uma conclusão?”
+
+EXEMPLO FICTÍCIO
+Exemplo fictício: A | anúncio conferido em 09/10 | Taquaral | apartamento | 70m² | 1 vaga | conservação a conferir | R$500 mil | condomínio ausente. B | mesma data | Taquaral | apartamento | 82m² | 1 vaga | reforma informada | R$500 mil | condomínio informado na ficha.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

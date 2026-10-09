@@ -1,0 +1,16 @@
+PROMPT DE ABERTURA DO TOUR DE IMÓVEL
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Copie o prompt, preencha os fatos e confira a cena antes de usar a abertura. Ambiente gerado por IA é ilustração, não prova de imóvel disponível.
+
+CAMPOS PARA PREENCHER
+[IMÓVEL], [CARACTERÍSTICA CONFIRMADA], [NECESSIDADE], [CENA DISPONÍVEL]
+
+MATERIAL PARA COPIAR
+Crie 3 aberturas diferentes para um tour imobiliário em português brasileiro. Imóvel: [IMÓVEL]. Característica confirmada: [CARACTERÍSTICA]. Necessidade que o comprador quer avaliar: [NECESSIDADE]. Cena autorizada disponível: [CENA]. Entregue para cada abertura: gancho de até 20 palavras com contexto imobiliário, cena correspondente e uma pergunta útil para a legenda. Não invente preço, medida, silêncio, internet, disponibilidade ou resultado de venda. Indique qualquer dado ausente como “conferir”. Não escreva como se eu morasse no imóvel.
+
+EXEMPLO FICTÍCIO
+Dados fictícios: apartamento de 2 quartos; quarto extra confirmado na ficha; necessidade de trabalhar em casa; take autorizado da porta até a janela. Abertura possível: “Esse quarto do apartamento cabe na sua rotina de trabalho? Veja o espaço antes de escolher.”
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

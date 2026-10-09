@@ -1,0 +1,27 @@
+FICHA DE FEEDBACK APÓS A VISITA AO IMÓVEL
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Salve a ficha na nota de cada visita. Use ID interno em compartilhamentos e não divulgue nome ou telefone do comprador.
+
+CAMPOS PARA PREENCHER
+[ID INTERNO], [DATA], [IMÓVEL], [RESPOSTA], [INFORMAÇÃO PENDENTE]
+
+MATERIAL PARA COPIAR
+PERGUNTA
+“Depois da visita ao [IMÓVEL], qual ponto mais pesou na sua avaliação? Ficou alguma informação que você quer conferir?”
+
+FICHA PARA COPIAR
+Visita: [ID INTERNO / DATA]
+Ponto que agradou: [RESPOSTA]
+Ponto que dificultou: [RESPOSTA LITERAL]
+Dúvida pendente: [INFORMAÇÃO]
+Quem pode confirmar e quando: [RESPONSÁVEL/DATA]
+Comparação com outros relatos: [SE REPETIU / DIFERENTE / DADOS INSUFICIENTES]
+
+Resumo ao proprietário: “Nas [N] visitas registradas, apareceu [PONTO] em [N] respostas. Outros relatos foram [RESUMO]. Ainda falta confirmar [PONTO].”
+
+EXEMPLO FICTÍCIO
+Visita fictícia V01 em 09/10; agradou a sala; dificultou “subir escadas todo dia”; vaga ainda a conferir. Uma resposta registrada: insuficiente para afirmar que todos recusam a casa.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

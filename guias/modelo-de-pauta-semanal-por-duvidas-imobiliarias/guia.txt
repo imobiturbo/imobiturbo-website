@@ -1,0 +1,27 @@
+MODELO DE PAUTA SEMANAL POR DÚVIDAS IMOBILIÁRIAS
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Use para organizar a pauta da semana. Não publique mensagens privadas nem invente resultados do conteúdo. Informação pendente precisa ser verificada ou permanecer como pergunta.
+
+CAMPOS PARA PREENCHER
+[PERGUNTAS], [FATOS CONFERIDOS], [CENAS], [PENDÊNCIAS], [DATA]
+
+MATERIAL PARA COPIAR
+PAUTA SEMANAL PARA COPIAR
+Dúvidas da semana, sem identificação: [ASSUNTOS]
+Pergunta escolhida: [PERGUNTA]
+Por que ajuda alguém a avaliar um imóvel: [MOTIVO]
+Fatos confirmados e fonte: [FATOS/FONTE]
+Cenas autorizadas: [CENAS]
+Gancho com situação imobiliária: [GANCHO]
+3 pontos úteis da legenda: [PASSOS]
+Dados a conferir: [PENDÊNCIAS]
+Data reservada: [DATA]
+
+Cheque antes de publicar: a pergunta foi respondida? O dado está confirmado? A cena sustenta a frase? O texto expõe alguém?
+
+EXEMPLO FICTÍCIO
+Exemplo fictício: dúvida “minha bicicleta cabe junto do carro na vaga?”; pauta explica medir o espaço e conferir regras de uso; medida e regra não disponíveis ficam pendentes. Nenhuma vaga é apresentada como adequada sem conferência.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.

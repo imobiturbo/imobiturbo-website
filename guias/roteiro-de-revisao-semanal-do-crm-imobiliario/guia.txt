@@ -1,0 +1,24 @@
+ROTEIRO DE REVISÃO SEMANAL DO CRM IMOBILIÁRIO
+Natan Pimentel / Imobiturbo
+
+PARA USAR
+Reserve um período de revisão e execute apenas o que tem contexto e autorização. Não trate todos os contatos cadastrados como compradores ativos.
+
+CAMPOS PARA PREENCHER
+[PERÍODO], [ID], [COMPROMISSO], [PENDÊNCIA], [AÇÃO], [RESPONSÁVEL/DATA]
+
+MATERIAL PARA COPIAR
+REVISÃO SEMANAL PARA COPIAR
+Período: [PERÍODO]
+1. Retornos combinados: [ID / DATA / COMPROMISSO]
+2. Informações pendentes: [ID / INFORMAÇÃO / QUEM CONFIRMA]
+3. Visitas com confirmação necessária: [ID / CONTEXTO]
+4. Pedidos de pausa ou encerramento: [ID / PREFERÊNCIA]
+5. Tarefas escolhidas: [ID / AÇÃO / RESPONSÁVEL / DATA]
+
+Antes de contatar alguém, leia a última conversa e confira a preferência. Pendência interna pode ser resolvida sem mandar outra cobrança ao comprador.
+
+EXEMPLO FICTÍCIO
+Exemplo fictício: L01 confirmar visita aceita para amanhã; L02 consultar medida com responsável; L03 aguardar mês seguinte conforme pedido. Três tarefas, nenhum disparo geral.
+
+Use apenas fatos e permissões confirmados; adapte os campos à sua conversa.
