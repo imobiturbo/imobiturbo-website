@@ -124,6 +124,11 @@ for (const [landing, entry, plan] of [
       await page.locator('#chkStep3Btn').click();
     }
     await page.locator('#chkStepPane4').waitFor({ state: 'visible' });
+    await page.locator('.chk-asaas-logo').scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => {
+      const logo = document.querySelector('.chk-asaas-logo');
+      return logo.complete && logo.naturalWidth > 0;
+    });
     assert.equal(await page.locator('#chkCardNumber').count(), 0);
     assert.equal(await page.locator('#chkCardCvv').count(), 0);
     await page.locator('#chkBuyerCpf').fill('529.982.247-25');
