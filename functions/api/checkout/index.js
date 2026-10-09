@@ -6,6 +6,7 @@ import { dispatchCheckoutContextToHub, dispatchVerifiedPurchaseToHub } from "./_
 import { dispatchConsultingCashflowToHub } from "./_cashflow.js";
 import { consultingInstallmentTotalCents } from "./_products.js";
 import { createCommunityOrder } from "./_community-orders.js";
+import { scheduleCommunityCrm } from "./_community-crm.js";
 import { communityOrderStatus, communityErrorResponse } from "./_community-payments.js";
 
 const CORS_HEADERS = {
@@ -84,6 +85,8 @@ async function createCheckout(context) {
     try {
       const { config, order } = await createCommunityOrder(env, { ...body,
         remoteIp: request.headers.get("cf-connecting-ip") || undefined });
+      const crm = scheduleCommunityCrm(context, config, order);
+      if (!context.waitUntil) await crm;
       const result = await communityOrderStatus(config, order, body.eventId);
       return Response.json({ ...result, clientIp: request.headers.get("cf-connecting-ip") || null }, { headers: CORS_HEADERS });
     } catch (error) { return communityErrorResponse(error, CORS_HEADERS); }
