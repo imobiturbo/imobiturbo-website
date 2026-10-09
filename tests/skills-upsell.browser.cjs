@@ -45,32 +45,46 @@ test('Skills access never uses an unrelated community checkout identity', async 
   assert.equal(await page.locator('#skillsAccessLink').getAttribute('href'), 'https://club.imobiturbo.com.br/login');
 });
 
-for (const [landing, entry] of [
-  ['/skills-ia-obrigado', 'main'],
-  ['/skills-ia-obrigado/?utm_source=wiapy&utm_medium=upsell&utm_campaign=skills-regression&is_test=true', 'main'],
-  ['/skills-ia-obrigado/?utm_source=wiapy&utm_medium=upsell&utm_campaign=skills-regression&is_test=true', 'vsl'],
+for (const [landing, entry, plan] of [
+  ['/skills-ia-obrigado', 'main', 'anual'],
+  ['/skills-ia-obrigado/?utm_source=wiapy&utm_medium=upsell&utm_campaign=skills-regression&is_test=true', 'main', 'anual'],
+  ['/skills-ia-obrigado/?utm_source=wiapy&utm_medium=upsell&utm_campaign=skills-regression&is_test=true', 'vsl', 'anual'],
+  ['/skills-ia-obrigado/?is_test=true', 'main', 'trimestral'],
+  ['/skills-ia-obrigado/?is_test=true', 'main', 'mensal'],
 ]) {
-  for (const method of ['PIX', 'CREDIT_CARD']) test(`${entry} ${landing}: ${method} checkout preserves attribution and waits for payment approval`, async t => {
+  for (const method of ['PIX', 'CREDIT_CARD']) test(`${entry} ${landing}: ${plan}/${method} checkout preserves attribution and waits for payment approval`, async t => {
     const context = await browser.newContext({ viewport: { width: 390, height: 900 }, reducedMotion: 'reduce' });
     t.after(() => context.close());
     const page = await context.newPage();
     const errors = [], payments = [];
     let confirmed = false;
+    const monthlyPix = plan === 'mensal' && method === 'PIX';
+    const amount = method === 'PIX' ? { anual: 997, trimestral: 357, mensal: 147 }[plan] : { anual: 1164, trimestral: 381, mensal: 147 }[plan];
     const payment = {
-      success: true, gateway: 'asaas', paymentId: 'pay_skills_fixture', eventId: 'evt_skills_fixture',
-      productId: 'comunidade-imobiturbo', plan: 'anual', amount: 997, chargeAmount: 997,
+      success: true, managedCommunity: true, gateway: 'asaas', checkoutOrderId: '11111111-1111-4111-8111-111111111111', paymentId: 'pay_skills_fixture', eventId: 'evt_skills_fixture',
+      invoiceUrl: 'https://www.asaas.com/i/synthetic_skills_not_payable', status: 'PENDING',
+      productId: 'comunidade-imobiturbo', plan, amount, chargeAmount: amount, installmentCount: method === 'PIX' ? 1 : { anual: 12, trimestral: 3, mensal: 1 }[plan],
+      ...(monthlyPix ? { pixAutomatic: true } : {}),
       expiresAt: new Date(Date.now() + 1800000).toISOString(),
       pix: { copyPaste: 'SYNTHETIC-NOT-PAYABLE', qrCodeBase64: '' },
     };
     page.on('pageerror', error => errors.push(error.message));
     await context.route('**/*', async route => {
       const request = route.request(), url = new URL(request.url());
+      if (url.href === payment.invoiceUrl) return route.fulfill({ contentType: 'text/html', body: '<h1>Checkout fixture — not payable</h1>' });
       if (url.origin !== baseURL) return route.abort();
       if (url.pathname === '/api/checkout' && request.method() === 'POST') {
         const payload = JSON.parse(request.postData());
         assert.equal(payload.gateway, 'asaas');
-        assert.equal(payload.plan, 'anual');
+        assert.equal(payload.plan, plan);
+        assert.equal(payload.installments, payment.installmentCount);
+        assert.equal(payload.pixAutomatic, monthlyPix ? true : undefined);
         assert.equal(payload.paymentMethod, method);
+        assert.equal(payload.checkoutMode, 'hosted');
+        assert.match(payload.idempotencyKey, /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+        assert.equal(payload.creditCard, undefined);
+        payment.idempotencyKey = payload.idempotencyKey;
+        payment.eventId = payload.eventId;
         payments.push(payload);
         return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(payment) });
       }
@@ -91,6 +105,7 @@ for (const [landing, entry] of [
     assert.ok(await page.evaluate(() => [...document.styleSheets].some(sheet => sheet.href?.includes('/vagas/vagas.css'))));
     assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
     assert.equal(payments.length, 0, 'visiting the upsell creates no charge');
+    await page.locator('input[name="plano"][value="' + plan + '"]').check({ force: true });
     if (entry === 'vsl') {
       await page.evaluate(() => window.openCheckoutWithCurrentPlan());
       await page.locator('#leadFullname').fill('Mariana Compradora');
@@ -109,27 +124,29 @@ for (const [landing, entry] of [
       await page.locator('#chkStep3Btn').click();
     }
     await page.locator('#chkStepPane4').waitFor({ state: 'visible' });
-    if (method === 'PIX') {
-      await page.locator('#chkTabPix').click();
-      await page.locator('#chkPixCpf').fill('529.982.247-25');
-      await page.locator('#chkGeneratePixBtn').click();
-    } else {
-      await page.locator('#chkCardNumber').fill('4111111111111111');
-      await page.locator('#chkCardHolder').fill('Mariana Compradora');
-      await page.locator('#chkCardExpiry').fill('12/30');
-      await page.locator('#chkCardCvv').fill('123');
-      await page.locator('#chkCardCpf').fill('529.982.247-25');
-      await page.locator('#chkContinuePaymentBtn').click();
-    }
-    await page.locator('#chkPendingNotice').waitFor({ state: 'visible' });
-    assert.ok(page.url().includes('/skills-ia-obrigado'), 'pending payment stays in the checkout');
-    assert.equal(payments.length, 1);
+    assert.equal(await page.locator('#chkCardNumber').count(), 0);
+    assert.equal(await page.locator('#chkCardCvv').count(), 0);
+    await page.locator('#chkBuyerCpf').fill('529.982.247-25');
+    await page.locator('#chkTabPix').click();
+    assert.equal(await page.locator('#chkBuyerCpf').inputValue(), '529.982.247-25');
+    await page.locator('#chkTabCard').click();
+    assert.equal(await page.locator('#chkBuyerCpf').inputValue(), '529.982.247-25');
+    if (method === 'PIX') await page.locator('#chkTabPix').click();
+    await page.locator(method === 'PIX' ? '#chkGeneratePixBtn' : '#chkContinuePaymentBtn').evaluate(button => { button.click(); button.click(); });
+    if (monthlyPix) await page.locator('#chkPendingNotice').waitFor({ state: 'visible' });
+    else await page.waitForURL(payment.invoiceUrl);
+    assert.equal(payments.length, 1, 'double click creates only one intention');
     if (landing.includes('utm_source')) {
       assert.equal(payments[0].tracking.utm_source, 'wiapy');
       assert.equal(payments[0].tracking.utm_medium, 'upsell');
       assert.equal(payments[0].tracking.utm_campaign, 'skills-regression');
     }
+    if (!monthlyPix) await page.goBack({ waitUntil: 'domcontentloaded' });
+    await page.locator('#chkPendingNotice').waitFor({ state: 'visible' });
+    assert.equal(await page.evaluate(() => JSON.parse(localStorage.getItem('imobiturbo:checkout:community:v2')).paid), false);
+    assert.equal(payments.length, 1, 'returning retains the original order');
     confirmed = true;
+    await page.reload({ waitUntil: 'domcontentloaded' });
     await page.waitForURL('**/vagas-obrigado*', { timeout: 15000, waitUntil: 'domcontentloaded' });
     const receipt = await page.evaluate(() => JSON.parse(localStorage.getItem('imobiturbo:checkout:community:v2')));
     assert.equal(receipt.paid, true);
