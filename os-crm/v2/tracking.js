@@ -22,8 +22,9 @@
   }
   document.querySelectorAll('a[href]').forEach(link => {
     const url = new URL(link.href, location.href);
-    if (url.origin === location.origin && url.pathname === '/os-crm/v2/assinatura/') {
-      const selected = window.OSOffer.selection(url.search);
+    const selected = window.OSOffer.checkoutSelection(url.href) ||
+      (url.origin === location.origin && url.pathname === '/os-crm/v2/assinatura/' ? window.OSOffer.selection(url.search) : null);
+    if (selected) {
       link.href = window.OSOffer.checkoutURL(selected.plan, selected.cycle);
     }
   });
@@ -39,8 +40,9 @@
     const link = target.closest('a[href]');
     if (!link) return;
     const url = new URL(link.href, location.href);
-    if (url.origin === location.origin && url.pathname === '/os-crm/v2/assinatura/') {
-      const selected = window.OSOffer.selection(url.search);
+    const selected = window.OSOffer.checkoutSelection(url.href) ||
+      (url.origin === location.origin && url.pathname === '/os-crm/v2/assinatura/' ? window.OSOffer.selection(url.search) : null);
+    if (selected) {
       track('select_plan', selected.plan, selected.cycle);
     } else if (url.hostname === 'wa.me') {
       const selected = window.OSOffer.selection(location.search);
